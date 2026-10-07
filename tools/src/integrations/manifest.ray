@@ -168,7 +168,7 @@ pub fn vscode_data(cs: [Component]) -> Result<string, string> {
     pretty(json.obj().field("version", 1.1).field("tags", tags))
 }
 
-// Indented (keys sorted by stringify_pretty: no order-preserving pretty printer, see #122).
+// Indented, keeping the authored key order.
 fn pretty(o: Obj) -> Result<string, string> {
-    Result.Ok(json.stringify_pretty(json.parse(json.render(o))?, 2) + "\n")
+    Result.Ok(json.render_pretty(o, 2) + "\n")
 }

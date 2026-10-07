@@ -27,6 +27,6 @@ pub fn render(m: Model) -> Result<string, string> {
         .field("colors", json.list(m.colors))
         .field("variants", json.list(m.variants))
         .field("tokens", tokens);
-    let pretty = json.stringify_pretty(json.parse(json.render(doc))?, 2);
-    Result.Ok(pretty + "\n")
+    // render_pretty keeps the authored order (stringify_pretty would sort the keys).
+    Result.Ok(json.render_pretty(doc, 2) + "\n")
 }
