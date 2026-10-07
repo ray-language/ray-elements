@@ -65,7 +65,8 @@ const styles = css`
   }
   .close:hover { background: var(--ray-accent); color: var(--ray-foreground); }
   .close svg { width: 1rem; height: 1rem; }
-  .body { flex: 1; overflow: auto; padding: var(--ray-space-md); }
+  /* flex-basis auto: Safari collapses a 0% basis under a max-height only. */
+  .body { flex: 1 1 auto; min-height: 0; overflow: auto; padding: var(--ray-space-md); }
   .footer { display: flex; justify-content: flex-end; gap: var(--ray-space-2); padding: 0 var(--ray-space-md) var(--ray-space-md); }
   .footer:not([data-filled]) { display: none; }
 `;

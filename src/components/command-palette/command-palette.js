@@ -61,7 +61,9 @@ const styles = css`
     outline: none;
   }
   input::placeholder { color: var(--ray-muted-foreground); }
-  .list { flex: 1; overflow-y: auto; padding: 0 var(--ray-space-2) var(--ray-space-2); scroll-padding: var(--ray-space-2); }
+  /* flex-basis auto: with only a max-height on the dialog, Safari resolves
+     a 0% basis to zero and the list collapses. */
+  .list { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 0 var(--ray-space-2) var(--ray-space-2); scroll-padding: var(--ray-space-2); }
   .group-label { padding: var(--ray-space-2) var(--ray-space-2) var(--ray-space-1); font-size: var(--ray-font-size-xs); font-weight: var(--ray-font-weight-medium); color: var(--ray-muted-foreground); }
   .option {
     display: flex;
