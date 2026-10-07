@@ -6,12 +6,16 @@ import { RayElement, css, define } from "../../core/core.js";
 const RADII = ["xs", "sm", "md", "lg", "xl", "full"];
 
 const styles = css`
+  /* Defaults set on the host: an ancestor's private --_r (a card's or a
+     button's radius) would otherwise inherit into it. */
   :host {
+    --_ratio: 16 / 9;
+    --_r: 0;
     display: block;
     position: relative;
     overflow: hidden;
-    aspect-ratio: var(--_ratio, 16 / 9);
-    border-radius: var(--_r, 0);
+    aspect-ratio: var(--_ratio);
+    border-radius: var(--_r);
   }
   :host([hidden]) { display: none; }
   ::slotted(*) {

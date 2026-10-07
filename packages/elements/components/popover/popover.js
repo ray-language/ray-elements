@@ -6,7 +6,9 @@ import { Floating, floatingStyles } from "../../core/floating.js";
 import { focusFirst, tabbables } from "../../core/focus.js";
 
 const styles = css`
-  .panel { padding: var(--_p, var(--ray-space-md)); width: var(--_width, max-content); }
+  /* Defaults on the host, so an ancestor's private --_p / --_width do not leak in. */
+  :host { --_p: var(--ray-space-md); --_width: max-content; }
+  .panel { padding: var(--_p); width: var(--_width); }
   :host([padding="0"]) { --_p: 0; }
   :host([padding="xs"]) { --_p: var(--ray-space-xs); }
   :host([padding="sm"]) { --_p: var(--ray-space-sm); }

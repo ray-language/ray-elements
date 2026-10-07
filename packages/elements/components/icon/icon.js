@@ -6,8 +6,11 @@ import { RayElement, css, define } from "../../core/core.js";
 const SIZES = { xs: "0.75rem", sm: "0.875rem", md: "1rem", lg: "1.25rem", xl: "1.5rem" };
 
 const styles = css`
-  :host { display: inline-flex; vertical-align: -0.125em; line-height: 1; }
-  .icon svg { width: var(--_size, 1em); height: var(--_size, 1em); }
+  /* --_size is set here, not only read: private custom properties inherit
+     through shadow roots, and an ancestor's own --_size (ray-split's pane
+     size) must not reach the icon. size= overrides it inline. */
+  :host { --_size: 1em; display: inline-flex; vertical-align: -0.125em; line-height: 1; }
+  .icon svg { width: var(--_size); height: var(--_size); }
 `;
 
 export class RayIcon extends RayElement {

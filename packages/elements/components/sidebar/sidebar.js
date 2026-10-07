@@ -47,6 +47,7 @@ const styles = css`
 
   /* Narrow screens: the panel lives in a modal dialog at the edge. */
   dialog {
+    --_from: -100%;
     position: fixed;
     inset: 0 auto 0 0;
     box-sizing: border-box;
@@ -63,7 +64,7 @@ const styles = css`
   :host([side="right"]) dialog { inset: 0 0 0 auto; }
   dialog[open] { display: block; animation: ray-sidebar-in var(--ray-duration-slow) var(--ray-easing-out); }
   dialog .panel { box-shadow: var(--ray-shadow-xl); background: var(--ray-card); }
-  @keyframes ray-sidebar-in { from { transform: translateX(var(--_from, -100%)); } }
+  @keyframes ray-sidebar-in { from { transform: translateX(var(--_from)); } }
   :host([side="right"]) dialog { --_from: 100%; }
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
   @keyframes ray-fade-in { from { opacity: 0; } }
