@@ -1,0 +1,64 @@
+[component]
+name = "Tooltip"
+category = "Overlays"
+summary = "A short hint on hover and focus of its child; the label also becomes the child's accessible description."
+files = ["tooltip.js"]
+requires = []
+tags = ["ray-tooltip"]
+
+[ray-tooltip]
+class = "RayTooltip"
+extends = "Floating"
+
+[ray-tooltip.properties.label]
+type = "string"
+description = "Tooltip text."
+
+[ray-tooltip.properties.placement]
+type = "string"
+values = ["top", "bottom", "left", "right", "top-start", "top-end", "bottom-start", "bottom-end"]
+default = "top"
+reflect = true
+description = "Preferred side."
+
+[ray-tooltip.properties.openDelay]
+attribute = "open-delay"
+type = "number"
+default = "300"
+description = "ms before showing."
+
+[ray-tooltip.properties.closeDelay]
+attribute = "close-delay"
+type = "number"
+default = "0"
+description = "ms before hiding."
+
+[ray-tooltip.properties.color]
+type = "string"
+description = "A palette color or any CSS color. Default: inverted foreground/background."
+
+[ray-tooltip.properties.disabled]
+type = "boolean"
+description = "Never shows."
+
+[ray-tooltip.slots.default]
+description = "The element the tooltip describes (one element)."
+
+[ray-tooltip.parts.tooltip]
+description = "The tooltip box."
+
+[ray-tooltip.members.show]
+ts = "show(): void"
+description = "Opens it."
+
+[ray-tooltip.members.hide]
+ts = "hide(): void"
+description = "Closes it."
+
+[ray-tooltip.members.toggle]
+ts = "toggle(): void"
+description = "Opens or closes it."
+
+[ray-tooltip.members.trigger]
+ts = "readonly trigger: Element | null"
+description = "The trigger element."

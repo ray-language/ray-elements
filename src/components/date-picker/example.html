@@ -1,0 +1,13 @@
+<div class="demo-grid">
+  <ray-date-picker label="Release date" description="When the update goes out." value="2026-10-06"></ray-date-picker>
+  <ray-date-picker label="Deadline" placeholder="No deadline" min="2026-10-01" max="2026-12-31" format="long" clearable></ray-date-picker>
+</div>
+<div class="demo-row" style="margin-top: 1.5rem; align-items: flex-start">
+  <ray-calendar id="demo-calendar" value="2026-10-15" min="2026-10-05"></ray-calendar>
+  <span id="demo-calendar-out" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick a day.</span>
+</div>
+<script type="module">
+  document.getElementById("demo-calendar").addEventListener("ray-change", (e) => {
+    document.getElementById("demo-calendar-out").textContent = `ray-change: ${e.detail.value}`;
+  });
+</script>

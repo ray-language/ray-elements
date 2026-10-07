@@ -1,0 +1,99 @@
+[component]
+name = "Slider"
+category = "Inputs"
+summary = "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated."
+files = ["slider.js"]
+requires = []
+tags = ["ray-slider"]
+
+[ray-slider]
+class = "RaySlider"
+extends = "FieldControl"
+
+[ray-slider.properties.value]
+type = "number"
+description = "Current value. The value attribute is the initial one (restored on reset)."
+
+[ray-slider.properties.min]
+type = "number"
+default = "0"
+description = "Minimum."
+
+[ray-slider.properties.max]
+type = "number"
+default = "100"
+description = "Maximum."
+
+[ray-slider.properties.step]
+type = "number"
+default = "1"
+description = "Step."
+
+[ray-slider.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-slider.properties.label]
+type = "string"
+description = "Visible label."
+
+[ray-slider.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-slider.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-slider.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-slider.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-slider.properties.color]
+type = "string"
+reflect = true
+description = "Track and thumb color."
+
+[ray-slider.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Track and thumb size."
+
+[ray-slider.properties.showValue]
+attribute = "show-value"
+type = "boolean"
+reflect = true
+description = "Shows the value next to the label."
+
+[ray-slider.properties.unit]
+type = "string"
+description = "Appended to the shown value and its spoken text (%, px, ms…)."
+
+[ray-slider.properties.marks]
+attribute = false
+type = "array"
+ts = "Array<number | { value: number; label?: string }>"
+description = "Labeled ticks under the track."
+
+[ray-slider.events.input]
+description = "While dragging."
+
+[ray-slider.events.change]
+description = "When released."
+
+[ray-slider.parts.input]
+description = "The native range input."
+
+[ray-slider.model]
+property = "value"
+events = ["input"]

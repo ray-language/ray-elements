@@ -1,0 +1,35 @@
+[component]
+name = "Hover card"
+category = "App"
+summary = "Rich content while the trigger is hovered or focused (level 3: a Floating)."
+files = ["hover-card.js"]
+requires = []
+tags = ["app-hover-card"]
+
+[app-hover-card]
+class = "AppHoverCard"
+extends = "Floating"
+
+[app-hover-card.properties.openDelay]
+attribute = "open-delay"
+type = "number"
+default = "200"
+description = "ms before opening."
+
+[app-hover-card.properties.closeDelay]
+attribute = "close-delay"
+type = "number"
+default = "150"
+description = "ms before closing."
+
+[app-hover-card.events.ray-open]
+description = "After it opened."
+
+[app-hover-card.events.ray-close]
+description = "After it closed."
+
+[app-hover-card.slots.trigger]
+description = "The element that shows it."
+
+[app-hover-card.slots.default]
+description = "The card."

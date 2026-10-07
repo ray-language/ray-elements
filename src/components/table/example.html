@@ -1,0 +1,37 @@
+<ray-table id="demo-table" selectable clickable-rows striped with-border sticky-header label="Releases" style="--ray-table-max-height: 16rem"></ray-table>
+<p id="demo-table-out" style="margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Click a row, sort a column, or select rows.</p>
+<ray-table id="demo-table-empty" label="Deployments" with-border>
+  <ray-empty-state slot="empty" label="No deployments" compact>Deploy a release to see it here.</ray-empty-state>
+</ray-table>
+<table class="ray-table ray-table-bordered">
+  <thead><tr><th>Plain HTML</th><th>class="ray-table"</th></tr></thead>
+  <tbody><tr><td>Server-rendered</td><td>No JavaScript</td></tr><tr><td>rayauth</td><td>Users list</td></tr></tbody>
+</table>
+<script type="module">
+  const t = document.getElementById("demo-table");
+  const out = document.getElementById("demo-table-out");
+  t.columns = [
+    { key: "app", label: "App", sortable: true },
+    { key: "version", label: "Version", sortable: true },
+    { key: "size", label: "Size", align: "right", sortable: true, render: (r) => `${r.size.toFixed(1)} MB` },
+    { key: "status", label: "Status", render: (r) => {
+      const b = document.createElement("ray-badge");
+      b.color = r.status === "live" ? "green" : r.status === "failed" ? "red" : "gray";
+      b.textContent = r.status;
+      return b;
+    } },
+  ];
+  t.data = [
+    { id: 1, app: "ray-remote", version: "0.4.1", size: 8.4, status: "live" },
+    { id: 2, app: "ray-sublime", version: "1.9.0", size: 21.7, status: "live" },
+    { id: 3, app: "rayauth", version: "0.10.2", size: 6.1, status: "failed" },
+    { id: 4, app: "raymart", version: "0.3.0", size: 12.9, status: "draft" },
+    { id: 5, app: "ray808", version: "2.0.0", size: 15.2, status: "live" },
+    { id: 6, app: "raylb", version: "0.2.4", size: 4.8, status: "draft" },
+  ];
+  t.addEventListener("ray-row-click", (e) => { out.textContent = `Opened ${e.detail.row.app}`; });
+  t.addEventListener("ray-selection-change", (e) => { out.textContent = `${e.detail.selection.length} selected`; });
+  const empty = document.getElementById("demo-table-empty");
+  empty.columns = [{ key: "app", label: "App" }, { key: "when", label: "When" }];
+  empty.data = [];
+</script>

@@ -1,0 +1,56 @@
+[component]
+name = "Skeleton"
+category = "Feedback"
+summary = "A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content."
+files = ["skeleton.js"]
+requires = []
+tags = ["ray-skeleton"]
+
+[ray-skeleton]
+class = "RaySkeleton"
+extends = "RayElement"
+summary = "aria-busy=\"true\" on the host while loading; the placeholder is aria-hidden."
+
+[ray-skeleton.properties.width]
+type = "string"
+description = "Width (CSS length, a number is px). Default: 100% (a circle: 2.5rem)."
+
+[ray-skeleton.properties.height]
+type = "string"
+description = "Height of a block or of each line (CSS length, a number is px). Default: 1rem."
+
+[ray-skeleton.properties.circle]
+type = "boolean"
+reflect = true
+description = "A circle (avatar placeholder): its diameter is width, else height."
+
+[ray-skeleton.properties.lines]
+type = "number"
+reflect = true
+description = "Number of text lines (the last one is shorter)."
+
+[ray-skeleton.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl, full or a CSS length. Default: sm."
+
+[ray-skeleton.properties.animation]
+type = "string"
+values = ["shimmer", "pulse", "none"]
+default = "shimmer"
+reflect = true
+description = "The loading effect (always none with reduced motion)."
+
+[ray-skeleton.properties.loaded]
+type = "boolean"
+reflect = true
+description = "Shows the slotted content instead of the placeholder."
+
+[ray-skeleton.slots.default]
+description = "The real content, shown with loaded."
+
+[ray-skeleton.parts.skeleton]
+description = "The placeholder container."
+
+[ray-skeleton.parts.bone]
+description = "Each block or line."

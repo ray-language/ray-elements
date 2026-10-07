@@ -1,0 +1,137 @@
+[component]
+name = "Table"
+category = "Data display"
+summary = "A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state. Plain HTML tables: the .ray-table class of base.css."
+files = ["table.js"]
+requires = []
+tags = ["ray-table"]
+
+[ray-table]
+class = "RayTable"
+extends = "RayElement"
+summary = "Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height."
+
+[component.types.TableColumn]
+ts = "{ key: string; label?: string; width?: number | string; align?: \"left\" | \"center\" | \"right\"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }"
+description = "A column of ray-table."
+
+[component.types.TableSort]
+ts = "{ key: string; direction: \"asc\" | \"desc\" }"
+description = "The sort state of ray-table."
+
+[ray-table.properties.columns]
+attribute = false
+type = "array"
+ts = "TableColumn[]"
+description = "Columns: key, label, width, align, sortable, render(row, index), sort(a, b)."
+
+[ray-table.properties.data]
+attribute = false
+type = "array"
+ts = "any[]"
+description = "Rows (objects)."
+
+[ray-table.properties.rowKey]
+attribute = "row-key"
+type = "string"
+default = "id"
+description = "Field that identifies a row (selection)."
+
+[ray-table.properties.selectable]
+type = "boolean"
+reflect = true
+description = "A checkbox per row and a select-all checkbox."
+
+[ray-table.properties.selection]
+attribute = false
+type = "array"
+ts = "unknown[]"
+description = "Keys of the selected rows."
+
+[ray-table.properties.sort]
+attribute = false
+type = "string"
+ts = "TableSort | null"
+description = "Current sort; set it, or let header clicks change it."
+
+[ray-table.properties.manualSort]
+attribute = "manual-sort"
+type = "boolean"
+description = "Do not sort here: listen to ray-sort and pass sorted data."
+
+[ray-table.properties.clickableRows]
+attribute = "clickable-rows"
+type = "boolean"
+reflect = true
+description = "Rows are focusable and fire ray-row-click (Enter too; arrows move between rows)."
+
+[ray-table.properties.striped]
+type = "boolean"
+reflect = true
+description = "Alternate row background."
+
+[ray-table.properties.withBorder]
+attribute = "with-border"
+type = "boolean"
+reflect = true
+description = "Border around the table."
+
+[ray-table.properties.withColumnBorders]
+attribute = "with-column-borders"
+type = "boolean"
+reflect = true
+description = "Borders between columns."
+
+[ray-table.properties.stickyHeader]
+attribute = "sticky-header"
+type = "boolean"
+reflect = true
+description = "The header stays visible while scrolling (with --ray-table-max-height)."
+
+[ray-table.properties.noHover]
+attribute = "no-hover"
+type = "boolean"
+reflect = true
+description = "No row highlight on hover."
+
+[ray-table.properties.density]
+type = "string"
+values = ["xs", "sm", "md", "lg"]
+default = "sm"
+reflect = true
+description = "Cell padding."
+
+[ray-table.properties.label]
+type = "string"
+description = "Caption (also the table's accessible name)."
+
+[ray-table.properties.emptyLabel]
+attribute = "empty-label"
+type = "string"
+default = "No data"
+description = "Text without rows (or put a ray-empty-state in slot=empty)."
+
+[ray-table.events.ray-sort]
+description = "A header changed the sort."
+detail = "{ key: string; direction: \"asc\" | \"desc\" | null }"
+
+[ray-table.events.ray-selection-change]
+description = "The selection changed."
+detail = "{ selection: unknown[] }"
+
+[ray-table.events.ray-row-click]
+description = "A row was clicked or activated with Enter (clickable-rows)."
+detail = "{ row: any; index: number }"
+
+[ray-table.slots.empty]
+description = "Shown instead of the empty text when there are no rows."
+
+[ray-table.parts.table]
+description = "The <table>."
+
+[ray-table.parts.scroll]
+description = "The scroll container."
+
+[ray-table.members.rows]
+ts = "readonly rows: any[]"
+description = "The rows in display order."

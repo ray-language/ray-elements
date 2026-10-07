@@ -1,0 +1,31 @@
+[component]
+name = "Kbd"
+category = "Data display"
+summary = "A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons."
+files = ["kbd.js"]
+requires = []
+tags = ["ray-kbd"]
+
+[ray-kbd]
+class = "RayKbd"
+extends = "RayElement"
+
+[ray-kbd.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Font size."
+
+[ray-kbd.properties.variant]
+type = "string"
+values = ["default", "filled", "outline"]
+default = "default"
+reflect = true
+description = "default: raised keycap; filled: flat muted chip; outline: flat with a border."
+
+[ray-kbd.slots.default]
+description = "The key name."
+
+[ray-kbd.parts.kbd]
+description = "The inner <kbd>."

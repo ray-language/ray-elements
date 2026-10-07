@@ -1,0 +1,474 @@
+// Syntax highlighting at build time: source code -> escaped HTML with
+// <span class="tk-…"> tokens (styled by the --ray-code-* tokens). Small
+// tokenizers, good enough for documentation snippets — not a parser.
+//
+//   html (with <script>/<style> inside), js / ts / jsx / tsx, css, sh, ray
+
+const JS_KEYWORDS: [string] = [
+    "import",
+    "export",
+    "from",
+    "default",
+    "const",
+    "let",
+    "var",
+    "function",
+    "return",
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "switch",
+    "case",
+    "break",
+    "continue",
+    "new",
+    "class",
+    "extends",
+    "super",
+    "this",
+    "async",
+    "await",
+    "try",
+    "catch",
+    "finally",
+    "throw",
+    "typeof",
+    "instanceof",
+    "in",
+    "of",
+    "true",
+    "false",
+    "null",
+    "undefined",
+    "void",
+    "static",
+    "get",
+    "set",
+    "type",
+    "interface",
+    "declare",
+    "readonly",
+    "as",
+    "yield",
+    "delete"
+];
+
+const RAY_KEYWORDS: [string] = [
+    "fn",
+    "let",
+    "var",
+    "const",
+    "if",
+    "else",
+    "while",
+    "for",
+    "in",
+    "match",
+    "return",
+    "break",
+    "continue",
+    "struct",
+    "enum",
+    "trait",
+    "impl",
+    "import",
+    "from",
+    "pub",
+    "true",
+    "false",
+    "type",
+    "self",
+    "Self",
+    "as",
+    "dyn"
+];
+
+// The highlighted HTML of `src` in `lang` (unknown languages: escaped only).
+pub fn code(src: string, lang: string) -> string {
+    let cs = src.chars();
+    let out: [string] = [];
+    // (no or-patterns in match: alias lists)
+    if (lang == "html" || lang == "vue") {
+        html(cs, 0, cs.len(), out);
+    } else if (["js", "javascript", "ts", "typescript", "jsx", "tsx", "mjs"].contains(lang)) {
+        script(cs, 0, cs.len(), out, JS_KEYWORDS, "//");
+    } else if (lang == "ray" || lang == "raylang") {
+        script(cs, 0, cs.len(), out, RAY_KEYWORDS, "//");
+    } else if (lang == "css") {
+        css(cs, 0, cs.len(), out);
+    } else if (["sh", "bash", "shell", "console"].contains(lang)) {
+        shell(cs, out);
+    } else {
+        out.push(escape(src));
+    }
+    join(out, "")
+}
+
+pub fn escape(s: string) -> string {
+    s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
+}
+
+fn span(out: [string], class: string, cs: [char], from_i: int, to: int) {
+    out.push("<span class=\"tk-${class}\">${escape(text(cs, from_i, to))}</span>");
+}
+
+fn plain(out: [string], cs: [char], from_i: int, to: int) {
+    if (to > from_i) {
+        out.push(escape(text(cs, from_i, to)));
+    }
+}
+
+fn text(cs: [char], from_i: int, to: int) -> string {
+    join(cs.slice(from_i, to).map(fn(c: char) -> string { to_string(c) }), "")
+}
+
+fn is_ident_start(c: char) -> bool {
+    let n = char_code(c);
+    (n >= 65 && n <= 90) || (n >= 97 && n <= 122) || c == '_' || c == '$'
+}
+
+fn is_ident(c: char) -> bool {
+    let n = char_code(c);
+    is_ident_start(c) || (n >= 48 && n <= 57)
+}
+
+fn is_digit(c: char) -> bool {
+    let n = char_code(c);
+    n >= 48 && n <= 57
+}
+
+fn is_space(c: char) -> bool {
+    c == ' ' || c == '\n' || c == '\t' || c == '\r'
+}
+
+// Does `cs` at `i` start with `s`?
+fn at(cs: [char], i: int, s: string) -> bool {
+    let p = s.chars();
+    if (i + p.len() > cs.len()) {
+        return false;
+    }
+    for k in 0..p.len() {
+        if (cs[i + k] != p[k]) {
+            return false;
+        }
+    }
+    true
+}
+
+// Index of `s` at or after `i` (or `end`).
+fn find(cs: [char], i: int, end: int, s: string) -> int {
+    var j = i;
+    while (j < end) {
+        if (at(cs, j, s)) {
+            return j;
+        }
+        j = j + 1;
+    }
+    end
+}
+
+// End of a quoted string starting at `i` (the quote), honoring backslashes.
+fn string_end(cs: [char], i: int, end: int) -> int {
+    let q = cs[i];
+    var j = i + 1;
+    while (j < end) {
+        if (cs[j] == '\\') {
+            j = j + 2;
+            continue;
+        }
+        if (cs[j] == q) {
+            return j + 1;
+        }
+        j = j + 1;
+    }
+    end
+}
+
+// JS-like languages: comments, strings, numbers, keywords.
+fn script(
+    cs: [char],
+    start: int,
+    end: int,
+    out: [string],
+    keywords: [string],
+    line_comment: string
+) {
+    var i = start;
+    var run = start;
+    while (i < end) {
+        let c = cs[i];
+        if (at(cs, i, line_comment)) {
+            plain(out, cs, run, i);
+            let j = find(cs, i, end, "\n");
+            span(out, "comment", cs, i, j);
+            i = j;
+            run = i;
+        } else if (at(cs, i, "/*")) {
+            plain(out, cs, run, i);
+            let j = min_int(find(cs, i + 2, end, "*/") + 2, end);
+            span(out, "comment", cs, i, j);
+            i = j;
+            run = i;
+        } else if (c == '"' || c == '\'' || c == '`') {
+            plain(out, cs, run, i);
+            let j = string_end(cs, i, end);
+            span(out, "string", cs, i, j);
+            i = j;
+            run = i;
+        } else if (is_digit(c) && (i == start || !is_ident(cs[i - 1]))) {
+            plain(out, cs, run, i);
+            var j = i;
+            while (j < end && (is_ident(cs[j]) || cs[j] == '.')) {
+                j = j + 1;
+            }
+            span(out, "number", cs, i, j);
+            i = j;
+            run = i;
+        } else if (is_ident_start(c) && (i == start || !is_ident(cs[i - 1]))) {
+            var j = i;
+            while (j < end && is_ident(cs[j])) {
+                j = j + 1;
+            }
+            let word = text(cs, i, j);
+            if (keywords.contains(word)) {
+                plain(out, cs, run, i);
+                span(out, "keyword", cs, i, j);
+                run = j;
+            }
+            i = j;
+        } else {
+            i = i + 1;
+        }
+    }
+    plain(out, cs, run, end);
+}
+
+fn min_int(a: int, b: int) -> int {
+    if (a < b) { a } else { b }
+}
+
+// CSS: comments, strings, at-rules, property names, numbers.
+fn css(cs: [char], start: int, end: int, out: [string]) {
+    var i = start;
+    var run = start;
+    var depth = 0;
+    while (i < end) {
+        let c = cs[i];
+        if (at(cs, i, "/*")) {
+            plain(out, cs, run, i);
+            let j = min_int(find(cs, i + 2, end, "*/") + 2, end);
+            span(out, "comment", cs, i, j);
+            i = j;
+            run = i;
+        } else if (c == '"' || c == '\'') {
+            plain(out, cs, run, i);
+            let j = string_end(cs, i, end);
+            span(out, "string", cs, i, j);
+            i = j;
+            run = i;
+        } else if (c == '@') {
+            plain(out, cs, run, i);
+            var j = i + 1;
+            while (j < end && (is_ident(cs[j]) || cs[j] == '-')) {
+                j = j + 1;
+            }
+            span(out, "keyword", cs, i, j);
+            i = j;
+            run = i;
+        } else if (c == '{') {
+            depth = depth + 1;
+            i = i + 1;
+        } else if (c == '}') {
+            depth = depth - 1;
+            i = i + 1;
+        } else if (depth > 0 && (is_ident_start(c) || c == '-') && (i == start || !is_ident(cs[i - 1]))) {
+            var j = i;
+            while (j < end && (is_ident(cs[j]) || cs[j] == '-')) {
+                j = j + 1;
+            }
+            var k = j;
+            while (k < end && cs[k] == ' ') {
+                k = k + 1;
+            }
+            if (k < end && cs[k] == ':') {
+                plain(out, cs, run, i);
+                span(out, "attr", cs, i, j);
+                run = j;
+            }
+            i = j;
+        } else if (is_digit(c) && (i == start || !is_ident(cs[i - 1]))) {
+            plain(out, cs, run, i);
+            var j = i;
+            while (j < end && (is_ident(cs[j]) || cs[j] == '.' || cs[j] == '%')) {
+                j = j + 1;
+            }
+            span(out, "number", cs, i, j);
+            i = j;
+            run = i;
+        } else {
+            i = i + 1;
+        }
+    }
+    plain(out, cs, run, end);
+}
+
+// HTML: comments, tags, attributes and values; <script>/<style> bodies in their language.
+fn html(cs: [char], start: int, end: int, out: [string]) {
+    var i = start;
+    var run = start;
+    while (i < end) {
+        if (at(cs, i, "<!--")) {
+            plain(out, cs, run, i);
+            let j = min_int(find(cs, i + 4, end, "-->") + 3, end);
+            span(out, "comment", cs, i, j);
+            i = j;
+            run = i;
+        } else if (cs[i] == '<' && i + 1 < end && (is_ident_start(cs[i + 1]) || cs[i + 1] == '/')) {
+            plain(out, cs, run, i);
+            var j = i + 1;
+            if (cs[j] == '/') {
+                j = j + 1;
+            }
+            span(out, "punctuation", cs, i, j);
+            var k = j;
+            while (k < end && (is_ident(cs[k]) || cs[k] == '-')) {
+                k = k + 1;
+            }
+            let name = text(cs, j, k).to_lower();
+            span(out, "tag", cs, j, k);
+            let closing = cs[i + 1] == '/';
+            // Attributes up to '>'.
+            var p = k;
+            var a_run = k;
+            while (p < end && cs[p] != '>') {
+                let c = cs[p];
+                if (c == '"' || c == '\'') {
+                    plain(out, cs, a_run, p);
+                    let q = string_end(cs, p, end);
+                    span(out, "string", cs, p, q);
+                    p = q;
+                    a_run = p;
+                } else if (is_ident_start(c) || c == '-' || c == ':' || c == '@') {
+                    plain(out, cs, a_run, p);
+                    var q = p;
+                    while (q < end
+                        && !is_space(cs[q])
+                        && cs[q] != '='
+                        && cs[q] != '>'
+                        && cs[q] != '/') {
+                        q = q + 1;
+                    }
+                    span(out, "attr", cs, p, q);
+                    p = q;
+                    a_run = p;
+                } else {
+                    p = p + 1;
+                }
+            }
+            plain(out, cs, a_run, p);
+            let gt = min_int(p + 1, end);
+            span(out, "punctuation", cs, p, gt);
+            i = gt;
+            run = i;
+            // A script or style body is highlighted in its own language.
+            if (!closing && (name == "script" || name == "style")) {
+                let close = find(cs, i, end, "</${name}");
+                if (name == "script") {
+                    script(cs, i, close, out, JS_KEYWORDS, "//");
+                } else {
+                    css(cs, i, close, out);
+                }
+                i = close;
+                run = i;
+            }
+        } else {
+            i = i + 1;
+        }
+    }
+    plain(out, cs, run, end);
+}
+
+// Shell: comments, strings, flags, and the command of each line.
+fn shell(cs: [char], out: [string]) {
+    let end = cs.len();
+    var i = 0;
+    var run = 0;
+    var line_start = true;
+    while (i < end) {
+        let c = cs[i];
+        if (c == '\n') {
+            line_start = true;
+            i = i + 1;
+        } else if (c == '#' && (i == 0 || is_space(cs[i - 1]))) {
+            plain(out, cs, run, i);
+            let j = find(cs, i, end, "\n");
+            span(out, "comment", cs, i, j);
+            i = j;
+            run = i;
+        } else if (c == '"' || c == '\'') {
+            plain(out, cs, run, i);
+            let j = string_end(cs, i, end);
+            span(out, "string", cs, i, j);
+            i = j;
+            run = i;
+            line_start = false;
+        } else if (c == '-' && (i == 0 || is_space(cs[i - 1]))) {
+            plain(out, cs, run, i);
+            var j = i;
+            while (j < end && !is_space(cs[j])) {
+                j = j + 1;
+            }
+            span(out, "attr", cs, i, j);
+            i = j;
+            run = i;
+        } else if (line_start && !is_space(c)) {
+            plain(out, cs, run, i);
+            var j = i;
+            while (j < end && !is_space(cs[j])) {
+                j = j + 1;
+            }
+            span(out, "keyword", cs, i, j);
+            i = j;
+            run = i;
+            line_start = false;
+        } else {
+            i = i + 1;
+        }
+    }
+    plain(out, cs, run, end);
+}
+
+@test
+fn highlights_html_attributes_and_script() {
+    let h = code(
+        "<ray-button variant=\"light\">Go</ray-button><script>const x = 1; // hi</script>",
+        "html"
+    );
+    assert(h.contains("<span class=\"tk-tag\">ray-button</span>"));
+    assert(h.contains("<span class=\"tk-attr\">variant</span>"));
+    assert(h.contains("<span class=\"tk-string\">&quot;light&quot;</span>"));
+    assert(h.contains("<span class=\"tk-keyword\">const</span>"));
+    assert(h.contains("<span class=\"tk-number\">1</span>"));
+    assert(h.contains("<span class=\"tk-comment\">// hi</span>"));
+    assert(!h.contains("<script>"));
+}
+
+@test
+fn highlights_js_and_escapes() {
+    let h = code("if (a < b) { return \"<x>\"; }", "js");
+    assert(h.contains("<span class=\"tk-keyword\">if</span>"));
+    assert(h.contains("a &lt; b"));
+    assert(h.contains("<span class=\"tk-string\">&quot;&lt;x&gt;&quot;</span>"));
+}
+
+@test
+fn shell_and_css() {
+    let s = code("ray run tools/src/main.ray build   # all", "sh");
+    assert(s.contains("<span class=\"tk-keyword\">ray</span>"));
+    assert(s.contains("<span class=\"tk-comment\"># all</span>"));
+    let c = code(".a { color: red; margin: 4px; }", "css");
+    assert(c.contains("<span class=\"tk-attr\">color</span>"));
+    assert(c.contains("<span class=\"tk-number\">4px</span>"));
+}

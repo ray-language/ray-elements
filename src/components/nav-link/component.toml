@@ -1,0 +1,85 @@
+[component]
+name = "Nav link"
+category = "Navigation"
+summary = "A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it."
+files = ["nav-link.js"]
+requires = []
+tags = ["ray-nav-link"]
+
+[ray-nav-link]
+class = "RayNavLink"
+extends = "RayElement"
+summary = "A link with href (aria-current=page when active), or a button that toggles its nested links."
+
+[ray-nav-link.properties.label]
+type = "string"
+description = "Text."
+
+[ray-nav-link.properties.description]
+type = "string"
+description = "Second line."
+
+[ray-nav-link.properties.href]
+type = "string"
+reflect = true
+description = "Makes it a link (ignored when it has nested links)."
+
+[ray-nav-link.properties.active]
+type = "boolean"
+reflect = true
+description = "The current page or section."
+
+[ray-nav-link.properties.opened]
+type = "boolean"
+reflect = true
+description = "Nested links are shown."
+
+[ray-nav-link.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Not interactive."
+
+[ray-nav-link.properties.variant]
+type = "string"
+values = ["light", "filled", "subtle"]
+default = "light"
+reflect = true
+description = "Style of the active state."
+
+[ray-nav-link.properties.color]
+type = "string"
+reflect = true
+description = "Active color."
+
+[ray-nav-link.properties.iconOnly]
+attribute = "icon-only"
+type = "boolean"
+reflect = true
+description = "Only the icon (left section), centered; the label becomes its accessible name and tooltip. A collapsed ray-sidebar sets it."
+
+[ray-nav-link.events.ray-toggle]
+description = "Nested links were shown or hidden."
+detail = "{ opened: boolean }"
+
+[ray-nav-link.slots.default]
+description = "Nested ray-nav-link elements."
+
+[ray-nav-link.slots.left]
+description = "Icon."
+
+[ray-nav-link.slots.right]
+description = "Badge or count."
+
+[ray-nav-link.parts.link]
+description = "The inner <a> or <button>."
+
+[ray-nav-link.parts.children]
+description = "The nested links."
+
+[ray-nav-link.members.links]
+ts = "readonly links: RayNavLink[]"
+description = "The nested nav links."
+
+[ray-nav-link.model]
+property = "opened"
+events = ["ray-toggle"]

@@ -1,0 +1,30 @@
+[component]
+name = "Spinner"
+category = "Feedback"
+summary = "An indeterminate loading indicator, announced as a status."
+files = ["spinner.js"]
+requires = []
+tags = ["ray-spinner"]
+
+[ray-spinner]
+class = "RaySpinner"
+extends = "RayElement"
+
+[ray-spinner.properties.color]
+type = "string"
+description = "A palette color or any CSS color. Default: the primary color."
+
+[ray-spinner.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Diameter."
+
+[ray-spinner.properties.label]
+type = "string"
+default = "Loading"
+description = "Text read by screen readers."
+
+[ray-spinner.parts.spinner]
+description = "The ring."

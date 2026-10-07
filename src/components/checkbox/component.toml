@@ -1,0 +1,96 @@
+[component]
+name = "Checkbox"
+category = "Inputs"
+summary = "A checkbox with label, description and error. Submits value when checked."
+files = ["checkbox.js"]
+requires = []
+tags = ["ray-checkbox"]
+
+[ray-checkbox]
+class = "RayCheckbox"
+extends = "FieldControl"
+
+[ray-checkbox.properties.checked]
+attribute = false
+type = "boolean"
+description = "Current state. The checked attribute is the initial state (restored on reset)."
+
+[ray-checkbox.properties.indeterminate]
+type = "boolean"
+reflect = true
+description = "Mixed state; cleared on the next user change."
+
+[ray-checkbox.properties.value]
+type = "string"
+default = "on"
+reflect = true
+description = "Submitted value when checked."
+
+[ray-checkbox.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-checkbox.properties.label]
+type = "string"
+description = "Label text (or put the label in the content)."
+
+[ray-checkbox.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-checkbox.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-checkbox.properties.required]
+type = "boolean"
+description = "Must be checked to submit."
+
+[ray-checkbox.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-checkbox.properties.variant]
+type = "string"
+values = ["filled", "outline"]
+default = "filled"
+reflect = true
+description = "Checked look: filled box, or colored border and mark."
+
+[ray-checkbox.properties.color]
+type = "string"
+description = "A palette color or any CSS color for the checked state."
+
+[ray-checkbox.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Box and font size."
+
+[ray-checkbox.properties.labelPosition]
+attribute = "label-position"
+type = "string"
+values = ["right", "left"]
+default = "right"
+reflect = true
+description = "Side of the label."
+
+[ray-checkbox.events.change]
+description = "When the user toggles it."
+
+[ray-checkbox.slots.default]
+description = "Label content."
+
+[ray-checkbox.parts.input]
+description = "The native checkbox (transparent, on top of the indicator)."
+
+[ray-checkbox.parts.indicator]
+description = "The drawn box."
+
+[ray-checkbox.parts.label]
+description = "The label."
+
+[ray-checkbox.model]
+property = "checked"
+events = ["change"]

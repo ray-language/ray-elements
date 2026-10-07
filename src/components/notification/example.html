@@ -1,0 +1,28 @@
+<div class="demo-row">
+  <ray-button id="demo-notify" variant="default">Notify</ray-button>
+  <ray-button id="demo-notify-undo" variant="default">With an action</ray-button>
+  <ray-button id="demo-notify-load" variant="default">Loading → done</ray-button>
+  <ray-button id="demo-notify-error" variant="light" color="red">Error</ray-button>
+</div>
+<div style="display: grid; gap: 0.75rem; max-width: 24rem">
+  <ray-notification label="Build finished" color="green" with-border>ray-remote 0.4.1 is ready to publish.</ray-notification>
+  <ray-notification label="Build failed" color="red" with-border>type error at 12:5: 'f' expects 2 argument(s)</ray-notification>
+  <ray-notification label="Certificate expires soon" color="yellow" with-border>update.json is signed with a key that expires in 7 days.</ray-notification>
+  <ray-notification label="New version" color="blue" with-border>ray 0.9 is available.</ray-notification>
+  <ray-notification label="Uploading" loading hide-close with-border>bundle-macos-arm64.zip</ray-notification>
+  <ray-notification label="Event created" action-label="Undo" with-border>Sunday, December 3 at 9:00 AM</ray-notification>
+</div>
+<p style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Several toasts stack; hover (or tap, on touch screens) to spread them. Swipe one sideways to dismiss it.</p>
+<script type="module">
+  import { notify, updateNotification } from "../src/components/notification/notification.js";
+  document.getElementById("demo-notify").addEventListener("click", () =>
+    notify({ title: "Saved", message: "Your changes are on disk." }));
+  document.getElementById("demo-notify-undo").addEventListener("click", () =>
+    notify({ title: "Event created", message: "Sunday, December 3 at 9:00 AM", action: { label: "Undo", onClick: () => notify({ message: "Event removed." }) } }));
+  document.getElementById("demo-notify-load").addEventListener("click", () => {
+    const id = notify({ title: "Deploying", message: "Uploading the bundle…", loading: true, closable: false });
+    setTimeout(() => updateNotification(id, { title: "Deployed", message: "ray-remote 0.4.1 is live.", loading: false, color: "green", closable: true }), 1500);
+  });
+  document.getElementById("demo-notify-error").addEventListener("click", () =>
+    notify({ title: "Build failed", message: "type error at 12:5: 'f' expects 2 argument(s)", color: "red", autoClose: false }));
+</script>

@@ -1,0 +1,113 @@
+[component]
+name = "Carousel"
+category = "Data display"
+summary = "Slides in a scroll-snap viewport: native swipe and scrolling, previous/next controls, indicators, keyboard, loop and autoplay with a pause button."
+files = ["carousel.js"]
+requires = []
+tags = ["ray-carousel"]
+
+[ray-carousel]
+class = "RayCarousel"
+extends = "RayElement"
+summary = "Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it."
+
+[ray-carousel.properties.index]
+type = "number"
+default = "0"
+description = "Current position (0-based). Setting it scrolls there."
+
+[ray-carousel.properties.label]
+type = "string"
+default = "Carousel"
+description = "Accessible name of the carousel region."
+
+[ray-carousel.properties.slideSize]
+attribute = "slide-size"
+type = "string"
+description = "Size of each slide along the scroll axis (\"100%\" by default; \"50%\", \"18rem\"…)."
+
+[ray-carousel.properties.slideGap]
+attribute = "slide-gap"
+type = "string"
+description = "Space between slides (default var(--ray-space-4))."
+
+[ray-carousel.properties.align]
+type = "string"
+values = ["start", "center"]
+default = "start"
+reflect = true
+description = "Where a slide snaps in the viewport."
+
+[ray-carousel.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Scroll axis (vertical needs a height; 20rem by default)."
+
+[ray-carousel.properties.loop]
+type = "boolean"
+reflect = true
+description = "next() on the last position goes to the first, prev() on the first to the last."
+
+[ray-carousel.properties.autoplay]
+type = "number"
+default = "0"
+description = "Milliseconds between automatic moves (0: off). Pauses on hover, focus and when the page is hidden; starts paused with reduced motion. Shows a pause/play button."
+
+[ray-carousel.properties.hideControls]
+attribute = "hide-controls"
+type = "boolean"
+reflect = true
+description = "No previous/next buttons."
+
+[ray-carousel.properties.hideIndicators]
+attribute = "hide-indicators"
+type = "boolean"
+reflect = true
+description = "No indicator dots."
+
+[ray-carousel.events.ray-slide-change]
+detail = "{ index: number }"
+description = "The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code."
+
+[ray-carousel.slots.default]
+description = "The slides."
+
+[ray-carousel.parts.viewport]
+description = "The scrolling viewport."
+
+[ray-carousel.parts.previous]
+description = "The previous button."
+
+[ray-carousel.parts.next]
+description = "The next button."
+
+[ray-carousel.parts.indicators]
+description = "The row of indicator dots."
+
+[ray-carousel.parts.indicator]
+description = "Each indicator dot ([aria-current] on the active one)."
+
+[ray-carousel.parts.play]
+description = "The pause/play button (with autoplay)."
+
+[ray-carousel.members.next]
+ts = "next(): void"
+description = "Goes to the next position."
+
+[ray-carousel.members.prev]
+ts = "prev(): void"
+description = "Goes to the previous position."
+
+[ray-carousel.members.goTo]
+ts = "goTo(index: number, options?: { instant?: boolean }): void"
+description = "Scrolls to a position (smoothly unless instant or reduced motion)."
+
+[ray-carousel.members.count]
+ts = "readonly count: number"
+description = "Number of positions."
+
+[ray-carousel.members.slides]
+ts = "readonly slides: Element[]"
+description = "The slide elements."

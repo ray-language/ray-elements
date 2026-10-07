@@ -1,0 +1,36 @@
+# Component metadata: the tools generate docs (and, in phase 3, React/Vue
+# wrappers, type declarations and custom-elements.json) from it, and
+# `ray-ds add` uses it to resolve files and dependencies.
+#
+# [component]          name, category, summary, files, requires (other components), tags
+# [<tag>]              class, summary
+# [<tag>.properties.<prop>]  attribute, type, values, default, reflect, description
+# [<tag>.events.<name>]      description
+# [<tag>.slots.<name>]       description ("default" = the unnamed slot)
+# [<tag>.parts.<name>]       description
+
+[component]
+name = "Theme toggle"
+category = "Theme"
+summary = "Icon button that cycles the document theme: system, light, dark."
+files = ["theme-toggle.js"]
+requires = []
+tags = ["ray-theme-toggle"]
+
+[ray-theme-toggle]
+class = "RayThemeToggle"
+extends = "RayElement"
+
+[ray-theme-toggle.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Control height."
+
+[ray-theme-toggle.events.ray-theme-change]
+description = "Fired on the document root by setTheme(); detail: { theme, resolved, primary }."
+detail = '{ theme: "light" | "dark" | "system"; resolved: "light" | "dark"; primary: string | null }'
+
+[ray-theme-toggle.parts.button]
+description = "The inner button."

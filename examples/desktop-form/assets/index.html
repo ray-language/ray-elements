@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New project</title>
+<link rel="stylesheet" href="ray-ds/tokens.css">
+<link rel="stylesheet" href="ray-ds/base.css">
+<script type="module" src="ray-ds/index.js"></script>
+<style>
+  body { padding: var(--ray-space-6); }
+  form { display: grid; gap: var(--ray-space-4); }
+  header { display: flex; justify-content: space-between; align-items: center; }
+  h1 { margin: 0; font-size: var(--ray-font-size-xl); }
+  .actions { display: flex; justify-content: flex-end; gap: var(--ray-space-2); }
+  #status { min-height: 1.5em; font-size: var(--ray-font-size-sm); color: var(--ray-success); }
+</style>
+</head>
+<body>
+<ray-card with-border shadow="sm" padding="lg">
+  <header slot="header"><h1>New project</h1><ray-theme-toggle></ray-theme-toggle></header>
+  <form id="project">
+    <ray-input name="name" label="Name" placeholder="my-app" required pattern="[a-z][a-z0-9-]*"
+      description="Lowercase letters, digits and dashes."></ray-input>
+    <ray-select name="template" label="Template" placeholder="Pick a template" required>
+      <option value="cli">Command line</option>
+      <option value="web">Web server (web)</option>
+      <option value="desktop">Desktop app (std/ui)</option>
+    </ray-select>
+    <ray-radio-group name="license" label="License" value="mit" orientation="horizontal">
+      <ray-radio value="mit">MIT</ray-radio>
+      <ray-radio value="apache">Apache-2.0</ray-radio>
+      <ray-radio value="none">None</ray-radio>
+    </ray-radio-group>
+    <ray-switch name="git" label="Initialize a git repository" checked></ray-switch>
+    <ray-checkbox name="tests" label="Add a tests/ directory"></ray-checkbox>
+    <div class="actions">
+      <ray-button type="reset" variant="default">Reset</ray-button>
+      <ray-button type="submit">Create</ray-button>
+    </div>
+    <div id="status" role="status"></div>
+  </form>
+</ray-card>
+<script type="module">
+  const form = document.getElementById("project");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // FormData sees the ray-ds controls like native ones.
+    const data = Object.fromEntries(new FormData(form));
+    window.ray.send("create:" + JSON.stringify(data));
+    document.getElementById("status").textContent = `Creating ${data.name}…`;
+  });
+</script>
+</body>
+</html>

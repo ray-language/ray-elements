@@ -1,0 +1,62 @@
+/* ray-ds base: document defaults on top of tokens.css. Optional — load it
+   for pages built with ray-ds, skip it when embedding components in an app
+   that has its own base styles. Layered, so any unlayered app CSS wins. */
+
+@layer ray.tokens, ray.base;
+
+@layer ray.base {
+  html {
+    font-family: var(--ray-font-sans);
+    font-size: 100%;
+    line-height: var(--ray-line-height-md);
+    color: var(--ray-foreground);
+    background: var(--ray-background);
+    accent-color: var(--ray-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--ray-font-size-md);
+  }
+
+  /* Subtrees with their own data-theme repaint with their own scheme. */
+  [data-theme] {
+    color: var(--ray-foreground);
+    background: var(--ray-background);
+  }
+
+  ::selection {
+    background: var(--ray-selection);
+  }
+
+  :focus-visible {
+    outline: var(--ray-focus-ring-width) solid var(--ray-ring);
+    outline-offset: var(--ray-focus-ring-offset);
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--ray-line-height-heading);
+    font-weight: var(--ray-font-weight-bold);
+  }
+
+  :where(code, kbd, samp, pre) {
+    font-family: var(--ray-font-mono);
+  }
+
+  :where(a) {
+    color: var(--ray-primary-light-color);
+  }
+
+  :where(hr) {
+    border: 0;
+    border-top: 1px solid var(--ray-border);
+  }
+
+  :where(img, svg, video, canvas) {
+    max-width: 100%;
+  }
+}

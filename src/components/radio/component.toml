@@ -1,0 +1,139 @@
+[component]
+name = "Radio group"
+category = "Inputs"
+summary = "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control."
+files = ["radio.js"]
+requires = []
+tags = ["ray-radio-group", "ray-radio"]
+
+[ray-radio-group]
+class = "RayRadioGroup"
+summary = "Arrow keys move the selection, Tab enters and leaves the group."
+extends = "FormControl"
+
+[ray-radio-group.properties.value]
+type = "string"
+description = "Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute."
+
+[ray-radio-group.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-radio-group.properties.label]
+type = "string"
+description = "Group label (also its accessible name)."
+
+[ray-radio-group.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-radio-group.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-radio-group.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-radio-group.properties.required]
+type = "boolean"
+description = "A choice is needed to submit."
+
+[ray-radio-group.properties.disabled]
+type = "boolean"
+description = "Disables every radio."
+
+[ray-radio-group.properties.orientation]
+type = "string"
+values = ["vertical", "horizontal"]
+default = "vertical"
+reflect = true
+description = "Layout of the radios."
+
+[ray-radio-group.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Size of every radio."
+
+[ray-radio-group.properties.color]
+type = "string"
+description = "Checked color of every radio."
+
+[ray-radio-group.properties.variant]
+type = "string"
+values = ["filled", "outline"]
+default = "filled"
+reflect = true
+description = "Checked look of every radio: filled circle, or colored ring and dot."
+
+[ray-radio-group.events.input]
+description = "When the user picks a radio."
+
+[ray-radio-group.events.change]
+description = "When the user picks a radio."
+
+[ray-radio-group.slots.default]
+description = "ray-radio elements (may be wrapped in layout elements)."
+
+[ray-radio]
+class = "RayRadio"
+extends = "RayElement"
+
+[ray-radio.properties.value]
+type = "string"
+reflect = true
+description = "Value given to the group when chosen."
+
+[ray-radio.properties.label]
+type = "string"
+description = "Label text (or the content)."
+
+[ray-radio.properties.description]
+type = "string"
+description = "Help text under the label."
+
+[ray-radio.properties.disabled]
+type = "boolean"
+description = "Cannot be chosen."
+
+[ray-radio.properties.color]
+type = "string"
+description = "Overrides the group color."
+
+[ray-radio.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+description = "Overrides the group size."
+
+[ray-radio.properties.variant]
+type = "string"
+values = ["filled", "outline"]
+reflect = true
+description = "Overrides the group variant."
+
+[ray-radio.slots.default]
+description = "Label content."
+
+[ray-radio.parts.indicator]
+description = "The circle."
+
+[ray-radio.parts.label]
+description = "The label."
+
+[ray-radio-group.model]
+property = "value"
+events = ["change"]
+
+[ray-radio-group.members.radios]
+ts = "readonly radios: RayRadio[]"
+description = "The radios of the group."
+
+[ray-radio.members.checked]
+ts = "readonly checked: boolean"
+description = "Whether this radio is the group's value."

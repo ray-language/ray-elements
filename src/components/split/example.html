@@ -1,0 +1,22 @@
+<div style="height: 18rem; border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); overflow: hidden; display: flex; flex-direction: column">
+  <ray-split position="200" min="140" max="360" autosave="docs-demo" style="flex: 1; min-height: 0">
+    <nav slot="start" style="display: grid; align-content: start; gap: 0.125rem; padding: 0.5rem; height: 100%; box-sizing: border-box; background: var(--ray-muted)">
+      <ray-nav-link label="src" opened>
+        <ray-nav-link label="main.ray" active></ray-nav-link>
+        <ray-nav-link label="server.ray"></ray-nav-link>
+      </ray-nav-link>
+      <ray-nav-link label="ray.toml"></ray-nav-link>
+    </nav>
+    <ray-split slot="end" orientation="vertical" position="65%" min="60">
+      <pre slot="start" style="margin: 0; padding: 0.75rem; font-size: 0.8125rem">fn main() -> int {
+    print("hello from raylang");
+    0
+}</pre>
+      <div slot="end" style="padding: 0.5rem 0.75rem; font-family: var(--ray-font-mono); font-size: 0.75rem; color: var(--ray-muted-foreground)">$ ray run<br>hello from raylang</div>
+    </ray-split>
+  </ray-split>
+  <ray-statusbar>
+    <ray-statusbar-item>main.ray</ray-statusbar-item>
+    <ray-statusbar-item slot="right">Drag the dividers, or focus one and use the arrows</ray-statusbar-item>
+  </ray-statusbar>
+</div>

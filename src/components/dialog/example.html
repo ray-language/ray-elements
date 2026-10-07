@@ -1,0 +1,19 @@
+<div class="demo-row">
+  <ray-button onclick="document.getElementById('demo-dialog').show()">Open dialog</ray-button>
+  <ray-button variant="light" color="red" id="demo-confirm">Confirm…</ray-button>
+  <span id="demo-confirm-result" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)"></span>
+</div>
+<ray-dialog id="demo-dialog" label="Rename file">
+  <ray-input label="New name" value="main.ray" autofocus></ray-input>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
+    <ray-button data-dialog-close="save">Rename</ray-button>
+  </div>
+</ray-dialog>
+<script type="module">
+  import { confirmDialog } from "../src/components/dialog/dialog.js";
+  document.getElementById("demo-confirm").addEventListener("click", async () => {
+    const ok = await confirmDialog({ label: "Delete project?", message: "This removes ray-remote and its history.", confirmLabel: "Delete", color: "red" });
+    document.getElementById("demo-confirm-result").textContent = ok ? "Deleted" : "Kept";
+  });
+</script>

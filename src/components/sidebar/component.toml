@@ -1,0 +1,115 @@
+[component]
+name = "Sidebar"
+category = "Navigation"
+summary = "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen."
+files = ["sidebar.js"]
+requires = []
+tags = ["ray-sidebar", "ray-sidebar-group"]
+
+[ray-sidebar]
+class = "RaySidebar"
+summary = "Put ray-sidebar-group + ray-nav-link (with an icon in slot=left) inside. Collapsed, nav links show only their icon (the label becomes the tooltip) and the host has the collapsed attribute, so your own header/footer content can hide with CSS (ray-sidebar[collapsed] .brand-name { display: none })."
+extends = "RayElement"
+
+[ray-sidebar.properties.collapsed]
+type = "boolean"
+reflect = true
+description = "Wide screens: an icon rail instead of the full panel."
+
+[ray-sidebar.properties.open]
+type = "boolean"
+reflect = true
+description = "Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it)."
+
+[ray-sidebar.properties.side]
+type = "string"
+values = ["left", "right"]
+default = "left"
+reflect = true
+description = "The edge it sits on."
+
+[ray-sidebar.properties.variant]
+type = "string"
+values = ["sidebar", "floating"]
+default = "sidebar"
+reflect = true
+description = "A panel against the edge, or a floating card with a margin."
+
+[ray-sidebar.properties.width]
+type = "string"
+description = "Width when expanded (CSS length). Default 16rem."
+
+[ray-sidebar.properties.collapsedWidth]
+attribute = "collapsed-width"
+type = "string"
+description = "Width of the icon rail. Default 3.5rem."
+
+[ray-sidebar.properties.breakpoint]
+type = "string"
+default = "48em"
+description = "At this viewport width and below, it becomes a drawer."
+
+[ray-sidebar.properties.label]
+type = "string"
+default = "Sidebar"
+description = "Accessible name of its navigation."
+
+[ray-sidebar.events.ray-toggle]
+detail = "{ collapsed: boolean; open: boolean; mobile: boolean }"
+description = "After toggle()."
+
+[ray-sidebar.events.ray-open]
+description = "The drawer opened (narrow screens)."
+
+[ray-sidebar.events.ray-close]
+description = "The drawer closed (narrow screens)."
+
+[ray-sidebar.slots.default]
+description = "The navigation: ray-sidebar-group and ray-nav-link elements."
+
+[ray-sidebar.slots.header]
+description = "Top area (brand, workspace switcher)."
+
+[ray-sidebar.slots.footer]
+description = "Bottom area (user, settings)."
+
+[ray-sidebar.parts.panel]
+description = "The panel (in the drawer on narrow screens)."
+
+[ray-sidebar.parts.header]
+description = "The header area."
+
+[ray-sidebar.parts.content]
+description = "The scrolling <nav>."
+
+[ray-sidebar.parts.footer]
+description = "The footer area."
+
+[ray-sidebar.parts.drawer]
+description = "The <dialog> used on narrow screens."
+
+[ray-sidebar.members.toggle]
+ts = "toggle(): void"
+description = "Collapses/expands on wide screens; opens/closes the drawer on narrow ones."
+
+[ray-sidebar.members.mobile]
+ts = "readonly mobile: boolean"
+description = "Whether it is in drawer mode (at or below the breakpoint)."
+
+[ray-sidebar-group]
+class = "RaySidebarGroup"
+summary = "A titled section of nav links; the title fades out (keeping its height) when the sidebar collapses."
+extends = "RayElement"
+
+[ray-sidebar-group.properties.label]
+type = "string"
+description = "Section title."
+
+[ray-sidebar-group.slots.default]
+description = "ray-nav-link elements."
+
+[ray-sidebar-group.parts.label]
+description = "The title."
+
+[ray-sidebar-group.parts.items]
+description = "The links container."

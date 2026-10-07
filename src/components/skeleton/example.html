@@ -1,0 +1,20 @@
+<div class="demo-grid">
+  <div style="display: flex; gap: 0.75rem; align-items: flex-start">
+    <ray-skeleton circle width="2.75rem"></ray-skeleton>
+    <div style="flex: 1; display: grid; gap: 0.5rem">
+      <ray-skeleton height="0.875rem" width="40%"></ray-skeleton>
+      <ray-skeleton lines="3" height="0.625rem"></ray-skeleton>
+    </div>
+  </div>
+  <div style="display: grid; gap: 0.75rem">
+    <ray-skeleton height="7rem" radius="md"></ray-skeleton>
+    <ray-skeleton id="demo-skeleton" height="1.25rem" width="60%">
+      <strong>ray-remote 0.4.1 is ready.</strong>
+    </ray-skeleton>
+    <ray-button size="xs" variant="default" id="demo-skeleton-toggle" style="justify-self: start">Toggle loaded</ray-button>
+  </div>
+</div>
+<script type="module">
+  const s = document.getElementById("demo-skeleton");
+  document.getElementById("demo-skeleton-toggle").addEventListener("click", () => { s.loaded = !s.loaded; });
+</script>

@@ -1,0 +1,19 @@
+<div class="demo-row">
+  <ray-button id="demo-palette-open" variant="default">Open command palette <ray-kbd slot="right" size="xs">⌘K</ray-kbd></ray-button>
+  <span id="demo-palette-out" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)"></span>
+</div>
+<ray-command-palette id="demo-palette"></ray-command-palette>
+<script type="module">
+  const palette = document.getElementById("demo-palette");
+  const say = (text) => { document.getElementById("demo-palette-out").textContent = text; };
+  palette.actions = [
+    { id: "new", label: "New file", group: "File", icon: "file", shortcut: "⌘ N", onSelect: () => say("New file") },
+    { id: "open", label: "Open file…", group: "File", icon: "folder", shortcut: "⌘ O", keywords: ["load"], onSelect: () => say("Open file") },
+    { id: "save", label: "Save", group: "File", icon: "check", shortcut: "⌘ S", disabled: true },
+    { id: "run", label: "Run program", description: "ray run src/main.ray", group: "Raylang", icon: "play", onSelect: () => say("ray run") },
+    { id: "test", label: "Run tests", description: "ray test", group: "Raylang", icon: "circle-check", onSelect: () => say("ray test") },
+    { id: "fmt", label: "Format document", description: "ray fmt", group: "Raylang", icon: "terminal", keywords: ["prettier", "style"], onSelect: () => say("ray fmt") },
+    { id: "theme", label: "Toggle theme", group: "View", icon: "moon", onSelect: () => say("Theme") },
+  ];
+  document.getElementById("demo-palette-open").addEventListener("click", () => palette.show());
+</script>

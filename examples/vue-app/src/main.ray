@@ -1,0 +1,185 @@
+// ray-ds Vue example: a std/ui window whose page (frontend/, Vite + Vue)
+// is built with the @ray-ds/vue wrappers (v-model). The form sends the new project as
+// JSON with window.ray.request; this program answers with ui.reply.
+//
+//   ray dev                     Vite dev server with hot reload, in a native window
+//   ray run                     the built frontend/dist (npm --prefix frontend run build first)
+//   ray run src/main.ray --check
+//                               drive the built page like a user (typing, choosing, submitting)
+//                               and check the request that reaches raylang; exit 0/1
+
+import std/json;
+import std/time;
+import std/ui;
+
+const TITLE: string = "ray-ds · Vue";
+
+fn main() -> int {
+    // Under `ray dev` the build may not exist yet (the dev server serves the page): only warn.
+    match (ui.mount_embed_at("", "frontend/dist")) {
+        Result.Err(e) => eprint("frontend build not mounted (fine under `ray dev`): " + e),
+        Result.Ok(_) => { },
+    }
+    let check = args().contains("--check");
+    match (run(check)) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("vue-app: ${e}");
+            1
+        },
+    }
+}
+
+fn run(check: bool) -> Result<int, string> {
+    let window = ui.open(TITLE, "app://index.html", 760, 720)?;
+    if (check) {
+        return self_check(window);
+    }
+    while (true) {
+        let e = ui.next_event()?;
+        if (e.kind == "closed" && e.window == window) {
+            return Result.Ok(0);
+        }
+        answer(e)?;
+    }
+}
+
+// A window.ray.request from the page: the new project as JSON.
+fn answer(e: ui.UiEvent) -> Result<string, string> {
+    if (e.kind != "message") {
+        return Result.Ok("");
+    }
+    match (ui.as_request(e)) {
+        Option.Some(request) => {
+            let (id, body) = request;
+            let text = describe(body)?;
+            ui.reply(e.window, id, text)?;
+            Result.Ok(text)
+        },
+        Option.None => Result.Ok(""),
+    }
+}
+
+fn describe(body: string) -> Result<string, string> {
+    let j = json.parse(body)?;
+    let name = json.get_string(j, "name").unwrap_or("?");
+    let template = json.get_string(j, "template").unwrap_or("?");
+    let license = json.get_string(j, "license").unwrap_or("?");
+    let git = json.get_bool(j, "git").unwrap_or(false);
+    Result.Ok("created ${name}: template=${template} license=${license} git=${git}")
+}
+
+// Types, picks and submits through the components' inner controls (what a
+// user does), so the framework state updates exactly as it would by hand.
+fn self_check(h: int) -> Result<int, string> {
+    wait_for(
+        h,
+        "ready",
+        "customElements.whenDefined('ray-button').then(() => document.querySelector('ray-input') && window.ray.send('ready'))",
+        15000
+    )?;
+    // Scripts are wrapped in a block: a top-level const of an injected script
+    // is page-global, and the next script redeclaring it would not run at all.
+    let script = `{
+      const q = (s) => document.querySelector(s);
+      const inner = (host, sel) => host.shadowRoot.querySelector(sel);
+      const name = inner(q("ray-input[name=name]"), "input");
+      name.value = "hello-vue";
+      name.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+      const tpl = inner(q("ray-select[name=template]"), "select");
+      tpl.value = "desktop";
+      tpl.dispatchEvent(new Event("change", { bubbles: true }));
+      inner(q("ray-segmented-control"), 'button[data-value="apache"]').click();
+      inner(q("ray-switch[name=git]"), "input").click();
+      setTimeout(() => inner(q("ray-button[type=submit]"), "button").click(), 100);
+    }`;
+    ui.eval_js(h, script)?;
+    let deadline = time.now() + 15000;
+    while (time.now() < deadline) {
+        match (ui.next_event_timeout(500)?) {
+            Option.Some(e) => {
+                let text = answer(e)?;
+                if (text != "") {
+                    print(text);
+                    let want = "created hello-vue: template=desktop license=apache git=false";
+                    if (text != want) {
+                        eprint("expected: ${want}");
+                        return Result.Ok(1);
+                    }
+                    return check_reset(h);
+                }
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no request from the page in 15 s")
+}
+
+// The other direction, framework state -> elements: the menu's "Reset form…"
+// opens the dialog through state (a controlled `open`), its Reset button
+// clears the state, and the components must show the cleared values.
+fn check_reset(h: int) -> Result<int, string> {
+    let script = `{
+      const q = (s) => document.querySelector(s);
+      const inner = (host, sel) => host.shadowRoot.querySelector(sel);
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      (async () => {
+        inner(q("ray-menu ray-button"), "button").click();
+        await wait(100);
+        q('ray-menu-item[value="reset"]').click();
+        await wait(150);
+        const dialog = q("ray-dialog");
+        const opened = dialog.open && dialog.dialog.open;
+        q('ray-dialog ray-button[data-dialog-close="reset"]').click();
+        await wait(150);
+        const state = [
+          opened,
+          dialog.open,
+          JSON.stringify(inner(q("ray-input[name=name]"), "input").value),
+          q("ray-segmented-control").value,
+          inner(q("ray-switch[name=git]"), "input").checked,
+          q("#reply").textContent.includes("created"),
+        ].join("|");
+        window.ray.send("state:" + state);
+      })().catch((e) => window.ray.send("state:error " + e));
+    }`;
+    ui.eval_js(h, script)?;
+    let deadline = time.now() + 10000;
+    while (time.now() < deadline) {
+        match (ui.next_event_timeout(500)?) {
+            Option.Some(e) => {
+                if (e.kind == "message" && e.tag.starts_with("state:")) {
+                    let got = e.tag.substring(6, e.tag.len());
+                    // opened by state | closed again | name cleared | license reset | git back on | reply kept
+                    let want = "true|false|\"\"|mit|true|true";
+                    print("reset: ${got}");
+                    if (got != want) {
+                        eprint("expected: ${want}");
+                        return Result.Ok(1);
+                    }
+                    print("check ok");
+                    return Result.Ok(0);
+                }
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no state from the page in 10 s")
+}
+
+// Re-sends `js` until the page answers `tag` (eval_js before load may be dropped).
+fn wait_for(h: int, tag: string, js: string, timeout_ms: int) -> Result<int, string> {
+    let deadline = time.now() + timeout_ms;
+    while (time.now() < deadline) {
+        ui.eval_js(h, js)?;
+        match (ui.next_event_timeout(250)?) {
+            Option.Some(e) => {
+                if (e.window == h && e.kind == "message" && e.tag == tag) {
+                    return Result.Ok(0);
+                }
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no '${tag}' from the page in ${timeout_ms} ms")
+}

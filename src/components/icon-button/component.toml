@@ -1,0 +1,54 @@
+[component]
+name = "Icon button"
+category = "Buttons"
+summary = "A square button for an icon (Mantine's ActionIcon). Always give it a label."
+files = ["icon-button.js"]
+requires = ["button"]
+tags = ["ray-icon-button"]
+
+[ray-icon-button]
+class = "RayIconButton"
+summary = "Same properties as ray-button; variant defaults to subtle."
+extends = "RayButton"
+
+[ray-icon-button.properties.label]
+type = "string"
+reflect = true
+description = "Accessible name and tooltip (required: the button has no text)."
+
+[ray-icon-button.properties.variant]
+type = "string"
+values = ["filled", "light", "outline", "subtle", "default", "transparent", "gradient", "raised"]
+default = "subtle"
+reflect = true
+description = "Visual style."
+
+[ray-icon-button.properties.gradient]
+type = "string"
+reflect = true
+description = "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+
+[ray-icon-button.properties.color]
+type = "string"
+description = "A palette color or any CSS color."
+
+[ray-icon-button.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Width and height."
+
+[ray-icon-button.properties.disabled]
+type = "boolean"
+description = "Not interactive."
+
+[ray-icon-button.properties.loading]
+type = "boolean"
+description = "Shows a spinner instead of the icon."
+
+[ray-icon-button.slots.default]
+description = "The icon (an inline <svg> is sized to the button)."
+
+[ray-icon-button.parts.button]
+description = "The inner button."

@@ -1,0 +1,50 @@
+[component]
+name = "Badge"
+category = "Data display"
+summary = "A short status label."
+files = ["badge.js"]
+requires = []
+tags = ["ray-badge"]
+
+[ray-badge]
+class = "RayBadge"
+extends = "RayElement"
+
+[ray-badge.properties.variant]
+type = "string"
+values = ["light", "filled", "outline", "dot", "default", "gradient"]
+default = "light"
+reflect = true
+description = "Visual style."
+
+[ray-badge.properties.gradient]
+type = "string"
+reflect = true
+description = "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+
+[ray-badge.properties.color]
+type = "string"
+description = "A palette color or any CSS color."
+
+[ray-badge.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-badge.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius. Default: full."
+
+[ray-badge.properties.normalCase]
+attribute = "normal-case"
+type = "boolean"
+description = "Keeps the text as written instead of uppercase."
+
+[ray-badge.slots.default]
+description = "The text."
+
+[ray-badge.parts.badge]
+description = "The badge box."

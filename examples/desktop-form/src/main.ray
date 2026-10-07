@@ -1,0 +1,111 @@
+// A std/ui window whose form is built with ray-ds components, copied into
+// assets/ray-ds with `ray run ../../tools/src/main.ray add … --into assets/ray-ds`.
+// The page sends the submitted form as `create:<json>`.
+//
+//   ray run                 open the window; Ctrl-C or close it to quit
+//   ray run src/main.ray --check
+//                           fill and submit the form by script, check what arrives, exit 0/1
+
+import std/json;
+import std/time;
+import std/ui;
+
+fn main() -> int {
+    let check = args().contains("--check");
+    match (run(check)) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("desktop-form: ${e}");
+            1
+        },
+    }
+}
+
+fn run(check: bool) -> Result<int, string> {
+    // From disk under `ray run`; a bundle would use ui.mount_embed("", "assets").
+    ui.mount_dir("", "assets")?;
+    let h = ui.open_with("New project", "ray://app/index.html", ui.options(520, 640))?;
+    if (check) {
+        return self_check(h);
+    }
+    while (true) {
+        let e = ui.next_event()?;
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        if (e.kind == "message" && e.tag.starts_with("create:")) {
+            print(describe(e.tag.substring(7, e.tag.len()))?);
+        }
+    }
+}
+
+fn describe(payload: string) -> Result<string, string> {
+    let j = json.parse(payload)?;
+    let name = json.get_string(j, "name").unwrap_or("?");
+    let template = json.get_string(j, "template").unwrap_or("?");
+    let license = json.get_string(j, "license").unwrap_or("?");
+    let git = json.get_string(j, "git").is_some();
+    let tests = json.get_string(j, "tests").is_some();
+    Result.Ok("create ${name}: template=${template} license=${license} git=${git} tests=${tests}")
+}
+
+// Fills the form through the components' public properties, submits it with
+// the ray-button, and expects the matching `create:` message.
+fn self_check(h: int) -> Result<int, string> {
+    wait_for(
+        h,
+        "ready",
+        "customElements.whenDefined('ray-button').then(() => window.ray.send('ready'))",
+        10000
+    )?;
+    let script = `
+      const q = (s) => document.querySelector(s);
+      q("ray-input[name=name]").value = "hello-ray";
+      q("ray-select[name=template]").value = "desktop";
+      q("ray-radio-group[name=license]").value = "apache";
+      q("ray-checkbox[name=tests]").checked = true;
+      setTimeout(() => q("ray-button[type=submit]").click(), 50);`;
+    ui.eval_js(h, script)?;
+    let got = wait_message(h, "create:", 10000)?;
+    let line = describe(got.substring(7, got.len()))?;
+    print(line);
+    let want = "create hello-ray: template=desktop license=apache git=true tests=true";
+    if (line != want) {
+        eprint("expected: ${want}");
+        return Result.Ok(1);
+    }
+    print("check ok");
+    Result.Ok(0)
+}
+
+// Re-sends `js` until the page answers `tag` (eval_js before load may be dropped).
+fn wait_for(h: int, tag: string, js: string, timeout_ms: int) -> Result<int, string> {
+    let deadline = time.now() + timeout_ms;
+    while (time.now() < deadline) {
+        ui.eval_js(h, js)?;
+        match (ui.next_event_timeout(200)?) {
+            Option.Some(e) => {
+                if (e.window == h && e.kind == "message" && e.tag == tag) {
+                    return Result.Ok(0);
+                }
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no '${tag}' from the page in ${timeout_ms} ms")
+}
+
+fn wait_message(h: int, prefix: string, timeout_ms: int) -> Result<string, string> {
+    let deadline = time.now() + timeout_ms;
+    while (time.now() < deadline) {
+        match (ui.next_event_timeout(deadline - time.now())?) {
+            Option.Some(e) => {
+                if (e.window == h && e.kind == "message" && e.tag.starts_with(prefix)) {
+                    return Result.Ok(e.tag);
+                }
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no '${prefix}' message in ${timeout_ms} ms")
+}

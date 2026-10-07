@@ -1,0 +1,92 @@
+[component]
+name = "Search"
+category = "Inputs"
+summary = "A search box: icon, clear button, an optional shortcut that focuses it, and a debounced ray-search event. A RayInput, so it has a label and takes part in forms."
+files = ["search.js"]
+requires = ["input"]
+tags = ["ray-search"]
+
+[ray-search]
+class = "RaySearch"
+summary = "Escape clears it (when it has text); Enter fires ray-search at once. JS: clear(), focus()."
+extends = "FieldControl"
+
+[ray-search.properties.value]
+type = "string"
+description = "Current text."
+
+[ray-search.properties.placeholder]
+type = "string"
+default = "Search…"
+description = "Placeholder text."
+
+[ray-search.properties.shortcut]
+type = "string"
+description = "Keyboard shortcut that focuses it (\"mod+k\", \"/\"; mod = ⌘ on macOS, Ctrl elsewhere). Shown as a hint while empty."
+
+[ray-search.properties.debounce]
+type = "number"
+default = "200"
+description = "Milliseconds of quiet typing before ray-search fires (0: on every keystroke)."
+
+[ray-search.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-search.properties.label]
+type = "string"
+description = "Visible label (also the accessible name). Without it, use aria-label."
+
+[ray-search.properties.disabled]
+type = "boolean"
+description = "Not editable nor submitted."
+
+[ray-search.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-search.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius."
+
+[ray-search.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "filled"
+reflect = true
+description = "Box style."
+
+[ray-search.events.input]
+description = "On every edit (value already updated)."
+
+[ray-search.events.ray-search]
+detail = "{ value: string }"
+description = "After `debounce` ms without typing, on Enter, and when cleared."
+
+[ray-search.parts.input]
+description = "The inner <input type=search>."
+
+[ray-search.parts.icon]
+description = "The search icon."
+
+[ray-search.parts.clear]
+description = "The clear button."
+
+[ray-search.parts.shortcut]
+description = "The shortcut hint."
+
+[ray-search.parts.wrapper]
+description = "The box."
+
+[ray-search.model]
+property = "value"
+events = ["input"]
+
+[ray-search.members.clear]
+ts = "clear(): void"
+description = "Empties the box (fires input and ray-search)."

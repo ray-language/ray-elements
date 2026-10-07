@@ -1,0 +1,93 @@
+[component]
+name = "Button"
+category = "Buttons"
+summary = "A button, or a link styled as one with href. Submits or resets its form with type."
+files = ["button.js"]
+requires = []
+tags = ["ray-button"]
+
+[ray-button]
+class = "RayButton"
+extends = "RayElement"
+
+[ray-button.properties.variant]
+type = "string"
+values = ["filled", "light", "outline", "subtle", "default", "transparent", "gradient", "raised"]
+default = "filled"
+reflect = true
+description = "Visual style. raised: a physical key on a darker edge that sinks when pressed (mouse, touch or keyboard)."
+
+[ray-button.properties.gradient]
+type = "string"
+reflect = true
+description = "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+
+[ray-button.properties.color]
+type = "string"
+description = "A palette color (blue, red…) or any CSS color. Default: the primary color."
+
+[ray-button.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height, padding and font size."
+
+[ray-button.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius. Default: --ray-radius-default."
+
+[ray-button.properties.type]
+type = "string"
+values = ["button", "submit", "reset"]
+default = "button"
+description = "submit/reset act on the enclosing form."
+
+[ray-button.properties.disabled]
+type = "boolean"
+description = "Not interactive (also when inside a disabled fieldset)."
+
+[ray-button.properties.loading]
+type = "boolean"
+description = "Shows a spinner over the content and blocks clicks."
+
+[ray-button.properties.fullWidth]
+attribute = "full-width"
+type = "boolean"
+description = "Takes the whole width of its container."
+
+[ray-button.properties.href]
+type = "string"
+description = "Renders a link instead of a button."
+
+[ray-button.properties.target]
+type = "string"
+description = "Link target, with href."
+
+[ray-button.properties.name]
+type = "string"
+description = "With type=submit: submitted as name=value."
+
+[ray-button.properties.value]
+type = "string"
+description = "With type=submit: the submitted value."
+
+[ray-button.slots.default]
+description = "The label."
+
+[ray-button.slots.left]
+description = "Icon or content before the label."
+
+[ray-button.slots.right]
+description = "Icon or content after the label."
+
+[ray-button.parts.button]
+description = "The inner <button> or <a>."
+
+[ray-button.parts.label]
+description = "The label wrapper."
+
+[ray-button.members.form]
+ts = "readonly form: HTMLFormElement | null"
+description = "The form a submit/reset button acts on."

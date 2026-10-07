@@ -1,0 +1,106 @@
+[component]
+name = "Drawer"
+category = "Overlays"
+summary = "A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive."
+files = ["drawer.js"]
+requires = ["dialog"]
+tags = ["ray-drawer"]
+
+[ray-drawer]
+class = "RayDrawer"
+# In JS it extends RayDialog; its position/size values differ from the
+# dialog's, which TypeScript would reject in a subclass, so the declared
+# parent is RayElement and the dialog API is listed below.
+extends = "RayElement"
+summary = "Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue)."
+
+[ray-drawer.properties.open]
+type = "boolean"
+reflect = true
+description = "Shown."
+
+[ray-drawer.properties.label]
+type = "string"
+description = "Heading (also the accessible name)."
+
+[ray-drawer.properties.position]
+type = "string"
+values = ["right", "left", "top", "bottom"]
+default = "right"
+reflect = true
+description = "The edge it slides from."
+
+[ray-drawer.properties.size]
+type = "string"
+default = "md"
+reflect = true
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})'
+description = "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length."
+
+[ray-drawer.properties.modeless]
+type = "boolean"
+reflect = true
+description = "No backdrop nor scroll lock: the page stays interactive (a side panel)."
+
+[ray-drawer.properties.floating]
+type = "boolean"
+reflect = true
+description = "Detached from the edge, with rounded corners."
+
+[ray-drawer.properties.persistent]
+type = "boolean"
+reflect = true
+description = "Escape and backdrop clicks do not close it."
+
+[ray-drawer.properties.hideClose]
+attribute = "hide-close"
+type = "boolean"
+reflect = true
+description = "No close button in the header."
+
+[ray-drawer.properties.overlayBlur]
+attribute = "overlay-blur"
+type = "string"
+description = "Blur of the page behind: px (\"8\"), a CSS length or \"none\". Default: --ray-overlay-blur ([overlay] blur in tokens.toml)."
+
+[ray-drawer.events.ray-open]
+description = "After it opened."
+
+[ray-drawer.events.ray-close]
+description = "After it closed; detail: { returnValue }."
+detail = "{ returnValue: string }"
+
+[ray-drawer.events.ray-request-close]
+description = "Escape, backdrop or close button; cancelable."
+detail = '{ source: "escape" | "backdrop" | "button" }'
+
+[ray-drawer.slots.default]
+description = "Body (scrolls)."
+
+[ray-drawer.slots.header]
+description = "Extra header content."
+
+[ray-drawer.slots.footer]
+description = "Actions, at the bottom."
+
+[ray-drawer.parts.drawer]
+description = "The native <dialog>."
+
+[ray-drawer.parts.body]
+description = "The body."
+
+[ray-drawer.model]
+property = "open"
+events = ["ray-open", "ray-close"]
+
+[ray-drawer.members.show]
+ts = "show(): void"
+description = "Opens it."
+
+[ray-drawer.members.close]
+ts = "close(returnValue?: string): void"
+description = "Closes it with an optional return value."
+
+[ray-drawer.members.returnValue]
+ts = "returnValue: string"
+description = "The value it was closed with."

@@ -1,0 +1,7 @@
+<div class="demo-grid">
+  <ray-slider label="Volume" value="40" show-value unit="%" name="volume"></ray-slider>
+  <ray-slider id="demo-slider" label="Tempo" min="60" max="180" step="5" value="120" show-value unit=" bpm" color="orange" size="md"></ray-slider>
+</div>
+<script type="module">
+  document.getElementById("demo-slider").marks = [60, 90, 120, 150, 180];
+</script>

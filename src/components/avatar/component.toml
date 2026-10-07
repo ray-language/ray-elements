@@ -1,0 +1,62 @@
+[component]
+name = "Avatar"
+category = "Data display"
+summary = "An image, the initials of a name, or a placeholder icon."
+files = ["avatar.js"]
+requires = []
+tags = ["ray-avatar"]
+
+[ray-avatar]
+class = "RayAvatar"
+extends = "RayElement"
+
+[ray-avatar.properties.src]
+type = "string"
+reflect = true
+description = "Image URL; falls back to initials if it fails to load."
+
+[ray-avatar.properties.alt]
+type = "string"
+reflect = true
+description = "Accessible name (default: name)."
+
+[ray-avatar.properties.name]
+type = "string"
+reflect = true
+description = "Person or entity name; its initials are shown without an image."
+
+[ray-avatar.properties.color]
+type = "string"
+description = "A palette color or any CSS color."
+
+[ray-avatar.properties.variant]
+type = "string"
+values = ["light", "filled", "outline", "default"]
+default = "light"
+reflect = true
+description = "Style of the initials/placeholder."
+
+[ray-avatar.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Diameter."
+
+[ray-avatar.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius. Default: full."
+
+[ray-avatar.slots.default]
+description = "Custom content (e.g. an icon) instead of initials."
+
+[ray-avatar.parts.avatar]
+description = "The box."
+
+[ray-avatar.parts.image]
+description = "The <img>."
+
+[component.exports.initials]
+ts = "function initials(name: string): string"
+description = "Up to two initials of a name: \"Ada Lovelace\" -> \"AL\"."

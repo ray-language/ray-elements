@@ -1,0 +1,64 @@
+[component]
+name = "Card"
+category = "Layout"
+summary = "A surface for grouped content, with optional media, header and footer."
+files = ["card.js"]
+requires = []
+tags = ["ray-card"]
+
+[ray-card]
+class = "RayCard"
+extends = "RayElement"
+
+[ray-card.properties.padding]
+type = "string"
+values = ["0", "xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Inner spacing (named space scale)."
+
+[ray-card.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+description = "Corner radius. Default: --ray-radius-default."
+
+[ray-card.properties.shadow]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+description = "Elevation."
+
+[ray-card.properties.withBorder]
+attribute = "with-border"
+type = "boolean"
+description = "Draws a border."
+
+[ray-card.properties.variant]
+type = "string"
+values = ["default", "filled", "outline"]
+default = "default"
+reflect = true
+description = "default: card surface; filled: muted surface; outline: border without fill."
+
+[ray-card.slots.default]
+description = "The body."
+
+[ray-card.slots.media]
+description = "Full-bleed image or media at the top."
+
+[ray-card.slots.header]
+description = "Header content."
+
+[ray-card.slots.footer]
+description = "Footer content (actions)."
+
+[ray-card.parts.card]
+description = "The surface."
+
+[ray-card.parts.header]
+description = "The header area."
+
+[ray-card.parts.body]
+description = "The body area."
+
+[ray-card.parts.footer]
+description = "The footer area."

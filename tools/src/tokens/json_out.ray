@@ -1,0 +1,32 @@
+// dist/tokens.json: every token with its CSS variable and resolved values,
+// for JS consumers (charts, canvas, native shells) and design tools.
+
+import std/json;
+from tokens/model import Model, depends_on_scheme;
+import tokens/refs;
+
+pub fn render(m: Model) -> Result<string, string> {
+    var tokens = json.obj();
+    for t in m.tokens {
+        var o = json.obj().field("group", t.group);
+        if (t.css) {
+            o = o.field("var", "--${m.prefix}-${t.name}");
+        }
+        if (depends_on_scheme(t)) {
+            o = o
+                .field("light", refs.resolve(m, t, "light")?)
+                .field("dark", refs.resolve(m, t, "dark")?);
+        } else {
+            o = o.field("value", refs.resolve(m, t, "light")?);
+        }
+        tokens = tokens.field(t.name, o);
+    }
+    let doc = json.obj()
+        .field("prefix", m.prefix)
+        .field("primary", m.primary)
+        .field("colors", json.list(m.colors))
+        .field("variants", json.list(m.variants))
+        .field("tokens", tokens);
+    let pretty = json.stringify_pretty(json.parse(json.render(doc))?, 2);
+    Result.Ok(pretty + "\n")
+}

@@ -1,0 +1,13 @@
+<div style="display: grid; gap: 1rem">
+  <ray-pagination id="demo-pagination" total="20" value="10"></ray-pagination>
+  <ray-pagination total="5" value="2" color="teal" radius="full" size="xs"></ray-pagination>
+  <ray-pagination total="50" value="1" siblings="2" with-edges></ray-pagination>
+  <ray-pagination total="8" value="3" disabled></ray-pagination>
+</div>
+<p id="demo-pagination-out" style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Page 10 of 20</p>
+<script type="module">
+  const p = document.getElementById("demo-pagination");
+  p.addEventListener("ray-change", (e) => {
+    document.getElementById("demo-pagination-out").textContent = `Page ${e.detail.value} of 20`;
+  });
+</script>

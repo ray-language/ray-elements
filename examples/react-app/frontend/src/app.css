@@ -1,0 +1,7 @@
+body { padding: var(--ray-space-6); }
+.app { max-width: 40rem; margin: 0 auto; display: grid; gap: var(--ray-space-4); }
+.app header { display: flex; align-items: center; justify-content: space-between; gap: var(--ray-space-3); }
+.app h1 { margin: 0; font-size: var(--ray-font-size-xl); }
+.app form { display: grid; gap: var(--ray-space-4); }
+.app .actions { display: flex; justify-content: flex-end; gap: var(--ray-space-2); }
+.app .reply { margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }

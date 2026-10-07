@@ -1,0 +1,16 @@
+[component]
+name = "Save button"
+category = "App"
+summary = "A ray-button with a dirty state (level 1: extend a component)."
+files = ["save-button.js"]
+requires = []
+tags = ["app-save-button"]
+
+[app-save-button]
+class = "AppSaveButton"
+extends = "RayButton"
+
+[app-save-button.properties.dirty]
+type = "boolean"
+reflect = true
+description = "There are unsaved changes (a dot, and an accessible description)."

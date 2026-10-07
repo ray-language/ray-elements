@@ -1,0 +1,25 @@
+{
+  "name": "@ray-ds/elements",
+  "version": "0.3.0",
+  "description": "Web components design system for raylang apps (shadcn/ui + Mantine inspired)",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./ray-ds.d.ts",
+  "exports": {
+    ".": {
+      "types": "./ray-ds.d.ts",
+      "default": "./index.js"
+    },
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./base.css": "./base.css",
+    "./custom-elements.json": "./custom-elements.json",
+    "./vscode.html-custom-data.json": "./vscode.html-custom-data.json",
+    "./core/*": "./core/*",
+    "./components/*": "./components/*"
+  },
+  "customElements": "custom-elements.json",
+  "sideEffects": ["./index.js", "./components/**/*.js", "*.css"]
+}

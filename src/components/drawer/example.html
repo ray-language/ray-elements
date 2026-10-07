@@ -1,0 +1,32 @@
+<div class="demo-row">
+  <ray-button onclick="document.getElementById('demo-drawer').show()">Settings (right)</ray-button>
+  <ray-button variant="default" onclick="document.getElementById('demo-drawer-left').show()">Navigation (left, floating)</ray-button>
+  <ray-button variant="default" onclick="document.getElementById('demo-drawer-bottom').show()">Logs (bottom)</ray-button>
+  <ray-button variant="light" onclick="document.getElementById('demo-drawer-side').open = !document.getElementById('demo-drawer-side').open">Toggle modeless panel</ray-button>
+</div>
+<ray-drawer id="demo-drawer" label="Settings">
+  <div style="display: grid; gap: 1rem">
+    <ray-input label="Project name" value="ray-remote" autofocus></ray-input>
+    <ray-switch label="Auto-update" checked></ray-switch>
+    <ray-select label="Channel" value="stable"><option value="stable">Stable</option><option value="beta">Beta</option></ray-select>
+  </div>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
+    <ray-button data-dialog-close="save">Save</ray-button>
+  </div>
+</ray-drawer>
+<ray-drawer id="demo-drawer-left" label="ray-ds" position="left" size="xs" floating>
+  <nav style="display: grid; gap: 0.125rem">
+    <ray-nav-link label="Dashboard" active></ray-nav-link>
+    <ray-nav-link label="Builds"></ray-nav-link>
+    <ray-nav-link label="Settings"></ray-nav-link>
+  </nav>
+</ray-drawer>
+<ray-drawer id="demo-drawer-bottom" label="Logs" position="bottom" size="16rem">
+  <pre style="margin: 0; font-size: 0.8125rem">[12:00:01] build started
+[12:00:04] compiled 42 modules
+[12:00:05] done in 4.1 s</pre>
+</ray-drawer>
+<ray-drawer id="demo-drawer-side" label="Inspector" modeless size="sm">
+  <p style="margin: 0">The page behind stays usable: no backdrop, no scroll lock. Escape or × closes it.</p>
+</ray-drawer>

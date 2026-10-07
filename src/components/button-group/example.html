@@ -1,0 +1,31 @@
+<div class="demo-row">
+  <ray-button-group label="Text alignment">
+    <ray-button variant="default">Left</ray-button>
+    <ray-button variant="default">Center</ray-button>
+    <ray-button variant="default">Right</ray-button>
+  </ray-button-group>
+  <ray-button-group label="Deploy">
+    <ray-button>Deploy</ray-button>
+    <ray-menu placement="bottom-end">
+      <ray-icon-button slot="trigger" variant="filled" label="More deploy options"><ray-icon name="chevron-down"></ray-icon></ray-icon-button>
+      <ray-menu-item value="staging">Deploy to staging</ray-menu-item>
+      <ray-menu-item value="schedule">Schedule…</ray-menu-item>
+    </ray-menu>
+  </ray-button-group>
+  <ray-button-group label="Zoom">
+    <ray-icon-button variant="default" label="Zoom out"><ray-icon name="minus"></ray-icon></ray-icon-button>
+    <ray-button variant="default">100%</ray-button>
+    <ray-icon-button variant="default" label="Zoom in"><ray-icon name="plus"></ray-icon></ray-icon-button>
+  </ray-button-group>
+</div>
+<div class="demo-row" style="margin-top: 1rem; align-items: flex-start">
+  <ray-button-group label="Search packages" style="width: 22rem">
+    <ray-input aria-label="Package name" placeholder="Package name" style="flex: 1"></ray-input>
+    <ray-button variant="default">Search</ray-button>
+  </ray-button-group>
+  <ray-button-group orientation="vertical" label="Layout">
+    <ray-button variant="default">Top</ray-button>
+    <ray-button variant="default">Middle</ray-button>
+    <ray-button variant="default">Bottom</ray-button>
+  </ray-button-group>
+</div>

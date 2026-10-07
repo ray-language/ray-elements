@@ -1,0 +1,179 @@
+[component]
+name = "File upload"
+category = "Inputs"
+summary = "A drop zone to pick files: drag, click, keyboard or paste. Checks type, size and count as files arrive, lists them as ray-attachment rows (thumbnails, remove) and submits them with its form."
+files = ["file-upload.js"]
+requires = ["attachment"]
+tags = ["ray-file-upload"]
+
+[ray-file-upload]
+class = "RayFileUpload"
+extends = "FormControl"
+summary = "A drag that can only be refused turns the zone red before the drop; refused files fire ray-reject and are explained under the zone. Without multiple a new file replaces the current one. Uploading is the app's: attachmentFor(file) gives the row whose progress/status/error to set."
+
+[ray-file-upload.properties.name]
+type = "string"
+reflect = true
+description = "Form field name: every file is submitted under it."
+
+[ray-file-upload.properties.label]
+type = "string"
+description = "Label above the zone."
+
+[ray-file-upload.properties.description]
+type = "string"
+description = "Help text under the label."
+
+[ray-file-upload.properties.error]
+type = "string"
+description = "Error text (replaces the explanation of refused files)."
+
+[ray-file-upload.properties.required]
+type = "boolean"
+reflect = true
+description = "The form needs at least one file."
+
+[ray-file-upload.properties.disabled]
+type = "boolean"
+reflect = true
+description = "No picking, dropping or removing."
+
+[ray-file-upload.properties.accept]
+type = "string"
+reflect = true
+description = "Accepted types, as in <input type=file>: \".pdf,.png\", \"image/*\", \"application/json\"."
+
+[ray-file-upload.properties.multiple]
+type = "boolean"
+reflect = true
+description = "Several files (else one, replaced by the next)."
+
+[ray-file-upload.properties.maxSize]
+attribute = "max-size"
+type = "string"
+ts = "string | number"
+description = "Largest file: bytes or a size like \"10 MB\", \"512 KB\"."
+
+[ray-file-upload.properties.maxFiles]
+attribute = "max-files"
+type = "number"
+description = "With multiple: the most files kept."
+
+[ray-file-upload.properties.hint]
+type = "string"
+description = "Small text in the zone. Default: from accept, max-size and max-files (\"PNG or PDF · up to 10 MB each · max. 5 files\")."
+
+[ray-file-upload.properties.dropLabel]
+attribute = "drop-label"
+type = "string"
+default = "Drag files here"
+description = "Title of the zone, before \"or browse\"."
+
+[ray-file-upload.properties.browseLabel]
+attribute = "browse-label"
+type = "string"
+default = "browse"
+description = "The link-styled word (the button text in compact)."
+
+[ray-file-upload.properties.activeLabel]
+attribute = "active-label"
+type = "string"
+default = "Drop to add files"
+description = "Title while files are dragged over it."
+
+[ray-file-upload.properties.tapLabel]
+attribute = "tap-label"
+type = "string"
+default = "Choose files"
+description = "Title on touch screens (no hover), where dragging files is rare."
+
+[ray-file-upload.properties.variant]
+type = "string"
+values = ["default", "compact"]
+default = "default"
+reflect = true
+description = "default: a tall centered zone; compact: one row with a Browse button."
+
+[ray-file-upload.properties.list]
+type = "string"
+values = ["rows", "cards", "none"]
+default = "rows"
+reflect = true
+description = "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change)."
+
+[ray-file-upload.properties.color]
+type = "string"
+reflect = true
+description = "Accent of hover, drag and the browse link (default: primary)."
+
+[ray-file-upload.members.files]
+ts = "files: File[]"
+description = "The chosen files (assign to replace them, without events)."
+
+[ray-file-upload.members.open]
+ts = "open(): void"
+description = "Opens the system file picker."
+
+[ray-file-upload.members.addFiles]
+ts = "addFiles(files: Iterable<File>): { accepted: File[]; rejected: FileRejection[] }"
+description = "Adds files as if dropped (checks them, fires the events)."
+
+[ray-file-upload.members.removeFile]
+ts = "removeFile(file: File): boolean"
+description = "Removes a file (fires ray-change)."
+
+[ray-file-upload.members.clear]
+ts = "clear(): void"
+description = "Removes every file (fires ray-change)."
+
+[ray-file-upload.members.attachmentFor]
+ts = "attachmentFor(file: File): RayAttachment | null"
+description = "The row of a file, to show its upload progress, status or error."
+
+[ray-file-upload.events.ray-change]
+detail = "{ files: File[]; added: File[]; removed: File[] }"
+description = "Files were added or removed (also a plain change event)."
+
+[ray-file-upload.events.change]
+description = "Files were added or removed."
+
+[ray-file-upload.events.ray-reject]
+detail = "{ rejected: FileRejection[] }"
+description = "Some files were refused (type, size or count)."
+
+[ray-file-upload.slots.icon]
+description = "Replaces the upload icon."
+
+[ray-file-upload.parts.dropzone]
+description = "The zone (a button)."
+
+[ray-file-upload.parts.icon]
+description = "The icon tile."
+
+[ray-file-upload.parts.hint]
+description = "The small text in the zone."
+
+[ray-file-upload.parts.files]
+description = "The list of chosen files."
+
+[ray-file-upload.parts.label]
+description = "The label."
+
+[ray-file-upload.parts.error]
+description = "The error text."
+
+[component.types.FileRejection]
+ts = "{ file: File; reason: \"type\" | \"size\" | \"count\"; message: string }"
+description = "A refused file and why."
+
+[component.exports.parseSize]
+ts = "function parseSize(value: string | number | null | undefined): number"
+description = "Bytes from a number or a size like \"10 MB\" (NaN if neither)."
+
+[component.exports.matchesAccept]
+ts = "function matchesAccept(file: { name: string; type: string }, accept: string | null | undefined): boolean"
+description = "Whether a file passes an accept list."
+
+[component.exports.describeAccept]
+ts = "function describeAccept(accept: string | null | undefined): string"
+description = "A short human list of an accept value (\"PNG, JPG or PDF\")."

@@ -1,0 +1,36 @@
+[component]
+name = "Aspect ratio"
+category = "Layout"
+summary = "A box with a fixed width/height ratio; its image, video or iframe fills it."
+files = ["aspect-ratio.js"]
+requires = []
+tags = ["ray-aspect-ratio"]
+
+[ray-aspect-ratio]
+class = "RayAspectRatio"
+extends = "RayElement"
+
+[ray-aspect-ratio.properties.ratio]
+type = "string"
+default = "16/9"
+reflect = true
+description = "Width/height: \"16/9\", \"4:3\", \"1\" or a number."
+
+[ray-aspect-ratio.properties.fit]
+type = "string"
+values = ["cover", "contain"]
+default = "cover"
+reflect = true
+description = "How the media fills the box (object-fit)."
+
+[ray-aspect-ratio.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl, full or a CSS length."
+
+[ray-aspect-ratio.slots.default]
+description = "The media (img, video, iframe or any element); it fills the box."
+
+[component.exports.parseRatio]
+ts = "function parseRatio(value: string | number): string | null"
+description = "A ratio (\"16/9\", \"4:3\", 1.5) as a CSS aspect-ratio value, or null."

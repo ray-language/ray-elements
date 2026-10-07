@@ -1,0 +1,85 @@
+[component]
+name = "Popover"
+category = "Overlays"
+summary = "A floating panel anchored to a trigger, in the top layer; closes on Escape and outside clicks."
+files = ["popover.js"]
+requires = []
+tags = ["ray-popover"]
+
+[ray-popover]
+class = "RayPopover"
+summary = "Positioned in JS (flip + shift to stay in the viewport). JS: show(), hide(), toggle()."
+extends = "Floating"
+
+[ray-popover.properties.open]
+type = "boolean"
+reflect = true
+description = "Shown."
+
+[ray-popover.properties.placement]
+type = "string"
+values = ["bottom", "bottom-start", "bottom-end", "top", "top-start", "top-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]
+default = "bottom"
+reflect = true
+description = "Preferred side and alignment."
+
+[ray-popover.properties.offset]
+type = "number"
+default = "8"
+description = "Gap to the trigger in px."
+
+[ray-popover.properties.width]
+type = "string"
+description = "Panel width (px number or CSS length). Default: its content."
+
+[ray-popover.properties.matchWidth]
+attribute = "match-width"
+type = "boolean"
+description = "At least as wide as the trigger."
+
+[ray-popover.properties.padding]
+type = "string"
+values = ["0", "xs", "sm", "md", "lg"]
+default = "md"
+reflect = true
+description = "Panel padding."
+
+[ray-popover.properties.trapFocus]
+attribute = "trap-focus"
+type = "boolean"
+description = "Moves focus into the panel when opened and keeps Tab inside it."
+
+[ray-popover.events.ray-open]
+description = "After it opened."
+
+[ray-popover.events.ray-close]
+description = "After it closed (also by Escape or an outside click)."
+
+[ray-popover.slots.trigger]
+description = "The element that toggles it (gets aria-haspopup and aria-expanded)."
+
+[ray-popover.slots.default]
+description = "Panel content."
+
+[ray-popover.parts.dropdown]
+description = "The panel."
+
+[ray-popover.model]
+property = "open"
+events = ["ray-open", "ray-close"]
+
+[ray-popover.members.show]
+ts = "show(): void"
+description = "Opens it."
+
+[ray-popover.members.hide]
+ts = "hide(): void"
+description = "Closes it."
+
+[ray-popover.members.toggle]
+ts = "toggle(): void"
+description = "Opens or closes it."
+
+[ray-popover.members.trigger]
+ts = "readonly trigger: Element | null"
+description = "The trigger element."

@@ -1,0 +1,130 @@
+[component]
+name = "Notification"
+category = "Feedback"
+summary = "Toasts: notify(), updateNotification(), hideNotification(), clearNotifications(); shown in a ray-toaster (a polite live region in the top layer). ray-notification is usable on its own."
+files = ["notification.js"]
+requires = []
+tags = ["ray-notification", "ray-toaster"]
+
+[ray-notification]
+class = "RayNotification"
+summary = "notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info."
+extends = "RayElement"
+
+[ray-notification.properties.label]
+type = "string"
+description = "Title."
+
+[ray-notification.properties.color]
+type = "string"
+reflect = true
+description = "Status color: tints the status icon (and a slotted icon's circle)."
+
+[ray-notification.properties.icon]
+type = "string"
+description = "Status icon from the registry (default: from the color); \"none\" for no icon."
+
+[ray-notification.properties.loading]
+type = "boolean"
+reflect = true
+description = "Shows a spinner (notify() does not auto-close it)."
+
+[ray-notification.properties.hideClose]
+attribute = "hide-close"
+type = "boolean"
+reflect = true
+description = "No close button."
+
+[ray-notification.properties.withBorder]
+attribute = "with-border"
+type = "boolean"
+reflect = true
+description = "Draws a border."
+
+[ray-notification.properties.actionLabel]
+attribute = "action-label"
+type = "string"
+description = "Text of an action button (e.g. \"Undo\"); pressing it fires ray-action."
+
+[ray-notification.events.ray-close]
+description = "The close button was pressed."
+
+[ray-notification.events.ray-action]
+description = "The action button was pressed (notify() runs action.onClick and closes it)."
+
+[ray-notification.slots.default]
+description = "Message."
+
+[ray-notification.slots.icon]
+description = "Your own icon, in a colored circle (replaces the status icon)."
+
+[ray-toaster]
+class = "RayToaster"
+summary = "Created by notify() when missing; add one yourself to choose its position. A stack (newest in front, older ones peeking behind) that spreads into a list on hover or keyboard focus; on touch screens a tap expands it, a tap outside collapses it, and a sideways swipe dismisses a toast. Auto-close pauses while expanded. Full width on phones."
+extends = "RayElement"
+
+[ray-toaster.properties.position]
+type = "string"
+values = ["bottom-right", "bottom-left", "bottom-center", "top-right", "top-left", "top-center"]
+default = "bottom-right"
+reflect = true
+description = "Corner of the stack."
+
+[ray-toaster.properties.limit]
+type = "number"
+default = "5"
+description = "Maximum kept; the oldest go first."
+
+[ray-toaster.properties.visible]
+type = "number"
+default = "3"
+description = "Toasts shown in the collapsed stack (the rest wait, hidden)."
+
+[ray-toaster.properties.expand]
+type = "boolean"
+reflect = true
+description = "Always expanded: a list instead of a stack."
+
+[ray-toaster.properties.gap]
+type = "number"
+default = "12"
+description = "Pixels between toasts when expanded."
+
+[ray-toaster.members.expanded]
+ts = "expanded: boolean"
+description = "Whether the stack is spread out (set it to expand or collapse it)."
+
+[ray-toaster.members.layout]
+ts = "layout(): void"
+description = "Places the toasts again (done automatically on changes)."
+
+[ray-toaster.members.raise]
+ts = "raise(): void"
+description = "Brings the stack above everything else in the top layer."
+
+[component.types.NotifyOptions]
+ts = "{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void }"
+description = "Options of notify() and updateNotification()."
+
+[component.exports.notify]
+ts = "function notify(options?: NotifyOptions): string"
+description = "Shows a notification; returns its id."
+
+[component.exports.updateNotification]
+ts = "function updateNotification(id: string, options?: NotifyOptions): boolean"
+description = "Changes a shown notification and restarts its auto-close."
+
+[component.exports.hideNotification]
+ts = "function hideNotification(id: string): boolean"
+description = "Removes a notification."
+
+[component.exports.clearNotifications]
+ts = "function clearNotifications(): void"
+description = "Removes every notification."
+
+[component.exports.statusIcon]
+ts = "function statusIcon(color: string): string"
+description = "The status icon a color gets: circle-check, circle-x, alert-triangle or info."
+
+[ray-notification.parts.status-icon]
+description = "The status icon."

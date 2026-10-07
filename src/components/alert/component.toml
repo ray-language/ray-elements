@@ -1,0 +1,64 @@
+[component]
+name = "Alert"
+category = "Feedback"
+summary = "An inline message: title, text, an icon of the registry, the color variants and an optional close button."
+files = ["alert.js"]
+requires = []
+tags = ["ray-alert"]
+
+[ray-alert]
+class = "RayAlert"
+extends = "RayElement"
+summary = "Announced as an alert. The icon follows the color (info, circle-check, alert-triangle, circle-x) unless icon or slot=icon."
+
+[ray-alert.properties.label]
+type = "string"
+description = "Title."
+
+[ray-alert.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color."
+
+[ray-alert.properties.variant]
+type = "string"
+values = ["light", "filled", "outline", "default", "transparent"]
+default = "light"
+reflect = true
+description = "Visual style."
+
+[ray-alert.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+description = "Corner radius."
+
+[ray-alert.properties.icon]
+type = "string"
+reflect = true
+description = "A registered icon name, or none."
+
+[ray-alert.properties.closable]
+type = "boolean"
+reflect = true
+description = "A close button; closing hides the alert (cancel ray-close to keep it)."
+
+[ray-alert.properties.closeLabel]
+attribute = "close-label"
+type = "string"
+default = "Dismiss"
+description = "Accessible name of the close button."
+
+[ray-alert.events.ray-close]
+description = "The close button was pressed; cancelable."
+
+[ray-alert.slots.default]
+description = "Text."
+
+[ray-alert.slots.icon]
+description = "A custom icon."
+
+[ray-alert.parts.alert]
+description = "The box."
+
+[ray-alert.parts.close]
+description = "The close button."

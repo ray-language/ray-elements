@@ -1,0 +1,9 @@
+# Package metadata of the generated npm packages (packages/*).
+# `ray run tools/src/main.ray package` writes @ray-ds/elements, @ray-ds/react
+# and @ray-ds/vue with this version.
+
+[package]
+scope = "@ray-ds"
+version = "0.3.0"
+description = "Web components design system for raylang apps (shadcn/ui + Mantine inspired)"
+license = "MIT"

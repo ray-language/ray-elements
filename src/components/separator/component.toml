@@ -1,0 +1,51 @@
+[component]
+name = "Separator"
+category = "Layout"
+summary = "A horizontal or vertical rule, optionally labeled (Mantine's Divider)."
+files = ["separator.js"]
+requires = []
+tags = ["ray-separator"]
+
+[ray-separator]
+class = "RaySeparator"
+extends = "RayElement"
+
+[ray-separator.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Direction of the rule."
+
+[ray-separator.properties.label]
+type = "string"
+reflect = true
+description = "Text in the middle of a horizontal rule."
+
+[ray-separator.properties.labelPosition]
+attribute = "label-position"
+type = "string"
+values = ["left", "center", "right"]
+default = "center"
+reflect = true
+description = "Where the label sits."
+
+[ray-separator.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "xs"
+reflect = true
+description = "Thickness (1–5px)."
+
+[ray-separator.properties.variant]
+type = "string"
+values = ["solid", "dashed", "dotted"]
+default = "solid"
+reflect = true
+description = "Line style."
+
+[ray-separator.parts.line]
+description = "The rule without label."
+
+[ray-separator.parts.label]
+description = "The labeled rule."

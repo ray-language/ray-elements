@@ -1,0 +1,44 @@
+[component]
+name = "Toggle"
+category = "Buttons"
+summary = "A two-state button (aria-pressed): bold in a toolbar, mute, favorite. The variant is how \"on\" looks; \"off\" is always neutral, so the states differ by more than color. Has everything ray-button has and joins a ray-button-group."
+files = ["toggle.js"]
+requires = ["button"]
+tags = ["ray-toggle"]
+
+[ray-toggle]
+class = "RayToggle"
+extends = "RayButton"
+summary = "Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute."
+
+[ray-toggle.properties.pressed]
+type = "boolean"
+reflect = true
+description = "On."
+
+[ray-toggle.properties.variant]
+type = "string"
+values = ["subtle", "outline", "light", "filled", "raised"]
+default = "subtle"
+reflect = true
+description = "Look of \"on\": subtle (tint), outline (colored border + tint), light (muted → tint), filled (surface → solid color), raised (a key that latches down, lit). ray-button's default, transparent and gradient are left out: no distinct on state, or only a color change."
+
+[ray-toggle.properties.square]
+type = "boolean"
+reflect = true
+description = "Square, for an icon alone (give it a label)."
+
+[ray-toggle.properties.label]
+type = "string"
+reflect = true
+description = "Accessible name and tooltip, for icon-only toggles."
+
+[ray-toggle.events.ray-change]
+detail = "{ pressed: boolean }"
+description = "The user flipped it (also a plain change event)."
+
+[ray-toggle.events.change]
+description = "The user flipped it."
+
+[ray-toggle.slots.default]
+description = "Text or an icon."

@@ -1,0 +1,26 @@
+[component]
+name = "Color field"
+category = "App"
+summary = "A color picker field with label, description and error (level 2: a FieldControl)."
+files = ["color-field.js"]
+requires = []
+tags = ["app-color-field"]
+
+[app-color-field]
+class = "AppColorField"
+extends = "FieldControl"
+
+[app-color-field.properties.value]
+type = "string"
+default = "#228be6"
+description = "The color as #rrggbb."
+
+[app-color-field.events.input]
+description = "While picking."
+
+[app-color-field.events.change]
+description = "When a color is chosen."
+
+[app-color-field.model]
+property = "value"
+events = ["input"]

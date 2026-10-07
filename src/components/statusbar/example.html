@@ -1,0 +1,14 @@
+<div style="display: grid; gap: 1rem">
+  <ray-statusbar>
+    <ray-statusbar-item action label="Branch main">⎇ main</ray-statusbar-item>
+    <ray-statusbar-item action color="red" label="2 errors">✕ 2</ray-statusbar-item>
+    <ray-statusbar-item action color="yellow" label="1 warning">⚠ 1</ray-statusbar-item>
+    <ray-statusbar-item slot="right">Ln 12, Col 5</ray-statusbar-item>
+    <ray-statusbar-item slot="right" action>Spaces: 4</ray-statusbar-item>
+    <ray-statusbar-item slot="right" action>raylang</ray-statusbar-item>
+  </ray-statusbar>
+  <ray-statusbar variant="accent">
+    <ray-statusbar-item action>Debugging: server.ray</ray-statusbar-item>
+    <ray-statusbar-item slot="right">VM · fibers on</ray-statusbar-item>
+  </ray-statusbar>
+</div>

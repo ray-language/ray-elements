@@ -1,0 +1,124 @@
+// Guides: Markdown files of the repository (README, EXTENDING, CHARTS) as
+// pages of the site, rendered with std/markdown. Headings get ids (h2s make
+// the sidebar), code blocks are highlighted, and links between the .md
+// files point at their pages.
+
+import std/markdown;
+from std/markdown import Block, Inline;
+from site/model import Page, Group, Link, page, link, slug;
+import site/highlight;
+
+// .md file -> page of the site.
+const PAGES: [(string, string)] = [
+    ("README.md", "getting-started.html"),
+    ("EXTENDING.md", "extending.html"),
+    ("CHARTS.md", "charts.html")
+];
+
+pub fn render(src: string, file: string, key: string, title: string, description: string) -> Page {
+    let out: [string] = [];
+    let links: [Link] = [];
+    let used: [string] = [];
+    for b in markdown.parse(src) {
+        match (b) {
+            Block.Heading(level, inl) => {
+                let html = inline(inl);
+                let text = strip_tags(html);
+                var id = slug(text);
+                // Unique ids: a repeated heading gets -2, -3…
+                var n = 2;
+                while (used.contains(id)) {
+                    id = "${slug(text)}-${n}";
+                    n = n + 1;
+                }
+                used.push(id);
+                if (level == 2) {
+                    links.push(link(text, "#${id}"));
+                }
+                out.push("<h${level} id=\"${id}\">${html}</h${level}>");
+            },
+            Block.Code(lang, text) => {
+                out.push(
+                    "<pre class=\"code\"><code>${highlight.code(text.trim(), lang)}</code></pre>"
+                );
+            },
+            _ => out.push(markdown.render([b])),
+        }
+    }
+    let body = "<article class=\"prose\">\n${rewrite_links(join(out, "\n"))}\n</article>";
+    page(file, key, title, description, [Group { title: title, links: links }], body, "guide")
+}
+
+fn inline(inl: [Inline]) -> string {
+    markdown.render([Block.Plain(inl)]).trim()
+}
+
+// The text of an HTML fragment (headings: sidebar labels and ids).
+pub fn strip_tags(html: string) -> string {
+    let out: [string] = [];
+    var inside = false;
+    for ch in html.chars() {
+        if (ch == '<') {
+            inside = true;
+        } else if (ch == '>') {
+            inside = false;
+        } else if (!inside) {
+            out.push(to_string(ch));
+        }
+    }
+    join(out, "")
+        .replace("&lt;", "<")
+        .replace("&gt;", ">")
+        .replace("&quot;", "\"")
+        .replace("&amp;", "&")
+}
+
+// href="EXTENDING.md#x" -> href="extending.html#x"; other relative links are
+// relative to the repository root, one level above docs/.
+fn rewrite_links(html: string) -> string {
+    let parts = html.split("href=\"");
+    let out: [string] = [parts[0]];
+    for i in 1..parts.len() {
+        let p = parts[i];
+        let end = p.index_of("\"").unwrap_or(0);
+        let href = p.substring(0, end);
+        out.push("href=\"${target(href)}${p.substring(end, p.len())}");
+    }
+    join(out, "")
+}
+
+fn target(href: string) -> string {
+    if (href.starts_with("http:")
+        || href.starts_with("https:")
+        || href.starts_with("#")
+        || href.starts_with("mailto:")) {
+        return href;
+    }
+    for (md, html) in PAGES {
+        if (href == md) {
+            return html;
+        }
+        if (href.starts_with("${md}#")) {
+            return html + href.substring(md.len(), href.len());
+        }
+    }
+    "../${href}"
+}
+
+@test
+fn guide_links_and_ids() {
+    let p = render(
+        "# T\n\n## Using it\n\nSee [ext](EXTENDING.md#the-contract), [ex](examples/extending) and [w](https://x.y).\n\n## Using it\n\n```js\nconst a = 1;\n```\n",
+        "t.html",
+        "",
+        "T",
+        ""
+    );
+    assert(p.body.contains("<h2 id=\"using-it\">Using it</h2>"));
+    assert(p.body.contains("<h2 id=\"using-it-2\">"));
+    assert(p.body.contains("href=\"extending.html#the-contract\""));
+    assert(p.body.contains("href=\"../examples/extending\""));
+    assert(p.body.contains("href=\"https://x.y\""));
+    assert(p.body.contains("<span class=\"tk-keyword\">const</span>"));
+    assert_eq(p.groups[0].links.len(), 2);
+}

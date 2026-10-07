@@ -1,0 +1,337 @@
+// ray-ds tools. Run from ray-ds/ (or ray-ds/tools/):
+//
+//   ray run tools/src/main.ray build                 tokens + docs + package
+//   ray run tools/src/main.ray tokens [--check]      tokens.toml -> dist/tokens.css, dist/tokens.json, docs/foundations.html
+//   ray run tools/src/main.ray docs                  component.toml + *.md -> docs/ (site), src/index.js
+//   ray run tools/src/main.ray add NAME... --into DIR [--all] [--overwrite]
+//   ray run tools/src/main.ray package               packages/{elements,react,vue} (npm)
+//   ray run tools/src/main.ray wrap --components DIR --out DIR
+//                                                    types, manifest and React/Vue wrappers for an app's components
+//   ray run tools/src/main.ray webtest [FILTER]      tests/*.test.js in a std/ui webview
+//
+// Every command takes --root DIR (the ray-ds directory); by default the
+// current directory or its parent, whichever holds tokens.toml.
+
+import std/fs;
+import tokens/model;
+import tokens/refs;
+import tokens/css;
+import tokens/json_out;
+import tokens/checks;
+import tokens/foundations;
+import components/meta;
+import components/docs;
+import components/add;
+import webtest;
+import site/shell;
+import site/guides;
+import site/landing;
+import site/brand;
+from site/model import Page;
+import integrations/package;
+import integrations/elements;
+import integrations/wrappers;
+import integrations/manifest;
+
+const USAGE: string = `usage: ray run tools/src/main.ray <command> [--root DIR] …
+  build                                tokens + docs + package
+  tokens [--check]                     generate dist/tokens.* and docs/foundations.html (--check: validate only)
+  docs                                 generate the docs site (docs/) and src/index.js
+  add NAME... --into DIR [--all] [--overwrite]
+                                       copy components (and what they need) into an app
+  package                              generate the npm packages in packages/ (elements, react, vue)
+  wrap --components DIR --out DIR      types, manifest and React/Vue wrappers for an app's own components
+  webtest [FILTER]                     run tests/*.test.js in a std/ui webview`;
+
+struct Opts {
+    root: string,
+    into: string,
+    components: string,
+    out: string,
+    flags: [string],
+    rest: [string],
+}
+
+fn main() -> int {
+    let a = args();
+    if (a.len() == 0 || a[0] == "help" || a[0] == "--help") {
+        print(USAGE);
+        return if (a.len() == 0) { 2 } else { 0 };
+    }
+    let result = parse_opts(a.slice(1, a.len())).and_then(fn(o: Opts) -> Result<int, string> {
+        match (a[0]) {
+            "build" => cmd_build(o),
+            "tokens" => cmd_tokens(o),
+            "docs" => cmd_docs(o),
+            "add" => cmd_add(o),
+            "package" => cmd_package(o),
+            "wrap" => cmd_wrap(o),
+            "webtest" => cmd_webtest(o),
+            other => Result.Err("unknown command '${other}'\n${USAGE}"),
+        }
+    });
+    match (result) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("ray-ds: ${e}");
+            1
+        },
+    }
+}
+
+fn parse_opts(a: [string]) -> Result<Opts, string> {
+    let o = Opts { root: "", into: "", components: "", out: "", flags: [], rest: [] };
+    var i = 0;
+    while (i < a.len()) {
+        let x = a[i];
+        if ((x == "--root" || x == "--into" || x == "--components" || x == "--out")
+            && i + 1 < a.len()) {
+            if (x == "--root") {
+                o.root = a[i + 1];
+            } else if (x == "--into") {
+                o.into = a[i + 1];
+            } else if (x == "--components") {
+                o.components = a[i + 1];
+            } else {
+                o.out = a[i + 1];
+            }
+            i = i + 1;
+        } else if (x.starts_with("--")) {
+            o.flags.push(x);
+        } else {
+            o.rest.push(x);
+        }
+        i = i + 1;
+    }
+    if (o.root == "") {
+        o.root = find_root()?;
+    }
+    Result.Ok(o)
+}
+
+fn only_flags(o: Opts, allowed: [string]) -> Result<int, string> {
+    for f in o.flags {
+        if (!allowed.contains(f)) {
+            return Result.Err("unknown option '${f}'\n${USAGE}");
+        }
+    }
+    Result.Ok(0)
+}
+
+fn cmd_build(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    cmd_tokens(o)?;
+    cmd_docs(o)?;
+    cmd_package(o)
+}
+
+fn cmd_package(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    let cs = meta.load_all(o.root)?;
+    let written = package.run(o.root, cs)?;
+    print("package: ${written.len()} files in packages/ (elements, react, vue)");
+    Result.Ok(0)
+}
+
+fn cmd_tokens(o: Opts) -> Result<int, string> {
+    only_flags(o, ["--check"])?;
+    let root = o.root;
+    let m = model.load("${root}/tokens.toml")?;
+    refs.validate(m)?;
+    let rep = checks.run(m)?;
+    for w in rep.warnings {
+        eprint("warning: ${w}");
+    }
+    for e in rep.errors {
+        eprint("error: ${e}");
+    }
+    if (rep.errors.len() > 0) {
+        return Result.Err("${rep.errors.len()} contrast check(s) failed");
+    }
+    print(
+        "tokens: ${m.tokens.len()} tokens, ${m.colors.len()} colors, ${m.aa_checks.len()} AA pairs ok"
+    );
+    if (o.flags.contains("--check")) {
+        return Result.Ok(0);
+    }
+    write(root, "dist/tokens.css", css.render(m)?)?;
+    write(root, "dist/tokens.json", json_out.render(m)?)?;
+    write(root, "docs/foundations.html", shell.render(foundations.render(m)?, m.colors))?;
+    Result.Ok(0)
+}
+
+fn cmd_docs(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    let root = o.root;
+    let cs = meta.load_all(root)?;
+    let colors = model.load("${root}/tokens.toml")?.colors;
+    let version = package.info(root)?.version;
+    let pages = [
+        landing.render(cs.len(), version, colors),
+        docs.render(cs),
+        guide(
+            root,
+            "README.md",
+            "getting-started.html",
+            "start",
+            "Get started",
+            "Install ray-ds, load it in a raylang app and theme it."
+        )?,
+        guide(
+            root,
+            "EXTENDING.md",
+            "extending.html",
+            "extending",
+            "Extending",
+            "Build your own components on RayElement."
+        )?,
+        guide(
+            root,
+            "CHARTS.md",
+            "charts.html",
+            "charts",
+            "Charts",
+            "Theme Chart.js, uPlot or ECharts with the ray-ds chart tokens."
+        )?
+    ];
+    for p in pages {
+        write(root, "docs/${p.file}", shell.render(p, colors))?;
+    }
+    for asset in ["site.css", "site.js"] {
+        write(root, "docs/${asset}", fs.read_file("${root}/site/${asset}")?)?;
+    }
+    for (name, svg) in brand.files() {
+        write(root, "brand/${name}", svg)?;
+        write(root, "docs/${name}", svg)?;
+    }
+    write(root, "index.html", shell.root_index())?;
+    write(root, "src/index.js", docs.index_js(cs, "./components/"))?;
+    print("docs: ${cs.len()} components, ${pages.len()} pages (+ foundations from tokens)");
+    Result.Ok(0)
+}
+
+fn guide(
+    root: string,
+    md: string,
+    file: string,
+    key: string,
+    title: string,
+    description: string
+) -> Result<Page, string> {
+    Result.Ok(guides.render(fs.read_file("${root}/${md}")?, file, key, title, description))
+}
+
+fn cmd_add(o: Opts) -> Result<int, string> {
+    only_flags(o, ["--all", "--overwrite"])?;
+    if (o.into == "") {
+        return Result.Err("add: --into DIR is required\n${USAGE}");
+    }
+    let rep = add.run(
+        o.root,
+        o.into,
+        o.rest,
+        o.flags.contains("--all"),
+        o.flags.contains("--overwrite")
+    )?;
+    print(
+        "add: ${rep.written} written, ${rep.unchanged} unchanged, ${rep.kept.len()} kept -> ${o.into}"
+    );
+    for k in rep.kept {
+        eprint("  kept (modified locally; --overwrite to replace): ${k}");
+    }
+    print(`
+Load it in your page:
+  <link rel="stylesheet" href="${o.into}/tokens.css">
+  <link rel="stylesheet" href="${o.into}/base.css">  <!-- optional -->
+  <script type="module" src="${o.into}/index.js"></script>
+(paths relative to where the page is served from)`);
+    Result.Ok(0)
+}
+
+fn cmd_wrap(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    if (o.components == "" || o.out == "") {
+        return Result.Err("wrap: --components DIR and --out DIR are required\n${USAGE}");
+    }
+    let cs = meta.load_dir(o.components)?;
+    if (cs.len() == 0) {
+        return Result.Err("wrap: no */component.toml under ${o.components}");
+    }
+    let rayds = meta.load_all(o.root)?;
+    fs.mkdir(o.out)?;
+    let modules = relative(fs.real_path(o.out)?, fs.real_path(o.components)?) + "/";
+    let t = wrappers.app_target();
+    let files = [
+        ("index.js", elements.app_index_js(cs, modules)),
+        ("index.d.ts", elements.app_dts(cs, rayds)),
+        ("react.js", wrappers.react_js(cs, rayds, t)),
+        ("react.d.ts", wrappers.react_dts(cs, rayds, t)),
+        ("vue.js", wrappers.vue_js(cs, rayds, t)),
+        ("vue.d.ts", wrappers.vue_dts(cs, rayds, t)),
+        ("custom-elements.json", manifest.custom_elements(cs, modules)?)
+    ];
+    for (name, content) in files {
+        fs.write_file("${o.out}/${name}", content)?;
+    }
+    let tags = meta.all_elements(cs).map(fn(e: meta.Element) -> string { e.tag });
+    print("wrap: ${join(tags, ", ")} -> ${o.out} (index, react, vue, custom-elements.json)");
+    Result.Ok(0)
+}
+
+// The path of `to` seen from directory `from` (both absolute): ../../x/y.
+fn relative(from_dir: string, to: string) -> string {
+    let a = from_dir.split("/").filter(fn(s: string) -> bool { s != "" });
+    let b = to.split("/").filter(fn(s: string) -> bool { s != "" });
+    var i = 0;
+    while (i < a.len() && i < b.len() && a[i] == b[i]) {
+        i = i + 1;
+    }
+    let up: [string] = [];
+    var j = i;
+    while (j < a.len()) {
+        up.push("..");
+        j = j + 1;
+    }
+    let parts = up + b.slice(i, b.len());
+    if (parts.len() == 0) {
+        "."
+    } else if (parts[0] == "..") {
+        join(parts, "/")
+    } else {
+        "./" + join(parts, "/")
+    }
+}
+
+fn cmd_webtest(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    let filter = if (o.rest.len() > 0) { o.rest[0] } else { "" };
+    let r = webtest.run(fs.real_path(o.root)?, filter)?;
+    print("\nwebtest: ${r.passed} passed, ${r.failed} failed");
+    Result.Ok(if (r.failed > 0) { 1 } else { 0 })
+}
+
+fn find_root() -> Result<string, string> {
+    if (fs.exists("tokens.toml")) {
+        return Result.Ok(".");
+    }
+    if (fs.exists("../tokens.toml")) {
+        return Result.Ok("..");
+    }
+    Result.Err("tokens.toml not found here or in the parent directory (use --root)")
+}
+
+fn write(root: string, rel: string, content: string) -> Result<int, string> {
+    let path = "${root}/${rel}";
+    let dir = path.substring(0, path.last_index_of("/").unwrap_or(0));
+    fs.mkdir(dir)?;
+    fs.write_file(path, content)?;
+    print("  wrote ${rel}");
+    Result.Ok(0)
+}
+
+@test
+fn relative_paths() {
+    assert_eq(relative("/a/b/out", "/a/b/components"), "../components");
+    assert_eq(relative("/a/b", "/a/b/components"), "./components");
+    assert_eq(relative("/a/x/y", "/a/b"), "../../b");
+}

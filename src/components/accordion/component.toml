@@ -1,0 +1,97 @@
+[component]
+name = "Accordion"
+category = "Data display"
+summary = "Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple."
+files = ["accordion.js"]
+requires = []
+tags = ["ray-accordion", "ray-accordion-item"]
+
+[ray-accordion]
+class = "RayAccordion"
+extends = "RayElement"
+
+[ray-accordion.properties.value]
+type = "string"
+ts = "string | string[] | undefined"
+description = "Open item's value; with multiple, an array (attribute: comma-separated)."
+
+[ray-accordion.properties.multiple]
+type = "boolean"
+reflect = true
+description = "Several items may be open."
+
+[ray-accordion.properties.variant]
+type = "string"
+values = ["default", "contained", "separated", "filled"]
+default = "default"
+reflect = true
+description = "Visual style."
+
+[ray-accordion.properties.chevronPosition]
+attribute = "chevron-position"
+type = "string"
+values = ["right", "left"]
+default = "right"
+reflect = true
+description = "Side of the chevron."
+
+[ray-accordion.events.change]
+description = "The user opened or closed an item."
+
+[ray-accordion.slots.default]
+description = "ray-accordion-item elements."
+
+[ray-accordion-item]
+class = "RayAccordionItem"
+extends = "RayElement"
+
+[ray-accordion-item.properties.value]
+type = "string"
+reflect = true
+description = "Identifies the item in the accordion's value."
+
+[ray-accordion-item.properties.label]
+type = "string"
+description = "Header text (or slot=label)."
+
+[ray-accordion-item.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Cannot be toggled."
+
+[ray-accordion-item.properties.headingLevel]
+attribute = "heading-level"
+type = "number"
+default = "3"
+description = "aria-level of the header."
+
+[ray-accordion-item.slots.default]
+description = "Panel content."
+
+[ray-accordion-item.slots.label]
+description = "Rich header content."
+
+[ray-accordion-item.slots.left]
+description = "Icon before the label."
+
+[ray-accordion-item.parts.control]
+description = "The header button."
+
+[ray-accordion-item.parts.panel]
+description = "The collapsible region."
+
+[ray-accordion.model]
+property = "value"
+events = ["change"]
+
+[ray-accordion.members.items]
+ts = "readonly items: RayAccordionItem[]"
+description = "The items."
+
+[ray-accordion.members.openValues]
+ts = "readonly openValues: string[]"
+description = "The open values as an array, whatever the mode."
+
+[ray-accordion-item.members.open]
+ts = "readonly open: boolean"
+description = "Whether this item is expanded."

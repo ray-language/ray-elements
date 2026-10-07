@@ -1,0 +1,89 @@
+[component]
+name = "Toggle group"
+category = "Buttons"
+summary = "ray-toggle elements with one shared value: type=\"single\" (at most one on: alignment, view mode) or \"multiple\" (bold / italic / underline). Joined like a button group, or spaced; arrow keys move between toggles; submitted with its form."
+files = ["toggle-group.js"]
+requires = ["button-group", "toggle"]
+tags = ["ray-toggle-group"]
+
+[ray-toggle-group]
+class = "RayToggleGroup"
+extends = "RayButtonGroup"
+summary = "Each toggle's value (else its text) is its key. variant, color, size, radius and square reach the toggles that do not set their own. One tab stop (the selected toggle); arrows, Home and End move; Space/Enter flips."
+
+[ray-toggle-group.properties.type]
+type = "string"
+values = ["single", "multiple"]
+default = "single"
+reflect = true
+description = "single: choosing one turns the others off; multiple: each toggle is independent."
+
+[ray-toggle-group.properties.value]
+type = "string"
+ts = "string | string[] | undefined"
+description = "The selected key (single) or keys (multiple: an array, or a comma-separated attribute)."
+
+[ray-toggle-group.properties.name]
+type = "string"
+reflect = true
+description = "Form field name: the value (multiple: one entry per key)."
+
+[ray-toggle-group.properties.required]
+type = "boolean"
+reflect = true
+description = "Needs a value; with single the selected toggle cannot be turned off."
+
+[ray-toggle-group.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Disables every toggle."
+
+[ray-toggle-group.properties.spaced]
+type = "boolean"
+reflect = true
+description = "Toggles apart, each with its own corners (default: joined)."
+
+[ray-toggle-group.properties.variant]
+type = "string"
+values = ["subtle", "outline", "light", "filled", "raised"]
+reflect = true
+description = "Variant of the toggles."
+
+[ray-toggle-group.properties.color]
+type = "string"
+reflect = true
+description = "Color of the toggles' on state."
+
+[ray-toggle-group.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+reflect = true
+description = "Size of the toggles."
+
+[ray-toggle-group.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius of the toggles."
+
+[ray-toggle-group.properties.square]
+type = "boolean"
+reflect = true
+description = "Square toggles, for icons."
+
+[ray-toggle-group.members.values]
+ts = "values: string[]"
+description = "The selected keys as a list, in any mode."
+
+[ray-toggle-group.members.toggles]
+ts = "readonly toggles: RayToggle[]"
+description = "The toggles of this group."
+
+[ray-toggle-group.events.ray-change]
+detail = "{ value: string | string[] | undefined; values: string[] }"
+description = "The user changed the selection (the toggles' own events stop at the group). Also a plain change event."
+
+[ray-toggle-group.events.change]
+description = "The user changed the selection."
+
+[ray-toggle-group.slots.default]
+description = "ray-toggle elements."

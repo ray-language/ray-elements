@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ray-date-picker test page</title>
+<link rel="stylesheet" href="../../dist/tokens.css">
+<link rel="stylesheet" href="../../src/core/base.css">
+<script type="module" src="../../src/components/date-picker/date-picker.js"></script>
+<style>body { padding: 24px; background: var(--ray-background); color: var(--ray-foreground); font-family: var(--ray-font-sans); }</style>
+</head>
+<body>
+<div style="display: grid; gap: 24px; max-width: 360px">
+  <ray-date-picker id="demo" label="Release date" description="When the update goes out." value="2026-10-06" clearable></ray-date-picker>
+  <ray-calendar id="demo-cal" value="2026-10-06"></ray-calendar>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+[component]
+name = "Progress"
+category = "Feedback"
+summary = "A determinate or (without value) indeterminate progress bar, announced as a progressbar."
+files = ["progress.js"]
+requires = []
+tags = ["ray-progress"]
+
+[ray-progress]
+class = "RayProgress"
+extends = "RayElement"
+
+[ray-progress.properties.value]
+type = "number"
+description = "Progress, from 0 to max. Unset: indeterminate."
+
+[ray-progress.properties.max]
+type = "number"
+default = "100"
+description = "The value of a full bar."
+
+[ray-progress.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color."
+
+[ray-progress.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Bar height."
+
+[ray-progress.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius. Default: full."
+
+[ray-progress.properties.striped]
+type = "boolean"
+reflect = true
+description = "Diagonal stripes."
+
+[ray-progress.properties.animated]
+type = "boolean"
+reflect = true
+description = "Moving stripes (with striped)."
+
+[ray-progress.properties.showValue]
+attribute = "show-value"
+type = "boolean"
+reflect = true
+description = "Shows the percentage: inside the bar on lg and xl, beside it on smaller sizes."
+
+[ray-progress.properties.label]
+type = "string"
+description = "Accessible name (default: Progress)."
+
+[ray-progress.parts.track]
+description = "The background track."
+
+[ray-progress.parts.bar]
+description = "The filled bar."
+
+[ray-progress.parts.value]
+description = "The percentage beside the bar (show-value on xs, sm, md)."

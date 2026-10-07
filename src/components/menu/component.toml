@@ -1,0 +1,115 @@
+[component]
+name = "Menu"
+category = "Overlays"
+summary = "A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer."
+files = ["menu.js"]
+requires = []
+tags = ["ray-menu", "ray-menu-item", "ray-menu-label", "ray-menu-divider"]
+
+[ray-menu]
+class = "RayMenu"
+extends = "Floating"
+
+[ray-menu.properties.open]
+type = "boolean"
+reflect = true
+description = "Shown."
+
+[ray-menu.properties.placement]
+type = "string"
+values = ["bottom-start", "bottom", "bottom-end", "top-start", "top", "top-end", "right-start", "left-start"]
+default = "bottom-start"
+reflect = true
+description = "Preferred side and alignment."
+
+[ray-menu.properties.context]
+type = "boolean"
+reflect = true
+description = "Opens on right click (contextmenu) over the trigger area, at the pointer."
+
+[ray-menu.properties.keepOpen]
+attribute = "keep-open"
+type = "boolean"
+reflect = true
+description = "Choosing an item does not close the menu."
+
+[ray-menu.events.ray-select]
+description = "An item was chosen; detail: { value, item }."
+detail = "{ value: string; item: RayMenuItem }"
+
+[ray-menu.events.ray-open]
+description = "After it opened."
+
+[ray-menu.events.ray-close]
+description = "After it closed."
+
+[ray-menu.slots.trigger]
+description = "The button that opens it, or the area for a context menu."
+
+[ray-menu.slots.default]
+description = "ray-menu-item, ray-menu-label and ray-menu-divider elements."
+
+[ray-menu.parts.dropdown]
+description = "The panel."
+
+[ray-menu-item]
+class = "RayMenuItem"
+extends = "RayElement"
+
+[ray-menu-item.properties.value]
+type = "string"
+reflect = true
+description = "Reported in ray-select (default: the text)."
+
+[ray-menu-item.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Skipped by the keyboard, cannot be chosen."
+
+[ray-menu-item.properties.color]
+type = "string"
+reflect = true
+description = "Text and hover color (e.g. red for destructive actions)."
+
+[ray-menu-item.slots.default]
+description = "Label."
+
+[ray-menu-item.slots.left]
+description = "Icon."
+
+[ray-menu-item.slots.right]
+description = "Shortcut or badge."
+
+[ray-menu-label]
+class = "RayMenuLabel"
+summary = "A section caption inside the menu."
+extends = "RayElement"
+
+[ray-menu-divider]
+class = "RayMenuDivider"
+summary = "A separator between groups of items."
+extends = "RayElement"
+
+[ray-menu.model]
+property = "open"
+events = ["ray-open", "ray-close"]
+
+[ray-menu.members.show]
+ts = "show(): void"
+description = "Opens it."
+
+[ray-menu.members.hide]
+ts = "hide(): void"
+description = "Closes it."
+
+[ray-menu.members.toggle]
+ts = "toggle(): void"
+description = "Opens or closes it."
+
+[ray-menu.members.trigger]
+ts = "readonly trigger: Element | null"
+description = "The trigger element."
+
+[ray-menu.members.items]
+ts = "readonly items: RayMenuItem[]"
+description = "The items of this menu."

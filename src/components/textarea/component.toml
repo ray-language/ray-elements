@@ -1,0 +1,111 @@
+[component]
+name = "Textarea"
+category = "Inputs"
+summary = "A multi-line text field that can grow with its content. Form-associated."
+files = ["textarea.js"]
+requires = []
+tags = ["ray-textarea"]
+
+[ray-textarea]
+class = "RayTextarea"
+summary = "Also forwards placeholder, autocomplete, minlength, maxlength, spellcheck and wrap. Initial value: the value attribute or the element's text."
+extends = "FieldControl"
+
+[ray-textarea.properties.value]
+type = "string"
+description = "Current value."
+
+[ray-textarea.properties.rows]
+type = "number"
+default = "3"
+description = "Visible rows (minimum when autosize)."
+
+[ray-textarea.properties.autosize]
+type = "boolean"
+description = "Grows with the content."
+
+[ray-textarea.properties.maxRows]
+attribute = "max-rows"
+type = "number"
+description = "With autosize: stop growing and scroll after this many rows."
+
+[ray-textarea.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-textarea.properties.label]
+type = "string"
+description = "Visible label."
+
+[ray-textarea.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-textarea.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-textarea.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-textarea.properties.required]
+type = "boolean"
+description = "Required for form submission."
+
+[ray-textarea.properties.disabled]
+type = "boolean"
+description = "Not editable nor submitted."
+
+[ray-textarea.properties.readonly]
+type = "boolean"
+description = "Not editable, still submitted."
+
+[ray-textarea.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Font size."
+
+[ray-textarea.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "default"
+reflect = true
+description = "Box style."
+
+[ray-textarea.events.input]
+description = "On every edit."
+
+[ray-textarea.events.change]
+description = "When an edit is committed."
+
+[ray-textarea.parts.textarea]
+description = "The inner <textarea>."
+
+[ray-textarea.parts.wrapper]
+description = "The box."
+
+[ray-textarea.model]
+property = "value"
+events = ["input"]
+
+[ray-textarea.attributes.placeholder]
+description = "Placeholder text."
+
+[ray-textarea.attributes.autocomplete]
+description = "Forwarded to the inner textarea."
+
+[ray-textarea.attributes.minlength]
+description = "Minimum length."
+
+[ray-textarea.attributes.maxlength]
+description = "Maximum length."
+
+[ray-textarea.attributes.wrap]
+description = "soft or hard."

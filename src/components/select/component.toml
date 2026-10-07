@@ -1,0 +1,118 @@
+[component]
+name = "Select"
+category = "Inputs"
+summary = "A select with its own dropdown (keyboard, typeahead, groups); options from child <option> elements or the data property. Form-associated."
+files = ["select.js"]
+requires = []
+tags = ["ray-select"]
+
+[ray-select]
+class = "RaySelect"
+extends = "FieldControl"
+
+[ray-select.properties.value]
+type = "string"
+description = "Selected value."
+
+[ray-select.properties.data]
+attribute = false
+type = "array"
+ts = 'Array<string | { value: string; label?: string; disabled?: boolean }>'
+description = "Options as strings or { value, label, disabled } (instead of child options)."
+
+[ray-select.properties.placeholder]
+type = "string"
+description = "Shown while nothing is selected (with required, blocks submit)."
+
+[ray-select.properties.open]
+type = "boolean"
+reflect = true
+description = "The dropdown is shown."
+
+[ray-select.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-select.properties.label]
+type = "string"
+description = "Visible label."
+
+[ray-select.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-select.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-select.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-select.properties.required]
+type = "boolean"
+description = "Required for form submission."
+
+[ray-select.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-select.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-select.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "default"
+reflect = true
+description = "Box style."
+
+[ray-select.events.input]
+description = "When the selection changes."
+
+[ray-select.events.change]
+description = "When the selection changes."
+
+[ray-select.events.ray-open]
+description = "The dropdown opened."
+
+[ray-select.events.ray-close]
+description = "The dropdown closed."
+
+[ray-select.slots.default]
+description = "<option> and <optgroup> elements."
+
+[ray-select.parts.trigger]
+description = "The combobox button showing the selected option."
+
+[ray-select.parts.dropdown]
+description = "The listbox panel (a popover in the top layer)."
+
+[ray-select.parts.option]
+description = "Each option in the dropdown ([aria-selected], [data-active], [aria-disabled])."
+
+[ray-select.parts.select]
+description = "The hidden native <select> that holds the value (the model)."
+
+[ray-select.parts.wrapper]
+description = "The box."
+
+[ray-select.model]
+property = "value"
+events = ["change"]
+
+[ray-select.members.options]
+ts = "readonly options: HTMLOptionsCollection"
+description = "The options of the model select."
+
+[ray-select.members.toggle]
+ts = "toggle(force?: boolean): void"
+description = "Opens or closes the dropdown."

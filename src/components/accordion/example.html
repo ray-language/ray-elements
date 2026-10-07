@@ -1,0 +1,13 @@
+<div class="demo-grid">
+  <ray-accordion value="install">
+    <ray-accordion-item value="install" label="Install">Run <code>ray add net</code> and import <code>net/http</code>.</ray-accordion-item>
+    <ray-accordion-item value="configure" label="Configure">Set the port and TLS options in <code>ray.toml</code>.</ray-accordion-item>
+    <ray-accordion-item value="deploy" label="Deploy">Build with <code>ray build --native --release</code>.</ray-accordion-item>
+  </ray-accordion>
+  <ray-accordion variant="separated" multiple value="a,c" chevron-position="left">
+    <ray-accordion-item value="a" label="Separated, multiple">Several items may be open.</ray-accordion-item>
+    <ray-accordion-item value="b" label="Second">Content.</ray-accordion-item>
+    <ray-accordion-item value="c" label="Third">Content.</ray-accordion-item>
+    <ray-accordion-item value="d" label="Disabled" disabled>Hidden.</ray-accordion-item>
+  </ray-accordion>
+</div>

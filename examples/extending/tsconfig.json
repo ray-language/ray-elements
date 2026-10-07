@@ -1,0 +1,24 @@
+{
+  // Type-checks the generated wrappers of these app components:
+  //   ../react-app/frontend/node_modules/.bin/tsc -p examples/extending/tsconfig.json
+  // (@ray-ds/* resolve to ../../packages, react/vue to the example apps' installs)
+  "compilerOptions": {
+    "target": "es2023",
+    "lib": ["ES2023", "DOM"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": false,
+    "paths": {
+      "@ray-ds/elements": ["../../packages/elements/ray-ds.d.ts"],
+      "@ray-ds/react": ["../../packages/react/index.d.ts"],
+      "@ray-ds/vue": ["../../packages/vue/index.d.ts"],
+      "react": ["../react-app/frontend/node_modules/@types/react/index.d.ts"],
+      "react/jsx-runtime": ["../react-app/frontend/node_modules/@types/react/jsx-runtime.d.ts"],
+      "vue": ["../vue-app/frontend/node_modules/vue/dist/vue.d.ts"]
+    }
+  },
+  "files": ["types.check.tsx"]
+}

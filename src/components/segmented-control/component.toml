@@ -1,0 +1,84 @@
+[component]
+name = "Segmented control"
+category = "Inputs"
+summary = "One choice among a few, as a segmented row with a sliding indicator. Options from child <option> elements or data. Form-associated."
+files = ["segmented-control.js"]
+requires = []
+tags = ["ray-segmented-control"]
+
+[ray-segmented-control]
+class = "RaySegmentedControl"
+extends = "FormControl"
+
+[ray-segmented-control.properties.value]
+type = "string"
+description = "Selected value (default: the first enabled option)."
+
+[ray-segmented-control.properties.data]
+attribute = false
+type = "array"
+ts = 'Array<string | { value: string; label?: string; disabled?: boolean }>'
+description = "Options as strings or { value, label, disabled }."
+
+[ray-segmented-control.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-segmented-control.properties.color]
+type = "string"
+reflect = true
+description = "Indicator color (default: a raised neutral segment)."
+
+[ray-segmented-control.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-segmented-control.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius."
+
+[ray-segmented-control.properties.fullWidth]
+attribute = "full-width"
+type = "boolean"
+description = "Takes the whole width."
+
+[ray-segmented-control.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Direction."
+
+[ray-segmented-control.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-segmented-control.events.input]
+description = "The user picked another option."
+
+[ray-segmented-control.events.change]
+description = "The user picked another option."
+
+[ray-segmented-control.slots.default]
+description = "<option> elements."
+
+[ray-segmented-control.parts.root]
+description = "The row."
+
+[ray-segmented-control.parts.indicator]
+description = "The sliding highlight."
+
+[ray-segmented-control.parts.control]
+description = "Each option button."
+
+[ray-segmented-control.model]
+property = "value"
+events = ["change"]
+
+[ray-segmented-control.members.items]
+ts = "readonly items: Array<{ value: string; label: string; disabled: boolean }>"
+description = "The options, from data or the child options."

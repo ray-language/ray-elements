@@ -1,0 +1,48 @@
+[component]
+name = "Status bar"
+category = "Layout"
+summary = "The bar at the bottom of an app window: items on the left and on the right; items with action are buttons."
+files = ["statusbar.js"]
+requires = []
+tags = ["ray-statusbar", "ray-statusbar-item"]
+
+[ray-statusbar]
+class = "RayStatusbar"
+extends = "RayElement"
+
+[ray-statusbar.properties.variant]
+type = "string"
+values = ["default", "accent"]
+default = "default"
+reflect = true
+description = "accent: the primary color (e.g. while debugging)."
+
+[ray-statusbar.slots.default]
+description = "Items on the left."
+
+[ray-statusbar.slots.right]
+description = "Items on the right."
+
+[ray-statusbar-item]
+class = "RayStatusbarItem"
+extends = "RayElement"
+
+[ray-statusbar-item.properties.action]
+type = "boolean"
+reflect = true
+description = "A button (listen to click)."
+
+[ray-statusbar-item.properties.color]
+type = "string"
+reflect = true
+description = "Text color (red for errors…)."
+
+[ray-statusbar-item.properties.label]
+type = "string"
+description = "Accessible name and tooltip (for icon-only or terse items)."
+
+[ray-statusbar-item.slots.default]
+description = "Text."
+
+[ray-statusbar-item.slots.icon]
+description = "Icon."

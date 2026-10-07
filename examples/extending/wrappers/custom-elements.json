@@ -1,0 +1,246 @@
+{
+  "modules": [
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "default": "#228be6",
+              "description": "The color as #rrggbb.",
+              "fieldName": "value",
+              "name": "value",
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "cssParts": [],
+          "customElement": true,
+          "description": "A color picker field with label, description and error (level 2: a FieldControl).",
+          "events": [
+            {
+              "description": "While picking.",
+              "name": "input",
+              "type": {
+                "text": "Event"
+              }
+            },
+            {
+              "description": "When a color is chosen.",
+              "name": "change",
+              "type": {
+                "text": "Event"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "attribute": "value",
+              "default": "#228be6",
+              "description": "The color as #rrggbb.",
+              "kind": "field",
+              "name": "value",
+              "reflects": false,
+              "type": {
+                "text": "string"
+              }
+            }
+          ],
+          "name": "AppColorField",
+          "slots": [],
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "tagName": "app-color-field"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "module": "../components/color-field/color-field.js",
+            "name": "AppColorField"
+          },
+          "kind": "js",
+          "name": "AppColorField"
+        },
+        {
+          "declaration": {
+            "module": "../components/color-field/color-field.js",
+            "name": "AppColorField"
+          },
+          "kind": "custom-element-definition",
+          "name": "app-color-field"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "../components/color-field/color-field.js"
+    },
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "default": "200",
+              "description": "ms before opening.",
+              "fieldName": "openDelay",
+              "name": "open-delay",
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "default": "150",
+              "description": "ms before closing.",
+              "fieldName": "closeDelay",
+              "name": "close-delay",
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "cssParts": [],
+          "customElement": true,
+          "description": "Rich content while the trigger is hovered or focused (level 3: a Floating).",
+          "events": [
+            {
+              "description": "After it opened.",
+              "name": "ray-open",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              }
+            },
+            {
+              "description": "After it closed.",
+              "name": "ray-close",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              }
+            }
+          ],
+          "kind": "class",
+          "members": [
+            {
+              "attribute": "open-delay",
+              "default": "200",
+              "description": "ms before opening.",
+              "kind": "field",
+              "name": "openDelay",
+              "reflects": false,
+              "type": {
+                "text": "number"
+              }
+            },
+            {
+              "attribute": "close-delay",
+              "default": "150",
+              "description": "ms before closing.",
+              "kind": "field",
+              "name": "closeDelay",
+              "reflects": false,
+              "type": {
+                "text": "number"
+              }
+            }
+          ],
+          "name": "AppHoverCard",
+          "slots": [
+            {
+              "description": "The element that shows it.",
+              "name": "trigger"
+            },
+            {
+              "description": "The card.",
+              "name": ""
+            }
+          ],
+          "superclass": {
+            "name": "Floating"
+          },
+          "tagName": "app-hover-card"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "module": "../components/hover-card/hover-card.js",
+            "name": "AppHoverCard"
+          },
+          "kind": "js",
+          "name": "AppHoverCard"
+        },
+        {
+          "declaration": {
+            "module": "../components/hover-card/hover-card.js",
+            "name": "AppHoverCard"
+          },
+          "kind": "custom-element-definition",
+          "name": "app-hover-card"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "../components/hover-card/hover-card.js"
+    },
+    {
+      "declarations": [
+        {
+          "attributes": [
+            {
+              "description": "There are unsaved changes (a dot, and an accessible description).",
+              "fieldName": "dirty",
+              "name": "dirty",
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "cssParts": [],
+          "customElement": true,
+          "description": "A ray-button with a dirty state (level 1: extend a component).",
+          "events": [],
+          "kind": "class",
+          "members": [
+            {
+              "attribute": "dirty",
+              "description": "There are unsaved changes (a dot, and an accessible description).",
+              "kind": "field",
+              "name": "dirty",
+              "reflects": true,
+              "type": {
+                "text": "boolean"
+              }
+            }
+          ],
+          "name": "AppSaveButton",
+          "slots": [],
+          "superclass": {
+            "name": "RayButton"
+          },
+          "tagName": "app-save-button"
+        }
+      ],
+      "exports": [
+        {
+          "declaration": {
+            "module": "../components/save-button/save-button.js",
+            "name": "AppSaveButton"
+          },
+          "kind": "js",
+          "name": "AppSaveButton"
+        },
+        {
+          "declaration": {
+            "module": "../components/save-button/save-button.js",
+            "name": "AppSaveButton"
+          },
+          "kind": "custom-element-definition",
+          "name": "app-save-button"
+        }
+      ],
+      "kind": "javascript-module",
+      "path": "../components/save-button/save-button.js"
+    }
+  ],
+  "readme": "README.md",
+  "schemaVersion": "2.1.0"
+}

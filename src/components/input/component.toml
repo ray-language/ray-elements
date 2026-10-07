@@ -1,0 +1,151 @@
+[component]
+name = "Input"
+category = "Inputs"
+summary = "A text field with label, description and error (Mantine's TextInput). Form-associated."
+files = ["input.js"]
+requires = []
+tags = ["ray-input"]
+
+[ray-input]
+class = "RayInput"
+summary = "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input."
+extends = "FieldControl"
+
+[ray-input.properties.value]
+type = "string"
+description = "Current value. The value attribute is the initial value (restored on form reset)."
+
+[ray-input.properties.type]
+type = "string"
+values = ["text", "email", "password", "search", "number", "url", "tel"]
+default = "text"
+reflect = true
+description = "Input type."
+
+[ray-input.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-input.properties.label]
+type = "string"
+description = "Visible label (also the accessible name)."
+
+[ray-input.properties.description]
+type = "string"
+description = "Help text under the label."
+
+[ray-input.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-input.properties.error]
+type = "string"
+description = "Error text; marks the field invalid (display only — does not block submit)."
+
+[ray-input.properties.placeholder]
+type = "string"
+description = "Placeholder text."
+
+[ray-input.properties.required]
+type = "boolean"
+description = "Required for form submission; shows an asterisk."
+
+[ray-input.properties.disabled]
+type = "boolean"
+description = "Not editable nor submitted."
+
+[ray-input.properties.readonly]
+type = "boolean"
+description = "Not editable, still submitted."
+
+[ray-input.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-input.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius."
+
+[ray-input.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "default"
+reflect = true
+description = "Box style."
+
+[ray-input.events.input]
+description = "On every edit (value already updated)."
+
+[ray-input.events.change]
+description = "When an edit is committed (blur, Enter)."
+
+[ray-input.slots.left]
+description = "Section before the text (icon)."
+
+[ray-input.slots.right]
+description = "Section after the text (icon, button)."
+
+[ray-input.parts.input]
+description = "The inner <input>."
+
+[ray-input.parts.wrapper]
+description = "The box around the input and sections."
+
+[ray-input.parts.label]
+description = "The label."
+
+[ray-input.parts.description]
+description = "The description."
+
+[ray-input.parts.error]
+description = "The error message."
+
+[ray-input.model]
+property = "value"
+events = ["input"]
+
+[ray-input.members.select]
+ts = "select(): void"
+description = "Selects the text."
+
+[ray-input.attributes.autocomplete]
+description = "Forwarded to the inner input."
+
+[ray-input.attributes.inputmode]
+description = "Virtual keyboard hint."
+
+[ray-input.attributes.pattern]
+description = "Validation pattern (regular expression)."
+
+[ray-input.attributes.min]
+description = "Minimum (number/date types)."
+
+[ray-input.attributes.max]
+description = "Maximum (number/date types)."
+
+[ray-input.attributes.step]
+description = "Step (number types)."
+
+[ray-input.attributes.minlength]
+description = "Minimum length."
+
+[ray-input.attributes.maxlength]
+description = "Maximum length."
+
+[ray-input.attributes.autocapitalize]
+description = "Mobile auto-capitalization."
+
+[ray-input.attributes.enterkeyhint]
+description = "Label of the Enter key on virtual keyboards."
+
+[ray-input.attributes.list]
+description = "Id of a <datalist> with suggestions."

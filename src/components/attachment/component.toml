@@ -1,0 +1,113 @@
+[component]
+name = "Attachment"
+category = "Data display"
+summary = "A file in a composer, upload list or chat: thumbnail or type icon, name, size, upload progress, error, remove and download."
+files = ["attachment.js"]
+requires = []
+tags = ["ray-attachment", "ray-attachments"]
+
+[ray-attachment]
+class = "RayAttachment"
+extends = "RayElement"
+summary = "Assign a File to `file` to fill name, size, type and an image thumbnail. Removing it (× button) fires a cancelable ray-remove and then removes the element."
+
+[ray-attachment.properties.name]
+type = "string"
+reflect = true
+description = "File name (ellipsized; full name in the tooltip)."
+
+[ray-attachment.properties.size]
+type = "number"
+description = "Size in bytes, shown as \"12 KB\", \"3.4 MB\"."
+
+[ray-attachment.properties.type]
+type = "string"
+reflect = true
+description = "MIME type: picks the icon (image or file) and, with the name, the extension badge."
+
+[ray-attachment.properties.src]
+type = "string"
+description = "Thumbnail URL for images (falls back to the icon if it fails to load)."
+
+[ray-attachment.properties.href]
+type = "string"
+reflect = true
+description = "Makes the name a download link."
+
+[ray-attachment.properties.progress]
+type = "number"
+description = "Upload progress 0–100: a thin bar and \"Uploading… 45%\". Unset: done."
+
+[ray-attachment.properties.status]
+type = "string"
+values = ["uploading", "done", "error"]
+reflect = true
+description = "Explicit state. Default: \"uploading\" while progress is set, else \"done\"."
+
+[ray-attachment.properties.error]
+type = "string"
+description = "Error text shown with status=\"error\" (default \"Upload failed\")."
+
+[ray-attachment.properties.removable]
+type = "boolean"
+reflect = true
+description = "Shows a remove (×) button."
+
+[ray-attachment.properties.removeLabel]
+attribute = "remove-label"
+type = "string"
+default = "Remove {name}"
+description = "Accessible label of the remove button; {name} is replaced by the file name."
+
+[ray-attachment.properties.variant]
+type = "string"
+values = ["row", "card"]
+default = "row"
+reflect = true
+description = "row: a compact chip; card: the thumbnail on top."
+
+[ray-attachment.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Dimmed, not removable, the name is not a link."
+
+[ray-attachment.events.ray-remove]
+detail = "{ name: string; file: File | null }"
+description = "The remove button was pressed; cancelable (preventDefault keeps the element)."
+
+[ray-attachment.parts.item]
+description = "The box."
+
+[ray-attachment.parts.thumbnail]
+description = "The thumbnail or icon box."
+
+[ray-attachment.parts.badge]
+description = "The extension badge (PDF, PNG…)."
+
+[ray-attachment.parts.name]
+description = "The file name (a link with href)."
+
+[ray-attachment.parts.meta]
+description = "Size, upload state or error."
+
+[ray-attachment.parts.progress]
+description = "The upload progress bar."
+
+[ray-attachment.parts.remove]
+description = "The remove button."
+
+[ray-attachment.members.file]
+ts = "file: File | null"
+description = "The File shown (fills name, size, type and a thumbnail for images)."
+
+[ray-attachment.members.state]
+ts = "readonly state: \"uploading\" | \"done\" | \"error\""
+description = "The effective status."
+
+[ray-attachments]
+class = "RayAttachments"
+extends = "RayElement"
+summary = "A wrapping row of ray-attachment elements."
+
+[ray-attachments.slots.default]
+description = "ray-attachment elements."

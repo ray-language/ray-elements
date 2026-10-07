@@ -1,0 +1,129 @@
+// Component tests in the real webview (WKWebView on macOS, WebKitGTK,
+// WebView2) — the engine ray apps ship with.
+//
+// The ray-ds root is mounted at ray://app/ (no TCP server). For every
+// tests/*.test.js, the page named on its first line (`// page: docs/x.html`)
+// opens in a std/ui window; once loaded, tests/harness.js and the test body
+// (wrapped in an async function) are injected with eval_js, and the results
+// come back as one `ray-test:<json>` message from window.ray.send.
+
+import std/fs;
+import std/json;
+import std/time;
+import std/ui;
+
+const READY_POLL_MS: int = 200;
+
+const LOAD_TIMEOUT_MS: int = 15000;
+
+// Generous: in a hidden window WebKit throttles timers to 1 Hz after a few
+// seconds, so cases that wait on real timers run slowly.
+const RUN_TIMEOUT_MS: int = 120000;
+
+pub struct Outcome {
+    passed: int,
+    failed: int,
+}
+
+pub fn run(root: string, filter: string) -> Result<Outcome, string> {
+    let harness = fs.read_file("${root}/tests/harness.js")?;
+    let files = fs.list_dir(
+        "${root}/tests"
+    )?.filter(fn(f: string) -> bool { f.ends_with(".test.js") && f.contains(filter) });
+    if (files.len() == 0) {
+        return Result.Err("no tests/*.test.js matching '${filter}'");
+    }
+    ui.mount_dir("", root)?;
+    var total = Outcome { passed: 0, failed: 0 };
+    for f in sort(files) {
+        let o = run_file(root, f, harness)?;
+        total.passed = total.passed + o.passed;
+        total.failed = total.failed + o.failed;
+    }
+    Result.Ok(total)
+}
+
+fn run_file(root: string, file: string, harness: string) -> Result<Outcome, string> {
+    let body = fs.read_file("${root}/tests/${file}")?;
+    let page = page_of(body).ok_or("tests/${file}: first line must be '// page: <path>'")?;
+    print("${file} (${page})");
+    let h = ui.open_with("ray-ds webtest: ${file}", "ray://app/${page}", ui.options(1024, 768))?;
+    wait_loaded(h)?;
+    let script = harness + "\n;(async () => {\n" + body + `
+const results = await window.__rayTest.run();
+window.ray.send("ray-test:" + JSON.stringify(results));
+})().catch((e) => window.ray.send("ray-test-error:" + ((e && e.stack) || e)));
+`;
+    ui.eval_js(h, script)?;
+    let reply = wait_message(h, "ray-test", RUN_TIMEOUT_MS)?;
+    close(h);
+    report(file, reply)
+}
+
+fn page_of(body: string) -> Option<string> {
+    let first = body.split("\n")[0].trim();
+    first.strip_prefix("// page:").map(fn(s: string) -> string { s.trim() })
+}
+
+// eval_js before the page has loaded may be dropped: ask until it answers.
+fn wait_loaded(h: int) -> Result<int, string> {
+    var waited = 0;
+    while (waited < LOAD_TIMEOUT_MS) {
+        ui.eval_js(h, "window.ray && window.ray.send('ray-ready:' + document.readyState)")?;
+        match (ui.next_event_timeout(READY_POLL_MS)?) {
+            Option.Some(e) => {
+                if (e.window == h && e.kind == "message" && e.tag == "ray-ready:complete") {
+                    return Result.Ok(0);
+                }
+            },
+            Option.None => { },
+        }
+        waited = waited + READY_POLL_MS;
+    }
+    Result.Err("page did not load in ${LOAD_TIMEOUT_MS} ms")
+}
+
+// The next message of window `h` that starts with `prefix` (stale ready pings are skipped).
+// `ray-case:<name>` messages mark the case that is running, named in the
+// error if the file never answers.
+fn wait_message(h: int, prefix: string, timeout_ms: int) -> Result<string, string> {
+    let deadline = time.now() + timeout_ms;
+    var last_case = "";
+    while (time.now() < deadline) {
+        match (ui.next_event_timeout(deadline - time.now())?) {
+            Option.Some(e) => {
+                if (e.window == h && e.kind == "message") {
+                    if (e.tag.starts_with("ray-case:")) {
+                        last_case = e.tag.substring(9, e.tag.len());
+                    } else if (e.tag.starts_with(prefix)) {
+                        return Result.Ok(e.tag);
+                    }
+                }
+            },
+            Option.None => { },
+        }
+    }
+    let at = if (last_case == "") { "before the first case" } else { "in or after '${last_case}'" };
+    Result.Err("no '${prefix}' message in ${timeout_ms} ms (stuck ${at})")
+}
+
+fn report(file: string, reply: string) -> Result<Outcome, string> {
+    if (reply.starts_with("ray-test-error:")) {
+        print("  FAIL ${file} did not run: ${reply.substring(15, reply.len())}");
+        return Result.Ok(Outcome { passed: 0, failed: 1 });
+    }
+    let results = json.parse(reply.strip_prefix("ray-test:").unwrap_or(""))?;
+    let items = json.as_array(results).ok_or("results are not an array")?;
+    var o = Outcome { passed: 0, failed: 0 };
+    for r in items {
+        let name = json.get_string(r, "name").unwrap_or("?");
+        if (json.get_bool(r, "ok").unwrap_or(false)) {
+            o.passed = o.passed + 1;
+            print("  ok   ${name}");
+        } else {
+            o.failed = o.failed + 1;
+            print("  FAIL ${name}: ${json.get_string(r, "error").unwrap_or("")}");
+        }
+    }
+    Result.Ok(o)
+}

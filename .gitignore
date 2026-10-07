@@ -1,0 +1,12 @@
+# Dependencies of the React/Vue example apps
+node_modules/
+
+# Build output of the example apps (dist/ at the repo root is the generated
+# tokens and stays tracked, like docs/ and packages/)
+examples/*/frontend/dist/
+examples/*/build/
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+*.log

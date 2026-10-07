@@ -1,0 +1,130 @@
+// Contrast checks over the resolved tokens, in both schemes.
+//
+// [checks] aa pairs ("fg on bg") must reach 4.5:1 — they are errors.
+// For every palette color, `contrast on filled`, `light-color on light`
+// (over the background) and `outline on background` (outline text) are
+// measured as warnings: some hues cannot reach AA
+// with white text, and the report says which.
+
+from tokens/model import Model, find;
+import tokens/refs;
+import tokens/contrast;
+from tokens/contrast import Rgba;
+
+const AA: float = 4.5;
+
+pub struct Report {
+    errors: [string],
+    warnings: [string],
+}
+
+pub fn run(m: Model) -> Result<Report, string> {
+    let rep = Report { errors: [], warnings: [] };
+    for pair in m.aa_checks {
+        let parts = pair.split(" on ");
+        if (parts.len() != 2) {
+            return Result.Err("checks.aa: '${pair}' is not '<fg> on <bg>'");
+        }
+        for scheme in ["light", "dark"] {
+            let r = measure(m, parts[0].trim(), parts[1].trim(), "", scheme)?;
+            if (r < AA) {
+                rep.errors.push("${pair} (${scheme}): ${contrast.show(r)}:1 < 4.5:1");
+            }
+        }
+    }
+    for c in m.colors {
+        if (m.runtime.contains(c)) {
+            continue;
+        }
+        for scheme in ["light", "dark"] {
+            let r1 = measure(m, "${c}-contrast", "${c}-filled", "", scheme)?;
+            if (r1 < AA) {
+                rep.warnings.push("${c}: contrast on filled (${scheme}) ${contrast.show(r1)}:1");
+            }
+            let r2 = measure(m, "${c}-light-color", "${c}-light", "background", scheme)?;
+            if (r2 < AA) {
+                rep.warnings.push("${c}: light-color on light (${scheme}) ${contrast.show(r2)}:1");
+            }
+            let r3 = measure(m, "${c}-outline", "background", "", scheme)?;
+            if (r3 < AA) {
+                rep.warnings.push("${c}: outline on background (${scheme}) ${contrast.show(r3)}:1");
+            }
+        }
+    }
+    chart_checks(m, rep)?;
+    Result.Ok(rep)
+}
+
+const CVD: [string] = ["protanopia", "deuteranopia", "tritanopia"];
+
+// [checks.chart]: every series color against the background (non-text
+// contrast, WCAG 1.4.11) and apart from the others (OKLab), in both
+// schemes; consecutive series apart under simulated color blindness.
+fn chart_checks(m: Model, rep: Report) -> Result<int, string> {
+    let cc = m.chart;
+    for scheme in [
+        "light",
+        "dark"
+    ] {
+        let bg = color(m, "background", scheme)?;
+        let cols: [Rgba] = [];
+        for key in cc.series {
+            cols.push(contrast.over(color(m, "chart-${key}", scheme)?, bg));
+        }
+        for i in 0..cols.len() {
+            let r = contrast.ratio(cols[i], bg);
+            if (r < cc.min_contrast) {
+                rep.errors.push(
+                    "chart-${cc.series[i]} on background (${scheme}): ${contrast.show(r)}:1 < ${contrast.show(cc.min_contrast)}:1"
+                );
+            }
+            for j in (i + 1)..cols.len() {
+                let d = contrast.distance(cols[i], cols[j]);
+                if (d < cc.min_distance) {
+                    rep.errors.push(
+                        "chart-${cc.series[i]} vs chart-${cc.series[j]} (${scheme}): distance ${contrast.show(d)} < ${contrast.show(cc.min_distance)}"
+                    );
+                }
+            }
+        }
+        for kind in CVD {
+            for i in 1..cols.len() {
+                let d = contrast.distance(
+                    contrast.simulate(cols[i - 1], kind),
+                    contrast.simulate(cols[i], kind)
+                );
+                if (d < cc.min_distance_cvd) {
+                    rep.warnings.push(
+                        "chart-${cc.series[i - 1]} vs chart-${cc.series[i]} (${scheme}, ${kind}): distance ${contrast.show(d)} < ${contrast.show(cc.min_distance_cvd)}"
+                    );
+                }
+            }
+        }
+    }
+    Result.Ok(0)
+}
+
+// Contrast of token `fg` over token `bg`; `bg` itself is composited over
+// `under` first when given (translucent backgrounds such as variant `light`).
+fn measure(
+    m: Model,
+    fg: string,
+    bg: string,
+    under: string,
+    scheme: string
+) -> Result<float, string> {
+    let f = color(m, fg, scheme)?;
+    var b = color(m, bg, scheme)?;
+    if (under != "") {
+        b = contrast.over(b, color(m, under, scheme)?);
+    } else if (b.a < 1.0) {
+        b = contrast.over(b, color(m, "background", scheme)?);
+    }
+    Result.Ok(contrast.ratio(f, b))
+}
+
+fn color(m: Model, name: string, scheme: string) -> Result<Rgba, string> {
+    let t = find(m, name).ok_or("checks: unknown token '${name}'")?;
+    let v = refs.resolve(m, t, scheme)?;
+    contrast.parse(v).ok_or("checks: '${name}' (${scheme}) is not a measurable color: ${v}")
+}

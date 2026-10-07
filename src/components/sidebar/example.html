@@ -1,0 +1,32 @@
+<div class="sidebar-demo" style="display: flex; height: 24rem; overflow: hidden; border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); background: var(--ray-background)">
+  <ray-sidebar id="demo-sidebar" label="Project">
+    <div slot="header" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.5rem; height: 2.25rem; overflow: hidden">
+      <ray-avatar name="ray remote" size="sm" color="blue" radius="md" variant="filled"></ray-avatar>
+      <strong class="demo-sidebar-name" style="white-space: nowrap; font-size: var(--ray-font-size-sm)">ray-remote</strong>
+    </div>
+    <ray-sidebar-group label="Project">
+      <ray-nav-link label="Files" href="#sidebar" active><ray-icon slot="left" name="file"></ray-icon></ray-nav-link>
+      <ray-nav-link label="Terminal" href="#sidebar"><ray-icon slot="left" name="terminal"></ray-icon></ray-nav-link>
+      <ray-nav-link label="Run" href="#sidebar"><ray-icon slot="left" name="play"></ray-icon><ray-badge slot="right" size="xs" color="green">3</ray-badge></ray-nav-link>
+    </ray-sidebar-group>
+    <ray-sidebar-group label="Workspace">
+      <ray-nav-link label="Folders" href="#sidebar"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+      <ray-nav-link label="Calendar" href="#sidebar"><ray-icon slot="left" name="calendar"></ray-icon></ray-nav-link>
+    </ray-sidebar-group>
+    <ray-nav-link slot="footer" label="Settings" href="#sidebar"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </ray-sidebar>
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-bottom: 1px solid var(--ray-border)">
+      <ray-icon-button id="demo-sidebar-toggle" variant="subtle" label="Toggle sidebar"><ray-icon name="panel-left"></ray-icon></ray-icon-button>
+      <span style="font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Files</span>
+    </div>
+    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons; on a narrow screen it opens it as a drawer.</div>
+  </div>
+</div>
+<style>
+  ray-sidebar[collapsed] .demo-sidebar-name { display: none; }
+</style>
+<script type="module">
+  const sidebar = document.getElementById("demo-sidebar");
+  document.getElementById("demo-sidebar-toggle").addEventListener("click", () => sidebar.toggle());
+</script>

@@ -1,0 +1,10 @@
+<div class="demo-grid">
+  <ray-search aria-label="Search packages" placeholder="Search packages" shortcut="/" id="demo-search"></ray-search>
+  <ray-search label="Filter tests" variant="default" placeholder="Name or file" debounce="0" size="md" radius="full"></ray-search>
+</div>
+<p id="demo-search-out" style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Type to search (ray-search fires after 200 ms of quiet).</p>
+<script type="module">
+  document.getElementById("demo-search").addEventListener("ray-search", (e) => {
+    document.getElementById("demo-search-out").textContent = e.detail.value ? `ray-search: "${e.detail.value}"` : "Cleared.";
+  });
+</script>

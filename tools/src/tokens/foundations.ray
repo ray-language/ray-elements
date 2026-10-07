@@ -1,0 +1,363 @@
+// docs/foundations.html: a live specimen of every token, generated from the
+// model so it never drifts from tokens.toml. It styles itself only with the
+// tokens it shows, and uses the core runtime (theme, primary color).
+
+from tokens/model import Model, Token;
+import tokens/refs;
+import tokens/contrast;
+from site/model import Page, Group, Link, page, link, slug;
+
+// The foundations page: one section per kind of token, each in the sidebar.
+pub fn render(m: Model) -> Result<Page, string> {
+    let p = m.prefix;
+    let body: [string] = [
+        "<h1 class=\"page-title\">Foundations</h1>",
+        "<p class=\"page-intro\">The design tokens, generated from <code>tokens.toml</code> and checked at build time (${m.tokens.len()} tokens). Switch the theme, the primary color or pick any color in the header: everything below follows.</p>"
+    ];
+    body.push(
+        section(
+            "Color palette",
+            "Ten shades per color, 0 = lightest. Scheme independent: <code>var(--${p}-blue-6)</code>.",
+            palette(m)?
+        )
+    );
+    body.push(
+        section(
+            "Color variants",
+            "Expanded for every color; each follows the theme through <code>light-dark()</code>. Components take <code>color</code> and <code>variant</code>.",
+            variants(m)
+        )
+    );
+    body.push(
+        section(
+            "Semantic tokens",
+            "What components and apps should use. Light and dark values side by side.",
+            semantic(m)?
+        )
+    );
+    body.push(
+        section(
+            "Chart palette",
+            "Series colors in order, checked in both schemes: 3:1 against the background, apart from each other, and consecutive ones apart with color blindness. SVG uses the variables directly; canvas libraries get them from <code>chartTheme()</code>.",
+            chart(m)?
+        )
+    );
+    body.push(section("Typography", "", typography(m)?));
+    body.push(
+        section(
+            "Spacing",
+            "4px grid (numeric) and Mantine-style named steps used for padding and gaps.",
+            spacing(m)?
+        )
+    );
+    body.push(
+        section(
+            "Radius",
+            "<code>--${p}-radius-default</code> is what components use; override it to round the whole system.",
+            radius(m)?
+        )
+    );
+    body.push(section("Shadows", "", shadows(m)));
+    body.push(
+        section(
+            "Control heights",
+            "Buttons, inputs and selects share these heights by size.",
+            controls(m)?
+        )
+    );
+    body.push(section("Motion and layers", "", motion(m)?));
+    let links: [Link] = [];
+    for t in SECTIONS {
+        links.push(link(t, "#${slug(t)}"));
+    }
+    Result.Ok(
+        page(
+            "foundations.html",
+            "foundations",
+            "Foundations",
+            "The ray·ds design tokens: palette, variants, semantic tokens, chart palette, type, spacing, radius, shadows, motion.",
+            [Group { title: "Foundations", links: links }],
+            join(body, "\n"),
+            "foundations"
+        )
+    )
+}
+
+const SECTIONS: [string] = [
+    "Color palette",
+    "Color variants",
+    "Semantic tokens",
+    "Chart palette",
+    "Typography",
+    "Spacing",
+    "Radius",
+    "Shadows",
+    "Control heights",
+    "Motion and layers"
+];
+
+fn section(title: string, intro: string, content: string) -> string {
+    let p = if (intro == "") { "" } else { "\n  <p>${intro}</p>" };
+    "<section id=\"${slug(title)}\">\n  <h2>${title}</h2>${p}\n${content}\n</section>"
+}
+
+fn palette(m: Model) -> Result<string, string> {
+    let out: [string] = [];
+    let head: [string] = ["<div class=\"ramp ramp-head\"><span></span>"];
+    for i in 0..10 {
+        head.push("<span class=\"label\">${i}</span>");
+    }
+    head.push("</div>");
+    out.push(join(head, ""));
+    for c in m.colors {
+        let row: [string] = ["<div class=\"ramp\"><span class=\"label\">${c}</span>"];
+        for t in m.tokens {
+            if (t.group == "palette" && t.name.starts_with("${c}-")) {
+                let v = refs.resolve(m, t, "light")?;
+                row.push(
+                    "<div class=\"chip\" title=\"--${m.prefix}-${t.name}: ${v}\" style=\"background: var(--${m.prefix}-${t.name})\"></div>"
+                );
+            }
+        }
+        row.push("</div>");
+        out.push(join(row, ""));
+    }
+    Result.Ok(join(out, "\n"))
+}
+
+fn variants(m: Model) -> string {
+    let p = m.prefix;
+    let out: [string] = [];
+    out.push(
+        "<div class=\"variants\"><span></span><span class=\"label\">filled</span><span class=\"label\">light</span><span class=\"label\">outline</span><span class=\"label\">subtle</span></div>"
+    );
+    for c in m.colors {
+        let v = "--${p}-${c}";
+        out.push(`<div class="variants"><span class="label">${c}</span>
+  <div class="pill" style="background: var(${v}-filled); color: var(${v}-contrast)">Filled</div>
+  <div class="pill" style="background: var(${v}-light); color: var(${v}-light-color)">Light</div>
+  <div class="pill" style="border-color: var(${v}-outline); color: var(${v}-outline)">Outline</div>
+  <div class="pill" style="color: var(${v}-light-color)">Subtle</div>
+</div>`);
+    }
+    join(out, "\n")
+}
+
+fn semantic(m: Model) -> Result<string, string> {
+    let out: [string] = ["<div class=\"grid\">"];
+    for t in m.tokens {
+        if (t.group != "semantic") {
+            continue;
+        }
+        let light = shown(refs.resolve(m, t, "light")?);
+        let dark = shown(refs.resolve(m, t, "dark")?);
+        let values = if (light == dark) { light } else { "light ${light}<br>dark ${dark}" };
+        out.push(
+            `<div class="token"><div class="chip" style="background: var(--${m.prefix}-${t.name})"></div><div><b>${t.name}</b><span class="label">${values}</span></div></div>`
+        );
+    }
+    out.push("</div>");
+    Result.Ok(join(out, "\n"))
+}
+
+fn typography(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = [];
+    for t in group(
+        m,
+        "font"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}</span><span style=\"font-family: var(--${p}-${t.name})\">The quick brown fox jumps over the lazy dog 0123456789</span></div>"
+        );
+    }
+    for t in group(
+        m,
+        "font-size"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}<br>${t.light}</span><span style=\"font-size: var(--${p}-${t.name})\">Ray design system</span></div>"
+        );
+    }
+    for t in group(
+        m,
+        "font-weight"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}</span><span style=\"font-weight: var(--${p}-${t.name})\">Weight ${t.light}</span></div>"
+        );
+    }
+    for t in group(
+        m,
+        "line-height"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}</span><span style=\"line-height: var(--${p}-${t.name}); max-width: 36rem\">${t.light} &mdash; Line height controls the vertical rhythm of a paragraph that wraps over several lines.</span></div>"
+        );
+    }
+    Result.Ok(join(out, "\n"))
+}
+
+fn spacing(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = [];
+    for t in group(
+        m,
+        "space"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name} &middot; ${t.light}</span><div class=\"bar\" style=\"width: var(--${p}-${t.name})\"></div></div>"
+        );
+    }
+    Result.Ok(join(out, "\n"))
+}
+
+fn radius(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = ["<div class=\"boxes\">"];
+    for t in group(
+        m,
+        "radius"
+    ) {
+        out.push(
+            "<div class=\"box\"><div style=\"border-radius: var(--${p}-${t.name})\"></div><span class=\"label\">${t.name}</span></div>"
+        );
+    }
+    out.push("</div>");
+    Result.Ok(join(out, "\n"))
+}
+
+fn shadows(m: Model) -> string {
+    let p = m.prefix;
+    let out: [string] = ["<div class=\"boxes\">"];
+    for t in group(
+        m,
+        "shadow"
+    ) {
+        out.push(
+            "<div class=\"shadow\" style=\"box-shadow: var(--${p}-${t.name})\"><span class=\"label\">${t.name}</span></div>"
+        );
+    }
+    out.push("</div>");
+    join(out, "\n")
+}
+
+fn controls(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = [];
+    for t in group(
+        m,
+        "control-height"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name} &middot; ${t.light}</span><div class=\"ctrl\" style=\"height: var(--${p}-${t.name})\">Control</div></div>"
+        );
+    }
+    Result.Ok(join(out, "\n"))
+}
+
+fn motion(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = [];
+    for t in group(
+        m,
+        "duration"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name} &middot; ${t.light}</span><div class=\"track\"><div class=\"move\" style=\"transition: transform var(--${p}-${t.name}) var(--${p}-easing-standard)\"></div></div></div>"
+        );
+    }
+    for t in group(
+        m,
+        "easing"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}</span><code>${t.light}</code></div>"
+        );
+    }
+    for t in group(
+        m,
+        "z"
+    ) {
+        out.push(
+            "<div class=\"row\"><span class=\"label\">--${p}-${t.name}</span><code>${t.light}</code></div>"
+        );
+    }
+    Result.Ok(join(out, "\n"))
+}
+
+// A resolved color as hex (color-mix computed); anything else escaped as is.
+fn shown(v: string) -> string {
+    match (contrast.parse(v)) {
+        Option.Some(c) => contrast.to_hex(c),
+        Option.None => escape(v),
+    }
+}
+
+fn chart(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let out: [string] = ["<div class=\"grid\">"];
+    for t in group(
+        m,
+        "chart"
+    ) {
+        let light = shown(refs.resolve(m, t, "light")?);
+        let dark = shown(refs.resolve(m, t, "dark")?);
+        let values = if (light == dark) { light } else { "light ${light}<br>dark ${dark}" };
+        out.push(
+            `<div class="token"><div class="chip" style="background: var(--${p}-${t.name})"></div><div><b>${t.name}</b><span class="label">${values}</span></div></div>`
+        );
+    }
+    out.push("</div>");
+    // Two small specimen charts drawn with the variables only.
+    let w = 560;
+    let h = 180;
+    let bars: [string] = [];
+    let groups = 4;
+    let series = 8;
+    for gi in 0..groups {
+        for si in 0..series {
+            let value = 30 + ((gi * 37 + si * 53) % 110);
+            let x = 40 + gi * 130 + si * 14;
+            bars.push(
+                "<rect x=\"${x}\" y=\"${h - 20 - value}\" width=\"12\" height=\"${value}\" rx=\"2\" style=\"fill: var(--${p}-chart-${si + 1})\"/>"
+            );
+        }
+    }
+    let grid: [string] = [];
+    for yi in 0..4 {
+        let y = h - 20 - yi * 40;
+        grid.push(
+            "<line x1=\"32\" x2=\"${w}\" y1=\"${y}\" y2=\"${y}\" style=\"stroke: var(--${p}-chart-grid)\"/>"
+        );
+        grid.push(
+            "<text x=\"26\" y=\"${y + 4}\" text-anchor=\"end\" style=\"fill: var(--${p}-chart-axis); font-size: 11px\">${yi * 40}</text>"
+        );
+    }
+    let lines: [string] = [];
+    for si in 0..4 {
+        let pts: [string] = [];
+        for xi in 0..12 {
+            let y = 30 + ((xi * 23 + si * 41 + xi * xi * 3) % 110);
+            pts.push("${40 + xi * 46},${y}");
+        }
+        lines.push(
+            "<polyline points=\"${join(pts, " ")}\" fill=\"none\" style=\"stroke: var(--${p}-chart-${si + 1}); stroke-width: 2\"/>"
+        );
+    }
+    out.push(
+        `<div class="boxes specimens" style="margin-top: var(--${p}-space-4)">
+<svg viewBox="0 0 ${w} ${h}" width="${w}" style="max-width: 100%" role="img" aria-label="Bar chart specimen: four groups of eight series">${join(grid, "")}${join(bars, "")}</svg>
+<svg viewBox="0 0 ${w} ${h}" width="${w}" style="max-width: 100%" role="img" aria-label="Line chart specimen: four series">${join(grid, "")}${join(lines, "")}</svg>
+</div>`
+    );
+    Result.Ok(join(out, "\n"))
+}
+
+fn group(m: Model, g: string) -> [Token] {
+    m.tokens.filter(fn(t: Token) -> bool { t.group == g })
+}
+
+fn escape(s: string) -> string {
+    s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\"", "&quot;")
+}

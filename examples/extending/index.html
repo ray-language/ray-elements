@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ray-ds · extending</title>
+<!-- What an app does: import "@ray-ds/elements" (here mapped to the generated package). -->
+<script type="importmap">{ "imports": { "@ray-ds/elements": "../../packages/elements/index.js" } }</script>
+<link rel="stylesheet" href="../../packages/elements/tokens.css">
+<link rel="stylesheet" href="../../packages/elements/base.css">
+<script type="module" src="../../packages/elements/index.js"></script>
+<script type="module" src="components/save-button/save-button.js"></script>
+<script type="module" src="components/color-field/color-field.js"></script>
+<script type="module" src="components/hover-card/hover-card.js"></script>
+<style>
+  body { max-width: 40rem; margin: 0 auto; padding: var(--ray-space-6); }
+  form { display: grid; gap: var(--ray-space-4); }
+  .row { display: flex; gap: var(--ray-space-3); align-items: center; }
+</style>
+</head>
+<body>
+<h1>Extending ray-ds</h1>
+<form id="form">
+  <app-color-field name="accent" label="Accent color" description="Used for links and highlights." required></app-color-field>
+  <div class="row">
+    <app-save-button type="submit" dirty>Save</app-save-button>
+    <app-hover-card placement="right">
+      <a slot="trigger" href="#form">@raylang</a>
+      <strong>raylang</strong>
+      <p style="margin: 0.25rem 0 0; color: var(--ray-muted-foreground)">A statically typed language with CSP concurrency.</p>
+    </app-hover-card>
+  </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,116 @@
+// `ray-ds add`: copies components into an app, shadcn-style — the code
+// becomes the app's own. Layout of the target directory:
+//
+//   <into>/tokens.css            dist/tokens.css
+//   <into>/base.css              src/core/base.css
+//   <into>/core/*.js             src/core/*.js
+//   <into>/components/<dir>/…    the component's files (and its `requires`)
+//   <into>/index.js              imports every component present (regenerated)
+//
+// A file that exists with different content was changed by the app: it is
+// kept (and reported) unless --overwrite.
+
+import std/fs;
+from components/meta import Component, load_all;
+import components/docs;
+
+pub struct Report {
+    written: int,
+    unchanged: int,
+    kept: [string],
+}
+
+// The components named (or all), plus what they require, in dependency order.
+pub fn resolve(all: [Component], names: [string]) -> Result<[Component], string> {
+    let out: [Component] = [];
+    for n in names {
+        visit(all, n, out, [])?;
+    }
+    Result.Ok(out)
+}
+
+fn visit(all: [Component], name: string, out: [Component], path: [string]) -> Result<int, string> {
+    if (path.contains(name)) {
+        return Result.Err("dependency cycle: ${join(path, " -> ")} -> ${name}");
+    }
+    for c in out {
+        if (c.dir == name) {
+            return Result.Ok(0);
+        }
+    }
+    let c = find(all, name).ok_or(
+        "unknown component '${name}' (available: ${join(all.map(fn(x: Component) -> string { x.dir }), ", ")})"
+    )?;
+    for r in c.requires {
+        visit(all, r, out, path + [name])?;
+    }
+    out.push(c);
+    Result.Ok(0)
+}
+
+fn find(all: [Component], name: string) -> Option<Component> {
+    for c in all {
+        if (c.dir == name) {
+            return Option.Some(c);
+        }
+    }
+    Option.None
+}
+
+pub fn run(
+    root: string,
+    into: string,
+    names: [string],
+    every: bool,
+    overwrite: bool
+) -> Result<Report, string> {
+    let all = load_all(root)?;
+    let wanted = if (every) { all.map(fn(c: Component) -> string { c.dir }) } else { names };
+    if (wanted.len() == 0) {
+        return Result.Err("add: name at least one component, or --all");
+    }
+    let picked = resolve(all, wanted)?;
+    let rep = Report { written: 0, unchanged: 0, kept: [] };
+
+    copy(rep, "${root}/dist/tokens.css", "${into}/tokens.css", overwrite)?;
+    copy(rep, "${root}/src/core/base.css", "${into}/base.css", overwrite)?;
+    for f in sort(fs.list_dir("${root}/src/core")?) {
+        if (f.ends_with(".js")) {
+            copy(rep, "${root}/src/core/${f}", "${into}/core/${f}", overwrite)?;
+        }
+    }
+    for c in picked {
+        for f in c.files {
+            copy(
+                rep,
+                "${root}/src/components/${c.dir}/${f}",
+                "${into}/components/${c.dir}/${f}",
+                overwrite
+            )?;
+        }
+    }
+
+    // index.js lists every known component present in the target, from earlier adds too.
+    let present = all.filter(fn(c: Component) -> bool { fs.is_dir("${into}/components/${c.dir}") });
+    fs.write_file("${into}/index.js", docs.index_js(present, "./components/"))?;
+    Result.Ok(rep)
+}
+
+fn copy(rep: Report, src: string, dst: string, overwrite: bool) -> Result<int, string> {
+    let content = fs.read_file(src)?;
+    if (fs.exists(dst)) {
+        let current = fs.read_file(dst)?;
+        if (current == content) {
+            rep.unchanged = rep.unchanged + 1;
+            return Result.Ok(0);
+        }
+        if (!overwrite) {
+            rep.kept.push(dst);
+            return Result.Ok(0);
+        }
+    }
+    fs.mkdir(dst.substring(0, dst.last_index_of("/").unwrap_or(0)))?;
+    fs.write_file(dst, content)?;
+    rep.written = rep.written + 1;
+    Result.Ok(0)
+}

@@ -1,0 +1,31 @@
+<div class="demo-grid">
+  <ray-file-upload label="Release assets" name="assets" multiple max-files="5" max-size="10 MB"
+    accept=".zip,.dmg,.json,image/*" description="Bundles, the update manifest and screenshots."></ray-file-upload>
+  <div class="demo-stack">
+    <ray-file-upload label="Avatar" name="avatar" accept="image/png,image/jpeg" max-size="2 MB" variant="compact"
+      drop-label="Drop an image" list="cards"></ray-file-upload>
+    <ray-file-upload label="Signing key" accept=".pem" variant="compact" drop-label="Drop the .pem file" color="teal"></ray-file-upload>
+    <ray-file-upload label="Locked" variant="compact" disabled hint="Uploads are paused during the release"></ray-file-upload>
+  </div>
+</div>
+<ray-file-upload id="demo-upload" label="Simulated upload" multiple list="rows"
+  hint="Files are not sent anywhere: the progress is simulated"></ray-file-upload>
+<script type="module">
+  const up = document.getElementById("demo-upload");
+  up.addEventListener("ray-change", (e) => {
+    for (const file of e.detail.added) {
+      let pct = 0;
+      const timer = setInterval(() => {
+        const row = up.attachmentFor(file);
+        if (!row) return clearInterval(timer);
+        pct = Math.min(100, pct + 8 + Math.random() * 18);
+        row.progress = Math.round(pct);
+        if (pct >= 100) {
+          clearInterval(timer);
+          row.progress = undefined;
+          if (/fail/i.test(file.name)) { row.status = "error"; row.error = "Server rejected the file"; }
+        }
+      }, 300);
+    }
+  });
+</script>

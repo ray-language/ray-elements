@@ -1,0 +1,73 @@
+// The ray·ds mark ("Kit"): three tiles of the raylang ocean palette and the
+// raylang emblem (a ray-blue tile with Manta knocked out in white) as one more
+// piece. Drawn on a 64-unit grid; Manta is the raylang brand path, only scaled.
+//
+// Follows the raylang brand manual: app icon radius 23% of the side, Manta
+// without its horns at 16 px, the negative variant swaps "profundo" for "niebla".
+
+pub const DEEP: string = "#0B1F33";
+
+pub const OCEAN: string = "#103A5E";
+
+pub const RAY: string = "#2B7CE0";
+
+pub const SKY: string = "#4BA3F5";
+
+pub const AQUA: string = "#34D2C6";
+
+pub const MIST: string = "#D4E4F0";
+
+// Manta, raylang brand coordinates (body 9..191 × 50..165, horns to y=30, tail to y=196).
+const BODY: string = "M100 50 C108 49 113 53 115 60 C150 66 175 84 191 116 C166 127 141 137 119 150 C111 154 105 159 100 165 C95 159 89 154 81 150 C59 137 34 127 9 116 C25 84 50 66 85 60 C87 53 92 49 100 50 Z";
+
+fn manta(color: string, small: bool) -> string {
+    let horns = if (small) {
+        ""
+    } else {
+        "<path d=\"M93 55 C90 45 88 38 87 30\" fill=\"none\" stroke=\"${color}\" stroke-width=\"7\" stroke-linecap=\"round\"/><path d=\"M107 55 C110 45 112 38 113 30\" fill=\"none\" stroke=\"${color}\" stroke-width=\"7\" stroke-linecap=\"round\"/>"
+    };
+    let tail = "<path d=\"M100 160 C101 176 100 186 100 196\" fill=\"none\" stroke=\"${color}\" stroke-width=\"9\" stroke-linecap=\"round\"/>";
+    "<g transform=\"translate(19 19.6) scale(.088) translate(-100 -113)\"><path d=\"${BODY}\" fill=\"${color}\"/>${horns}${tail}</g>"
+}
+
+// The four pieces. `ink`: the fourth tile (DEEP on light grounds, MIST on dark
+// ones, or a CSS value such as "var(--x, #0B1F33)" to follow a theme).
+fn pieces(ink: string, small: bool) -> string {
+    "<rect x=\"8\" y=\"8\" width=\"22\" height=\"22\" rx=\"6\" fill=\"${RAY}\"/>"
+        + "<rect x=\"34\" y=\"8\" width=\"22\" height=\"22\" rx=\"6\" fill=\"${AQUA}\"/>"
+        + "<rect x=\"8\" y=\"34\" width=\"22\" height=\"22\" rx=\"6\" fill=\"${SKY}\"/>"
+        + "<rect x=\"34\" y=\"34\" width=\"22\" height=\"22\" rx=\"6\" style=\"fill: ${ink}\"/>"
+        + manta("#fff", small)
+}
+
+// The mark as a standalone file or inline markup. `ink` as in pieces().
+pub fn mark(ink: string, size: int, small: bool) -> string {
+    "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 64 64\" width=\"${size}\" height=\"${size}\" aria-hidden=\"true\">${pieces(ink, small)}</svg>"
+}
+
+// The app icon: the negative mark on the ocean gradient tile (radius 23%).
+pub fn icon(small: bool) -> string {
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"><defs><linearGradient id="ocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${OCEAN}"/><stop offset="1" stop-color="${DEEP}"/></linearGradient></defs><rect width="64" height="64" rx="14.7" fill="url(#ocean)"/><g transform="translate(32 32) scale(.8) translate(-32 -32)">${pieces(MIST, small)}</g></svg>
+`
+}
+
+// brand/<file> and docs/<file>: name -> content.
+pub fn files() -> [(string, string)] {
+    [
+        ("logo.svg", mark(DEEP, 64, false) + "\n"),
+        ("logo-dark.svg", mark(MIST, 64, false) + "\n"),
+        ("logo-16.svg", mark(DEEP, 16, true) + "\n"),
+        ("icon.svg", icon(false)),
+        ("favicon.svg", icon(true))
+    ]
+}
+
+@test
+fn small_mark_drops_the_horns() {
+    let big = mark(DEEP, 64, false);
+    let small = mark(DEEP, 16, true);
+    assert(big.contains("M93 55"));
+    assert(!small.contains("M93 55"));
+    assert(small.contains("width=\"16\""));
+    assert(icon(false).contains("rx=\"14.7\""));
+}

@@ -1,0 +1,38 @@
+[component]
+name = "Icon"
+category = "Data display"
+summary = "An icon of the registry: the whole set (the components' too) changes with setIcons()."
+files = ["icon.js"]
+requires = []
+tags = ["ray-icon"]
+
+[ray-icon]
+class = "RayIcon"
+extends = "RayElement"
+summary = "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system."
+
+[ray-icon.properties.name]
+type = "string"
+reflect = true
+description = "Registered icon name (iconNames())."
+
+[ray-icon.properties.size]
+type = "string"
+reflect = true
+description = "xs…xl or any CSS length. Default: 1em."
+
+[ray-icon.properties.label]
+type = "string"
+description = "Accessible name; without it the icon is decorative (hidden from screen readers)."
+
+[ray-icon.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color. Default: the text color."
+
+[ray-icon.properties.stroke]
+type = "number"
+description = "Stroke width for stroke icons (default: --ray-icon-stroke, 2)."
+
+[ray-icon.parts.icon]
+description = "The icon box."

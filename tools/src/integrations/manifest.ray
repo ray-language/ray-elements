@@ -1,0 +1,174 @@
+// custom-elements.json (Custom Elements Manifest 2.1: IDEs, Storybook, linters)
+// and vscode.html-custom-data.json (VS Code HTML completion).
+
+import std/json;
+from std/json import Obj, Arr;
+from components/meta import Component, Element, Prop, Named, all_elements, all_props, all_events;
+from integrations/ts import prop_type, event_type, is_dom_prop;
+
+// `prefix`: the path of the components' directory from the manifest
+// ("components/" in @ray-ds/elements).
+pub fn custom_elements(cs: [Component], prefix: string) -> Result<string, string> {
+    let els = all_elements(cs);
+    var modules = json.arr();
+    for c in cs {
+        for f in c.files {
+            let path = "${prefix}${c.dir}/${f}";
+            var decls = json.arr();
+            var exports = json.arr();
+            for el in c.elements {
+                decls = decls.item(declaration(els, el, c));
+                exports = exports
+                    .item(json.obj()
+                    .field("kind", "js")
+                    .field("name", el.class_name)
+                    .field("declaration", ref(el.class_name, path)))
+                    .item(json.obj()
+                    .field("kind", "custom-element-definition")
+                    .field("name", el.tag)
+                    .field("declaration", ref(el.class_name, path)));
+            }
+            for d in c.exports {
+                decls = decls.item(json.obj()
+                    .field("kind", "function")
+                    .field("name", d.name)
+                    .field("description", d.description));
+                exports = exports.item(json.obj()
+                    .field("kind", "js")
+                    .field("name", d.name)
+                    .field("declaration", ref(d.name, path)));
+            }
+            modules = modules.item(json.obj()
+                .field("kind", "javascript-module")
+                .field("path", path)
+                .field("declarations", decls)
+                .field("exports", exports));
+        }
+    }
+    let doc = json.obj()
+        .field("schemaVersion", "2.1.0")
+        .field("readme", "README.md")
+        .field("modules", modules);
+    pretty(doc)
+}
+
+fn ref(name: string, module: string) -> Obj {
+    json.obj().field("name", name).field("module", module)
+}
+
+fn declaration(els: [Element], el: Element, c: Component) -> Obj {
+    var attributes = json.arr();
+    var members = json.arr();
+    for p in all_props(els, el) {
+        let t = json.obj().field("text", prop_type(p));
+        if (p.attribute != "") {
+            var a = json.obj()
+                .field("name", p.attribute)
+                .field("type", t)
+                .field("description", p.description)
+                .field("fieldName", p.name);
+            if (p.default_value != "") {
+                a = a.field("default", p.default_value);
+            }
+            attributes = attributes.item(a);
+        }
+        if (!is_dom_prop(p.name)) {
+            var m = json.obj()
+                .field("kind", "field")
+                .field("name", p.name)
+                .field("type", t)
+                .field("description", p.description);
+            if (p.attribute != "") {
+                m = m.field("attribute", p.attribute).field("reflects", p.reflect);
+            }
+            if (p.default_value != "") {
+                m = m.field("default", p.default_value);
+            }
+            members = members.item(m);
+        }
+    }
+    for a in el.attrs {
+        attributes = attributes.item(json.obj()
+            .field("name", a.name)
+            .field("type", json.obj().field("text", "string"))
+            .field("description", a.description));
+    }
+    for d in el.members {
+        let kind = if (d.ts.contains("(")) { "method" } else { "field" };
+        members = members.item(json.obj()
+            .field("kind", kind)
+            .field("name", d.name)
+            .field("description", d.description));
+    }
+    var events = json.arr();
+    for n in all_events(els, el) {
+        events = events.item(json.obj()
+            .field("name", n.name)
+            .field("type", json.obj().field("text", event_type(n)))
+            .field("description", n.description));
+    }
+    var slots = json.arr();
+    for s in el.slots {
+        let name = if (s.name == "default") { "" } else { s.name };
+        slots = slots.item(json.obj().field("name", name).field("description", s.description));
+    }
+    var parts = json.arr();
+    for p in el.parts {
+        parts = parts.item(json.obj().field("name", p.name).field("description", p.description));
+    }
+    let summary = if (el.summary != "") { el.summary } else { c.summary };
+    json.obj()
+        .field("kind", "class")
+        .field("name", el.class_name)
+        .field("tagName", el.tag)
+        .field("customElement", true)
+        .field("description", summary)
+        .field("superclass", json.obj().field("name", el.extends_name))
+        .field("attributes", attributes)
+        .field("members", members)
+        .field("events", events)
+        .field("slots", slots)
+        .field("cssParts", parts)
+}
+
+pub fn vscode_data(cs: [Component]) -> Result<string, string> {
+    let els = all_elements(cs);
+    var tags = json.arr();
+    for c in cs {
+        for el in c.elements {
+            var attrs = json.arr();
+            for p in all_props(els, el) {
+                if (p.attribute == "") {
+                    continue;
+                }
+                var a = json.obj().field("name", p.attribute).field("description", p.description);
+                if (p.values.len() > 0) {
+                    var vs = json.arr();
+                    for v in p.values {
+                        vs = vs.item(json.obj().field("name", v));
+                    }
+                    a = a.field("values", vs);
+                } else if (p.kind == "boolean") {
+                    a = a.field("valueSet", "v");
+                }
+                attrs = attrs.item(a);
+            }
+            for a in el.attrs {
+                attrs = attrs.item(json.obj()
+                    .field("name", a.name)
+                    .field("description", a.description));
+            }
+            let summary = if (el.summary != "") { el.summary } else { c.summary };
+            tags = tags.item(json.obj()
+                .field("name", el.tag)
+                .field("description", summary)
+                .field("attributes", attrs));
+        }
+    }
+    pretty(json.obj().field("version", 1.1).field("tags", tags))
+}
+
+// Indented (keys sorted by stringify_pretty: no order-preserving pretty printer, see #122).
+fn pretty(o: Obj) -> Result<string, string> {
+    Result.Ok(json.stringify_pretty(json.parse(json.render(o))?, 2) + "\n")
+}

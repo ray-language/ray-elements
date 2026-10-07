@@ -1,0 +1,32 @@
+[component]
+name = "Button group"
+category = "Buttons"
+summary = "Buttons joined into one control: inner corners squared, borders overlapped. Works with ray-button, ray-icon-button, menus with a button trigger and fields (ray-input, ray-select, ray-search)."
+files = ["button-group.js"]
+requires = []
+tags = ["ray-button-group"]
+
+[ray-button-group]
+class = "RayButtonGroup"
+summary = "role=group; give it a label. The corners come from the --ray-group-radius-* custom properties, which your own components can read too."
+extends = "RayElement"
+
+[ray-button-group.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Direction of the group."
+
+[ray-button-group.properties.fullWidth]
+attribute = "full-width"
+type = "boolean"
+reflect = true
+description = "Fills its container; the children share the width."
+
+[ray-button-group.properties.label]
+type = "string"
+description = "Accessible name (aria-label)."
+
+[ray-button-group.slots.default]
+description = "The buttons, fields or menus to join."

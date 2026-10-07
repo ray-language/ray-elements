@@ -1,0 +1,49 @@
+[component]
+name = "Stat"
+category = "Data display"
+summary = "A metric tile: label, value, change against a previous period, note."
+files = ["stat.js"]
+requires = []
+tags = ["ray-stat"]
+
+[ray-stat]
+class = "RayStat"
+extends = "RayElement"
+
+[ray-stat.properties.label]
+type = "string"
+description = "What is measured."
+
+[ray-stat.properties.value]
+type = "string"
+description = "The figure, already formatted."
+
+[ray-stat.properties.diff]
+type = "number"
+description = "Change (positive is shown as good, in green; see inverse)."
+
+[ray-stat.properties.diffUnit]
+attribute = "diff-unit"
+type = "string"
+default = "%"
+description = "Unit of diff."
+
+[ray-stat.properties.note]
+type = "string"
+description = "A line under the value (compared to…)."
+
+[ray-stat.properties.inverse]
+type = "boolean"
+reflect = true
+description = "Lower is better (errors, latency): negative diffs are green."
+
+[ray-stat.properties.plain]
+type = "boolean"
+reflect = true
+description = "Without the card around."
+
+[ray-stat.slots.icon]
+description = "Icon next to the label."
+
+[ray-stat.slots.default]
+description = "Extra content (e.g. a ray-progress)."

@@ -1,0 +1,224 @@
+// `package`: writes the npm packages under packages/ (generated, replaced
+// wholesale on every run):
+//
+//   packages/elements  @ray-ds/elements  the web components + tokens + types + manifests
+//   packages/react     @ray-ds/react     React wrappers (React 18/19)
+//   packages/vue       @ray-ds/vue       Vue 3 wrappers with v-model + plugin
+//
+// Consume them from a Vite app with file: dependencies (see examples/).
+
+import std/fs;
+import std/toml;
+from std/toml import TomlValue;
+from components/meta import Component;
+import integrations/elements;
+import integrations/manifest;
+import integrations/wrappers;
+
+pub struct Info {
+    scope: string,
+    version: string,
+    description: string,
+    license: string,
+}
+
+pub fn info(root: string) -> Result<Info, string> {
+    let entries = toml.parse_toml(fs.read_file("${root}/ray-ds.toml")?)?;
+    let i = Info { scope: "@ray-ds", version: "0.0.0", description: "", license: "MIT" };
+    for e in entries {
+        let v = match (e.value) {
+            TomlValue.TStr(s) => s,
+            _ => return Result.Err("ray-ds.toml: ${e.key} must be a string"),
+        };
+        if (e.key == "package.scope") {
+            i.scope = v;
+        } else if (e.key == "package.version") {
+            i.version = v;
+        } else if (e.key == "package.description") {
+            i.description = v;
+        } else if (e.key == "package.license") {
+            i.license = v;
+        } else {
+            return Result.Err("ray-ds.toml: unknown key '${e.key}'");
+        }
+    }
+    Result.Ok(i)
+}
+
+pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
+    let i = info(root)?;
+    let written: [string] = [];
+    let base = "${root}/packages";
+
+    // --- elements
+    let el = "${base}/elements";
+    fresh(el)?;
+    copy_tree(root, "src/core", "${el}/core", ".js")?;
+    for c in cs {
+        for f in c.files {
+            put(
+                written,
+                "${el}/components/${c.dir}/${f}",
+                fs.read_file("${root}/src/components/${c.dir}/${f}")?
+            )?;
+        }
+    }
+    put(written, "${el}/tokens.css", fs.read_file("${root}/dist/tokens.css")?)?;
+    put(written, "${el}/tokens.json", fs.read_file("${root}/dist/tokens.json")?)?;
+    put(written, "${el}/base.css", fs.read_file("${root}/src/core/base.css")?)?;
+    put(written, "${el}/index.js", elements.index_js(cs))?;
+    put(
+        written,
+        "${el}/ray-ds.d.ts",
+        elements.dts(fs.read_file("${root}/src/core/core.d.ts")?, cs)
+    )?;
+    put(written, "${el}/custom-elements.json", manifest.custom_elements(cs, "components/")?)?;
+    put(written, "${el}/vscode.html-custom-data.json", manifest.vscode_data(cs)?)?;
+    put(written, "${el}/package.json", elements_package(i))?;
+    put(written, "${el}/README.md", readme(i, "elements"))?;
+
+    // --- react (and vue): the package target; no components beyond ray-ds's own
+    let t = wrappers.package_target();
+    let none: [Component] = [];
+    let r = "${base}/react";
+    fresh(r)?;
+    put(written, "${r}/create.js", fs.read_file("${root}/src/integrations/react/create.js")?)?;
+    put(written, "${r}/index.js", wrappers.react_js(cs, none, t))?;
+    put(written, "${r}/index.d.ts", wrappers.react_dts(cs, none, t))?;
+    put(
+        written,
+        "${r}/package.json",
+        wrapper_package(
+            i,
+            "react",
+            "React wrappers of the ray-ds web components",
+            "\"react\": \">=18\""
+        )
+    )?;
+    put(written, "${r}/README.md", readme(i, "react"))?;
+
+    // --- vue
+    let v = "${base}/vue";
+    fresh(v)?;
+    put(written, "${v}/create.js", fs.read_file("${root}/src/integrations/vue/create.js")?)?;
+    put(written, "${v}/index.js", wrappers.vue_js(cs, none, t))?;
+    put(written, "${v}/index.d.ts", wrappers.vue_dts(cs, none, t))?;
+    put(
+        written,
+        "${v}/package.json",
+        wrapper_package(
+            i,
+            "vue",
+            "Vue 3 wrappers (with v-model) of the ray-ds web components",
+            "\"vue\": \">=3.3\""
+        )
+    )?;
+    put(written, "${v}/README.md", readme(i, "vue"))?;
+    Result.Ok(written)
+}
+
+fn fresh(dir: string) -> Result<int, string> {
+    if (fs.exists(dir)) {
+        fs.remove_all(dir)?;
+    }
+    fs.mkdir(dir)
+}
+
+fn put(written: [string], path: string, content: string) -> Result<int, string> {
+    fs.mkdir(path.substring(0, path.last_index_of("/").unwrap_or(0)))?;
+    fs.write_file(path, content)?;
+    written.push(path);
+    Result.Ok(0)
+}
+
+fn copy_tree(root: string, from_dir: string, to: string, ext: string) -> Result<int, string> {
+    fs.mkdir(to)?;
+    for f in sort(fs.list_dir("${root}/${from_dir}")?) {
+        if (f.ends_with(ext)) {
+            fs.write_file("${to}/${f}", fs.read_file("${root}/${from_dir}/${f}")?)?;
+        }
+    }
+    Result.Ok(0)
+}
+
+fn elements_package(i: Info) -> string {
+    `{
+  "name": "${i.scope}/elements",
+  "version": "${i.version}",
+  "description": "${i.description}",
+  "license": "${i.license}",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./ray-ds.d.ts",
+  "exports": {
+    ".": {
+      "types": "./ray-ds.d.ts",
+      "default": "./index.js"
+    },
+    "./tokens.css": "./tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./base.css": "./base.css",
+    "./custom-elements.json": "./custom-elements.json",
+    "./vscode.html-custom-data.json": "./vscode.html-custom-data.json",
+    "./core/*": "./core/*",
+    "./components/*": "./components/*"
+  },
+  "customElements": "custom-elements.json",
+  "sideEffects": ["./index.js", "./components/**/*.js", "*.css"]
+}
+`
+}
+
+fn wrapper_package(i: Info, kind: string, description: string, peer: string) -> string {
+    `{
+  "name": "${i.scope}/${kind}",
+  "version": "${i.version}",
+  "description": "${description}",
+  "license": "${i.license}",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "sideEffects": ["./index.js"],
+  "peerDependencies": {
+    "${i.scope}/elements": "^${i.version}",
+    ${peer}
+  }
+}
+`
+}
+
+fn readme(i: Info, kind: string) -> string {
+    let usage = match (kind) {
+        "react" => `import "${i.scope}/elements/tokens.css";
+import { RayButton, RayInput } from "${i.scope}/react";
+
+<RayInput label="Name" value={name} onInput={(e) => setName(e.currentTarget.value)} />
+<RayButton onClick={save}>Save</RayButton>`,
+        "vue" => `import "${i.scope}/elements/tokens.css";
+import RayDs from "${i.scope}/vue";
+app.use(RayDs);
+
+<RayInput v-model="name" label="Name" />
+<RayButton @click="save">Save</RayButton>`,
+        _ => `import "${i.scope}/elements/tokens.css";
+import "${i.scope}/elements";   // registers every <ray-*> element
+
+<ray-button variant="light">Save</ray-button>`,
+    };
+    `# ${i.scope}/${kind}
+
+${i.description}. Generated by the ray-ds tools (ray-apps/ray-ds): do not edit.
+
+\`\`\`
+${usage}
+\`\`\`
+`
+}

@@ -1,0 +1,618 @@
+// Component metadata: src/components/<dir>/component.toml (+ example.html).
+//
+//   [component]                  name, category, summary, files, requires, tags
+//   [component.exports.<name>]   ts (a TypeScript declaration), description
+//   [component.types.<Name>]     ts (the type), description
+//   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-ds class)
+//   [<tag>.properties.<prop>]    attribute (string, or false = property only),
+//                                type, values, default, reflect, ts (TypeScript type), description
+//   [<tag>.events.<name>]        description, detail (TypeScript type of event.detail)
+//   [<tag>.attributes.<name>]    description (attribute-only, forwarded to an inner element; typed string)
+//   [<tag>.slots.<name>]         description
+//   [<tag>.parts.<name>]         description
+//   [<tag>.members.<name>]       ts (TypeScript member declaration), description
+//   [<tag>.model]                property, events: the v-model contract of the Vue wrapper
+
+import std/fs;
+import std/toml;
+from std/toml import TomlEntry, TomlValue;
+
+pub const CATEGORIES: [string] = [
+    "Buttons",
+    "Inputs",
+    "Navigation",
+    "Overlays",
+    "Data display",
+    "Feedback",
+    "Layout",
+    "Theme"
+];
+
+pub struct Prop {
+    name: string,
+    attribute: string,
+    kind: string,
+    values: [string],
+    default_value: string,
+    reflect: bool,
+    ts: string,
+    description: string,
+}
+
+pub struct Named {
+    name: string,
+    description: string,
+    detail: string,
+}
+
+// A TypeScript declaration with its documentation (members, exports, types).
+pub struct Decl {
+    name: string,
+    ts: string,
+    description: string,
+}
+
+pub struct Element {
+    tag: string,
+    class_name: string,
+    extends_name: string,
+    summary: string,
+    props: [Prop],
+    attrs: [Named],
+    events: [Named],
+    slots: [Named],
+    parts: [Named],
+    members: [Decl],
+    model_property: string,
+    model_events: [string],
+}
+
+pub struct Component {
+    dir: string,
+    name: string,
+    category: string,
+    summary: string,
+    files: [string],
+    requires: [string],
+    elements: [Element],
+    exports: [Decl],
+    types: [Decl],
+    example: string,
+}
+
+// Every component under <root>/src/components, by category then name.
+pub fn load_all(root: string) -> Result<[Component], string> {
+    let out = load_dir("${root}/src/components")?;
+    let ordered: [Component] = [];
+    for cat in CATEGORIES {
+        for c in out {
+            if (c.category == cat) {
+                ordered.push(c);
+            }
+        }
+    }
+    for c in out {
+        if (!CATEGORIES.contains(c.category)) {
+            return Result.Err(
+                "${c.dir}: unknown category '${c.category}' (one of ${join(CATEGORIES, ", ")})"
+            );
+        }
+    }
+    Result.Ok(ordered)
+}
+
+// Every <base>/<dir>/component.toml, by directory name (any category: an
+// app's own components too).
+pub fn load_dir(base: string) -> Result<[Component], string> {
+    let out: [Component] = [];
+    for d in sort(fs.list_dir(base)?) {
+        if (fs.exists("${base}/${d}/component.toml")) {
+            out.push(load_from(base, d)?);
+        }
+    }
+    Result.Ok(out)
+}
+
+pub fn load(root: string, dir: string) -> Result<Component, string> {
+    load_from("${root}/src/components", dir)
+}
+
+fn load_from(base: string, dir: string) -> Result<Component, string> {
+    let path = "${base}/${dir}/component.toml";
+    let src = fs.read_file(path)?;
+    let c = parse(dir, src).map_err(fn(e: string) -> string { "${path}: ${e}" })?;
+    let ex = "${base}/${dir}/example.html";
+    if (fs.exists(ex)) {
+        c.example = fs.read_file(ex)?;
+    }
+    for f in c.files {
+        if (!fs.exists("${base}/${dir}/${f}")) {
+            return Result.Err("${path}: file '${f}' does not exist");
+        }
+    }
+    Result.Ok(c)
+}
+
+// The extension base classes as elements, so components extending them
+// inherit their properties in types and wrappers (core/form.js, floating.js).
+pub fn base_elements() -> [Element] {
+    let field = base("FieldControl", "FormControl");
+    field.props = [
+        base_prop("name", "string", [], "", false, "Form field name."),
+        base_prop("label", "string", [], "", false, "Visible label (also the accessible name)."),
+        base_prop("description", "string", [], "", false, "Help text."),
+        base_prop("error", "string", [], "", false, "Error text; marks the field invalid."),
+        base_prop("required", "boolean", [], "", true, "Required for form submission."),
+        base_prop("disabled", "boolean", [], "", true, "Not interactive nor submitted."),
+        base_prop("size", "string", ["xs", "sm", "md", "lg", "xl"], "sm", true, "Size."),
+        base_prop(
+            "radius",
+            "string",
+            ["xs", "sm", "md", "lg", "xl", "full"],
+            "",
+            true,
+            "Corner radius."
+        ),
+        base_prop(
+            "variant",
+            "string",
+            ["default", "filled", "unstyled"],
+            "default",
+            true,
+            "Box style."
+        ),
+        base_prop(
+            "descriptionPosition",
+            "string",
+            ["above", "below"],
+            "above",
+            true,
+            "Description before or after the control."
+        )
+    ];
+    let floating = base("Floating", "RayElement");
+    floating.props = [
+        base_prop("open", "boolean", [], "", true, "Shown."),
+        base_prop("placement", "string", [], "bottom", true, "Preferred side and alignment."),
+        base_prop("offset", "number", [], "8", false, "Gap to the anchor in px.")
+    ];
+    [field, floating, base("FormControl", "RayElement")]
+}
+
+fn base(name: string, parent: string) -> Element {
+    Element {
+        tag: "",
+        class_name: name,
+        extends_name: parent,
+        summary: "",
+        props: [],
+        attrs: [],
+        events: [],
+        slots: [],
+        parts: [],
+        members: [],
+        model_property: "",
+        model_events: []
+    }
+}
+
+fn base_prop(
+    name: string,
+    kind: string,
+    values: [string],
+    default_value: string,
+    reflect: bool,
+    description: string
+) -> Prop {
+    Prop {
+        name: name,
+        attribute: kebab(name),
+        kind: kind,
+        values: values,
+        default_value: default_value,
+        reflect: reflect,
+        ts: "",
+        description: description
+    }
+}
+
+pub fn parse(dir: string, src: string) -> Result<Component, string> {
+    let entries = toml.parse_toml(src)?;
+    let c = Component {
+        dir: dir,
+        name: dir,
+        category: "",
+        summary: "",
+        files: [],
+        requires: [],
+        elements: [],
+        exports: [],
+        types: [],
+        example: ""
+    };
+    for e in entries {
+        let parts = e.key.split(".");
+        if (parts[0] == "component") {
+            let k = parts[1];
+            if (k == "name") {
+                c.name = str_of(e)?;
+            } else if (k == "category") {
+                c.category = str_of(e)?;
+            } else if (k == "summary") {
+                c.summary = str_of(e)?;
+            } else if (k == "files") {
+                c.files = strs_of(e)?;
+            } else if (k == "requires") {
+                c.requires = strs_of(e)?;
+            } else if (k == "tags") {
+                for t in strs_of(e)? {
+                    c.elements.push(
+                        Element {
+                            tag: t,
+                            class_name: "",
+                            extends_name: "RayElement",
+                            summary: "",
+                            props: [],
+                            attrs: [],
+                            events: [],
+                            slots: [],
+                            parts: [],
+                            members: [],
+                            model_property: "",
+                            model_events: []
+                        }
+                    );
+                }
+            } else if ((k == "exports" || k == "types") && parts.len() == 4) {
+                let d = decl(if (k == "exports") { c.exports } else { c.types }, parts[2]);
+                set_decl(d, parts[3], e)?;
+            } else {
+                return Result.Err("unknown key '${e.key}'");
+            }
+        } else {
+            let el = element(c, parts[0]).ok_or("'${parts[0]}' is not listed in component.tags")?;
+            apply(el, parts, e)?;
+        }
+    }
+    if (c.category == "" || c.files.len() == 0 || c.elements.len() == 0) {
+        return Result.Err("[component] needs category, files and tags");
+    }
+    Result.Ok(c)
+}
+
+fn element(c: Component, tag: string) -> Option<Element> {
+    for el in c.elements {
+        if (el.tag == tag) {
+            return Option.Some(el);
+        }
+    }
+    Option.None
+}
+
+fn apply(el: Element, parts: [string], e: TomlEntry) -> Result<int, string> {
+    if (parts.len() == 2) {
+        if (parts[1] == "class") {
+            el.class_name = str_of(e)?;
+        } else if (parts[1] == "summary") {
+            el.summary = str_of(e)?;
+        } else if (parts[1] == "extends") {
+            el.extends_name = str_of(e)?;
+        } else {
+            return Result.Err("unknown key '${e.key}'");
+        }
+        return Result.Ok(0);
+    }
+    if (parts.len() == 3 && parts[1] == "model") {
+        if (parts[2] == "property") {
+            el.model_property = str_of(e)?;
+        } else if (parts[2] == "events") {
+            el.model_events = strs_of(e)?;
+        } else {
+            return Result.Err("unknown model field '${e.key}'");
+        }
+        return Result.Ok(0);
+    }
+    if (parts.len() != 4) {
+        return Result.Err("unexpected key '${e.key}'");
+    }
+    let section = parts[1];
+    let name = parts[2];
+    let field = parts[3];
+    if (section == "properties") {
+        let p = prop(el, name);
+        if (field == "attribute") {
+            p.attribute = match (e.value) {
+                TomlValue.TBool(false) => "",
+                _ => str_of(e)?,
+            };
+        } else if (field == "type") {
+            p.kind = str_of(e)?;
+        } else if (field == "values") {
+            p.values = strs_of(e)?;
+        } else if (field == "default") {
+            p.default_value = str_of(e)?;
+        } else if (field == "reflect") {
+            p.reflect = bool_of(e)?;
+        } else if (field == "ts") {
+            p.ts = str_of(e)?;
+        } else if (field == "description") {
+            p.description = str_of(e)?;
+        } else {
+            return Result.Err("unknown property field '${e.key}'");
+        }
+    } else if (section == "events"
+        || section == "slots"
+        || section == "parts"
+        || section == "attributes") {
+        let list = if (section == "events") {
+            el.events
+        } else if (section == "slots") {
+            el.slots
+        } else if (section == "attributes") {
+            el.attrs
+        } else {
+            el.parts
+        };
+        let n = named(list, name);
+        if (field == "description") {
+            n.description = str_of(e)?;
+        } else if (field == "detail" && section == "events") {
+            n.detail = str_of(e)?;
+        } else {
+            return Result.Err("unknown field '${e.key}'");
+        }
+    } else if (section == "members") {
+        set_decl(decl(el.members, name), field, e)?;
+    } else {
+        return Result.Err("unknown section '${e.key}'");
+    }
+    Result.Ok(0)
+}
+
+// The property `name` of `el`, created on first sight with its kebab-case attribute.
+fn prop(el: Element, name: string) -> Prop {
+    for p in el.props {
+        if (p.name == name) {
+            return p;
+        }
+    }
+    let p = Prop {
+        name: name,
+        attribute: kebab(name),
+        kind: "string",
+        values: [],
+        default_value: "",
+        reflect: false,
+        ts: "",
+        description: ""
+    };
+    el.props.push(p);
+    p
+}
+
+fn named(list: [Named], name: string) -> Named {
+    for n in list {
+        if (n.name == name) {
+            return n;
+        }
+    }
+    let n = Named { name: name, description: "", detail: "" };
+    list.push(n);
+    n
+}
+
+fn decl(list: [Decl], name: string) -> Decl {
+    for d in list {
+        if (d.name == name) {
+            return d;
+        }
+    }
+    let d = Decl { name: name, ts: "", description: "" };
+    list.push(d);
+    d
+}
+
+fn set_decl(d: Decl, field: string, e: TomlEntry) -> Result<int, string> {
+    if (field == "ts") {
+        d.ts = str_of(e)?;
+    } else if (field == "description") {
+        d.description = str_of(e)?;
+    } else {
+        return Result.Err("unknown field '${e.key}'");
+    }
+    Result.Ok(0)
+}
+
+// Every element of every component, for lookups by class name.
+pub fn all_elements(cs: [Component]) -> [Element] {
+    let out: [Element] = [];
+    for c in cs {
+        for el in c.elements {
+            out.push(el);
+        }
+    }
+    out
+}
+
+// The properties of `el` including the ones it inherits from another ray-ds
+// element (extends = "RayCheckbox"), the element's own first.
+pub fn all_props(els: [Element], el: Element) -> [Prop] {
+    let out: [Prop] = [];
+    for p in el.props {
+        out.push(p);
+    }
+    var parent = el.extends_name;
+    var depth = 0;
+    while (depth < 8) {
+        var found = false;
+        for other in els {
+            if (other.class_name == parent) {
+                found = true;
+                for p in other.props {
+                    if (!out.map(fn(x: Prop) -> string { x.name }).contains(p.name)) {
+                        out.push(p);
+                    }
+                }
+                parent = other.extends_name;
+            }
+        }
+        if (!found) {
+            break;
+        }
+        depth = depth + 1;
+    }
+    out
+}
+
+// Same for events.
+pub fn all_events(els: [Element], el: Element) -> [Named] {
+    let out: [Named] = [];
+    for n in el.events {
+        out.push(n);
+    }
+    var parent = el.extends_name;
+    var depth = 0;
+    while (depth < 8) {
+        var found = false;
+        for other in els {
+            if (other.class_name == parent) {
+                found = true;
+                for n in other.events {
+                    if (!out.map(fn(x: Named) -> string { x.name }).contains(n.name)) {
+                        out.push(n);
+                    }
+                }
+                parent = other.extends_name;
+            }
+        }
+        if (!found) {
+            break;
+        }
+        depth = depth + 1;
+    }
+    out
+}
+
+// "ray-select" -> "RaySelect", "change" -> "Change".
+pub fn pascal(name: string) -> string {
+    let out: [string] = [];
+    var upper = true;
+    for ch in name.chars() {
+        if (ch == '-') {
+            upper = true;
+        } else if (upper) {
+            out.push(to_string(ch).to_upper());
+            upper = false;
+        } else {
+            out.push(to_string(ch));
+        }
+    }
+    join(out, "")
+}
+
+pub fn kebab(name: string) -> string {
+    let out: [string] = [];
+    for ch in name.chars() {
+        let n = char_code(ch);
+        if (n >= 65 && n <= 90) {
+            out.push("-");
+            out.push(to_string(ch).to_lower());
+        } else {
+            out.push(to_string(ch));
+        }
+    }
+    join(out, "")
+}
+
+fn str_of(e: TomlEntry) -> Result<string, string> {
+    match (e.value) {
+        TomlValue.TStr(s) => Result.Ok(s),
+        _ => Result.Err("${e.key}: expected a string"),
+    }
+}
+
+fn bool_of(e: TomlEntry) -> Result<bool, string> {
+    match (e.value) {
+        TomlValue.TBool(b) => Result.Ok(b),
+        _ => Result.Err("${e.key}: expected true or false"),
+    }
+}
+
+fn strs_of(e: TomlEntry) -> Result<[string], string> {
+    match (e.value) {
+        TomlValue.TArray(items) => {
+            let out: [string] = [];
+            for it in items {
+                match (it) {
+                    TomlValue.TStr(s) => out.push(s),
+                    _ => return Result.Err("${e.key}: expected an array of strings"),
+                }
+            }
+            Result.Ok(out)
+        },
+        _ => Result.Err("${e.key}: expected an array of strings"),
+    }
+}
+
+@test
+fn pascal_case() {
+    assert_eq(pascal("ray-select"), "RaySelect");
+    assert_eq(pascal("change"), "Change");
+    assert_eq(pascal("ray-request-close"), "RayRequestClose");
+}
+
+@test
+fn kebab_case() {
+    assert_eq(kebab("fullWidth"), "full-width");
+    assert_eq(kebab("size"), "size");
+    assert_eq(kebab("maxRows"), "max-rows");
+}
+
+@test
+fn parses_a_component() {
+    let src = `[component]
+name = "Thing"
+category = "Layout"
+summary = "S"
+files = ["thing.js"]
+requires = []
+tags = ["ray-thing"]
+
+[ray-thing]
+class = "RayThing"
+
+[ray-thing.properties.fullWidth]
+type = "boolean"
+reflect = true
+
+[ray-thing.properties.data]
+attribute = false
+type = "array"
+
+[ray-thing.slots.default]
+description = "Body."
+
+[ray-thing.events.ray-pick]
+description = "Picked."
+detail = "{ value: string }"
+
+[ray-thing.model]
+property = "value"
+events = ["input"]
+
+[component.exports.helper]
+ts = "function helper(): void"
+`;
+    let c = parse("thing", src).unwrap();
+    assert_eq(c.elements.len(), 1);
+    let el = c.elements[0];
+    assert_eq(el.class_name, "RayThing");
+    assert_eq(el.props[0].attribute, "full-width");
+    assert_eq(el.props[0].reflect, true);
+    assert_eq(el.props[1].attribute, "");
+    assert_eq(el.slots[0].name, "default");
+    assert_eq(el.events.len(), 1);
+    assert_eq(el.events[0].detail, "{ value: string }");
+    assert_eq(el.model_property, "value");
+    assert_eq(c.exports[0].ts, "function helper(): void");
+}

@@ -1,0 +1,126 @@
+// References inside raw token values: `{blue.6}`, `{white}`, `{black / 5%}`.
+//
+// A reference names another token with dots (`{font-size.md}` -> token
+// `font-size-md`); an optional `/ N%` mixes it with transparent.
+
+from tokens/model import Model, Token, find;
+
+pub struct Ref {
+    name: string,
+    alpha: string,
+}
+
+pub enum Piece {
+    Text(string),
+    Reference(Ref),
+}
+
+// Splits a raw value into literal text and references.
+pub fn pieces(raw: string) -> Result<[Piece], string> {
+    let out: [Piece] = [];
+    var s = raw;
+    while (true) {
+        match (s.index_of("{")) {
+            Option.None => {
+                if (s != "") {
+                    out.push(Piece.Text(s));
+                }
+                return Result.Ok(out);
+            },
+            Option.Some(open) => {
+                if (open > 0) {
+                    out.push(Piece.Text(s.substring(0, open)));
+                }
+                let after = s.substring(open + 1, s.len());
+                let close = after.index_of("}").ok_or("unclosed '{' in '${raw}'")?;
+                out.push(Piece.Reference(parse_ref(after.substring(0, close))?));
+                s = after.substring(close + 1, after.len());
+            },
+        }
+    }
+}
+
+fn parse_ref(inner: string) -> Result<Ref, string> {
+    let parts = inner.split("/");
+    if (parts.len() > 2) {
+        return Result.Err("bad reference '{${inner}}'");
+    }
+    let path = parts[0].trim();
+    if (path == "") {
+        return Result.Err("empty reference '{${inner}}'");
+    }
+    var alpha = "";
+    if (parts.len() == 2) {
+        alpha = parts[1].trim();
+        if (!alpha.ends_with("%")) {
+            return Result.Err("alpha in '{${inner}}' must be a percentage");
+        }
+    }
+    Result.Ok(Ref { name: path.replace(".", "-"), alpha: alpha })
+}
+
+// The CSS text of a raw value: references become var(--<prefix>-<name>).
+pub fn to_css(raw: string, prefix: string) -> Result<string, string> {
+    let out: [string] = [];
+    for p in pieces(raw)? {
+        match (p) {
+            Piece.Text(t) => out.push(t),
+            Piece.Reference(r) => out.push(with_alpha("var(--${prefix}-${r.name})", r.alpha)),
+        }
+    }
+    Result.Ok(join(out, ""))
+}
+
+// The names a raw value refers to.
+pub fn names(raw: string) -> Result<[string], string> {
+    let out: [string] = [];
+    for p in pieces(raw)? {
+        match (p) {
+            Piece.Text(_) => { },
+            Piece.Reference(r) => out.push(r.name),
+        }
+    }
+    Result.Ok(out)
+}
+
+// The final value of a token in a scheme ("light" | "dark"), with every
+// reference replaced by the referenced token's own final value.
+pub fn resolve(m: Model, t: Token, scheme: string) -> Result<string, string> {
+    resolve_raw(m, raw_of(t, scheme), scheme, 0)
+}
+
+fn raw_of(t: Token, scheme: string) -> string {
+    if (scheme == "dark") { t.dark } else { t.light }
+}
+
+fn resolve_raw(m: Model, raw: string, scheme: string, depth: int) -> Result<string, string> {
+    if (depth > 16) {
+        return Result.Err("reference cycle through '${raw}'");
+    }
+    let out: [string] = [];
+    for p in pieces(raw)? {
+        match (p) {
+            Piece.Text(t) => out.push(t),
+            Piece.Reference(r) => {
+                let target = find(m, r.name).ok_or("unknown token '${r.name}' in '${raw}'")?;
+                let v = resolve_raw(m, raw_of(target, scheme), scheme, depth + 1)?;
+                out.push(with_alpha(v, r.alpha));
+            },
+        }
+    }
+    Result.Ok(join(out, ""))
+}
+
+fn with_alpha(color: string, alpha: string) -> string {
+    if (alpha == "") { color } else { "color-mix(in srgb, ${color} ${alpha}, transparent)" }
+}
+
+// Checks that every reference of every token exists.
+pub fn validate(m: Model) -> Result<int, string> {
+    for t in m.tokens {
+        for scheme in ["light", "dark"] {
+            resolve(m, t, scheme).map_err(fn(e: string) -> string { "${t.name}: ${e}" })?;
+        }
+    }
+    Result.Ok(0)
+}

@@ -1,0 +1,215 @@
+[component]
+name = "Date picker"
+category = "Inputs"
+summary = "A date field with a calendar dropdown, and the calendar on its own. Keyboard grid navigation, min/max, locale-aware. Form-associated."
+files = ["date-picker.js"]
+requires = []
+tags = ["ray-date-picker", "ray-calendar"]
+
+[ray-date-picker]
+class = "RayDatePicker"
+summary = "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it."
+extends = "FieldControl"
+
+[ray-date-picker.properties.value]
+type = "string"
+description = "The chosen date, ISO \"YYYY-MM-DD\" (\"\" for none). The value attribute is the initial value (restored on form reset)."
+
+[ray-date-picker.properties.min]
+type = "string"
+description = "Earliest selectable date (ISO). Earlier days are disabled; an earlier value is invalid (rangeUnderflow)."
+
+[ray-date-picker.properties.max]
+type = "string"
+description = "Latest selectable date (ISO)."
+
+[ray-date-picker.properties.placeholder]
+type = "string"
+default = "Pick a date"
+description = "Shown while no date is chosen."
+
+[ray-date-picker.properties.format]
+type = "string"
+values = ["short", "medium", "long", "full"]
+default = "medium"
+description = "How the date is displayed (Intl dateStyle)."
+
+[ray-date-picker.properties.locale]
+type = "string"
+description = "Locale for names and formats. Default: the nearest lang attribute, else the browser's."
+
+[ray-date-picker.properties.firstDay]
+attribute = "first-day"
+type = "number"
+description = "First day of the week, 0 (Sunday) to 6. Default: the locale's."
+
+[ray-date-picker.properties.clearable]
+type = "boolean"
+reflect = true
+description = "Shows a button that clears the date."
+
+[ray-date-picker.properties.open]
+type = "boolean"
+reflect = true
+description = "The calendar dropdown is shown."
+
+[ray-date-picker.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-date-picker.properties.label]
+type = "string"
+description = "Visible label (also the accessible name)."
+
+[ray-date-picker.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-date-picker.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the control (help first) or after it, with the error (fields in a row stay aligned)."
+
+[ray-date-picker.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-date-picker.properties.required]
+type = "boolean"
+description = "Required for form submission."
+
+[ray-date-picker.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-date-picker.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height and font size."
+
+[ray-date-picker.properties.radius]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl", "full"]
+description = "Corner radius."
+
+[ray-date-picker.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "default"
+reflect = true
+description = "Box style."
+
+[ray-date-picker.events.input]
+description = "When the date changes (picked or cleared)."
+
+[ray-date-picker.events.change]
+description = "When the date changes (picked or cleared)."
+
+[ray-date-picker.events.ray-open]
+description = "The calendar opened."
+
+[ray-date-picker.events.ray-close]
+description = "The calendar closed."
+
+[ray-date-picker.parts.trigger]
+description = "The button showing the date."
+
+[ray-date-picker.parts.clear]
+description = "The clear button."
+
+[ray-date-picker.parts.dropdown]
+description = "The calendar panel (a popover in the top layer)."
+
+[ray-date-picker.parts.calendar]
+description = "The <ray-calendar> in the dropdown (its day, caption, nav and grid parts are exported)."
+
+[ray-date-picker.parts.input]
+description = "The hidden native <input type=date> that holds the value (the model)."
+
+[ray-date-picker.parts.wrapper]
+description = "The box."
+
+[ray-date-picker.model]
+property = "value"
+events = ["change"]
+
+[ray-date-picker.members.toggle]
+ts = "toggle(force?: boolean): void"
+description = "Opens or closes the calendar."
+
+[ray-date-picker.members.displayValue]
+ts = "readonly displayValue: string"
+description = "The chosen date as displayed (\"\" when none)."
+
+[ray-calendar]
+class = "RayCalendar"
+summary = "WAI-ARIA grid: arrows move by day and week, Home/End to the week's ends, PageUp/PageDown by month (with Shift, by year), Enter/Space select."
+extends = "RayElement"
+
+[ray-calendar.properties.value]
+type = "string"
+description = "The selected date, ISO \"YYYY-MM-DD\"."
+
+[ray-calendar.properties.min]
+type = "string"
+description = "Earliest selectable date (ISO)."
+
+[ray-calendar.properties.max]
+type = "string"
+description = "Latest selectable date (ISO)."
+
+[ray-calendar.properties.locale]
+type = "string"
+description = "Locale for month and weekday names. Default: the nearest lang attribute, else the browser's."
+
+[ray-calendar.properties.firstDay]
+attribute = "first-day"
+type = "number"
+description = "First day of the week, 0 (Sunday) to 6. Default: the locale's."
+
+[ray-calendar.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Day cell size and font size."
+
+[ray-calendar.events.ray-change]
+detail = "{ value: string }"
+description = "A day was selected."
+
+[ray-calendar.events.change]
+description = "A day was selected."
+
+[ray-calendar.parts.header]
+description = "The row with the month and the navigation buttons."
+
+[ray-calendar.parts.caption]
+description = "The month and year."
+
+[ray-calendar.parts.nav]
+description = "The previous/next month buttons."
+
+[ray-calendar.parts.grid]
+description = "The day grid (role=grid)."
+
+[ray-calendar.parts.day]
+description = "Each day button ([aria-selected], [aria-current=date], [aria-disabled], [data-outside])."
+
+[ray-calendar.model]
+property = "value"
+events = ["change"]
+
+[ray-calendar.members.focusDay]
+ts = "focusDay(): void"
+description = "Focuses the day the keyboard is on (the selected day, else today)."
+
+[ray-calendar.members.focusedDate]
+ts = "readonly focusedDate: string"
+description = "The day the keyboard is on (ISO)."

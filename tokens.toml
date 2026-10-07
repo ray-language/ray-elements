@@ -1,0 +1,622 @@
+# ray-ds design tokens — the single source of truth.
+#
+# Regenerate dist/tokens.css, dist/tokens.json and docs/foundations.html with:
+#   ray run tools/src/main.ray tokens
+#
+# Value syntax
+#   "#fff", "1rem", "200ms"       literal CSS value
+#   "{blue.6}"                    reference to another token  -> var(--ray-blue-6)
+#   "{white}"                     reference to a top-level token -> var(--ray-white)
+#   "{blue.6 / 15%}"              reference with alpha -> color-mix(in srgb, var(--ray-blue-6) 15%, transparent)
+#   "{c.6}"                       inside [variants.*] only: the color being expanded
+#   "{primary.6}"                 the primary color (see [meta] primary; runtime: data-primary="violet")
+# References may appear anywhere inside a value ("0 1px 3px {black / 5%}").
+
+[meta]
+prefix = "ray"
+primary = "blue"
+json_only = ["breakpoint"]
+# "custom": a color whose ten shades are set at runtime by definePrimary(color)
+# (data-primary="custom"); without them it falls back to the primary's.
+runtime_colors = ["custom"]
+
+# WCAG AA (4.5:1) text/background pairs checked in both schemes by
+# `ray run tools/src/main.ray tokens` (the build fails if one does not pass).
+# Every color's `contrast on filled` is checked too, as a warning.
+[checks]
+aa = [
+    "foreground on background",
+    "card-foreground on card",
+    "popover-foreground on popover",
+    "primary-foreground on primary",
+    "secondary-foreground on secondary",
+    "muted-foreground on muted",
+    "muted-foreground on background",
+    "accent-foreground on accent",
+    "destructive-foreground on destructive",
+    "success on background",
+    "warning on background",
+    "info on background",
+    "white on gradient-from",
+    "white on gradient-to",
+    "code-text on code-background",
+    "code-tag on code-background",
+    "code-attr on code-background",
+    "code-string on code-background",
+    "code-keyword on code-background",
+    "code-number on code-background",
+    "code-comment on code-background",
+]
+
+[checks.chart]
+# Series tokens (chart-<n>), in display order.
+series = ["1", "2", "3", "4", "5", "6", "7", "8"]
+# Each series against the background, both schemes (WCAG 1.4.11): error below.
+min_contrast = 3.0
+# OKLab distance (x100) between any two series: error below.
+min_distance = 10.0
+# Same, between consecutive series (the ones charts use together most), under
+# simulated protanopia, deuteranopia and tritanopia: warning below.
+min_distance_cvd = 6.0
+
+# ---------------------------------------------------------------------------
+# Palette: ten shades per color, 0 = lightest, 9 = darkest (open-color, MIT).
+# `dark` is the neutral ramp used for dark surfaces.
+# ---------------------------------------------------------------------------
+
+[base]
+white = "#ffffff"
+black = "#000000"
+
+[palette.dark]
+0 = "#c9c9c9"
+1 = "#b8b8b8"
+2 = "#828282"
+3 = "#696969"
+4 = "#424242"
+5 = "#3b3b3b"
+6 = "#2e2e2e"
+7 = "#242424"
+8 = "#1f1f1f"
+9 = "#141414"
+
+[palette.gray]
+0 = "#f8f9fa"
+1 = "#f1f3f5"
+2 = "#e9ecef"
+3 = "#dee2e6"
+4 = "#ced4da"
+5 = "#adb5bd"
+6 = "#868e96"
+7 = "#495057"
+8 = "#343a40"
+9 = "#212529"
+
+[palette.red]
+0 = "#fff5f5"
+1 = "#ffe3e3"
+2 = "#ffc9c9"
+3 = "#ffa8a8"
+4 = "#ff8787"
+5 = "#ff6b6b"
+6 = "#fa5252"
+7 = "#f03e3e"
+8 = "#e03131"
+9 = "#c92a2a"
+
+[palette.pink]
+0 = "#fff0f6"
+1 = "#ffdeeb"
+2 = "#fcc2d7"
+3 = "#faa2c1"
+4 = "#f783ac"
+5 = "#f06595"
+6 = "#e64980"
+7 = "#d6336c"
+8 = "#c2255c"
+9 = "#a61e4d"
+
+[palette.violet]
+0 = "#f3f0ff"
+1 = "#e5dbff"
+2 = "#d0bfff"
+3 = "#b197fc"
+4 = "#9775fa"
+5 = "#845ef7"
+6 = "#7950f2"
+7 = "#7048e8"
+8 = "#6741d9"
+9 = "#5f3dc4"
+
+[palette.indigo]
+0 = "#edf2ff"
+1 = "#dbe4ff"
+2 = "#bac8ff"
+3 = "#91a7ff"
+4 = "#748ffc"
+5 = "#5c7cfa"
+6 = "#4c6ef5"
+7 = "#4263eb"
+8 = "#3b5bdb"
+9 = "#364fc7"
+
+[palette.blue]
+0 = "#e7f5ff"
+1 = "#d0ebff"
+2 = "#a5d8ff"
+3 = "#74c0fc"
+4 = "#4dabf7"
+5 = "#339af0"
+6 = "#228be6"
+7 = "#1c7ed6"
+8 = "#1971c2"
+9 = "#1864ab"
+
+[palette.cyan]
+0 = "#e3fafc"
+1 = "#c5f6fa"
+2 = "#99e9f2"
+3 = "#66d9e8"
+4 = "#3bc9db"
+5 = "#22b8cf"
+6 = "#15aabf"
+7 = "#1098ad"
+8 = "#0c8599"
+9 = "#0b7285"
+
+[palette.teal]
+0 = "#e6fcf5"
+1 = "#c3fae8"
+2 = "#96f2d7"
+3 = "#63e6be"
+4 = "#38d9a9"
+5 = "#20c997"
+6 = "#12b886"
+7 = "#0ca678"
+8 = "#099268"
+9 = "#087f5b"
+
+[palette.green]
+0 = "#ebfbee"
+1 = "#d3f9d8"
+2 = "#b2f2bb"
+3 = "#8ce99a"
+4 = "#69db7c"
+5 = "#51cf66"
+6 = "#40c057"
+7 = "#37b24d"
+8 = "#2f9e44"
+9 = "#2b8a3e"
+
+[palette.yellow]
+0 = "#fff9db"
+1 = "#fff3bf"
+2 = "#ffec99"
+3 = "#ffe066"
+4 = "#ffd43b"
+5 = "#fcc419"
+6 = "#fab005"
+7 = "#f59f00"
+8 = "#f08c00"
+9 = "#e67700"
+
+[palette.orange]
+0 = "#fff4e6"
+1 = "#ffe8cc"
+2 = "#ffd8a8"
+3 = "#ffc078"
+4 = "#ffa94d"
+5 = "#ff922b"
+6 = "#fd7e14"
+7 = "#f76707"
+8 = "#e8590c"
+9 = "#d9480f"
+
+# ---------------------------------------------------------------------------
+# Color variants (Mantine-style): expanded for every palette color `c`,
+# producing --ray-<c>-filled, --ray-<c>-light, … with light-dark() values.
+# Components use these for variant="filled|light|outline|subtle".
+# ---------------------------------------------------------------------------
+
+[variants.light]
+filled = "{c.8}"
+filled-hover = "{c.9}"
+light = "{c.6 / 10%}"
+light-hover = "{c.6 / 16%}"
+light-color = "{c.9}"
+outline = "{c.8}"
+outline-hover = "{c.6 / 8%}"
+contrast = "{white}"
+
+[variants.dark]
+filled = "{c.8}"
+filled-hover = "{c.9}"
+light = "{c.6 / 15%}"
+light-hover = "{c.6 / 22%}"
+light-color = "{c.3}"
+outline = "{c.4}"
+outline-hover = "{c.4 / 8%}"
+contrast = "{white}"
+
+# Per-color overrides. [variants.override.<c>] applies to both schemes;
+# [variants.override-light.<c>] / [variants.override-dark.<c>] to one (and win).
+# The AA checks of `ray run tools/src/main.ray tokens` drive these values.
+
+# Yellow: a light filled shade with dark text (white fails on every yellow).
+[variants.override.yellow]
+filled = "{yellow.5}"
+filled-hover = "{yellow.6}"
+contrast = "{black}"
+# Orange, green, teal, cyan: their deepest shade (darkened where the palette
+# stops short) so white text reaches AA, like the other colors.
+[variants.override.orange]
+filled = "color-mix(in srgb, {orange.9} 90%, {black})"
+filled-hover = "color-mix(in srgb, {orange.9} 80%, {black})"
+[variants.override.green]
+filled = "color-mix(in srgb, {green.9} 90%, {black})"
+filled-hover = "color-mix(in srgb, {green.9} 80%, {black})"
+[variants.override.teal]
+filled = "{teal.9}"
+filled-hover = "color-mix(in srgb, {teal.9} 85%, {black})"
+[variants.override.cyan]
+filled = "{cyan.9}"
+filled-hover = "color-mix(in srgb, {cyan.9} 85%, {black})"
+[variants.override.red]
+filled = "{red.9}"
+filled-hover = "color-mix(in srgb, {red.9} 85%, {black})"
+
+# Their text (on a light tint, or as outline text) needs to be darker than the
+# palette goes.
+[variants.override-light.yellow]
+light-color = "color-mix(in srgb, {yellow.9} 62%, {black})"
+outline = "{yellow.light-color}"
+[variants.override-light.orange]
+light-color = "color-mix(in srgb, {orange.9} 78%, {black})"
+outline = "{orange.light-color}"
+[variants.override-light.green]
+light-color = "color-mix(in srgb, {green.9} 80%, {black})"
+outline = "{green.light-color}"
+[variants.override-light.teal]
+light-color = "color-mix(in srgb, {teal.9} 90%, {black})"
+outline = "{teal.light-color}"
+[variants.override-light.cyan]
+light-color = "color-mix(in srgb, {cyan.9} 90%, {black})"
+outline = "{cyan.light-color}"
+[variants.override-light.red]
+light-color = "color-mix(in srgb, {red.9} 90%, {black})"
+
+# Neutral ramps.
+[variants.override.dark]
+filled = "{dark.6}"
+filled-hover = "{dark.7}"
+# In the dark scheme "dark" inverts: a near-white fill with black text (a dark
+# fill would melt into the page), tints of white for light/subtle.
+[variants.override-dark.dark]
+filled = "{gray.1}"
+filled-hover = "{gray.3}"
+contrast = "{black}"
+light = "{gray.1 / 10%}"
+light-hover = "{gray.1 / 16%}"
+light-color = "{gray.1}"
+outline = "{gray.3}"
+outline-hover = "{gray.1 / 8%}"
+[variants.override.gray]
+filled = "{gray.7}"
+filled-hover = "{gray.8}"
+
+# ---------------------------------------------------------------------------
+# Semantic tokens (shadcn-style). Each has a light and a dark value; the
+# generator emits light-dark(light, dark), so the theme follows `color-scheme`
+# (system by default, forced with data-theme="light|dark" on any element).
+# ---------------------------------------------------------------------------
+
+[semantic.background]
+light = "{white}"
+dark = "{dark.9}"
+[semantic.foreground]
+light = "{gray.9}"
+dark = "{gray.1}"
+
+[semantic.card]
+light = "{white}"
+dark = "{dark.8}"
+[semantic.card-foreground]
+light = "{gray.9}"
+dark = "{gray.1}"
+
+[semantic.popover]
+light = "{white}"
+dark = "{dark.8}"
+[semantic.popover-foreground]
+light = "{gray.9}"
+dark = "{gray.1}"
+
+# A semantic token with a single `value` is the same in both schemes (here it
+# points at a variant token, which already carries its own light/dark values).
+[semantic.primary]
+value = "{primary.filled}"
+[semantic.primary-hover]
+value = "{primary.filled-hover}"
+[semantic.primary-foreground]
+value = "{primary.contrast}"
+
+[semantic.secondary]
+light = "{gray.1}"
+dark = "{dark.6}"
+[semantic.secondary-hover]
+light = "{gray.2}"
+dark = "{dark.5}"
+[semantic.secondary-foreground]
+light = "{gray.9}"
+dark = "{gray.1}"
+
+# variant="default" (buttons, icon buttons…): a quiet surface and a gentle
+# hover. Dark: translucent white, so it sits on the page and on cards alike.
+[semantic.default]
+light = "{white}"
+dark = "{white / 3%}"
+[semantic.default-hover]
+light = "{gray.1}"
+dark = "{white / 7%}"
+
+# A raised surface on a muted one: the active segment of a segmented control.
+# Dark: lighter than its track (a darker "hole" would read as pressed in).
+[semantic.raised]
+light = "{white}"
+dark = "{dark.4}"
+
+# Muted surfaces (filled inputs, tiles, code): in dark, a step above the card
+# so they stay visible on it.
+[semantic.muted]
+light = "{gray.0}"
+dark = "{dark.6}"
+# Secondary text (descriptions, placeholders, captions): clearly dimmer than
+# foreground, still AA on background, card and muted.
+[semantic.muted-foreground]
+light = "color-mix(in srgb, {gray.7} 50%, {gray.6})"
+dark = "color-mix(in srgb, {dark.1} 75%, {dark.2})"
+
+[semantic.accent]
+light = "{gray.1}"
+dark = "{dark.6}"
+[semantic.accent-foreground]
+light = "{gray.9}"
+dark = "{gray.1}"
+
+[semantic.destructive]
+value = "{red.filled}"
+[semantic.destructive-hover]
+value = "{red.filled-hover}"
+[semantic.destructive-foreground]
+light = "{white}"
+dark = "{white}"
+
+# Status colors as text on the page background.
+[semantic.success]
+light = "{green.light-color}"
+dark = "{green.5}"
+[semantic.warning]
+light = "{yellow.light-color}"
+dark = "{yellow.5}"
+[semantic.info]
+light = "{cyan.light-color}"
+dark = "{cyan.4}"
+
+[semantic.border]
+light = "{gray.3}"
+dark = "{dark.6}"
+[semantic.input]
+light = "{gray.4}"
+dark = "{dark.5}"
+[semantic.ring]
+light = "{primary.6 / 55%}"
+dark = "{primary.4 / 60%}"
+# The backdrop of modal dialogs, drawers and the command palette: a light
+# dim plus [overlay] blur (shadcn-style) — the blur, not the darkness, sets
+# the dialog apart.
+[semantic.overlay]
+light = "{black / 10%}"
+dark = "{black / 50%}"
+# The outer border of what sits on the overlay: translucent, and the surfaces
+# clip their background to the padding box, so the border tints whatever is
+# behind it — always darker (light) or lighter (dark) than the dimmed page, a
+# crisp edge instead of a halo.
+[semantic.overlay-border]
+light = "{black / 16%}"
+dark = "{white / 14%}"
+[semantic.selection]
+light = "{primary.6 / 22%}"
+dark = "{primary.4 / 30%}"
+
+# ---------------------------------------------------------------------------
+# Charts: a categorical palette for series (use them in order) and the
+# chart chrome. ray-ds draws no charts: chartTheme() hands these, resolved
+# for the current theme, to a chart library (see CHARTS.md).
+# The build checks, in both schemes ([checks.chart]): each series color
+# against the background (non-text contrast, WCAG 1.4.11), and that the
+# colors stay apart — for normal vision and simulated color blindness.
+# ---------------------------------------------------------------------------
+
+[chart.1]
+light = "{blue.6}"
+dark = "{blue.5}"
+[chart.2]
+light = "{orange.8}"
+dark = "{orange.6}"
+[chart.3]
+light = "{teal.8}"
+dark = "{teal.5}"
+[chart.4]
+light = "{violet.6}"
+dark = "{violet.5}"
+[chart.5]
+light = "{pink.6}"
+dark = "{pink.5}"
+[chart.6]
+light = "color-mix(in srgb, {yellow.9} 70%, {green.9})"
+dark = "{yellow.5}"
+[chart.7]
+light = "{cyan.9}"
+dark = "{cyan.5}"
+[chart.8]
+light = "{gray.6}"
+dark = "{gray.6}"
+
+[chart.grid]
+light = "{gray.2}"
+dark = "{dark.6}"
+[chart.axis]
+value = "{muted-foreground}"
+[chart.text]
+value = "{foreground}"
+[chart.tooltip]
+value = "{popover}"
+[chart.tooltip-text]
+value = "{popover-foreground}"
+[chart.tooltip-border]
+value = "{border}"
+
+# ---------------------------------------------------------------------------
+# Code: syntax colors of highlighted code (the docs; any app showing code).
+# Text on the muted background, checked for AA in [checks] aa.
+# ---------------------------------------------------------------------------
+
+[code.background]
+value = "{muted}"
+[code.text]
+value = "{foreground}"
+[code.tag]
+value = "{green.light-color}"
+[code.attr]
+value = "{violet.light-color}"
+[code.string]
+value = "{blue.light-color}"
+[code.keyword]
+value = "{pink.light-color}"
+[code.number]
+value = "{orange.light-color}"
+[code.comment]
+value = "{muted-foreground}"
+[code.punctuation]
+value = "{muted-foreground}"
+
+# ---------------------------------------------------------------------------
+# Scales (scheme independent).
+# ---------------------------------------------------------------------------
+
+[font]
+sans = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+mono = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace'
+
+[font-size]
+xs = "0.75rem"
+sm = "0.875rem"
+md = "1rem"
+lg = "1.125rem"
+xl = "1.25rem"
+2xl = "1.5rem"
+3xl = "1.875rem"
+4xl = "2.25rem"
+
+[line-height]
+tight = "1.25"
+heading = "1.3"
+xs = "1.4"
+sm = "1.45"
+md = "1.55"
+lg = "1.6"
+xl = "1.65"
+
+[font-weight]
+regular = "400"
+medium = "500"
+semibold = "600"
+bold = "700"
+
+# 4px grid. Named steps (xs…xl) are Mantine's and drive component padding/gaps.
+[space]
+0 = "0"
+1 = "0.25rem"
+2 = "0.5rem"
+3 = "0.75rem"
+4 = "1rem"
+5 = "1.25rem"
+6 = "1.5rem"
+8 = "2rem"
+10 = "2.5rem"
+12 = "3rem"
+16 = "4rem"
+xs = "0.625rem"
+sm = "0.75rem"
+md = "1rem"
+lg = "1.25rem"
+xl = "2rem"
+
+[radius]
+xs = "0.125rem"
+sm = "0.25rem"
+md = "0.5rem"
+lg = "1rem"
+xl = "2rem"
+full = "9999px"
+default = "{radius.md}"
+
+# Height of buttons, inputs, selects… by size.
+[control-height]
+xs = "1.875rem"
+sm = "2.25rem"
+md = "2.625rem"
+lg = "3.125rem"
+xl = "3.75rem"
+
+[shadow]
+xs = "0 1px 3px {black / 5%}, 0 1px 2px {black / 10%}"
+sm = "0 1px 3px {black / 5%}, 0 10px 15px -5px {black / 5%}, 0 7px 7px -5px {black / 4%}"
+md = "0 1px 3px {black / 5%}, 0 20px 25px -5px {black / 5%}, 0 10px 10px -5px {black / 4%}"
+lg = "0 1px 3px {black / 5%}, 0 28px 23px -7px {black / 5%}, 0 12px 12px -7px {black / 4%}"
+xl = "0 1px 3px {black / 5%}, 0 36px 28px -7px {black / 5%}, 0 17px 17px -7px {black / 4%}"
+
+# variant="gradient" (buttons, badges): default colors and angle; per element
+# with gradient="from to [deg]". White text: both ends are checked for AA.
+[gradient]
+from = "{indigo.8}"
+to = "{violet.8}"
+deg = "45deg"
+
+# Blur of the page behind modal overlays (--ray-overlay-blur). "0px" turns it
+# off; per subtree with the CSS variable, per element with overlay-blur="…".
+[overlay]
+blur = "4px"
+
+[focus]
+ring-width = "2px"
+ring-offset = "2px"
+
+[duration]
+fast = "120ms"
+base = "200ms"
+slow = "300ms"
+
+[easing]
+standard = "cubic-bezier(0.2, 0, 0, 1)"
+in = "cubic-bezier(0.3, 0, 1, 1)"
+out = "cubic-bezier(0, 0, 0, 1)"
+
+[z]
+base = "0"
+sticky = "200"
+dropdown = "300"
+overlay = "400"
+modal = "500"
+popover = "600"
+toast = "700"
+tooltip = "800"
+
+# Exported to tokens.json only (see [meta] json_only): custom properties cannot
+# be used inside @media.
+[breakpoint]
+xs = "36em"
+sm = "48em"
+md = "62em"
+lg = "75em"
+xl = "88em"

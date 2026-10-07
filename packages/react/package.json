@@ -1,0 +1,21 @@
+{
+  "name": "@ray-ds/react",
+  "version": "0.3.0",
+  "description": "React wrappers of the ray-ds web components",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "sideEffects": ["./index.js"],
+  "peerDependencies": {
+    "@ray-ds/elements": "^0.3.0",
+    "react": ">=18"
+  }
+}

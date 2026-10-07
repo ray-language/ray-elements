@@ -1,0 +1,21 @@
+{
+  "name": "@ray-ds/vue",
+  "version": "0.3.0",
+  "description": "Vue 3 wrappers (with v-model) of the ray-ds web components",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "types": "./index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
+  "sideEffects": ["./index.js"],
+  "peerDependencies": {
+    "@ray-ds/elements": "^0.3.0",
+    "vue": ">=3.3"
+  }
+}

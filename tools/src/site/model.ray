@@ -1,0 +1,99 @@
+// What a page of the documentation site is made of. The generators
+// (components, foundations, guides, landing) build a Page; site/shell renders
+// it inside the shared layout (site/layout.ray.html).
+
+pub struct Link {
+    label: string,
+    href: string,
+}
+
+pub struct Group {
+    title: string,
+    links: [Link],
+}
+
+pub struct Page {
+    // docs/<file>
+    file: string,
+    // The site-nav entry this page belongs to ("home" for the landing).
+    key: string,
+    title: string,
+    description: string,
+    // Sidebar groups; empty: no sidebar.
+    groups: [Group],
+    body: string,
+    // Class of <main> (landing, prose, foundations…).
+    main_class: string,
+}
+
+// An entry of the site navigation, as the layout template shows it.
+pub struct NavItem {
+    label: string,
+    href: string,
+    current: bool,
+}
+
+// A bar of the landing's build-history chart.
+pub struct Bar {
+    month: string,
+    height: int,
+    opacity: int,
+}
+
+// A row of the landing's team card.
+pub struct Member {
+    name: string,
+    email: string,
+    role: string,
+    color: string,
+    badge: string,
+}
+
+pub fn page(
+    file: string,
+    key: string,
+    title: string,
+    description: string,
+    groups: [Group],
+    body: string,
+    main_class: string
+) -> Page {
+    Page {
+        file: file,
+        key: key,
+        title: title,
+        description: description,
+        groups: groups,
+        body: body,
+        main_class: main_class
+    }
+}
+
+pub fn link(label: string, href: string) -> Link {
+    Link { label: label, href: href }
+}
+
+// "Color palette" -> "color-palette" (ids of headings and sections).
+pub fn slug(s: string) -> string {
+    let out: [string] = [];
+    var dash = false;
+    for ch in s.to_lower().chars() {
+        let n = char_code(ch);
+        if ((n >= 97 && n <= 122) || (n >= 48 && n <= 57)) {
+            if (dash && out.len() > 0) {
+                out.push("-");
+            }
+            dash = false;
+            out.push(to_string(ch));
+        } else {
+            dash = true;
+        }
+    }
+    join(out, "")
+}
+
+@test
+fn slug_of_titles() {
+    assert_eq(slug("Color palette"), "color-palette");
+    assert_eq(slug("  ray-button (Button) "), "ray-button-button");
+}

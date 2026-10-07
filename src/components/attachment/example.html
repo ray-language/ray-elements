@@ -1,0 +1,31 @@
+<ray-attachments>
+  <ray-attachment name="screenshot.png" type="image/png" size="248320" removable
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Crect width='40' height='30' fill='%234dabf7'/%3E%3Ccircle cx='12' cy='10' r='4' fill='%23fff'/%3E%3Cpath d='M0 30 14 16l8 8 6-5 12 11z' fill='%231864ab'/%3E%3C/svg%3E"></ray-attachment>
+  <ray-attachment name="release-notes-0.4.1.pdf" type="application/pdf" size="1835008" href="#attachment" removable></ray-attachment>
+  <ray-attachment name="bundle-macos-arm64.zip" type="application/zip" size="8912896" progress="45" removable></ray-attachment>
+  <ray-attachment name="update.json" type="application/json" size="912" status="error" error="Signature mismatch" removable></ray-attachment>
+</ray-attachments>
+<ray-attachments style="margin-top: 1rem">
+  <ray-attachment variant="card" name="mockup.png" type="image/png" size="52224" removable
+    src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Crect width='40' height='30' fill='%2338d9a9'/%3E%3Crect x='6' y='6' width='28' height='4' rx='2' fill='%23fff'/%3E%3Crect x='6' y='14' width='18' height='10' rx='2' fill='%230ca678'/%3E%3C/svg%3E"></ray-attachment>
+  <ray-attachment variant="card" name="main.ray" type="text/plain" size="3072"></ray-attachment>
+</ray-attachments>
+<div style="margin-top: 1rem; display: grid; gap: 0.75rem">
+  <ray-file-upload id="demo-attach-input" label="Add files" variant="compact" multiple list="none"
+    drop-label="Drop files to attach"></ray-file-upload>
+  <ray-attachments id="demo-attach-list"></ray-attachments>
+</div>
+<script type="module">
+  // The upload only picks files; this list shows them (list="none" hides its own).
+  const list = document.getElementById("demo-attach-list");
+  const upload = document.getElementById("demo-attach-input");
+  upload.addEventListener("ray-change", (e) => {
+    for (const f of e.detail.added) {
+      const a = document.createElement("ray-attachment");
+      a.removable = true;
+      a.file = f;
+      list.append(a);
+    }
+    upload.files = [];
+  });
+</script>

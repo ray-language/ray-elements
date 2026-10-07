@@ -1,0 +1,432 @@
+// Token model: reads tokens.toml into an ordered list of tokens.
+//
+// Every token has a light and a dark raw value (equal when the token does not
+// depend on the color scheme). Raw values may contain references (`{blue.6}`,
+// `{black / 5%}`), resolved by `refs`.
+
+import std/fs;
+import std/toml;
+from std/toml import TomlEntry, TomlValue;
+
+pub struct Token {
+    name: string,
+    group: string,
+    light: string,
+    dark: string,
+    css: bool,
+}
+
+pub struct Model {
+    prefix: string,
+    primary: string,
+    colors: [string],
+    variants: [string],
+    tokens: [Token],
+    aa_checks: [string],
+    // Colors whose shades are set at runtime (definePrimary): not measurable at build time.
+    runtime: [string],
+    chart: ChartChecks,
+}
+
+// [checks.chart]: the categorical chart palette.
+pub struct ChartChecks {
+    series: [string],
+    min_contrast: float,
+    min_distance: float,
+    min_distance_cvd: float,
+}
+
+pub struct Variant {
+    name: string,
+    light: string,
+    dark: string,
+}
+
+// `scheme` is "light", "dark" or "" (both).
+struct Override {
+    scheme: string,
+    color: string,
+    variant: string,
+    value: string,
+}
+
+pub fn token(name: string, group: string, light: string, dark: string) -> Token {
+    Token { name: name, group: group, light: light, dark: dark, css: true }
+}
+
+pub fn depends_on_scheme(t: Token) -> bool {
+    t.light != t.dark
+}
+
+pub fn find(m: Model, name: string) -> Option<Token> {
+    for t in m.tokens {
+        if (t.name == name) {
+            return Option.Some(t);
+        }
+    }
+    Option.None
+}
+
+pub fn load(path: string) -> Result<Model, string> {
+    let src = fs.read_file(path).map_err(fn(e: string) -> string { "${path}: ${e}" })?;
+    parse(src)
+}
+
+pub fn parse(src: string) -> Result<Model, string> {
+    let entries = toml.parse_toml(src)?;
+    var prefix = "ray";
+    var primary = "blue";
+    let json_only: [string] = [];
+    let runtime: [string] = [];
+    let chart_checks = ChartChecks {
+        series: [],
+        min_contrast: 3.0,
+        min_distance: 0.0,
+        min_distance_cvd: 0.0
+    };
+    let aa: [string] = [];
+    let base: [Token] = [];
+    let palette: [Token] = [];
+    let colors: [string] = [];
+    let variants: [Variant] = [];
+    let overrides: [Override] = [];
+    let semantic: [Token] = [];
+    let chart: [Token] = [];
+    let scales: [Token] = [];
+
+    for e in entries {
+        let parts = e.key.split(".");
+        let head = parts[0];
+        if (head == "meta") {
+            let key = rest(parts, 1);
+            if (key == "prefix") {
+                prefix = str_of(e)?;
+            } else if (key == "primary") {
+                primary = str_of(e)?;
+            } else if (key == "json_only") {
+                for s in strs_of(e)? {
+                    json_only.push(s);
+                }
+            } else if (key == "runtime_colors") {
+                for s in strs_of(e)? {
+                    runtime.push(s);
+                }
+            } else {
+                return Result.Err("unknown meta key '${key}'");
+            }
+        } else if (head == "checks") {
+            let key = rest(parts, 1);
+            if (key == "aa") {
+                for s in strs_of(e)? {
+                    aa.push(s);
+                }
+            } else if (key == "chart.series") {
+                chart_checks.series = strs_of(e)?;
+            } else if (key == "chart.min_contrast") {
+                chart_checks.min_contrast = num_of(e)?;
+            } else if (key == "chart.min_distance") {
+                chart_checks.min_distance = num_of(e)?;
+            } else if (key == "chart.min_distance_cvd") {
+                chart_checks.min_distance_cvd = num_of(e)?;
+            } else {
+                return Result.Err("unknown checks key '${e.key}'");
+            }
+        } else if (head == "base") {
+            let v = str_of(e)?;
+            base.push(token(rest(parts, 1), "base", v, v));
+        } else if (head == "palette") {
+            if (parts.len() != 3) {
+                return Result.Err("palette keys are palette.<color>.<shade>: '${e.key}'");
+            }
+            let color = parts[1];
+            if (!colors.contains(color)) {
+                colors.push(color);
+            }
+            let v = str_of(e)?;
+            palette.push(token("${color}-${parts[2]}", "palette", v, v));
+        } else if (head == "variants") {
+            let v = str_of(e)?;
+            if (parts.len() == 3 && (parts[1] == "light" || parts[1] == "dark")) {
+                set_variant(variants, parts[2], parts[1], v);
+            } else if (parts.len() == 4 && is_override_table(parts[1])) {
+                overrides.push(
+                    Override {
+                        scheme: override_scheme(parts[1]),
+                        color: parts[2],
+                        variant: parts[3],
+                        value: v
+                    }
+                );
+            } else {
+                return Result.Err("unknown variants key '${e.key}'");
+            }
+        } else if (head == "semantic") {
+            if (parts.len() != 3) {
+                return Result.Err(
+                    "semantic keys are semantic.<name>.<light|dark|value>: '${e.key}'"
+                );
+            }
+            let v = str_of(e)?;
+            set_semantic(semantic, parts[1], parts[2], v, "semantic", parts[1])?;
+        } else if (head == "chart" || head == "code") {
+            // Like semantic (light/dark or value), named chart-<key> / code-<key>.
+            if (parts.len() != 3) {
+                return Result.Err("chart keys are chart.<name>.<light|dark|value>: '${e.key}'");
+            }
+            let v = str_of(e)?;
+            set_semantic(chart, "${head}-${parts[1]}", parts[2], v, head, parts[1])?;
+        } else {
+            let v = str_of(e)?;
+            let name = join(parts, "-");
+            var t = token(name, head, v, v);
+            t.css = !json_only.contains(head);
+            scales.push(t);
+        }
+    }
+
+    for s in semantic + chart {
+        if (s.light == "" || s.dark == "") {
+            return Result.Err("${s.group}.${s.name} needs both light and dark (or a single value)");
+        }
+    }
+    if (!colors.contains(primary)) {
+        return Result.Err("meta.primary '${primary}' is not a palette color");
+    }
+    for o in overrides {
+        if (!colors.contains(o.color)) {
+            return Result.Err("variants.override.${o.color}: not a palette color");
+        }
+        if (!has_variant(variants, o.variant)) {
+            return Result.Err("variants.override.${o.color}.${o.variant}: unknown variant");
+        }
+    }
+
+    // Runtime colors: ten shades read from --<prefix>-<c>-src-N (set by
+    // definePrimary), falling back to the primary color's.
+    for c in runtime {
+        if (colors.contains(c)) {
+            return Result.Err("meta.runtime_colors: '${c}' is also a palette color");
+        }
+        colors.push(c);
+        for t in palette.filter(fn(t: Token) -> bool { t.group == "palette" && t.name.starts_with("${primary}-") }) {
+            let shade = t.name.substring(primary.len() + 1, t.name.len());
+            let v = "var(--${prefix}-${c}-src-${shade}, ${t.light})";
+            palette.push(token("${c}-${shade}", "palette", v, v));
+        }
+        // Its filled shade and text are chosen at runtime too: a bright color
+        // fills with itself and black text, like yellow in the palette.
+        let contrast = "var(--${prefix}-${c}-src-contrast, {white})";
+        overrides.push(Override { scheme: "", color: c, variant: "contrast", value: contrast });
+        for (variant, fallback) in [("filled", "8"), ("filled-hover", "9")] {
+            let v = "var(--${prefix}-${c}-src-${variant}, {${c}.${fallback}})";
+            overrides.push(Override { scheme: "", color: c, variant: variant, value: v });
+        }
+    }
+
+    let tokens: [Token] = [];
+    for t in base {
+        tokens.push(t);
+    }
+    for t in palette {
+        tokens.push(t);
+    }
+    for c in colors {
+        for v in variants {
+            let light = override_or(overrides, "light", c, v.name, v.light).replace(
+                "{c.",
+                "{${c}."
+            );
+            let dark = override_or(overrides, "dark", c, v.name, v.dark).replace("{c.", "{${c}.");
+            tokens.push(token("${c}-${v.name}", "variant", light, dark));
+        }
+    }
+    for t in primary_tokens(primary, palette_shades(palette, primary), variants) {
+        tokens.push(t);
+    }
+    for t in semantic {
+        tokens.push(t);
+    }
+    for t in chart {
+        tokens.push(t);
+    }
+    for t in scales {
+        tokens.push(t);
+    }
+
+    let variant_names: [string] = variants.map(fn(v: Variant) -> string { v.name });
+    Result.Ok(
+        Model {
+            prefix: prefix,
+            primary: primary,
+            colors: colors,
+            variants: variant_names,
+            tokens: tokens,
+            aa_checks: aa,
+            runtime: runtime,
+            chart: chart_checks
+        }
+    )
+}
+
+// The `primary-*` aliases of a color: one per shade and one per variant.
+pub fn primary_tokens(color: string, shades: [string], variants: [Variant]) -> [Token] {
+    let out: [Token] = [];
+    for s in shades {
+        let v = "{${color}.${s}}";
+        out.push(token("primary-${s}", "primary", v, v));
+    }
+    for v in variants {
+        let r = "{${color}.${v.name}}";
+        out.push(token("primary-${v.name}", "primary", r, r));
+    }
+    out
+}
+
+// Same as `primary_tokens`, for a model already loaded (used by data-primary blocks).
+pub fn primary_aliases(m: Model, color: string) -> [Token] {
+    let shades: [string] = [];
+    for t in m.tokens {
+        if (t.group == "palette" && t.name.starts_with("${color}-")) {
+            shades.push(t.name.substring(color.len() + 1, t.name.len()));
+        }
+    }
+    let vs: [Variant] = m.variants.map(fn(n: string) -> Variant { Variant { name: n, light: "", dark: "" } });
+    primary_tokens(color, shades, vs)
+}
+
+fn palette_shades(palette: [Token], color: string) -> [string] {
+    let out: [string] = [];
+    for t in palette {
+        if (t.name.starts_with("${color}-")) {
+            out.push(t.name.substring(color.len() + 1, t.name.len()));
+        }
+    }
+    out
+}
+
+fn set_variant(vs: [Variant], name: string, scheme: string, v: string) {
+    for x in vs {
+        if (x.name == name) {
+            if (scheme == "light") {
+                x.light = v;
+            } else {
+                x.dark = v;
+            }
+            return;
+        }
+    }
+    // First sighting: both schemes start with this value; the other table overrides it.
+    vs.push(Variant { name: name, light: v, dark: v });
+}
+
+fn has_variant(vs: [Variant], name: string) -> bool {
+    for v in vs {
+        if (v.name == name) {
+            return true;
+        }
+    }
+    false
+}
+
+// The most specific override wins: [variants.override-<scheme>.<c>] over
+// [variants.override.<c>], whatever their order in the file.
+fn override_or(
+    os: [Override],
+    scheme: string,
+    color: string,
+    variant: string,
+    fallback: string
+) -> string {
+    var v = fallback;
+    for o in os {
+        if (o.color == color && o.variant == variant && o.scheme == "") {
+            v = o.value;
+        }
+    }
+    for o in os {
+        if (o.color == color && o.variant == variant && o.scheme == scheme) {
+            v = o.value;
+        }
+    }
+    v
+}
+
+fn is_override_table(t: string) -> bool {
+    t == "override" || t == "override-light" || t == "override-dark"
+}
+
+fn override_scheme(t: string) -> string {
+    t.strip_prefix("override-").unwrap_or("")
+}
+
+fn set_semantic(
+    ts: [Token],
+    name: string,
+    field: string,
+    v: string,
+    group: string,
+    key: string
+) -> Result<int, string> {
+    var found = false;
+    for t in ts {
+        if (t.name == name) {
+            found = true;
+            apply_semantic(t, field, v)?;
+        }
+    }
+    if (!found) {
+        let t = token(name, group, "", "");
+        apply_semantic(t, field, v)?;
+        ts.push(t);
+    }
+    Result.Ok(0)
+}
+
+fn apply_semantic(t: Token, field: string, v: string) -> Result<int, string> {
+    if (field == "light") {
+        t.light = v;
+    } else if (field == "dark") {
+        t.dark = v;
+    } else if (field == "value") {
+        t.light = v;
+        t.dark = v;
+    } else {
+        return Result.Err("semantic.${t.name}.${field}: expected light, dark or value");
+    }
+    Result.Ok(0)
+}
+
+fn rest(parts: [string], from_index: int) -> string {
+    join(parts.slice(from_index, parts.len()), ".")
+}
+
+fn str_of(e: TomlEntry) -> Result<string, string> {
+    match (e.value) {
+        TomlValue.TStr(s) => Result.Ok(s),
+        _ => Result.Err("${e.key}: expected a string, got ${toml.toml_show(e.value)}"),
+    }
+}
+
+fn num_of(e: TomlEntry) -> Result<float, string> {
+    match (e.value) {
+        TomlValue.TFloat(f) => Result.Ok(f),
+        TomlValue.TInt(n) => Result.Ok(n as float),
+        _ => Result.Err("${e.key}: expected a number"),
+    }
+}
+
+fn strs_of(e: TomlEntry) -> Result<[string], string> {
+    match (e.value) {
+        TomlValue.TArray(items) => {
+            let out: [string] = [];
+            for it in items {
+                match (it) {
+                    TomlValue.TStr(s) => out.push(s),
+                    _ => return Result.Err("${e.key}: expected an array of strings"),
+                }
+            }
+            Result.Ok(out)
+        },
+        _ => Result.Err("${e.key}: expected an array of strings"),
+    }
+}

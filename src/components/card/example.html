@@ -1,0 +1,16 @@
+<div class="demo-grid">
+  <ray-card with-border shadow="sm">
+    <strong slot="header">Deploy ray-remote</strong>
+    <p style="margin: 0; color: var(--ray-muted-foreground)">Builds the native bundle and publishes a signed update.json.</p>
+    <div slot="footer" class="demo-row"><ray-button size="xs">Deploy</ray-button><ray-button size="xs" variant="default">Cancel</ray-button></div>
+  </ray-card>
+  <ray-card padding="lg" radius="lg" style="background: var(--ray-muted)">
+    <strong>No border, large padding</strong>
+    <p style="margin: 0.5rem 0 0; color: var(--ray-muted-foreground)">Cards take the card tokens; any surface can be overridden with plain CSS.</p>
+  </ray-card>
+</div>
+<div class="demo-grid">
+  <ray-card variant="default" with-border><strong>default</strong> · card surface</ray-card>
+  <ray-card variant="filled"><strong>filled</strong> · muted surface</ray-card>
+  <ray-card variant="outline"><strong>outline</strong> · border, no fill</ray-card>
+</div>

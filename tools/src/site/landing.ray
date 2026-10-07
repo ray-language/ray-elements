@@ -1,0 +1,125 @@
+// docs/index.html: the landing page (markup in site/home.ray.html).
+
+from site/model import Page, Bar, Member, page;
+import site/home;
+import site/highlight;
+import site/brand;
+import site/shell;
+
+const HTML_SNIPPET: string = `<link rel="stylesheet" href="ray-ds/tokens.css">
+<script type="module" src="ray-ds/index.js"></script>
+
+<form>
+  <ray-input name="email" label="Email" type="email" required></ray-input>
+  <ray-switch name="remember" label="Remember me" checked></ray-switch>
+  <ray-button type="submit">Sign in</ray-button>
+</form>`;
+
+const REACT_SNIPPET: string = `import { RayButton, RayInput, RaySwitch } from "@ray-ds/react";
+
+export function SignIn() {
+  const [email, setEmail] = useState("");
+  return (
+    <form>
+      <RayInput name="email" label="Email" type="email" required
+        value={email} onInput={(e) => setEmail(e.currentTarget.value)} />
+      <RaySwitch name="remember" label="Remember me" checked />
+      <RayButton type="submit">Sign in</RayButton>
+    </form>
+  );
+}`;
+
+const VUE_SNIPPET: string = `<script setup lang="ts">
+import { ref } from "vue";
+const email = ref("");
+const remember = ref(true);
+</script>
+
+<template>
+  <form>
+    <RayInput v-model="email" name="email" label="Email" type="email" required />
+    <RaySwitch v-model="remember" name="remember" label="Remember me" />
+    <RayButton type="submit">Sign in</RayButton>
+  </form>
+</template>`;
+
+// Builds per month (example data for the showcase).
+const BUILDS: [(string, int)] = [
+    ("May", 18),
+    ("Jun", 34),
+    ("Jul", 27),
+    ("Aug", 41),
+    ("Sep", 22),
+    ("Oct", 12)
+];
+
+fn bars() -> [Bar] {
+    var top = 1;
+    for (_, n) in BUILDS {
+        if (n > top) {
+            top = n;
+        }
+    }
+    let out: [Bar] = [];
+    for (month, n) in BUILDS {
+        // Taller bars are more opaque: the busiest month stands out.
+        out.push(Bar { month: month, height: n * 100 / top, opacity: 35 + n * 65 / top });
+    }
+    out
+}
+
+fn team() -> [Member] {
+    [
+        Member {
+            name: "Ada Lovelace",
+            email: "ada@example.com",
+            role: "Owner",
+            color: "teal",
+            badge: "blue"
+        },
+        Member {
+            name: "Grace Hopper",
+            email: "grace@example.com",
+            role: "Reviewer",
+            color: "violet",
+            badge: "gray"
+        },
+        Member {
+            name: "Alan Kay",
+            email: "alan@example.com",
+            role: "Reviewer",
+            color: "orange",
+            badge: "gray"
+        }
+    ]
+}
+
+pub fn render(components: int, version: string, colors: [string]) -> Page {
+    // The swatches are palette colors; "custom" (definePrimary) has no fixed shade to show.
+    let palette: [string] = [];
+    for c in colors {
+        if (c != "custom") {
+            palette.push(c);
+        }
+    }
+    let body = home.render(
+        brand.mark(shell.INK, 88, false),
+        bars(),
+        team(),
+        components,
+        version,
+        palette,
+        highlight.code(HTML_SNIPPET, "html"),
+        highlight.code(REACT_SNIPPET, "tsx"),
+        highlight.code(VUE_SNIPPET, "vue")
+    );
+    page(
+        "index.html",
+        "home",
+        "ray·ds",
+        "Accessible, themeable web components for raylang apps: plain HTML, React or Vue.",
+        [],
+        body,
+        "landing"
+    )
+}

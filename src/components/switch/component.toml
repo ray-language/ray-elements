@@ -1,0 +1,61 @@
+[component]
+name = "Switch"
+category = "Inputs"
+summary = "An on/off toggle with the same API as Checkbox, announced as a switch."
+files = ["switch.js"]
+requires = ["checkbox"]
+tags = ["ray-switch"]
+
+[ray-switch]
+class = "RaySwitch"
+summary = "Same properties and events as ray-checkbox (indeterminate does not apply)."
+extends = "RayCheckbox"
+
+[ray-switch.properties.checked]
+attribute = false
+type = "boolean"
+description = "Current state. The checked attribute is the initial state."
+
+[ray-switch.properties.value]
+type = "string"
+default = "on"
+description = "Submitted value when on."
+
+[ray-switch.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-switch.properties.label]
+type = "string"
+description = "Label text (or the content)."
+
+[ray-switch.properties.color]
+type = "string"
+description = "Track color when on."
+
+[ray-switch.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Track size."
+
+[ray-switch.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-switch.events.change]
+description = "When the user toggles it."
+
+[ray-switch.slots.default]
+description = "Label content."
+
+[ray-switch.parts.track]
+description = "The track."
+
+[ray-switch.parts.thumb]
+description = "The thumb."
+
+[ray-switch.model]
+property = "checked"
+events = ["change"]

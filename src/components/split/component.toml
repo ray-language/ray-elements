@@ -1,0 +1,74 @@
+[component]
+name = "Split"
+category = "Layout"
+summary = "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered."
+files = ["split.js"]
+requires = []
+tags = ["ray-split"]
+
+[ray-split]
+class = "RaySplit"
+extends = "RayElement"
+summary = "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane."
+
+[ray-split.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "horizontal: side by side; vertical: stacked."
+
+[ray-split.properties.position]
+type = "string"
+default = "50%"
+description = "Initial size of the start pane: px (280) or any CSS length (30%, 20rem)."
+
+[ray-split.properties.min]
+type = "number"
+default = "0"
+description = "Minimum size of the start pane in px."
+
+[ray-split.properties.max]
+type = "number"
+description = "Maximum size of the start pane in px."
+
+[ray-split.properties.collapsed]
+type = "boolean"
+reflect = true
+description = "The start pane is hidden."
+
+[ray-split.properties.disabled]
+type = "boolean"
+reflect = true
+description = "The divider cannot be moved."
+
+[ray-split.properties.autosave]
+type = "string"
+description = "A key: the size is saved in localStorage and restored."
+
+[ray-split.events.ray-resize]
+description = "After a drag, a key or a collapse."
+detail = "{ size: number; collapsed: boolean }"
+
+[ray-split.slots.start]
+description = "The sized pane (sidebar)."
+
+[ray-split.slots.end]
+description = "The pane that takes the rest."
+
+[ray-split.parts.divider]
+description = "The separator."
+
+[ray-split.parts.start]
+description = "The start pane."
+
+[ray-split.parts.end]
+description = "The end pane."
+
+[ray-split.members.size]
+ts = "readonly size: number"
+description = "The start pane's size in px."
+
+[ray-split.members.toggle]
+ts = "toggle(): void"
+description = "Collapses or restores the start pane."

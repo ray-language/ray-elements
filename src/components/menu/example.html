@@ -1,0 +1,23 @@
+<div class="demo-row">
+  <ray-menu id="demo-menu">
+    <ray-button slot="trigger" variant="default">File</ray-button>
+    <ray-menu-label>Project</ray-menu-label>
+    <ray-menu-item value="new">New file <ray-kbd slot="right" size="xs">⌘N</ray-kbd></ray-menu-item>
+    <ray-menu-item value="open">Open… <ray-kbd slot="right" size="xs">⌘O</ray-kbd></ray-menu-item>
+    <ray-menu-item value="save" disabled>Save</ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-item value="delete" color="red">Delete project</ray-menu-item>
+  </ray-menu>
+  <span id="demo-menu-result" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick an item</span>
+</div>
+<ray-menu context>
+  <div slot="trigger" style="display: grid; place-items: center; height: 6rem; border: 1px dashed var(--ray-border); border-radius: var(--ray-radius-default); color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Right-click here</div>
+  <ray-menu-item>Copy</ray-menu-item>
+  <ray-menu-item>Paste</ray-menu-item>
+  <ray-menu-item>Reveal in Finder</ray-menu-item>
+</ray-menu>
+<script type="module">
+  document.getElementById("demo-menu").addEventListener("ray-select", (e) => {
+    document.getElementById("demo-menu-result").textContent = `Chose: ${e.detail.value}`;
+  });
+</script>

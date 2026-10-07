@@ -1,0 +1,98 @@
+[component]
+name = "Tabs"
+category = "Navigation"
+summary = "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation."
+files = ["tabs.js"]
+requires = []
+tags = ["ray-tabs", "ray-tab", "ray-tab-panel"]
+
+[ray-tabs]
+class = "RayTabs"
+extends = "RayElement"
+
+[ray-tabs.properties.value]
+type = "string"
+description = "Value of the active tab (default: the first enabled one)."
+
+[ray-tabs.properties.variant]
+type = "string"
+values = ["default", "outline", "pills"]
+default = "default"
+reflect = true
+description = "Tab style."
+
+[ray-tabs.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Tab list direction (and arrow keys)."
+
+[ray-tabs.properties.color]
+type = "string"
+reflect = true
+description = "Active indicator color."
+
+[ray-tabs.properties.activation]
+type = "string"
+values = ["auto", "manual"]
+default = "auto"
+description = "manual: arrows move focus, Enter/Space activates."
+
+[ray-tabs.properties.grow]
+type = "boolean"
+reflect = true
+description = "Tabs share the full width."
+
+[ray-tabs.events.change]
+description = "The user activated another tab."
+
+[ray-tabs.slots.default]
+description = "ray-tab and ray-tab-panel elements (tabs move to the tab list on their own)."
+
+[ray-tabs.parts.list]
+description = "The tab list."
+
+[ray-tabs.parts.panels]
+description = "The panel area."
+
+[ray-tab]
+class = "RayTab"
+extends = "RayElement"
+
+[ray-tab.properties.value]
+type = "string"
+reflect = true
+description = "Matches a ray-tab-panel's value."
+
+[ray-tab.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Cannot be activated."
+
+[ray-tab.slots.left]
+description = "Icon."
+
+[ray-tab.slots.right]
+description = "Badge or count."
+
+[ray-tab-panel]
+class = "RayTabPanel"
+extends = "RayElement"
+
+[ray-tab-panel.properties.value]
+type = "string"
+reflect = true
+description = "Matches a ray-tab's value."
+
+[ray-tabs.model]
+property = "value"
+events = ["change"]
+
+[ray-tabs.members.tabs]
+ts = "readonly tabs: RayTab[]"
+description = "The tabs."
+
+[ray-tabs.members.panels]
+ts = "readonly panels: RayTabPanel[]"
+description = "The panels."

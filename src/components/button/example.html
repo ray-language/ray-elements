@@ -1,0 +1,50 @@
+<div class="demo-caption">Variants × colors</div>
+<div class="demo-scroll">
+  <div class="demo-matrix" style="--demo-cols: 4" id="demo-raised">
+    <span></span><span class="demo-matrix-head">primary</span><span class="demo-matrix-head">gray</span><span class="demo-matrix-head">red</span><span class="demo-matrix-head">teal</span>
+    <span class="demo-matrix-label">filled</span><ray-button>Button</ray-button><ray-button color="gray">Button</ray-button><ray-button color="red">Button</ray-button><ray-button color="teal">Button</ray-button>
+    <span class="demo-matrix-label">light</span><ray-button variant="light">Button</ray-button><ray-button variant="light" color="gray">Button</ray-button><ray-button variant="light" color="red">Button</ray-button><ray-button variant="light" color="teal">Button</ray-button>
+    <span class="demo-matrix-label">outline</span><ray-button variant="outline">Button</ray-button><ray-button variant="outline" color="gray">Button</ray-button><ray-button variant="outline" color="red">Button</ray-button><ray-button variant="outline" color="teal">Button</ray-button>
+    <span class="demo-matrix-label">subtle</span><ray-button variant="subtle">Button</ray-button><ray-button variant="subtle" color="gray">Button</ray-button><ray-button variant="subtle" color="red">Button</ray-button><ray-button variant="subtle" color="teal">Button</ray-button>
+    <span class="demo-matrix-label">default</span><ray-button variant="default">Button</ray-button><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span>
+    <span class="demo-matrix-label">transparent</span><ray-button variant="transparent">Button</ray-button><ray-button variant="transparent" color="gray">Button</ray-button><ray-button variant="transparent" color="red">Button</ray-button><ray-button variant="transparent" color="teal">Button</ray-button>
+    <span class="demo-matrix-label">raised</span><ray-button variant="raised">Button</ray-button><ray-button variant="raised" color="gray">Button</ray-button><ray-button variant="raised" color="red">Button</ray-button><ray-button variant="raised" color="teal">Button</ray-button>
+  </div>
+</div>
+<p class="demo-muted" style="margin: 0">default is the neutral surface and ignores color. Any palette name or CSS color works: <code>color="#8e44ad"</code>.</p>
+
+<div class="demo-caption">Gradient</div>
+<div class="demo-row">
+  <ray-button variant="gradient">Theme gradient</ray-button>
+  <ray-button variant="gradient" gradient="pink orange 90">pink → orange</ray-button>
+  <ray-button variant="gradient" gradient="#0f766e #1d4ed8 135">Raw colors</ray-button>
+</div>
+
+<div class="demo-caption">Sizes</div>
+<div class="demo-row">
+  <ray-button size="xs">Extra small</ray-button>
+  <ray-button size="sm">Small</ray-button>
+  <ray-button size="md">Medium</ray-button>
+  <ray-button size="lg">Large</ray-button>
+  <ray-button size="xl">Extra large</ray-button>
+</div>
+
+<div class="demo-caption">Radius</div>
+<div class="demo-row">
+  <ray-button variant="light" radius="xs">xs</ray-button>
+  <ray-button variant="light" radius="sm">sm</ray-button>
+  <ray-button variant="light" radius="md">md</ray-button>
+  <ray-button variant="light" radius="lg">lg</ray-button>
+  <ray-button variant="light" radius="full">full</ray-button>
+</div>
+
+<div class="demo-caption">Icons, states and links</div>
+<div class="demo-row">
+  <ray-button variant="default"><ray-icon slot="left" name="plus"></ray-icon>New file</ray-button>
+  <ray-button>Continue<ray-icon slot="right" name="chevron-right"></ray-icon></ray-button>
+  <ray-icon-button variant="light" label="Settings"><ray-icon name="settings"></ray-icon></ray-icon-button>
+  <ray-button loading>Saving</ray-button>
+  <ray-button disabled>Disabled</ray-button>
+  <ray-button href="#button" variant="subtle">Link<ray-icon slot="right" name="arrow-up-right"></ray-icon></ray-button>
+</div>
+<ray-button full-width variant="raised" color="teal">Full width</ray-button>

@@ -1,0 +1,35 @@
+[component]
+name = "Empty state"
+category = "Feedback"
+summary = "What a list, table or pane shows when it is empty: icon, title, text and the action that fills it."
+files = ["empty-state.js"]
+requires = []
+tags = ["ray-empty-state"]
+
+[ray-empty-state]
+class = "RayEmptyState"
+extends = "RayElement"
+
+[ray-empty-state.properties.label]
+type = "string"
+description = "Title."
+
+[ray-empty-state.properties.compact]
+type = "boolean"
+reflect = true
+description = "Less padding."
+
+[ray-empty-state.properties.withBorder]
+attribute = "with-border"
+type = "boolean"
+reflect = true
+description = "Dashed border."
+
+[ray-empty-state.slots.default]
+description = "Text."
+
+[ray-empty-state.slots.icon]
+description = "Icon, shown in a circle."
+
+[ray-empty-state.slots.actions]
+description = "Buttons."

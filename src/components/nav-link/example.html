@@ -1,0 +1,14 @@
+<nav style="width: 16rem; display: grid; gap: 0.125rem">
+  <ray-nav-link label="Dashboard" href="#nav-link" active>
+    <svg slot="left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+  </ray-nav-link>
+  <ray-nav-link label="Builds" description="3 running" href="#nav-link">
+    <ray-badge slot="right" size="xs" color="teal">3</ray-badge>
+  </ray-nav-link>
+  <ray-nav-link label="Settings" opened>
+    <ray-nav-link label="General" href="#nav-link"></ray-nav-link>
+    <ray-nav-link label="Security" href="#nav-link"></ray-nav-link>
+    <ray-nav-link label="Billing" href="#nav-link" disabled></ray-nav-link>
+  </ray-nav-link>
+  <ray-nav-link label="Filled variant" variant="filled" active href="#nav-link"></ray-nav-link>
+</nav>

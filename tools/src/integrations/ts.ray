@@ -1,0 +1,118 @@
+// TypeScript helpers shared by the generated declarations.
+
+from components/meta import Prop, Named, Decl, Element, all_props, pascal;
+
+// Properties HTMLElement already declares: their types come from the DOM lib
+// (redeclaring them, e.g. `autofocus: boolean | undefined`, would not compile).
+const DOM_PROPS: [string] = [
+    "autofocus",
+    "hidden",
+    "title",
+    "id",
+    "slot",
+    "lang",
+    "dir",
+    "inert",
+    "tabIndex",
+    "draggable",
+    "spellcheck",
+    "translate",
+    "accessKey",
+    "popover",
+    "role",
+    "className",
+    "nonce"
+];
+
+pub fn is_dom_prop(name: string) -> bool {
+    DOM_PROPS.contains(name)
+}
+
+// The TypeScript type of a property.
+pub fn prop_type(p: Prop) -> string {
+    if (p.ts != "") {
+        return p.ts;
+    }
+    if (p.values.len() > 0) {
+        return join(p.values.map(fn(v: string) -> string { "\"${v}\"" }), " | ");
+    }
+    match (p.kind) {
+        "boolean" => "boolean",
+        "number" => "number",
+        "array" => "unknown[]",
+        _ => "string",
+    }
+}
+
+// Events named like DOM events (change, input) are plain Events; ray-* are CustomEvents.
+pub fn event_type(n: Named) -> string {
+    if (!n.name.starts_with("ray-")) {
+        return "Event";
+    }
+    let detail = if (n.detail == "") { "unknown" } else { n.detail };
+    "CustomEvent<${detail}>"
+}
+
+// onChange, onRaySelect…
+pub fn handler_name(event: string) -> string {
+    "on${pascal(event)}"
+}
+
+// A JSDoc line (empty when there is nothing to say).
+pub fn doc(text: string, indent: string) -> string {
+    if (text == "") {
+        return "";
+    }
+    "${indent}/** ${text.replace("*/", "* /")} */\n"
+}
+
+pub fn quote(s: string) -> string {
+    "\"${s.replace("\\", "\\\\").replace("\"", "\\\"")}\""
+}
+
+// `"a", "b"` for a JS array literal.
+pub fn js_list(items: [string]) -> string {
+    join(items.map(fn(s: string) -> string { quote(s) }), ", ")
+}
+
+// The names of the properties a wrapper sets as DOM properties.
+pub fn wrapper_props(els: [Element], el: Element) -> [string] {
+    let out: [string] = [];
+    for p in all_props(els, el) {
+        if (!is_dom_prop(p.name)) {
+            out.push(p.name);
+        }
+    }
+    out
+}
+
+@test
+fn types_of_properties() {
+    let p = Prop {
+        name: "size",
+        attribute: "size",
+        kind: "string",
+        values: ["xs", "sm"],
+        default_value: "sm",
+        reflect: true,
+        ts: "",
+        description: ""
+    };
+    assert_eq(prop_type(p), "\"xs\" | \"sm\"");
+    p.values = [];
+    p.kind = "boolean";
+    assert_eq(prop_type(p), "boolean");
+    p.ts = "string[]";
+    assert_eq(prop_type(p), "string[]");
+}
+
+@test
+fn event_types_and_handlers() {
+    assert_eq(event_type(Named { name: "change", description: "", detail: "" }), "Event");
+    assert_eq(
+        event_type(Named { name: "ray-close", description: "", detail: "{ a: string }" }),
+        "CustomEvent<{ a: string }>"
+    );
+    assert_eq(handler_name("ray-request-close"), "onRayRequestClose");
+    assert_eq(quote("a\"b"), "\"a\\\"b\"");
+}
