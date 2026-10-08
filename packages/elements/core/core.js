@@ -279,10 +279,13 @@ export class RayElement extends HTMLElement {
   #settle() {
     if (this.#settled || this.#settling) return;
     this.#settling = true;
-    requestAnimationFrame(() => requestAnimationFrame(() => {
+    const done = () => {
       this.#settled = true;
       this.#adoptStyles();
-    }));
+    };
+    // A hidden page paints nothing (and runs no frames): nothing to animate.
+    if (document.visibilityState === "hidden") queueMicrotask(done);
+    else requestAnimationFrame(() => requestAnimationFrame(done));
   }
   #settling = false;
 

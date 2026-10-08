@@ -1,0 +1,80 @@
+[component]
+name = "App shell"
+category = "Layout"
+summary = "The frame of an app (Mantine's AppShell): header, navbar, main, aside and footer on wide screens; on phones one column with a bottom bar. The main content scrolls, the bars stay."
+files = ["app-shell.js"]
+requires = []
+tags = ["ray-app-shell"]
+
+[ray-app-shell]
+class = "RayAppShell"
+extends = "RayElement"
+summary = "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized."
+
+[ray-app-shell.properties.layout]
+type = "string"
+values = ["default", "alt"]
+default = "default"
+reflect = true
+description = "default: the header across the top; alt: the navbar full height, the header beside it."
+
+[ray-app-shell.properties.breakpoint]
+type = "string"
+default = "48em"
+description = "Width (px, em or rem) below which it takes the phone layout."
+
+[ray-app-shell.properties.padding]
+type = "string"
+reflect = true
+description = "Padding of the main area: xs…xl, a number (px) or a CSS length."
+
+[ray-app-shell.events.ray-breakpoint]
+detail = "{ mobile: boolean }"
+description = "It switched between the wide and the phone layout."
+
+[ray-app-shell.slots.default]
+description = "The main content (it scrolls)."
+
+[ray-app-shell.slots.header]
+description = "Top bar: a ray-app-bar or a header of your own."
+
+[ray-app-shell.slots.navbar]
+description = "Side navigation (a ray-sidebar). Wide screens only."
+
+[ray-app-shell.slots.aside]
+description = "A panel on the other side (details, an inspector). Wide screens only."
+
+[ray-app-shell.slots.footer]
+description = "Under the main content."
+
+[ray-app-shell.slots.bottom]
+description = "Phones only: a ray-bottom-nav."
+
+[ray-app-shell.parts.shell]
+description = "The grid."
+
+[ray-app-shell.parts.header]
+description = "The header area."
+
+[ray-app-shell.parts.navbar]
+description = "The navbar area."
+
+[ray-app-shell.parts.main]
+description = "The scrolling main area."
+
+[ray-app-shell.parts.aside]
+description = "The aside area."
+
+[ray-app-shell.parts.footer]
+description = "The footer area."
+
+[ray-app-shell.parts.bottom]
+description = "The bottom bar area."
+
+[ray-app-shell.members.scroller]
+ts = "readonly scroller: HTMLElement"
+description = "The element that scrolls the main content."
+
+[ray-app-shell.members.mobile]
+ts = "readonly mobile: boolean"
+description = "Whether it is in the phone layout."

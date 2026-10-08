@@ -6633,6 +6633,464 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/bottom-nav/bottom-nav.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayBottomNav",
+          "tagName": "ray-bottom-nav",
+          "customElement": true,
+          "description": "With href items it marks the link to this page (aria-current=\"page\"); without, it is a control (value, change). Clear of the home indicator (safe-area inset). In a ray-app-shell, put it in the bottom slot.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The current destination (an item's value, else its href, else its label).",
+              "fieldName": "value"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the navigation.",
+              "fieldName": "label",
+              "default": "Main"
+            },
+            {
+              "name": "labels",
+              "type": {
+                "text": "\"always\" | \"active\" | \"never\""
+              },
+              "description": "Which labels show (the others stay for assistive technology).",
+              "fieldName": "labels",
+              "default": "always"
+            },
+            {
+              "name": "indicator",
+              "type": {
+                "text": "\"pill\" | \"line\" | \"none\""
+              },
+              "description": "How the current destination is marked besides its color.",
+              "fieldName": "indicator",
+              "default": "pill"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for the current item and the action (default: primary).",
+              "fieldName": "color"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"floating\""
+              },
+              "description": "default: a bar across the bottom; floating: a rounded bar off the edges.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "hide-on-scroll",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Slides away while the content scrolls down, back on the way up.",
+              "fieldName": "hideOnScroll"
+            },
+            {
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Pinned to the bottom of the window (outside a shell).",
+              "fieldName": "fixed"
+            },
+            {
+              "name": "scroll-target",
+              "type": {
+                "text": "string"
+              },
+              "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window).",
+              "fieldName": "scrollTarget"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The current destination (an item's value, else its href, else its label).",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the navigation.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Main"
+            },
+            {
+              "kind": "field",
+              "name": "labels",
+              "type": {
+                "text": "\"always\" | \"active\" | \"never\""
+              },
+              "description": "Which labels show (the others stay for assistive technology).",
+              "attribute": "labels",
+              "reflects": true,
+              "default": "always"
+            },
+            {
+              "kind": "field",
+              "name": "indicator",
+              "type": {
+                "text": "\"pill\" | \"line\" | \"none\""
+              },
+              "description": "How the current destination is marked besides its color.",
+              "attribute": "indicator",
+              "reflects": true,
+              "default": "pill"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for the current item and the action (default: primary).",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"floating\""
+              },
+              "description": "default: a bar across the bottom; floating: a rounded bar off the edges.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "hideOnScroll",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Slides away while the content scrolls down, back on the way up.",
+              "attribute": "hide-on-scroll",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "fixed",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Pinned to the bottom of the window (outside a shell).",
+              "attribute": "fixed",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "scrollTarget",
+              "type": {
+                "text": "string"
+              },
+              "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window).",
+              "attribute": "scroll-target",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "description": "The items, in order."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The user picked another destination (read value)."
+            },
+            {
+              "name": "ray-select",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "An action item was pressed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-bottom-nav-item elements (3 to 5)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "nav",
+              "description": "The <nav>."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "RayBottomNavItem",
+          "tagName": "ray-bottom-nav-item",
+          "customElement": true,
+          "description": "A link with href, else a button. The badge is read with the label (\"Messages, 3\").",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its value (default: its href, else its label).",
+              "fieldName": "value"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon of the registry (or put one in the icon slot).",
+              "fieldName": "icon"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "Makes it a link.",
+              "fieldName": "href"
+            },
+            {
+              "name": "badge",
+              "type": {
+                "text": "string"
+              },
+              "description": "A count or a short text on the icon.",
+              "fieldName": "badge"
+            },
+            {
+              "name": "dot",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A dot on the icon (something new).",
+              "fieldName": "dot"
+            },
+            {
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Set by the bar: the current destination.",
+              "fieldName": "active"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "action",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A raised round button (\"New\"): it fires ray-select on the bar, it is not a destination.",
+              "fieldName": "action"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its value (default: its href, else its label).",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon of the registry (or put one in the icon slot).",
+              "attribute": "icon",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "Makes it a link.",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "badge",
+              "type": {
+                "text": "string"
+              },
+              "description": "A count or a short text on the icon.",
+              "attribute": "badge",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "dot",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A dot on the icon (something new).",
+              "attribute": "dot",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Set by the bar: the current destination.",
+              "attribute": "active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "action",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A raised round button (\"New\"): it fires ray-select on the bar, it is not a destination.",
+              "attribute": "action",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "icon",
+              "description": "A custom icon (a ray-icon, an svg, an avatar)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "item",
+              "description": "The link or button."
+            },
+            {
+              "name": "indicator",
+              "description": "The pill behind the icon."
+            },
+            {
+              "name": "badge",
+              "description": "The badge."
+            },
+            {
+              "name": "label",
+              "description": "The label."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayBottomNav",
+          "declaration": {
+            "name": "RayBottomNav",
+            "module": "components/bottom-nav/bottom-nav.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-bottom-nav",
+          "declaration": {
+            "name": "RayBottomNav",
+            "module": "components/bottom-nav/bottom-nav.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayBottomNavItem",
+          "declaration": {
+            "name": "RayBottomNavItem",
+            "module": "components/bottom-nav/bottom-nav.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-bottom-nav-item",
+          "declaration": {
+            "name": "RayBottomNavItem",
+            "module": "components/bottom-nav/bottom-nav.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/nav-link/nav-link.js",
       "declarations": [
         {
@@ -13575,6 +14033,411 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/app-bar/app-bar.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayAppBar",
+          "tagName": "ray-app-bar",
+          "customElement": true,
+          "description": "It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title.",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title.",
+              "fieldName": "description"
+            },
+            {
+              "name": "center",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The title centered (iOS).",
+              "fieldName": "center"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"transparent\""
+              },
+              "description": "default: the page background; filled: the primary color; transparent: until it elevates.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Height: 48, 56 or 64 px.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "scroll",
+              "type": {
+                "text": "\"elevate\" | \"hide\" | \"none\""
+              },
+              "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
+              "fieldName": "scroll",
+              "default": "elevate"
+            },
+            {
+              "name": "sticky",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Sticks to the top of the window (outside a shell).",
+              "fieldName": "sticky"
+            },
+            {
+              "name": "scroll-target",
+              "type": {
+                "text": "string"
+              },
+              "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window).",
+              "fieldName": "scrollTarget"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "center",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The title centered (iOS).",
+              "attribute": "center",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"transparent\""
+              },
+              "description": "default: the page background; filled: the primary color; transparent: until it elevates.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Height: 48, 56 or 64 px.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "scroll",
+              "type": {
+                "text": "\"elevate\" | \"hide\" | \"none\""
+              },
+              "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
+              "attribute": "scroll",
+              "reflects": true,
+              "default": "elevate"
+            },
+            {
+              "kind": "field",
+              "name": "sticky",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Sticks to the top of the window (outside a shell).",
+              "attribute": "sticky",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "scrollTarget",
+              "type": {
+                "text": "string"
+              },
+              "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window).",
+              "attribute": "scroll-target",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "concealed",
+              "description": "Whether scroll=\"hide\" has slid it away."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Title content after the label (a heading, a select)."
+            },
+            {
+              "name": "start",
+              "description": "Before the title: back or menu button."
+            },
+            {
+              "name": "end",
+              "description": "Actions."
+            },
+            {
+              "name": "bottom",
+              "description": "A row under the bar: tabs, a search field."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "bar",
+              "description": "The bar."
+            },
+            {
+              "name": "start",
+              "description": "The start area."
+            },
+            {
+              "name": "title",
+              "description": "The title area."
+            },
+            {
+              "name": "end",
+              "description": "The actions area."
+            },
+            {
+              "name": "bottom",
+              "description": "The row under the bar."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayAppBar",
+          "declaration": {
+            "name": "RayAppBar",
+            "module": "components/app-bar/app-bar.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-app-bar",
+          "declaration": {
+            "name": "RayAppBar",
+            "module": "components/app-bar/app-bar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/app-shell/app-shell.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayAppShell",
+          "tagName": "ray-app-shell",
+          "customElement": true,
+          "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "layout",
+              "type": {
+                "text": "\"default\" | \"alt\""
+              },
+              "description": "default: the header across the top; alt: the navbar full height, the header beside it.",
+              "fieldName": "layout",
+              "default": "default"
+            },
+            {
+              "name": "breakpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width (px, em or rem) below which it takes the phone layout.",
+              "fieldName": "breakpoint",
+              "default": "48em"
+            },
+            {
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Padding of the main area: xs…xl, a number (px) or a CSS length.",
+              "fieldName": "padding"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "\"default\" | \"alt\""
+              },
+              "description": "default: the header across the top; alt: the navbar full height, the header beside it.",
+              "attribute": "layout",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "breakpoint",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width (px, em or rem) below which it takes the phone layout.",
+              "attribute": "breakpoint",
+              "reflects": false,
+              "default": "48em"
+            },
+            {
+              "kind": "field",
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Padding of the main area: xs…xl, a number (px) or a CSS length.",
+              "attribute": "padding",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "scroller",
+              "description": "The element that scrolls the main content."
+            },
+            {
+              "kind": "field",
+              "name": "mobile",
+              "description": "Whether it is in the phone layout."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-breakpoint",
+              "type": {
+                "text": "CustomEvent<{ mobile: boolean }>"
+              },
+              "description": "It switched between the wide and the phone layout."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The main content (it scrolls)."
+            },
+            {
+              "name": "header",
+              "description": "Top bar: a ray-app-bar or a header of your own."
+            },
+            {
+              "name": "navbar",
+              "description": "Side navigation (a ray-sidebar). Wide screens only."
+            },
+            {
+              "name": "aside",
+              "description": "A panel on the other side (details, an inspector). Wide screens only."
+            },
+            {
+              "name": "footer",
+              "description": "Under the main content."
+            },
+            {
+              "name": "bottom",
+              "description": "Phones only: a ray-bottom-nav."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "shell",
+              "description": "The grid."
+            },
+            {
+              "name": "header",
+              "description": "The header area."
+            },
+            {
+              "name": "navbar",
+              "description": "The navbar area."
+            },
+            {
+              "name": "main",
+              "description": "The scrolling main area."
+            },
+            {
+              "name": "aside",
+              "description": "The aside area."
+            },
+            {
+              "name": "footer",
+              "description": "The footer area."
+            },
+            {
+              "name": "bottom",
+              "description": "The bottom bar area."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayAppShell",
+          "declaration": {
+            "name": "RayAppShell",
+            "module": "components/app-shell/app-shell.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-app-shell",
+          "declaration": {
+            "name": "RayAppShell",
+            "module": "components/app-shell/app-shell.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/aspect-ratio/aspect-ratio.js",
       "declarations": [
         {
@@ -13855,6 +14718,712 @@
           "declaration": {
             "name": "RayCard",
             "module": "components/card/card.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/center/center.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayCenter",
+          "tagName": "ray-center",
+          "customElement": true,
+          "description": "It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "As wide as its content (inline-flex): an icon beside text.",
+              "fieldName": "inline"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "As wide as its content (inline-flex): an icon beside text.",
+              "attribute": "inline",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The content."
+            }
+          ],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayCenter",
+          "declaration": {
+            "name": "RayCenter",
+            "module": "components/center/center.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-center",
+          "declaration": {
+            "name": "RayCenter",
+            "module": "components/center/center.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/container/container.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayContainer",
+          "tagName": "ray-container",
+          "customElement": true,
+          "description": "Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Side padding: xs…xl, a number (px) or a CSS length.",
+              "fieldName": "padding",
+              "default": "md"
+            },
+            {
+              "name": "fluid",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No maximum width: the whole width, still padded.",
+              "fieldName": "fluid"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Side padding: xs…xl, a number (px) or a CSS length.",
+              "attribute": "padding",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "fluid",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No maximum width: the whole width, still padded.",
+              "attribute": "fluid",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The content."
+            }
+          ],
+          "cssParts": []
+        },
+        {
+          "kind": "function",
+          "name": "CONTAINER_SIZES",
+          "description": "The maximum widths of size."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayContainer",
+          "declaration": {
+            "name": "RayContainer",
+            "module": "components/container/container.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-container",
+          "declaration": {
+            "name": "RayContainer",
+            "module": "components/container/container.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "CONTAINER_SIZES",
+          "declaration": {
+            "name": "CONTAINER_SIZES",
+            "module": "components/container/container.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/grid/grid.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayGrid",
+          "tagName": "ray-grid",
+          "customElement": true,
+          "description": "The widths are the grid's own (container queries: xs 36em, sm 48em, md 62em, lg 75em, xl 88em), so a grid in a narrow column or a phone frame drops to fewer columns. It needs a width from its parent: in a flex row give it one or let it grow. A child spans with data-span=\"2\"…\"12\" or \"full\".",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "cols",
+              "type": {
+                "text": "string"
+              },
+              "description": "Columns: a count, then counts from a width up (\"1 sm:2 lg:4\").",
+              "fieldName": "cols",
+              "default": "1"
+            },
+            {
+              "name": "min-col-width",
+              "type": {
+                "text": "string"
+              },
+              "description": "Instead of cols: as many columns of at least this width as fit (\"14rem\", 220).",
+              "fieldName": "minColWidth"
+            },
+            {
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between cells: xs…xl, a number (px) or a CSS length.",
+              "fieldName": "gap",
+              "default": "md"
+            },
+            {
+              "name": "row-gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between rows when it differs from gap.",
+              "fieldName": "rowGap"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "\"stretch\" | \"start\" | \"center\" | \"end\""
+              },
+              "description": "Vertical alignment of the cells in a row.",
+              "fieldName": "align",
+              "default": "stretch"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "cols",
+              "type": {
+                "text": "string"
+              },
+              "description": "Columns: a count, then counts from a width up (\"1 sm:2 lg:4\").",
+              "attribute": "cols",
+              "reflects": true,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "minColWidth",
+              "type": {
+                "text": "string"
+              },
+              "description": "Instead of cols: as many columns of at least this width as fit (\"14rem\", 220).",
+              "attribute": "min-col-width",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between cells: xs…xl, a number (px) or a CSS length.",
+              "attribute": "gap",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "rowGap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between rows when it differs from gap.",
+              "attribute": "row-gap",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "\"stretch\" | \"start\" | \"center\" | \"end\""
+              },
+              "description": "Vertical alignment of the cells in a row.",
+              "attribute": "align",
+              "reflects": true,
+              "default": "stretch"
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The cells (data-span=\"2\" or \"full\" to span)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "grid",
+              "description": "The grid element."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseCols",
+          "description": "\"1 sm:2 lg:4\" as counts per width."
+        },
+        {
+          "kind": "function",
+          "name": "BREAKPOINTS",
+          "description": "The widths of cols (36em, 48em, 62em, 75em, 88em)."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayGrid",
+          "declaration": {
+            "name": "RayGrid",
+            "module": "components/grid/grid.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-grid",
+          "declaration": {
+            "name": "RayGrid",
+            "module": "components/grid/grid.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseCols",
+          "declaration": {
+            "name": "parseCols",
+            "module": "components/grid/grid.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "BREAKPOINTS",
+          "declaration": {
+            "name": "BREAKPOINTS",
+            "module": "components/grid/grid.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/group/group.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayGroup",
+          "tagName": "ray-group",
+          "customElement": true,
+          "description": "A flex row on the host: the children are laid out directly, no wrapper.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length.",
+              "fieldName": "gap",
+              "default": "md"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "\"center\" | \"start\" | \"end\" | \"stretch\" | \"baseline\""
+              },
+              "description": "Cross-axis alignment.",
+              "fieldName": "align",
+              "default": "center"
+            },
+            {
+              "name": "justify",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\" | \"space-between\" | \"space-around\" | \"space-evenly\""
+              },
+              "description": "Main-axis distribution: space-between for a title on one side and actions on the other.",
+              "fieldName": "justify",
+              "default": "start"
+            },
+            {
+              "name": "nowrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Keeps the children on one line.",
+              "fieldName": "nowrap"
+            },
+            {
+              "name": "grow",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The children share the width equally.",
+              "fieldName": "grow"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length.",
+              "attribute": "gap",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "\"center\" | \"start\" | \"end\" | \"stretch\" | \"baseline\""
+              },
+              "description": "Cross-axis alignment.",
+              "attribute": "align",
+              "reflects": true,
+              "default": "center"
+            },
+            {
+              "kind": "field",
+              "name": "justify",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\" | \"space-between\" | \"space-around\" | \"space-evenly\""
+              },
+              "description": "Main-axis distribution: space-between for a title on one side and actions on the other.",
+              "attribute": "justify",
+              "reflects": true,
+              "default": "start"
+            },
+            {
+              "kind": "field",
+              "name": "nowrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Keeps the children on one line.",
+              "attribute": "nowrap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "grow",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The children share the width equally.",
+              "attribute": "grow",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The children."
+            }
+          ],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayGroup",
+          "declaration": {
+            "name": "RayGroup",
+            "module": "components/group/group.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-group",
+          "declaration": {
+            "name": "RayGroup",
+            "module": "components/group/group.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/scroll-area/scroll-area.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayScrollArea",
+          "tagName": "ray-scroll-area",
+          "customElement": true,
+          "description": "Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Height (CSS length).",
+              "fieldName": "height"
+            },
+            {
+              "name": "max-height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum height: it grows with its content up to this, then scrolls.",
+              "fieldName": "maxHeight"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\" | \"both\""
+              },
+              "description": "Which ways it scrolls.",
+              "fieldName": "orientation",
+              "default": "vertical"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"auto\" | \"hover\" | \"never\""
+              },
+              "description": "The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).",
+              "fieldName": "type",
+              "default": "auto"
+            },
+            {
+              "name": "no-shadows",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No edge shadows.",
+              "fieldName": "noShadows"
+            },
+            {
+              "name": "threshold",
+              "type": {
+                "text": "number"
+              },
+              "description": "Distance from the end (px) at which ray-reach-end fires.",
+              "fieldName": "threshold",
+              "default": "48"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name: makes the scrolling box a named region.",
+              "fieldName": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Height (CSS length).",
+              "attribute": "height",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "maxHeight",
+              "type": {
+                "text": "string"
+              },
+              "description": "Maximum height: it grows with its content up to this, then scrolls.",
+              "attribute": "max-height",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\" | \"both\""
+              },
+              "description": "Which ways it scrolls.",
+              "attribute": "orientation",
+              "reflects": true,
+              "default": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"auto\" | \"hover\" | \"never\""
+              },
+              "description": "The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).",
+              "attribute": "type",
+              "reflects": true,
+              "default": "auto"
+            },
+            {
+              "kind": "field",
+              "name": "noShadows",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No edge shadows.",
+              "attribute": "no-shadows",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "threshold",
+              "type": {
+                "text": "number"
+              },
+              "description": "Distance from the end (px) at which ray-reach-end fires.",
+              "attribute": "threshold",
+              "reflects": false,
+              "default": "48"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name: makes the scrolling box a named region.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "viewport",
+              "description": "The scrolling element (scrollTop, scrollTo…)."
+            },
+            {
+              "kind": "method",
+              "name": "scrollToStart",
+              "description": "Scrolls to the top (left)."
+            },
+            {
+              "kind": "method",
+              "name": "scrollToEnd",
+              "description": "Scrolls to the bottom (right when horizontal)."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-reach-end",
+              "type": {
+                "text": "CustomEvent<{ edge: \"bottom\" | \"right\" }>"
+              },
+              "description": "The end came within threshold (once per arrival)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The content."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "viewport",
+              "description": "The scrolling box."
+            },
+            {
+              "name": "shadow",
+              "description": "The edge shadows."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayScrollArea",
+          "declaration": {
+            "name": "RayScrollArea",
+            "module": "components/scroll-area/scroll-area.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-scroll-area",
+          "declaration": {
+            "name": "RayScrollArea",
+            "module": "components/scroll-area/scroll-area.js"
           }
         }
       ]
@@ -14216,6 +15785,125 @@
           "declaration": {
             "name": "RaySplit",
             "module": "components/split/split.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/stack/stack.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayStack",
+          "tagName": "ray-stack",
+          "customElement": true,
+          "description": "A flex column on the host: the children are laid out directly, no wrapper.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length.",
+              "fieldName": "gap",
+              "default": "md"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "\"stretch\" | \"start\" | \"center\" | \"end\" | \"baseline\""
+              },
+              "description": "Cross-axis alignment: stretch fills the width.",
+              "fieldName": "align",
+              "default": "stretch"
+            },
+            {
+              "name": "justify",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\" | \"space-between\" | \"space-around\" | \"space-evenly\""
+              },
+              "description": "Main-axis distribution (with a height to distribute).",
+              "fieldName": "justify",
+              "default": "start"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "gap",
+              "type": {
+                "text": "string"
+              },
+              "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length.",
+              "attribute": "gap",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "\"stretch\" | \"start\" | \"center\" | \"end\" | \"baseline\""
+              },
+              "description": "Cross-axis alignment: stretch fills the width.",
+              "attribute": "align",
+              "reflects": true,
+              "default": "stretch"
+            },
+            {
+              "kind": "field",
+              "name": "justify",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\" | \"space-between\" | \"space-around\" | \"space-evenly\""
+              },
+              "description": "Main-axis distribution (with a height to distribute).",
+              "attribute": "justify",
+              "reflects": true,
+              "default": "start"
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The children."
+            }
+          ],
+          "cssParts": []
+        },
+        {
+          "kind": "function",
+          "name": "applyFlex",
+          "description": "Gap, align and justify of a stack or group onto an element's custom properties (for a layout component of your own)."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayStack",
+          "declaration": {
+            "name": "RayStack",
+            "module": "components/stack/stack.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-stack",
+          "declaration": {
+            "name": "RayStack",
+            "module": "components/stack/stack.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "applyFlex",
+          "declaration": {
+            "name": "applyFlex",
+            "module": "components/stack/stack.js"
           }
         }
       ]

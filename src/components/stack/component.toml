@@ -1,0 +1,39 @@
+[component]
+name = "Stack"
+category = "Layout"
+summary = "Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked."
+files = ["stack.js"]
+requires = []
+tags = ["ray-stack"]
+
+[ray-stack]
+class = "RayStack"
+extends = "RayElement"
+summary = "A flex column on the host: the children are laid out directly, no wrapper."
+
+[ray-stack.properties.gap]
+type = "string"
+default = "md"
+reflect = true
+description = "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+
+[ray-stack.properties.align]
+type = "string"
+values = ["stretch", "start", "center", "end", "baseline"]
+default = "stretch"
+reflect = true
+description = "Cross-axis alignment: stretch fills the width."
+
+[ray-stack.properties.justify]
+type = "string"
+values = ["start", "center", "end", "space-between", "space-around", "space-evenly"]
+default = "start"
+reflect = true
+description = "Main-axis distribution (with a height to distribute)."
+
+[ray-stack.slots.default]
+description = "The children."
+
+[component.exports.applyFlex]
+ts = "function applyFlex(el: HTMLElement, options: { gap?: string; align?: string; justify?: string }, alignDefault: string): void"
+description = "Gap, align and justify of a stack or group onto an element's custom properties (for a layout component of your own)."

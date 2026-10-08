@@ -6,6 +6,22 @@ import { css } from "./core.js";
 /** Palette colors of tokens.toml; anything else given as `color` is used as a raw CSS color. */
 export const COLORS = ["dark", "gray", "red", "pink", "violet", "indigo", "blue", "cyan", "teal", "green", "yellow", "orange", "custom"];
 
+/** Named steps of the space scale (--ray-space-*). */
+const SPACES = ["xs", "sm", "md", "lg", "xl"];
+
+/**
+ * A spacing value as CSS: a named step ("md") as its token, a bare number
+ * as px (0 included), anything else as a CSS length ("1.5rem", "5%").
+ * @param {string | number | undefined} value
+ * @returns {string | null} null when empty
+ */
+export function spaceValue(value) {
+  const s = String(value ?? "").trim();
+  if (!s) return null;
+  if (SPACES.includes(s)) return `var(--ray-space-${s})`;
+  return /^-?\d+(\.\d+)?$/.test(s) ? `${s}px` : s;
+}
+
 /** Variant tokens generated per color (tokens.toml [variants.*]). */
 export const VARIANT_TOKENS = ["filled", "filled-hover", "light", "light-hover", "light-color", "outline", "outline-hover", "contrast"];
 

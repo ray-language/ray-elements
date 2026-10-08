@@ -1,0 +1,20 @@
+[component]
+name = "Center"
+category = "Layout"
+summary = "Its content centered on both axes (Mantine's Center): empty states, loaders, a sign-in card."
+files = ["center.js"]
+requires = []
+tags = ["ray-center"]
+
+[ray-center]
+class = "RayCenter"
+extends = "RayElement"
+summary = "It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically."
+
+[ray-center.properties.inline]
+type = "boolean"
+reflect = true
+description = "As wide as its content (inline-flex): an icon beside text."
+
+[ray-center.slots.default]
+description = "The content."

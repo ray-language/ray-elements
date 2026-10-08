@@ -1,0 +1,85 @@
+<div class="demo-caption">Patterns (tap the destinations; scroll the last one)</div>
+<div class="demo-phones">
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-center class="demo-phone-screen"><ray-stack align="center" gap="2"><span class="demo-phone-big" data-bn-out="demo-bn-1">Home</span><span class="demo-muted">value · change</span></ray-stack></ray-center>
+        <ray-bottom-nav slot="bottom" id="demo-bn-1" value="home">
+          <ray-bottom-nav-item value="home" label="Home" icon="home"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="search" label="Search" icon="search"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="messages" label="Messages" icon="message-circle" badge="3"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="profile" label="Profile" icon="user" dot></ray-bottom-nav-item>
+        </ray-bottom-nav>
+      </ray-app-shell>
+    </div>
+    <figcaption>The pill, a count and a dot</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-center class="demo-phone-screen"><ray-stack align="center" gap="2"><span class="demo-phone-big" data-bn-out="demo-bn-2">Today</span><span class="demo-muted">labels="active" · indicator="line"</span></ray-stack></ray-center>
+        <ray-bottom-nav slot="bottom" id="demo-bn-2" value="today" labels="active" indicator="line" color="teal">
+          <ray-bottom-nav-item value="today" label="Today" icon="calendar"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="files" label="Files" icon="folder"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="photos" label="Photos" icon="image"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="saved" label="Saved" icon="star" badge="12"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="settings" label="Settings" icon="settings"></ray-bottom-nav-item>
+        </ray-bottom-nav>
+      </ray-app-shell>
+    </div>
+    <figcaption>Five destinations, only the current label, a teal line</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-center class="demo-phone-screen"><ray-stack align="center" gap="2"><span class="demo-phone-big" data-bn-out="demo-bn-3">Feed</span><span class="demo-muted" id="demo-bn-3-act">The + fires ray-select</span></ray-stack></ray-center>
+        <ray-bottom-nav slot="bottom" id="demo-bn-3" value="feed" variant="floating" color="violet">
+          <ray-bottom-nav-item value="feed" label="Feed" icon="home"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="explore" label="Explore" icon="search"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="post" label="Post" icon="plus" action></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="inbox" label="Inbox" icon="bell" badge="9+"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="me" label="Me"><ray-avatar slot="icon" name="Ada Lovelace" color="pink" size="xs"></ray-avatar></ray-bottom-nav-item>
+        </ray-bottom-nav>
+      </ray-app-shell>
+    </div>
+    <figcaption>variant="floating", an action in the middle, an avatar as icon</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-app-bar slot="header" label="Library" scroll="hide"></ray-app-bar>
+        <ul class="demo-feed" id="demo-bn-feed"></ul>
+        <ray-bottom-nav slot="bottom" value="library" hide-on-scroll labels="active">
+          <ray-bottom-nav-item value="library" label="Library" icon="folder"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="search" label="Search" icon="search"></ray-bottom-nav-item>
+          <ray-bottom-nav-item value="downloads" label="Downloads" icon="download"></ray-bottom-nav-item>
+        </ray-bottom-nav>
+      </ray-app-shell>
+    </div>
+    <figcaption>hide-on-scroll (with an app bar that hides too)</figcaption>
+  </figure>
+</div>
+
+<script type="module">
+  // Each bar shows its value on its screen.
+  for (const id of ["demo-bn-1", "demo-bn-2", "demo-bn-3"]) {
+    const nav = document.getElementById(id);
+    nav.addEventListener("change", () => {
+      const item = nav.items.find((i) => i.value === nav.value);
+      document.querySelector(`[data-bn-out="${id}"]`).textContent = item?.label ?? nav.value;
+    });
+  }
+  document.getElementById("demo-bn-3").addEventListener("ray-select", (e) => {
+    document.getElementById("demo-bn-3-act").textContent = `ray-select: ${e.detail.value}`;
+  });
+
+  const feed = document.getElementById("demo-bn-feed");
+  for (let i = 0; i < 20; i++) {
+    const li = document.createElement("li");
+    li.innerHTML = `<b>${["Design system.pdf", "Release notes.md", "Roadmap.key", "Screenshots", "Invoices", "Contracts"][i % 6]}</b><small>${(i * 1.7 + 0.4).toFixed(1)} MB</small>`;
+    feed.append(li);
+  }
+</script>

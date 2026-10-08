@@ -1,0 +1,45 @@
+[component]
+name = "Group"
+category = "Layout"
+summary = "Its children in a row (Mantine's Group): spaced by the space scale, centered, wrapping when they do not fit. Toolbars, form actions, chips."
+files = ["group.js"]
+requires = ["stack"]
+tags = ["ray-group"]
+
+[ray-group]
+class = "RayGroup"
+extends = "RayElement"
+summary = "A flex row on the host: the children are laid out directly, no wrapper."
+
+[ray-group.properties.gap]
+type = "string"
+default = "md"
+reflect = true
+description = "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+
+[ray-group.properties.align]
+type = "string"
+values = ["center", "start", "end", "stretch", "baseline"]
+default = "center"
+reflect = true
+description = "Cross-axis alignment."
+
+[ray-group.properties.justify]
+type = "string"
+values = ["start", "center", "end", "space-between", "space-around", "space-evenly"]
+default = "start"
+reflect = true
+description = "Main-axis distribution: space-between for a title on one side and actions on the other."
+
+[ray-group.properties.nowrap]
+type = "boolean"
+reflect = true
+description = "Keeps the children on one line."
+
+[ray-group.properties.grow]
+type = "boolean"
+reflect = true
+description = "The children share the width equally."
+
+[ray-group.slots.default]
+description = "The children."

@@ -1,0 +1,33 @@
+<div class="demo-caption">A form, stacked</div>
+<ray-card with-border radius="lg" padding="lg" class="demo-narrow">
+  <ray-stack gap="lg">
+    <ray-stack gap="2">
+      <strong class="demo-title">Create a workspace</strong>
+      <span class="demo-muted">Everyone you invite joins it.</span>
+    </ray-stack>
+    <ray-stack gap="sm">
+      <ray-input label="Name" placeholder="Acme Labs"></ray-input>
+      <ray-input label="URL" placeholder="acme" description="ray.dev/acme"></ray-input>
+    </ray-stack>
+    <ray-button full-width>Create</ray-button>
+  </ray-stack>
+</ray-card>
+
+<div class="demo-caption">gap: the space scale</div>
+<div class="demo-layout-row">
+  <figure class="demo-gap"><ray-stack gap="xs"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>xs</figcaption></figure>
+  <figure class="demo-gap"><ray-stack gap="sm"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>sm</figcaption></figure>
+  <figure class="demo-gap"><ray-stack gap="md"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>md</figcaption></figure>
+  <figure class="demo-gap"><ray-stack gap="lg"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>lg</figcaption></figure>
+  <figure class="demo-gap"><ray-stack gap="xl"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>xl</figcaption></figure>
+  <figure class="demo-gap"><ray-stack gap="2"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>2 (px)</figcaption></figure>
+</div>
+
+<div class="demo-caption">align and justify</div>
+<div class="demo-layout-row">
+  <figure class="demo-gap"><ray-stack align="start" class="demo-frame"><span class="demo-block" style="width: 60%"></span><span class="demo-block" style="width: 35%"></span><span class="demo-block" style="width: 80%"></span></ray-stack><figcaption>align="start"</figcaption></figure>
+  <figure class="demo-gap"><ray-stack align="center" class="demo-frame"><span class="demo-block" style="width: 60%"></span><span class="demo-block" style="width: 35%"></span><span class="demo-block" style="width: 80%"></span></ray-stack><figcaption>align="center"</figcaption></figure>
+  <figure class="demo-gap"><ray-stack align="end" class="demo-frame"><span class="demo-block" style="width: 60%"></span><span class="demo-block" style="width: 35%"></span><span class="demo-block" style="width: 80%"></span></ray-stack><figcaption>align="end"</figcaption></figure>
+  <figure class="demo-gap"><ray-stack justify="space-between" class="demo-frame tall"><span class="demo-block"></span><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>justify="space-between"</figcaption></figure>
+  <figure class="demo-gap"><ray-stack justify="center" gap="xs" class="demo-frame tall"><span class="demo-block"></span><span class="demo-block"></span></ray-stack><figcaption>justify="center"</figcaption></figure>
+</div>

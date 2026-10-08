@@ -111,6 +111,16 @@ export const RayTextarea = createComponent("ray-textarea", {
   properties: ["value", "rows", "autosize", "maxRows", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "readonly", "size", "variant", "radius"],
   events: { onInput: "input", onChange: "change" },
 });
+export const RayBottomNav = createComponent("ray-bottom-nav", {
+  displayName: "RayBottomNav",
+  properties: ["value", "label", "labels", "indicator", "color", "variant", "hideOnScroll", "fixed", "scrollTarget"],
+  events: { onChange: "change", onRaySelect: "ray-select" },
+});
+export const RayBottomNavItem = createComponent("ray-bottom-nav-item", {
+  displayName: "RayBottomNavItem",
+  properties: ["value", "label", "icon", "href", "badge", "dot", "active", "disabled", "action"],
+  events: {  },
+});
 export const RayNavLink = createComponent("ray-nav-link", {
   displayName: "RayNavLink",
   properties: ["label", "description", "href", "active", "opened", "disabled", "variant", "color", "iconOnly"],
@@ -296,6 +306,16 @@ export const RaySpinner = createComponent("ray-spinner", {
   properties: ["color", "size", "label"],
   events: {  },
 });
+export const RayAppBar = createComponent("ray-app-bar", {
+  displayName: "RayAppBar",
+  properties: ["label", "description", "center", "variant", "size", "scroll", "sticky", "scrollTarget"],
+  events: {  },
+});
+export const RayAppShell = createComponent("ray-app-shell", {
+  displayName: "RayAppShell",
+  properties: ["layout", "breakpoint", "padding"],
+  events: { onRayBreakpoint: "ray-breakpoint" },
+});
 export const RayAspectRatio = createComponent("ray-aspect-ratio", {
   displayName: "RayAspectRatio",
   properties: ["ratio", "fit", "radius"],
@@ -306,6 +326,31 @@ export const RayCard = createComponent("ray-card", {
   properties: ["padding", "radius", "shadow", "withBorder", "variant"],
   events: {  },
 });
+export const RayCenter = createComponent("ray-center", {
+  displayName: "RayCenter",
+  properties: ["inline"],
+  events: {  },
+});
+export const RayContainer = createComponent("ray-container", {
+  displayName: "RayContainer",
+  properties: ["size", "padding", "fluid"],
+  events: {  },
+});
+export const RayGrid = createComponent("ray-grid", {
+  displayName: "RayGrid",
+  properties: ["cols", "minColWidth", "gap", "rowGap", "align"],
+  events: {  },
+});
+export const RayGroup = createComponent("ray-group", {
+  displayName: "RayGroup",
+  properties: ["gap", "align", "justify", "nowrap", "grow"],
+  events: {  },
+});
+export const RayScrollArea = createComponent("ray-scroll-area", {
+  displayName: "RayScrollArea",
+  properties: ["height", "maxHeight", "orientation", "type", "noShadows", "threshold", "label"],
+  events: { onRayReachEnd: "ray-reach-end" },
+});
 export const RaySeparator = createComponent("ray-separator", {
   displayName: "RaySeparator",
   properties: ["orientation", "label", "labelPosition", "size", "variant"],
@@ -315,6 +360,11 @@ export const RaySplit = createComponent("ray-split", {
   displayName: "RaySplit",
   properties: ["orientation", "position", "min", "max", "collapsed", "disabled", "autosave"],
   events: { onRayResize: "ray-resize" },
+});
+export const RayStack = createComponent("ray-stack", {
+  displayName: "RayStack",
+  properties: ["gap", "align", "justify"],
+  events: {  },
 });
 export const RayStatusbar = createComponent("ray-statusbar", {
   displayName: "RayStatusbar",

@@ -188,6 +188,8 @@ export declare const COLORS: string[];
 export declare const VARIANT_TOKENS: string[];
 /** Points an element's --_<variant> properties at a palette color, any CSS color, or the primary. */
 export declare function applyColor(el: HTMLElement, color: string | undefined): void;
+/** A spacing value as CSS: xs…xl as its --ray-space token, a bare number as px, else a CSS length; null when empty. */
+export declare function spaceValue(value: string | number | undefined): string | null;
 /** :host size scale: --_h, --_fs, --_px, --_gap by [size]. */
 export declare const sizeStyles: CSSStyleSheet;
 /** :host radius: --_r by [radius]. */
@@ -262,3 +264,10 @@ export declare function chartTheme(el?: Element): ChartTheme;
 export declare function onChartThemeChange(cb: (theme: ChartTheme) => void, el?: Element): () => void;
 /** A color with an alpha, as rgba(): withAlpha("#1c7ed6", 0.2). */
 export declare function withAlpha(color: string, alpha: number): string;
+
+// --- scrolling ---------------------------------------------------------------
+
+/** The scroller of an element: `target`, else the content of its ray-app-shell or ray-scroll-area, else the window. */
+export declare function scrollerOf(el: Element, target?: Element | string | null): Element | Window;
+/** Calls cb with the scroll position and direction ("down" | "up") once per frame; returns a stop function. */
+export declare function watchScroll(scroller: Element | Window, cb: (state: { y: number; direction: "up" | "down" }) => void, options?: { tolerance?: number }): () => void;

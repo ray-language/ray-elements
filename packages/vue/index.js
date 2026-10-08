@@ -103,6 +103,15 @@ export const RayTextarea = createComponent("RayTextarea", "ray-textarea", {
   booleans: ["autosize", "required", "disabled", "readonly"],
   model: { prop: "value", events: ["input"] },
 });
+export const RayBottomNav = createComponent("RayBottomNav", "ray-bottom-nav", {
+  properties: ["value", "label", "labels", "indicator", "color", "variant", "hideOnScroll", "fixed", "scrollTarget"],
+  booleans: ["hideOnScroll", "fixed"],
+  model: { prop: "value", events: ["change"] },
+});
+export const RayBottomNavItem = createComponent("RayBottomNavItem", "ray-bottom-nav-item", {
+  properties: ["value", "label", "icon", "href", "badge", "dot", "active", "disabled", "action"],
+  booleans: ["dot", "active", "disabled", "action"],
+});
 export const RayNavLink = createComponent("RayNavLink", "ray-nav-link", {
   properties: ["label", "description", "href", "active", "opened", "disabled", "variant", "color", "iconOnly"],
   booleans: ["active", "opened", "disabled", "iconOnly"],
@@ -260,6 +269,14 @@ export const RaySpinner = createComponent("RaySpinner", "ray-spinner", {
   properties: ["color", "size", "label"],
   booleans: [],
 });
+export const RayAppBar = createComponent("RayAppBar", "ray-app-bar", {
+  properties: ["label", "description", "center", "variant", "size", "scroll", "sticky", "scrollTarget"],
+  booleans: ["center", "sticky"],
+});
+export const RayAppShell = createComponent("RayAppShell", "ray-app-shell", {
+  properties: ["layout", "breakpoint", "padding"],
+  booleans: [],
+});
 export const RayAspectRatio = createComponent("RayAspectRatio", "ray-aspect-ratio", {
   properties: ["ratio", "fit", "radius"],
   booleans: [],
@@ -268,6 +285,26 @@ export const RayCard = createComponent("RayCard", "ray-card", {
   properties: ["padding", "radius", "shadow", "withBorder", "variant"],
   booleans: ["withBorder"],
 });
+export const RayCenter = createComponent("RayCenter", "ray-center", {
+  properties: ["inline"],
+  booleans: ["inline"],
+});
+export const RayContainer = createComponent("RayContainer", "ray-container", {
+  properties: ["size", "padding", "fluid"],
+  booleans: ["fluid"],
+});
+export const RayGrid = createComponent("RayGrid", "ray-grid", {
+  properties: ["cols", "minColWidth", "gap", "rowGap", "align"],
+  booleans: [],
+});
+export const RayGroup = createComponent("RayGroup", "ray-group", {
+  properties: ["gap", "align", "justify", "nowrap", "grow"],
+  booleans: ["nowrap", "grow"],
+});
+export const RayScrollArea = createComponent("RayScrollArea", "ray-scroll-area", {
+  properties: ["height", "maxHeight", "orientation", "type", "noShadows", "threshold", "label"],
+  booleans: ["noShadows"],
+});
 export const RaySeparator = createComponent("RaySeparator", "ray-separator", {
   properties: ["orientation", "label", "labelPosition", "size", "variant"],
   booleans: [],
@@ -275,6 +312,10 @@ export const RaySeparator = createComponent("RaySeparator", "ray-separator", {
 export const RaySplit = createComponent("RaySplit", "ray-split", {
   properties: ["orientation", "position", "min", "max", "collapsed", "disabled", "autosave"],
   booleans: ["collapsed", "disabled"],
+});
+export const RayStack = createComponent("RayStack", "ray-stack", {
+  properties: ["gap", "align", "justify"],
+  booleans: [],
 });
 export const RayStatusbar = createComponent("RayStatusbar", "ray-statusbar", {
   properties: ["variant"],
@@ -289,7 +330,7 @@ export const RayThemeToggle = createComponent("RayThemeToggle", "ray-theme-toggl
   booleans: [],
 });
 
-export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayColorPicker, RayColorInput, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAspectRatio, RayCard, RaySeparator, RaySplit, RayStatusbar, RayStatusbarItem, RayThemeToggle };
+export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayColorPicker, RayColorInput, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayBottomNav, RayBottomNavItem, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAppBar, RayAppShell, RayAspectRatio, RayCard, RayCenter, RayContainer, RayGrid, RayGroup, RayScrollArea, RaySeparator, RaySplit, RayStack, RayStatusbar, RayStatusbarItem, RayThemeToggle };
 
 /** app.use(RayDs) registers every component globally. */
 export const RayDs = createPlugin(components);

@@ -166,7 +166,7 @@ fn category_blurb(cat: string) -> string {
         ("Overlays", "Above the page: modals, drawers, menus, popovers, the command palette."),
         ("Data display", "Content and data: tables, stats, code, media, badges."),
         ("Feedback", "What the app says back: alerts, notifications, progress, loading."),
-        ("Layout", "The frame around the content: cards, panes, ratios, separators."),
+        ("Layout", "The frame of an app and of its content: the shell and its bars, stacks, groups, grids, cards, scrolling."),
         ("Theme", "Light, dark or the system's choice.")
     ] {
         if (k == cat) {

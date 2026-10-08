@@ -422,8 +422,13 @@ T.test("no transition into the initial state; transitions after it", async (T) =
   const settling = (el) => el.shadowRoot.adoptedStyleSheets.some((s) => [...s.cssRules].some((r) => /transition:\s*none/.test(r.cssText)));
   const box = await mount(`<ray-badge color="teal">New</ray-badge><ray-avatar name="Ada Lovelace" color="pink"></ray-avatar>`);
   const [badge, avatar] = box.children;
-  T.ok(settling(badge) && settling(avatar), "no transitions right after the first update");
-  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(r))));
+  // A hidden window paints no frames: there the sheet goes at once.
+  if (document.visibilityState !== "hidden") {
+    T.ok(settling(badge) && settling(avatar), "no transitions right after the first update");
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(r))));
+  } else {
+    await T.settle();
+  }
   T.ok(!settling(badge) && !settling(avatar), "transitions back once painted");
   box.remove();
 });

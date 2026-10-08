@@ -1,0 +1,75 @@
+[component]
+name = "Scroll area"
+category = "Layout"
+summary = "A box that scrolls its content with the native scrolling and a thin themed scrollbar (Mantine's ScrollArea). Edge shadows tell there is more; ray-reach-end fires at the end (load the next page)."
+files = ["scroll-area.js"]
+requires = []
+tags = ["ray-scroll-area"]
+
+[ray-scroll-area]
+class = "RayScrollArea"
+extends = "RayElement"
+summary = "Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own."
+
+[ray-scroll-area.properties.height]
+type = "string"
+description = "Height (CSS length)."
+
+[ray-scroll-area.properties.maxHeight]
+attribute = "max-height"
+type = "string"
+description = "Maximum height: it grows with its content up to this, then scrolls."
+
+[ray-scroll-area.properties.orientation]
+type = "string"
+values = ["vertical", "horizontal", "both"]
+default = "vertical"
+reflect = true
+description = "Which ways it scrolls."
+
+[ray-scroll-area.properties.type]
+type = "string"
+values = ["auto", "hover", "never"]
+default = "auto"
+reflect = true
+description = "The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls)."
+
+[ray-scroll-area.properties.noShadows]
+attribute = "no-shadows"
+type = "boolean"
+reflect = true
+description = "No edge shadows."
+
+[ray-scroll-area.properties.threshold]
+type = "number"
+default = "48"
+description = "Distance from the end (px) at which ray-reach-end fires."
+
+[ray-scroll-area.properties.label]
+type = "string"
+description = "Accessible name: makes the scrolling box a named region."
+
+[ray-scroll-area.events.ray-reach-end]
+detail = "{ edge: \"bottom\" | \"right\" }"
+description = "The end came within threshold (once per arrival)."
+
+[ray-scroll-area.slots.default]
+description = "The content."
+
+[ray-scroll-area.parts.viewport]
+description = "The scrolling box."
+
+[ray-scroll-area.parts.shadow]
+description = "The edge shadows."
+
+[ray-scroll-area.members.viewport]
+ts = "readonly viewport: HTMLElement"
+description = "The scrolling element (scrollTop, scrollTo…)."
+
+[ray-scroll-area.members.scrollToStart]
+ts = "scrollToStart(options?: { behavior?: ScrollBehavior }): void"
+description = "Scrolls to the top (left)."
+
+[ray-scroll-area.members.scrollToEnd]
+ts = "scrollToEnd(options?: { behavior?: ScrollBehavior }): void"
+description = "Scrolls to the bottom (right when horizontal)."

@@ -821,6 +821,58 @@ export type RayTextareaProps = RayTextareaOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-textarea> as a React component. */
 export declare const RayTextarea: React.ForwardRefExoticComponent<RayTextareaProps & React.RefAttributes<Ray.RayTextarea>>;
 
+export interface RayBottomNavOwnProps {
+  /** The current destination (an item's value, else its href, else its label). */
+  value?: string;
+  /** Accessible name of the navigation. */
+  label?: string;
+  /** Which labels show (the others stay for assistive technology). */
+  labels?: "always" | "active" | "never";
+  /** How the current destination is marked besides its color. */
+  indicator?: "pill" | "line" | "none";
+  /** A palette color or any CSS color for the current item and the action (default: primary). */
+  color?: string;
+  /** default: a bar across the bottom; floating: a rounded bar off the edges. */
+  variant?: "default" | "floating";
+  /** Slides away while the content scrolls down, back on the way up. */
+  hideOnScroll?: boolean;
+  /** Pinned to the bottom of the window (outside a shell). */
+  fixed?: boolean;
+  /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */
+  scrollTarget?: string;
+  /** The user picked another destination (read value). */
+  onChange?: (event: Event) => void;
+  /** An action item was pressed. */
+  onRaySelect?: (event: CustomEvent<{ value: string }>) => void;
+}
+export type RayBottomNavProps = RayBottomNavOwnProps & Omit<React.HTMLAttributes<Ray.RayBottomNav>, keyof RayBottomNavOwnProps> & { children?: React.ReactNode };
+/** <ray-bottom-nav> as a React component. */
+export declare const RayBottomNav: React.ForwardRefExoticComponent<RayBottomNavProps & React.RefAttributes<Ray.RayBottomNav>>;
+
+export interface RayBottomNavItemOwnProps {
+  /** Its value (default: its href, else its label). */
+  value?: string;
+  /** The label. */
+  label?: string;
+  /** An icon of the registry (or put one in the icon slot). */
+  icon?: string;
+  /** Makes it a link. */
+  href?: string;
+  /** A count or a short text on the icon. */
+  badge?: string;
+  /** A dot on the icon (something new). */
+  dot?: boolean;
+  /** Set by the bar: the current destination. */
+  active?: boolean;
+  /** Not interactive. */
+  disabled?: boolean;
+  /** A raised round button ("New"): it fires ray-select on the bar, it is not a destination. */
+  action?: boolean;
+}
+export type RayBottomNavItemProps = RayBottomNavItemOwnProps & Omit<React.HTMLAttributes<Ray.RayBottomNavItem>, keyof RayBottomNavItemOwnProps> & { children?: React.ReactNode };
+/** <ray-bottom-nav-item> as a React component. */
+export declare const RayBottomNavItem: React.ForwardRefExoticComponent<RayBottomNavItemProps & React.RefAttributes<Ray.RayBottomNavItem>>;
+
 export interface RayNavLinkOwnProps {
   /** Text. */
   label?: string;
@@ -1583,6 +1635,42 @@ export type RaySpinnerProps = RaySpinnerOwnProps & Omit<React.HTMLAttributes<Ray
 /** <ray-spinner> as a React component. */
 export declare const RaySpinner: React.ForwardRefExoticComponent<RaySpinnerProps & React.RefAttributes<Ray.RaySpinner>>;
 
+export interface RayAppBarOwnProps {
+  /** The title. */
+  label?: string;
+  /** A line under the title. */
+  description?: string;
+  /** The title centered (iOS). */
+  center?: boolean;
+  /** default: the page background; filled: the primary color; transparent: until it elevates. */
+  variant?: "default" | "filled" | "transparent";
+  /** Height: 48, 56 or 64 px. */
+  size?: "sm" | "md" | "lg";
+  /** While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none. */
+  scroll?: "elevate" | "hide" | "none";
+  /** Sticks to the top of the window (outside a shell). */
+  sticky?: boolean;
+  /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */
+  scrollTarget?: string;
+}
+export type RayAppBarProps = RayAppBarOwnProps & Omit<React.HTMLAttributes<Ray.RayAppBar>, keyof RayAppBarOwnProps> & { children?: React.ReactNode };
+/** <ray-app-bar> as a React component. */
+export declare const RayAppBar: React.ForwardRefExoticComponent<RayAppBarProps & React.RefAttributes<Ray.RayAppBar>>;
+
+export interface RayAppShellOwnProps {
+  /** default: the header across the top; alt: the navbar full height, the header beside it. */
+  layout?: "default" | "alt";
+  /** Width (px, em or rem) below which it takes the phone layout. */
+  breakpoint?: string;
+  /** Padding of the main area: xs…xl, a number (px) or a CSS length. */
+  padding?: string;
+  /** It switched between the wide and the phone layout. */
+  onRayBreakpoint?: (event: CustomEvent<{ mobile: boolean }>) => void;
+}
+export type RayAppShellProps = RayAppShellOwnProps & Omit<React.HTMLAttributes<Ray.RayAppShell>, keyof RayAppShellOwnProps> & { children?: React.ReactNode };
+/** <ray-app-shell> as a React component. */
+export declare const RayAppShell: React.ForwardRefExoticComponent<RayAppShellProps & React.RefAttributes<Ray.RayAppShell>>;
+
 export interface RayAspectRatioOwnProps {
   /** Width/height: "16/9", "4:3", "1" or a number. */
   ratio?: string;
@@ -1610,6 +1698,80 @@ export interface RayCardOwnProps {
 export type RayCardProps = RayCardOwnProps & Omit<React.HTMLAttributes<Ray.RayCard>, keyof RayCardOwnProps> & { children?: React.ReactNode };
 /** <ray-card> as a React component. */
 export declare const RayCard: React.ForwardRefExoticComponent<RayCardProps & React.RefAttributes<Ray.RayCard>>;
+
+export interface RayCenterOwnProps {
+  /** As wide as its content (inline-flex): an icon beside text. */
+  inline?: boolean;
+}
+export type RayCenterProps = RayCenterOwnProps & Omit<React.HTMLAttributes<Ray.RayCenter>, keyof RayCenterOwnProps> & { children?: React.ReactNode };
+/** <ray-center> as a React component. */
+export declare const RayCenter: React.ForwardRefExoticComponent<RayCenterProps & React.RefAttributes<Ray.RayCenter>>;
+
+export interface RayContainerOwnProps {
+  /** Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length. */
+  size?: string;
+  /** Side padding: xs…xl, a number (px) or a CSS length. */
+  padding?: string;
+  /** No maximum width: the whole width, still padded. */
+  fluid?: boolean;
+}
+export type RayContainerProps = RayContainerOwnProps & Omit<React.HTMLAttributes<Ray.RayContainer>, keyof RayContainerOwnProps> & { children?: React.ReactNode };
+/** <ray-container> as a React component. */
+export declare const RayContainer: React.ForwardRefExoticComponent<RayContainerProps & React.RefAttributes<Ray.RayContainer>>;
+
+export interface RayGridOwnProps {
+  /** Columns: a count, then counts from a width up ("1 sm:2 lg:4"). */
+  cols?: string;
+  /** Instead of cols: as many columns of at least this width as fit ("14rem", 220). */
+  minColWidth?: string;
+  /** Space between cells: xs…xl, a number (px) or a CSS length. */
+  gap?: string;
+  /** Space between rows when it differs from gap. */
+  rowGap?: string;
+  /** Vertical alignment of the cells in a row. */
+  align?: "stretch" | "start" | "center" | "end";
+}
+export type RayGridProps = RayGridOwnProps & Omit<React.HTMLAttributes<Ray.RayGrid>, keyof RayGridOwnProps> & { children?: React.ReactNode };
+/** <ray-grid> as a React component. */
+export declare const RayGrid: React.ForwardRefExoticComponent<RayGridProps & React.RefAttributes<Ray.RayGrid>>;
+
+export interface RayGroupOwnProps {
+  /** Space between children: xs…xl (the space scale), a number (px) or any CSS length. */
+  gap?: string;
+  /** Cross-axis alignment. */
+  align?: "center" | "start" | "end" | "stretch" | "baseline";
+  /** Main-axis distribution: space-between for a title on one side and actions on the other. */
+  justify?: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly";
+  /** Keeps the children on one line. */
+  nowrap?: boolean;
+  /** The children share the width equally. */
+  grow?: boolean;
+}
+export type RayGroupProps = RayGroupOwnProps & Omit<React.HTMLAttributes<Ray.RayGroup>, keyof RayGroupOwnProps> & { children?: React.ReactNode };
+/** <ray-group> as a React component. */
+export declare const RayGroup: React.ForwardRefExoticComponent<RayGroupProps & React.RefAttributes<Ray.RayGroup>>;
+
+export interface RayScrollAreaOwnProps {
+  /** Height (CSS length). */
+  height?: string;
+  /** Maximum height: it grows with its content up to this, then scrolls. */
+  maxHeight?: string;
+  /** Which ways it scrolls. */
+  orientation?: "vertical" | "horizontal" | "both";
+  /** The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls). */
+  type?: "auto" | "hover" | "never";
+  /** No edge shadows. */
+  noShadows?: boolean;
+  /** Distance from the end (px) at which ray-reach-end fires. */
+  threshold?: number;
+  /** Accessible name: makes the scrolling box a named region. */
+  label?: string;
+  /** The end came within threshold (once per arrival). */
+  onRayReachEnd?: (event: CustomEvent<{ edge: "bottom" | "right" }>) => void;
+}
+export type RayScrollAreaProps = RayScrollAreaOwnProps & Omit<React.HTMLAttributes<Ray.RayScrollArea>, keyof RayScrollAreaOwnProps> & { children?: React.ReactNode };
+/** <ray-scroll-area> as a React component. */
+export declare const RayScrollArea: React.ForwardRefExoticComponent<RayScrollAreaProps & React.RefAttributes<Ray.RayScrollArea>>;
 
 export interface RaySeparatorOwnProps {
   /** Direction of the rule. */
@@ -1648,6 +1810,18 @@ export interface RaySplitOwnProps {
 export type RaySplitProps = RaySplitOwnProps & Omit<React.HTMLAttributes<Ray.RaySplit>, keyof RaySplitOwnProps> & { children?: React.ReactNode };
 /** <ray-split> as a React component. */
 export declare const RaySplit: React.ForwardRefExoticComponent<RaySplitProps & React.RefAttributes<Ray.RaySplit>>;
+
+export interface RayStackOwnProps {
+  /** Space between children: xs…xl (the space scale), a number (px) or any CSS length. */
+  gap?: string;
+  /** Cross-axis alignment: stretch fills the width. */
+  align?: "stretch" | "start" | "center" | "end" | "baseline";
+  /** Main-axis distribution (with a height to distribute). */
+  justify?: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly";
+}
+export type RayStackProps = RayStackOwnProps & Omit<React.HTMLAttributes<Ray.RayStack>, keyof RayStackOwnProps> & { children?: React.ReactNode };
+/** <ray-stack> as a React component. */
+export declare const RayStack: React.ForwardRefExoticComponent<RayStackProps & React.RefAttributes<Ray.RayStack>>;
 
 export interface RayStatusbarOwnProps {
   /** accent: the primary color (e.g. while debugging). */

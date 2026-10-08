@@ -1,0 +1,77 @@
+<div class="demo-caption">Patterns (scroll inside each phone)</div>
+<div class="demo-phones">
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-app-bar slot="header" label="Build #482" description="ray-remote · main">
+          <ray-icon-button slot="start" variant="subtle" label="Back"><ray-icon name="arrow-left"></ray-icon></ray-icon-button>
+          <ray-icon-button slot="end" variant="subtle" label="Share"><ray-icon name="arrow-up-right"></ray-icon></ray-icon-button>
+          <ray-icon-button slot="end" variant="subtle" label="More"><ray-icon name="more-horizontal"></ray-icon></ray-icon-button>
+        </ray-app-bar>
+        <ul class="demo-feed" data-feed="log"></ul>
+      </ray-app-shell>
+    </div>
+    <figcaption>Back, title and subtitle, actions; elevates once it scrolls</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-app-bar slot="header" label="Settings" center scroll="hide">
+          <ray-button slot="start" variant="subtle" size="xs">Cancel</ray-button>
+          <ray-button slot="end" variant="subtle" size="xs">Done</ray-button>
+        </ray-app-bar>
+        <ul class="demo-feed" data-feed="settings"></ul>
+      </ray-app-shell>
+    </div>
+    <figcaption>center (iOS) and scroll="hide": away going down, back going up</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-app-bar slot="header" label="Inbox" description="3 unread" variant="filled">
+          <ray-icon-button slot="start" variant="subtle" color="white" label="Menu"><ray-icon name="menu"></ray-icon></ray-icon-button>
+          <ray-avatar slot="end" name="Ada Lovelace" variant="filled" color="pink" size="sm"></ray-avatar>
+          <ray-search slot="bottom" aria-label="Search mail" placeholder="Search mail" size="xs" radius="full"></ray-search>
+        </ray-app-bar>
+        <ul class="demo-feed" data-feed="mail"></ul>
+      </ray-app-shell>
+    </div>
+    <figcaption>variant="filled" with a search row (the bottom slot)</figcaption>
+  </figure>
+
+  <figure class="demo-phone-fig">
+    <div class="demo-phone">
+      <ray-app-shell style="height: 100%">
+        <ray-app-bar slot="header" label="Explore" size="lg">
+          <ray-icon-button slot="end" variant="subtle" label="Search"><ray-icon name="search"></ray-icon></ray-icon-button>
+          <ray-segmented-control slot="bottom" full-width size="xs" aria-label="Section" value="all"><option value="all">All</option><option value="apps">Apps</option><option value="templates">Templates</option></ray-segmented-control>
+        </ray-app-bar>
+        <ul class="demo-feed" data-feed="cards"></ul>
+      </ray-app-shell>
+    </div>
+    <figcaption>size="lg" with a segmented control under it</figcaption>
+  </figure>
+</div>
+
+<script type="module">
+  // Something to scroll in each phone.
+  const rows = {
+    log: (i) => [`${String(12 + Math.floor(i / 6)).padStart(2, "0")}:0${i % 6}:${String((i * 7) % 60).padStart(2, "0")}`, ["compiling module", "linking", "running tests", "bundling", "signing", "uploading"][i % 6]],
+    settings: (i) => [["Wi-Fi", "Bluetooth", "Notifications", "Sounds", "Focus", "Screen time", "General", "Display", "Wallpaper", "Privacy"][i % 10], "›"],
+    mail: (i) => [["Grace Hopper", "Alan Turing", "Ray CI", "Katherine Johnson"][i % 4], ["Review #482", "Docs are faster", "Build passed", "Numbers check out"][i % 4]],
+    cards: (i) => [["Dashboard", "Chat", "Store", "Blog", "Docs", "Status page"][i % 6], ["Template", "App"][i % 2]],
+  };
+  for (const ul of document.querySelectorAll("[data-feed]")) {
+    const make = rows[ul.dataset.feed];
+    for (let i = 0; i < 18; i++) {
+      const [a, b] = make(i);
+      const li = document.createElement("li");
+      li.innerHTML = "<b></b><small></small>";
+      li.querySelector("b").textContent = a;
+      li.querySelector("small").textContent = b;
+      ul.append(li);
+    }
+  }
+</script>

@@ -1,0 +1,104 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Empty state, loading and sign-in<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-grid</span> <span class="tk-attr">cols</span>=<span class="tk-string">&quot;1 sm:3&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-center</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-stack</span> <span class="tk-attr">align</span>=<span class="tk-string">&quot;center&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-icon&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>No files yet<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span><span class="tk-punctuation">&gt;</span>Drop files here to upload them.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-stack</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-center</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-center</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-stack</span> <span class="tk-attr">align</span>=<span class="tk-string">&quot;center&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-spinner</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-spinner</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span><span class="tk-punctuation">&gt;</span>Loading builds…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-stack</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-center</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-center</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box demo-center-pattern&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-card</span> <span class="tk-attr">with-border</span> <span class="tk-attr">shadow</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-card&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-stack</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Sign in<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;you@ray.dev&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">full-width</span><span class="tk-punctuation">&gt;</span>Continue<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-stack</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-card</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-center</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-grid</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>inline: beside text<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-text&quot;</span><span class="tk-punctuation">&gt;</span>
+  Builds run on
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-center</span> <span class="tk-attr">inline</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-chip&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;terminal&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-center</span><span class="tk-punctuation">&gt;</span>
+  ray runners and report to
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-center</span> <span class="tk-attr">inline</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-chip&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;bell&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-center</span><span class="tk-punctuation">&gt;</span>
+  your notifications.
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayGrid, RayCenter, RayStack, RayIcon, RaySpinner, RayCard, RayInput, RayButton } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> CenterExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Empty state, loading and sign-<span class="tk-keyword">in</span>&lt;/div&gt;
+      &lt;RayGrid cols=<span class="tk-string">&quot;1 sm:3&quot;</span> gap=<span class="tk-string">&quot;sm&quot;</span>&gt;
+        &lt;RayCenter className=<span class="tk-string">&quot;demo-center-box&quot;</span>&gt;
+          &lt;RayStack align=<span class="tk-string">&quot;center&quot;</span> gap=<span class="tk-string">&quot;xs&quot;</span>&gt;
+            &lt;span className=<span class="tk-string">&quot;demo-center-icon&quot;</span>&gt;&lt;RayIcon name=<span class="tk-string">&quot;folder&quot;</span> /&gt;&lt;/span&gt;
+            &lt;strong&gt;No files yet&lt;/strong&gt;
+            &lt;span className=<span class="tk-string">&quot;demo-muted&quot;</span>&gt;Drop files here to upload them.&lt;/span&gt;
+          &lt;/RayStack&gt;
+        &lt;/RayCenter&gt;
+        &lt;RayCenter className=<span class="tk-string">&quot;demo-center-box&quot;</span>&gt;
+          &lt;RayStack align=<span class="tk-string">&quot;center&quot;</span> gap=<span class="tk-string">&quot;sm&quot;</span>&gt;&lt;RaySpinner /&gt;&lt;span className=<span class="tk-string">&quot;demo-muted&quot;</span>&gt;Loading builds…&lt;/span&gt;&lt;/RayStack&gt;
+        &lt;/RayCenter&gt;
+        &lt;RayCenter className=<span class="tk-string">&quot;demo-center-box demo-center-pattern&quot;</span>&gt;
+          &lt;RayCard withBorder shadow=<span class="tk-string">&quot;sm&quot;</span> radius=<span class="tk-string">&quot;lg&quot;</span> className=<span class="tk-string">&quot;demo-center-card&quot;</span>&gt;
+            &lt;RayStack gap=<span class="tk-string">&quot;sm&quot;</span>&gt;
+              &lt;strong&gt;Sign <span class="tk-keyword">in</span>&lt;/strong&gt;
+              &lt;RayInput aria-label=<span class="tk-string">&quot;Email&quot;</span> placeholder=<span class="tk-string">&quot;you@ray.dev&quot;</span> size=<span class="tk-string">&quot;xs&quot;</span> /&gt;
+              &lt;RayButton size=<span class="tk-string">&quot;xs&quot;</span> fullWidth&gt;Continue&lt;/RayButton&gt;
+            &lt;/RayStack&gt;
+          &lt;/RayCard&gt;
+        &lt;/RayCenter&gt;
+      &lt;/RayGrid&gt;
+
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;inline: beside text&lt;/div&gt;
+      &lt;p className=<span class="tk-string">&quot;demo-center-text&quot;</span>&gt;
+        Builds run on
+        &lt;RayCenter inline className=<span class="tk-string">&quot;demo-center-chip&quot;</span>&gt;&lt;RayIcon name=<span class="tk-string">&quot;terminal&quot;</span> /&gt;&lt;/RayCenter&gt;
+        ray runners and report to
+        &lt;RayCenter inline className=<span class="tk-string">&quot;demo-center-chip&quot;</span>&gt;&lt;RayIcon name=<span class="tk-string">&quot;bell&quot;</span> /&gt;&lt;/RayCenter&gt;
+        your notifications.
+      &lt;/p&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Empty state, loading and sign-in<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayGrid</span> <span class="tk-attr">cols</span>=<span class="tk-string">&quot;1 sm:3&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCenter</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStack</span> <span class="tk-attr">align</span>=<span class="tk-string">&quot;center&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-icon&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span> /<span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>No files yet<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span><span class="tk-punctuation">&gt;</span>Drop files here to upload them.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStack</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCenter</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCenter</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStack</span> <span class="tk-attr">align</span>=<span class="tk-string">&quot;center&quot;</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySpinner</span> /<span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span><span class="tk-punctuation">&gt;</span>Loading builds…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStack</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCenter</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCenter</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-box demo-center-pattern&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCard</span> <span class="tk-attr">with-border</span> <span class="tk-attr">shadow</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-card&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStack</span> <span class="tk-attr">gap</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Sign in<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;you@ray.dev&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">full-width</span><span class="tk-punctuation">&gt;</span>Continue<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStack</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCard</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCenter</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayGrid</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>inline: beside text<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-text&quot;</span><span class="tk-punctuation">&gt;</span>
+    Builds run on
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCenter</span> <span class="tk-attr">inline</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-chip&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;terminal&quot;</span> /<span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCenter</span><span class="tk-punctuation">&gt;</span>
+    ray runners and report to
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCenter</span> <span class="tk-attr">inline</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-center-chip&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;bell&quot;</span> /<span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayCenter</span><span class="tk-punctuation">&gt;</span>
+    your notifications.
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

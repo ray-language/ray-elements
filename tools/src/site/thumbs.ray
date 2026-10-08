@@ -40,6 +40,8 @@ const I_MOON: string = "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10
 const I_BOLD: string = "<path d=\"M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z\"/>";
 const I_ITALIC: string = "<path d=\"M10 4h8M6 20h8M14 4l-4 16\"/>";
 const I_X: string = "<path d=\"M6 6l12 12M18 6L6 18\"/>";
+const I_LEFT: string = "<path d=\"M19 12H5M11 6l-6 6 6 6\"/>";
+const I_HOME: string = "<path d=\"M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z\"/>";
 const I_IMAGE: string = "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><circle cx=\"9\" cy=\"10\" r=\"2\"/><path d=\"M21 16l-5-5-9 9\"/>";
 
 fn thumbs() -> [(string, string)] {
@@ -102,6 +104,15 @@ fn thumbs() -> [(string, string)] {
         ("separator", col(ln("8rem") + "<i class=\"t-sep\">" + txt("", "or") + "</i>" + ln("6rem"))),
         ("split", sf("split", "<i>" + ln("2.5rem") + ln("3rem") + "</i><i class=\"handle\"></i><i>" + ln("3.5rem") + ln("2.5rem") + ln("3rem") + "</i>")),
         ("statusbar", sf("status", "<i class=\"top\">" + ln("5rem") + ln("4rem") + "</i><i class=\"bar\">" + dot("green") + ln("2.5rem") + "<i class=\"t-grow\"></i>" + ln("1.5rem") + ln("2rem") + "</i>")),
+        ("stack", "<i class=\"t-stackd\">" + "<i class=\"t-blk\"></i>".repeat(3) + "</i>"),
+        ("group", sf("pad", row(ln("3rem") + "<i class=\"t-grow\"></i>" + btn("o", "1rem") + btn("", "1.25rem")) + row(pill("l", "blue", "1.5rem") + pill("l", "teal", "2rem") + pill("l", "violet", "1.25rem")))),
+        ("grid", "<i class=\"t-gridd\">" + "<i class=\"t-blk\"></i>".repeat(2) + "<i class=\"t-blk wide\"></i>" + "<i class=\"t-blk\"></i>".repeat(3) + "</i>"),
+        ("container", "<i class=\"t-cont\"><i class=\"t-col\">" + ln("5rem") + ln("6rem") + ln("4rem") + "</i></i>"),
+        ("center", "<i class=\"t-centerd\"><i class=\"t-gl big\">" + svg(I_STAR) + "</i></i>"),
+        ("scroll-area", sf("sa", "<i class=\"t-col\">" + ln("6rem") + ln("5rem") + ln("6.5rem") + ln("4rem") + ln("5.5rem") + "</i><i class=\"t-thumbbar\"></i>")),
+        ("app-shell", sf("appsh", "<i class=\"hd\">" + lp("2rem") + "</i><i class=\"nv\">" + ln("1.75rem") + ln("2rem") + ln("1.5rem") + "</i><i class=\"mn\">" + ln("4.5rem") + ln("5rem") + ln("3.5rem") + "</i>")),
+        ("app-bar", "<i class=\"t-phone\"><i class=\"top\">" + svg(I_LEFT) + "<i class=\"t-col\">" + ln("3rem") + ln("2rem") + "</i><i class=\"t-grow\"></i>" + svg(I_SEARCH) + "</i>" + ln("5rem") + ln("4rem") + "</i>"),
+        ("bottom-nav", "<i class=\"t-phone\">" + ln("5rem") + ln("4rem") + "<i class=\"t-grow\"></i><i class=\"bot\"><i class=\"on\">" + svg(I_HOME) + "</i>" + svg(I_SEARCH) + svg(I_BELL) + svg(I_USER) + "</i></i>"),
         // Theme
         ("theme-toggle", "<i class=\"t-theme\"><i class=\"light\">" + svg(I_SUN) + "</i><i class=\"dark\">" + svg(I_MOON) + "</i></i>")
     ]

@@ -190,6 +190,8 @@ export declare const COLORS: string[];
 export declare const VARIANT_TOKENS: string[];
 /** Points an element's --_<variant> properties at a palette color, any CSS color, or the primary. */
 export declare function applyColor(el: HTMLElement, color: string | undefined): void;
+/** A spacing value as CSS: xs…xl as its --ray-space token, a bare number as px, else a CSS length; null when empty. */
+export declare function spaceValue(value: string | number | undefined): string | null;
 /** :host size scale: --_h, --_fs, --_px, --_gap by [size]. */
 export declare const sizeStyles: CSSStyleSheet;
 /** :host radius: --_r by [radius]. */
@@ -264,6 +266,13 @@ export declare function chartTheme(el?: Element): ChartTheme;
 export declare function onChartThemeChange(cb: (theme: ChartTheme) => void, el?: Element): () => void;
 /** A color with an alpha, as rgba(): withAlpha("#1c7ed6", 0.2). */
 export declare function withAlpha(color: string, alpha: number): string;
+
+// --- scrolling ---------------------------------------------------------------
+
+/** The scroller of an element: `target`, else the content of its ray-app-shell or ray-scroll-area, else the window. */
+export declare function scrollerOf(el: Element, target?: Element | string | null): Element | Window;
+/** Calls cb with the scroll position and direction ("down" | "up") once per frame; returns a stop function. */
+export declare function watchScroll(scroller: Element | Window, cb: (state: { y: number; direction: "up" | "down" }) => void, options?: { tolerance?: number }): () => void;
 
 // --- Button (button)
 /** <ray-button> A button, or a link styled as one with href. Submits or resets its form with type. */
@@ -938,6 +947,60 @@ export declare class RayTextarea extends FieldControl {
   size: "xs" | "sm" | "md" | "lg" | "xl";
   /** Box style. */
   variant: "default" | "filled" | "unstyled";
+}
+
+// --- Bottom nav (bottom-nav)
+/** <ray-bottom-nav> With href items it marks the link to this page (aria-current="page"); without, it is a control (value, change). Clear of the home indicator (safe-area inset). In a ray-app-shell, put it in the bottom slot. */
+export declare class RayBottomNav extends RayElement {
+  /** The current destination (an item's value, else its href, else its label). */
+  value: string | undefined;
+  /** Accessible name of the navigation. */
+  label: string;
+  /** Which labels show (the others stay for assistive technology). */
+  labels: "always" | "active" | "never";
+  /** How the current destination is marked besides its color. */
+  indicator: "pill" | "line" | "none";
+  /** A palette color or any CSS color for the current item and the action (default: primary). */
+  color: string | undefined;
+  /** default: a bar across the bottom; floating: a rounded bar off the edges. */
+  variant: "default" | "floating";
+  /** Slides away while the content scrolls down, back on the way up. */
+  hideOnScroll: boolean | undefined;
+  /** Pinned to the bottom of the window (outside a shell). */
+  fixed: boolean | undefined;
+  /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */
+  scrollTarget: string | undefined;
+  /** The items, in order. */
+  readonly items: RayBottomNavItem[];
+  addEventListener<K extends keyof RayBottomNavEventMap>(type: K, listener: (this: RayBottomNav, ev: RayBottomNavEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayBottomNavEventMap>(type: K, listener: (this: RayBottomNav, ev: RayBottomNavEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayBottomNavEventMap extends HTMLElementEventMap {
+  /** An action item was pressed. */
+  "ray-select": CustomEvent<{ value: string }>;
+}
+/** <ray-bottom-nav-item> A link with href, else a button. The badge is read with the label ("Messages, 3"). */
+export declare class RayBottomNavItem extends RayElement {
+  /** Its value (default: its href, else its label). */
+  value: string | undefined;
+  /** The label. */
+  label: string | undefined;
+  /** An icon of the registry (or put one in the icon slot). */
+  icon: string | undefined;
+  /** Makes it a link. */
+  href: string | undefined;
+  /** A count or a short text on the icon. */
+  badge: string | undefined;
+  /** A dot on the icon (something new). */
+  dot: boolean | undefined;
+  /** Set by the bar: the current destination. */
+  active: boolean | undefined;
+  /** Not interactive. */
+  disabled: boolean | undefined;
+  /** A raised round button ("New"): it fires ray-select on the bar, it is not a destination. */
+  action: boolean | undefined;
 }
 
 // --- Nav link (nav-link)
@@ -1837,6 +1900,52 @@ export declare class RaySpinner extends RayElement {
   label: string;
 }
 
+// --- App bar (app-bar)
+/** <ray-app-bar> It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one. */
+export declare class RayAppBar extends RayElement {
+  /** The title. */
+  label: string | undefined;
+  /** A line under the title. */
+  description: string | undefined;
+  /** The title centered (iOS). */
+  center: boolean | undefined;
+  /** default: the page background; filled: the primary color; transparent: until it elevates. */
+  variant: "default" | "filled" | "transparent";
+  /** Height: 48, 56 or 64 px. */
+  size: "sm" | "md" | "lg";
+  /** While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none. */
+  scroll: "elevate" | "hide" | "none";
+  /** Sticks to the top of the window (outside a shell). */
+  sticky: boolean | undefined;
+  /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */
+  scrollTarget: string | undefined;
+  /** Whether scroll="hide" has slid it away. */
+  readonly concealed: boolean;
+}
+
+// --- App shell (app-shell)
+/** <ray-app-shell> The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. */
+export declare class RayAppShell extends RayElement {
+  /** default: the header across the top; alt: the navbar full height, the header beside it. */
+  layout: "default" | "alt";
+  /** Width (px, em or rem) below which it takes the phone layout. */
+  breakpoint: string;
+  /** Padding of the main area: xs…xl, a number (px) or a CSS length. */
+  padding: string | undefined;
+  /** The element that scrolls the main content. */
+  readonly scroller: HTMLElement;
+  /** Whether it is in the phone layout. */
+  readonly mobile: boolean;
+  addEventListener<K extends keyof RayAppShellEventMap>(type: K, listener: (this: RayAppShell, ev: RayAppShellEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayAppShellEventMap>(type: K, listener: (this: RayAppShell, ev: RayAppShellEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayAppShellEventMap extends HTMLElementEventMap {
+  /** It switched between the wide and the phone layout. */
+  "ray-breakpoint": CustomEvent<{ mobile: boolean }>;
+}
+
 // --- Aspect ratio (aspect-ratio)
 /** A ratio ("16/9", "4:3", 1.5) as a CSS aspect-ratio value, or null. */
 export declare function parseRatio(value: string | number): string | null;
@@ -1863,6 +1972,93 @@ export declare class RayCard extends RayElement {
   withBorder: boolean | undefined;
   /** default: card surface; filled: muted surface; outline: border without fill. */
   variant: "default" | "filled" | "outline";
+}
+
+// --- Center (center)
+/** <ray-center> It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically. */
+export declare class RayCenter extends RayElement {
+  /** As wide as its content (inline-flex): an icon beside text. */
+  inline: boolean | undefined;
+}
+
+// --- Container (container)
+/** The maximum widths of size. */
+export declare const CONTAINER_SIZES: { xs: string; sm: string; md: string; lg: string; xl: string };
+/** <ray-container> Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page. */
+export declare class RayContainer extends RayElement {
+  /** Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length. */
+  size: string;
+  /** Side padding: xs…xl, a number (px) or a CSS length. */
+  padding: string;
+  /** No maximum width: the whole width, still padded. */
+  fluid: boolean | undefined;
+}
+
+// --- Grid (grid)
+/** "1 sm:2 lg:4" as counts per width. */
+export declare function parseCols(value: string | number | undefined): { base?: number; xs?: number; sm?: number; md?: number; lg?: number; xl?: number };
+/** The widths of cols (36em, 48em, 62em, 75em, 88em). */
+export declare const BREAKPOINTS: { xs: string; sm: string; md: string; lg: string; xl: string };
+/** <ray-grid> The widths are the grid's own (container queries: xs 36em, sm 48em, md 62em, lg 75em, xl 88em), so a grid in a narrow column or a phone frame drops to fewer columns. It needs a width from its parent: in a flex row give it one or let it grow. A child spans with data-span="2"…"12" or "full". */
+export declare class RayGrid extends RayElement {
+  /** Columns: a count, then counts from a width up ("1 sm:2 lg:4"). */
+  cols: string;
+  /** Instead of cols: as many columns of at least this width as fit ("14rem", 220). */
+  minColWidth: string | undefined;
+  /** Space between cells: xs…xl, a number (px) or a CSS length. */
+  gap: string;
+  /** Space between rows when it differs from gap. */
+  rowGap: string | undefined;
+  /** Vertical alignment of the cells in a row. */
+  align: "stretch" | "start" | "center" | "end";
+}
+
+// --- Group (group)
+/** <ray-group> A flex row on the host: the children are laid out directly, no wrapper. */
+export declare class RayGroup extends RayElement {
+  /** Space between children: xs…xl (the space scale), a number (px) or any CSS length. */
+  gap: string;
+  /** Cross-axis alignment. */
+  align: "center" | "start" | "end" | "stretch" | "baseline";
+  /** Main-axis distribution: space-between for a title on one side and actions on the other. */
+  justify: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly";
+  /** Keeps the children on one line. */
+  nowrap: boolean | undefined;
+  /** The children share the width equally. */
+  grow: boolean | undefined;
+}
+
+// --- Scroll area (scroll-area)
+/** <ray-scroll-area> Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own. */
+export declare class RayScrollArea extends RayElement {
+  /** Height (CSS length). */
+  height: string | undefined;
+  /** Maximum height: it grows with its content up to this, then scrolls. */
+  maxHeight: string | undefined;
+  /** Which ways it scrolls. */
+  orientation: "vertical" | "horizontal" | "both";
+  /** The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls). */
+  type: "auto" | "hover" | "never";
+  /** No edge shadows. */
+  noShadows: boolean | undefined;
+  /** Distance from the end (px) at which ray-reach-end fires. */
+  threshold: number;
+  /** Accessible name: makes the scrolling box a named region. */
+  label: string | undefined;
+  /** The scrolling element (scrollTop, scrollTo…). */
+  readonly viewport: HTMLElement;
+  /** Scrolls to the top (left). */
+  scrollToStart(options?: { behavior?: ScrollBehavior }): void;
+  /** Scrolls to the bottom (right when horizontal). */
+  scrollToEnd(options?: { behavior?: ScrollBehavior }): void;
+  addEventListener<K extends keyof RayScrollAreaEventMap>(type: K, listener: (this: RayScrollArea, ev: RayScrollAreaEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayScrollAreaEventMap>(type: K, listener: (this: RayScrollArea, ev: RayScrollAreaEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayScrollAreaEventMap extends HTMLElementEventMap {
+  /** The end came within threshold (once per arrival). */
+  "ray-reach-end": CustomEvent<{ edge: "bottom" | "right" }>;
 }
 
 // --- Separator (separator)
@@ -1909,6 +2105,19 @@ export declare class RaySplit extends RayElement {
 export interface RaySplitEventMap extends HTMLElementEventMap {
   /** After a drag, a key or a collapse. */
   "ray-resize": CustomEvent<{ size: number; collapsed: boolean }>;
+}
+
+// --- Stack (stack)
+/** Gap, align and justify of a stack or group onto an element's custom properties (for a layout component of your own). */
+export declare function applyFlex(el: HTMLElement, options: { gap?: string; align?: string; justify?: string }, alignDefault: string): void;
+/** <ray-stack> A flex column on the host: the children are laid out directly, no wrapper. */
+export declare class RayStack extends RayElement {
+  /** Space between children: xs…xl (the space scale), a number (px) or any CSS length. */
+  gap: string;
+  /** Cross-axis alignment: stretch fills the width. */
+  align: "stretch" | "start" | "center" | "end" | "baseline";
+  /** Main-axis distribution (with a height to distribute). */
+  justify: "start" | "center" | "end" | "space-between" | "space-around" | "space-evenly";
 }
 
 // --- Status bar (statusbar)
@@ -1965,6 +2174,8 @@ declare global {
     "ray-slider": RaySlider;
     "ray-switch": RaySwitch;
     "ray-textarea": RayTextarea;
+    "ray-bottom-nav": RayBottomNav;
+    "ray-bottom-nav-item": RayBottomNavItem;
     "ray-nav-link": RayNavLink;
     "ray-pagination": RayPagination;
     "ray-sidebar": RaySidebar;
@@ -2002,10 +2213,18 @@ declare global {
     "ray-progress": RayProgress;
     "ray-skeleton": RaySkeleton;
     "ray-spinner": RaySpinner;
+    "ray-app-bar": RayAppBar;
+    "ray-app-shell": RayAppShell;
     "ray-aspect-ratio": RayAspectRatio;
     "ray-card": RayCard;
+    "ray-center": RayCenter;
+    "ray-container": RayContainer;
+    "ray-grid": RayGrid;
+    "ray-group": RayGroup;
+    "ray-scroll-area": RayScrollArea;
     "ray-separator": RaySeparator;
     "ray-split": RaySplit;
+    "ray-stack": RayStack;
     "ray-statusbar": RayStatusbar;
     "ray-statusbar-item": RayStatusbarItem;
     "ray-theme-toggle": RayThemeToggle;

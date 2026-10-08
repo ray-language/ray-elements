@@ -202,6 +202,18 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Bottom nav",
+    "group": "Components · Navigation",
+    "description": "The bottom navigation of a phone app (Material's navigation bar, the iOS tab bar): three to five destinations with an icon, a label and a badge, the current one marked by a pill. Links or a value; an action button in the middle; hides on scroll.",
+    "href": "components/bottom-nav.html",
+    "keywords": [
+      "bottom-nav",
+      "ray-bottom-nav",
+      "ray-bottom-nav-item"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Nav link",
     "group": "Components · Navigation",
     "description": "A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.",
@@ -520,6 +532,28 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "App bar",
+    "group": "Components · Layout",
+    "description": "The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it. It elevates once the content scrolls, or hides while scrolling down.",
+    "href": "components/app-bar.html",
+    "keywords": [
+      "app-bar",
+      "ray-app-bar"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "App shell",
+    "group": "Components · Layout",
+    "description": "The frame of an app (Mantine's AppShell): header, navbar, main, aside and footer on wide screens; on phones one column with a bottom bar. The main content scrolls, the bars stay.",
+    "href": "components/app-shell.html",
+    "keywords": [
+      "app-shell",
+      "ray-app-shell"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Aspect ratio",
     "group": "Components · Layout",
     "description": "A box with a fixed width/height ratio; its image, video or iframe fills it.",
@@ -542,6 +576,61 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Center",
+    "group": "Components · Layout",
+    "description": "Its content centered on both axes (Mantine's Center): empty states, loaders, a sign-in card.",
+    "href": "components/center.html",
+    "keywords": [
+      "center",
+      "ray-center"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Container",
+    "group": "Components · Layout",
+    "description": "Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.",
+    "href": "components/container.html",
+    "keywords": [
+      "container",
+      "ray-container"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Grid",
+    "group": "Components · Layout",
+    "description": "A responsive grid: a column count per width (cols=\"1 sm:2 lg:4\") measured on the grid itself, or as many columns of a minimum width as fit. Children span columns with data-span.",
+    "href": "components/grid.html",
+    "keywords": [
+      "grid",
+      "ray-grid"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Group",
+    "group": "Components · Layout",
+    "description": "Its children in a row (Mantine's Group): spaced by the space scale, centered, wrapping when they do not fit. Toolbars, form actions, chips.",
+    "href": "components/group.html",
+    "keywords": [
+      "group",
+      "ray-group"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Scroll area",
+    "group": "Components · Layout",
+    "description": "A box that scrolls its content with the native scrolling and a thin themed scrollbar (Mantine's ScrollArea). Edge shadows tell there is more; ray-reach-end fires at the end (load the next page).",
+    "href": "components/scroll-area.html",
+    "keywords": [
+      "scroll-area",
+      "ray-scroll-area"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Separator",
     "group": "Components · Layout",
     "description": "A horizontal or vertical rule, optionally labeled (Mantine's Divider).",
@@ -560,6 +649,17 @@ export default [
     "keywords": [
       "split",
       "ray-split"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Stack",
+    "group": "Components · Layout",
+    "description": "Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked.",
+    "href": "components/stack.html",
+    "keywords": [
+      "stack",
+      "ray-stack"
     ],
     "icon": "layers"
   },

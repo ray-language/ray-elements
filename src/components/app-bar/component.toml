@@ -1,0 +1,87 @@
+[component]
+name = "App bar"
+category = "Layout"
+summary = "The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it. It elevates once the content scrolls, or hides while scrolling down."
+files = ["app-bar.js"]
+requires = []
+tags = ["ray-app-bar"]
+
+[ray-app-bar]
+class = "RayAppBar"
+extends = "RayElement"
+summary = "It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one."
+
+[ray-app-bar.properties.label]
+type = "string"
+description = "The title."
+
+[ray-app-bar.properties.description]
+type = "string"
+description = "A line under the title."
+
+[ray-app-bar.properties.center]
+type = "boolean"
+reflect = true
+description = "The title centered (iOS)."
+
+[ray-app-bar.properties.variant]
+type = "string"
+values = ["default", "filled", "transparent"]
+default = "default"
+reflect = true
+description = "default: the page background; filled: the primary color; transparent: until it elevates."
+
+[ray-app-bar.properties.size]
+type = "string"
+values = ["sm", "md", "lg"]
+default = "md"
+reflect = true
+description = "Height: 48, 56 or 64 px."
+
+[ray-app-bar.properties.scroll]
+type = "string"
+values = ["elevate", "hide", "none"]
+default = "elevate"
+reflect = true
+description = "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none."
+
+[ray-app-bar.properties.sticky]
+type = "boolean"
+reflect = true
+description = "Sticks to the top of the window (outside a shell)."
+
+[ray-app-bar.properties.scrollTarget]
+attribute = "scroll-target"
+type = "string"
+description = "A selector of the element whose scrolling it follows (default: its shell's, else the window)."
+
+[ray-app-bar.slots.default]
+description = "Title content after the label (a heading, a select)."
+
+[ray-app-bar.slots.start]
+description = "Before the title: back or menu button."
+
+[ray-app-bar.slots.end]
+description = "Actions."
+
+[ray-app-bar.slots.bottom]
+description = "A row under the bar: tabs, a search field."
+
+[ray-app-bar.parts.bar]
+description = "The bar."
+
+[ray-app-bar.parts.start]
+description = "The start area."
+
+[ray-app-bar.parts.title]
+description = "The title area."
+
+[ray-app-bar.parts.end]
+description = "The actions area."
+
+[ray-app-bar.parts.bottom]
+description = "The row under the bar."
+
+[ray-app-bar.members.concealed]
+ts = "readonly concealed: boolean"
+description = "Whether scroll=\"hide\" has slid it away."

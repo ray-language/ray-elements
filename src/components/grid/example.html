@@ -1,0 +1,47 @@
+<div class="demo-caption">Responsive to its own width: drag the corner</div>
+<div class="demo-resize" id="demo-grid-resize">
+  <ray-grid cols="1 xs:2 md:4" gap="sm">
+    <ray-stat label="Builds" value="1,284" diff="12"></ray-stat>
+    <ray-stat label="Success rate" value="98.2%" diff="0.4"></ray-stat>
+    <ray-stat label="Avg. duration" value="4.1 s" diff="-8"></ray-stat>
+    <ray-stat label="Deploys" value="73" diff="5"></ray-stat>
+    <ray-card with-border radius="md" data-span="full" class="demo-grid-chart"><span class="demo-muted">data-span="full": a row of its own</span><span class="bars"><i style="--h: 40%"></i><i style="--h: 65%"></i><i style="--h: 52%"></i><i style="--h: 80%"></i><i style="--h: 70%"></i><i style="--h: 92%"></i><i style="--h: 60%"></i><i style="--h: 75%"></i></span></ray-card>
+  </ray-grid>
+  <span class="demo-resize-width" id="demo-grid-width"></span>
+</div>
+<p class="demo-muted">cols="1 xs:2 md:4": one column, two from 36em, four from 62em, measured on the grid (container queries), not the window.</p>
+
+<div class="demo-caption">Spans</div>
+<ray-grid cols="4" gap="xs">
+  <span class="demo-cell" data-span="2">data-span="2"</span><span class="demo-cell">1</span><span class="demo-cell">1</span>
+  <span class="demo-cell">1</span><span class="demo-cell" data-span="3">data-span="3"</span>
+  <span class="demo-cell" data-span="full">data-span="full"</span>
+</ray-grid>
+
+<div class="demo-caption">As many as fit: min-col-width</div>
+<ray-grid min-col-width="9rem" gap="sm">
+  <figure class="demo-swatch" style="--c: var(--ray-blue-filled)"><span></span><figcaption>blue</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-teal-filled)"><span></span><figcaption>teal</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-violet-filled)"><span></span><figcaption>violet</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-pink-filled)"><span></span><figcaption>pink</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-orange-filled)"><span></span><figcaption>orange</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-green-filled)"><span></span><figcaption>green</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-yellow-filled)"><span></span><figcaption>yellow</figcaption></figure>
+  <figure class="demo-swatch" style="--c: var(--ray-red-filled)"><span></span><figcaption>red</figcaption></figure>
+</ray-grid>
+
+<div class="demo-caption">gap, row-gap and align</div>
+<ray-grid cols="3" gap="xl" row-gap="xs" align="center">
+  <span class="demo-cell">gap="xl"</span><span class="demo-cell tall">align="center"</span><span class="demo-cell">row-gap="xs"</span>
+  <span class="demo-cell">4</span><span class="demo-cell">5</span><span class="demo-cell tall">6</span>
+</ray-grid>
+
+<script type="module">
+  // The width under the corner, as the grid sees it.
+  const box = document.getElementById("demo-grid-resize");
+  const out = document.getElementById("demo-grid-width");
+  new ResizeObserver(() => {
+    const px = box.querySelector("ray-grid").getBoundingClientRect().width;
+    out.textContent = `${Math.round(px)} px · ${(px / 16).toFixed(1)} em`;
+  }).observe(box);
+</script>

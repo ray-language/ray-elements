@@ -2253,6 +2253,126 @@
       ]
     },
     {
+      "name": "ray-bottom-nav",
+      "description": "With href items it marks the link to this page (aria-current=\"page\"); without, it is a control (value, change). Clear of the home indicator (safe-area inset). In a ray-app-shell, put it in the bottom slot.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The current destination (an item's value, else its href, else its label)."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the navigation."
+        },
+        {
+          "name": "labels",
+          "description": "Which labels show (the others stay for assistive technology).",
+          "values": [
+            {
+              "name": "always"
+            },
+            {
+              "name": "active"
+            },
+            {
+              "name": "never"
+            }
+          ]
+        },
+        {
+          "name": "indicator",
+          "description": "How the current destination is marked besides its color.",
+          "values": [
+            {
+              "name": "pill"
+            },
+            {
+              "name": "line"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for the current item and the action (default: primary)."
+        },
+        {
+          "name": "variant",
+          "description": "default: a bar across the bottom; floating: a rounded bar off the edges.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "floating"
+            }
+          ]
+        },
+        {
+          "name": "hide-on-scroll",
+          "description": "Slides away while the content scrolls down, back on the way up.",
+          "valueSet": "v"
+        },
+        {
+          "name": "fixed",
+          "description": "Pinned to the bottom of the window (outside a shell).",
+          "valueSet": "v"
+        },
+        {
+          "name": "scroll-target",
+          "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window)."
+        }
+      ]
+    },
+    {
+      "name": "ray-bottom-nav-item",
+      "description": "A link with href, else a button. The badge is read with the label (\"Messages, 3\").",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Its value (default: its href, else its label)."
+        },
+        {
+          "name": "label",
+          "description": "The label."
+        },
+        {
+          "name": "icon",
+          "description": "An icon of the registry (or put one in the icon slot)."
+        },
+        {
+          "name": "href",
+          "description": "Makes it a link."
+        },
+        {
+          "name": "badge",
+          "description": "A count or a short text on the icon."
+        },
+        {
+          "name": "dot",
+          "description": "A dot on the icon (something new).",
+          "valueSet": "v"
+        },
+        {
+          "name": "active",
+          "description": "Set by the bar: the current destination.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "action",
+          "description": "A raised round button (\"New\"): it fires ray-select on the bar, it is not a destination.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ray-nav-link",
       "description": "A link with href (aria-current=page when active), or a button that toggles its nested links.",
       "attributes": [
@@ -4073,6 +4193,105 @@
       ]
     },
     {
+      "name": "ray-app-bar",
+      "description": "It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The title."
+        },
+        {
+          "name": "description",
+          "description": "A line under the title."
+        },
+        {
+          "name": "center",
+          "description": "The title centered (iOS).",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "default: the page background; filled: the primary color; transparent: until it elevates.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "transparent"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Height: 48, 56 or 64 px.",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "scroll",
+          "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
+          "values": [
+            {
+              "name": "elevate"
+            },
+            {
+              "name": "hide"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "sticky",
+          "description": "Sticks to the top of the window (outside a shell).",
+          "valueSet": "v"
+        },
+        {
+          "name": "scroll-target",
+          "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window)."
+        }
+      ]
+    },
+    {
+      "name": "ray-app-shell",
+      "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized.",
+      "attributes": [
+        {
+          "name": "layout",
+          "description": "default: the header across the top; alt: the navbar full height, the header beside it.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "alt"
+            }
+          ]
+        },
+        {
+          "name": "breakpoint",
+          "description": "Width (px, em or rem) below which it takes the phone layout."
+        },
+        {
+          "name": "padding",
+          "description": "Padding of the main area: xs…xl, a number (px) or a CSS length."
+        }
+      ]
+    },
+    {
       "name": "ray-aspect-ratio",
       "description": "A box with a fixed width/height ratio; its image, video or iframe fills it.",
       "attributes": [
@@ -4191,6 +4410,198 @@
       ]
     },
     {
+      "name": "ray-center",
+      "description": "It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically.",
+      "attributes": [
+        {
+          "name": "inline",
+          "description": "As wide as its content (inline-flex): an icon beside text.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-container",
+      "description": "Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.",
+      "attributes": [
+        {
+          "name": "size",
+          "description": "Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length."
+        },
+        {
+          "name": "padding",
+          "description": "Side padding: xs…xl, a number (px) or a CSS length."
+        },
+        {
+          "name": "fluid",
+          "description": "No maximum width: the whole width, still padded.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-grid",
+      "description": "The widths are the grid's own (container queries: xs 36em, sm 48em, md 62em, lg 75em, xl 88em), so a grid in a narrow column or a phone frame drops to fewer columns. It needs a width from its parent: in a flex row give it one or let it grow. A child spans with data-span=\"2\"…\"12\" or \"full\".",
+      "attributes": [
+        {
+          "name": "cols",
+          "description": "Columns: a count, then counts from a width up (\"1 sm:2 lg:4\")."
+        },
+        {
+          "name": "min-col-width",
+          "description": "Instead of cols: as many columns of at least this width as fit (\"14rem\", 220)."
+        },
+        {
+          "name": "gap",
+          "description": "Space between cells: xs…xl, a number (px) or a CSS length."
+        },
+        {
+          "name": "row-gap",
+          "description": "Space between rows when it differs from gap."
+        },
+        {
+          "name": "align",
+          "description": "Vertical alignment of the cells in a row.",
+          "values": [
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-group",
+      "description": "A flex row on the host: the children are laid out directly, no wrapper.",
+      "attributes": [
+        {
+          "name": "gap",
+          "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+        },
+        {
+          "name": "align",
+          "description": "Cross-axis alignment.",
+          "values": [
+            {
+              "name": "center"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "baseline"
+            }
+          ]
+        },
+        {
+          "name": "justify",
+          "description": "Main-axis distribution: space-between for a title on one side and actions on the other.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "space-between"
+            },
+            {
+              "name": "space-around"
+            },
+            {
+              "name": "space-evenly"
+            }
+          ]
+        },
+        {
+          "name": "nowrap",
+          "description": "Keeps the children on one line.",
+          "valueSet": "v"
+        },
+        {
+          "name": "grow",
+          "description": "The children share the width equally.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-scroll-area",
+      "description": "Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own.",
+      "attributes": [
+        {
+          "name": "height",
+          "description": "Height (CSS length)."
+        },
+        {
+          "name": "max-height",
+          "description": "Maximum height: it grows with its content up to this, then scrolls."
+        },
+        {
+          "name": "orientation",
+          "description": "Which ways it scrolls.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "both"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "description": "The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "hover"
+            },
+            {
+              "name": "never"
+            }
+          ]
+        },
+        {
+          "name": "no-shadows",
+          "description": "No edge shadows.",
+          "valueSet": "v"
+        },
+        {
+          "name": "threshold",
+          "description": "Distance from the end (px) at which ray-reach-end fires."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name: makes the scrolling box a named region."
+        }
+      ]
+    },
+    {
       "name": "ray-separator",
       "description": "A horizontal or vertical rule, optionally labeled (Mantine's Divider).",
       "attributes": [
@@ -4304,6 +4715,61 @@
         {
           "name": "autosave",
           "description": "A key: the size is saved in localStorage and restored."
+        }
+      ]
+    },
+    {
+      "name": "ray-stack",
+      "description": "A flex column on the host: the children are laid out directly, no wrapper.",
+      "attributes": [
+        {
+          "name": "gap",
+          "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+        },
+        {
+          "name": "align",
+          "description": "Cross-axis alignment: stretch fills the width.",
+          "values": [
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "baseline"
+            }
+          ]
+        },
+        {
+          "name": "justify",
+          "description": "Main-axis distribution (with a height to distribute).",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "space-between"
+            },
+            {
+              "name": "space-around"
+            },
+            {
+              "name": "space-evenly"
+            }
+          ]
         }
       ]
     },
