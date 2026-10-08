@@ -696,3 +696,13 @@ pre.code code, .prose pre code { font-size: inherit; }
   .demo-indicator-positions { gap: var(--ray-space-10) 3.5rem; padding: var(--ray-space-5) 2.75rem; }
   .demo-indicator-positions .demo-indicator-box { width: 4rem; height: 3rem; }
 }
+
+/* Blockquote example. */
+.demo-quotes { gap: var(--ray-space-6); }
+.demo-quote-author { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ray-space-3); width: 100%; }
+.demo-quote-author div { display: grid; gap: 0.125rem; }
+.demo-quote-author strong { color: var(--ray-foreground); }
+.demo-article { max-width: 42rem; line-height: var(--ray-line-height-lg); }
+.demo-article h3 { margin: 0 0 var(--ray-space-3); }
+.demo-article p { margin: 0 0 var(--ray-space-4); }
+.demo-article ray-blockquote { margin: var(--ray-space-5) 0; }

@@ -1448,6 +1448,29 @@ export declare class RayBadge extends RayElement {
   normalCase: boolean | undefined;
 }
 
+// --- Blockquote (blockquote)
+/** <ray-blockquote> Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot="cite": an avatar, a name, a role). */
+export declare class RayBlockquote extends RayElement {
+  /** Who said it, shown below the quote ("— Grace Hopper"). */
+  cite: string | undefined;
+  /** URL of the source: the inner blockquote's cite attribute. */
+  href: string | undefined;
+  /** A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary. */
+  color: string | undefined;
+  /** light: tinted background; outline: border and edge only; filled: solid color (a pull quote). */
+  variant: "light" | "outline" | "filled";
+  /** Registry icon of the mark, or none. The icon slot replaces it. */
+  icon: string;
+  /** Text size (lg for a pull quote). */
+  size: "sm" | "md" | "lg";
+  /** Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md. */
+  padding: string | undefined;
+  /** No colored edge on the start side (the tint, border and mark stay). */
+  hideEdge: boolean | undefined;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: md. */
+  radius: string | undefined;
+}
+
 // --- Carousel (carousel)
 /** <ray-carousel> Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it. */
 export declare class RayCarousel extends RayElement {
@@ -1909,6 +1932,7 @@ declare global {
     "ray-attachments": RayAttachments;
     "ray-avatar": RayAvatar;
     "ray-badge": RayBadge;
+    "ray-blockquote": RayBlockquote;
     "ray-carousel": RayCarousel;
     "ray-icon": RayIcon;
     "ray-indicator": RayIndicator;

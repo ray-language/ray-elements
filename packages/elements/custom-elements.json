@@ -10476,6 +10476,241 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/blockquote/blockquote.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayBlockquote",
+          "tagName": "ray-blockquote",
+          "customElement": true,
+          "description": "Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot=\"cite\": an avatar, a name, a role).",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "cite",
+              "type": {
+                "text": "string"
+              },
+              "description": "Who said it, shown below the quote (\"— Grace Hopper\").",
+              "fieldName": "cite"
+            },
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "URL of the source: the inner blockquote's cite attribute.",
+              "fieldName": "href"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary.",
+              "fieldName": "color"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"light\" | \"outline\" | \"filled\""
+              },
+              "description": "light: tinted background; outline: border and edge only; filled: solid color (a pull quote).",
+              "fieldName": "variant",
+              "default": "light"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "Registry icon of the mark, or none. The icon slot replaces it.",
+              "fieldName": "icon",
+              "default": "quote"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Text size (lg for a pull quote).",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md.",
+              "fieldName": "padding"
+            },
+            {
+              "name": "hide-edge",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No colored edge on the start side (the tint, border and mark stay).",
+              "fieldName": "hideEdge"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: md.",
+              "fieldName": "radius"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "cite",
+              "type": {
+                "text": "string"
+              },
+              "description": "Who said it, shown below the quote (\"— Grace Hopper\").",
+              "attribute": "cite",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "URL of the source: the inner blockquote's cite attribute.",
+              "attribute": "href",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"light\" | \"outline\" | \"filled\""
+              },
+              "description": "light: tinted background; outline: border and edge only; filled: solid color (a pull quote).",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "light"
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "Registry icon of the mark, or none. The icon slot replaces it.",
+              "attribute": "icon",
+              "reflects": false,
+              "default": "quote"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Text size (lg for a pull quote).",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "padding",
+              "type": {
+                "text": "string"
+              },
+              "description": "Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md.",
+              "attribute": "padding",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideEdge",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No colored edge on the start side (the tint, border and mark stay).",
+              "attribute": "hide-edge",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: md.",
+              "attribute": "radius",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The quotation (text or paragraphs)."
+            },
+            {
+              "name": "cite",
+              "description": "Rich attribution, instead of cite."
+            },
+            {
+              "name": "icon",
+              "description": "A custom mark, instead of icon."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "quote",
+              "description": "The <blockquote>."
+            },
+            {
+              "name": "icon",
+              "description": "The disc with the mark."
+            },
+            {
+              "name": "cite",
+              "description": "The attribution (a <figcaption>)."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayBlockquote",
+          "declaration": {
+            "name": "RayBlockquote",
+            "module": "components/blockquote/blockquote.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-blockquote",
+          "declaration": {
+            "name": "RayBlockquote",
+            "module": "components/blockquote/blockquote.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/carousel/carousel.js",
       "declarations": [
         {

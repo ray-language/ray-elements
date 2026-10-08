@@ -1273,6 +1273,29 @@ export interface RayBadgeProps {
 /** <ray-badge> as a Vue component. */
 export declare const RayBadge: DefineComponent<RayBadgeProps>;
 
+export interface RayBlockquoteProps {
+  /** Who said it, shown below the quote ("— Grace Hopper"). */
+  cite?: string;
+  /** URL of the source: the inner blockquote's cite attribute. */
+  href?: string;
+  /** A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary. */
+  color?: string;
+  /** light: tinted background; outline: border and edge only; filled: solid color (a pull quote). */
+  variant?: "light" | "outline" | "filled";
+  /** Registry icon of the mark, or none. The icon slot replaces it. */
+  icon?: string;
+  /** Text size (lg for a pull quote). */
+  size?: "sm" | "md" | "lg";
+  /** Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md. */
+  padding?: string;
+  /** No colored edge on the start side (the tint, border and mark stay). */
+  hideEdge?: boolean;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: md. */
+  radius?: string;
+}
+/** <ray-blockquote> as a Vue component. */
+export declare const RayBlockquote: DefineComponent<RayBlockquoteProps>;
+
 export interface RayCarouselProps {
   /** Current position (0-based). Setting it scrolls there. */
   index?: number;
@@ -1669,6 +1692,7 @@ export declare const components: {
   RayAttachments: typeof RayAttachments;
   RayAvatar: typeof RayAvatar;
   RayBadge: typeof RayBadge;
+  RayBlockquote: typeof RayBlockquote;
   RayCarousel: typeof RayCarousel;
   RayIcon: typeof RayIcon;
   RayIndicator: typeof RayIndicator;
@@ -1739,6 +1763,7 @@ declare module "vue" {
     RayAttachments: typeof RayAttachments;
     RayAvatar: typeof RayAvatar;
     RayBadge: typeof RayBadge;
+    RayBlockquote: typeof RayBlockquote;
     RayCarousel: typeof RayCarousel;
     RayIcon: typeof RayIcon;
     RayIndicator: typeof RayIndicator;

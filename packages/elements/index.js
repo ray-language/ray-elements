@@ -43,6 +43,7 @@ export { RayAccordion, RayAccordionItem } from "./components/accordion/accordion
 export { RayAttachment, RayAttachments } from "./components/attachment/attachment.js";
 export { RayAvatar, initials } from "./components/avatar/avatar.js";
 export { RayBadge } from "./components/badge/badge.js";
+export { RayBlockquote } from "./components/blockquote/blockquote.js";
 export { RayCarousel } from "./components/carousel/carousel.js";
 export { RayIcon } from "./components/icon/icon.js";
 export { RayIndicator } from "./components/indicator/indicator.js";

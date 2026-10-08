@@ -3269,6 +3269,71 @@
       ]
     },
     {
+      "name": "ray-blockquote",
+      "description": "Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot=\"cite\": an avatar, a name, a role).",
+      "attributes": [
+        {
+          "name": "cite",
+          "description": "Who said it, shown below the quote (\"— Grace Hopper\")."
+        },
+        {
+          "name": "href",
+          "description": "URL of the source: the inner blockquote's cite attribute."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary."
+        },
+        {
+          "name": "variant",
+          "description": "light: tinted background; outline: border and edge only; filled: solid color (a pull quote).",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "filled"
+            }
+          ]
+        },
+        {
+          "name": "icon",
+          "description": "Registry icon of the mark, or none. The icon slot replaces it."
+        },
+        {
+          "name": "size",
+          "description": "Text size (lg for a pull quote).",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "padding",
+          "description": "Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md."
+        },
+        {
+          "name": "hide-edge",
+          "description": "No colored edge on the start side (the tint, border and mark stay).",
+          "valueSet": "v"
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: md."
+        }
+      ]
+    },
+    {
       "name": "ray-carousel",
       "description": "Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it.",
       "attributes": [

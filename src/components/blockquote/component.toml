@@ -1,0 +1,78 @@
+[component]
+name = "Blockquote"
+category = "Data display"
+summary = "A quotation set apart from the text (Mantine's Blockquote): a colored edge, a quote mark on it and the attribution below. A real <blockquote> inside, with the source's URL as its cite."
+files = ["blockquote.js"]
+requires = []
+tags = ["ray-blockquote"]
+
+[ray-blockquote]
+class = "RayBlockquote"
+extends = "RayElement"
+summary = "Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot=\"cite\": an avatar, a name, a role)."
+
+[ray-blockquote.properties.cite]
+type = "string"
+description = "Who said it, shown below the quote (\"— Grace Hopper\")."
+
+[ray-blockquote.properties.href]
+type = "string"
+description = "URL of the source: the inner blockquote's cite attribute."
+
+[ray-blockquote.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary."
+
+[ray-blockquote.properties.variant]
+type = "string"
+values = ["light", "outline", "filled"]
+default = "light"
+reflect = true
+description = "light: tinted background; outline: border and edge only; filled: solid color (a pull quote)."
+
+[ray-blockquote.properties.icon]
+type = "string"
+default = "quote"
+description = "Registry icon of the mark, or none. The icon slot replaces it."
+
+[ray-blockquote.properties.size]
+type = "string"
+values = ["sm", "md", "lg"]
+default = "md"
+reflect = true
+description = "Text size (lg for a pull quote)."
+
+[ray-blockquote.properties.padding]
+type = "string"
+reflect = true
+description = "Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md."
+
+[ray-blockquote.properties.hideEdge]
+attribute = "hide-edge"
+type = "boolean"
+reflect = true
+description = "No colored edge on the start side (the tint, border and mark stay)."
+
+[ray-blockquote.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl, none, or a CSS length. Default: md."
+
+[ray-blockquote.slots.default]
+description = "The quotation (text or paragraphs)."
+
+[ray-blockquote.slots.cite]
+description = "Rich attribution, instead of cite."
+
+[ray-blockquote.slots.icon]
+description = "A custom mark, instead of icon."
+
+[ray-blockquote.parts.quote]
+description = "The <blockquote>."
+
+[ray-blockquote.parts.icon]
+description = "The disc with the mark."
+
+[ray-blockquote.parts.cite]
+description = "The attribution (a <figcaption>)."

@@ -365,6 +365,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Blockquote",
+    "group": "Components · Data display",
+    "description": "A quotation set apart from the text (Mantine's Blockquote): a colored edge, a quote mark on it and the attribution below. A real <blockquote> inside, with the source's URL as its cite.",
+    "href": "components.html#blockquote",
+    "keywords": [
+      "blockquote",
+      "ray-blockquote"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Carousel",
     "group": "Components · Data display",
     "description": "Slides in a scroll-snap viewport: native swipe and scrolling, previous/next controls, indicators, keyboard, loop and autoplay with a pause button.",

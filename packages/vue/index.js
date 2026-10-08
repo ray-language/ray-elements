@@ -200,6 +200,10 @@ export const RayBadge = createComponent("RayBadge", "ray-badge", {
   properties: ["variant", "gradient", "color", "size", "radius", "normalCase"],
   booleans: ["normalCase"],
 });
+export const RayBlockquote = createComponent("RayBlockquote", "ray-blockquote", {
+  properties: ["cite", "href", "color", "variant", "icon", "size", "padding", "hideEdge", "radius"],
+  booleans: ["hideEdge"],
+});
 export const RayCarousel = createComponent("RayCarousel", "ray-carousel", {
   properties: ["index", "label", "slideSize", "slideGap", "align", "orientation", "loop", "autoplay", "hideControls", "hideIndicators"],
   booleans: ["loop", "hideControls", "hideIndicators"],
@@ -281,7 +285,7 @@ export const RayThemeToggle = createComponent("RayThemeToggle", "ray-theme-toggl
   booleans: [],
 });
 
-export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayColorPicker, RayColorInput, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayCarousel, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAspectRatio, RayCard, RaySeparator, RaySplit, RayStatusbar, RayStatusbarItem, RayThemeToggle };
+export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayColorPicker, RayColorInput, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAspectRatio, RayCard, RaySeparator, RaySplit, RayStatusbar, RayStatusbarItem, RayThemeToggle };
 
 /** app.use(RayDs) registers every component globally. */
 export const RayDs = createPlugin(components);

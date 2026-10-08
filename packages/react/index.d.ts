@@ -1247,6 +1247,30 @@ export type RayBadgeProps = RayBadgeOwnProps & Omit<React.HTMLAttributes<Ray.Ray
 /** <ray-badge> as a React component. */
 export declare const RayBadge: React.ForwardRefExoticComponent<RayBadgeProps & React.RefAttributes<Ray.RayBadge>>;
 
+export interface RayBlockquoteOwnProps {
+  /** Who said it, shown below the quote ("— Grace Hopper"). */
+  cite?: string;
+  /** URL of the source: the inner blockquote's cite attribute. */
+  href?: string;
+  /** A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary. */
+  color?: string;
+  /** light: tinted background; outline: border and edge only; filled: solid color (a pull quote). */
+  variant?: "light" | "outline" | "filled";
+  /** Registry icon of the mark, or none. The icon slot replaces it. */
+  icon?: string;
+  /** Text size (lg for a pull quote). */
+  size?: "sm" | "md" | "lg";
+  /** Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md. */
+  padding?: string;
+  /** No colored edge on the start side (the tint, border and mark stay). */
+  hideEdge?: boolean;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: md. */
+  radius?: string;
+}
+export type RayBlockquoteProps = RayBlockquoteOwnProps & Omit<React.HTMLAttributes<Ray.RayBlockquote>, keyof RayBlockquoteOwnProps> & { children?: React.ReactNode };
+/** <ray-blockquote> as a React component. */
+export declare const RayBlockquote: React.ForwardRefExoticComponent<RayBlockquoteProps & React.RefAttributes<Ray.RayBlockquote>>;
+
 export interface RayCarouselOwnProps {
   /** Current position (0-based). Setting it scrolls there. */
   index?: number;

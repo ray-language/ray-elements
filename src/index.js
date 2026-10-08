@@ -32,6 +32,7 @@ import "./components/accordion/accordion.js";
 import "./components/attachment/attachment.js";
 import "./components/avatar/avatar.js";
 import "./components/badge/badge.js";
+import "./components/blockquote/blockquote.js";
 import "./components/carousel/carousel.js";
 import "./components/icon/icon.js";
 import "./components/indicator/indicator.js";

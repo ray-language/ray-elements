@@ -221,6 +221,11 @@ export const RayBadge = createComponent("ray-badge", {
   properties: ["variant", "gradient", "color", "size", "radius", "normalCase"],
   events: {  },
 });
+export const RayBlockquote = createComponent("ray-blockquote", {
+  displayName: "RayBlockquote",
+  properties: ["cite", "href", "color", "variant", "icon", "size", "padding", "hideEdge", "radius"],
+  events: {  },
+});
 export const RayCarousel = createComponent("ray-carousel", {
   displayName: "RayCarousel",
   properties: ["index", "label", "slideSize", "slideGap", "align", "orientation", "loop", "autoplay", "hideControls", "hideIndicators"],

@@ -47,17 +47,20 @@ T.test("attachment: size formatting, extension and icon", async (T) => {
 T.test("attachment: a File fills name, size, type and an image thumbnail", async (T) => {
   const box = await mount(`<ray-attachment></ray-attachment>`);
   const el = box.firstElementChild;
-  const file = new File([new Uint8Array(2048)], "a.png", { type: "image/png" });
+  // A real 1×1 PNG: bytes that do not decode make the image fail, and a
+  // failed thumbnail hides itself (a race with the assertion below).
+  const png = Uint8Array.from(atob("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="), (c) => c.charCodeAt(0));
+  const file = new File([png], "a.png", { type: "image/png" });
   el.file = file;
   await T.settle();
   T.eq(el.file, file);
   T.eq(el.name, "a.png");
-  T.eq(el.size, 2048);
+  T.eq(el.size, png.length);
   T.eq(el.type, "image/png");
   T.ok(String(el.src).startsWith("blob:"), "an object URL thumbnail");
   T.eq(inner(el, "img").hidden, false, "thumbnail shown");
   T.eq(inner(el, ".thumb").hasAttribute("data-image"), true);
-  T.eq(inner(el, ".meta").textContent, "2 KB");
+  T.eq(inner(el, ".meta").textContent, "70 B");
   const url = el.src;
   el.file = new File(["x"], "notes.txt", { type: "text/plain" });
   await T.settle();
