@@ -1,0 +1,79 @@
+<div class="demo-caption">Picker</div>
+<div class="demo-color-row">
+  <ray-color-picker id="demo-cp" value="#7c3aed" label="Accent color"></ray-color-picker>
+  <div class="demo-color-card" id="demo-cp-card">
+    <span class="demo-color-chip"></span>
+    <div><strong id="demo-cp-value">#7c3aed</strong><span id="demo-cp-event">Drag the area or the hue, or use the arrow keys.</span></div>
+  </div>
+</div>
+
+<div class="demo-caption">Formats and opacity</div>
+<div class="demo-color-row">
+  <div class="demo-stack"><span class="demo-matrix-label">format="rgba"</span><ray-color-picker format="rgba" value="rgba(14, 165, 233, 0.6)" size="sm" class="demo-cp-out"></ray-color-picker><code></code></div>
+  <div class="demo-stack"><span class="demo-matrix-label">format="hsla"</span><ray-color-picker format="hsla" value="hsla(330, 80%, 55%, 0.8)" size="sm" class="demo-cp-out"></ray-color-picker><code></code></div>
+  <div class="demo-stack"><span class="demo-matrix-label">format="hexa"</span><ray-color-picker format="hexa" value="#16a34acc" size="sm" class="demo-cp-out"></ray-color-picker><code></code></div>
+</div>
+
+<div class="demo-caption">Swatches</div>
+<div class="demo-color-row">
+  <div class="demo-stack">
+    <span class="demo-matrix-label">picker + swatches</span>
+    <ray-color-picker value="#228be6" size="sm" swatches="#25262b, #868e96, #fa5252, #e64980, #be4bdb, #7950f2, #4c6ef5, #228be6, #15aabf, #12b886, #40c057, #82c91e, #fab005, #fd7e14"></ray-color-picker>
+  </div>
+  <div class="demo-stack">
+    <span class="demo-matrix-label">swatches-only</span>
+    <ray-color-picker swatches-only value="#fd7e14" swatches-per-row="6" size="sm" swatches="#fa5252, #fd7e14, #fab005, #40c057, #12b886, #15aabf, #228be6, #4c6ef5, #7950f2, #be4bdb, #e64980, #868e96"></ray-color-picker>
+  </div>
+</div>
+
+<div class="demo-caption">Color input</div>
+<div class="demo-grid">
+  <ray-color-input label="Brand color" description="Type any CSS color, or pick one." value="#7c3aed" swatches="#25262b, #fa5252, #e64980, #be4bdb, #7950f2, #228be6, #15aabf, #12b886, #40c057, #fab005, #fd7e14, #868e96"></ray-color-input>
+  <ray-color-input label="Overlay" format="rgba" value="rgba(0, 0, 0, 0.45)" variant="filled"></ray-color-input>
+  <ray-color-input label="Highlight" format="hsl" placeholder="Pick a color"></ray-color-input>
+  <ray-color-input label="Invalid" value="#e11d48" error="This color fails contrast on white (3.9:1)."></ray-color-input>
+</div>
+
+<div class="demo-caption">In a form</div>
+<form class="demo-color-form" id="demo-color-form">
+  <ray-input name="name" label="Label name" value="bug" required></ray-input>
+  <ray-color-input name="color" label="Label color" value="#d73a4a" required swatches="#d73a4a, #0075ca, #cfd3d7, #a2eeef, #7057ff, #008672, #e4e669, #d876e3"></ray-color-input>
+  <div class="demo-color-preview"><ray-badge id="demo-color-badge" variant="filled" color="#d73a4a" normal-case>bug</ray-badge></div>
+  <div class="demo-row"><ray-button type="submit">Save label</ray-button><ray-button type="reset" variant="default">Reset</ray-button><span class="demo-muted" id="demo-color-out"></span></div>
+</form>
+
+<script type="module">
+  // Picker: show the value and which event moved it.
+  const cp = document.getElementById("demo-cp");
+  const card = document.getElementById("demo-cp-card");
+  const show = (e) => {
+    document.getElementById("demo-cp-value").textContent = cp.value;
+    document.getElementById("demo-cp-event").textContent = `${e.type}: ${cp.value}`;
+    card.style.setProperty("--chip", cp.value);
+  };
+  cp.addEventListener("input", show);
+  cp.addEventListener("change", show);
+  card.style.setProperty("--chip", cp.value);
+
+  // Formats: the value under each picker.
+  for (const p of document.querySelectorAll(".demo-cp-out")) {
+    const code = p.nextElementSibling;
+    const write = () => { code.textContent = p.value; };
+    p.addEventListener("input", write);
+    customElements.whenDefined("ray-color-picker").then(write);
+  }
+
+  // Form: the badge follows the fields; submit shows the FormData.
+  const form = document.getElementById("demo-color-form");
+  const badge = document.getElementById("demo-color-badge");
+  const sync = () => {
+    badge.textContent = form.elements.name.value || "label";
+    badge.color = form.elements.color.value || "gray";
+  };
+  form.addEventListener("input", sync);
+  form.addEventListener("reset", () => setTimeout(sync));
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.getElementById("demo-color-out").textContent = JSON.stringify(Object.fromEntries(new FormData(form)));
+  });
+</script>

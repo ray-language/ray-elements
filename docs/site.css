@@ -661,3 +661,38 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-accordion-icon { display: inline-grid; place-items: center; width: 2rem; height: 2rem; color: var(--c); background: var(--bg); border-radius: var(--ray-radius-md); }
 .demo-accordion-icon ray-icon { --_size: 1rem; }
 .demo-accordion-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ray-space-3); margin-inline-end: var(--ray-space-2); }
+
+/* Color picker example. */
+.demo-color-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--ray-space-6); }
+.demo-color-row code { font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
+.demo-color-card { display: flex; align-items: center; gap: var(--ray-space-3); min-width: 0; padding: var(--ray-space-3) var(--ray-space-4); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); }
+.demo-color-chip { flex: none; width: 2.5rem; height: 2.5rem; background: var(--chip); border-radius: var(--ray-radius-md); box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12); }
+.demo-color-card div { display: grid; gap: 0.125rem; min-width: 0; }
+.demo-color-card strong { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-sm); }
+.demo-color-card span { font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+.demo-color-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr)); gap: var(--ray-space-4); align-items: end; }
+.demo-color-form .demo-row { grid-column: 1 / -1; }
+.demo-color-preview { display: flex; align-items: center; min-height: var(--ray-control-height-sm); }
+
+/* Password input example. */
+.demo-auth { display: grid; gap: var(--ray-space-4); max-width: 24rem; }
+.demo-auth-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ray-space-2); font-size: var(--ray-font-size-sm); }
+.demo-auth-row a { color: var(--ray-primary-light-color); text-decoration: none; }
+.demo-auth-row a:hover { text-decoration: underline; }
+.demo-requirements { display: grid; gap: var(--ray-space-1); margin: 0; padding: 0; list-style: none; font-size: var(--ray-font-size-sm); color: var(--ray-red-light-color); }
+.demo-requirements li { display: flex; align-items: center; gap: var(--ray-space-2); }
+.demo-requirements li[data-met] { color: var(--ray-teal-light-color); }
+
+/* Indicator example. */
+.demo-indicator-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ray-space-8); padding: var(--ray-space-3) 0; }
+.demo-indicator-card { display: grid; gap: 0.125rem; }
+.demo-indicator-card span { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
+.demo-indicator-video { display: grid; place-items: end start; width: 12rem; aspect-ratio: 16 / 9; padding: var(--ray-space-2); box-sizing: border-box; font-size: var(--ray-font-size-xs); color: #fff; background: radial-gradient(circle at 30% 30%, #475569, #0f172a); border-radius: var(--ray-radius-md); }
+.demo-indicator-positions { display: grid; grid-template-columns: repeat(3, max-content); justify-content: safe center; gap: var(--ray-space-12) 6rem; padding: var(--ray-space-6) 3.5rem; }
+.demo-indicator-box { width: 7rem; height: 4.5rem; background: var(--ray-muted); border: 1px dashed var(--ray-border); border-radius: var(--ray-radius-md); }
+.demo-indicator-box.sm { width: 3rem; height: 3rem; }
+.demo-indicator-sep { width: 1px; align-self: stretch; background: var(--ray-border); }
+@media (max-width: 40em) {
+  .demo-indicator-positions { gap: var(--ray-space-10) 3.5rem; padding: var(--ray-space-5) 2.75rem; }
+  .demo-indicator-positions .demo-indicator-box { width: 4rem; height: 3rem; }
+}

@@ -1,0 +1,74 @@
+[component]
+name = "Indicator"
+category = "Data display"
+summary = "A dot or a small label on the edge of any element (Mantine's Indicator): \"New\" on an avatar, an unread count on a bell, an online dot. Nine positions, an inward offset, palette or CSS colors, a border and a live pulse."
+files = ["indicator.js"]
+requires = []
+tags = ["ray-indicator"]
+
+[ray-indicator]
+class = "RayIndicator"
+extends = "RayElement"
+summary = "Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label=\"Grace, online\")."
+
+[ray-indicator.properties.label]
+type = "string"
+description = "Text in the indicator (a word or a count). Empty: a dot."
+
+[ray-indicator.properties.position]
+type = "string"
+values = ["top-start", "top-center", "top-end", "middle-start", "middle-center", "middle-end", "bottom-start", "bottom-center", "bottom-end"]
+default = "top-end"
+reflect = true
+description = "Which point of the content's box it sits on."
+
+[ray-indicator.properties.offset]
+type = "string"
+ts = "string | number"
+description = "Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve."
+
+[ray-indicator.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color. Default: the primary."
+
+[ray-indicator.properties.size]
+type = "string"
+ts = "string | number"
+description = "Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px."
+
+[ray-indicator.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl, none, or a CSS length. Default: round."
+
+[ray-indicator.properties.max]
+type = "number"
+description = "A numeric label above it shows as max+ (99+)."
+
+[ray-indicator.properties.inline]
+type = "boolean"
+reflect = true
+description = "inline-block, to sit within a line of text."
+
+[ray-indicator.properties.withBorder]
+attribute = "with-border"
+type = "boolean"
+reflect = true
+description = "A ring in the background color, to separate it from the content."
+
+[ray-indicator.properties.processing]
+type = "boolean"
+reflect = true
+description = "A pulse around it (live, recording, syncing)."
+
+[ray-indicator.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Hides the indicator (the content stays)."
+
+[ray-indicator.slots.default]
+description = "The element the indicator sits on."
+
+[ray-indicator.parts.indicator]
+description = "The dot or label."

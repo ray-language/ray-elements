@@ -442,6 +442,36 @@ pub fn all_elements(cs: [Component]) -> [Element] {
 
 // The properties of `el` including the ones it inherits from another ray-ds
 // element (extends = "RayCheckbox"), the element's own first.
+// The plain attributes of an element and of the ray-ds classes it extends
+// (ray-password-input forwards autocomplete like ray-input).
+pub fn all_attrs(els: [Element], el: Element) -> [Named] {
+    let out: [Named] = [];
+    for a in el.attrs {
+        out.push(a);
+    }
+    var parent = el.extends_name;
+    var depth = 0;
+    while (depth < 8) {
+        var found = false;
+        for other in els {
+            if (other.class_name == parent) {
+                found = true;
+                for a in other.attrs {
+                    if (!out.map(fn(x: Named) -> string { x.name }).contains(a.name)) {
+                        out.push(a);
+                    }
+                }
+                parent = other.extends_name;
+            }
+        }
+        if (!found) {
+            break;
+        }
+        depth = depth + 1;
+    }
+    out
+}
+
 pub fn all_props(els: [Element], el: Element) -> [Prop] {
     let out: [Prop] = [];
     for p in el.props {

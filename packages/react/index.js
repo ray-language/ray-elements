@@ -36,6 +36,16 @@ export const RayCheckbox = createComponent("ray-checkbox", {
   properties: ["checked", "indeterminate", "value", "name", "label", "description", "error", "required", "disabled", "variant", "color", "size", "labelPosition", "radius", "descriptionPosition"],
   events: { onChange: "change" },
 });
+export const RayColorPicker = createComponent("ray-color-picker", {
+  displayName: "RayColorPicker",
+  properties: ["value", "format", "swatches", "swatchesPerRow", "swatchesOnly", "size", "fullWidth", "name", "disabled", "label"],
+  events: { onInput: "input", onChange: "change" },
+});
+export const RayColorInput = createComponent("ray-color-input", {
+  displayName: "RayColorInput",
+  properties: ["value", "format", "swatches", "swatchesPerRow", "placeholder", "hideEyedropper", "open", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
+  events: { onInput: "input", onChange: "change", onRayOpen: "ray-open", onRayClose: "ray-close" },
+});
 export const RayDatePicker = createComponent("ray-date-picker", {
   displayName: "RayDatePicker",
   properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
@@ -55,6 +65,11 @@ export const RayInput = createComponent("ray-input", {
   displayName: "RayInput",
   properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
   events: { onInput: "input", onChange: "change" },
+});
+export const RayPasswordInput = createComponent("ray-password-input", {
+  displayName: "RayPasswordInput",
+  properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  events: { onRayVisibilityChange: "ray-visibility-change", onInput: "input", onChange: "change" },
 });
 export const RayRadioGroup = createComponent("ray-radio-group", {
   displayName: "RayRadioGroup",
@@ -214,6 +229,11 @@ export const RayCarousel = createComponent("ray-carousel", {
 export const RayIcon = createComponent("ray-icon", {
   displayName: "RayIcon",
   properties: ["name", "size", "label", "color", "stroke"],
+  events: {  },
+});
+export const RayIndicator = createComponent("ray-indicator", {
+  displayName: "RayIndicator",
+  properties: ["label", "position", "offset", "color", "size", "radius", "max", "inline", "withBorder", "processing", "disabled"],
   events: {  },
 });
 export const RayKbd = createComponent("ray-kbd", {

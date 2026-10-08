@@ -226,12 +226,26 @@ fn jsx_style(css: string) -> string {
     if (custom) { "{{ ${join(pairs, ", ")} } as CSSProperties}" } else { "{{ ${join(pairs, ", ")} }}" }
 }
 
-fn jsx_attr(a: Attr) -> string {
+// Input-only attributes (autocomplete, maxlength…) are camelCase on native
+// elements, but a ray element's wrapper declares them as written.
+const INPUT_ATTRS: [string] = ["autocomplete", "maxlength", "minlength", "readonly"];
+
+fn jsx_attr(a: Attr, custom: bool) -> string {
+    if (custom && INPUT_ATTRS.contains(a.name)) {
+        return if (a.bare) { a.name } else { "${a.name}=\"${a.value}\"" };
+    }
     let name = match (a.name) {
         "class" => "className",
         "for" => "htmlFor",
         "tabindex" => "tabIndex",
         "autofocus" => "autoFocus",
+        "autocomplete" => "autoComplete",
+        "autocapitalize" => "autoCapitalize",
+        "maxlength" => "maxLength",
+        "minlength" => "minLength",
+        "inputmode" => "inputMode",
+        "enterkeyhint" => "enterKeyHint",
+        "spellcheck" => "spellCheck",
         "readonly" => "readOnly",
         "colspan" => "colSpan",
         "rowspan" => "rowSpan",
@@ -245,6 +259,9 @@ fn jsx_attr(a: Attr) -> string {
     }
     if (a.name == "tabindex") {
         return "tabIndex={${a.value}}";
+    }
+    if ((a.name == "colspan" || a.name == "rowspan") && parse_int(a.value).is_some()) {
+        return "${name}={${a.value}}";
     }
     "${name}=\"${a.value}\""
 }
@@ -293,13 +310,13 @@ pub fn react(html: string, els: [Element], fn_name: string) -> string {
                                         parts.push("${p.name}=\"${a.value}\"");
                                     }
                                 },
-                                Option.None => parts.push(jsx_attr(a)),
+                                Option.None => parts.push(jsx_attr(a, true)),
                             }
                         }
                     },
                     Option.None => {
                         for a in attrs {
-                            parts.push(jsx_attr(a));
+                            parts.push(jsx_attr(a, false));
                         }
                     },
                 }
@@ -434,6 +451,9 @@ fn react_and_vue_from_html() {
     let h = react(`<div style="--a: 1" onclick="go()" tabindex="0"></div>`, [el], "Y");
     assert(h.contains("import type { CSSProperties } from \"react\";"));
     assert(h.contains("<div style={{ \"--a\": \"1\" } as CSSProperties} tabIndex={0} />"));
+    assert(react(`<input autocomplete="off" maxlength="4">`, [el], "Z").contains("<input autoComplete=\"off\" maxLength=\"4\" />"));
+    assert(react(`<ray-x autocomplete="off"></ray-x>`, [el], "Z").contains("<RayX autocomplete=\"off\" />"));
+    assert(react(`<td colspan="2">x</td>`, [el], "Z").contains("<td colSpan={2}>"));
     let v = vue(html, [el]);
     assert(v.contains("<RayX variant=\"light\" full-width :max=\"3\">Go</RayX><RayX /><br></div>"));
     assert(!v.contains("ignored"));

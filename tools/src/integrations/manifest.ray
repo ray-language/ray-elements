@@ -3,7 +3,7 @@
 
 import std/json;
 from std/json import Obj, Arr;
-from components/meta import Component, Element, Prop, Named, all_elements, all_props, all_events;
+from components/meta import Component, Element, Prop, Named, all_elements, all_props, all_attrs, all_events;
 from integrations/ts import prop_type, event_type, is_dom_prop;
 
 // `prefix`: the path of the components' directory from the manifest
@@ -153,7 +153,7 @@ pub fn vscode_data(cs: [Component]) -> Result<string, string> {
                 }
                 attrs = attrs.item(a);
             }
-            for a in el.attrs {
+            for a in all_attrs(els, el) {
                 attrs = attrs.item(json.obj()
                     .field("name", a.name)
                     .field("description", a.description));

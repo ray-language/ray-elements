@@ -1,0 +1,36 @@
+[component]
+name = "Password input"
+category = "Inputs"
+summary = "A password field with a button that shows or hides what was typed (Mantine's PasswordInput). Everything else is ray-input: label, description, error, sizes, validation, forms."
+files = ["password-input.js"]
+requires = ["input"]
+tags = ["ray-password-input"]
+
+[ray-password-input]
+class = "RayPasswordInput"
+extends = "RayInput"
+summary = "autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field."
+
+[ray-password-input.properties.visible]
+type = "boolean"
+reflect = true
+description = "The password is shown as text."
+
+[ray-password-input.properties.showLabel]
+attribute = "show-label"
+type = "string"
+default = "Show password"
+description = "Accessible name of the toggle while hidden."
+
+[ray-password-input.properties.hideLabel]
+attribute = "hide-label"
+type = "string"
+default = "Hide password"
+description = "Accessible name of the toggle while shown."
+
+[ray-password-input.events.ray-visibility-change]
+detail = "{ visible: boolean }"
+description = "The user showed or hid the password."
+
+[ray-password-input.parts.toggle]
+description = "The show/hide button."

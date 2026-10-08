@@ -650,6 +650,186 @@
       ]
     },
     {
+      "name": "ray-color-picker",
+      "description": "Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "format",
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider."
+        },
+        {
+          "name": "swatches",
+          "description": "Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept)."
+        },
+        {
+          "name": "swatches-per-row",
+          "description": "Swatches in each row."
+        },
+        {
+          "name": "swatches-only",
+          "description": "Only the swatches: no area nor sliders.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Width of the picker and size of its thumbs.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the whole picker."
+        }
+      ]
+    },
+    {
+      "name": "ray-color-input",
+      "description": "Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The color, written in format. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "format",
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla."
+        },
+        {
+          "name": "swatches",
+          "description": "Preset colors in the dropdown (an array, or a comma-separated list)."
+        },
+        {
+          "name": "swatches-per-row",
+          "description": "Swatches in each row."
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "hide-eyedropper",
+          "description": "Hides the eyedropper button.",
+          "valueSet": "v"
+        },
+        {
+          "name": "open",
+          "description": "The dropdown is shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Label above the field."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error message; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Must have a color.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Field height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl or a CSS length."
+        },
+        {
+          "name": "variant",
+          "description": "Visual style of the field.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Where the description goes.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "ray-date-picker",
       "description": "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it.",
       "attributes": [
@@ -956,6 +1136,207 @@
       "name": "ray-input",
       "description": "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input.",
       "attributes": [
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-password-input",
+      "description": "autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field.",
+      "attributes": [
+        {
+          "name": "visible",
+          "description": "The password is shown as text.",
+          "valueSet": "v"
+        },
+        {
+          "name": "show-label",
+          "description": "Accessible name of the toggle while hidden."
+        },
+        {
+          "name": "hide-label",
+          "description": "Accessible name of the toggle while shown."
+        },
         {
           "name": "value",
           "description": "Current value. The value attribute is the initial value (restored on form reset)."
@@ -2975,6 +3356,89 @@
         {
           "name": "stroke",
           "description": "Stroke width for stroke icons (default: --ray-icon-stroke, 2)."
+        }
+      ]
+    },
+    {
+      "name": "ray-indicator",
+      "description": "Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label=\"Grace, online\").",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Text in the indicator (a word or a count). Empty: a dot."
+        },
+        {
+          "name": "position",
+          "description": "Which point of the content's box it sits on.",
+          "values": [
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top-center"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "middle-start"
+            },
+            {
+              "name": "middle-center"
+            },
+            {
+              "name": "middle-end"
+            },
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom-center"
+            },
+            {
+              "name": "bottom-end"
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "description": "Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the primary."
+        },
+        {
+          "name": "size",
+          "description": "Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px."
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: round."
+        },
+        {
+          "name": "max",
+          "description": "A numeric label above it shows as max+ (99+)."
+        },
+        {
+          "name": "inline",
+          "description": "inline-block, to sit within a line of text.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-border",
+          "description": "A ring in the background color, to separate it from the content.",
+          "valueSet": "v"
+        },
+        {
+          "name": "processing",
+          "description": "A pulse around it (live, recording, syncing).",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Hides the indicator (the content stays).",
+          "valueSet": "v"
         }
       ]
     },

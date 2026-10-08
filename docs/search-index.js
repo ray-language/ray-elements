@@ -67,6 +67,18 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Color picker",
+    "group": "Components · Inputs",
+    "description": "Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper. Pointer and keyboard; form-associated; hex, rgb or hsl, with or without alpha.",
+    "href": "components.html#color-picker",
+    "keywords": [
+      "color-picker",
+      "ray-color-picker",
+      "ray-color-input"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Date picker",
     "group": "Components · Inputs",
     "description": "A date field with a calendar dropdown, and the calendar on its own. Keyboard grid navigation, min/max, locale-aware. Form-associated.",
@@ -97,6 +109,17 @@ export default [
     "keywords": [
       "input",
       "ray-input"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Password input",
+    "group": "Components · Inputs",
+    "description": "A password field with a button that shows or hides what was typed (Mantine's PasswordInput). Everything else is ray-input: label, description, error, sizes, validation, forms.",
+    "href": "components.html#password-input",
+    "keywords": [
+      "password-input",
+      "ray-password-input"
     ],
     "icon": "layers"
   },
@@ -360,6 +383,17 @@ export default [
     "keywords": [
       "icon",
       "ray-icon"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Indicator",
+    "group": "Components · Data display",
+    "description": "A dot or a small label on the edge of any element (Mantine's Indicator): \"New\" on an avatar, an unread count on a bell, an online dot. Nine positions, an inward offset, palette or CSS colors, a border and a live pulse.",
+    "href": "components.html#indicator",
+    "keywords": [
+      "indicator",
+      "ray-indicator"
     ],
     "icon": "layers"
   },

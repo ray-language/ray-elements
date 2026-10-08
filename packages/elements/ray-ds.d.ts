@@ -403,6 +403,92 @@ export declare class RayCheckbox extends FieldControl {
   labelPosition: "right" | "left";
 }
 
+// --- Color picker (color-picker)
+/** How a color value is written. */
+export type ColorFormat = "hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla";
+/** sRGB channels and alpha, all 0…1. */
+export type Rgba = { r: number; g: number; b: number; a: number };
+/** A color string (hex with 3/4/6/8 digits, rgb(a), hsl(a), or any CSS color) as channels and alpha, or null. */
+export declare function parseColorValue(input: string | null | undefined): Rgba | null;
+/** Channels and alpha as a string in a format (default hex). */
+export declare function formatColor(color: Rgba, format?: ColorFormat): string;
+/** <ray-color-picker> Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha. */
+export declare class RayColorPicker extends FormControl {
+  /** The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset). */
+  value: string | undefined;
+  /** How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider. */
+  format: ColorFormat;
+  /** Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept). */
+  swatches: string | string[] | undefined;
+  /** Swatches in each row. */
+  swatchesPerRow: number;
+  /** Only the swatches: no area nor sliders. */
+  swatchesOnly: boolean | undefined;
+  /** Width of the picker and size of its thumbs. */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Takes the width of its container. */
+  fullWidth: boolean | undefined;
+  /** Form field name. */
+  name: string | undefined;
+  /** Not interactive. */
+  disabled: boolean | undefined;
+  /** Accessible name of the whole picker. */
+  label: string | undefined;
+  /** The current color as channels and alpha (0…1). */
+  readonly rgba: Rgba;
+}
+/** <ray-color-input> Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API. */
+export declare class RayColorInput extends FieldControl {
+  /** The color, written in format. The value attribute is the initial value (restored on form reset). */
+  value: string | undefined;
+  /** How value is written: hex, hexa, rgb, rgba, hsl or hsla. */
+  format: ColorFormat;
+  /** Preset colors in the dropdown (an array, or a comma-separated list). */
+  swatches: string | string[] | undefined;
+  /** Swatches in each row. */
+  swatchesPerRow: number;
+  /** Shown while empty. */
+  placeholder: string | undefined;
+  /** Hides the eyedropper button. */
+  hideEyedropper: boolean | undefined;
+  /** The dropdown is shown. */
+  open: boolean | undefined;
+  /** Form field name. */
+  name: string | undefined;
+  /** Label above the field. */
+  label: string | undefined;
+  /** Help text. */
+  description: string | undefined;
+  /** Error message; marks the field invalid. */
+  error: string | undefined;
+  /** Must have a color. */
+  required: boolean | undefined;
+  /** Not interactive. */
+  disabled: boolean | undefined;
+  /** Field height and font size. */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius: xs…xl or a CSS length. */
+  radius: string | undefined;
+  /** Visual style of the field. */
+  variant: "default" | "filled" | "unstyled";
+  /** Where the description goes. */
+  descriptionPosition: "above" | "below";
+  /** The ray-color-picker in the dropdown. */
+  readonly picker: RayColorPicker;
+  /** Opens or closes the dropdown. */
+  toggle(force?: boolean): void;
+  addEventListener<K extends keyof RayColorInputEventMap>(type: K, listener: (this: RayColorInput, ev: RayColorInputEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayColorInputEventMap>(type: K, listener: (this: RayColorInput, ev: RayColorInputEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayColorInputEventMap extends HTMLElementEventMap {
+  /** The dropdown opened. */
+  "ray-open": CustomEvent<unknown>;
+  /** The dropdown closed. */
+  "ray-close": CustomEvent<unknown>;
+}
+
 // --- Date picker (date-picker)
 /** <ray-date-picker> Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. */
 export declare class RayDatePicker extends FieldControl {
@@ -585,6 +671,25 @@ export declare class RayInput extends FieldControl {
   variant: "default" | "filled" | "unstyled";
   /** Selects the text. */
   select(): void;
+}
+
+// --- Password input (password-input)
+/** <ray-password-input> autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field. */
+export declare class RayPasswordInput extends RayInput {
+  /** The password is shown as text. */
+  visible: boolean | undefined;
+  /** Accessible name of the toggle while hidden. */
+  showLabel: string;
+  /** Accessible name of the toggle while shown. */
+  hideLabel: string;
+  addEventListener<K extends keyof RayPasswordInputEventMap>(type: K, listener: (this: RayPasswordInput, ev: RayPasswordInputEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayPasswordInputEventMap>(type: K, listener: (this: RayPasswordInput, ev: RayPasswordInputEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayPasswordInputEventMap extends HTMLElementEventMap {
+  /** The user showed or hid the password. */
+  "ray-visibility-change": CustomEvent<{ visible: boolean }>;
 }
 
 // --- Radio group (radio)
@@ -1393,6 +1498,33 @@ export declare class RayIcon extends RayElement {
   stroke: number | undefined;
 }
 
+// --- Indicator (indicator)
+/** <ray-indicator> Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label="Grace, online"). */
+export declare class RayIndicator extends RayElement {
+  /** Text in the indicator (a word or a count). Empty: a dot. */
+  label: string | undefined;
+  /** Which point of the content's box it sits on. */
+  position: "top-start" | "top-center" | "top-end" | "middle-start" | "middle-center" | "middle-end" | "bottom-start" | "bottom-center" | "bottom-end";
+  /** Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve. */
+  offset: string | number | undefined;
+  /** A palette color or any CSS color. Default: the primary. */
+  color: string | undefined;
+  /** Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px. */
+  size: string | number | undefined;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: round. */
+  radius: string | undefined;
+  /** A numeric label above it shows as max+ (99+). */
+  max: number | undefined;
+  /** inline-block, to sit within a line of text. */
+  inline: boolean | undefined;
+  /** A ring in the background color, to separate it from the content. */
+  withBorder: boolean | undefined;
+  /** A pulse around it (live, recording, syncing). */
+  processing: boolean | undefined;
+  /** Hides the indicator (the content stays). */
+  disabled: boolean | undefined;
+}
+
 // --- Kbd (kbd)
 /** <ray-kbd> A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons. */
 export declare class RayKbd extends RayElement {
@@ -1740,10 +1872,13 @@ declare global {
     "ray-toggle": RayToggle;
     "ray-toggle-group": RayToggleGroup;
     "ray-checkbox": RayCheckbox;
+    "ray-color-picker": RayColorPicker;
+    "ray-color-input": RayColorInput;
     "ray-date-picker": RayDatePicker;
     "ray-calendar": RayCalendar;
     "ray-file-upload": RayFileUpload;
     "ray-input": RayInput;
+    "ray-password-input": RayPasswordInput;
     "ray-radio-group": RayRadioGroup;
     "ray-radio": RayRadio;
     "ray-search": RaySearch;
@@ -1776,6 +1911,7 @@ declare global {
     "ray-badge": RayBadge;
     "ray-carousel": RayCarousel;
     "ray-icon": RayIcon;
+    "ray-indicator": RayIndicator;
     "ray-kbd": RayKbd;
     "ray-stat": RayStat;
     "ray-table": RayTable;

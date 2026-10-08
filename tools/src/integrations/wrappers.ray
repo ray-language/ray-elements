@@ -9,6 +9,7 @@ from components/meta import
     Named,
     all_elements,
     all_props,
+    all_attrs,
     all_events,
     base_elements;
 from integrations/ts import
@@ -136,7 +137,7 @@ pub fn react_dts(cs: [Component], extra: [Component], t: Target) -> string {
             }
             out.push("${doc(p.description, "  ")}  ${p.name}?: ${qualify(prop_type(p), classes)};");
         }
-        for a in el.attrs {
+        for a in all_attrs(els, el) {
             out.push("${doc(a.description, "  ")}  ${a.name}?: string;");
         }
         for n in all_events(
@@ -258,7 +259,7 @@ pub fn vue_dts(cs: [Component], extra: [Component], t: Target) -> string {
             );
             out.push("  \"onUpdate:modelValue\"?: (value: ${ty}) => void;");
         }
-        for a in el.attrs {
+        for a in all_attrs(els, el) {
             out.push("${doc(a.description, "  ")}  ${a.name}?: string;");
         }
         for n in all_events(

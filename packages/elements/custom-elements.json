@@ -1690,6 +1690,705 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/color-picker/color-picker.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayColorPicker",
+          "tagName": "ray-color-picker",
+          "customElement": true,
+          "description": "Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha.",
+          "superclass": {
+            "name": "FormControl"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "format",
+              "type": {
+                "text": "ColorFormat"
+              },
+              "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider.",
+              "fieldName": "format",
+              "default": "hex"
+            },
+            {
+              "name": "swatches",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept).",
+              "fieldName": "swatches"
+            },
+            {
+              "name": "swatches-per-row",
+              "type": {
+                "text": "number"
+              },
+              "description": "Swatches in each row.",
+              "fieldName": "swatchesPerRow",
+              "default": "7"
+            },
+            {
+              "name": "swatches-only",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Only the swatches: no area nor sliders.",
+              "fieldName": "swatchesOnly"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Width of the picker and size of its thumbs.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "full-width",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Takes the width of its container.",
+              "fieldName": "fullWidth"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the whole picker.",
+              "fieldName": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "format",
+              "type": {
+                "text": "ColorFormat"
+              },
+              "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider.",
+              "attribute": "format",
+              "reflects": true,
+              "default": "hex"
+            },
+            {
+              "kind": "field",
+              "name": "swatches",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept).",
+              "attribute": "swatches",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "swatchesPerRow",
+              "type": {
+                "text": "number"
+              },
+              "description": "Swatches in each row.",
+              "attribute": "swatches-per-row",
+              "reflects": false,
+              "default": "7"
+            },
+            {
+              "kind": "field",
+              "name": "swatchesOnly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Only the swatches: no area nor sliders.",
+              "attribute": "swatches-only",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Width of the picker and size of its thumbs.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "fullWidth",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Takes the width of its container.",
+              "attribute": "full-width",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the whole picker.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "rgba",
+              "description": "The current color as channels and alpha (0…1)."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The color moved (every step of a drag)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The color settled: pointer released, a key pressed or a swatch chosen (read value)."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "saturation",
+              "description": "The saturation/brightness area."
+            },
+            {
+              "name": "hue",
+              "description": "The hue slider."
+            },
+            {
+              "name": "alpha",
+              "description": "The opacity slider."
+            },
+            {
+              "name": "preview",
+              "description": "The current color."
+            },
+            {
+              "name": "swatches",
+              "description": "The swatches' grid."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "RayColorInput",
+          "tagName": "ray-color-input",
+          "customElement": true,
+          "description": "Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API.",
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color, written in format. The value attribute is the initial value (restored on form reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "format",
+              "type": {
+                "text": "ColorFormat"
+              },
+              "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla.",
+              "fieldName": "format",
+              "default": "hex"
+            },
+            {
+              "name": "swatches",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "Preset colors in the dropdown (an array, or a comma-separated list).",
+              "fieldName": "swatches"
+            },
+            {
+              "name": "swatches-per-row",
+              "type": {
+                "text": "number"
+              },
+              "description": "Swatches in each row.",
+              "fieldName": "swatchesPerRow",
+              "default": "7"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "hide-eyedropper",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Hides the eyedropper button.",
+              "fieldName": "hideEyedropper"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The dropdown is shown.",
+              "fieldName": "open"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label above the field.",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error message; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Must have a color.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Field height and font size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl or a CSS length.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Visual style of the field.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Where the description goes.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color, written in format. The value attribute is the initial value (restored on form reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "format",
+              "type": {
+                "text": "ColorFormat"
+              },
+              "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla.",
+              "attribute": "format",
+              "reflects": true,
+              "default": "hex"
+            },
+            {
+              "kind": "field",
+              "name": "swatches",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "Preset colors in the dropdown (an array, or a comma-separated list).",
+              "attribute": "swatches",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "swatchesPerRow",
+              "type": {
+                "text": "number"
+              },
+              "description": "Swatches in each row.",
+              "attribute": "swatches-per-row",
+              "reflects": false,
+              "default": "7"
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "hideEyedropper",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Hides the eyedropper button.",
+              "attribute": "hide-eyedropper",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The dropdown is shown.",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label above the field.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error message; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Must have a color.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Field height and font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl or a CSS length.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Visual style of the field.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Where the description goes.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "picker",
+              "description": "The ray-color-picker in the dropdown."
+            },
+            {
+              "kind": "method",
+              "name": "toggle",
+              "description": "Opens or closes the dropdown."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The color changed (typing a valid color, or moving the picker)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The color settled (picker released, a swatch, the eyedropper, or the field left with a new color)."
+            },
+            {
+              "name": "ray-open",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "The dropdown opened."
+            },
+            {
+              "name": "ray-close",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "The dropdown closed."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "input",
+              "description": "The text field."
+            },
+            {
+              "name": "preview",
+              "description": "The swatch of the current color."
+            },
+            {
+              "name": "eyedropper",
+              "description": "The eyedropper button."
+            },
+            {
+              "name": "dropdown",
+              "description": "The dropdown with the picker."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseColorValue",
+          "description": "A color string (hex with 3/4/6/8 digits, rgb(a), hsl(a), or any CSS color) as channels and alpha, or null."
+        },
+        {
+          "kind": "function",
+          "name": "formatColor",
+          "description": "Channels and alpha as a string in a format (default hex)."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayColorPicker",
+          "declaration": {
+            "name": "RayColorPicker",
+            "module": "components/color-picker/color-picker.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-color-picker",
+          "declaration": {
+            "name": "RayColorPicker",
+            "module": "components/color-picker/color-picker.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayColorInput",
+          "declaration": {
+            "name": "RayColorInput",
+            "module": "components/color-picker/color-picker.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-color-input",
+          "declaration": {
+            "name": "RayColorInput",
+            "module": "components/color-picker/color-picker.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseColorValue",
+          "declaration": {
+            "name": "parseColorValue",
+            "module": "components/color-picker/color-picker.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "formatColor",
+          "declaration": {
+            "name": "formatColor",
+            "module": "components/color-picker/color-picker.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/date-picker/date-picker.js",
       "declarations": [
         {
@@ -3247,6 +3946,392 @@
           "declaration": {
             "name": "RayInput",
             "module": "components/input/input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/password-input/password-input.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayPasswordInput",
+          "tagName": "ray-password-input",
+          "customElement": true,
+          "description": "autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field.",
+          "superclass": {
+            "name": "RayInput"
+          },
+          "attributes": [
+            {
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The password is shown as text.",
+              "fieldName": "visible"
+            },
+            {
+              "name": "show-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the toggle while hidden.",
+              "fieldName": "showLabel",
+              "default": "Show password"
+            },
+            {
+              "name": "hide-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the toggle while shown.",
+              "fieldName": "hideLabel",
+              "default": "Hide password"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "fieldName": "type",
+              "default": "text"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "fieldName": "error"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "visible",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The password is shown as text.",
+              "attribute": "visible",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the toggle while hidden.",
+              "attribute": "show-label",
+              "reflects": false,
+              "default": "Show password"
+            },
+            {
+              "kind": "field",
+              "name": "hideLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the toggle while shown.",
+              "attribute": "hide-label",
+              "reflects": false,
+              "default": "Hide password"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "attribute": "type",
+              "reflects": true,
+              "default": "text"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "attribute": "required",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "attribute": "disabled",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "attribute": "readonly",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-visibility-change",
+              "type": {
+                "text": "CustomEvent<{ visible: boolean }>"
+              },
+              "description": "The user showed or hid the password."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "On every edit (value already updated)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "When an edit is committed (blur, Enter)."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "toggle",
+              "description": "The show/hide button."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayPasswordInput",
+          "declaration": {
+            "name": "RayPasswordInput",
+            "module": "components/password-input/password-input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-password-input",
+          "declaration": {
+            "name": "RayPasswordInput",
+            "module": "components/password-input/password-input.js"
           }
         }
       ]
@@ -9815,6 +10900,257 @@
           "declaration": {
             "name": "RayIcon",
             "module": "components/icon/icon.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/indicator/indicator.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayIndicator",
+          "tagName": "ray-indicator",
+          "customElement": true,
+          "description": "Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label=\"Grace, online\").",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text in the indicator (a word or a count). Empty: a dot.",
+              "fieldName": "label"
+            },
+            {
+              "name": "position",
+              "type": {
+                "text": "\"top-start\" | \"top-center\" | \"top-end\" | \"middle-start\" | \"middle-center\" | \"middle-end\" | \"bottom-start\" | \"bottom-center\" | \"bottom-end\""
+              },
+              "description": "Which point of the content's box it sits on.",
+              "fieldName": "position",
+              "default": "top-end"
+            },
+            {
+              "name": "offset",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve.",
+              "fieldName": "offset"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px.",
+              "fieldName": "size"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: round.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "A numeric label above it shows as max+ (99+).",
+              "fieldName": "max"
+            },
+            {
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "inline-block, to sit within a line of text.",
+              "fieldName": "inline"
+            },
+            {
+              "name": "with-border",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A ring in the background color, to separate it from the content.",
+              "fieldName": "withBorder"
+            },
+            {
+              "name": "processing",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A pulse around it (live, recording, syncing).",
+              "fieldName": "processing"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Hides the indicator (the content stays).",
+              "fieldName": "disabled"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text in the indicator (a word or a count). Empty: a dot.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "position",
+              "type": {
+                "text": "\"top-start\" | \"top-center\" | \"top-end\" | \"middle-start\" | \"middle-center\" | \"middle-end\" | \"bottom-start\" | \"bottom-center\" | \"bottom-end\""
+              },
+              "description": "Which point of the content's box it sits on.",
+              "attribute": "position",
+              "reflects": true,
+              "default": "top-end"
+            },
+            {
+              "kind": "field",
+              "name": "offset",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve.",
+              "attribute": "offset",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px.",
+              "attribute": "size",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: round.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "A numeric label above it shows as max+ (99+).",
+              "attribute": "max",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "inline",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "inline-block, to sit within a line of text.",
+              "attribute": "inline",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "withBorder",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A ring in the background color, to separate it from the content.",
+              "attribute": "with-border",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "processing",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A pulse around it (live, recording, syncing).",
+              "attribute": "processing",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Hides the indicator (the content stays).",
+              "attribute": "disabled",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The element the indicator sits on."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "indicator",
+              "description": "The dot or label."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayIndicator",
+          "declaration": {
+            "name": "RayIndicator",
+            "module": "components/indicator/indicator.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-indicator",
+          "declaration": {
+            "name": "RayIndicator",
+            "module": "components/indicator/indicator.js"
           }
         }
       ]

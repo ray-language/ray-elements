@@ -201,6 +201,84 @@ export type RayCheckboxProps = RayCheckboxOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-checkbox> as a React component. */
 export declare const RayCheckbox: React.ForwardRefExoticComponent<RayCheckboxProps & React.RefAttributes<Ray.RayCheckbox>>;
 
+export interface RayColorPickerOwnProps {
+  /** The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset). */
+  value?: string;
+  /** How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider. */
+  format?: Ray.ColorFormat;
+  /** Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept). */
+  swatches?: string | string[];
+  /** Swatches in each row. */
+  swatchesPerRow?: number;
+  /** Only the swatches: no area nor sliders. */
+  swatchesOnly?: boolean;
+  /** Width of the picker and size of its thumbs. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Takes the width of its container. */
+  fullWidth?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Not interactive. */
+  disabled?: boolean;
+  /** Accessible name of the whole picker. */
+  label?: string;
+  /** The color moved (every step of a drag). */
+  onInput?: (event: Event) => void;
+  /** The color settled: pointer released, a key pressed or a swatch chosen (read value). */
+  onChange?: (event: Event) => void;
+}
+export type RayColorPickerProps = RayColorPickerOwnProps & Omit<React.HTMLAttributes<Ray.RayColorPicker>, keyof RayColorPickerOwnProps> & { children?: React.ReactNode };
+/** <ray-color-picker> as a React component. */
+export declare const RayColorPicker: React.ForwardRefExoticComponent<RayColorPickerProps & React.RefAttributes<Ray.RayColorPicker>>;
+
+export interface RayColorInputOwnProps {
+  /** The color, written in format. The value attribute is the initial value (restored on form reset). */
+  value?: string;
+  /** How value is written: hex, hexa, rgb, rgba, hsl or hsla. */
+  format?: Ray.ColorFormat;
+  /** Preset colors in the dropdown (an array, or a comma-separated list). */
+  swatches?: string | string[];
+  /** Swatches in each row. */
+  swatchesPerRow?: number;
+  /** Shown while empty. */
+  placeholder?: string;
+  /** Hides the eyedropper button. */
+  hideEyedropper?: boolean;
+  /** The dropdown is shown. */
+  open?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Label above the field. */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error message; marks the field invalid. */
+  error?: string;
+  /** Must have a color. */
+  required?: boolean;
+  /** Not interactive. */
+  disabled?: boolean;
+  /** Field height and font size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius: xs…xl or a CSS length. */
+  radius?: string;
+  /** Visual style of the field. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Where the description goes. */
+  descriptionPosition?: "above" | "below";
+  /** The color changed (typing a valid color, or moving the picker). */
+  onInput?: (event: Event) => void;
+  /** The color settled (picker released, a swatch, the eyedropper, or the field left with a new color). */
+  onChange?: (event: Event) => void;
+  /** The dropdown opened. */
+  onRayOpen?: (event: CustomEvent<unknown>) => void;
+  /** The dropdown closed. */
+  onRayClose?: (event: CustomEvent<unknown>) => void;
+}
+export type RayColorInputProps = RayColorInputOwnProps & Omit<React.HTMLAttributes<Ray.RayColorInput>, keyof RayColorInputOwnProps> & { children?: React.ReactNode };
+/** <ray-color-input> as a React component. */
+export declare const RayColorInput: React.ForwardRefExoticComponent<RayColorInputProps & React.RefAttributes<Ray.RayColorInput>>;
+
 export interface RayDatePickerOwnProps {
   /** The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset). */
   value?: string;
@@ -378,6 +456,74 @@ export interface RayInputOwnProps {
 export type RayInputProps = RayInputOwnProps & Omit<React.HTMLAttributes<Ray.RayInput>, keyof RayInputOwnProps> & { children?: React.ReactNode };
 /** <ray-input> as a React component. */
 export declare const RayInput: React.ForwardRefExoticComponent<RayInputProps & React.RefAttributes<Ray.RayInput>>;
+
+export interface RayPasswordInputOwnProps {
+  /** The password is shown as text. */
+  visible?: boolean;
+  /** Accessible name of the toggle while hidden. */
+  showLabel?: string;
+  /** Accessible name of the toggle while shown. */
+  hideLabel?: string;
+  /** Current value. The value attribute is the initial value (restored on form reset). */
+  value?: string;
+  /** Input type. */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** The description before the control (help first) or after it, with the error (fields in a row stay aligned). */
+  descriptionPosition?: "above" | "below";
+  /** Error text; marks the field invalid (display only — does not block submit). */
+  error?: string;
+  /** Placeholder text. */
+  placeholder?: string;
+  /** Required for form submission; shows an asterisk. */
+  required?: boolean;
+  /** Not editable nor submitted. */
+  disabled?: boolean;
+  /** Not editable, still submitted. */
+  readonly?: boolean;
+  /** Height and font size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Forwarded to the inner input. */
+  autocomplete?: string;
+  /** Virtual keyboard hint. */
+  inputmode?: string;
+  /** Validation pattern (regular expression). */
+  pattern?: string;
+  /** Minimum (number/date types). */
+  min?: string;
+  /** Maximum (number/date types). */
+  max?: string;
+  /** Step (number types). */
+  step?: string;
+  /** Minimum length. */
+  minlength?: string;
+  /** Maximum length. */
+  maxlength?: string;
+  /** Mobile auto-capitalization. */
+  autocapitalize?: string;
+  /** Label of the Enter key on virtual keyboards. */
+  enterkeyhint?: string;
+  /** Id of a <datalist> with suggestions. */
+  list?: string;
+  /** The user showed or hid the password. */
+  onRayVisibilityChange?: (event: CustomEvent<{ visible: boolean }>) => void;
+  /** On every edit (value already updated). */
+  onInput?: (event: Event) => void;
+  /** When an edit is committed (blur, Enter). */
+  onChange?: (event: Event) => void;
+}
+export type RayPasswordInputProps = RayPasswordInputOwnProps & Omit<React.HTMLAttributes<Ray.RayPasswordInput>, keyof RayPasswordInputOwnProps> & { children?: React.ReactNode };
+/** <ray-password-input> as a React component. */
+export declare const RayPasswordInput: React.ForwardRefExoticComponent<RayPasswordInputProps & React.RefAttributes<Ray.RayPasswordInput>>;
 
 export interface RayRadioGroupOwnProps {
   /** Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute. */
@@ -1144,6 +1290,34 @@ export interface RayIconOwnProps {
 export type RayIconProps = RayIconOwnProps & Omit<React.HTMLAttributes<Ray.RayIcon>, keyof RayIconOwnProps> & { children?: React.ReactNode };
 /** <ray-icon> as a React component. */
 export declare const RayIcon: React.ForwardRefExoticComponent<RayIconProps & React.RefAttributes<Ray.RayIcon>>;
+
+export interface RayIndicatorOwnProps {
+  /** Text in the indicator (a word or a count). Empty: a dot. */
+  label?: string;
+  /** Which point of the content's box it sits on. */
+  position?: "top-start" | "top-center" | "top-end" | "middle-start" | "middle-center" | "middle-end" | "bottom-start" | "bottom-center" | "bottom-end";
+  /** Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve. */
+  offset?: string | number;
+  /** A palette color or any CSS color. Default: the primary. */
+  color?: string;
+  /** Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px. */
+  size?: string | number;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: round. */
+  radius?: string;
+  /** A numeric label above it shows as max+ (99+). */
+  max?: number;
+  /** inline-block, to sit within a line of text. */
+  inline?: boolean;
+  /** A ring in the background color, to separate it from the content. */
+  withBorder?: boolean;
+  /** A pulse around it (live, recording, syncing). */
+  processing?: boolean;
+  /** Hides the indicator (the content stays). */
+  disabled?: boolean;
+}
+export type RayIndicatorProps = RayIndicatorOwnProps & Omit<React.HTMLAttributes<Ray.RayIndicator>, keyof RayIndicatorOwnProps> & { children?: React.ReactNode };
+/** <ray-indicator> as a React component. */
+export declare const RayIndicator: React.ForwardRefExoticComponent<RayIndicatorProps & React.RefAttributes<Ray.RayIndicator>>;
 
 export interface RayKbdOwnProps {
   /** Font size. */

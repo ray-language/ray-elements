@@ -1,0 +1,248 @@
+[component]
+name = "Color picker"
+category = "Inputs"
+summary = "Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper. Pointer and keyboard; form-associated; hex, rgb or hsl, with or without alpha."
+files = ["color-picker.js"]
+requires = []
+tags = ["ray-color-picker", "ray-color-input"]
+
+[component.types.ColorFormat]
+ts = '"hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla"'
+description = "How a color value is written."
+
+[component.types.Rgba]
+ts = "{ r: number; g: number; b: number; a: number }"
+description = "sRGB channels and alpha, all 0…1."
+
+[component.exports.parseColorValue]
+ts = "function parseColorValue(input: string | null | undefined): Rgba | null"
+description = "A color string (hex with 3/4/6/8 digits, rgb(a), hsl(a), or any CSS color) as channels and alpha, or null."
+
+[component.exports.formatColor]
+ts = "function formatColor(color: Rgba, format?: ColorFormat): string"
+description = "Channels and alpha as a string in a format (default hex)."
+
+# --- ray-color-picker -------------------------------------------------------------
+
+[ray-color-picker]
+class = "RayColorPicker"
+extends = "FormControl"
+summary = "Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha."
+
+[ray-color-picker.properties.value]
+type = "string"
+description = "The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset)."
+
+[ray-color-picker.properties.format]
+type = "string"
+default = "hex"
+reflect = true
+ts = "ColorFormat"
+description = "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider."
+
+[ray-color-picker.properties.swatches]
+type = "string"
+ts = "string | string[]"
+description = "Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept)."
+
+[ray-color-picker.properties.swatchesPerRow]
+attribute = "swatches-per-row"
+type = "number"
+default = "7"
+description = "Swatches in each row."
+
+[ray-color-picker.properties.swatchesOnly]
+attribute = "swatches-only"
+type = "boolean"
+reflect = true
+description = "Only the swatches: no area nor sliders."
+
+[ray-color-picker.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Width of the picker and size of its thumbs."
+
+[ray-color-picker.properties.fullWidth]
+attribute = "full-width"
+type = "boolean"
+reflect = true
+description = "Takes the width of its container."
+
+[ray-color-picker.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-color-picker.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Not interactive."
+
+[ray-color-picker.properties.label]
+type = "string"
+description = "Accessible name of the whole picker."
+
+[ray-color-picker.events.input]
+description = "The color moved (every step of a drag)."
+
+[ray-color-picker.events.change]
+description = "The color settled: pointer released, a key pressed or a swatch chosen (read value)."
+
+[ray-color-picker.parts.saturation]
+description = "The saturation/brightness area."
+
+[ray-color-picker.parts.hue]
+description = "The hue slider."
+
+[ray-color-picker.parts.alpha]
+description = "The opacity slider."
+
+[ray-color-picker.parts.preview]
+description = "The current color."
+
+[ray-color-picker.parts.swatches]
+description = "The swatches' grid."
+
+[ray-color-picker.members.rgba]
+ts = "readonly rgba: Rgba"
+description = "The current color as channels and alpha (0…1)."
+
+[ray-color-picker.model]
+property = "value"
+events = ["input"]
+
+# --- ray-color-input --------------------------------------------------------------
+
+[ray-color-input]
+class = "RayColorInput"
+extends = "FieldControl"
+summary = "Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API."
+
+[ray-color-input.properties.value]
+type = "string"
+description = "The color, written in format. The value attribute is the initial value (restored on form reset)."
+
+[ray-color-input.properties.format]
+type = "string"
+default = "hex"
+reflect = true
+ts = "ColorFormat"
+description = "How value is written: hex, hexa, rgb, rgba, hsl or hsla."
+
+[ray-color-input.properties.swatches]
+type = "string"
+ts = "string | string[]"
+description = "Preset colors in the dropdown (an array, or a comma-separated list)."
+
+[ray-color-input.properties.swatchesPerRow]
+attribute = "swatches-per-row"
+type = "number"
+default = "7"
+description = "Swatches in each row."
+
+[ray-color-input.properties.placeholder]
+type = "string"
+description = "Shown while empty."
+
+[ray-color-input.properties.hideEyedropper]
+attribute = "hide-eyedropper"
+type = "boolean"
+reflect = true
+description = "Hides the eyedropper button."
+
+[ray-color-input.properties.open]
+type = "boolean"
+reflect = true
+description = "The dropdown is shown."
+
+[ray-color-input.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-color-input.properties.label]
+type = "string"
+description = "Label above the field."
+
+[ray-color-input.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-color-input.properties.error]
+type = "string"
+description = "Error message; marks the field invalid."
+
+[ray-color-input.properties.required]
+type = "boolean"
+reflect = true
+description = "Must have a color."
+
+[ray-color-input.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Not interactive."
+
+[ray-color-input.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Field height and font size."
+
+[ray-color-input.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl or a CSS length."
+
+[ray-color-input.properties.variant]
+type = "string"
+values = ["default", "filled", "unstyled"]
+default = "default"
+reflect = true
+description = "Visual style of the field."
+
+[ray-color-input.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "Where the description goes."
+
+[ray-color-input.events.input]
+description = "The color changed (typing a valid color, or moving the picker)."
+
+[ray-color-input.events.change]
+description = "The color settled (picker released, a swatch, the eyedropper, or the field left with a new color)."
+
+[ray-color-input.events.ray-open]
+description = "The dropdown opened."
+
+[ray-color-input.events.ray-close]
+description = "The dropdown closed."
+
+[ray-color-input.parts.input]
+description = "The text field."
+
+[ray-color-input.parts.preview]
+description = "The swatch of the current color."
+
+[ray-color-input.parts.eyedropper]
+description = "The eyedropper button."
+
+[ray-color-input.parts.dropdown]
+description = "The dropdown with the picker."
+
+[ray-color-input.members.picker]
+ts = "readonly picker: RayColorPicker"
+description = "The ray-color-picker in the dropdown."
+
+[ray-color-input.members.toggle]
+ts = "toggle(force?: boolean): void"
+description = "Opens or closes the dropdown."
+
+[ray-color-input.model]
+property = "value"
+events = ["input"]
