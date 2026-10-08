@@ -414,6 +414,20 @@ T.test("radio group: required, checked attribute, disabled group", async (T) => 
   box.remove();
 });
 
+T.test("no transition into the initial state; transitions after it", async (T) => {
+  // Styled before its first update (a layout read while loading), a badge
+  // used to fade in from black text and a border. Until its first update
+  // has painted, a component carries a sheet that turns transitions off.
+  // (This window runs with zero durations, so the sheet is checked, not motion.)
+  const settling = (el) => el.shadowRoot.adoptedStyleSheets.some((s) => [...s.cssRules].some((r) => /transition:\s*none/.test(r.cssText)));
+  const box = await mount(`<ray-badge color="teal">New</ray-badge><ray-avatar name="Ada Lovelace" color="pink"></ray-avatar>`);
+  const [badge, avatar] = box.children;
+  T.ok(settling(badge) && settling(avatar), "no transitions right after the first update");
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(r))));
+  T.ok(!settling(badge) && !settling(avatar), "transitions back once painted");
+  box.remove();
+});
+
 T.test("avatar: initials and image fallback", async (T) => {
   T.eq(initials("Ada Lovelace"), "AL");
   T.eq(initials("ray"), "R");

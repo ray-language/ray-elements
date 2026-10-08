@@ -35,6 +35,16 @@ export function css(strings, ...values) {
   return sheet;
 }
 
+/**
+ * Applied until a component's first update has been painted: it does not
+ * transition into its initial state. Its styles depend on what update()
+ * sets (data-variant, color variables); if the browser computed its style
+ * before that (a layout read by another component while the page loads),
+ * the variant would animate in from no style at all: black text and a
+ * border fading out.
+ */
+const settlingStyles = css`*, *::before, *::after { transition: none !important; }`;
+
 /** Applied to every component before its own styles. */
 export const hostStyles = css`
   :host { box-sizing: border-box; }
@@ -139,6 +149,7 @@ export class RayElement extends HTMLElement {
   #changed = new Map();
   #pending = false;
   #reflecting = false;
+  #settled = false;
 
   constructor() {
     super();
@@ -165,7 +176,7 @@ export class RayElement extends HTMLElement {
     const chain = [];
     for (let c = ctor; c && c !== RayElement; c = Object.getPrototypeOf(c)) chain.unshift(c);
     for (const c of chain) extra.push(...(extraStyles.get(c) ?? []));
-    this.shadowRoot.adoptedStyleSheets = [hostStyles, ...ctor.styles, ...extra];
+    this.shadowRoot.adoptedStyleSheets = [hostStyles, ...ctor.styles, ...extra, ...(this.#settled ? [] : [settlingStyles])];
   }
 
   connectedCallback() {
@@ -258,8 +269,22 @@ export class RayElement extends HTMLElement {
       const changed = this.#changed;
       this.#changed = new Map();
       this.update(changed);
+      this.#settle();
     });
   }
+
+  // After the first update: once a frame has been painted with its initial
+  // state (two frames: the first may run before that state is styled),
+  // transitions are allowed again.
+  #settle() {
+    if (this.#settled || this.#settling) return;
+    this.#settling = true;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      this.#settled = true;
+      this.#adoptStyles();
+    }));
+  }
+  #settling = false;
 
   /**
    * Protected. Called after property changes. `changed` maps each changed
