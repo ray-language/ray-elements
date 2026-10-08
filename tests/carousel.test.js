@@ -48,7 +48,7 @@ T.test("carousel: next, prev, ends disabled, goTo, index, events", async (T) => 
   const prev = inner(c, '[part="previous"]');
   const next = inner(c, '[part="next"]');
   const seen = [];
-  c.addEventListener("ray-slide-change", (e) => seen.push(e.detail.index));
+  c.addEventListener("change", (e) => { if (e.target === c) seen.push(c.index); });
   T.eq(prev.disabled, true, "previous disabled at the start");
   T.eq(next.disabled, false);
   c.next();
@@ -69,7 +69,7 @@ T.test("carousel: next, prev, ends disabled, goTo, index, events", async (T) => 
   c.index = 0;
   await T.settle();
   T.eq(vp.scrollLeft, 0, "setting index scrolls");
-  T.eq(seen.join(","), "1,2,1", "ray-slide-change for each move (not for index set by code)");
+  T.eq(seen.join(","), "1,2,1", "change for each move (not for index set by code)");
   inner(c, '[part="indicator"][data-index="2"]').click();
   await T.settle();
   T.eq(c.index, 2, "indicator click");

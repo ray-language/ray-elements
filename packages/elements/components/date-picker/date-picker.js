@@ -297,7 +297,6 @@ export class RayCalendar extends RayElement {
     this._render();
     this.$('.day[tabindex="0"]')?.focus();
     if (!changed) return;
-    this.emit("ray-change", { value: id });
     this.dispatchEvent(new Event("change", { bubbles: true }));
   }
 }
@@ -416,14 +415,13 @@ export class RayDatePicker extends FieldControl {
       this._set("");
       this.trigger.focus();
     });
-    this.calendar.addEventListener("ray-change", (e) => {
+    this.calendar.addEventListener("change", (e) => {
       // The picker reports its own change: keep the calendar's inside.
       e.stopPropagation();
-      this._set(e.detail.value);
+      this._set(this.calendar.value);
       this.open = false;
       this.trigger.focus();
     });
-    this.calendar.addEventListener("change", (e) => e.stopPropagation());
     this.panel.addEventListener("toggle", (e) => this._onToggle(e.newState === "open"));
     this._default = this.getAttribute("value") ?? "";
   }

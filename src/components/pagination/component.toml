@@ -70,12 +70,8 @@ type = "string"
 default = "Pagination"
 description = "Accessible name of the navigation landmark."
 
-[ray-pagination.events.ray-change]
-detail = "{ value: number }"
-description = "The user went to another page (also fires `change`)."
-
 [ray-pagination.events.change]
-description = "The page changed."
+description = "The user went to another page (read `value`)."
 
 [ray-pagination.parts.root]
 description = "The <nav> landmark."
@@ -105,7 +101,7 @@ description = "The current page clamped to 1…total."
 
 [ray-pagination.members.setPage]
 ts = "setPage(page: number): void"
-description = "Goes to a page (fires ray-change and change)."
+description = "Goes to a page (fires change)."
 
 [ray-pagination.members.next]
 ts = "next(): void"

@@ -358,7 +358,9 @@ define("ray-thing", RayThing);
 
 - Styling hooks: tokens (CSS custom properties pierce the shadow root),
   `::part()` and slots. Document them in `component.toml`.
-- Events: `this.emit("ray-something", detail)` (bubbles, composed).
+- Events: a value change is a plain `change` (and `input`), read from the
+  element; anything else is `this.emit("ray-something", detail)` (bubbles,
+  composed). See "Events" in [EXTENDING.md](EXTENDING.md).
 - Properties set before the element is defined (React/Vue) are picked up on
   connection.
 - Focus rings: give the focusable element `class="focus-ring"`.

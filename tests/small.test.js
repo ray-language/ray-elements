@@ -46,8 +46,7 @@ T.test("pagination: ARIA, clicks, events, disabled ends", async (T) => {
   T.eq(current.dataset.variant, "filled", "current page is filled");
   const seen = [];
   let changes = 0;
-  p.addEventListener("ray-change", (e) => seen.push(e.detail.value));
-  p.addEventListener("change", () => changes++);
+  p.addEventListener("change", () => { seen.push(p.value); changes++; });
   pages().find((b) => b.textContent === "11").click();
   await T.settle();
   T.eq(p.value, 11);

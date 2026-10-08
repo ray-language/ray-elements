@@ -67,9 +67,8 @@ type = "boolean"
 reflect = true
 description = "No indicator dots."
 
-[ray-carousel.events.ray-slide-change]
-detail = "{ index: number }"
-description = "The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code."
+[ray-carousel.events.change]
+description = "The current position changed (read `index`) by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code."
 
 [ray-carousel.slots.default]
 description = "The slides."

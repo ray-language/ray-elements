@@ -21,6 +21,24 @@ Stable (public or protected): everything documented here and in
 cannot break it by accident — but **do not name your own members with a
 leading `_`**: component internals (`_el`, `_default`…) still use it.
 
+### Events
+
+One rule for every component, so nobody has to guess what to listen to:
+
+- **A value changes: `change`** (and `input` too while it is being edited
+  continuously, as a text field or a slider does). Plain `Event`s that bubble,
+  like the native controls, so forms, React's `onChange` and Vue's `v-model`
+  work as usual. They carry no `detail`: read the new state from the element
+  (`value`, `checked`, `pressed`, `files`, `index`…). When something else is
+  worth knowing, it is a property too (`ray-file-upload`'s `lastChange`:
+  the files the last change added and removed).
+- **Anything else: `ray-<what>`**, a `CustomEvent` from `emit()` with a
+  typed `detail`: `ray-open`, `ray-close`, `ray-select`, `ray-sort`,
+  `ray-reject`, `ray-remove`, `ray-resize`…
+- A container stops the `change` events of its own parts and fires its own
+  (`ray-toggle-group` stops its toggles'); a listener on a container still
+  sees the changes of the controls slotted in it, so check `e.target`.
+
 ### RayElement (core.js)
 
 | Member | |

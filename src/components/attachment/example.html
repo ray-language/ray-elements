@@ -19,8 +19,9 @@
   // The upload only picks files; this list shows them (list="none" hides its own).
   const list = document.getElementById("demo-attach-list");
   const upload = document.getElementById("demo-attach-input");
-  upload.addEventListener("ray-change", (e) => {
-    for (const f of e.detail.added) {
+  upload.addEventListener("change", () => {
+    if (!upload.lastChange) return;
+    for (const f of upload.lastChange.added) {
       const a = document.createElement("ray-attachment");
       a.removable = true;
       a.file = f;

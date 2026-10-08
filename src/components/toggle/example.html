@@ -28,12 +28,12 @@
   <ray-toggle variant="filled" disabled pressed>Disabled on</ray-toggle>
   <ray-toggle variant="filled" disabled>Disabled off</ray-toggle>
 </div>
-<p id="demo-toggle-out" class="demo-muted" style="margin: 0">Flip a toggle to see its ray-change event.</p>
+<p id="demo-toggle-out" class="demo-muted" style="margin: 0">Flip a toggle to see its change event.</p>
 <script type="module">
   const out = document.getElementById("demo-toggle-out");
-  out.closest(".example").addEventListener("ray-change", (e) => {
+  out.closest(".example").addEventListener("change", (e) => {
     if (e.target.localName !== "ray-toggle") return;
     const name = e.target.label || e.target.textContent.trim();
-    out.textContent = `ray-change: ${name} → pressed = ${e.detail.pressed}`;
+    out.textContent = `change: ${name} → pressed = ${e.target.pressed}`;
   });
 </script>

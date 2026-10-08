@@ -9,7 +9,7 @@ tags = ["ray-toggle"]
 [ray-toggle]
 class = "RayToggle"
 extends = "RayButton"
-summary = "Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute."
+summary = "Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute."
 
 [ray-toggle.properties.pressed]
 type = "boolean"
@@ -33,12 +33,8 @@ type = "string"
 reflect = true
 description = "Accessible name and tooltip, for icon-only toggles."
 
-[ray-toggle.events.ray-change]
-detail = "{ pressed: boolean }"
-description = "The user flipped it (also a plain change event)."
-
 [ray-toggle.events.change]
-description = "The user flipped it."
+description = "The user flipped it (read `pressed`)."
 
 [ray-toggle.slots.default]
 description = "Text or an icon."

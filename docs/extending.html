@@ -132,6 +132,25 @@ in <a href="../examples/extending"><code>examples/extending</code></a>, tested i
 cannot break it by accident — but <strong>do not name your own members with a
 leading <code>_</code></strong>: component internals (<code>_el</code>, <code>_default</code>…) still use it.</p>
 
+<h3 id="events">Events</h3>
+<p>One rule for every component, so nobody has to guess what to listen to:</p>
+
+<ul>
+<li><strong>A value changes: <code>change</code></strong> (and <code>input</code> too while it is being edited
+continuously, as a text field or a slider does). Plain <code>Event</code>s that bubble,
+like the native controls, so forms, React's <code>onChange</code> and Vue's <code>v-model</code>
+work as usual. They carry no <code>detail</code>: read the new state from the element
+(<code>value</code>, <code>checked</code>, <code>pressed</code>, <code>files</code>, <code>index</code>…). When something else is
+worth knowing, it is a property too (<code>ray-file-upload</code>'s <code>lastChange</code>:
+the files the last change added and removed).</li>
+<li><strong>Anything else: <code>ray-&lt;what&gt;</code></strong>, a <code>CustomEvent</code> from <code>emit()</code> with a
+typed <code>detail</code>: <code>ray-open</code>, <code>ray-close</code>, <code>ray-select</code>, <code>ray-sort</code>,
+<code>ray-reject</code>, <code>ray-remove</code>, <code>ray-resize</code>…</li>
+<li>A container stops the <code>change</code> events of its own parts and fires its own
+(<code>ray-toggle-group</code> stops its toggles'); a listener on a container still
+sees the changes of the controls slotted in it, so check <code>e.target</code>.</li>
+</ul>
+
 <h3 id="rayelement-core-js">RayElement (core.js)</h3>
 <table>
 <thead>

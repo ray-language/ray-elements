@@ -7,7 +7,7 @@
 <p id="demo-pagination-out" style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Page 10 of 20</p>
 <script type="module">
   const p = document.getElementById("demo-pagination");
-  p.addEventListener("ray-change", (e) => {
-    document.getElementById("demo-pagination-out").textContent = `Page ${e.detail.value} of 20`;
+  p.addEventListener("change", () => {
+    document.getElementById("demo-pagination-out").textContent = `Page ${p.value} of 20`;
   });
 </script>

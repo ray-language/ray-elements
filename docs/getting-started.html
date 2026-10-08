@@ -533,7 +533,9 @@ define(<span class="tk-string">&quot;ray-thing&quot;</span>, RayThing);</code></
 <ul>
 <li>Styling hooks: tokens (CSS custom properties pierce the shadow root),
 <code>::part()</code> and slots. Document them in <code>component.toml</code>.</li>
-<li>Events: <code>this.emit(&quot;ray-something&quot;, detail)</code> (bubbles, composed).</li>
+<li>Events: a value change is a plain <code>change</code> (and <code>input</code>), read from the
+element; anything else is <code>this.emit(&quot;ray-something&quot;, detail)</code> (bubbles,
+composed). See &quot;Events&quot; in <a href="extending.html">EXTENDING.md</a>.</li>
 <li>Properties set before the element is defined (React/Vue) are picked up on
 connection.</li>
 <li>Focus rings: give the focusable element <code>class=&quot;focus-ring&quot;</code>.</li>

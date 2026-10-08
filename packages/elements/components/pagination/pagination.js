@@ -109,7 +109,7 @@ export class RayPagination extends RayElement {
     return Math.min(Math.max(1, this.value || 1), total);
   }
 
-  /** Goes to a page (clamped), firing ray-change and change when it changes. */
+  /** Goes to a page (clamped), firing change when it changes. */
   setPage(page) {
     this._go(page);
   }
@@ -125,7 +125,6 @@ export class RayPagination extends RayElement {
     if (p === this.page || this.disabled) return;
     this.commitProperty("value", p);
     this.requestUpdate();
-    this.emit("ray-change", { value: p });
     this.dispatchEvent(new Event("change", { bubbles: true }));
     // Keep the focus on the activated page (the list is rebuilt).
     queueMicrotask(() => this.$(`button[data-page="${p}"][data-number]`)?.focus());

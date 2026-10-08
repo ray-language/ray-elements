@@ -40,7 +40,8 @@ T.test("file-upload: adds, refuses, explains and fires events", async (T) => {
   const el = box.firstElementChild;
   const changes = [];
   const rejects = [];
-  el.addEventListener("ray-change", (e) => changes.push(e.detail));
+  T.eq(el.lastChange, null, "no change yet");
+  el.addEventListener("change", () => changes.push(el.lastChange));
   el.addEventListener("ray-reject", (e) => rejects.push(e.detail));
   const ok1 = file("a.png", 100, "image/png");
   const ok2 = file("b.json", 100, "application/json");
@@ -64,6 +65,9 @@ T.test("file-upload: adds, refuses, explains and fires events", async (T) => {
   await T.settle();
   T.eq(el.files.length, 3);
   T.ok(inner(el, "#error").textContent.includes("Up to 3 files"), inner(el, "#error").textContent);
+  T.eq(el.lastChange.added.length, 1, "lastChange: the files the last change added");
+  el.files = [];
+  T.eq(el.lastChange, null, "assigning files fires nothing and clears lastChange");
   box.remove();
 });
 
@@ -89,7 +93,7 @@ T.test("file-upload: the row's remove button removes the file", async (T) => {
   el.addFiles([a, file("b.txt")]);
   await T.settle();
   let removed = null;
-  el.addEventListener("ray-change", (e) => { removed = e.detail.removed; });
+  el.addEventListener("change", () => { removed = el.lastChange.removed; });
   el.attachmentFor(a).shadowRoot.querySelector(".remove").click();
   await T.settle();
   await T.settle();

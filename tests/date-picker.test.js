@@ -54,13 +54,10 @@ T.test("calendar: keyboard — days, weeks, week ends, months, years, Enter", as
   T.eq(cal.shadowRoot.querySelector(".caption").textContent, "November 2026");
   k("PageUp", { shiftKey: true }); T.eq(at(), "2025-11-11", "previous year");
   const seen = [];
-  cal.addEventListener("ray-change", (e) => seen.push(e.detail.value));
-  let changes = 0;
-  cal.addEventListener("change", () => changes++);
+  cal.addEventListener("change", () => seen.push(cal.value));
   k("Enter");
   T.eq(cal.value, "2025-11-11");
-  T.eq(seen.join(), "2025-11-11", "ray-change with the value");
-  T.eq(changes, 1, "change too");
+  T.eq(seen.join(), "2025-11-11", "one change, value already set");
   // Month boundaries clamp: Jan 31 + 1 month = Feb 28.
   cal.value = "2026-01-31";
   await T.settle();
@@ -79,7 +76,7 @@ T.test("calendar: min/max disable days and block selection", async (T) => {
   T.eq(byDate("2026-10-21").getAttribute("aria-disabled"), "true", "after max");
   T.eq(byDate("2026-10-05").hasAttribute("aria-disabled"), false, "min itself is selectable");
   let fired = 0;
-  cal.addEventListener("ray-change", () => fired++);
+  cal.addEventListener("change", () => fired++);
   byDate("2026-10-04").click();
   T.eq(cal.value, "2026-10-15", "a disabled day is not selected");
   T.eq(fired, 0);
@@ -130,8 +127,8 @@ T.test("date picker: open, pick, Escape, clear", async (T) => {
   const cal = sr.querySelector("ray-calendar");
   const changes = [];
   el.addEventListener("change", () => changes.push(el.value));
-  let leaked = 0;
-  box.addEventListener("ray-change", () => leaked++);
+  const reached = [];
+  box.addEventListener("change", (e) => reached.push(e.target.localName));
 
   trigger.click();
   await T.settle();
@@ -146,7 +143,7 @@ T.test("date picker: open, pick, Escape, clear", async (T) => {
   await T.settle();
   T.eq(el.value, "2026-10-07", "picked");
   T.eq(changes.join(), "2026-10-07", "one change");
-  T.eq(leaked, 0, "the calendar's ray-change stays inside");
+  T.eq(reached.join(), "ray-date-picker", "only the picker's change reaches the page");
   T.eq(el.open, false, "picking closes");
   T.eq(panel.matches(":popover-open"), false);
 

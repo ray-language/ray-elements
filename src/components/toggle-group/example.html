@@ -38,11 +38,11 @@
   <ray-toggle value="2">Normal</ray-toggle>
   <ray-toggle value="3">Fast</ray-toggle>
 </ray-toggle-group>
-<p id="demo-tg-out" class="demo-muted" style="margin: 0">Change a group to see its ray-change event.</p>
+<p id="demo-tg-out" class="demo-muted" style="margin: 0">Change a group to see its change event.</p>
 <script type="module">
   const out = document.getElementById("demo-tg-out");
-  out.closest(".example").addEventListener("ray-change", (e) => {
+  out.closest(".example").addEventListener("change", (e) => {
     if (e.target.localName !== "ray-toggle-group") return;
-    out.textContent = `ray-change: ${e.target.label} → ${JSON.stringify(e.detail.value)}`;
+    out.textContent = `change: ${e.target.label} → ${JSON.stringify(e.target.value)}`;
   });
 </script>

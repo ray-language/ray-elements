@@ -225,8 +225,8 @@ a table (see &quot;Accessibility is the chart's job&quot; below).</p>
   const table = document.getElementById("builds-table");
   table.innerHTML = `<thead><tr><th>Month</th>${series.map((s) => `<th>${s.name}</th>`).join("")}</tr></thead>` +
     `<tbody>${months.map((m, i) => `<tr><td>${m}</td>${series.map((s) => `<td>${s.data[i]}</td>`).join("")}</tr>`).join("")}</tbody>`;
-  document.getElementById("builds-view").addEventListener("ray-change", (e) => {
-    const asTable = e.detail.value === "table";
+  document.getElementById("builds-view").addEventListener("change", (e) => {
+    const asTable = e.currentTarget.value === "table";
     table.hidden = !asTable;
     chart.style.display = asTable ? "none" : "";
     document.getElementById("builds-legend").hidden = asTable;
@@ -278,8 +278,8 @@ a table (see &quot;Accessibility is the chart's job&quot; below).</p>
   <span class="tk-keyword">const</span> table = document.getElementById(<span class="tk-string">&quot;builds-table&quot;</span>);
   table.innerHTML = <span class="tk-string">`&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Month&lt;/th&gt;${series.map((s) =&gt; `</span>&lt;th&gt;${s.name}&lt;/th&gt;<span class="tk-string">`).join(&quot;&quot;)}&lt;/tr&gt;&lt;/thead&gt;`</span> +
     <span class="tk-string">`&lt;tbody&gt;${months.map((m, i) =&gt; `</span>&lt;tr&gt;&lt;td&gt;${m}&lt;/td&gt;${series.map((s) =&gt; <span class="tk-string">`&lt;td&gt;${s.data[i]}&lt;/td&gt;`</span>).join(<span class="tk-string">&quot;&quot;</span>)}&lt;/tr&gt;<span class="tk-string">`).join(&quot;&quot;)}&lt;/tbody&gt;`</span>;
-  document.getElementById(<span class="tk-string">&quot;builds-view&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    <span class="tk-keyword">const</span> asTable = e.detail.value === <span class="tk-string">&quot;table&quot;</span>;
+  document.getElementById(<span class="tk-string">&quot;builds-view&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
+    <span class="tk-keyword">const</span> asTable = e.currentTarget.value === <span class="tk-string">&quot;table&quot;</span>;
     table.hidden = !asTable;
     chart.style.display = asTable ? <span class="tk-string">&quot;none&quot;</span> : <span class="tk-string">&quot;&quot;</span>;
     document.getElementById(<span class="tk-string">&quot;builds-legend&quot;</span>).hidden = asTable;
@@ -352,9 +352,10 @@ has its own <code>data-theme</code>, so it can differ from the page:</p>
     document.getElementById("latency-legend").innerHTML = regions
       .map((r, s) => `<span><i style="background: ${t.series[s]}"></i>${r}</span>`).join("");
   }
-  document.getElementById("latency-theme").addEventListener("ray-change", (e) => {
-    if (e.detail.value === "page") card.removeAttribute("data-theme");
-    else card.setAttribute("data-theme", e.detail.value);
+  document.getElementById("latency-theme").addEventListener("change", (e) => {
+    const theme = e.currentTarget.value;
+    if (theme === "page") card.removeAttribute("data-theme");
+    else card.setAttribute("data-theme", theme);
     draw();
   });
   onChartThemeChange(draw);
@@ -408,9 +409,10 @@ has its own <code>data-theme</code>, so it can differ from the page:</p>
     document.getElementById(<span class="tk-string">&quot;latency-legend&quot;</span>).innerHTML = regions
       .map((r, s) =&gt; <span class="tk-string">`&lt;span&gt;&lt;i style=&quot;background: ${t.series[s]}&quot;&gt;&lt;/i&gt;${r}&lt;/span&gt;`</span>).join(<span class="tk-string">&quot;&quot;</span>);
   }
-  document.getElementById(<span class="tk-string">&quot;latency-theme&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    <span class="tk-keyword">if</span> (e.detail.value === <span class="tk-string">&quot;page&quot;</span>) card.removeAttribute(<span class="tk-string">&quot;data-theme&quot;</span>);
-    <span class="tk-keyword">else</span> card.setAttribute(<span class="tk-string">&quot;data-theme&quot;</span>, e.detail.value);
+  document.getElementById(<span class="tk-string">&quot;latency-theme&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
+    <span class="tk-keyword">const</span> theme = e.currentTarget.value;
+    <span class="tk-keyword">if</span> (theme === <span class="tk-string">&quot;page&quot;</span>) card.removeAttribute(<span class="tk-string">&quot;data-theme&quot;</span>);
+    <span class="tk-keyword">else</span> card.setAttribute(<span class="tk-string">&quot;data-theme&quot;</span>, theme);
     draw();
   });
   onChartThemeChange(draw);

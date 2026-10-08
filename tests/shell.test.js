@@ -135,7 +135,7 @@ T.test("toggle: flips pressed, aria-pressed, events, form and reset", async (T) 
   T.eq(inner(bold).dataset.toggle, "subtle", "default variant");
   T.eq(inner(wrap).dataset.toggle, "subtle", "button-only variants fall back to subtle");
   const seen = [];
-  bold.addEventListener("ray-change", (e) => seen.push(e.detail.pressed));
+  bold.addEventListener("change", () => seen.push(bold.pressed));
   bold.click();
   await T.settle();
   T.ok(bold.pressed && bold.hasAttribute("pressed"), "pressed and reflected");
@@ -193,12 +193,12 @@ T.test("toggle group: single, multiple, required, inheritance, roving tab stop a
   T.eq(c.tabIndex, -1);
 
   const changes = [];
-  form.addEventListener("ray-change", (e) => changes.push([e.target.localName, JSON.stringify(e.detail.value ?? null)]));
+  form.addEventListener("change", (e) => changes.push([e.target.localName, JSON.stringify(e.target.value ?? null)]));
   c.click();
   await T.settle();
   T.eq(align.value, "center");
   T.ok(!l.pressed && c.pressed, "single: the others turn off");
-  T.eq(changes.map((x) => x.join(" ")).join(" | "), 'ray-toggle-group "center"', "only the group's event leaves it");
+  T.eq(changes.map((x) => x.join(" ")).join(" | "), 'ray-toggle-group "center"', "only the group's change leaves it");
   c.click();
   await T.settle();
   T.eq(align.values.length, 0, "single can be cleared");

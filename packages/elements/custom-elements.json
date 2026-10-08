@@ -730,7 +730,7 @@
           "name": "RayToggle",
           "tagName": "ray-toggle",
           "customElement": true,
-          "description": "Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute.",
+          "description": "Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute.",
           "superclass": {
             "name": "RayButton"
           },
@@ -1034,18 +1034,11 @@
           ],
           "events": [
             {
-              "name": "ray-change",
-              "type": {
-                "text": "CustomEvent<{ pressed: boolean }>"
-              },
-              "description": "The user flipped it (also a plain change event)."
-            },
-            {
               "name": "change",
               "type": {
                 "text": "Event"
               },
-              "description": "The user flipped it."
+              "description": "The user flipped it (read `pressed`)."
             }
           ],
           "slots": [
@@ -1361,18 +1354,11 @@
           ],
           "events": [
             {
-              "name": "ray-change",
-              "type": {
-                "text": "CustomEvent<{ value: string | string[] | undefined; values: string[] }>"
-              },
-              "description": "The user changed the selection (the toggles' own events stop at the group). Also a plain change event."
-            },
-            {
               "name": "change",
               "type": {
                 "text": "Event"
               },
-              "description": "The user changed the selection."
+              "description": "The user changed the selection (read `value` or `values`; the toggles' own change events stop at the group)."
             }
           ],
           "slots": [
@@ -2274,18 +2260,11 @@
           ],
           "events": [
             {
-              "name": "ray-change",
-              "type": {
-                "text": "CustomEvent<{ value: string }>"
-              },
-              "description": "A day was selected."
-            },
-            {
               "name": "change",
               "type": {
                 "text": "Event"
               },
-              "description": "A day was selected."
+              "description": "A day was selected (read `value`)."
             }
           ],
           "slots": [],
@@ -2500,7 +2479,7 @@
               "type": {
                 "text": "\"rows\" | \"cards\" | \"none\""
               },
-              "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change).",
+              "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).",
               "fieldName": "list",
               "default": "rows"
             },
@@ -2685,7 +2664,7 @@
               "type": {
                 "text": "\"rows\" | \"cards\" | \"none\""
               },
-              "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change).",
+              "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).",
               "attribute": "list",
               "reflects": true,
               "default": "rows"
@@ -2706,6 +2685,11 @@
               "description": "The chosen files (assign to replace them, without events)."
             },
             {
+              "kind": "field",
+              "name": "lastChange",
+              "description": "What the last change event changed: the files added and removed. null before the first one, and after assigning files."
+            },
+            {
               "kind": "method",
               "name": "open",
               "description": "Opens the system file picker."
@@ -2718,12 +2702,12 @@
             {
               "kind": "method",
               "name": "removeFile",
-              "description": "Removes a file (fires ray-change)."
+              "description": "Removes a file (fires change)."
             },
             {
               "kind": "method",
               "name": "clear",
-              "description": "Removes every file (fires ray-change)."
+              "description": "Removes every file (fires change)."
             },
             {
               "kind": "method",
@@ -2733,18 +2717,11 @@
           ],
           "events": [
             {
-              "name": "ray-change",
-              "type": {
-                "text": "CustomEvent<{ files: File[]; added: File[]; removed: File[] }>"
-              },
-              "description": "Files were added or removed (also a plain change event)."
-            },
-            {
               "name": "change",
               "type": {
                 "text": "Event"
               },
-              "description": "Files were added or removed."
+              "description": "Files were added or removed (read `files`, and `lastChange` for which)."
             },
             {
               "name": "ray-reject",
@@ -6043,7 +6020,7 @@
             {
               "kind": "method",
               "name": "setPage",
-              "description": "Goes to a page (fires ray-change and change)."
+              "description": "Goes to a page (fires change)."
             },
             {
               "kind": "method",
@@ -6068,18 +6045,11 @@
           ],
           "events": [
             {
-              "name": "ray-change",
-              "type": {
-                "text": "CustomEvent<{ value: number }>"
-              },
-              "description": "The user went to another page (also fires `change`)."
-            },
-            {
               "name": "change",
               "type": {
                 "text": "Event"
               },
-              "description": "The page changed."
+              "description": "The user went to another page (read `value`)."
             }
           ],
           "slots": [],
@@ -9551,11 +9521,11 @@
           ],
           "events": [
             {
-              "name": "ray-slide-change",
+              "name": "change",
               "type": {
-                "text": "CustomEvent<{ index: number }>"
+                "text": "Event"
               },
-              "description": "The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code."
+              "description": "The current position changed (read `index`) by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code."
             }
           ],
           "slots": [

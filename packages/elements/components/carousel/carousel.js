@@ -347,7 +347,7 @@ export class RayCarousel extends RayElement {
     this._tracking = true;
     this.commitProperty("index", i);
     queueMicrotask(() => { this._tracking = false; });
-    this.emit("ray-slide-change", { index: i });
+    this.dispatchEvent(new Event("change", { bubbles: true }));
   }
 
   _go(index, user, instant = false) {

@@ -11,8 +11,8 @@
 // Uploading is the app's job: attachmentFor(file) returns the row of a file,
 // whose `progress`, `status` and `error` show how its upload goes.
 //
-//   upload.addEventListener("ray-change", (e) => {
-//     for (const file of e.detail.added) send(file, (pct) => { upload.attachmentFor(file).progress = pct; });
+//   upload.addEventListener("change", () => {
+//     for (const file of upload.lastChange.added) send(file, (pct) => { upload.attachmentFor(file).progress = pct; });
 //   });
 
 import { css, define } from "../../core/core.js";
@@ -238,6 +238,7 @@ export class RayFileUpload extends FormControl {
 
   /** @type {File[]} */
   #files = [];
+  #lastChange = null;
   /** @type {Map<File, HTMLElement>} */
   #rows = new Map();
   #rejected = "";
@@ -284,8 +285,17 @@ export class RayFileUpload extends FormControl {
     return [...this.#files];
   }
 
+  /**
+   * What the last change event changed: { added, removed }. null before the
+   * first one, and after assigning `files` (which fires nothing).
+   */
+  get lastChange() {
+    return this.#lastChange;
+  }
+
   set files(list) {
     const next = [...(list ?? [])];
+    this.#lastChange = null;
     for (const f of this.#files) if (!next.includes(f)) this.#dropRow(f, false);
     this.#files = next;
     this.#rejected = "";
@@ -301,13 +311,13 @@ export class RayFileUpload extends FormControl {
 
   /**
    * Adds files as if they were dropped: checks them, fires ray-reject for the
-   * refused ones and ray-change for the rest. Returns both lists.
+   * refused ones and change for the rest. Returns both lists.
    */
   addFiles(list) {
     return this.#take([...(list ?? [])]);
   }
 
-  /** Removes a file (fires ray-change). */
+  /** Removes a file (fires change). */
   removeFile(file) {
     const i = this.#files.indexOf(file);
     if (i < 0) return false;
@@ -319,7 +329,7 @@ export class RayFileUpload extends FormControl {
     return true;
   }
 
-  /** Removes every file (fires ray-change if there were any). */
+  /** Removes every file (fires change if there were any). */
   clear() {
     const removed = this.#files;
     if (removed.length === 0) return;
@@ -385,7 +395,7 @@ export class RayFileUpload extends FormControl {
   }
 
   #changed(added, removed) {
-    this.emit("ray-change", { files: this.files, added, removed });
+    this.#lastChange = { added, removed };
     this.dispatchEvent(new Event("change", { bubbles: true }));
   }
 

@@ -64,7 +64,7 @@ own protocol.
 
 | Component | With the bridge | raylang API |
 |---|---|---|
-| `ray-file-upload` | "browse" opens the native dialog with filters built from `accept` and returns real **paths** (`paths` property, `ray-change` detail); drop and paste keep working with `File` objects | `ui.pick_files`, `ui.file_options`, `ui.filter` |
+| `ray-file-upload` | "browse" opens the native dialog with filters built from `accept` and returns real **paths** (`paths` property, read on `change`); drop and paste keep working with `File` objects | `ui.pick_files`, `ui.file_options`, `ui.filter` |
 | `ray-path-input` (new) | a field with a "Browse…" button for a file, a folder or a save target, showing the chosen path; without the bridge it is a plain text field | `ui.pick_file_with`, `ui.pick_folder_with`, `ui.save_file_with` |
 | `ray-command-palette` | lists the app's native menu items next to its own commands, with their shortcuts; running one emits the same `menu` event as the menu | `ui.menu` (recorded through `bridge.menu`) |
 | `ray-menu` | `native` attribute: opens as a native context menu at the pointer; the choice arrives as `ray-select` | `ui.popup_menu` |

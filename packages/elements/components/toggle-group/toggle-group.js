@@ -59,15 +59,13 @@ export class RayToggleGroup extends RayButtonGroup {
     super();
     this.internals = this.attachInternals();
     this.$("slot").addEventListener("slotchange", () => this.requestUpdate());
-    // A toggle flipped itself: apply the group's rule, then announce the value.
-    this.addEventListener("ray-change", (e) => {
-      const t = e.target;
-      if (t === this || t.localName !== "ray-toggle" || t.closest("ray-toggle-group") !== this) return;
-      e.stopPropagation();
-      this.#flipped(t);
-    });
+    // A toggle flipped itself: apply the group's rule, then announce the
+    // group's value. The toggles' own change events stop here.
     this.addEventListener("change", (e) => {
-      if (e.target !== this) e.stopPropagation();
+      const t = e.target;
+      if (t === this) return;
+      e.stopPropagation();
+      if (t.localName === "ray-toggle" && t.closest("ray-toggle-group") === this) this.#flipped(t);
     });
     this.addEventListener("keydown", (e) => this.#key(e));
     this.addEventListener("focusin", (e) => {
@@ -157,7 +155,6 @@ export class RayToggleGroup extends RayButtonGroup {
     this.values = next;
     this.#sync();
     if (next.join("\n") !== before.join("\n")) {
-      this.emit("ray-change", { value: this.value, values: this.values });
       this.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }

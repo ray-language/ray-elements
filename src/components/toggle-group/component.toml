@@ -78,12 +78,8 @@ description = "The selected keys as a list, in any mode."
 ts = "readonly toggles: RayToggle[]"
 description = "The toggles of this group."
 
-[ray-toggle-group.events.ray-change]
-detail = "{ value: string | string[] | undefined; values: string[] }"
-description = "The user changed the selection (the toggles' own events stop at the group). Also a plain change event."
-
 [ray-toggle-group.events.change]
-description = "The user changed the selection."
+description = "The user changed the selection (read `value` or `values`; the toggles' own change events stop at the group)."
 
 [ray-toggle-group.slots.default]
 description = "ray-toggle elements."

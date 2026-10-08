@@ -97,7 +97,6 @@ export class RayToggle extends RayButton {
     this.addEventListener("click", () => {
       if (this.disabled || this.loading || this._fieldsetDisabled) return;
       this.pressed = !this.pressed;
-      this.emit("ray-change", { pressed: this.pressed });
       this.dispatchEvent(new Event("change", { bubbles: true }));
     });
   }

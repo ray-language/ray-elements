@@ -329,7 +329,7 @@ export declare class RayIconButton extends RayButton {
 }
 
 // --- Toggle (toggle)
-/** <ray-toggle> Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default "on") under name while pressed; reset restores the initial pressed attribute. */
+/** <ray-toggle> Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default "on") under name while pressed; reset restores the initial pressed attribute. */
 export declare class RayToggle extends RayButton {
   /** On. */
   pressed: boolean | undefined;
@@ -339,14 +339,6 @@ export declare class RayToggle extends RayButton {
   square: boolean | undefined;
   /** Accessible name and tooltip, for icon-only toggles. */
   label: string | undefined;
-  addEventListener<K extends keyof RayToggleEventMap>(type: K, listener: (this: RayToggle, ev: RayToggleEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof RayToggleEventMap>(type: K, listener: (this: RayToggle, ev: RayToggleEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-export interface RayToggleEventMap extends HTMLElementEventMap {
-  /** The user flipped it (also a plain change event). */
-  "ray-change": CustomEvent<{ pressed: boolean }>;
 }
 
 // --- Toggle group (toggle-group)
@@ -378,14 +370,6 @@ export declare class RayToggleGroup extends RayButtonGroup {
   values: string[];
   /** The toggles of this group. */
   readonly toggles: RayToggle[];
-  addEventListener<K extends keyof RayToggleGroupEventMap>(type: K, listener: (this: RayToggleGroup, ev: RayToggleGroupEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof RayToggleGroupEventMap>(type: K, listener: (this: RayToggleGroup, ev: RayToggleGroupEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-export interface RayToggleGroupEventMap extends HTMLElementEventMap {
-  /** The user changed the selection (the toggles' own events stop at the group). Also a plain change event. */
-  "ray-change": CustomEvent<{ value: string | string[] | undefined; values: string[] }>;
 }
 
 // --- Checkbox (checkbox)
@@ -493,17 +477,11 @@ export declare class RayCalendar extends RayElement {
   focusDay(): void;
   /** The day the keyboard is on (ISO). */
   readonly focusedDate: string;
-  addEventListener<K extends keyof RayCalendarEventMap>(type: K, listener: (this: RayCalendar, ev: RayCalendarEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof RayCalendarEventMap>(type: K, listener: (this: RayCalendar, ev: RayCalendarEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-export interface RayCalendarEventMap extends HTMLElementEventMap {
-  /** A day was selected. */
-  "ray-change": CustomEvent<{ value: string }>;
 }
 
 // --- File upload (file-upload)
+/** The files a change added and removed. */
+export type FileUploadChange = { added: File[]; removed: File[] };
 /** A refused file and why. */
 export type FileRejection = { file: File; reason: "type" | "size" | "count"; message: string };
 /** Bytes from a number or a size like "10 MB" (NaN if neither). */
@@ -546,19 +524,21 @@ export declare class RayFileUpload extends FormControl {
   tapLabel: string;
   /** default: a tall centered zone; compact: one row with a Browse button. */
   variant: "default" | "compact";
-  /** How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change). */
+  /** How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change). */
   list: "rows" | "cards" | "none";
   /** Accent of hover, drag and the browse link (default: primary). */
   color: string | undefined;
   /** The chosen files (assign to replace them, without events). */
   files: File[];
+  /** What the last change event changed: the files added and removed. null before the first one, and after assigning files. */
+  readonly lastChange: FileUploadChange | null;
   /** Opens the system file picker. */
   open(): void;
   /** Adds files as if dropped (checks them, fires the events). */
   addFiles(files: Iterable<File>): { accepted: File[]; rejected: FileRejection[] };
-  /** Removes a file (fires ray-change). */
+  /** Removes a file (fires change). */
   removeFile(file: File): boolean;
-  /** Removes every file (fires ray-change). */
+  /** Removes every file (fires change). */
   clear(): void;
   /** The row of a file, to show its upload progress, status or error. */
   attachmentFor(file: File): RayAttachment | null;
@@ -568,8 +548,6 @@ export declare class RayFileUpload extends FormControl {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RayFileUploadEventMap extends HTMLElementEventMap {
-  /** Files were added or removed (also a plain change event). */
-  "ray-change": CustomEvent<{ files: File[]; added: File[]; removed: File[] }>;
   /** Some files were refused (type, size or count). */
   "ray-reject": CustomEvent<{ rejected: FileRejection[] }>;
 }
@@ -913,7 +891,7 @@ export declare class RayPagination extends RayElement {
   label: string;
   /** The current page clamped to 1…total. */
   readonly page: number;
-  /** Goes to a page (fires ray-change and change). */
+  /** Goes to a page (fires change). */
   setPage(page: number): void;
   /** Next page. */
   next(): void;
@@ -923,14 +901,6 @@ export declare class RayPagination extends RayElement {
   first(): void;
   /** Last page. */
   last(): void;
-  addEventListener<K extends keyof RayPaginationEventMap>(type: K, listener: (this: RayPagination, ev: RayPaginationEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof RayPaginationEventMap>(type: K, listener: (this: RayPagination, ev: RayPaginationEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-export interface RayPaginationEventMap extends HTMLElementEventMap {
-  /** The user went to another page (also fires `change`). */
-  "ray-change": CustomEvent<{ value: number }>;
 }
 
 // --- Sidebar (sidebar)
@@ -1396,14 +1366,6 @@ export declare class RayCarousel extends RayElement {
   readonly count: number;
   /** The slide elements. */
   readonly slides: Element[];
-  addEventListener<K extends keyof RayCarouselEventMap>(type: K, listener: (this: RayCarousel, ev: RayCarouselEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof RayCarouselEventMap>(type: K, listener: (this: RayCarousel, ev: RayCarouselEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
-}
-export interface RayCarouselEventMap extends HTMLElementEventMap {
-  /** The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code. */
-  "ray-slide-change": CustomEvent<{ index: number }>;
 }
 
 // --- Icon (icon)

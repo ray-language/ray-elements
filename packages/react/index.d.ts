@@ -120,9 +120,7 @@ export interface RayToggleOwnProps {
   name?: string;
   /** With type=submit: the submitted value. */
   value?: string;
-  /** The user flipped it (also a plain change event). */
-  onRayChange?: (event: CustomEvent<{ pressed: boolean }>) => void;
-  /** The user flipped it. */
+  /** The user flipped it (read `pressed`). */
   onChange?: (event: Event) => void;
 }
 export type RayToggleProps = RayToggleOwnProps & Omit<React.HTMLAttributes<Ray.RayToggle>, keyof RayToggleOwnProps> & { children?: React.ReactNode };
@@ -158,9 +156,7 @@ export interface RayToggleGroupOwnProps {
   fullWidth?: boolean;
   /** Accessible name (aria-label). */
   label?: string;
-  /** The user changed the selection (the toggles' own events stop at the group). Also a plain change event. */
-  onRayChange?: (event: CustomEvent<{ value: string | string[] | undefined; values: string[] }>) => void;
-  /** The user changed the selection. */
+  /** The user changed the selection (read `value` or `values`; the toggles' own change events stop at the group). */
   onChange?: (event: Event) => void;
 }
 export type RayToggleGroupProps = RayToggleGroupOwnProps & Omit<React.HTMLAttributes<Ray.RayToggleGroup>, keyof RayToggleGroupOwnProps> & { children?: React.ReactNode };
@@ -270,9 +266,7 @@ export interface RayCalendarOwnProps {
   firstDay?: number;
   /** Day cell size and font size. */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  /** A day was selected. */
-  onRayChange?: (event: CustomEvent<{ value: string }>) => void;
-  /** A day was selected. */
+  /** A day was selected (read `value`). */
   onChange?: (event: Event) => void;
 }
 export type RayCalendarProps = RayCalendarOwnProps & Omit<React.HTMLAttributes<Ray.RayCalendar>, keyof RayCalendarOwnProps> & { children?: React.ReactNode };
@@ -312,13 +306,11 @@ export interface RayFileUploadOwnProps {
   tapLabel?: string;
   /** default: a tall centered zone; compact: one row with a Browse button. */
   variant?: "default" | "compact";
-  /** How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change). */
+  /** How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change). */
   list?: "rows" | "cards" | "none";
   /** Accent of hover, drag and the browse link (default: primary). */
   color?: string;
-  /** Files were added or removed (also a plain change event). */
-  onRayChange?: (event: CustomEvent<{ files: File[]; added: File[]; removed: File[] }>) => void;
-  /** Files were added or removed. */
+  /** Files were added or removed (read `files`, and `lastChange` for which). */
   onChange?: (event: Event) => void;
   /** Some files were refused (type, size or count). */
   onRayReject?: (event: CustomEvent<{ rejected: Ray.FileRejection[] }>) => void;
@@ -732,9 +724,7 @@ export interface RayPaginationOwnProps {
   disabled?: boolean;
   /** Accessible name of the navigation landmark. */
   label?: string;
-  /** The user went to another page (also fires `change`). */
-  onRayChange?: (event: CustomEvent<{ value: number }>) => void;
-  /** The page changed. */
+  /** The user went to another page (read `value`). */
   onChange?: (event: Event) => void;
 }
 export type RayPaginationProps = RayPaginationOwnProps & Omit<React.HTMLAttributes<Ray.RayPagination>, keyof RayPaginationOwnProps> & { children?: React.ReactNode };
@@ -1122,8 +1112,8 @@ export interface RayCarouselOwnProps {
   hideControls?: boolean;
   /** No indicator dots. */
   hideIndicators?: boolean;
-  /** The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code. */
-  onRaySlideChange?: (event: CustomEvent<{ index: number }>) => void;
+  /** The current position changed (read `index`) by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code. */
+  onChange?: (event: Event) => void;
 }
 export type RayCarouselProps = RayCarouselOwnProps & Omit<React.HTMLAttributes<Ray.RayCarousel>, keyof RayCarouselOwnProps> & { children?: React.ReactNode };
 /** <ray-carousel> as a React component. */

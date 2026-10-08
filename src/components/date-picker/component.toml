@@ -180,12 +180,8 @@ default = "sm"
 reflect = true
 description = "Day cell size and font size."
 
-[ray-calendar.events.ray-change]
-detail = "{ value: string }"
-description = "A day was selected."
-
 [ray-calendar.events.change]
-description = "A day was selected."
+description = "A day was selected (read `value`)."
 
 [ray-calendar.parts.header]
 description = "The row with the month and the navigation buttons."

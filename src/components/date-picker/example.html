@@ -7,7 +7,7 @@
   <span id="demo-calendar-out" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick a day.</span>
 </div>
 <script type="module">
-  document.getElementById("demo-calendar").addEventListener("ray-change", (e) => {
-    document.getElementById("demo-calendar-out").textContent = `ray-change: ${e.detail.value}`;
+  document.getElementById("demo-calendar").addEventListener("change", (e) => {
+    document.getElementById("demo-calendar-out").textContent = `change: ${e.currentTarget.value}`;
   });
 </script>

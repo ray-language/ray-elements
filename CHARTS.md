@@ -105,8 +105,8 @@ a table (see "Accessibility is the chart's job" below).
   const table = document.getElementById("builds-table");
   table.innerHTML = `<thead><tr><th>Month</th>${series.map((s) => `<th>${s.name}</th>`).join("")}</tr></thead>` +
     `<tbody>${months.map((m, i) => `<tr><td>${m}</td>${series.map((s) => `<td>${s.data[i]}</td>`).join("")}</tr>`).join("")}</tbody>`;
-  document.getElementById("builds-view").addEventListener("ray-change", (e) => {
-    const asTable = e.detail.value === "table";
+  document.getElementById("builds-view").addEventListener("change", (e) => {
+    const asTable = e.currentTarget.value === "table";
     table.hidden = !asTable;
     chart.style.display = asTable ? "none" : "";
     document.getElementById("builds-legend").hidden = asTable;
@@ -186,9 +186,10 @@ has its own `data-theme`, so it can differ from the page:
     document.getElementById("latency-legend").innerHTML = regions
       .map((r, s) => `<span><i style="background: ${t.series[s]}"></i>${r}</span>`).join("");
   }
-  document.getElementById("latency-theme").addEventListener("ray-change", (e) => {
-    if (e.detail.value === "page") card.removeAttribute("data-theme");
-    else card.setAttribute("data-theme", e.detail.value);
+  document.getElementById("latency-theme").addEventListener("change", (e) => {
+    const theme = e.currentTarget.value;
+    if (theme === "page") card.removeAttribute("data-theme");
+    else card.setAttribute("data-theme", theme);
     draw();
   });
   onChartThemeChange(draw);

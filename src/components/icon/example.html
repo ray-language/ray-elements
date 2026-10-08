@@ -105,7 +105,7 @@
     "user": `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>`,
   };
   const original = Object.fromEntries(Object.keys(filled).map((n) => [n, getIcon(n)]));
-  document.getElementById("demo-icons-swap").addEventListener("ray-change", (e) => {
-    setIcons(e.detail.pressed ? filled : original);
+  document.getElementById("demo-icons-swap").addEventListener("change", (e) => {
+    setIcons(e.currentTarget.pressed ? filled : original);
   });
 </script>

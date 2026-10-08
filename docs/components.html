@@ -806,13 +806,13 @@ if (location.protocol === "file:") window.__rayServeHint();
   <ray-toggle variant="filled" disabled pressed>Disabled on</ray-toggle>
   <ray-toggle variant="filled" disabled>Disabled off</ray-toggle>
 </div>
-<p id="demo-toggle-out" class="demo-muted" style="margin: 0">Flip a toggle to see its ray-change event.</p>
+<p id="demo-toggle-out" class="demo-muted" style="margin: 0">Flip a toggle to see its change event.</p>
 <script type="module">
   const out = document.getElementById("demo-toggle-out");
-  out.closest(".example").addEventListener("ray-change", (e) => {
+  out.closest(".example").addEventListener("change", (e) => {
     if (e.target.localName !== "ray-toggle") return;
     const name = e.target.label || e.target.textContent.trim();
-    out.textContent = `ray-change: ${name} → pressed = ${e.detail.pressed}`;
+    out.textContent = `change: ${name} → pressed = ${e.target.pressed}`;
   });
 </script>
 </div>
@@ -848,20 +848,20 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-toggle</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">disabled</span> <span class="tk-attr">pressed</span><span class="tk-punctuation">&gt;</span>Disabled on<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-toggle</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">disabled</span><span class="tk-punctuation">&gt;</span>Disabled off<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-toggle-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Flip a toggle to see its ray-change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-toggle-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Flip a toggle to see its change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-keyword">const</span> out = document.getElementById(<span class="tk-string">&quot;demo-toggle-out&quot;</span>);
-  out.closest(<span class="tk-string">&quot;.example&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
+  out.closest(<span class="tk-string">&quot;.example&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
     <span class="tk-keyword">if</span> (e.target.localName !== <span class="tk-string">&quot;ray-toggle&quot;</span>) <span class="tk-keyword">return</span>;
     <span class="tk-keyword">const</span> name = e.target.label || e.target.textContent.trim();
-    out.textContent = <span class="tk-string">`ray-change: ${name} → pressed = ${e.detail.pressed}`</span>;
+    out.textContent = <span class="tk-string">`change: ${name} → pressed = ${e.target.pressed}`</span>;
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;
 <span class="tk-keyword">import</span> { RayToggle, RayIcon } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRayChange, onChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> ToggleExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -895,7 +895,7 @@ if (location.protocol === "file:") window.__rayServeHint();
         &lt;RayToggle variant=&quot;filled&quot; disabled pressed&gt;Disabled on&lt;/RayToggle&gt;
         &lt;RayToggle variant=&quot;filled&quot; disabled&gt;Disabled off&lt;/RayToggle&gt;
       &lt;/div&gt;
-      &lt;p id=&quot;demo-toggle-out&quot; className=&quot;demo-muted&quot; style={{ margin: &quot;0&quot; }}&gt;Flip a toggle to see its ray-change event.&lt;/p&gt;
+      &lt;p id=&quot;demo-toggle-out&quot; className=&quot;demo-muted&quot; style={{ margin: &quot;0&quot; }}&gt;Flip a toggle to see its change event.&lt;/p&gt;
     &lt;/&gt;
   );
 }</span></code></pre>
@@ -932,13 +932,13 @@ if (location.protocol === "file:") window.__rayServeHint();
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayToggle</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">disabled</span> <span class="tk-attr">pressed</span><span class="tk-punctuation">&gt;</span>Disabled on<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayToggle</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayToggle</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">disabled</span><span class="tk-punctuation">&gt;</span>Disabled off<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayToggle</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-toggle-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Flip a toggle to see its ray-change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-toggle-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Flip a toggle to see its change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-toggle&gt;</code> &middot; <code>RayToggle</code></p>
-<p class="note">Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default &quot;on&quot;) under name while pressed; reset restores the initial pressed attribute.</p>
+<p class="note">Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default &quot;on&quot;) under name while pressed; reset restores the initial pressed attribute.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>pressed</code></td><td><code>pressed</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>On.</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>subtle</code> | <code>outline</code> | <code>light</code> | <code>filled</code> | <code>raised</code></td><td><code>subtle</code></td><td>Look of &quot;on&quot;: subtle (tint), outline (colored border + tint), light (muted → tint), filled (surface → solid color), raised (a key that latches down, lit). ray-button's default, transparent and gradient are left out: no distinct on state, or only a color change.</td></tr><tr><td><code>square</code></td><td><code>square</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Square, for an icon alone (give it a label).</td></tr><tr><td><code>label</code></td><td><code>label</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Accessible name and tooltip, for icon-only toggles.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-change</code></td><td>The user flipped it (also a plain change event).</td></tr><tr><td><code>change</code></td><td>The user flipped it.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The user flipped it (read `pressed`).</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Text or an icon.</td></tr></tbody></table></div>
 
 </section>
@@ -985,12 +985,12 @@ if (location.protocol === "file:") window.__rayServeHint();
   <ray-toggle value="2">Normal</ray-toggle>
   <ray-toggle value="3">Fast</ray-toggle>
 </ray-toggle-group>
-<p id="demo-tg-out" class="demo-muted" style="margin: 0">Change a group to see its ray-change event.</p>
+<p id="demo-tg-out" class="demo-muted" style="margin: 0">Change a group to see its change event.</p>
 <script type="module">
   const out = document.getElementById("demo-tg-out");
-  out.closest(".example").addEventListener("ray-change", (e) => {
+  out.closest(".example").addEventListener("change", (e) => {
     if (e.target.localName !== "ray-toggle-group") return;
-    out.textContent = `ray-change: ${e.target.label} → ${JSON.stringify(e.detail.value)}`;
+    out.textContent = `change: ${e.target.label} → ${JSON.stringify(e.target.value)}`;
   });
 </script>
 </div>
@@ -1036,18 +1036,18 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-toggle</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;2&quot;</span><span class="tk-punctuation">&gt;</span>Normal<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-toggle</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;3&quot;</span><span class="tk-punctuation">&gt;</span>Fast<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle-group</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-tg-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Change a group to see its ray-change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-tg-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Change a group to see its change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-keyword">const</span> out = document.getElementById(<span class="tk-string">&quot;demo-tg-out&quot;</span>);
-  out.closest(<span class="tk-string">&quot;.example&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
+  out.closest(<span class="tk-string">&quot;.example&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
     <span class="tk-keyword">if</span> (e.target.localName !== <span class="tk-string">&quot;ray-toggle-group&quot;</span>) <span class="tk-keyword">return</span>;
-    out.textContent = <span class="tk-string">`ray-change: ${e.target.label} → ${JSON.stringify(e.detail.value)}`</span>;
+    out.textContent = <span class="tk-string">`change: ${e.target.label} → ${JSON.stringify(e.target.value)}`</span>;
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayToggleGroup, RayToggle } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRayChange, onChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> ToggleGroupExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -1091,7 +1091,7 @@ if (location.protocol === "file:") window.__rayServeHint();
         &lt;RayToggle value=<span class="tk-string">&quot;2&quot;</span>&gt;Normal&lt;/RayToggle&gt;
         &lt;RayToggle value=<span class="tk-string">&quot;3&quot;</span>&gt;Fast&lt;/RayToggle&gt;
       &lt;/RayToggleGroup&gt;
-      &lt;p id=<span class="tk-string">&quot;demo-tg-out&quot;</span> className=<span class="tk-string">&quot;demo-muted&quot;</span> style={{ margin: <span class="tk-string">&quot;0&quot;</span> }}&gt;Change a group to see its ray-change event.&lt;/p&gt;
+      &lt;p id=<span class="tk-string">&quot;demo-tg-out&quot;</span> className=<span class="tk-string">&quot;demo-muted&quot;</span> style={{ margin: <span class="tk-string">&quot;0&quot;</span> }}&gt;Change a group to see its change event.&lt;/p&gt;
     &lt;/&gt;
   );
 }</code></pre>
@@ -1138,13 +1138,13 @@ if (location.protocol === "file:") window.__rayServeHint();
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayToggle</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;2&quot;</span><span class="tk-punctuation">&gt;</span>Normal<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayToggle</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayToggle</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;3&quot;</span><span class="tk-punctuation">&gt;</span>Fast<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayToggle</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayToggleGroup</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-tg-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Change a group to see its ray-change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-tg-out&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Change a group to see its change event.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-toggle-group&gt;</code> &middot; <code>RayToggleGroup</code></p>
 <p class="note">Each toggle's value (else its text) is its key. variant, color, size, radius and square reach the toggles that do not set their own. One tab stop (the selected toggle); arrows, Home and End move; Space/Enter flips.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>type</code></td><td><code>type</code> <span class="reflects">reflects</span></td><td><code>single</code> | <code>multiple</code></td><td><code>single</code></td><td>single: choosing one turns the others off; multiple: each toggle is independent.</td></tr><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td></td><td>The selected key (single) or keys (multiple: an array, or a comma-separated attribute).</td></tr><tr><td><code>name</code></td><td><code>name</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Form field name: the value (multiple: one entry per key).</td></tr><tr><td><code>required</code></td><td><code>required</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Needs a value; with single the selected toggle cannot be turned off.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Disables every toggle.</td></tr><tr><td><code>spaced</code></td><td><code>spaced</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Toggles apart, each with its own corners (default: joined).</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>subtle</code> | <code>outline</code> | <code>light</code> | <code>filled</code> | <code>raised</code></td><td></td><td>Variant of the toggles.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Color of the toggles' on state.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td></td><td>Size of the toggles.</td></tr><tr><td><code>radius</code></td><td><code>radius</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Corner radius of the toggles.</td></tr><tr><td><code>square</code></td><td><code>square</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Square toggles, for icons.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-change</code></td><td>The user changed the selection (the toggles' own events stop at the group). Also a plain change event.</td></tr><tr><td><code>change</code></td><td>The user changed the selection.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The user changed the selection (read `value` or `values`; the toggles' own change events stop at the group).</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>ray-toggle elements.</td></tr></tbody></table></div>
 
 </section>
@@ -1232,8 +1232,8 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span id="demo-calendar-out" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick a day.</span>
 </div>
 <script type="module">
-  document.getElementById("demo-calendar").addEventListener("ray-change", (e) => {
-    document.getElementById("demo-calendar-out").textContent = `ray-change: ${e.detail.value}`;
+  document.getElementById("demo-calendar").addEventListener("change", (e) => {
+    document.getElementById("demo-calendar-out").textContent = `change: ${e.currentTarget.value}`;
   });
 </script>
 </div>
@@ -1248,8 +1248,8 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-calendar-out&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)&quot;</span><span class="tk-punctuation">&gt;</span>Pick a day.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
-  document.getElementById(<span class="tk-string">&quot;demo-calendar&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    document.getElementById(<span class="tk-string">&quot;demo-calendar-out&quot;</span>).textContent = <span class="tk-string">`ray-change: ${e.detail.value}`</span>;
+  document.getElementById(<span class="tk-string">&quot;demo-calendar&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
+    document.getElementById(<span class="tk-string">&quot;demo-calendar-out&quot;</span>).textContent = <span class="tk-string">`change: ${e.currentTarget.value}`</span>;
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;
@@ -1294,7 +1294,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="note">WAI-ARIA grid: arrows move by day and week, Home/End to the week's ends, PageUp/PageDown by month (with Shift, by year), Enter/Space select.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td></td><td>The selected date, ISO &quot;YYYY-MM-DD&quot;.</td></tr><tr><td><code>min</code></td><td><code>min</code></td><td>string</td><td></td><td>Earliest selectable date (ISO).</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>string</td><td></td><td>Latest selectable date (ISO).</td></tr><tr><td><code>locale</code></td><td><code>locale</code></td><td>string</td><td></td><td>Locale for month and weekday names. Default: the nearest lang attribute, else the browser's.</td></tr><tr><td><code>firstDay</code></td><td><code>first-day</code></td><td>number</td><td></td><td>First day of the week, 0 (Sunday) to 6. Default: the locale's.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Day cell size and font size.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-change</code></td><td>A day was selected.</td></tr><tr><td><code>change</code></td><td>A day was selected.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>A day was selected (read `value`).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>header</code></td><td>The row with the month and the navigation buttons.</td></tr><tr><td><code>caption</code></td><td>The month and year.</td></tr><tr><td><code>nav</code></td><td>The previous/next month buttons.</td></tr><tr><td><code>grid</code></td><td>The day grid (role=grid).</td></tr><tr><td><code>day</code></td><td>Each day button ([aria-selected], [aria-current=date], [aria-disabled], [data-outside]).</td></tr></tbody></table></div>
 </section>
@@ -1315,8 +1315,8 @@ if (location.protocol === "file:") window.__rayServeHint();
   hint="Files are not sent anywhere: the progress is simulated"></ray-file-upload>
 <script type="module">
   const up = document.getElementById("demo-upload");
-  up.addEventListener("ray-change", (e) => {
-    for (const file of e.detail.added) {
+  up.addEventListener("change", () => {
+    for (const file of up.lastChange?.added ?? []) {
       let pct = 0;
       const timer = setInterval(() => {
         const row = up.attachmentFor(file);
@@ -1349,8 +1349,8 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-attr">hint</span>=<span class="tk-string">&quot;Files are not sent anywhere: the progress is simulated&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-file-upload</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-keyword">const</span> up = document.getElementById(<span class="tk-string">&quot;demo-upload&quot;</span>);
-  up.addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> file <span class="tk-keyword">of</span> e.detail.added) {
+  up.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> file <span class="tk-keyword">of</span> up.lastChange?.added ?? []) {
       <span class="tk-keyword">let</span> pct = <span class="tk-number">0</span>;
       <span class="tk-keyword">const</span> timer = setInterval(() =&gt; {
         <span class="tk-keyword">const</span> row = up.attachmentFor(file);
@@ -1369,7 +1369,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayFileUpload } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRayChange, onChange, onRayReject…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange, onRayReject…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> FileUploadExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -1400,9 +1400,9 @@ if (location.protocol === "file:") window.__rayServeHint();
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-file-upload&gt;</code> &middot; <code>RayFileUpload</code></p>
 <p class="note">A drag that can only be refused turns the zone red before the drop; refused files fire ray-reject and are explained under the zone. Without multiple a new file replaces the current one. Uploading is the app's: attachmentFor(file) gives the row whose progress/status/error to set.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>name</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Form field name: every file is submitted under it.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Label above the zone.</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>Help text under the label.</td></tr><tr><td><code>error</code></td><td><code>error</code></td><td>string</td><td></td><td>Error text (replaces the explanation of refused files).</td></tr><tr><td><code>required</code></td><td><code>required</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>The form needs at least one file.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No picking, dropping or removing.</td></tr><tr><td><code>accept</code></td><td><code>accept</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Accepted types, as in &lt;input type=file&gt;: &quot;.pdf,.png&quot;, &quot;image/*&quot;, &quot;application/json&quot;.</td></tr><tr><td><code>multiple</code></td><td><code>multiple</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Several files (else one, replaced by the next).</td></tr><tr><td><code>maxSize</code></td><td><code>max-size</code></td><td>string</td><td></td><td>Largest file: bytes or a size like &quot;10 MB&quot;, &quot;512 KB&quot;.</td></tr><tr><td><code>maxFiles</code></td><td><code>max-files</code></td><td>number</td><td></td><td>With multiple: the most files kept.</td></tr><tr><td><code>hint</code></td><td><code>hint</code></td><td>string</td><td></td><td>Small text in the zone. Default: from accept, max-size and max-files (&quot;PNG or PDF · up to 10 MB each · max. 5 files&quot;).</td></tr><tr><td><code>dropLabel</code></td><td><code>drop-label</code></td><td>string</td><td><code>Drag files here</code></td><td>Title of the zone, before &quot;or browse&quot;.</td></tr><tr><td><code>browseLabel</code></td><td><code>browse-label</code></td><td>string</td><td><code>browse</code></td><td>The link-styled word (the button text in compact).</td></tr><tr><td><code>activeLabel</code></td><td><code>active-label</code></td><td>string</td><td><code>Drop to add files</code></td><td>Title while files are dragged over it.</td></tr><tr><td><code>tapLabel</code></td><td><code>tap-label</code></td><td>string</td><td><code>Choose files</code></td><td>Title on touch screens (no hover), where dragging files is rare.</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>default</code> | <code>compact</code></td><td><code>default</code></td><td>default: a tall centered zone; compact: one row with a Browse button.</td></tr><tr><td><code>list</code></td><td><code>list</code> <span class="reflects">reflects</span></td><td><code>rows</code> | <code>cards</code> | <code>none</code></td><td><code>rows</code></td><td>How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change).</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Accent of hover, drag and the browse link (default: primary).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>name</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Form field name: every file is submitted under it.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Label above the zone.</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>Help text under the label.</td></tr><tr><td><code>error</code></td><td><code>error</code></td><td>string</td><td></td><td>Error text (replaces the explanation of refused files).</td></tr><tr><td><code>required</code></td><td><code>required</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>The form needs at least one file.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No picking, dropping or removing.</td></tr><tr><td><code>accept</code></td><td><code>accept</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Accepted types, as in &lt;input type=file&gt;: &quot;.pdf,.png&quot;, &quot;image/*&quot;, &quot;application/json&quot;.</td></tr><tr><td><code>multiple</code></td><td><code>multiple</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Several files (else one, replaced by the next).</td></tr><tr><td><code>maxSize</code></td><td><code>max-size</code></td><td>string</td><td></td><td>Largest file: bytes or a size like &quot;10 MB&quot;, &quot;512 KB&quot;.</td></tr><tr><td><code>maxFiles</code></td><td><code>max-files</code></td><td>number</td><td></td><td>With multiple: the most files kept.</td></tr><tr><td><code>hint</code></td><td><code>hint</code></td><td>string</td><td></td><td>Small text in the zone. Default: from accept, max-size and max-files (&quot;PNG or PDF · up to 10 MB each · max. 5 files&quot;).</td></tr><tr><td><code>dropLabel</code></td><td><code>drop-label</code></td><td>string</td><td><code>Drag files here</code></td><td>Title of the zone, before &quot;or browse&quot;.</td></tr><tr><td><code>browseLabel</code></td><td><code>browse-label</code></td><td>string</td><td><code>browse</code></td><td>The link-styled word (the button text in compact).</td></tr><tr><td><code>activeLabel</code></td><td><code>active-label</code></td><td>string</td><td><code>Drop to add files</code></td><td>Title while files are dragged over it.</td></tr><tr><td><code>tapLabel</code></td><td><code>tap-label</code></td><td>string</td><td><code>Choose files</code></td><td>Title on touch screens (no hover), where dragging files is rare.</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>default</code> | <code>compact</code></td><td><code>default</code></td><td>default: a tall centered zone; compact: one row with a Browse button.</td></tr><tr><td><code>list</code></td><td><code>list</code> <span class="reflects">reflects</span></td><td><code>rows</code> | <code>cards</code> | <code>none</code></td><td><code>rows</code></td><td>How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Accent of hover, drag and the browse link (default: primary).</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-change</code></td><td>Files were added or removed (also a plain change event).</td></tr><tr><td><code>change</code></td><td>Files were added or removed.</td></tr><tr><td><code>ray-reject</code></td><td>Some files were refused (type, size or count).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>Files were added or removed (read `files`, and `lastChange` for which).</td></tr><tr><td><code>ray-reject</code></td><td>Some files were refused (type, size or count).</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>icon</code></td><td>Replaces the upload icon.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dropzone</code></td><td>The zone (a button).</td></tr><tr><td><code>icon</code></td><td>The icon tile.</td></tr><tr><td><code>hint</code></td><td>The small text in the zone.</td></tr><tr><td><code>files</code></td><td>The list of chosen files.</td></tr><tr><td><code>label</code></td><td>The label.</td></tr><tr><td><code>error</code></td><td>The error text.</td></tr></tbody></table></div>
 </section>
@@ -1993,8 +1993,8 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p id="demo-pagination-out" style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Page 10 of 20</p>
 <script type="module">
   const p = document.getElementById("demo-pagination");
-  p.addEventListener("ray-change", (e) => {
-    document.getElementById("demo-pagination-out").textContent = `Page ${e.detail.value} of 20`;
+  p.addEventListener("change", () => {
+    document.getElementById("demo-pagination-out").textContent = `Page ${p.value} of 20`;
   });
 </script>
 </div>
@@ -2009,15 +2009,15 @@ if (location.protocol === "file:") window.__rayServeHint();
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-pagination-out&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)&quot;</span><span class="tk-punctuation">&gt;</span>Page 10 of 20<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-keyword">const</span> p = document.getElementById(<span class="tk-string">&quot;demo-pagination&quot;</span>);
-  p.addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    document.getElementById(<span class="tk-string">&quot;demo-pagination-out&quot;</span>).textContent = <span class="tk-string">`Page ${e.detail.value} of 20`</span>;
+  p.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+    document.getElementById(<span class="tk-string">&quot;demo-pagination-out&quot;</span>).textContent = <span class="tk-string">`Page ${p.value} of 20`</span>;
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;
 <span class="tk-keyword">import</span> { RayPagination } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRayChange, onChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> PaginationExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -2046,7 +2046,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="note">JS: setPage(n), next(), previous(), first(), last(); page (clamped value).</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>total</code></td><td><code>total</code></td><td>number</td><td><code>1</code></td><td>Number of pages.</td></tr><tr><td><code>value</code></td><td><code>value</code></td><td>number</td><td><code>1</code></td><td>Current page (1-based).</td></tr><tr><td><code>siblings</code></td><td><code>siblings</code></td><td>number</td><td><code>1</code></td><td>Pages shown on each side of the current one.</td></tr><tr><td><code>boundaries</code></td><td><code>boundaries</code></td><td>number</td><td><code>1</code></td><td>Pages always shown at the start and the end.</td></tr><tr><td><code>withEdges</code></td><td><code>with-edges</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Adds first/last page buttons.</td></tr><tr><td><code>hideControls</code></td><td><code>hide-controls</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Hides the previous/next (and first/last) buttons.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Color of the current page: a palette color or any CSS color. Default: the primary color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Item size.</td></tr><tr><td><code>radius</code></td><td><code>radius</code></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code> | <code>full</code></td><td></td><td>Corner radius of the items.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Not interactive.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Pagination</code></td><td>Accessible name of the navigation landmark.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-change</code></td><td>The user went to another page (also fires `change`).</td></tr><tr><td><code>change</code></td><td>The page changed.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The user went to another page (read `value`).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>root</code></td><td>The &lt;nav&gt; landmark.</td></tr><tr><td><code>list</code></td><td>The list of items.</td></tr><tr><td><code>item</code></td><td>Every button (pages and controls).</td></tr><tr><td><code>active</code></td><td>The current page button.</td></tr><tr><td><code>control</code></td><td>Previous/next/first/last buttons.</td></tr><tr><td><code>dots</code></td><td>An ellipsis.</td></tr></tbody></table></div>
 </section>
@@ -3344,8 +3344,9 @@ if (location.protocol === "file:") window.__rayServeHint();
   // The upload only picks files; this list shows them (list="none" hides its own).
   const list = document.getElementById("demo-attach-list");
   const upload = document.getElementById("demo-attach-input");
-  upload.addEventListener("ray-change", (e) => {
-    for (const f of e.detail.added) {
+  upload.addEventListener("change", () => {
+    if (!upload.lastChange) return;
+    for (const f of upload.lastChange.added) {
       const a = document.createElement("ray-attachment");
       a.removable = true;
       a.file = f;
@@ -3378,8 +3379,9 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-comment">// The upload only picks files; this list shows them (list=&quot;none&quot; hides its own).</span>
   <span class="tk-keyword">const</span> list = document.getElementById(<span class="tk-string">&quot;demo-attach-list&quot;</span>);
   <span class="tk-keyword">const</span> upload = document.getElementById(<span class="tk-string">&quot;demo-attach-input&quot;</span>);
-  upload.addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> f <span class="tk-keyword">of</span> e.detail.added) {
+  upload.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+    <span class="tk-keyword">if</span> (!upload.lastChange) <span class="tk-keyword">return</span>;
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> f <span class="tk-keyword">of</span> upload.lastChange.added) {
       <span class="tk-keyword">const</span> a = document.createElement(<span class="tk-string">&quot;ray-attachment&quot;</span>);
       a.removable = <span class="tk-keyword">true</span>;
       a.file = f;
@@ -3391,7 +3393,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayAttachments, RayAttachment, RayFileUpload } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRayRemove, onRayChange, onChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onRayRemove, onChange, onRayReject…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> AttachmentExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -3785,7 +3787,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <span class="tk-keyword">import</span> { RayCarousel } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onRaySlideChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> CarouselExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -3840,7 +3842,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="note">Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>index</code></td><td><code>index</code></td><td>number</td><td><code>0</code></td><td>Current position (0-based). Setting it scrolls there.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Carousel</code></td><td>Accessible name of the carousel region.</td></tr><tr><td><code>slideSize</code></td><td><code>slide-size</code></td><td>string</td><td></td><td>Size of each slide along the scroll axis (&quot;100%&quot; by default; &quot;50%&quot;, &quot;18rem&quot;…).</td></tr><tr><td><code>slideGap</code></td><td><code>slide-gap</code></td><td>string</td><td></td><td>Space between slides (default var(--ray-space-4)).</td></tr><tr><td><code>align</code></td><td><code>align</code> <span class="reflects">reflects</span></td><td><code>start</code> | <code>center</code></td><td><code>start</code></td><td>Where a slide snaps in the viewport.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>horizontal</code> | <code>vertical</code></td><td><code>horizontal</code></td><td>Scroll axis (vertical needs a height; 20rem by default).</td></tr><tr><td><code>loop</code></td><td><code>loop</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>next() on the last position goes to the first, prev() on the first to the last.</td></tr><tr><td><code>autoplay</code></td><td><code>autoplay</code></td><td>number</td><td><code>0</code></td><td>Milliseconds between automatic moves (0: off). Pauses on hover, focus and when the page is hidden; starts paused with reduced motion. Shows a pause/play button.</td></tr><tr><td><code>hideControls</code></td><td><code>hide-controls</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No previous/next buttons.</td></tr><tr><td><code>hideIndicators</code></td><td><code>hide-indicators</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No indicator dots.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-slide-change</code></td><td>The current position changed by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The current position changed (read `index`) by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>The slides.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>viewport</code></td><td>The scrolling viewport.</td></tr><tr><td><code>previous</code></td><td>The previous button.</td></tr><tr><td><code>next</code></td><td>The next button.</td></tr><tr><td><code>indicators</code></td><td>The row of indicator dots.</td></tr><tr><td><code>indicator</code></td><td>Each indicator dot ([aria-current] on the active one).</td></tr><tr><td><code>play</code></td><td>The pause/play button (with autoplay).</td></tr></tbody></table></div>
 </section>
@@ -3954,8 +3956,8 @@ if (location.protocol === "file:") window.__rayServeHint();
     "user": `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>`,
   };
   const original = Object.fromEntries(Object.keys(filled).map((n) => [n, getIcon(n)]));
-  document.getElementById("demo-icons-swap").addEventListener("ray-change", (e) => {
-    setIcons(e.detail.pressed ? filled : original);
+  document.getElementById("demo-icons-swap").addEventListener("change", (e) => {
+    setIcons(e.currentTarget.pressed ? filled : original);
   });
 </script>
 </div>
@@ -4068,14 +4070,14 @@ if (location.protocol === "file:") window.__rayServeHint();
     <span class="tk-string">&quot;user&quot;</span>: <span class="tk-string">`&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot; aria-hidden=&quot;true&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;8&quot; r=&quot;4&quot;/&gt;&lt;path d=&quot;M4 21a8 8 0 0 1 16 0z&quot;/&gt;&lt;/svg&gt;`</span>,
   };
   <span class="tk-keyword">const</span> original = Object.fromEntries(Object.keys(filled).map((n) =&gt; [n, getIcon(n)]));
-  document.getElementById(<span class="tk-string">&quot;demo-icons-swap&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
-    setIcons(e.detail.pressed ? filled : original);
+  document.getElementById(<span class="tk-string">&quot;demo-icons-swap&quot;</span>).addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
+    setIcons(e.currentTarget.pressed ? filled : original);
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RaySearch, RayIcon, RayButton, RayIconButton, RayBadge, RayToggle, RayAlert } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onInput, onRaySearch, onRayChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onInput, onRaySearch, onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> IconExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;

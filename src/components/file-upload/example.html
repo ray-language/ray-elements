@@ -12,8 +12,8 @@
   hint="Files are not sent anywhere: the progress is simulated"></ray-file-upload>
 <script type="module">
   const up = document.getElementById("demo-upload");
-  up.addEventListener("ray-change", (e) => {
-    for (const file of e.detail.added) {
+  up.addEventListener("change", () => {
+    for (const file of up.lastChange?.added ?? []) {
       let pct = 0;
       const timer = setInterval(() => {
         const row = up.attachmentFor(file);

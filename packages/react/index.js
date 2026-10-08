@@ -24,12 +24,12 @@ export const RayIconButton = createComponent("ray-icon-button", {
 export const RayToggle = createComponent("ray-toggle", {
   displayName: "RayToggle",
   properties: ["pressed", "variant", "square", "label", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "href", "target", "name", "value"],
-  events: { onRayChange: "ray-change", onChange: "change" },
+  events: { onChange: "change" },
 });
 export const RayToggleGroup = createComponent("ray-toggle-group", {
   displayName: "RayToggleGroup",
   properties: ["type", "value", "name", "required", "disabled", "spaced", "variant", "color", "size", "radius", "square", "orientation", "fullWidth", "label"],
-  events: { onRayChange: "ray-change", onChange: "change" },
+  events: { onChange: "change" },
 });
 export const RayCheckbox = createComponent("ray-checkbox", {
   displayName: "RayCheckbox",
@@ -44,12 +44,12 @@ export const RayDatePicker = createComponent("ray-date-picker", {
 export const RayCalendar = createComponent("ray-calendar", {
   displayName: "RayCalendar",
   properties: ["value", "min", "max", "locale", "firstDay", "size"],
-  events: { onRayChange: "ray-change", onChange: "change" },
+  events: { onChange: "change" },
 });
 export const RayFileUpload = createComponent("ray-file-upload", {
   displayName: "RayFileUpload",
   properties: ["name", "label", "description", "error", "required", "disabled", "accept", "multiple", "maxSize", "maxFiles", "hint", "dropLabel", "browseLabel", "activeLabel", "tapLabel", "variant", "list", "color"],
-  events: { onRayChange: "ray-change", onChange: "change", onRayReject: "ray-reject" },
+  events: { onChange: "change", onRayReject: "ray-reject" },
 });
 export const RayInput = createComponent("ray-input", {
   displayName: "RayInput",
@@ -104,7 +104,7 @@ export const RayNavLink = createComponent("ray-nav-link", {
 export const RayPagination = createComponent("ray-pagination", {
   displayName: "RayPagination",
   properties: ["total", "value", "siblings", "boundaries", "withEdges", "hideControls", "color", "size", "radius", "disabled", "label"],
-  events: { onRayChange: "ray-change", onChange: "change" },
+  events: { onChange: "change" },
 });
 export const RaySidebar = createComponent("ray-sidebar", {
   displayName: "RaySidebar",
@@ -209,7 +209,7 @@ export const RayBadge = createComponent("ray-badge", {
 export const RayCarousel = createComponent("ray-carousel", {
   displayName: "RayCarousel",
   properties: ["index", "label", "slideSize", "slideGap", "align", "orientation", "loop", "autoplay", "hideControls", "hideIndicators"],
-  events: { onRaySlideChange: "ray-slide-change" },
+  events: { onChange: "change" },
 });
 export const RayIcon = createComponent("ray-icon", {
   displayName: "RayIcon",

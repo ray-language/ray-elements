@@ -304,7 +304,7 @@
     },
     {
       "name": "ray-toggle",
-      "description": "Click, Enter or Space flips pressed and fires ray-change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute.",
+      "description": "Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute.",
       "attributes": [
         {
           "name": "pressed",
@@ -933,7 +933,7 @@
         },
         {
           "name": "list",
-          "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change).",
+          "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).",
           "values": [
             {
               "name": "rows"

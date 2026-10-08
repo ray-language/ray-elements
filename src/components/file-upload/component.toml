@@ -99,7 +99,7 @@ type = "string"
 values = ["rows", "cards", "none"]
 default = "rows"
 reflect = true
-description = "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own from ray-change)."
+description = "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change)."
 
 [ray-file-upload.properties.color]
 type = "string"
@@ -109,6 +109,10 @@ description = "Accent of hover, drag and the browse link (default: primary)."
 [ray-file-upload.members.files]
 ts = "files: File[]"
 description = "The chosen files (assign to replace them, without events)."
+
+[ray-file-upload.members.lastChange]
+ts = "readonly lastChange: FileUploadChange | null"
+description = "What the last change event changed: the files added and removed. null before the first one, and after assigning files."
 
 [ray-file-upload.members.open]
 ts = "open(): void"
@@ -120,22 +124,18 @@ description = "Adds files as if dropped (checks them, fires the events)."
 
 [ray-file-upload.members.removeFile]
 ts = "removeFile(file: File): boolean"
-description = "Removes a file (fires ray-change)."
+description = "Removes a file (fires change)."
 
 [ray-file-upload.members.clear]
 ts = "clear(): void"
-description = "Removes every file (fires ray-change)."
+description = "Removes every file (fires change)."
 
 [ray-file-upload.members.attachmentFor]
 ts = "attachmentFor(file: File): RayAttachment | null"
 description = "The row of a file, to show its upload progress, status or error."
 
-[ray-file-upload.events.ray-change]
-detail = "{ files: File[]; added: File[]; removed: File[] }"
-description = "Files were added or removed (also a plain change event)."
-
 [ray-file-upload.events.change]
-description = "Files were added or removed."
+description = "Files were added or removed (read `files`, and `lastChange` for which)."
 
 [ray-file-upload.events.ray-reject]
 detail = "{ rejected: FileRejection[] }"
@@ -161,6 +161,10 @@ description = "The label."
 
 [ray-file-upload.parts.error]
 description = "The error text."
+
+[component.types.FileUploadChange]
+ts = "{ added: File[]; removed: File[] }"
+description = "The files a change added and removed."
 
 [component.types.FileRejection]
 ts = "{ file: File; reason: \"type\" | \"size\" | \"count\"; message: string }"
