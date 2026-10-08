@@ -23,12 +23,14 @@
 <a class="brand" href="index.html"{% if home %} aria-current="page"{% endif %}>{{& mark }}<span class="wordmark"><b>ray</b><span class="dot">·</span>ds</span></a>
 <nav class="site-nav" aria-label="Site">{% for n in nav %}<a href="{{ n.href }}"{% if n.current %} aria-current="page"{% endif %}>{{ n.label }}</a>{% endfor %}</nav>
 <div class="site-tools">
+<button class="site-search" type="button" data-site-search aria-label="Search the docs" aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
 <span class="desktop-only"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select></span>
 <input class="brand-color desktop-only" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color" title="Custom primary color (definePrimary)">
 <ray-theme-toggle></ray-theme-toggle>
 </div>
 </div>
 </header>
+<ray-command-palette id="site-palette" label="Search the docs" placeholder="Search components, guides and sections…" empty-label="No matches"></ray-command-palette>
 <ray-drawer id="site-menu" label="ray·ds" position="left" size="xs">
 <nav class="drawer-nav" aria-label="Site">
 <ray-nav-link label="Home" href="index.html"{% if home %} active{% endif %}></ray-nav-link>

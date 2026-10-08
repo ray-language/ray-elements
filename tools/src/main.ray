@@ -27,6 +27,7 @@ import site/shell;
 import site/guides;
 import site/landing;
 import site/brand;
+import site/search;
 from site/model import Page;
 import integrations/package;
 import integrations/elements;
@@ -164,7 +165,8 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     only_flags(o, [])?;
     let root = o.root;
     let cs = meta.load_all(root)?;
-    let colors = model.load("${root}/tokens.toml")?.colors;
+    let tokens = model.load("${root}/tokens.toml")?;
+    let colors = tokens.colors;
     let version = package.info(root)?.version;
     let pages = [
         landing.render(cs.len(), version, colors),
@@ -205,6 +207,9 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     for p in pages {
         write(root, "docs/${p.file}", shell.render(p, colors))?;
     }
+    // The palette also lists foundations.html (written by `tokens`).
+    let searchable = pages + [foundations.render(tokens)?];
+    write(root, "docs/search-index.js", search.index_js(cs, searchable))?;
     for asset in ["site.css", "site.js"] {
         write(root, "docs/${asset}", fs.read_file("${root}/site/${asset}")?)?;
     }

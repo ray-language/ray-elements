@@ -251,10 +251,17 @@ T.test("palette: scoring", (T) => {
   T.ok(score(fmt, "fmt") > 0, "description");
 });
 
+// The page's own palettes (the site search, the docs example) lose their
+// hotkey while a test mounts its own; the returned function gives it back.
+function silencePagePalettes() {
+  const saved = [...document.querySelectorAll("ray-command-palette")].map((p) => [p, p.hotkey]);
+  for (const [p] of saved) p.hotkey = "";
+  return () => { for (const [p, hotkey] of saved) p.hotkey = hotkey; };
+}
+
 T.test("palette: hotkey, filter, combobox ARIA, run, close", async (T) => {
-  // The docs page has its own palette (registered first, so it would take ⌘K): disable it here.
-  const docsPalette = document.getElementById("demo-palette");
-  if (docsPalette) docsPalette.hotkey = "";
+  // The docs page has its own palettes (the site search takes ⌘K): silence them here.
+  const restore = silencePagePalettes();
   const box = await mount(`<button id="before">x</button><ray-command-palette></ray-command-palette>`);
   const p = box.querySelector("ray-command-palette");
   let ran = [];
@@ -307,13 +314,12 @@ T.test("palette: hotkey, filter, combobox ARIA, run, close", async (T) => {
   await T.settle();
   T.eq(p.open, false, "empty hotkey disables it");
   box.remove();
-  if (docsPalette) docsPalette.hotkey = "mod+k";
+  restore();
 });
 
 T.test("palette: two palettes, one hotkey: only one opens", async (T) => {
+  const restore = silencePagePalettes();
   const box = await mount(`<ray-command-palette></ray-command-palette><ray-command-palette></ray-command-palette>`);
-  const docsPalette = document.getElementById("demo-palette");
-  if (docsPalette) docsPalette.hotkey = "";
   const mac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
   document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: mac, ctrlKey: !mac, bubbles: true, cancelable: true }));
   await T.settle();
@@ -321,5 +327,5 @@ T.test("palette: two palettes, one hotkey: only one opens", async (T) => {
   for (const p of box.children) p.hide();
   await T.settle();
   box.remove();
-  if (docsPalette) docsPalette.hotkey = "mod+k";
+  restore();
 });
