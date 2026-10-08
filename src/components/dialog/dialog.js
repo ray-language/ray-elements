@@ -197,8 +197,15 @@ export class RayDialog extends RayElement {
     } else {
       this.dialog.show();
     }
-    // Focus the content's first focusable (or [autofocus]); else the close button.
-    if (!focusFirst(this, { lightOnly: true })) this.$(".close").focus();
+    // Focus the content's first focusable (or [autofocus]); else the close
+    // button. Content created along with the dialog (confirmDialog) renders
+    // its own focusable parts a microtask later: try again then.
+    const focusContent = () => focusFirst(this, { lightOnly: true });
+    if (!focusContent()) this.$(".close").focus();
+    queueMicrotask(() => {
+      const inside = this.contains(document.activeElement) && document.activeElement !== this;
+      if (this.open && !inside) focusContent();
+    });
     this.emit("ray-open");
   }
 

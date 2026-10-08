@@ -39,6 +39,8 @@ export function css(strings, ...values) {
 export const hostStyles = css`
   :host { box-sizing: border-box; }
   :host([hidden]) { display: none !important; }
+  /* hidden always hides, whatever display a component's own rule gives. */
+  [hidden] { display: none !important; }
   *, *::before, *::after { box-sizing: inherit; }
   /* Icons of the registry (paintIcons). Zero specificity: components size them. */
   :where([data-ray-icon]) { display: inline-flex; align-items: center; justify-content: center; flex: none; }

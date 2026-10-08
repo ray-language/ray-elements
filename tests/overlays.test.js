@@ -124,13 +124,26 @@ T.test("dialog: Escape closes; persistent and preventDefault keep it open", asyn
   box.remove();
 });
 
+T.test("dialog: hide-close hides the close button", async (T) => {
+  const box = await mount(`<ray-dialog label="X" hide-close><ray-button>OK</ray-button></ray-dialog>`);
+  const d = box.querySelector("ray-dialog");
+  d.show();
+  await T.settle();
+  T.eq(getComputedStyle(d.shadowRoot.querySelector(".close")).display, "none");
+  d.close();
+  await T.settle();
+  box.remove();
+});
+
 T.test("dialog: confirmDialog resolves with the choice", async (T) => {
   const p = confirmDialog({ label: "Delete?", message: "Sure?", confirmLabel: "Delete", color: "red" });
   await T.settle();
   const d = document.querySelector("body > ray-dialog");
   T.ok(d, "dialog appended");
   T.eq(d.label, "Delete?");
-  [...d.querySelectorAll("ray-button")].find((b) => b.textContent === "Delete").click();
+  const del = [...d.querySelectorAll("ray-button")].find((b) => b.textContent === "Delete");
+  T.eq(document.activeElement, del, "focus on the confirm button (rendered after the dialog opened)");
+  del.click();
   T.eq(await p, true);
   T.eq(document.querySelector("body > ray-dialog"), null, "removed");
   const p2 = confirmDialog({});

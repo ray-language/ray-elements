@@ -1,19 +1,212 @@
-<div class="demo-row">
-  <ray-button onclick="document.getElementById('demo-dialog').show()">Open dialog</ray-button>
-  <ray-button variant="light" color="red" id="demo-confirm">Confirm…</ray-button>
-  <span id="demo-confirm-result" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)"></span>
+<div class="demo-caption">Patterns</div>
+<div class="demo-launchers">
+  <article class="demo-launcher" style="--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)">
+    <span class="demo-launcher-icon"><ray-icon name="file"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Rename</strong><span>One field, focused on open; the button's value is the returnValue.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-rename">Open</ray-button><span data-out="dlg-rename"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-red-light-color); --bg: var(--ray-red-light)">
+    <span class="demo-launcher-icon"><ray-icon name="alert-triangle"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Confirm</strong><span><code>confirmDialog()</code> builds one and resolves to true or false.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" id="dlg-confirm-open">Delete…</ray-button><span data-out="dlg-confirm"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-violet-light-color); --bg: var(--ray-violet-light)">
+    <span class="demo-launcher-icon"><ray-icon name="plus"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Create project</strong><span>A larger form (size lg) with a header badge; read its fields on ray-close.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-create">Open</ray-button><span data-out="dlg-create"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-orange-light-color); --bg: var(--ray-orange-light)">
+    <span class="demo-launcher-icon"><ray-icon name="download"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Unsaved changes</strong><span>Persistent: no ×, Escape or backdrop; one of three answers.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-unsaved">Open</ray-button><span data-out="dlg-unsaved"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-teal-light-color); --bg: var(--ray-teal-light)">
+    <span class="demo-launcher-icon"><ray-icon name="paperclip"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Guarded draft</strong><span>ray-request-close is cancelable: closing a written note asks first.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-note">Open</ray-button><span data-out="dlg-note"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-gray-light-color); --bg: var(--ray-gray-light)">
+    <span class="demo-launcher-icon"><ray-icon name="settings"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Keyboard shortcuts</strong><span>Long content near the top (position top): the body scrolls, header and footer stay.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-keys">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-green-light-color); --bg: var(--ray-green-light)">
+    <span class="demo-launcher-icon"><ray-icon name="terminal"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Build log</strong><span>size="full" for a workspace: almost the whole window.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-log">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-pink-light-color); --bg: var(--ray-pink-light)">
+    <span class="demo-launcher-icon"><ray-icon name="star"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>What's new</strong><span>Small and announcement-like (size sm), with a hero and a single action.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-open="dlg-news">Open</ray-button></div>
+  </article>
 </div>
-<ray-dialog id="demo-dialog" label="Rename file">
-  <ray-input label="New name" value="main.ray" autofocus></ray-input>
+
+<ray-dialog id="dlg-rename" label="Rename file" size="sm">
+  <ray-input label="New name" value="main.ray" description="Letters, digits, dots and dashes." autofocus></ray-input>
   <div slot="footer" style="display: contents">
     <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
-    <ray-button data-dialog-close="save">Rename</ray-button>
+    <ray-button data-dialog-close="rename">Rename</ray-button>
   </div>
 </ray-dialog>
+
+<ray-dialog id="dlg-create" label="Create project" size="lg">
+  <ray-badge slot="header" variant="light" color="violet" normal-case>raylang 1.27</ray-badge>
+  <div class="demo-dialog-form">
+    <ray-input name="name" label="Name" value="ray-remote" required autofocus></ray-input>
+    <ray-select name="template" label="Template" value="desktop">
+      <option value="desktop">Desktop app (std/ui)</option>
+      <option value="web">Web server (web)</option>
+      <option value="cli">Command line</option>
+    </ray-select>
+    <div class="demo-field">Frontend
+      <ray-segmented-control name="frontend" value="html" aria-label="Frontend"><option value="html">Plain HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control>
+    </div>
+    <ray-switch name="git" label="Initialize a git repository" checked></ray-switch>
+  </div>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
+    <ray-button data-dialog-close="create"><ray-icon slot="left" name="plus"></ray-icon>Create</ray-button>
+  </div>
+</ray-dialog>
+
+<ray-dialog id="dlg-unsaved" label="Save changes to main.ray?" size="sm" persistent hide-close>
+  <p class="demo-dialog-text">Your changes will be lost if you close without saving.</p>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="subtle" color="red" data-dialog-close="discard" style="margin-inline-end: auto">Don't save</ray-button>
+    <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
+    <ray-button data-dialog-close="save" autofocus>Save</ray-button>
+  </div>
+</ray-dialog>
+
+<ray-dialog id="dlg-note" label="New note">
+  <ray-textarea id="dlg-note-text" label="Note" placeholder="Write something, then try Escape, the × or the backdrop." rows="4" autofocus></ray-textarea>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" id="dlg-note-cancel">Cancel</ray-button>
+    <ray-button data-dialog-close="saved">Save note</ray-button>
+  </div>
+</ray-dialog>
+
+<ray-dialog id="dlg-keys" label="Keyboard shortcuts" position="top">
+  <ray-search slot="header" size="xs" aria-label="Filter shortcuts" placeholder="Filter" id="dlg-keys-filter" style="width: 9rem"></ray-search>
+  <table class="demo-keys" id="dlg-keys-table">
+    <tbody>
+      <tr><th colspan="2">General</th></tr>
+      <tr><td>Command palette</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>K</ray-kbd></span></td></tr>
+      <tr><td>Settings</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>,</ray-kbd></span></td></tr>
+      <tr><td>Toggle sidebar</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>B</ray-kbd></span></td></tr>
+      <tr><td>Toggle theme</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>⇧</ray-kbd><ray-kbd>L</ray-kbd></span></td></tr>
+      <tr><th colspan="2">Editor</th></tr>
+      <tr><td>Save</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>S</ray-kbd></span></td></tr>
+      <tr><td>Find</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>F</ray-kbd></span></td></tr>
+      <tr><td>Go to line</td><td><span><ray-kbd>⌃</ray-kbd><ray-kbd>G</ray-kbd></span></td></tr>
+      <tr><td>Format document</td><td><span><ray-kbd>⌥</ray-kbd><ray-kbd>⇧</ray-kbd><ray-kbd>F</ray-kbd></span></td></tr>
+      <tr><td>Comment line</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>/</ray-kbd></span></td></tr>
+      <tr><th colspan="2">Run</th></tr>
+      <tr><td>Run program</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>R</ray-kbd></span></td></tr>
+      <tr><td>Run tests</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>⇧</ray-kbd><ray-kbd>T</ray-kbd></span></td></tr>
+      <tr><td>Build native</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>⇧</ray-kbd><ray-kbd>B</ray-kbd></span></td></tr>
+      <tr><td>Stop</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>.</ray-kbd></span></td></tr>
+      <tr><th colspan="2">Navigation</th></tr>
+      <tr><td>Next tab</td><td><span><ray-kbd>⌃</ray-kbd><ray-kbd>Tab</ray-kbd></span></td></tr>
+      <tr><td>Previous tab</td><td><span><ray-kbd>⌃</ray-kbd><ray-kbd>⇧</ray-kbd><ray-kbd>Tab</ray-kbd></span></td></tr>
+      <tr><td>Go to file</td><td><span><ray-kbd>⌘</ray-kbd><ray-kbd>P</ray-kbd></span></td></tr>
+      <tr><td>Go back</td><td><span><ray-kbd>⌃</ray-kbd><ray-kbd>-</ray-kbd></span></td></tr>
+    </tbody>
+  </table>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" data-dialog-close="done">Done</ray-button>
+  </div>
+</ray-dialog>
+
+<ray-dialog id="dlg-log" label="Build log · ray-remote 0.4.1" size="full">
+  <ray-badge slot="header" variant="dot" color="green" normal-case>Passed</ray-badge>
+  <pre class="demo-dialog-log"><span class="p">$</span> ray build --native --release src/main.ray
+<span class="d">  compiling</span> std/ui, std/json, net 0.5.0, web 0.4.6
+<span class="d">  checking </span> 42 modules · 0 warnings
+<span class="d">  linking  </span> target/release/ray-remote (4.2 MB)
+<span class="p">$</span> ray test
+<span class="ok">  ok</span>   session: resumes after reconnect (12 ms)
+<span class="ok">  ok</span>   files: upload with progress (31 ms)
+<span class="ok">  ok</span>   files: rejects paths outside the root (2 ms)
+<span class="ok">  ok</span>   ui: palette lists the menu commands (48 ms)
+<span class="ok">  ok</span>   ui: theme follows the system (7 ms)
+<span class="d">  result: </span>5 test(s), all passed ✓
+<span class="p">$</span> ray bundle --name "Ray Remote" -o dist
+<span class="d">  bundle   </span> dist/Ray Remote.app (ad-hoc signed)
+<span class="ok">  done</span> in 18.4 s</pre>
+  <div slot="footer" style="display: contents">
+    <ray-button variant="default" data-dialog-close="close">Close</ray-button>
+    <ray-button variant="light" data-dialog-close="reveal"><ray-icon slot="left" name="folder"></ray-icon>Show in folder</ray-button>
+  </div>
+</ray-dialog>
+
+<ray-dialog id="dlg-news" label="What's new in ray·ds 0.4" size="sm">
+  <div class="demo-dialog-hero"><ray-icon name="star" size="2rem"></ray-icon></div>
+  <ul class="demo-dialog-list">
+    <li><ray-badge variant="light" color="green">New</ray-badge> ray-toggle and ray-toggle-group</li>
+    <li><ray-badge variant="light" color="green">New</ray-badge> ray-file-upload with drag and drop</li>
+    <li><ray-badge variant="light" color="blue">Changed</ray-badge> every value change is a <code>change</code> event</li>
+    <li><ray-badge variant="light" color="gray">Docs</ray-badge> React and Vue code for every example</li>
+  </ul>
+  <div slot="footer" style="display: contents">
+    <ray-button full-width data-dialog-close="ok">Got it</ray-button>
+  </div>
+</ray-dialog>
+
 <script type="module">
   import { confirmDialog } from "../src/components/dialog/dialog.js";
-  document.getElementById("demo-confirm").addEventListener("click", async () => {
-    const ok = await confirmDialog({ label: "Delete project?", message: "This removes ray-remote and its history.", confirmLabel: "Delete", color: "red" });
-    document.getElementById("demo-confirm-result").textContent = ok ? "Deleted" : "Kept";
+  const out = (id, text) => { document.querySelector(`[data-out="${id}"]`).textContent = text; };
+
+  // Every launcher opens its dialog; most report how it closed.
+  for (const button of document.querySelectorAll("[data-open]")) {
+    button.addEventListener("click", () => document.getElementById(button.dataset.open).show());
+  }
+  for (const id of ["dlg-rename", "dlg-unsaved"]) {
+    document.getElementById(id).addEventListener("ray-close", (e) => out(id, `returnValue: "${e.detail.returnValue}"`));
+  }
+
+  // Rename: show the new name when it was renamed.
+  document.getElementById("dlg-rename").addEventListener("ray-close", (e) => {
+    if (e.detail.returnValue === "rename") out("dlg-rename", `Renamed to ${e.currentTarget.querySelector("ray-input").value}`);
+  });
+
+  // Create: read the fields once it closes with "create".
+  const create = document.getElementById("dlg-create");
+  create.addEventListener("ray-close", (e) => {
+    if (e.detail.returnValue !== "create") return out("dlg-create", "Cancelled");
+    const field = (name) => create.querySelector(`[name="${name}"]`);
+    out("dlg-create", `${field("name").value} · ${field("template").value} · ${field("frontend").value}${field("git").checked ? " · git" : ""}`);
+  });
+
+  // Confirm: a dialog built by code.
+  document.getElementById("dlg-confirm-open").addEventListener("click", async () => {
+    const ok = await confirmDialog({ label: "Delete project?", message: "This removes ray-remote and its history. It cannot be undone.", confirmLabel: "Delete", color: "red" });
+    out("dlg-confirm", ok ? "Deleted" : "Kept");
+  });
+
+  // Guarded draft: Escape, × and backdrop ask before dropping a written note.
+  const note = document.getElementById("dlg-note");
+  const text = document.getElementById("dlg-note-text");
+  async function leave() {
+    if (!text.value.trim() || await confirmDialog({ label: "Discard the note?", message: "What you wrote will be lost.", confirmLabel: "Discard", color: "red" })) {
+      text.value = "";
+      note.close("discarded");
+    }
+  }
+  note.addEventListener("ray-request-close", (e) => { e.preventDefault(); leave(); });
+  document.getElementById("dlg-note-cancel").addEventListener("click", leave);
+  note.addEventListener("ray-close", (e) => {
+    out("dlg-note", e.detail.returnValue === "saved" ? `Saved: "${text.value.trim() || "(empty)"}"` : "Discarded");
+    if (e.detail.returnValue === "saved") text.value = "";
+  });
+
+  // Shortcuts: the header's search filters the rows.
+  document.getElementById("dlg-keys-filter").addEventListener("input", (e) => {
+    const q = e.currentTarget.value.trim().toLowerCase();
+    for (const row of document.querySelectorAll("#dlg-keys-table tr")) {
+      if (row.querySelector("th")) continue;
+      row.hidden = q !== "" && !row.textContent.toLowerCase().includes(q);
+    }
   });
 </script>
