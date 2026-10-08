@@ -233,7 +233,7 @@ export const RayCarousel = createComponent("ray-carousel", {
 });
 export const RayCode = createComponent("ray-code", {
   displayName: "RayCode",
-  properties: ["code", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
+  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
   events: { onRayCopy: "ray-copy" },
 });
 export const RayIcon = createComponent("ray-icon", {

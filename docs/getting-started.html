@@ -39,7 +39,28 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="stylesheet" href="../src/core/base.css">
 <link rel="stylesheet" href="site.css">
 <script type="importmap">{"imports": {"@ray-ds/elements": "./elements.js"}}</script>
-<script type="module" src="../src/index.js"></script>
+<link rel="modulepreload" href="../src/components/icon-button/icon-button.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/select/select.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/nav-link/nav-link.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/command-palette/command-palette.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/drawer/drawer.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/icon/icon.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/separator/separator.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/core.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/button/button.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/styles.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/position.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/dismiss.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/motion.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/form.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/hotkey.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/dialog/dialog.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/notification/notification.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/color.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/focus.js" fetchpriority="low">
+<script type="module">import "../src/components/icon-button/icon-button.js"; import "../src/components/select/select.js"; import "../src/components/nav-link/nav-link.js"; import "../src/components/command-palette/command-palette.js"; import "../src/components/drawer/drawer.js"; import "../src/components/icon/icon.js"; import "../src/components/separator/separator.js"; import "../src/components/theme-toggle/theme-toggle.js";</script>
 <script type="module" src="site.js"></script>
 </head>
 <body>
@@ -50,7 +71,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect x="8" y="8" width="22" height="22" rx="6" fill="#2B7CE0"/><rect x="34" y="8" width="22" height="22" rx="6" fill="#34D2C6"/><rect x="8" y="34" width="22" height="22" rx="6" fill="#4BA3F5"/><rect x="34" y="34" width="22" height="22" rx="6" style="fill: var(--site-logo-ink, #0B1F33)"/><g transform="translate(19 19.6) scale(.088) translate(-100 -113)"><path d="M100 50 C108 49 113 53 115 60 C150 66 175 84 191 116 C166 127 141 137 119 150 C111 154 105 159 100 165 C95 159 89 154 81 150 C59 137 34 127 9 116 C25 84 50 66 85 60 C87 53 92 49 100 50 Z" fill="#fff"/><path d="M93 55 C90 45 88 38 87 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M107 55 C110 45 112 38 113 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M100 160 C101 176 100 186 100 196" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></g></svg><span class="wordmark"><b>ray</b><span class="dot">·</span>ds</span></a>
 <nav class="site-nav" aria-label="Site"><a href="getting-started.html" aria-current="page">Get started</a><a href="foundations.html">Foundations</a><a href="components.html">Components</a><a href="extending.html">Extending</a><a href="charts.html">Charts</a><a href="raylang.html">raylang</a></nav>
 <div class="site-tools">
-<button class="site-search" type="button" data-site-search aria-label="Search the docs" aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
+<button class="site-search" type="button" data-site-search aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
 <span class="desktop-only"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue"><option value="dark">dark</option><option value="gray">gray</option><option value="red">red</option><option value="pink">pink</option><option value="violet">violet</option><option value="indigo">indigo</option><option value="blue">blue</option><option value="cyan">cyan</option><option value="teal">teal</option><option value="green">green</option><option value="yellow">yellow</option><option value="orange">orange</option><option value="custom">custom</option></ray-select></span>
 <input class="brand-color desktop-only" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color" title="Custom primary color (definePrimary)">
 <ray-theme-toggle></ray-theme-toggle>

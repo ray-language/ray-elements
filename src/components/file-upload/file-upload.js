@@ -224,13 +224,13 @@ export class RayFileUpload extends FormControl {
   static template = `
     <span class="label" part="label" id="label" hidden><span class="label-text"></span><span class="required" aria-hidden="true" hidden> *</span></span>
     <div class="description" part="description" id="description" hidden></div>
-    <button type="button" class="zone" part="dropzone" aria-labelledby="label title" aria-describedby="hint description error">
+    <button type="button" class="zone" part="dropzone" aria-labelledby="label title hint pill" aria-describedby="description error">
       <span class="glyph" part="icon"><slot name="icon"><span data-ray-icon="upload"></span></slot></span>
       <span class="copy">
         <span class="title" id="title"></span>
         <span class="hint" id="hint" part="hint"></span>
       </span>
-      <span class="button" aria-hidden="true"></span>
+      <span class="button" id="pill"></span>
     </button>
     <input type="file" tabindex="-1" aria-hidden="true" hidden>
     <div class="error" part="error" id="error" aria-live="polite" hidden></div>
@@ -535,7 +535,8 @@ export class RayFileUpload extends FormControl {
     else this.zone.removeAttribute("aria-invalid");
     // Without a visible label, the host's aria-label names the zone.
     const aria = this.getAttribute("aria-label");
-    this.zone.setAttribute("aria-labelledby", this.label ? "label title" : "title");
+    // The name holds every visible word of the zone (WCAG 2.5.3, label in name).
+    this.zone.setAttribute("aria-labelledby", this.label ? "label title hint pill" : "title hint pill");
     if (!this.label && aria) this.zone.setAttribute("aria-label", aria);
     else this.zone.removeAttribute("aria-label");
 

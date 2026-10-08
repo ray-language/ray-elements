@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="../src/core/base.css">
 <link rel="stylesheet" href="site.css">
 <script type="importmap">{"imports": {"@ray-ds/elements": "./elements.js"}}</script>
-<script type="module" src="../src/index.js"></script>
+<!--ray-modules-->
 <script type="module" src="site.js"></script>
 </head>
 <body>
@@ -24,7 +24,7 @@
 <a class="brand" href="index.html"{% if home %} aria-current="page"{% endif %}>{{& mark }}<span class="wordmark"><b>ray</b><span class="dot">·</span>ds</span></a>
 <nav class="site-nav" aria-label="Site">{% for n in nav %}<a href="{{ n.href }}"{% if n.current %} aria-current="page"{% endif %}>{{ n.label }}</a>{% endfor %}</nav>
 <div class="site-tools">
-<button class="site-search" type="button" data-site-search aria-label="Search the docs" aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
+<button class="site-search" type="button" data-site-search aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
 <span class="desktop-only"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select></span>
 <input class="brand-color desktop-only" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color" title="Custom primary color (definePrimary)">
 <ray-theme-toggle></ray-theme-toggle>

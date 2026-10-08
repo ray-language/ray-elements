@@ -1,0 +1,153 @@
+// The scripts of a docs page: only the components it uses, and a
+// modulepreload for every module they (and site.js) import, so the browser
+// fetches the whole graph at once instead of discovering it level by level.
+//
+// The layout leaves MODULES_MARK where the scripts go; inject() replaces it
+// after scanning the finished page for ray-* tags (markup, and the tag names
+// its inline scripts create).
+
+import std/fs;
+from components/meta import Component, Element;
+
+pub const MODULES_MARK: string = "<!--ray-modules-->";
+
+// "../a/./b/../c.js" against "src/components/x" → "src/components/a/c.js".
+fn resolve(dir: string, rel: string) -> string {
+    let parts: [string] = dir.split("/").filter(fn(p: string) -> bool { p != "" });
+    for seg in rel.split("/") {
+        if (seg == "..") {
+            parts.pop();
+        } else if (seg != "." && seg != "") {
+            parts.push(seg);
+        }
+    }
+    join(parts, "/")
+}
+
+// The static imports of a module (`import … from "x"`, `import "x"`,
+// `export … from "x"`); relative ones only.
+fn imports_of(src: string) -> [string] {
+    let out: [string] = [];
+    for line in src.split("\n") {
+        let t = line.trim();
+        if (!(t.starts_with("import ") || t.starts_with("export ")) || t.starts_with("import(")) {
+            continue;
+        }
+        for q in ["\"", "'"] {
+            let from_at = match (t.index_of(" from ${q}")) {
+                Option.Some(i) => i + 7,
+                Option.None => match (t.index_of("import ${q}")) {
+                    Option.Some(i) => i + 8,
+                    Option.None => -1,
+                },
+            };
+            if (from_at < 0) {
+                continue;
+            }
+            let rest = t.substring(from_at, t.len());
+            match (rest.index_of(q)) {
+                Option.Some(end) => {
+                    let spec = rest.substring(0, end);
+                    if (spec.starts_with(".")) {
+                        out.push(spec);
+                    }
+                },
+                Option.None => {},
+            }
+        }
+    }
+    out
+}
+
+// Every module reachable from `entries` (paths from the root), entries first.
+fn graph(root: string, entries: [string]) -> Result<[string], string> {
+    let seen: [string] = [];
+    let queue: [string] = [];
+    for e in entries {
+        queue.push(e);
+    }
+    var next = 0;
+    while (next < queue.len()) {
+        let path = queue[next];
+        next = next + 1;
+        if (seen.contains(path) || !fs.exists("${root}/${path}")) {
+            continue;
+        }
+        seen.push(path);
+        let dir = path.substring(0, path.last_index_of("/").unwrap_or(0));
+        for spec in imports_of(fs.read_file("${root}/${path}")?) {
+            queue.push(resolve(dir, spec));
+        }
+    }
+    Result.Ok(seen)
+}
+
+// The ray-* tags a page uses: in its markup or named in its scripts.
+fn tags_in(html: string, known: [string]) -> [string] {
+    let out: [string] = [];
+    var i = 0;
+    while (true) {
+        let at = match (html.substring(i, html.len()).index_of("ray-")) {
+            Option.Some(k) => i + k,
+            Option.None => break,
+        };
+        var j = at + 4;
+        while (j < html.len() && (html[j] == '-' || (html[j] >= 'a' && html[j] <= 'z'))) {
+            j = j + 1;
+        }
+        let tag = html.substring(at, j);
+        // A tag (<ray-x) or a name in a script ("ray-x"), not prose about it.
+        let before = if (at > 0) { html[at - 1] } else { ' ' };
+        let used = before == '<' || before == '"' || before == '\'';
+        if (used && known.contains(tag) && !out.contains(tag)) {
+            out.push(tag);
+        }
+        i = j;
+    }
+    out
+}
+
+// The page with its scripts in place of MODULES_MARK (pages live in docs/).
+pub fn inject(root: string, html: string, cs: [Component]) -> Result<string, string> {
+    let known: [string] = [];
+    for c in cs {
+        for el in c.elements {
+            known.push(el.tag);
+        }
+    }
+    let used = tags_in(html, known);
+    let entries: [string] = [];
+    for c in cs {
+        if (c.elements.filter(fn(e: Element) -> bool { used.contains(e.tag) }).len() > 0) {
+            for f in c.files {
+                entries.push("src/components/${c.dir}/${f}");
+            }
+        }
+    }
+    let modules = graph(root, entries + ["docs/site.js"])?;
+    let lines: [string] = [];
+    for m in modules {
+        if (m != "docs/site.js") {
+            // Low priority: they must not slow down the render-blocking CSS.
+            lines.push("<link rel=\"modulepreload\" href=\"${href(m)}\" fetchpriority=\"low\">");
+        }
+    }
+    let imports = entries.map(fn(e: string) -> string { "import \"${href(e)}\";" });
+    lines.push("<script type=\"module\">${join(imports, " ")}</script>");
+    Result.Ok(html.replace(MODULES_MARK, join(lines, "\n")))
+}
+
+// A root path as seen from docs/.
+fn href(path: string) -> string {
+    if (path.starts_with("docs/")) { path.substring(5, path.len()) } else { "../${path}" }
+}
+
+@test
+fn reads_imports_and_resolves() {
+    let src = "import { a } from \"./x.js\";\nimport \"../y/y.js\";\nexport { b } from './z.js';\nimport pkg from \"react\";\nconst c = import(\"./lazy.js\");";
+    let got = imports_of(src);
+    assert_eq(join(got, ","), "./x.js,../y/y.js,./z.js");
+    assert_eq(resolve("src/components/dialog", "../button/button.js"), "src/components/button/button.js");
+    assert_eq(resolve("src/core", "./icons.js"), "src/core/icons.js");
+    assert_eq(join(tags_in("<ray-button>x</ray-button> createElement(\"ray-badge\") .ray-table, the ray-dialog docs", ["ray-button", "ray-badge", "ray-dialog"]), ","), "ray-button,ray-badge");
+}

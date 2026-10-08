@@ -209,7 +209,7 @@ export const RayCarousel = createComponent("RayCarousel", "ray-carousel", {
   booleans: ["loop", "hideControls", "hideIndicators"],
 });
 export const RayCode = createComponent("RayCode", "ray-code", {
-  properties: ["code", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
+  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
   booleans: ["lineNumbers", "wrap", "expanded", "hideCopy", "hideHeader"],
 });
 export const RayIcon = createComponent("RayIcon", "ray-icon", {

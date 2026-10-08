@@ -28,6 +28,7 @@ import site/guides;
 import site/landing;
 import site/brand;
 import site/search;
+import site/modules;
 from site/model import Page;
 import integrations/package;
 import integrations/elements;
@@ -157,7 +158,9 @@ fn cmd_tokens(o: Opts) -> Result<int, string> {
     }
     write(root, "dist/tokens.css", css.render(m)?)?;
     write(root, "dist/tokens.json", json_out.render(m)?)?;
-    write(root, "docs/foundations.html", shell.render(foundations.render(m)?, m.colors))?;
+    let cs = meta.load_all(root)?;
+    let page = shell.render(foundations.render(m)?, m.colors);
+    write(root, "docs/foundations.html", modules.inject(root, page, cs)?)?;
     Result.Ok(0)
 }
 
@@ -205,7 +208,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
         )?
     ];
     for p in pages {
-        write(root, "docs/${p.file}", shell.render(p, colors))?;
+        write(root, "docs/${p.file}", modules.inject(root, shell.render(p, colors), cs)?)?;
     }
     // The palette also lists foundations.html (written by `tokens`).
     let searchable = pages + [foundations.render(tokens)?];

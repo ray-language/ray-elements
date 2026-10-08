@@ -32,10 +32,10 @@ T.test("code: the built-in tokenizer", async (T) => {
 
 T.test("code: sources, dedent, lines, numbers, highlight", async (T) => {
   const box = await mount(`
-    <ray-code lang="html" id="a"><template>
+    <ray-code language="html" id="a"><template>
       <p class="x">a &amp; b -> c</p>
     </template></ray-code>
-    <ray-code lang="ts" id="b" line-numbers highlight="2"><script type="text/plain">
+    <ray-code language="ts" id="b" line-numbers highlight="2"><script type="text/plain">
       let p: Promise<void>;
       let q = 1;
     </script></ray-code>`);
@@ -54,7 +54,7 @@ T.test("code: sources, dedent, lines, numbers, highlight", async (T) => {
 });
 
 T.test("code: diff lines, header and floating copy button", async (T) => {
-  const box = await mount(`<ray-code lang="diff" filename="a.js"><script type="text/plain">@@ -1 +1 @@
+  const box = await mount(`<ray-code language="diff" filename="a.js"><script type="text/plain">@@ -1 +1 @@
 -old
 +new
  same</script></ray-code><ray-code hide-header id="c">x</ray-code>`);
@@ -69,7 +69,7 @@ T.test("code: diff lines, header and floating copy button", async (T) => {
 
 T.test("code: a library highlighter, split into lines; null falls back", async (T) => {
   setHighlighter((code, lang) => lang === "fake" ? `<pre><code><span class="token comment">/* a\nb */</span> <span class="hljs-keyword">x</span></code></pre>` : null);
-  const box = await mount(`<ray-code lang="fake">ignored</ray-code><ray-code lang="js" id="js">let a</ray-code>`);
+  const box = await mount(`<ray-code language="fake">ignored</ray-code><ray-code language="js" id="js">let a</ray-code>`);
   const el = box.firstElementChild;
   const ls = lines(el);
   T.eq(ls.length, 2, "a span across a newline is split");

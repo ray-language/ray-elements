@@ -24,10 +24,10 @@ attribute = false
 type = "string"
 description = "The code, from script (the most convenient in React and Vue). Wins over the content."
 
-[ray-code.properties.lang]
+[ray-code.properties.language]
 type = "string"
 reflect = true
-description = "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header)."
+description = "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text."
 
 [ray-code.properties.filename]
 type = "string"

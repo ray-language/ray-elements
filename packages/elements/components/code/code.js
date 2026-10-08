@@ -8,6 +8,9 @@
 // breaks it), or the element's text; common indentation and blank edges are
 // removed.
 //
+// The language is `language`, not `lang`: lang is HTML's attribute for the
+// human language of the text (a screen reader would switch its voice).
+//
 // Highlighting is pluggable. The built-in highlighter is small and generic
 // (comments, strings, numbers, keywords, types, functions, tags, attributes,
 // punctuation for js/ts, json, html/xml, css, shell, ray and diff) and
@@ -390,7 +393,7 @@ const styles = css`
 export class RayCode extends RayElement {
   static properties = {
     code: { type: String, attribute: false },
-    lang: { type: String, reflect: true },
+    language: { type: String, reflect: true },
     filename: { type: String },
     lineNumbers: { type: Boolean, reflect: true },
     highlight: { type: String },
@@ -407,7 +410,7 @@ export class RayCode extends RayElement {
   static styles = [styles];
   static template = `
     <div class="frame" part="frame">
-      <div class="header" part="header"><span class="filename" part="filename"></span><span class="lang" part="lang"></span></div>
+      <div class="header" part="header"><span class="filename" part="filename"></span><span class="lang" part="language"></span></div>
       <div class="scroller" part="scroller" tabindex="0" role="region"><pre part="pre"><code part="code"></code></pre></div>
       <div class="more" part="more" hidden><button type="button"></button></div>
       <span class="sr" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"></span>
@@ -463,7 +466,7 @@ export class RayCode extends RayElement {
 
   update() {
     this.#source = this.#readSource();
-    const lang = (this.lang ?? "").toLowerCase();
+    const lang = (this.language ?? "").toLowerCase();
     // Header: file name and language; the copy button goes in it or floats.
     const header = this.$(".header");
     const label = LABELS[lang] ?? (lang ? lang.toUpperCase() : "");

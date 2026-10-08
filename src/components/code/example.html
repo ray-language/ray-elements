@@ -1,5 +1,5 @@
 <div class="demo-caption">A file</div>
-<ray-code lang="ray" filename="src/main.ray" line-numbers highlight="6-8"><script type="text/plain">
+<ray-code language="ray" filename="src/main.ray" line-numbers highlight="6-8"><script type="text/plain">
 import std/ui;
 
 fn main() -> int {
@@ -16,7 +16,7 @@ fn main() -> int {
 
 <div class="demo-caption">Languages</div>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="html" filename="index.html"><template>
+  <ray-code language="html" filename="index.html"><template>
 <form id="login">
   <ray-input name="email" label="Email" type="email" required></ray-input>
   <ray-password-input name="password" label="Password"></ray-password-input>
@@ -24,7 +24,7 @@ fn main() -> int {
   <ray-button type="submit">Sign in</ray-button>
 </form>
 </template></ray-code>
-  <ray-code lang="ts" filename="app.ts"><script type="text/plain">
+  <ray-code language="ts" filename="app.ts"><script type="text/plain">
 import { notify } from "@ray-ds/elements";
 
 type Build = { id: number; ok: boolean };
@@ -34,7 +34,7 @@ export async function report(build: Build): Promise<void> {
   notify({ title: `Build #${build.id}`, color });
 }
 </script></ray-code>
-  <ray-code lang="css" filename="theme.css"><template>
+  <ray-code language="css" filename="theme.css"><template>
 :root {
   --ray-radius-md: 0.625rem; /* rounder */
 }
@@ -42,7 +42,7 @@ ray-button::part(button):hover {
   background: color-mix(in srgb, var(--ray-primary) 90%, black);
 }
 </template></ray-code>
-  <ray-code lang="json" filename="update.json"><template>
+  <ray-code language="json" filename="update.json"><template>
 {
   "version": "0.4.1",
   "artifacts": {
@@ -54,13 +54,13 @@ ray-button::part(button):hover {
 
 <div class="demo-caption">Terminal, diff and long code</div>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="sh" hide-header><template>
+  <ray-code language="sh" hide-header><template>
 # Build and bundle the desktop app
 ray build --native --release src/main.ray
 ray bundle --name "Ray Remote" -o dist
 echo "done: $HOME/dist"
 </template></ray-code>
-  <ray-code lang="diff" filename="dialog.js"><template>
+  <ray-code language="diff" filename="dialog.js"><template>
 @@ -68,3 +68,4 @@
 -  .body { flex: 1; overflow: auto; }
 +  /* Safari collapses a 0% basis under a max-height. */
@@ -68,26 +68,26 @@ echo "done: $HOME/dist"
    .footer { display: flex; }
 </template></ray-code>
 </div>
-<ray-code lang="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
+<ray-code language="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
 
 <div class="demo-caption">Bring your own highlighter</div>
 <p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="js" filename="Prism"><script type="text/plain">
+  <ray-code language="js" filename="Prism"><script type="text/plain">
 import Prism from "prismjs";
 import { setHighlighter } from "@ray-ds/elements";
 
 setHighlighter((code, lang) =>
   Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
 </script></ray-code>
-  <ray-code lang="js" filename="highlight.js"><script type="text/plain">
+  <ray-code language="js" filename="highlight.js"><script type="text/plain">
 import hljs from "highlight.js/lib/common";
 import { setHighlighter } from "@ray-ds/elements";
 
 setHighlighter((code, lang) =>
   hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
 </script></ray-code>
-  <ray-code lang="js" filename="Shiki"><script type="text/plain">
+  <ray-code language="js" filename="Shiki"><script type="text/plain">
 import { codeToHtml, createCssVariablesTheme } from "shiki";
 import { setHighlighter } from "@ray-ds/elements";
 

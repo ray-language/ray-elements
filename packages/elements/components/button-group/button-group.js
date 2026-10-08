@@ -63,8 +63,9 @@ export class RayButtonGroup extends RayElement {
 
   update() {
     if (this.label) this.setAttribute("aria-label", this.label);
-    if (this.orientation === "vertical") this.setAttribute("aria-orientation", "vertical");
-    else this.removeAttribute("aria-orientation");
+    // role=group takes no aria-orientation (ARIA allows it on toolbars,
+    // sliders, separators…): the orientation shows, it is not announced.
+    this.removeAttribute("aria-orientation");
   }
 }
 

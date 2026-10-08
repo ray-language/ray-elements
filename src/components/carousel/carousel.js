@@ -89,8 +89,9 @@ const styles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
+    /* 24px: the minimum target (WCAG 2.5.8); the dot drawn inside is smaller. */
+    width: 1.5rem;
+    height: 1.5rem;
     padding: 0;
     background: none;
     border: 0;

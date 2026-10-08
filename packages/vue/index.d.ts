@@ -1326,6 +1326,8 @@ export declare const RayCarousel: DefineComponent<RayCarouselProps>;
 export interface RayCodeProps {
   /** The code, from script (the most convenient in React and Vue). Wins over the content. */
   code?: string;
+  /** The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text. */
+  language?: string;
   /** A file name or title in the header; also the scroll region's accessible name. */
   filename?: string;
   /** Numbers each line (not copied, not selectable). */

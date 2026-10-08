@@ -29,6 +29,18 @@
     background: var(--ray-background);
   }
 
+  /* Overlays take no room before their definition loads: their light DOM
+     (a drawer's navigation, a dialog's form) would otherwise lay out in the
+     page for an instant and push it down when it leaves (layout shift). */
+  :where(ray-dialog, ray-drawer, ray-command-palette, ray-toaster):not(:defined) {
+    display: none;
+  }
+  /* A navigation list keeps its rows' height while its links load. */
+  :where(ray-nav-link):not(:defined) {
+    display: block;
+    min-height: 2.25rem;
+  }
+
   ::selection {
     background: var(--ray-selection);
   }

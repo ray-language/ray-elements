@@ -98,7 +98,8 @@ export class RayNavLink extends RayElement {
     const parent = this.links.length > 0;
     this.toggleAttribute("data-parent", parent);
     // A parent toggles its children; a leaf with href is a link.
-    const tag = this.href && !parent ? "a" : "button";
+    // A disabled link is a disabled button: an <a> without href is not a link.
+    const tag = this.href && !parent && !this.disabled ? "a" : "button";
     if (!this._el || this._el.localName !== tag) this._render(tag);
     const el = this._el;
     el.querySelector(".label").textContent = this.label ?? "";

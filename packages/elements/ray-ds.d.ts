@@ -1515,6 +1515,8 @@ export declare function tokenize(code: string, lang?: string): [type: string, te
 export declare class RayCode extends RayElement {
   /** The code, from script (the most convenient in React and Vue). Wins over the content. */
   code: string | undefined;
+  /** The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text. */
+  language: string | undefined;
   /** A file name or title in the header; also the scroll region's accessible name. */
   filename: string | undefined;
   /** Numbers each line (not copied, not selectable). */

@@ -11018,12 +11018,12 @@
           },
           "attributes": [
             {
-              "name": "lang",
+              "name": "language",
               "type": {
                 "text": "string"
               },
-              "description": "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header).",
-              "fieldName": "lang"
+              "description": "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text.",
+              "fieldName": "language"
             },
             {
               "name": "filename",
@@ -11133,6 +11133,16 @@
                 "text": "string"
               },
               "description": "The code, from script (the most convenient in React and Vue). Wins over the content."
+            },
+            {
+              "kind": "field",
+              "name": "language",
+              "type": {
+                "text": "string"
+              },
+              "description": "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text.",
+              "attribute": "language",
+              "reflects": true
             },
             {
               "kind": "field",

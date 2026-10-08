@@ -28,7 +28,8 @@ T.test("calendar: a known month — caption, first-day offset, 31 days, selectio
   T.eq(all.filter((d) => !d.hasAttribute("data-outside")).length, 31, "31 days in October");
   T.eq(sr.querySelector("th").textContent, "Mon", "weeks start on Monday");
   T.eq(sr.querySelector("table").getAttribute("role"), "grid");
-  const sel = all.filter((d) => d.getAttribute("aria-selected") === "true");
+  const sel = all.filter((d) => d.parentElement.getAttribute("aria-selected") === "true");
+  T.eq(all.filter((d) => d.hasAttribute("aria-selected")).length, 0, "aria-selected on the gridcell, not the button");
   T.eq(sel.length, 1);
   T.eq(sel[0].dataset.date, "2026-10-06");
   T.eq(roving(cal).dataset.date, "2026-10-06", "roving tabindex on the selected day");

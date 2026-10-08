@@ -499,8 +499,8 @@ const inputStyles = css`
     flex: none;
     align-items: center;
     justify-content: center;
-    width: calc(var(--_h) * 0.65);
-    height: calc(var(--_h) * 0.65);
+    width: max(1.5rem, calc(var(--_h) * 0.65));
+    height: max(1.5rem, calc(var(--_h) * 0.65));
     margin-inline-end: calc(var(--_px) * 0.4);
     padding: 0;
     color: var(--ray-muted-foreground);
@@ -539,7 +539,7 @@ export class RayColorInput extends FieldControl {
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, inputStyles];
   static template = fieldTemplate(
     `<button type="button" class="preview" part="preview" tabindex="-1" aria-hidden="true"></button>` +
-      `<input id="control" class="control" part="input" autocomplete="off" spellcheck="false" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
+      `<input id="control" class="control" part="input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="none" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
       `<button type="button" class="dropper focus-ring" part="eyedropper" aria-label="Pick a color from the screen" hidden><span data-ray-icon="pipette" aria-hidden="true"></span></button>`,
     { sections: false },
   ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a color"><ray-color-picker part="picker"></ray-color-picker></div>`;

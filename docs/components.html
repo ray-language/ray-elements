@@ -39,7 +39,70 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="stylesheet" href="../src/core/base.css">
 <link rel="stylesheet" href="site.css">
 <script type="importmap">{"imports": {"@ray-ds/elements": "./elements.js"}}</script>
-<script type="module" src="../src/index.js"></script>
+<link rel="modulepreload" href="../src/components/button/button.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/button-group/button-group.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/icon-button/icon-button.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/toggle/toggle.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/toggle-group/toggle-group.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/checkbox/checkbox.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/color-picker/color-picker.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/date-picker/date-picker.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/file-upload/file-upload.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/input/input.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/password-input/password-input.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/radio/radio.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/search/search.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/segmented-control/segmented-control.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/select/select.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/slider/slider.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/switch/switch.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/textarea/textarea.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/nav-link/nav-link.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/pagination/pagination.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/sidebar/sidebar.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/tabs/tabs.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/command-palette/command-palette.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/dialog/dialog.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/drawer/drawer.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/menu/menu.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/popover/popover.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/tooltip/tooltip.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/accordion/accordion.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/attachment/attachment.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/avatar/avatar.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/badge/badge.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/blockquote/blockquote.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/carousel/carousel.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/code/code.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/icon/icon.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/indicator/indicator.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/kbd/kbd.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/stat/stat.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/table/table.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/alert/alert.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/empty-state/empty-state.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/notification/notification.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/progress/progress.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/skeleton/skeleton.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/spinner/spinner.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/aspect-ratio/aspect-ratio.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/card/card.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/separator/separator.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/split/split.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/statusbar/statusbar.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/core.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/styles.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/form.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/color.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/position.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/dismiss.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/motion.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/hotkey.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/focus.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/floating.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/icons.js" fetchpriority="low">
+<script type="module">import "../src/components/button/button.js"; import "../src/components/button-group/button-group.js"; import "../src/components/icon-button/icon-button.js"; import "../src/components/toggle/toggle.js"; import "../src/components/toggle-group/toggle-group.js"; import "../src/components/checkbox/checkbox.js"; import "../src/components/color-picker/color-picker.js"; import "../src/components/date-picker/date-picker.js"; import "../src/components/file-upload/file-upload.js"; import "../src/components/input/input.js"; import "../src/components/password-input/password-input.js"; import "../src/components/radio/radio.js"; import "../src/components/search/search.js"; import "../src/components/segmented-control/segmented-control.js"; import "../src/components/select/select.js"; import "../src/components/slider/slider.js"; import "../src/components/switch/switch.js"; import "../src/components/textarea/textarea.js"; import "../src/components/nav-link/nav-link.js"; import "../src/components/pagination/pagination.js"; import "../src/components/sidebar/sidebar.js"; import "../src/components/tabs/tabs.js"; import "../src/components/command-palette/command-palette.js"; import "../src/components/dialog/dialog.js"; import "../src/components/drawer/drawer.js"; import "../src/components/menu/menu.js"; import "../src/components/popover/popover.js"; import "../src/components/tooltip/tooltip.js"; import "../src/components/accordion/accordion.js"; import "../src/components/attachment/attachment.js"; import "../src/components/avatar/avatar.js"; import "../src/components/badge/badge.js"; import "../src/components/blockquote/blockquote.js"; import "../src/components/carousel/carousel.js"; import "../src/components/code/code.js"; import "../src/components/icon/icon.js"; import "../src/components/indicator/indicator.js"; import "../src/components/kbd/kbd.js"; import "../src/components/stat/stat.js"; import "../src/components/table/table.js"; import "../src/components/alert/alert.js"; import "../src/components/empty-state/empty-state.js"; import "../src/components/notification/notification.js"; import "../src/components/progress/progress.js"; import "../src/components/skeleton/skeleton.js"; import "../src/components/spinner/spinner.js"; import "../src/components/aspect-ratio/aspect-ratio.js"; import "../src/components/card/card.js"; import "../src/components/separator/separator.js"; import "../src/components/split/split.js"; import "../src/components/statusbar/statusbar.js"; import "../src/components/theme-toggle/theme-toggle.js";</script>
 <script type="module" src="site.js"></script>
 </head>
 <body>
@@ -50,7 +113,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="brand" href="index.html"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><rect x="8" y="8" width="22" height="22" rx="6" fill="#2B7CE0"/><rect x="34" y="8" width="22" height="22" rx="6" fill="#34D2C6"/><rect x="8" y="34" width="22" height="22" rx="6" fill="#4BA3F5"/><rect x="34" y="34" width="22" height="22" rx="6" style="fill: var(--site-logo-ink, #0B1F33)"/><g transform="translate(19 19.6) scale(.088) translate(-100 -113)"><path d="M100 50 C108 49 113 53 115 60 C150 66 175 84 191 116 C166 127 141 137 119 150 C111 154 105 159 100 165 C95 159 89 154 81 150 C59 137 34 127 9 116 C25 84 50 66 85 60 C87 53 92 49 100 50 Z" fill="#fff"/><path d="M93 55 C90 45 88 38 87 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M107 55 C110 45 112 38 113 30" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round"/><path d="M100 160 C101 176 100 186 100 196" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></g></svg><span class="wordmark"><b>ray</b><span class="dot">·</span>ds</span></a>
 <nav class="site-nav" aria-label="Site"><a href="getting-started.html">Get started</a><a href="foundations.html">Foundations</a><a href="components.html" aria-current="page">Components</a><a href="extending.html">Extending</a><a href="charts.html">Charts</a><a href="raylang.html">raylang</a></nav>
 <div class="site-tools">
-<button class="site-search" type="button" data-site-search aria-label="Search the docs" aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
+<button class="site-search" type="button" data-site-search aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
 <span class="desktop-only"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue"><option value="dark">dark</option><option value="gray">gray</option><option value="red">red</option><option value="pink">pink</option><option value="violet">violet</option><option value="indigo">indigo</option><option value="blue">blue</option><option value="cyan">cyan</option><option value="teal">teal</option><option value="green">green</option><option value="yellow">yellow</option><option value="orange">orange</option><option value="custom">custom</option></ray-select></span>
 <input class="brand-color desktop-only" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color" title="Custom primary color (definePrimary)">
 <ray-theme-toggle></ray-theme-toggle>
@@ -1985,7 +2048,7 @@ if (location.protocol === "file:") window.__rayServeHint();
   <ray-avatar name="Grace Hopper" color="teal"></ray-avatar>
   <ray-avatar name="Linus" variant="filled" color="violet"></ray-avatar>
   <ray-avatar></ray-avatar>
-  <ray-avatar src="does-not-exist.png" name="Broken Image" color="orange"></ray-avatar>
+  <ray-avatar src="data:image/png;base64,broken" name="Broken Image" color="orange"></ray-avatar>
   <ray-avatar name="Small" size="sm"></ray-avatar>
   <ray-avatar name="Extra Large" size="xl" radius="md"></ray-avatar>
 </div>
@@ -2161,7 +2224,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <h2>Code</h2>
 <p class="summary">A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a &quot;show more&quot; height. A small built-in highlighter, or any library through setHighlighter(), painted with the --ray-code-* tokens.</p>
 <div class="example"><div class="demo-caption">A file</div>
-<ray-code lang="ray" filename="src/main.ray" line-numbers highlight="6-8"><script type="text/plain">
+<ray-code language="ray" filename="src/main.ray" line-numbers highlight="6-8"><script type="text/plain">
 import std/ui;
 
 fn main() -> int {
@@ -2178,7 +2241,7 @@ fn main() -> int {
 
 <div class="demo-caption">Languages</div>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="html" filename="index.html"><template>
+  <ray-code language="html" filename="index.html"><template>
 <form id="login">
   <ray-input name="email" label="Email" type="email" required></ray-input>
   <ray-password-input name="password" label="Password"></ray-password-input>
@@ -2186,7 +2249,7 @@ fn main() -> int {
   <ray-button type="submit">Sign in</ray-button>
 </form>
 </template></ray-code>
-  <ray-code lang="ts" filename="app.ts"><script type="text/plain">
+  <ray-code language="ts" filename="app.ts"><script type="text/plain">
 import { notify } from "@ray-ds/elements";
 
 type Build = { id: number; ok: boolean };
@@ -2196,7 +2259,7 @@ export async function report(build: Build): Promise<void> {
   notify({ title: `Build #${build.id}`, color });
 }
 </script></ray-code>
-  <ray-code lang="css" filename="theme.css"><template>
+  <ray-code language="css" filename="theme.css"><template>
 :root {
   --ray-radius-md: 0.625rem; /* rounder */
 }
@@ -2204,7 +2267,7 @@ ray-button::part(button):hover {
   background: color-mix(in srgb, var(--ray-primary) 90%, black);
 }
 </template></ray-code>
-  <ray-code lang="json" filename="update.json"><template>
+  <ray-code language="json" filename="update.json"><template>
 {
   "version": "0.4.1",
   "artifacts": {
@@ -2216,13 +2279,13 @@ ray-button::part(button):hover {
 
 <div class="demo-caption">Terminal, diff and long code</div>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="sh" hide-header><template>
+  <ray-code language="sh" hide-header><template>
 # Build and bundle the desktop app
 ray build --native --release src/main.ray
 ray bundle --name "Ray Remote" -o dist
 echo "done: $HOME/dist"
 </template></ray-code>
-  <ray-code lang="diff" filename="dialog.js"><template>
+  <ray-code language="diff" filename="dialog.js"><template>
 @@ -68,3 +68,4 @@
 -  .body { flex: 1; overflow: auto; }
 +  /* Safari collapses a 0% basis under a max-height. */
@@ -2230,26 +2293,26 @@ echo "done: $HOME/dist"
    .footer { display: flex; }
 </template></ray-code>
 </div>
-<ray-code lang="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
+<ray-code language="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
 
 <div class="demo-caption">Bring your own highlighter</div>
 <p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
 <div class="demo-grid demo-code-grid">
-  <ray-code lang="js" filename="Prism"><script type="text/plain">
+  <ray-code language="js" filename="Prism"><script type="text/plain">
 import Prism from "prismjs";
 import { setHighlighter } from "@ray-ds/elements";
 
 setHighlighter((code, lang) =>
   Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
 </script></ray-code>
-  <ray-code lang="js" filename="highlight.js"><script type="text/plain">
+  <ray-code language="js" filename="highlight.js"><script type="text/plain">
 import hljs from "highlight.js/lib/common";
 import { setHighlighter } from "@ray-ds/elements";
 
 setHighlighter((code, lang) =>
   hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
 </script></ray-code>
-  <ray-code lang="js" filename="Shiki"><script type="text/plain">
+  <ray-code language="js" filename="Shiki"><script type="text/plain">
 import { codeToHtml, createCssVariablesTheme } from "shiki";
 import { setHighlighter } from "@ray-ds/elements";
 
@@ -2270,7 +2333,7 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 <div class="source-body"><p class="source-status"><a href="code/code.html">Open the code</a></p></div></details>
 <p class="tag"><code>&lt;ray-code&gt;</code> &middot; <code>RayCode</code></p>
 <p class="note">The code comes from the code property, a &lt;script type=&quot;text/plain&quot;&gt; child (raw text: anything but a closing script tag), a &lt;template&gt; child (parsed as HTML: the easiest for markup, but a &lt; that is not a tag, as in Promise&lt;void&gt;, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>code</code></td><td>&mdash;</td><td>string</td><td></td><td>The code, from script (the most convenient in React and Vue). Wins over the content.</td></tr><tr><td><code>lang</code></td><td><code>lang</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header).</td></tr><tr><td><code>filename</code></td><td><code>filename</code></td><td>string</td><td></td><td>A file name or title in the header; also the scroll region's accessible name.</td></tr><tr><td><code>lineNumbers</code></td><td><code>line-numbers</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Numbers each line (not copied, not selectable).</td></tr><tr><td><code>highlight</code></td><td><code>highlight</code></td><td>string</td><td></td><td>Lines to highlight: &quot;3, 5-7&quot;.</td></tr><tr><td><code>wrap</code></td><td><code>wrap</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Wraps long lines instead of scrolling sideways.</td></tr><tr><td><code>maxHeight</code></td><td><code>max-height</code></td><td>string</td><td></td><td>Height before it scrolls: px as a number, or a CSS length. A taller block gets a &quot;Show all N lines&quot; button.</td></tr><tr><td><code>expanded</code></td><td><code>expanded</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown whole, past max-height.</td></tr><tr><td><code>hideCopy</code></td><td><code>hide-copy</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No copy button.</td></tr><tr><td><code>hideHeader</code></td><td><code>hide-header</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No header bar (the copy button floats in the corner).</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code></td><td><code>sm</code></td><td>Font size.</td></tr><tr><td><code>radius</code></td><td><code>radius</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Corner radius: xs…xl, none, or a CSS length. Default: md.</td></tr><tr><td><code>copyLabel</code></td><td><code>copy-label</code></td><td>string</td><td><code>Copy code</code></td><td>Accessible name of the copy button.</td></tr><tr><td><code>copiedLabel</code></td><td><code>copied-label</code></td><td>string</td><td><code>Copied</code></td><td>Shown and announced after copying.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>code</code></td><td>&mdash;</td><td>string</td><td></td><td>The code, from script (the most convenient in React and Vue). Wins over the content.</td></tr><tr><td><code>language</code></td><td><code>language</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text.</td></tr><tr><td><code>filename</code></td><td><code>filename</code></td><td>string</td><td></td><td>A file name or title in the header; also the scroll region's accessible name.</td></tr><tr><td><code>lineNumbers</code></td><td><code>line-numbers</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Numbers each line (not copied, not selectable).</td></tr><tr><td><code>highlight</code></td><td><code>highlight</code></td><td>string</td><td></td><td>Lines to highlight: &quot;3, 5-7&quot;.</td></tr><tr><td><code>wrap</code></td><td><code>wrap</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Wraps long lines instead of scrolling sideways.</td></tr><tr><td><code>maxHeight</code></td><td><code>max-height</code></td><td>string</td><td></td><td>Height before it scrolls: px as a number, or a CSS length. A taller block gets a &quot;Show all N lines&quot; button.</td></tr><tr><td><code>expanded</code></td><td><code>expanded</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown whole, past max-height.</td></tr><tr><td><code>hideCopy</code></td><td><code>hide-copy</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No copy button.</td></tr><tr><td><code>hideHeader</code></td><td><code>hide-header</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No header bar (the copy button floats in the corner).</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code></td><td><code>sm</code></td><td>Font size.</td></tr><tr><td><code>radius</code></td><td><code>radius</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Corner radius: xs…xl, none, or a CSS length. Default: md.</td></tr><tr><td><code>copyLabel</code></td><td><code>copy-label</code></td><td>string</td><td><code>Copy code</code></td><td>Accessible name of the copy button.</td></tr><tr><td><code>copiedLabel</code></td><td><code>copied-label</code></td><td>string</td><td><code>Copied</code></td><td>Shown and announced after copying.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-copy</code></td><td>The code was copied.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>The code: text, a &lt;template&gt; or a &lt;script type=&quot;text/plain&quot;&gt;.</td></tr></tbody></table></div>
@@ -2411,7 +2474,7 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
   <ray-indicator label="3" color="red" with-border offset="4"><ray-icon-button variant="default" size="lg" label="Notifications, 3 unread"><ray-icon name="bell"></ray-icon></ray-icon-button></ray-indicator>
   <ray-indicator label="12" max="9" color="red"><ray-button variant="default">Inbox</ray-button></ray-indicator>
   <ray-indicator label="Beta" color="teal" position="top-start" radius="sm"><ray-card with-border padding="md"><div class="demo-indicator-card"><strong>Native builds</strong><span>ray build --native</span></div></ray-card></ray-indicator>
-  <p style="margin: 0">Messages <ray-indicator inline size="8" color="red" offset="-6" position="middle-end"><span aria-label="unread">&nbsp;</span></ray-indicator></p>
+  <p style="margin: 0">Messages <ray-indicator inline size="8" color="red" offset="-6" position="middle-end"><span role="img" aria-label="unread">&nbsp;</span></ray-indicator></p>
 </div>
 
 <div class="demo-caption">Status</div>

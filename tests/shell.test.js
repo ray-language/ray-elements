@@ -35,7 +35,7 @@ T.test("button group: inner corners squared, borders overlapped, vertical, field
   const [t, b] = v.children;
   T.eq(corners(t), `${rad} ${rad} 0px 0px`, "vertical first: bottom corners square");
   T.eq(corners(b), `0px 0px ${rad} ${rad}`, "vertical last: top corners square");
-  T.eq(v.getAttribute("aria-orientation"), "vertical");
+  T.eq(v.hasAttribute("aria-orientation"), false, "no aria-orientation on role=group");
   const [input, go] = f.children;
   T.eq(corners(input), `${rad} 0px ${rad} 0px`, "a field joins too");
   T.eq(corners(go), `0px ${rad} 0px ${rad}`);

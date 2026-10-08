@@ -132,7 +132,7 @@ T.test("file-upload: disabled and labels", async (T) => {
   const zone = inner(el, ".zone");
   T.ok(zone.disabled);
   T.eq(zone.localName, "button", "keyboard reachable");
-  T.eq(zone.getAttribute("aria-labelledby"), "label title");
+  T.eq(zone.getAttribute("aria-labelledby"), "label title hint pill", "every visible word in the name");
   T.ok(zone.getAttribute("aria-describedby").includes("description"));
   let clicked = false;
   inner(el, "input").addEventListener("click", () => { clicked = true; });

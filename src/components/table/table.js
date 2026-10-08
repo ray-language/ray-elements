@@ -128,8 +128,8 @@ export class RayTable extends RayElement {
     caption.textContent = this.label ?? "";
     this.$("table").setAttribute("aria-label", this.label || this.getAttribute("aria-label") || "");
     if (!this.label && !this.getAttribute("aria-label")) this.$("table").removeAttribute("aria-label");
-    if (this.selectable) this.$("table").setAttribute("aria-multiselectable", "true");
-    else this.$("table").removeAttribute("aria-multiselectable");
+    // No aria-multiselectable: a plain table takes none (that is for
+    // role=grid); each row's checkbox says what is selected.
 
     // Head
     const head = document.createElement("tr");

@@ -87,7 +87,9 @@ const styles = css`
     --_loader: calc(var(--_fs) * 1.15);
   }
   :host([loading]) .overlay { display: flex; }
-  :host([loading]) .content { visibility: hidden; }
+  /* Hidden by opacity, not visibility: the label stays the button's
+     accessible name while the spinner shows ("Saving", busy). */
+  :host([loading]) .content { opacity: 0; }
   .content { display: contents; }
   :host([loading]) .button[data-disabled] { cursor: progress; }
   :host([loading]) .button[data-variant="filled"][data-disabled] {

@@ -122,8 +122,8 @@ const calendarStyles = css`
   .day:hover:not([aria-disabled="true"]) { background: var(--ray-accent); color: var(--ray-accent-foreground); }
   .day[data-outside] { color: var(--ray-muted-foreground); }
   .day[aria-current="date"] { background: var(--ray-accent); font-weight: var(--ray-font-weight-semibold); }
-  .day[aria-selected="true"],
-  .day[aria-selected="true"]:hover {
+  .day[data-selected],
+  .day[data-selected]:hover {
     color: var(--ray-primary-foreground);
     background: var(--ray-primary);
     font-weight: var(--ray-font-weight-semibold);
@@ -246,8 +246,9 @@ export class RayCalendar extends RayElement {
         if (day.getUTCMonth() !== month) b.toggleAttribute("data-outside", true);
         if (id === now) b.setAttribute("aria-current", "date");
         const sel = id === selected;
-        b.setAttribute("aria-selected", String(sel));
+        // aria-selected belongs to the gridcell (a button cannot have it).
         td.setAttribute("aria-selected", String(sel));
+        b.toggleAttribute("data-selected", sel);
         if (this._disabled(day)) b.setAttribute("aria-disabled", "true");
         td.append(b);
         tr.append(td);

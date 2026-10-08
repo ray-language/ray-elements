@@ -15,8 +15,8 @@ const styles = css`
     flex: none;
     align-items: center;
     justify-content: center;
-    width: calc(var(--_h) * 0.7);
-    height: calc(var(--_h) * 0.7);
+    width: max(1.5rem, calc(var(--_h) * 0.7));
+    height: max(1.5rem, calc(var(--_h) * 0.7));
     margin-inline-end: calc(var(--_px) * 0.35);
     padding: 0;
     color: var(--ray-muted-foreground);
