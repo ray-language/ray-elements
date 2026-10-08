@@ -50,6 +50,8 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/segmented-control/segmented-control.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/select/select.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/menu/menu.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/avatar/avatar.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/badge/badge.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/icon/icon.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/kbd/kbd.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
@@ -62,7 +64,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/floating.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/menu/menu.js"; import "../../src/components/icon/icon.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/menu/menu.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/icon/icon.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -256,27 +258,108 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="menu" class="component">
 <h1 class="page-title">Menu</h1>
 <p class="page-intro">A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.</p>
-<div class="example"><div class="demo-row">
-  <ray-menu id="demo-menu">
-    <ray-button slot="trigger" variant="default">File</ray-button>
-    <ray-menu-label>Project</ray-menu-label>
-    <ray-menu-item value="new">New file <ray-kbd slot="right" size="xs">⌘N</ray-kbd></ray-menu-item>
-    <ray-menu-item value="open">Open… <ray-kbd slot="right" size="xs">⌘O</ray-kbd></ray-menu-item>
-    <ray-menu-item value="save" disabled>Save</ray-menu-item>
+<div class="example"><div class="demo-caption">Row actions</div>
+<ul class="demo-files" id="demo-files">
+  <li><span class="ic" style="--c: var(--ray-blue-light-color); --b: var(--ray-blue-light)"><ray-icon name="file"></ray-icon></span><span class="name">release-notes.md</span><small>12 KB · 2 h ago</small></li>
+  <li><span class="ic" style="--c: var(--ray-violet-light-color); --b: var(--ray-violet-light)"><ray-icon name="image"></ray-icon></span><span class="name">screenshot-dark.png</span><small>1.8 MB · yesterday</small></li>
+  <li><span class="ic" style="--c: var(--ray-teal-light-color); --b: var(--ray-teal-light)"><ray-icon name="folder"></ray-icon></span><span class="name">bundles</span><small>6 files · Oct 2</small></li>
+</ul>
+<template id="demo-file-menu">
+  <ray-menu placement="bottom-end">
+    <ray-icon-button slot="trigger" variant="subtle" size="sm" label="Actions"><ray-icon name="more-horizontal"></ray-icon></ray-icon-button>
+    <ray-menu-item value="rename"><ray-icon slot="left" name="file"></ray-icon>Rename<ray-kbd slot="right" size="xs">F2</ray-kbd></ray-menu-item>
+    <ray-menu-item value="duplicate"><ray-icon slot="left" name="copy"></ray-icon>Duplicate<ray-kbd slot="right" size="xs">⌘D</ray-kbd></ray-menu-item>
+    <ray-menu-item value="download"><ray-icon slot="left" name="download"></ray-icon>Download</ray-menu-item>
     <ray-menu-divider></ray-menu-divider>
-    <ray-menu-item value="delete" color="red">Delete project</ray-menu-item>
+    <ray-menu-item value="delete" color="red"><ray-icon slot="left" name="circle-x"></ray-icon>Delete</ray-menu-item>
   </ray-menu>
-  <span id="demo-menu-result" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick an item</span>
+</template>
+<span class="demo-muted" id="demo-files-out">Use the ⋯ of a row.</span>
+
+<div class="demo-caption">Account and view options</div>
+<div class="demo-row demo-menu-row">
+  <ray-menu placement="bottom-start">
+    <button slot="trigger" class="demo-account" type="button"><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>Pro plan</small></span><ray-icon name="chevron-down"></ray-icon></button>
+    <ray-menu-label>ada@ray.dev</ray-menu-label>
+    <ray-menu-item value="profile"><ray-icon slot="left" name="user"></ray-icon>Profile</ray-menu-item>
+    <ray-menu-item value="settings"><ray-icon slot="left" name="settings"></ray-icon>Settings<ray-kbd slot="right" size="xs">⌘,</ray-kbd></ray-menu-item>
+    <ray-menu-item value="notifications"><ray-icon slot="left" name="bell"></ray-icon>Notifications<ray-badge slot="right" size="xs" color="red" variant="filled">3</ray-badge></ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-label>Workspace</ray-menu-label>
+    <ray-menu-item value="switch"><ray-icon slot="left" name="chevrons-right"></ray-icon>Switch workspace</ray-menu-item>
+    <ray-menu-item value="invite"><ray-icon slot="left" name="plus"></ray-icon>Invite people</ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-item value="signout" color="red">Sign out</ray-menu-item>
+  </ray-menu>
+
+  <ray-menu id="demo-view-menu" keep-open placement="bottom-start">
+    <ray-button slot="trigger" variant="default"><ray-icon slot="left" name="eye"></ray-icon>View<ray-icon slot="right" name="chevron-down"></ray-icon></ray-button>
+    <ray-menu-label>Show (keep-open)</ray-menu-label>
+    <ray-menu-item value="lines" data-on><ray-icon slot="left" name="check"></ray-icon>Line numbers</ray-menu-item>
+    <ray-menu-item value="minimap"><ray-icon slot="left" name="none"></ray-icon>Minimap</ray-menu-item>
+    <ray-menu-item value="wrap" data-on><ray-icon slot="left" name="check"></ray-icon>Word wrap</ray-menu-item>
+    <ray-menu-item value="whitespace"><ray-icon slot="left" name="none"></ray-icon>Whitespace</ray-menu-item>
+  </ray-menu>
+  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap</span>
 </div>
-<ray-menu context>
-  <div slot="trigger" style="display: grid; place-items: center; height: 6rem; border: 1px dashed var(--ray-border); border-radius: var(--ray-radius-default); color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Right-click here</div>
-  <ray-menu-item>Copy</ray-menu-item>
-  <ray-menu-item>Paste</ray-menu-item>
-  <ray-menu-item>Reveal in Finder</ray-menu-item>
+
+<div class="demo-caption">Placements</div>
+<div class="demo-row">
+  <ray-menu placement="bottom-start"><ray-button slot="trigger" size="xs" variant="light">bottom-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="bottom"><ray-button slot="trigger" size="xs" variant="light">bottom</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="bottom-end"><ray-button slot="trigger" size="xs" variant="light">bottom-end</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="top-start"><ray-button slot="trigger" size="xs" variant="light">top-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="right-start"><ray-button slot="trigger" size="xs" variant="light">right-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="left-start"><ray-button slot="trigger" size="xs" variant="light">left-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+</div>
+
+<div class="demo-caption">Context menu</div>
+<ray-menu context id="demo-context">
+  <div slot="trigger" class="demo-canvas">
+    <span class="shape" style="--c: var(--ray-violet-light); left: 12%; top: 22%"></span>
+    <span class="shape round" style="--c: var(--ray-teal-light); left: 46%; top: 38%"></span>
+    <span class="shape" style="--c: var(--ray-orange-light); left: 72%; top: 18%"></span>
+    <span class="hint">Right-click (or long-press) anywhere on the canvas</span>
+  </div>
+  <ray-menu-item value="cut">Cut<ray-kbd slot="right" size="xs">⌘X</ray-kbd></ray-menu-item>
+  <ray-menu-item value="copy">Copy<ray-kbd slot="right" size="xs">⌘C</ray-kbd></ray-menu-item>
+  <ray-menu-item value="paste" disabled>Paste<ray-kbd slot="right" size="xs">⌘V</ray-kbd></ray-menu-item>
+  <ray-menu-divider></ray-menu-divider>
+  <ray-menu-item value="front">Bring to front</ray-menu-item>
+  <ray-menu-item value="back">Send to back</ray-menu-item>
 </ray-menu>
+<span class="demo-muted" id="demo-context-out"></span>
+
 <script type="module">
-  document.getElementById("demo-menu").addEventListener("ray-select", (e) => {
-    document.getElementById("demo-menu-result").textContent = `Chose: ${e.detail.value}`;
+  // Row actions: one menu per row, from a template; the choice acts on the row.
+  const list = document.getElementById("demo-files");
+  const say = (t) => { document.getElementById("demo-files-out").textContent = t; };
+  const addMenu = (li) => {
+    const menu = document.getElementById("demo-file-menu").content.firstElementChild.cloneNode(true);
+    li.append(menu);
+    menu.addEventListener("ray-select", (e) => {
+      const name = li.querySelector(".name");
+      if (e.detail.value === "rename") { name.textContent = name.textContent.replace(/(\.[^.]+)?$/, "-renamed$1"); say(`Renamed to ${name.textContent}`); }
+      if (e.detail.value === "duplicate") { const copy = li.cloneNode(true); copy.querySelector("ray-menu").remove(); copy.querySelector(".name").textContent += " (copy)"; li.after(copy); addMenu(copy); say(`Duplicated ${name.textContent}`); }
+      if (e.detail.value === "download") say(`Downloading ${name.textContent}…`);
+      if (e.detail.value === "delete") { say(`Deleted ${name.textContent}`); li.remove(); }
+    });
+  };
+  for (const li of list.children) addMenu(li);
+
+  // View options: keep-open, each item toggles a check.
+  const view = document.getElementById("demo-view-menu");
+  view.addEventListener("ray-select", (e) => {
+    const item = view.querySelector(`ray-menu-item[value="${e.detail.value}"]`);
+    const on = !item.hasAttribute("data-on");
+    item.toggleAttribute("data-on", on);
+    item.querySelector("ray-icon").name = on ? "check" : "none";
+    const shown = [...view.querySelectorAll("ray-menu-item[data-on]")].map((i) => i.getAttribute("value"));
+    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"}`;
+  });
+
+  document.getElementById("demo-context").addEventListener("ray-select", (e) => {
+    document.getElementById("demo-context-out").textContent = `ray-select: ${e.detail.value}`;
   });
 </script>
 </div>

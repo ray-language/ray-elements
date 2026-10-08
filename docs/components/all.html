@@ -2106,38 +2106,199 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="drawer" class="component">
 <h2>Drawer</h2>
 <p class="summary">A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive.</p>
-<div class="example"><div class="demo-row">
-  <ray-button onclick="document.getElementById('demo-drawer').show()">Settings (right)</ray-button>
-  <ray-button variant="default" onclick="document.getElementById('demo-drawer-left').show()">Navigation (left, floating)</ray-button>
-  <ray-button variant="default" onclick="document.getElementById('demo-drawer-bottom').show()">Logs (bottom)</ray-button>
-  <ray-button variant="light" onclick="document.getElementById('demo-drawer-side').open = !document.getElementById('demo-drawer-side').open">Toggle modeless panel</ray-button>
+<div class="example"><div class="demo-caption">Patterns</div>
+<div class="demo-launchers">
+  <article class="demo-launcher" style="--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)">
+    <span class="demo-launcher-icon"><ray-icon name="download"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Cart</strong><span>From the right: items you can change, a running total, the checkout pinned to the footer.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-cart">Open</ray-button><span data-drawer-out="drw-cart"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-violet-light-color); --bg: var(--ray-violet-light)">
+    <span class="demo-launcher-icon"><ray-icon name="settings"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Filters</strong><span>From the left with a blurred backdrop; Apply reports what was picked.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-filters">Open</ray-button><span data-drawer-out="drw-filters"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-teal-light-color); --bg: var(--ray-teal-light)">
+    <span class="demo-launcher-icon"><ray-icon name="menu"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Mobile navigation</strong><span>A floating panel (<code>floating</code>, <code>size="xs"</code>) with links and the account at the bottom.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-nav">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-gray-light-color); --bg: var(--ray-gray-light)">
+    <span class="demo-launcher-icon"><ray-icon name="terminal"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Build log</strong><span>From the bottom (<code>size="18rem"</code>), with the status in the header.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-log">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-orange-light-color); --bg: var(--ray-orange-light)">
+    <span class="demo-launcher-icon"><ray-icon name="panel-left"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Inspector</strong><span><code>modeless</code>: no backdrop, the page stays usable; the button toggles it.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" id="drw-inspect-toggle">Toggle</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-red-light-color); --bg: var(--ray-red-light)">
+    <span class="demo-launcher-icon"><ray-icon name="alert-triangle"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Unsaved changes</strong><span>Escape and the backdrop are refused (<code>ray-request-close</code>) while the note is edited.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-note">Open</ray-button><span data-drawer-out="drw-note"></span></div>
+  </article>
 </div>
-<ray-drawer id="demo-drawer" label="Settings">
-  <div style="display: grid; gap: 1rem">
-    <ray-input label="Project name" value="ray-remote" autofocus></ray-input>
-    <ray-switch label="Auto-update" checked></ray-switch>
-    <ray-select label="Channel" value="stable"><option value="stable">Stable</option><option value="beta">Beta</option></ray-select>
+
+<div class="demo-caption">Positions and sizes</div>
+<div class="demo-row">
+  <ray-button size="xs" variant="light" data-drawer-at="left">left</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="right">right</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="top">top</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="bottom">bottom</ray-button>
+  <span class="demo-indicator-sep"></span>
+  <ray-button size="xs" variant="default" data-drawer-size="xs">xs</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="md">md</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="xl">xl</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="40%">40%</ray-button>
+</div>
+
+<ray-drawer id="drw-cart" label="Your cart" size="sm">
+  <ray-badge slot="header" variant="light" normal-case id="drw-cart-count">3 items</ray-badge>
+  <ul class="demo-cart" id="drw-cart-items">
+    <li data-price="29"><span class="thumb" style="--c: var(--ray-violet-light)"></span><span class="what"><b>ray-ds sticker pack</b><small>$29.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="1"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+    <li data-price="48"><span class="thumb" style="--c: var(--ray-teal-light)"></span><span class="what"><b>Mechanical keycap set</b><small>$48.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="1"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+    <li data-price="12"><span class="thumb" style="--c: var(--ray-orange-light)"></span><span class="what"><b>raylang mug</b><small>$12.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="2"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+  </ul>
+  <dl class="demo-summary">
+    <div><dt>Subtotal</dt><dd id="drw-cart-sub">$101.00</dd></div>
+    <div><dt>Shipping</dt><dd>Free</dd></div>
+    <div class="total"><dt>Total</dt><dd id="drw-cart-total">$101.00</dd></div>
+  </dl>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="default" data-dialog-close="keep">Keep shopping</ray-button>
+    <ray-button data-dialog-close="checkout">Check out</ray-button>
   </div>
-  <div slot="footer" style="display: contents">
-    <ray-button variant="default" data-dialog-close="cancel">Cancel</ray-button>
+</ray-drawer>
+
+<ray-drawer id="drw-filters" label="Filters" description="12 results" position="left" size="sm" overlay-blur="2px">
+  <div class="demo-stack">
+    <div class="demo-filter-checks" id="drw-filter-checks" role="group" aria-labelledby="drw-filter-cat-label">
+      <span class="demo-field-title" id="drw-filter-cat-label">Category</span>
+      <ray-checkbox label="Components" value="components" checked></ray-checkbox>
+      <ray-checkbox label="Templates" value="templates" checked></ray-checkbox>
+      <ray-checkbox label="Icons" value="icons"></ray-checkbox>
+      <ray-checkbox label="Charts" value="charts"></ray-checkbox>
+    </div>
+    <ray-slider id="drw-filter-price" label="Max price" min="0" max="200" step="10" value="120" show-value unit=" $"></ray-slider>
+    <div class="demo-field">Sort by
+      <ray-segmented-control id="drw-filter-sort" full-width size="xs" aria-label="Sort by" value="popular"><option value="popular">Popular</option><option value="new">Newest</option><option value="price">Price</option></ray-segmented-control>
+    </div>
+    <ray-switch id="drw-filter-free" label="Free only"></ray-switch>
+  </div>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="subtle" id="drw-filter-reset">Reset</ray-button>
+    <ray-button data-dialog-close="apply">Apply</ray-button>
+  </div>
+</ray-drawer>
+
+<ray-drawer id="drw-nav" label="ray·ds" position="left" size="xs" floating>
+  <nav class="demo-drawer-nav" aria-label="App">
+    <ray-nav-link label="Dashboard" active><ray-icon slot="left" name="monitor"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Builds" description="2 running"><ray-icon slot="left" name="terminal"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Releases"><ray-icon slot="left" name="download"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Files"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </nav>
+  <div slot="footer" class="demo-drawer-account"><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>ada@ray.dev</small></span></div>
+</ray-drawer>
+
+<ray-drawer id="drw-log" label="Build #482" description="ray-remote · main · 4.1 s" position="bottom" size="18rem">
+  <ray-badge slot="header" variant="dot" color="green" normal-case>Passed</ray-badge>
+  <pre class="demo-drawer-log"><span class="t">12:00:01</span> build started on <b>runner-3</b>
+<span class="t">12:00:02</span> resolving 14 dependencies
+<span class="t">12:00:04</span> compiled 42 modules
+<span class="t">12:00:04</span> <span class="w">warn</span> unused import std/fs in src/sync.ray:3
+<span class="t">12:00:05</span> tests: 128 passed, 0 failed
+<span class="t">12:00:05</span> <span class="ok">done</span> in 4.1 s</pre>
+</ray-drawer>
+
+<ray-drawer id="drw-inspect" label="Inspector" description="ray-card · 3 children" modeless size="sm">
+  <dl class="demo-inspect">
+    <div><dt>tag</dt><dd>ray-card</dd></div>
+    <div><dt>padding</dt><dd>lg</dd></div>
+    <div><dt>radius</dt><dd>lg</dd></div>
+    <div><dt>with-border</dt><dd>true</dd></div>
+    <div><dt>size</dt><dd>320 × 184</dd></div>
+  </dl>
+  <p class="demo-muted">No backdrop and no scroll lock: keep scrolling the page while it is open. Escape or × closes it.</p>
+</ray-drawer>
+
+<ray-drawer id="drw-note" label="Edit note" size="md">
+  <div class="demo-stack">
+    <ray-input id="drw-note-title" label="Title" value="Release checklist"></ray-input>
+    <ray-textarea id="drw-note-body" label="Note" rows="6" value="Bump the version, tag, build the bundles, publish update.json."></ray-textarea>
+    <span class="demo-muted" id="drw-note-state">No changes yet: Escape closes it.</span>
+  </div>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="default" data-dialog-close="discard">Discard</ray-button>
     <ray-button data-dialog-close="save">Save</ray-button>
   </div>
 </ray-drawer>
-<ray-drawer id="demo-drawer-left" label="ray-ds" position="left" size="xs" floating>
-  <nav style="display: grid; gap: 0.125rem">
-    <ray-nav-link label="Dashboard" active></ray-nav-link>
-    <ray-nav-link label="Builds"></ray-nav-link>
-    <ray-nav-link label="Settings"></ray-nav-link>
-  </nav>
+
+<ray-drawer id="drw-demo" label="A drawer" size="sm">
+  <p class="demo-muted" id="drw-demo-text">position="right" · size="sm"</p>
 </ray-drawer>
-<ray-drawer id="demo-drawer-bottom" label="Logs" position="bottom" size="16rem">
-  <pre style="margin: 0; font-size: 0.8125rem">[12:00:01] build started
-[12:00:04] compiled 42 modules
-[12:00:05] done in 4.1 s</pre>
-</ray-drawer>
-<ray-drawer id="demo-drawer-side" label="Inspector" modeless size="sm">
-  <p style="margin: 0">The page behind stays usable: no backdrop, no scroll lock. Escape or × closes it.</p>
-</ray-drawer>
+
+<script type="module">
+  const out = (id, text) => { document.querySelector(`[data-drawer-out="${id}"]`).textContent = text; };
+  for (const button of document.querySelectorAll("[data-drawer]")) {
+    button.addEventListener("click", () => document.getElementById(button.dataset.drawer).show());
+  }
+
+  // Cart: quantities change the total.
+  const money = (n) => `$${n.toFixed(2)}`;
+  const items = [...document.querySelectorAll("#drw-cart-items li")];
+  const total = () => {
+    let sum = 0, count = 0;
+    for (const li of items) { const q = Number(li.querySelector("ray-segmented-control").value || 1); sum += q * Number(li.dataset.price); count += q; }
+    document.getElementById("drw-cart-sub").textContent = money(sum);
+    document.getElementById("drw-cart-total").textContent = money(sum);
+    document.getElementById("drw-cart-count").textContent = `${count} items`;
+    return sum;
+  };
+  for (const li of items) li.querySelector("ray-segmented-control").addEventListener("change", total);
+  document.getElementById("drw-cart").addEventListener("ray-close", (e) => out("drw-cart", e.detail.returnValue === "checkout" ? `checkout: ${money(total())}` : `returnValue: "${e.detail.returnValue}"`));
+
+  // Filters: Apply reports the choice; Reset restores it.
+  const checks = [...document.querySelectorAll("#drw-filter-checks ray-checkbox")];
+  const price = document.getElementById("drw-filter-price");
+  const sort = document.getElementById("drw-filter-sort");
+  const free = document.getElementById("drw-filter-free");
+  document.getElementById("drw-filter-reset").addEventListener("click", () => {
+    checks.forEach((c, i) => { c.checked = i < 2; });
+    price.value = 120; sort.value = "popular"; free.checked = false;
+  });
+  document.getElementById("drw-filters").addEventListener("ray-close", (e) => {
+    if (e.detail.returnValue !== "apply") return;
+    const picked = checks.filter((c) => c.checked).map((c) => c.value);
+    out("drw-filters", `${picked.join("+") || "all"} · ≤ $${free.checked ? 0 : price.value} · ${sort.value}`);
+  });
+
+  // Inspector: modeless, toggled.
+  const inspect = document.getElementById("drw-inspect");
+  document.getElementById("drw-inspect-toggle").addEventListener("click", () => { inspect.open = !inspect.open; });
+
+  // Unsaved: refuse Escape, the backdrop and × once something changed.
+  const note = document.getElementById("drw-note");
+  const state = document.getElementById("drw-note-state");
+  let dirty = false;
+  for (const id of ["drw-note-title", "drw-note-body"]) {
+    document.getElementById(id).addEventListener("input", () => { dirty = true; state.textContent = "Edited: Escape and the backdrop are refused; Save or Discard."; });
+  }
+  note.addEventListener("ray-request-close", (e) => {
+    if (!dirty) return;
+    e.preventDefault();
+    state.textContent = `Refused (${e.detail.source}): Save or Discard first.`;
+  });
+  note.addEventListener("ray-close", (e) => { out("drw-note", `returnValue: "${e.detail.returnValue}"`); dirty = false; state.textContent = "No changes yet: Escape closes it."; });
+
+  // Positions and sizes: one drawer, reconfigured.
+  const demo = document.getElementById("drw-demo");
+  const describe = () => { document.getElementById("drw-demo-text").textContent = `position="${demo.position}" · size="${demo.size}"`; };
+  for (const b of document.querySelectorAll("[data-drawer-at]")) b.addEventListener("click", () => { demo.position = b.dataset.drawerAt; demo.size = "sm"; describe(); demo.show(); });
+  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "right"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
+</script>
 </div>
 <details class="source" data-code-src="code/drawer.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
@@ -2153,27 +2314,108 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="menu" class="component">
 <h2>Menu</h2>
 <p class="summary">A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.</p>
-<div class="example"><div class="demo-row">
-  <ray-menu id="demo-menu">
-    <ray-button slot="trigger" variant="default">File</ray-button>
-    <ray-menu-label>Project</ray-menu-label>
-    <ray-menu-item value="new">New file <ray-kbd slot="right" size="xs">⌘N</ray-kbd></ray-menu-item>
-    <ray-menu-item value="open">Open… <ray-kbd slot="right" size="xs">⌘O</ray-kbd></ray-menu-item>
-    <ray-menu-item value="save" disabled>Save</ray-menu-item>
+<div class="example"><div class="demo-caption">Row actions</div>
+<ul class="demo-files" id="demo-files">
+  <li><span class="ic" style="--c: var(--ray-blue-light-color); --b: var(--ray-blue-light)"><ray-icon name="file"></ray-icon></span><span class="name">release-notes.md</span><small>12 KB · 2 h ago</small></li>
+  <li><span class="ic" style="--c: var(--ray-violet-light-color); --b: var(--ray-violet-light)"><ray-icon name="image"></ray-icon></span><span class="name">screenshot-dark.png</span><small>1.8 MB · yesterday</small></li>
+  <li><span class="ic" style="--c: var(--ray-teal-light-color); --b: var(--ray-teal-light)"><ray-icon name="folder"></ray-icon></span><span class="name">bundles</span><small>6 files · Oct 2</small></li>
+</ul>
+<template id="demo-file-menu">
+  <ray-menu placement="bottom-end">
+    <ray-icon-button slot="trigger" variant="subtle" size="sm" label="Actions"><ray-icon name="more-horizontal"></ray-icon></ray-icon-button>
+    <ray-menu-item value="rename"><ray-icon slot="left" name="file"></ray-icon>Rename<ray-kbd slot="right" size="xs">F2</ray-kbd></ray-menu-item>
+    <ray-menu-item value="duplicate"><ray-icon slot="left" name="copy"></ray-icon>Duplicate<ray-kbd slot="right" size="xs">⌘D</ray-kbd></ray-menu-item>
+    <ray-menu-item value="download"><ray-icon slot="left" name="download"></ray-icon>Download</ray-menu-item>
     <ray-menu-divider></ray-menu-divider>
-    <ray-menu-item value="delete" color="red">Delete project</ray-menu-item>
+    <ray-menu-item value="delete" color="red"><ray-icon slot="left" name="circle-x"></ray-icon>Delete</ray-menu-item>
   </ray-menu>
-  <span id="demo-menu-result" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick an item</span>
+</template>
+<span class="demo-muted" id="demo-files-out">Use the ⋯ of a row.</span>
+
+<div class="demo-caption">Account and view options</div>
+<div class="demo-row demo-menu-row">
+  <ray-menu placement="bottom-start">
+    <button slot="trigger" class="demo-account" type="button"><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>Pro plan</small></span><ray-icon name="chevron-down"></ray-icon></button>
+    <ray-menu-label>ada@ray.dev</ray-menu-label>
+    <ray-menu-item value="profile"><ray-icon slot="left" name="user"></ray-icon>Profile</ray-menu-item>
+    <ray-menu-item value="settings"><ray-icon slot="left" name="settings"></ray-icon>Settings<ray-kbd slot="right" size="xs">⌘,</ray-kbd></ray-menu-item>
+    <ray-menu-item value="notifications"><ray-icon slot="left" name="bell"></ray-icon>Notifications<ray-badge slot="right" size="xs" color="red" variant="filled">3</ray-badge></ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-label>Workspace</ray-menu-label>
+    <ray-menu-item value="switch"><ray-icon slot="left" name="chevrons-right"></ray-icon>Switch workspace</ray-menu-item>
+    <ray-menu-item value="invite"><ray-icon slot="left" name="plus"></ray-icon>Invite people</ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-item value="signout" color="red">Sign out</ray-menu-item>
+  </ray-menu>
+
+  <ray-menu id="demo-view-menu" keep-open placement="bottom-start">
+    <ray-button slot="trigger" variant="default"><ray-icon slot="left" name="eye"></ray-icon>View<ray-icon slot="right" name="chevron-down"></ray-icon></ray-button>
+    <ray-menu-label>Show (keep-open)</ray-menu-label>
+    <ray-menu-item value="lines" data-on><ray-icon slot="left" name="check"></ray-icon>Line numbers</ray-menu-item>
+    <ray-menu-item value="minimap"><ray-icon slot="left" name="none"></ray-icon>Minimap</ray-menu-item>
+    <ray-menu-item value="wrap" data-on><ray-icon slot="left" name="check"></ray-icon>Word wrap</ray-menu-item>
+    <ray-menu-item value="whitespace"><ray-icon slot="left" name="none"></ray-icon>Whitespace</ray-menu-item>
+  </ray-menu>
+  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap</span>
 </div>
-<ray-menu context>
-  <div slot="trigger" style="display: grid; place-items: center; height: 6rem; border: 1px dashed var(--ray-border); border-radius: var(--ray-radius-default); color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Right-click here</div>
-  <ray-menu-item>Copy</ray-menu-item>
-  <ray-menu-item>Paste</ray-menu-item>
-  <ray-menu-item>Reveal in Finder</ray-menu-item>
+
+<div class="demo-caption">Placements</div>
+<div class="demo-row">
+  <ray-menu placement="bottom-start"><ray-button slot="trigger" size="xs" variant="light">bottom-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="bottom"><ray-button slot="trigger" size="xs" variant="light">bottom</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="bottom-end"><ray-button slot="trigger" size="xs" variant="light">bottom-end</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="top-start"><ray-button slot="trigger" size="xs" variant="light">top-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="right-start"><ray-button slot="trigger" size="xs" variant="light">right-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+  <ray-menu placement="left-start"><ray-button slot="trigger" size="xs" variant="light">left-start</ray-button><ray-menu-item>One</ray-menu-item><ray-menu-item>Two</ray-menu-item></ray-menu>
+</div>
+
+<div class="demo-caption">Context menu</div>
+<ray-menu context id="demo-context">
+  <div slot="trigger" class="demo-canvas">
+    <span class="shape" style="--c: var(--ray-violet-light); left: 12%; top: 22%"></span>
+    <span class="shape round" style="--c: var(--ray-teal-light); left: 46%; top: 38%"></span>
+    <span class="shape" style="--c: var(--ray-orange-light); left: 72%; top: 18%"></span>
+    <span class="hint">Right-click (or long-press) anywhere on the canvas</span>
+  </div>
+  <ray-menu-item value="cut">Cut<ray-kbd slot="right" size="xs">⌘X</ray-kbd></ray-menu-item>
+  <ray-menu-item value="copy">Copy<ray-kbd slot="right" size="xs">⌘C</ray-kbd></ray-menu-item>
+  <ray-menu-item value="paste" disabled>Paste<ray-kbd slot="right" size="xs">⌘V</ray-kbd></ray-menu-item>
+  <ray-menu-divider></ray-menu-divider>
+  <ray-menu-item value="front">Bring to front</ray-menu-item>
+  <ray-menu-item value="back">Send to back</ray-menu-item>
 </ray-menu>
+<span class="demo-muted" id="demo-context-out"></span>
+
 <script type="module">
-  document.getElementById("demo-menu").addEventListener("ray-select", (e) => {
-    document.getElementById("demo-menu-result").textContent = `Chose: ${e.detail.value}`;
+  // Row actions: one menu per row, from a template; the choice acts on the row.
+  const list = document.getElementById("demo-files");
+  const say = (t) => { document.getElementById("demo-files-out").textContent = t; };
+  const addMenu = (li) => {
+    const menu = document.getElementById("demo-file-menu").content.firstElementChild.cloneNode(true);
+    li.append(menu);
+    menu.addEventListener("ray-select", (e) => {
+      const name = li.querySelector(".name");
+      if (e.detail.value === "rename") { name.textContent = name.textContent.replace(/(\.[^.]+)?$/, "-renamed$1"); say(`Renamed to ${name.textContent}`); }
+      if (e.detail.value === "duplicate") { const copy = li.cloneNode(true); copy.querySelector("ray-menu").remove(); copy.querySelector(".name").textContent += " (copy)"; li.after(copy); addMenu(copy); say(`Duplicated ${name.textContent}`); }
+      if (e.detail.value === "download") say(`Downloading ${name.textContent}…`);
+      if (e.detail.value === "delete") { say(`Deleted ${name.textContent}`); li.remove(); }
+    });
+  };
+  for (const li of list.children) addMenu(li);
+
+  // View options: keep-open, each item toggles a check.
+  const view = document.getElementById("demo-view-menu");
+  view.addEventListener("ray-select", (e) => {
+    const item = view.querySelector(`ray-menu-item[value="${e.detail.value}"]`);
+    const on = !item.hasAttribute("data-on");
+    item.toggleAttribute("data-on", on);
+    item.querySelector("ray-icon").name = on ? "check" : "none";
+    const shown = [...view.querySelectorAll("ray-menu-item[data-on]")].map((i) => i.getAttribute("value"));
+    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"}`;
+  });
+
+  document.getElementById("demo-context").addEventListener("ray-select", (e) => {
+    document.getElementById("demo-context-out").textContent = `ray-select: ${e.detail.value}`;
   });
 </script>
 </div>
@@ -2208,19 +2450,123 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="popover" class="component">
 <h2>Popover</h2>
 <p class="summary">A floating panel anchored to a trigger, in the top layer; closes on Escape and outside clicks.</p>
-<div class="example"><div class="demo-row">
-  <ray-popover placement="bottom-start" width="280" trap-focus aria-label="Share">
-    <ray-button slot="trigger" variant="default">Share</ray-button>
-    <div style="display: grid; gap: 0.75rem">
-      <ray-input label="Invite by email" placeholder="you@example.com" size="xs"></ray-input>
-      <ray-button size="xs">Send invite</ray-button>
+<div class="example"><div class="demo-caption">Share, filters and a profile card</div>
+<div class="demo-row demo-pop-row">
+  <ray-popover placement="bottom-start" width="340" trap-focus aria-label="Share">
+    <ray-button slot="trigger"><ray-icon slot="left" name="arrow-up-right"></ray-icon>Share</ray-button>
+    <div class="demo-pop">
+      <strong>Share “ray-remote”</strong>
+      <div class="demo-pop-invite"><ray-input aria-label="Invite by email" placeholder="name@company.com" size="xs" type="email" id="demo-pop-email"></ray-input><ray-button size="xs" id="demo-pop-invite">Invite</ray-button></div>
+      <ul class="demo-pop-people" id="demo-pop-people">
+        <li><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>ada@ray.dev</small></span><em>Owner</em></li>
+        <li><ray-avatar name="Alan Turing" color="blue" size="sm"></ray-avatar><span><b>Alan Turing</b><small>alan@ray.dev</small></span><em>Editor</em></li>
+      </ul>
+      <div class="demo-pop-link"><ray-icon name="paperclip"></ray-icon><span>ray.dev/p/ray-remote</span><ray-button size="xs" variant="default" id="demo-pop-copy"><ray-icon slot="left" name="copy"></ray-icon>Copy link</ray-button></div>
     </div>
   </ray-popover>
-  <ray-popover placement="right">
-    <ray-button slot="trigger" variant="light">Right side</ray-button>
-    <p style="margin: 0; font-size: var(--ray-font-size-sm)">Flips and shifts to stay on screen.</p>
+
+  <ray-popover id="demo-pop-filters" placement="bottom-start" width="260" trap-focus aria-label="Filters">
+    <ray-button slot="trigger" variant="default"><ray-icon slot="left" name="settings"></ray-icon>Filters<ray-badge slot="right" size="xs" variant="filled" id="demo-pop-count">2</ray-badge></ray-button>
+    <div class="demo-pop">
+      <strong>Status</strong>
+      <div class="demo-pop-checks" id="demo-pop-checks">
+        <ray-checkbox label="Open" value="open" checked></ray-checkbox>
+        <ray-checkbox label="In review" value="review" checked></ray-checkbox>
+        <ray-checkbox label="Done" value="done"></ray-checkbox>
+        <ray-checkbox label="Archived" value="archived"></ray-checkbox>
+      </div>
+      <div class="demo-pop-foot"><ray-button size="xs" variant="subtle" id="demo-pop-clear">Clear</ray-button><ray-button size="xs" id="demo-pop-apply">Apply</ray-button></div>
+    </div>
   </ray-popover>
+
+  <ray-popover placement="bottom" width="280">
+    <button slot="trigger" type="button" class="demo-pop-user"><ray-avatar name="Grace Hopper" color="teal" size="sm"></ray-avatar>@grace</button>
+    <div class="demo-pop demo-pop-card">
+      <div class="head"><ray-avatar name="Grace Hopper" color="teal" size="lg"></ray-avatar><ray-button size="xs" variant="light">Follow</ray-button></div>
+      <strong>Grace Hopper</strong>
+      <span>Compiler engineer. Writes the parts of raylang nobody sees.</span>
+      <dl><div><dt>Following</dt><dd>128</dd></div><div><dt>Followers</dt><dd>4.2k</dd></div></dl>
+    </div>
+  </ray-popover>
+  <span class="demo-muted" id="demo-pop-out"></span>
 </div>
+
+<div class="demo-caption">Reactions</div>
+<div class="demo-message">
+  <ray-avatar name="Alan Turing" color="blue" size="sm"></ray-avatar>
+  <div>
+    <p><b>Alan Turing</b> <small>10:42</small><br>The new docs load in half the time. Nice work on the per-page modules!</p>
+    <div class="demo-reactions" id="demo-reactions">
+      <ray-popover placement="top-start" padding="xs" id="demo-react-pop">
+        <ray-icon-button slot="trigger" size="sm" variant="default" label="Add a reaction"><ray-icon name="plus"></ray-icon></ray-icon-button>
+        <div class="demo-emoji" id="demo-emoji">
+          <button type="button">👍</button><button type="button">🎉</button><button type="button">🚀</button><button type="button">❤️</button><button type="button">👀</button><button type="button">😄</button>
+        </div>
+      </ray-popover>
+    </div>
+  </div>
+</div>
+
+<div class="demo-caption">Placements, width and padding</div>
+<div class="demo-pop-placements">
+  <ray-popover placement="top"><ray-button slot="trigger" size="xs" variant="light">top</ray-button><span class="demo-pop-tip">placement="top"</span></ray-popover>
+  <ray-popover placement="right"><ray-button slot="trigger" size="xs" variant="light">right</ray-button><span class="demo-pop-tip">placement="right"</span></ray-popover>
+  <ray-popover placement="bottom"><ray-button slot="trigger" size="xs" variant="light">bottom</ray-button><span class="demo-pop-tip">placement="bottom"</span></ray-popover>
+  <ray-popover placement="left"><ray-button slot="trigger" size="xs" variant="light">left</ray-button><span class="demo-pop-tip">placement="left"</span></ray-popover>
+  <ray-popover placement="bottom-start" match-width><ray-button slot="trigger" size="xs" variant="default">match-width: as wide as this button</ray-button><span class="demo-pop-tip">The same width as its trigger.</span></ray-popover>
+  <ray-popover placement="bottom" padding="lg" offset="16"><ray-button slot="trigger" size="xs" variant="default">padding lg · offset 16</ray-button><span class="demo-pop-tip">More room, further away.</span></ray-popover>
+</div>
+
+<script type="module">
+  // Share: invite adds a person; copy copies the link.
+  const say = (t) => { document.getElementById("demo-pop-out").textContent = t; };
+  document.getElementById("demo-pop-invite").addEventListener("click", () => {
+    const email = document.getElementById("demo-pop-email");
+    if (!email.value) return;
+    const li = document.createElement("li");
+    li.innerHTML = `<ray-avatar color="gray" size="sm"></ray-avatar><span><b></b><small>Invitation sent</small></span><em>Viewer</em>`;
+    li.querySelector("ray-avatar").name = email.value;
+    li.querySelector("b").textContent = email.value;
+    document.getElementById("demo-pop-people").append(li);
+    email.value = "";
+  });
+  document.getElementById("demo-pop-copy").addEventListener("click", (e) => {
+    navigator.clipboard?.writeText("https://ray.dev/p/ray-remote").catch(() => {});
+    say("Link copied.");
+  });
+
+  // Filters: the badge counts the checked ones; Apply closes the popover.
+  const filters = document.getElementById("demo-pop-filters");
+  const checks = [...document.querySelectorAll("#demo-pop-checks ray-checkbox")];
+  const count = () => { const n = checks.filter((c) => c.checked).length; const b = document.getElementById("demo-pop-count"); b.textContent = String(n); b.hidden = n === 0; return n; };
+  for (const c of checks) c.addEventListener("change", count);
+  document.getElementById("demo-pop-clear").addEventListener("click", () => { for (const c of checks) c.checked = false; count(); });
+  document.getElementById("demo-pop-apply").addEventListener("click", () => {
+    say(`Status: ${checks.filter((c) => c.checked).map((c) => c.value).join(", ") || "any"}`);
+    filters.hide();
+  });
+
+  // Reactions: a pick adds (or bumps) a chip next to the + button.
+  const pop = document.getElementById("demo-react-pop");
+  document.getElementById("demo-emoji").addEventListener("click", (e) => {
+    const emoji = e.target.closest("button")?.textContent;
+    if (!emoji) return;
+    const box = document.getElementById("demo-reactions");
+    let chip = [...box.querySelectorAll(".chip")].find((c) => c.dataset.emoji === emoji);
+    if (!chip) {
+      chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.dataset.emoji = emoji;
+      chip.dataset.n = "0";
+      chip.addEventListener("click", () => { chip.dataset.n = String(Number(chip.dataset.n) + 1); chip.textContent = `${emoji} ${chip.dataset.n}`; });
+      box.insertBefore(chip, pop);
+    }
+    chip.dataset.n = String(Number(chip.dataset.n) + 1);
+    chip.textContent = `${emoji} ${chip.dataset.n}`;
+    pop.hide();
+  });
+</script>
 </div>
 <details class="source" data-code-src="code/popover.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
@@ -2236,12 +2582,72 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="tooltip" class="component">
 <h2>Tooltip</h2>
 <p class="summary">A short hint on hover and focus of its child; the label also becomes the child's accessible description.</p>
-<div class="example"><div class="demo-row">
-  <ray-tooltip label="Saves to disk (⌘S)"><ray-button variant="default">Save</ray-button></ray-tooltip>
-  <ray-tooltip label="On the right" placement="right"><ray-button variant="default">Right</ray-button></ray-tooltip>
-  <ray-tooltip label="Colored tooltip" color="violet" placement="bottom"><ray-button variant="light" color="violet">Bottom</ray-button></ray-tooltip>
-  <ray-tooltip label="Plain elements work too"><span tabindex="0" style="text-decoration: underline dotted">hover me</span></ray-tooltip>
+<div class="example"><div class="demo-caption">An editor toolbar</div>
+<div class="demo-toolbar" role="toolbar" aria-label="Formatting">
+  <ray-tooltip label="Bold · ⌘B"><ray-icon-button variant="subtle" label="Bold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z"/></svg></ray-icon-button></ray-tooltip>
+  <ray-tooltip label="Italic · ⌘I"><ray-icon-button variant="subtle" label="Italic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4h8M6 20h8M14 4l-4 16"/></svg></ray-icon-button></ray-tooltip>
+  <ray-tooltip label="Quote · ⌘⇧."><ray-icon-button variant="subtle" label="Quote"><ray-icon name="quote"></ray-icon></ray-icon-button></ray-tooltip>
+  <span class="demo-toolbar-sep"></span>
+  <ray-tooltip label="Insert image"><ray-icon-button variant="subtle" label="Insert image"><ray-icon name="image"></ray-icon></ray-icon-button></ray-tooltip>
+  <ray-tooltip label="Attach a file"><ray-icon-button variant="subtle" label="Attach a file"><ray-icon name="paperclip"></ray-icon></ray-icon-button></ray-tooltip>
+  <ray-tooltip label="Code block · ⌘E"><ray-icon-button variant="subtle" label="Code block"><ray-icon name="terminal"></ray-icon></ray-icon-button></ray-tooltip>
+  <span class="demo-toolbar-sep"></span>
+  <ray-tooltip label="You have no permission to publish" color="red"><span tabindex="0" class="demo-tip-wrap"><ray-button size="xs" disabled>Publish</ray-button></span></ray-tooltip>
 </div>
+
+<div class="demo-caption">Help, truncated text and status</div>
+<div class="demo-grid">
+  <div class="demo-tip-field">
+    <span class="demo-tip-label">API token <ray-tooltip label="Read-only tokens can list builds but not start them." placement="right"><span class="demo-tip-help" tabindex="0" role="img" aria-label="About API tokens"><ray-icon name="info"></ray-icon></span></ray-tooltip></span>
+    <ray-input aria-label="API token" value="ray_live_4f9c2e…" readonly></ray-input>
+  </div>
+  <ul class="demo-tip-files">
+    <li><ray-tooltip label="screenshot-2026-10-08-dark-theme-components-page.png" placement="top-start"><span tabindex="0" class="truncate">screenshot-2026-10-08-dark-theme-components-page.png</span></ray-tooltip><small>1.8 MB</small></li>
+    <li><ray-tooltip label="ray-remote-1.27.39-macos-arm64-signed.dmg" placement="top-start"><span tabindex="0" class="truncate">ray-remote-1.27.39-macos-arm64-signed.dmg</span></ray-tooltip><small>42 MB</small></li>
+  </ul>
+  <div class="demo-row">
+    <ray-tooltip label="All systems operational" color="green"><span class="demo-tip-dot" style="--c: var(--ray-green-filled)" tabindex="0" role="img" aria-label="Operational"></span></ray-tooltip>
+    <ray-tooltip label="Degraded: builds are slower" color="yellow"><span class="demo-tip-dot" style="--c: var(--ray-yellow-filled)" tabindex="0" role="img" aria-label="Degraded"></span></ray-tooltip>
+    <ray-tooltip label="Outage: deploys paused" color="red"><span class="demo-tip-dot" style="--c: var(--ray-red-filled)" tabindex="0" role="img" aria-label="Outage"></span></ray-tooltip>
+    <span class="demo-muted">Hover or focus a dot</span>
+  </div>
+</div>
+
+<div class="demo-caption">Placements</div>
+<div class="demo-tip-grid">
+  <ray-tooltip label="top-start" placement="top-start"><ray-button size="xs" variant="default">top-start</ray-button></ray-tooltip>
+  <ray-tooltip label="top" placement="top"><ray-button size="xs" variant="default">top</ray-button></ray-tooltip>
+  <ray-tooltip label="top-end" placement="top-end"><ray-button size="xs" variant="default">top-end</ray-button></ray-tooltip>
+  <ray-tooltip label="left" placement="left"><ray-button size="xs" variant="default">left</ray-button></ray-tooltip>
+  <span></span>
+  <ray-tooltip label="right" placement="right"><ray-button size="xs" variant="default">right</ray-button></ray-tooltip>
+  <ray-tooltip label="bottom-start" placement="bottom-start"><ray-button size="xs" variant="default">bottom-start</ray-button></ray-tooltip>
+  <ray-tooltip label="bottom" placement="bottom"><ray-button size="xs" variant="default">bottom</ray-button></ray-tooltip>
+  <ray-tooltip label="bottom-end" placement="bottom-end"><ray-button size="xs" variant="default">bottom-end</ray-button></ray-tooltip>
+</div>
+
+<div class="demo-caption">Colors, delays and disabled</div>
+<div class="demo-row">
+  <ray-tooltip label="Default"><ray-button size="xs" variant="light">default</ray-button></ray-tooltip>
+  <ray-tooltip label="Violet" color="violet"><ray-button size="xs" variant="light" color="violet">violet</ray-button></ray-tooltip>
+  <ray-tooltip label="Teal" color="teal"><ray-button size="xs" variant="light" color="teal">teal</ray-button></ray-tooltip>
+  <ray-tooltip label="Any CSS color" color="#db2777"><ray-button size="xs" variant="light" color="pink">#db2777</ray-button></ray-tooltip>
+  <span class="demo-indicator-sep"></span>
+  <ray-tooltip label="Opens at once" open-delay="0"><ray-button size="xs" variant="default">open-delay 0</ray-button></ray-tooltip>
+  <ray-tooltip label="Took 800 ms" open-delay="800"><ray-button size="xs" variant="default">open-delay 800</ray-button></ray-tooltip>
+  <ray-tooltip label="Stays 1 s after leaving" close-delay="1000"><ray-button size="xs" variant="default">close-delay 1000</ray-button></ray-tooltip>
+  <ray-tooltip label="Never shown" id="demo-tip-off" disabled><ray-button size="xs" variant="default" id="demo-tip-toggle">disabled (click to enable)</ray-button></ray-tooltip>
+</div>
+
+<script type="module">
+  // disabled: the tooltip stays quiet until enabled.
+  const tip = document.getElementById("demo-tip-off");
+  document.getElementById("demo-tip-toggle").addEventListener("click", () => {
+    tip.disabled = !tip.disabled;
+    tip.label = tip.disabled ? "Never shown" : "Enabled again";
+    document.getElementById("demo-tip-toggle").textContent = tip.disabled ? "disabled (click to enable)" : "enabled (click to disable)";
+  });
+</script>
 </div>
 <details class="source" data-code-src="code/tooltip.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
@@ -3237,21 +3643,83 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 <section id="card" class="component">
 <h2>Card</h2>
 <p class="summary">A surface for grouped content, with optional media, header and footer.</p>
-<div class="example"><div class="demo-grid">
-  <ray-card with-border shadow="sm">
-    <strong slot="header">Deploy ray-remote</strong>
-    <p style="margin: 0; color: var(--ray-muted-foreground)">Builds the native bundle and publishes a signed update.json.</p>
-    <div slot="footer" class="demo-row"><ray-button size="xs">Deploy</ray-button><ray-button size="xs" variant="default">Cancel</ray-button></div>
+<div class="example"><div class="demo-caption">With media</div>
+<div class="demo-card-grid">
+  <ray-card with-border shadow="sm" radius="lg">
+    <div slot="media" class="demo-card-media" style="--a: var(--ray-violet-light); --b: var(--ray-blue-light); --c: var(--ray-violet-light-color)"><ray-icon name="terminal" size="2.5rem" stroke="1.5"></ray-icon></div>
+    <div class="demo-card-meta"><ray-badge variant="light" color="violet" size="sm">Guide</ray-badge><span>8 min read</span></div>
+    <strong class="demo-card-title">Ship a native app with raylang</strong>
+    <p class="demo-card-text">From ray new to a signed bundle: the webview, the update feed and the release checklist.</p>
+    <div slot="footer" class="demo-card-author"><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>Oct 2, 2026</small></span></div>
   </ray-card>
-  <ray-card padding="lg" radius="lg" style="background: var(--ray-muted)">
-    <strong>No border, large padding</strong>
-    <p style="margin: 0.5rem 0 0; color: var(--ray-muted-foreground)">Cards take the card tokens; any surface can be overridden with plain CSS.</p>
+  <ray-card with-border shadow="sm" radius="lg">
+    <div slot="media" class="demo-card-media" style="--a: var(--ray-teal-light); --b: var(--ray-green-light); --c: var(--ray-teal-light-color)"><ray-icon name="folder" size="2.5rem" stroke="1.5"></ray-icon></div>
+    <div class="demo-card-meta"><ray-badge variant="light" color="teal" size="sm">Template</ray-badge><span>Updated today</span></div>
+    <strong class="demo-card-title">Dashboard starter</strong>
+    <p class="demo-card-text">Sidebar, tables, charts and a settings modal, wired to a web backend.</p>
+    <div slot="footer" class="demo-card-actions"><span class="demo-card-price">$0<small> · MIT</small></span><ray-button size="xs" variant="light"><ray-icon slot="left" name="download"></ray-icon>Use template</ray-button></div>
+  </ray-card>
+  <ray-card with-border shadow="sm" radius="lg">
+    <div slot="media" class="demo-card-media" style="--a: var(--ray-orange-light); --b: var(--ray-yellow-light); --c: var(--ray-orange-light-color)"><ray-icon name="star" size="2.5rem" stroke="1.5"></ray-icon></div>
+    <div class="demo-card-meta"><ray-badge variant="light" color="orange" size="sm">Release</ray-badge><span>v1.27</span></div>
+    <strong class="demo-card-title">Per-page modules and faster docs</strong>
+    <p class="demo-card-text">Every docs page now loads only the components it shows, and the menu keeps its place.</p>
+    <div slot="footer" class="demo-card-actions"><a href="#card">Read the notes</a><ray-icon-button size="sm" variant="subtle" label="Save for later"><ray-icon name="bell"></ray-icon></ray-icon-button></div>
   </ray-card>
 </div>
-<div class="demo-grid">
-  <ray-card variant="default" with-border><strong>default</strong> · card surface</ray-card>
-  <ray-card variant="filled"><strong>filled</strong> · muted surface</ray-card>
-  <ray-card variant="outline"><strong>outline</strong> · border, no fill</ray-card>
+
+<div class="demo-caption">Profile and metrics</div>
+<div class="demo-card-grid">
+  <ray-card with-border radius="lg" padding="lg">
+    <div class="demo-card-profile">
+      <ray-avatar name="Grace Hopper" color="teal" size="xl"></ray-avatar>
+      <strong>Grace Hopper</strong>
+      <span>Compiler engineer · Arlington</span>
+      <div class="demo-row"><ray-badge variant="outline" color="gray" size="sm" normal-case>raylang</ray-badge><ray-badge variant="outline" color="gray" size="sm" normal-case>compilers</ray-badge><ray-badge variant="outline" color="gray" size="sm" normal-case>COBOL</ray-badge></div>
+      <dl class="demo-card-stats"><div><dt>Commits</dt><dd>1,284</dd></div><div><dt>Reviews</dt><dd>312</dd></div><div><dt>Streak</dt><dd>41 d</dd></div></dl>
+    </div>
+    <div slot="footer" class="demo-card-split"><ray-button size="sm" full-width>Follow</ray-button><ray-button size="sm" variant="default" full-width>Message</ray-button></div>
+  </ray-card>
+  <div class="demo-stack">
+    <ray-card variant="filled" radius="lg">
+      <div class="demo-card-kpi"><span>Monthly active users</span><strong>48,210</strong><ray-badge variant="light" color="green" size="sm" normal-case>+12.4% vs September</ray-badge></div>
+    </ray-card>
+    <ray-card with-border radius="lg">
+      <div class="demo-card-kpi"><span>Storage</span><strong>62.4 <small>/ 100 GB</small></strong><ray-progress value="62" size="sm" label="Storage used"></ray-progress></div>
+      <div slot="footer" class="demo-card-actions"><span class="demo-muted">Renews Nov 1</span><a href="#card">Upgrade</a></div>
+    </ray-card>
+  </div>
+</div>
+
+<div class="demo-caption">As a link</div>
+<div class="demo-card-links">
+  <a class="demo-card-link" href="#card"><ray-card with-border radius="md"><span class="ic" style="--c: var(--ray-blue-light-color); --b: var(--ray-blue-light)"><ray-icon name="file"></ray-icon></span><strong>Getting started</strong><span>Install, import, theme.</span><ray-icon class="go" name="arrow-up-right"></ray-icon></ray-card></a>
+  <a class="demo-card-link" href="#card"><ray-card with-border radius="md"><span class="ic" style="--c: var(--ray-violet-light-color); --b: var(--ray-violet-light)"><ray-icon name="settings"></ray-icon></span><strong>Tokens</strong><span>Colors, spacing, radius, motion.</span><ray-icon class="go" name="arrow-up-right"></ray-icon></ray-card></a>
+  <a class="demo-card-link" href="#card"><ray-card with-border radius="md"><span class="ic" style="--c: var(--ray-teal-light-color); --b: var(--ray-teal-light)"><ray-icon name="terminal"></ray-icon></span><strong>raylang extras</strong><span>Typed props and ray check.</span><ray-icon class="go" name="arrow-up-right"></ray-icon></ray-card></a>
+</div>
+
+<div class="demo-caption">A form, with the header and footer styled through ::part()</div>
+<ray-card class="demo-card-form" with-border radius="lg" padding="lg">
+  <div slot="header"><strong>Invite people</strong><span>They get an email with a link that expires in 7 days.</span></div>
+  <div class="demo-card-fields">
+    <ray-input label="Email" type="email" placeholder="ada@ray.dev"></ray-input>
+    <ray-select label="Role" value="member"><option value="viewer">Viewer</option><option value="member">Member</option><option value="admin">Admin</option></ray-select>
+  </div>
+  <ray-switch label="Also give access to billing" size="sm"></ray-switch>
+  <div slot="footer" class="demo-card-actions"><span class="demo-muted">3 of 10 seats used</span><span class="demo-row"><ray-button size="sm" variant="default">Cancel</ray-button><ray-button size="sm">Send invite</ray-button></span></div>
+</ray-card>
+
+<div class="demo-caption">Variants, shadows, radius and padding</div>
+<div class="demo-card-matrix">
+  <ray-card variant="default" with-border><strong>default</strong><span>card surface, with-border</span></ray-card>
+  <ray-card variant="filled"><strong>filled</strong><span>muted surface</span></ray-card>
+  <ray-card variant="outline"><strong>outline</strong><span>border, no fill</span></ray-card>
+  <ray-card shadow="xs"><strong>shadow xs</strong><span>barely lifted</span></ray-card>
+  <ray-card shadow="md"><strong>shadow md</strong><span>a raised panel</span></ray-card>
+  <ray-card shadow="xl"><strong>shadow xl</strong><span>floating</span></ray-card>
+  <ray-card with-border radius="xs" padding="xs"><strong>radius xs · padding xs</strong><span>dense</span></ray-card>
+  <ray-card with-border radius="md" padding="md"><strong>radius md · padding md</strong><span>the defaults</span></ray-card>
+  <ray-card with-border radius="xl" padding="xl"><strong>radius xl · padding xl</strong><span>roomy</span></ray-card>
 </div>
 </div>
 <details class="source" data-code-src="code/card.html"><summary>Code</summary>
