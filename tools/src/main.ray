@@ -210,6 +210,20 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     // The palette also lists foundations.html (written by `tokens`).
     let searchable = pages + [foundations.render(tokens)?];
     write(root, "docs/search-index.js", search.index_js(cs, searchable))?;
+    // Each example's code, loaded by the components page on demand.
+    let els = meta.base_elements() + meta.all_elements(cs);
+    if (fs.exists("${root}/docs/code")) {
+        fs.remove_all("${root}/docs/code")?;
+    }
+    fs.mkdir("${root}/docs/code")?;
+    var samples = 0;
+    for c in cs {
+        if (c.example != "") {
+            fs.write_file("${root}/docs/code/${c.dir}.html", docs.code_file(c, els))?;
+            samples = samples + 1;
+        }
+    }
+    print("  wrote docs/code/*.html (${samples} examples)");
     for asset in ["site.css", "site.js", "elements.js"] {
         write(root, "docs/${asset}", fs.read_file("${root}/site/${asset}")?)?;
     }

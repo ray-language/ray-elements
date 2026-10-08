@@ -413,6 +413,14 @@ pre.code code, .prose pre code { font-size: inherit; }
 .source-switch { position: absolute; top: 0; right: var(--ray-space-3); display: flex; align-items: center; height: 2.75rem; }
 .source:not([open]) .source-switch { display: none; }
 .source pre.code[hidden] { display: none; }
+.source-status { margin: 0; padding: var(--ray-space-3) var(--ray-space-4); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); border-top: 1px solid var(--ray-border); }
+.source-status a { color: var(--ray-primary-light-color); }
+.source[data-loaded="loading"] .source-status { visibility: hidden; }
+/* Components page: sections off screen are not styled, laid out nor painted
+   until they get near (the browser remembers each one's real height).
+   Not for sections whose demos position themselves on the window (a
+   modeless drawer, a sidebar): content-visibility would contain them. */
+.component:not(:has(ray-drawer[modeless], ray-sidebar)) { content-visibility: auto; contain-intrinsic-size: auto 1200px; }
 .palette-strip { display: flex; gap: var(--ray-space-2); justify-content: center; flex-wrap: wrap; margin-top: var(--ray-space-6); }
 .palette-strip button {
   width: 2.25rem;

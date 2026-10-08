@@ -1,0 +1,23 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-textarea</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Notes&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;Write something…&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Markdown is supported.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-textarea</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-textarea</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Autosize&quot;</span> <span class="tk-attr">autosize</span> <span class="tk-attr">max-rows</span>=<span class="tk-string">&quot;6&quot;</span><span class="tk-punctuation">&gt;</span>Grows as you type, up to six rows.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-textarea</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayTextarea } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> TextareaExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-grid&quot;</span>&gt;
+        &lt;RayTextarea label=<span class="tk-string">&quot;Notes&quot;</span> placeholder=<span class="tk-string">&quot;Write something…&quot;</span> description=<span class="tk-string">&quot;Markdown is supported.&quot;</span> /&gt;
+        &lt;RayTextarea label=<span class="tk-string">&quot;Autosize&quot;</span> autosize maxRows={<span class="tk-number">6</span>}&gt;Grows <span class="tk-keyword">as</span> you <span class="tk-keyword">type</span>, up to six rows.&lt;/RayTextarea&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTextarea</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Notes&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;Write something…&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Markdown is supported.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTextarea</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Autosize&quot;</span> <span class="tk-attr">autosize</span> <span class="tk-attr">:max-rows</span>=<span class="tk-string">&quot;6&quot;</span><span class="tk-punctuation">&gt;</span>Grows as you type, up to six rows.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTextarea</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

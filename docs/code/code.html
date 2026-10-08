@@ -1,0 +1,314 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A file<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;ray&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;src/main.ray&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">highlight</span>=<span class="tk-string">&quot;6-8&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-keyword">import</span> std/ui;
+
+fn main() -&gt; int {
+    <span class="tk-keyword">let</span> h = ui.open(<span class="tk-string">&quot;Ray Remote&quot;</span>, <span class="tk-string">&quot;ray://app/index.html&quot;</span>, <span class="tk-number">960</span>, <span class="tk-number">640</span>).unwrap();
+    <span class="tk-comment">// The page asks; the program answers.</span>
+    <span class="tk-keyword">for</span> e <span class="tk-keyword">in</span> ui.events() {
+        <span class="tk-keyword">if</span> <span class="tk-keyword">let</span> Option.Some((id, body)) = ui.as_request(e) {
+            ui.reply(h, id, <span class="tk-string">&quot;pong: ${body}&quot;</span>);
+        }
+    }
+    <span class="tk-number">0</span>
+}
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Languages<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;html&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;index.html&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">form</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;login&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Email&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">required</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-password-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;password&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Password&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-password-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-comment">&lt;!-- Submits like any form --&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;submit&quot;</span><span class="tk-punctuation">&gt;</span>Sign in<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">form</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;ts&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;app.ts&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-keyword">import</span> { notify } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+
+<span class="tk-keyword">type</span> Build = { id: number; ok: boolean };
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">async</span> <span class="tk-keyword">function</span> report(build: Build): Promise&lt;<span class="tk-keyword">void</span>&gt; {
+  <span class="tk-keyword">const</span> color = build.ok ? <span class="tk-string">&quot;green&quot;</span> : <span class="tk-string">&quot;red&quot;</span>;
+  notify({ title: <span class="tk-string">`Build #${build.id}`</span>, color });
+}
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;css&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;theme.css&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+:root {
+  --ray-radius-md: 0.625rem; /* rounder */
+}
+ray-button::part(button):hover {
+  background: color-mix(in srgb, var(--ray-primary) 90%, black);
+}
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;json&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;update.json&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+{
+  &quot;version&quot;: &quot;0.4.1&quot;,
+  &quot;artifacts&quot;: {
+    &quot;macos-aarch64&quot;: { &quot;size&quot;: 4404019, &quot;signed&quot;: true }
+  }
+}
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Terminal, diff and long code<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;sh&quot;</span> <span class="tk-attr">hide-header</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+# Build and bundle the desktop app
+ray build --native --release src/main.ray
+ray bundle --name &quot;Ray Remote&quot; -o dist
+echo &quot;done: $HOME/dist&quot;
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;diff&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;dialog.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+@@ -68,3 +68,4 @@
+-  .body { flex: 1; overflow: auto; }
++  /* Safari collapses a 0% basis under a max-height. */
++  .body { flex: 1 1 auto; min-height: 0; overflow: auto; }
+   .footer { display: flex; }
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;tokens.js&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">max-height</span>=<span class="tk-string">&quot;12rem&quot;</span> <span class="tk-attr">wrap</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-long&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Bring your own highlighter<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Prism&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-keyword">import</span> Prism <span class="tk-keyword">from</span> <span class="tk-string">&quot;prismjs&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+
+setHighlighter((code, lang) =&gt;
+  Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : <span class="tk-keyword">null</span>);
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;highlight.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-keyword">import</span> hljs <span class="tk-keyword">from</span> <span class="tk-string">&quot;highlight.js/lib/common&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+
+setHighlighter((code, lang) =&gt;
+  hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : <span class="tk-keyword">null</span>);
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Shiki&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-keyword">import</span> { codeToHtml, createCssVariablesTheme } <span class="tk-keyword">from</span> <span class="tk-string">&quot;shiki&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+
+<span class="tk-comment">// The css-variables theme: ray-code maps its variables to the tokens.</span>
+<span class="tk-keyword">const</span> theme = createCssVariablesTheme({ name: <span class="tk-string">&quot;ray-ds&quot;</span>, variablePrefix: <span class="tk-string">&quot;--shiki-&quot;</span> });
+setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-comment">// Code from script: the `code` property (what React and Vue use).</span>
+  document.getElementById(<span class="tk-string">&quot;demo-long&quot;</span>).code = Array.<span class="tk-keyword">from</span>({ length: <span class="tk-number">24</span> }, (_, i) =&gt;
+    <span class="tk-string">`export const space${i} = &quot;${(i * 0.25).toFixed(2)}rem&quot;; // step ${i} of the spacing scale, used by gaps and paddings`</span>).join(<span class="tk-string">&quot;\n&quot;</span>);
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayCode } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
+<span class="tk-comment">// and listen with the on* handlers (onRayCopy…).</span>
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> CodeExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;A file&lt;/div&gt;
+      &lt;RayCode lang=<span class="tk-string">&quot;ray&quot;</span> filename=<span class="tk-string">&quot;src/main.ray&quot;</span> lineNumbers highlight=<span class="tk-string">&quot;6-8&quot;</span> code={<span class="tk-string">`
+      import std/ui;
+
+      fn main() -&gt; int {
+          let h = ui.open(&quot;Ray Remote&quot;, &quot;ray://app/index.html&quot;, 960, 640).unwrap();
+          // The page asks; the program answers.
+          for e in ui.events() {
+              if let Option.Some((id, body)) = ui.as_request(e) {
+                  ui.reply(h, id, &quot;pong: \${body}&quot;);
+              }
+          }
+          0
+      }
+      `</span>} /&gt;
+
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Languages&lt;/div&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span>&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;html&quot;</span> filename=<span class="tk-string">&quot;index.html&quot;</span> code={<span class="tk-string">`
+      &lt;form id=&quot;login&quot;&gt;
+        &lt;ray-input name=&quot;email&quot; label=&quot;Email&quot; type=&quot;email&quot; required&gt;&lt;/ray-input&gt;
+        &lt;ray-password-input name=&quot;password&quot; label=&quot;Password&quot;&gt;&lt;/ray-password-input&gt;
+        &lt;!-- Submits like any form --&gt;
+        &lt;ray-button type=&quot;submit&quot;&gt;Sign in&lt;/ray-button&gt;
+      &lt;/form&gt;
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;ts&quot;</span> filename=<span class="tk-string">&quot;app.ts&quot;</span> code={<span class="tk-string">`
+      import { notify } from &quot;@ray-ds/elements&quot;;
+
+      type Build = { id: number; ok: boolean };
+
+      export async function report(build: Build): Promise&lt;void&gt; {
+        const color = build.ok ? &quot;green&quot; : &quot;red&quot;;
+        notify({ title: \`Build #\${build.id}\`, color });
+      }
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;css&quot;</span> filename=<span class="tk-string">&quot;theme.css&quot;</span> code={<span class="tk-string">`
+      :root {
+        --ray-radius-md: 0.625rem; /* rounder */
+      }
+      ray-button::part(button):hover {
+        background: color-mix(in srgb, var(--ray-primary) 90%, black);
+      }
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;json&quot;</span> filename=<span class="tk-string">&quot;update.json&quot;</span> code={<span class="tk-string">`
+      {
+        &quot;version&quot;: &quot;0.4.1&quot;,
+        &quot;artifacts&quot;: {
+          &quot;macos-aarch64&quot;: { &quot;size&quot;: 4404019, &quot;signed&quot;: true }
+        }
+      }
+      `</span>} /&gt;
+      &lt;/div&gt;
+
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Terminal, diff and long code&lt;/div&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span>&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;sh&quot;</span> hideHeader code={<span class="tk-string">`
+      # Build and bundle the desktop app
+      ray build --native --release src/main.ray
+      ray bundle --name &quot;Ray Remote&quot; -o dist
+      echo &quot;done: $HOME/dist&quot;
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;diff&quot;</span> filename=<span class="tk-string">&quot;dialog.js&quot;</span> code={<span class="tk-string">`
+      @@ -68,3 +68,4 @@
+      -  .body { flex: 1; overflow: auto; }
+      +  /* Safari collapses a 0% basis under a max-height. */
+      +  .body { flex: 1 1 auto; min-height: 0; overflow: auto; }
+         .footer { display: flex; }
+      `</span>} /&gt;
+      &lt;/div&gt;
+      &lt;RayCode lang=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;tokens.js&quot;</span> lineNumbers maxHeight=<span class="tk-string">&quot;12rem&quot;</span> wrap id=<span class="tk-string">&quot;demo-long&quot;</span> /&gt;
+
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Bring your own highlighter&lt;/div&gt;
+      &lt;p className=<span class="tk-string">&quot;demo-muted&quot;</span> style={{ margin: <span class="tk-string">&quot;0&quot;</span> }}&gt;setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-<span class="tk-keyword">in</span> one.&lt;/p&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span>&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;Prism&quot;</span> code={<span class="tk-string">`
+      import Prism from &quot;prismjs&quot;;
+      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+
+      setHighlighter((code, lang) =&gt;
+        Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;highlight.js&quot;</span> code={<span class="tk-string">`
+      import hljs from &quot;highlight.js/lib/common&quot;;
+      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+
+      setHighlighter((code, lang) =&gt;
+        hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
+      `</span>} /&gt;
+        &lt;RayCode lang=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;Shiki&quot;</span> code={<span class="tk-string">`
+      import { codeToHtml, createCssVariablesTheme } from &quot;shiki&quot;;
+      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+
+      // The css-variables theme: ray-code maps its variables to the tokens.
+      const theme = createCssVariablesTheme({ name: &quot;ray-ds&quot;, variablePrefix: &quot;--shiki-&quot; });
+      setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
+      `</span>} /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A file<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;ray&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;src/main.ray&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">highlight</span>=<span class="tk-string">&quot;6-8&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  import std/ui;
+
+  fn main() -&gt; int {
+      let h = ui.open(&amp;quot;Ray Remote&amp;quot;, &amp;quot;ray://app/index.html&amp;quot;, 960, 640).unwrap();
+      // The page asks; the program answers.
+      for e in ui.events() {
+          if let Option.Some((id, body)) = ui.as_request(e) {
+              ui.reply(h, id, &amp;quot;pong: \${body}&amp;quot;);
+          }
+      }
+      0
+  }
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Languages<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;html&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;index.html&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  &lt;form id=&amp;quot;login&amp;quot;&gt;
+    &lt;ray-input name=&amp;quot;email&amp;quot; label=&amp;quot;Email&amp;quot; type=&amp;quot;email&amp;quot; required&gt;&lt;/ray-input&gt;
+    &lt;ray-password-input name=&amp;quot;password&amp;quot; label=&amp;quot;Password&amp;quot;&gt;&lt;/ray-password-input&gt;
+    &lt;!-- Submits like any form --&gt;
+    &lt;ray-button type=&amp;quot;submit&amp;quot;&gt;Sign in&lt;/ray-button&gt;
+  &lt;/form&gt;
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;ts&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;app.ts&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  import { notify } from &amp;quot;@ray-ds/elements&amp;quot;;
+
+  type Build = { id: number; ok: boolean };
+
+  export async function report(build: Build): Promise&lt;void&gt; {
+    const color = build.ok ? &amp;quot;green&amp;quot; : &amp;quot;red&amp;quot;;
+    notify({ title: \`Build #\${build.id}\`, color });
+  }
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;css&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;theme.css&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  :root {
+    --ray-radius-md: 0.625rem; /* rounder */
+  }
+  ray-button::part(button):hover {
+    background: color-mix(in srgb, var(--ray-primary) 90%, black);
+  }
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;json&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;update.json&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  {
+    &amp;quot;version&amp;quot;: &amp;quot;0.4.1&amp;quot;,
+    &amp;quot;artifacts&amp;quot;: {
+      &amp;quot;macos-aarch64&amp;quot;: { &amp;quot;size&amp;quot;: 4404019, &amp;quot;signed&amp;quot;: true }
+    }
+  }
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Terminal, diff and long code<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;sh&quot;</span> <span class="tk-attr">hide-header</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  # Build and bundle the desktop app
+  ray build --native --release src/main.ray
+  ray bundle --name &amp;quot;Ray Remote&amp;quot; -o dist
+  echo &amp;quot;done: $HOME/dist&amp;quot;
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;diff&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;dialog.js&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  @@ -68,3 +68,4 @@
+  -  .body { flex: 1; overflow: auto; }
+  +  /* Safari collapses a 0% basis under a max-height. */
+  +  .body { flex: 1 1 auto; min-height: 0; overflow: auto; }
+     .footer { display: flex; }
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;tokens.js&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">max-height</span>=<span class="tk-string">&quot;12rem&quot;</span> <span class="tk-attr">wrap</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-long&quot;</span> /<span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Bring your own highlighter<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Prism&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  import Prism from &amp;quot;prismjs&amp;quot;;
+  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+
+  setHighlighter((code, lang) =&gt;
+    Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;highlight.js&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  import hljs from &amp;quot;highlight.js/lib/common&amp;quot;;
+  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+
+  setHighlighter((code, lang) =&gt;
+    hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">lang</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Shiki&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
+  import { codeToHtml, createCssVariablesTheme } from &amp;quot;shiki&amp;quot;;
+  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+
+  // The css-variables theme: ray-code maps its variables to the tokens.
+  const theme = createCssVariablesTheme({ name: &amp;quot;ray-ds&amp;quot;, variablePrefix: &amp;quot;--shiki-&amp;quot; });
+  setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
+  `&quot;</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

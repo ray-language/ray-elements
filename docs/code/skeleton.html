@@ -1,0 +1,66 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: flex; gap: 0.75rem; align-items: flex-start&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-skeleton</span> <span class="tk-attr">circle</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;2.75rem&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-skeleton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;flex: 1; display: grid; gap: 0.5rem&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-skeleton</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;0.875rem&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;40%&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-skeleton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-skeleton</span> <span class="tk-attr">lines</span>=<span class="tk-string">&quot;3&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;0.625rem&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-skeleton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-skeleton</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;7rem&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;md&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-skeleton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-skeleton</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-skeleton&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;1.25rem&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;60%&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>ray-remote 0.4.1 is ready.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-skeleton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-skeleton-toggle&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;justify-self: start&quot;</span><span class="tk-punctuation">&gt;</span>Toggle loaded<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">const</span> s = document.getElementById(<span class="tk-string">&quot;demo-skeleton&quot;</span>);
+  document.getElementById(<span class="tk-string">&quot;demo-skeleton-toggle&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; { s.loaded = !s.loaded; });
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RaySkeleton, RayButton } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
+<span class="tk-comment">// and listen with the on* handlers.</span>
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> SkeletonExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-grid&quot;</span>&gt;
+        &lt;div style={{ display: <span class="tk-string">&quot;flex&quot;</span>, gap: <span class="tk-string">&quot;0.75rem&quot;</span>, alignItems: <span class="tk-string">&quot;flex-start&quot;</span> }}&gt;
+          &lt;RaySkeleton circle width=<span class="tk-string">&quot;2.75rem&quot;</span> /&gt;
+          &lt;div style={{ flex: <span class="tk-string">&quot;1&quot;</span>, display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;0.5rem&quot;</span> }}&gt;
+            &lt;RaySkeleton height=<span class="tk-string">&quot;0.875rem&quot;</span> width=<span class="tk-string">&quot;40%&quot;</span> /&gt;
+            &lt;RaySkeleton lines={<span class="tk-number">3</span>} height=<span class="tk-string">&quot;0.625rem&quot;</span> /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div style={{ display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;0.75rem&quot;</span> }}&gt;
+          &lt;RaySkeleton height=<span class="tk-string">&quot;7rem&quot;</span> radius=<span class="tk-string">&quot;md&quot;</span> /&gt;
+          &lt;RaySkeleton id=<span class="tk-string">&quot;demo-skeleton&quot;</span> height=<span class="tk-string">&quot;1.25rem&quot;</span> width=<span class="tk-string">&quot;60%&quot;</span>&gt;
+            &lt;strong&gt;ray-remote <span class="tk-number">0.4.1</span> is ready.&lt;/strong&gt;
+          &lt;/RaySkeleton&gt;
+          &lt;RayButton size=<span class="tk-string">&quot;xs&quot;</span> variant=<span class="tk-string">&quot;default&quot;</span> id=<span class="tk-string">&quot;demo-skeleton-toggle&quot;</span> style={{ justifySelf: <span class="tk-string">&quot;start&quot;</span> }}&gt;Toggle loaded&lt;/RayButton&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: flex; gap: 0.75rem; align-items: flex-start&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySkeleton</span> <span class="tk-attr">circle</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;2.75rem&quot;</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;flex: 1; display: grid; gap: 0.5rem&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySkeleton</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;0.875rem&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;40%&quot;</span> /<span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySkeleton</span> <span class="tk-attr">:lines</span>=<span class="tk-string">&quot;3&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;0.625rem&quot;</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySkeleton</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;7rem&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;md&quot;</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySkeleton</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-skeleton&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;1.25rem&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;60%&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>ray-remote 0.4.1 is ready.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RaySkeleton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-skeleton-toggle&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;justify-self: start&quot;</span><span class="tk-punctuation">&gt;</span>Toggle loaded<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

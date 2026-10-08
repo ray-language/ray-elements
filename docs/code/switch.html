@@ -1,0 +1,29 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Wi-Fi&quot;</span> <span class="tk-attr">checked</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Bluetooth&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;md&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Airplane mode&quot;</span> <span class="tk-attr">disabled</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Label on the left&quot;</span> <span class="tk-attr">label-position</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RaySwitch } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> SwitchExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div style={{ display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;0.75rem&quot;</span> }}&gt;
+        &lt;RaySwitch label=<span class="tk-string">&quot;Wi-Fi&quot;</span> checked /&gt;
+        &lt;RaySwitch label=<span class="tk-string">&quot;Bluetooth&quot;</span> color=<span class="tk-string">&quot;teal&quot;</span> size=<span class="tk-string">&quot;md&quot;</span> /&gt;
+        &lt;RaySwitch label=<span class="tk-string">&quot;Airplane mode&quot;</span> disabled /&gt;
+        &lt;RaySwitch label=<span class="tk-string">&quot;Label on the left&quot;</span> labelPosition=<span class="tk-string">&quot;left&quot;</span> size=<span class="tk-string">&quot;lg&quot;</span> /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Wi-Fi&quot;</span> <span class="tk-attr">checked</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Bluetooth&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;md&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Airplane mode&quot;</span> <span class="tk-attr">disabled</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Label on the left&quot;</span> <span class="tk-attr">label-position</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

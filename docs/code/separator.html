@@ -1,0 +1,29 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 1rem&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-separator</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Or continue with&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-separator</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Left&quot;</span> <span class="tk-attr">label-position</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dashed&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>Files <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-separator</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span> Edit <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-separator</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-separator</span><span class="tk-punctuation">&gt;</span> View<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RaySeparator } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> SeparatorExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div style={{ display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;1rem&quot;</span> }}&gt;
+        &lt;RaySeparator /&gt;
+        &lt;RaySeparator label=<span class="tk-string">&quot;Or continue with&quot;</span> /&gt;
+        &lt;RaySeparator label=<span class="tk-string">&quot;Left&quot;</span> labelPosition=<span class="tk-string">&quot;left&quot;</span> variant=<span class="tk-string">&quot;dashed&quot;</span> /&gt;
+        &lt;div className=<span class="tk-string">&quot;demo-row&quot;</span>&gt;Files &lt;RaySeparator orientation=<span class="tk-string">&quot;vertical&quot;</span> /&gt; Edit &lt;RaySeparator orientation=<span class="tk-string">&quot;vertical&quot;</span> /&gt; View&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 1rem&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySeparator</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySeparator</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Or continue with&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySeparator</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Left&quot;</span> <span class="tk-attr">label-position</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dashed&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>Files <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySeparator</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span> /<span class="tk-punctuation">&gt;</span> Edit <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySeparator</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span> /<span class="tk-punctuation">&gt;</span> View<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

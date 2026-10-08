@@ -1,0 +1,51 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-popover</span> <span class="tk-attr">placement</span>=<span class="tk-string">&quot;bottom-start&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;280&quot;</span> <span class="tk-attr">trap-focus</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Share&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span>Share<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Invite by email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;you@example.com&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span>Send invite<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-popover</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-popover</span> <span class="tk-attr">placement</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Right side<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0; font-size: var(--ray-font-size-sm)&quot;</span><span class="tk-punctuation">&gt;</span>Flips and shifts to stay on screen.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-popover</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;
+<span class="tk-keyword">import</span> { RayPopover, RayButton, RayInput } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> PopoverExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-row&quot;</span>&gt;
+        &lt;RayPopover placement=<span class="tk-string">&quot;bottom-start&quot;</span> width=<span class="tk-string">&quot;280&quot;</span> trapFocus aria-label=<span class="tk-string">&quot;Share&quot;</span>&gt;
+          &lt;RayButton slot=<span class="tk-string">&quot;trigger&quot;</span> variant=<span class="tk-string">&quot;default&quot;</span>&gt;Share&lt;/RayButton&gt;
+          &lt;div style={{ display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;0.75rem&quot;</span> }}&gt;
+            &lt;RayInput label=<span class="tk-string">&quot;Invite by email&quot;</span> placeholder=<span class="tk-string">&quot;you@example.com&quot;</span> size=<span class="tk-string">&quot;xs&quot;</span> /&gt;
+            &lt;RayButton size=<span class="tk-string">&quot;xs&quot;</span>&gt;Send invite&lt;/RayButton&gt;
+          &lt;/div&gt;
+        &lt;/RayPopover&gt;
+        &lt;RayPopover placement=<span class="tk-string">&quot;right&quot;</span>&gt;
+          &lt;RayButton slot=<span class="tk-string">&quot;trigger&quot;</span> variant=<span class="tk-string">&quot;light&quot;</span>&gt;Right side&lt;/RayButton&gt;
+          &lt;p style={{ margin: <span class="tk-string">&quot;0&quot;</span>, fontSize: <span class="tk-string">&quot;var(--ray-font-size-sm)&quot;</span> } <span class="tk-keyword">as</span> CSSProperties}&gt;Flips and shifts to stay on screen.&lt;/p&gt;
+        &lt;/RayPopover&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPopover</span> <span class="tk-attr">placement</span>=<span class="tk-string">&quot;bottom-start&quot;</span> <span class="tk-attr">width</span>=<span class="tk-string">&quot;280&quot;</span> <span class="tk-attr">trap-focus</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Share&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span>Share<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 0.75rem&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Invite by email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;you@example.com&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> /<span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span>Send invite<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayPopover</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPopover</span> <span class="tk-attr">placement</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Right side<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0; font-size: var(--ray-font-size-sm)&quot;</span><span class="tk-punctuation">&gt;</span>Flips and shifts to stay on screen.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayPopover</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

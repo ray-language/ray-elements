@@ -60,17 +60,16 @@ fn component(c: Component, els: [Element]) -> string {
     for el in c.elements {
         api.push(element(el, c.elements.len() > 1));
     }
+    // The example's code (HTML, React, Vue) is most of the page's weight and
+    // rarely opened: it lives in docs/code/<dir>.html (code_file) and
+    // site.js fetches it when the details opens.
     let example = if (c.example == "") {
         ""
     } else {
-        let react = frameworks.react(c.example, els, "${pascal(c.dir)}Example");
-        let vue = frameworks.vue(c.example, els);
         `<div class="example">${c.example}</div>
-<details class="source"><summary>Code</summary>
+<details class="source" data-code-src="code/${c.dir}.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
-<pre class="code" data-source="html"><code>${highlight.code(c.example.trim(), "html")}</code></pre>
-<pre class="code" data-source="react" hidden><code>${highlight.code(react, "tsx")}</code></pre>
-<pre class="code" data-source="vue" hidden><code>${highlight.code(vue, "vue")}</code></pre></details>`
+<div class="source-body"><p class="source-status"><a href="code/${c.dir}.html">Open the code</a></p></div></details>`
     };
     `<section id="${c.dir}" class="component">
 <h2>${escape(c.name)}${aka(c)}</h2>
@@ -145,4 +144,15 @@ fn aka(c: Component) -> string {
         return "";
     }
     " <span class=\"aka\">also ${escape(join(c.aliases, ", "))}</span>"
+}
+
+// docs/code/<dir>.html: an example's code in HTML, React and Vue, the
+// fragment the components page loads when its "Code" opens.
+pub fn code_file(c: Component, els: [Element]) -> string {
+    let react = frameworks.react(c.example, els, "${pascal(c.dir)}Example");
+    let vue = frameworks.vue(c.example, els);
+    `<pre class="code" data-source="html"><code>${highlight.code(c.example.trim(), "html")}</code></pre>
+<pre class="code" data-source="react" hidden><code>${highlight.code(react, "tsx")}</code></pre>
+<pre class="code" data-source="vue" hidden><code>${highlight.code(vue, "vue")}</code></pre>
+`
 }

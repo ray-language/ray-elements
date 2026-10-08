@@ -1,0 +1,53 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 1rem&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">action</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Branch main&quot;</span><span class="tk-punctuation">&gt;</span>⎇ main<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">action</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;2 errors&quot;</span><span class="tk-punctuation">&gt;</span>✕ 2<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">action</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;yellow&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;1 warning&quot;</span><span class="tk-punctuation">&gt;</span>⚠ 1<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>Ln 12, Col 5<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>Spaces: 4<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>raylang<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;accent&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>Debugging: server.ray<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-statusbar-item</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>VM · fibers on<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar-item</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-statusbar</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayStatusbar, RayStatusbarItem } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> StatusbarExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div style={{ display: <span class="tk-string">&quot;grid&quot;</span>, gap: <span class="tk-string">&quot;1rem&quot;</span> }}&gt;
+        &lt;RayStatusbar&gt;
+          &lt;RayStatusbarItem action label=<span class="tk-string">&quot;Branch main&quot;</span>&gt;⎇ main&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem action color=<span class="tk-string">&quot;red&quot;</span> label=<span class="tk-string">&quot;2 errors&quot;</span>&gt;✕ <span class="tk-number">2</span>&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem action color=<span class="tk-string">&quot;yellow&quot;</span> label=<span class="tk-string">&quot;1 warning&quot;</span>&gt;⚠ <span class="tk-number">1</span>&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem slot=<span class="tk-string">&quot;right&quot;</span>&gt;Ln <span class="tk-number">12</span>, Col <span class="tk-number">5</span>&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem slot=<span class="tk-string">&quot;right&quot;</span> action&gt;Spaces: <span class="tk-number">4</span>&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem slot=<span class="tk-string">&quot;right&quot;</span> action&gt;raylang&lt;/RayStatusbarItem&gt;
+        &lt;/RayStatusbar&gt;
+        &lt;RayStatusbar variant=<span class="tk-string">&quot;accent&quot;</span>&gt;
+          &lt;RayStatusbarItem action&gt;Debugging: server.ray&lt;/RayStatusbarItem&gt;
+          &lt;RayStatusbarItem slot=<span class="tk-string">&quot;right&quot;</span>&gt;VM · fibers on&lt;/RayStatusbarItem&gt;
+        &lt;/RayStatusbar&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;display: grid; gap: 1rem&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbar</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">action</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Branch main&quot;</span><span class="tk-punctuation">&gt;</span>⎇ main<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">action</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;2 errors&quot;</span><span class="tk-punctuation">&gt;</span>✕ 2<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">action</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;yellow&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;1 warning&quot;</span><span class="tk-punctuation">&gt;</span>⚠ 1<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>Ln 12, Col 5<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>Spaces: 4<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>raylang<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbar</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbar</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;accent&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">action</span><span class="tk-punctuation">&gt;</span>Debugging: server.ray<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayStatusbarItem</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span><span class="tk-punctuation">&gt;</span>VM · fibers on<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbarItem</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayStatusbar</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

@@ -6,6 +6,27 @@ import { notify } from "../src/components/notification/notification.js";
 
 const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 
+// --- jumps to a section. Sections off screen have an estimated height
+// (content-visibility: auto) until they render, so a jump can land off when
+// the ones above it render on the way: align again until it holds still.
+function settleOn(id) {
+  const el = id && document.getElementById(id);
+  if (!el) return;
+  let last = NaN;
+  let still = 0;
+  let tries = 0;
+  const step = () => {
+    el.scrollIntoView({ block: "start" });
+    const top = Math.round(el.getBoundingClientRect().top);
+    still = top === last ? still + 1 : 0;
+    last = top;
+    if (still < 2 && ++tries < 30) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+window.addEventListener("hashchange", () => settleOn(decodeURIComponent(location.hash.slice(1))));
+if (location.hash) addEventListener("load", () => settleOn(decodeURIComponent(location.hash.slice(1))), { once: true });
+
 // --- icons for the landing's showcase: the registry takes any SVG markup.
 const icon = (paths) =>
   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
@@ -40,7 +61,7 @@ if (palette) {
         if (url.pathname === location.pathname && url.hash) {
           // Same page: jump to the section (and keep it in the history).
           history.pushState(null, "", url.hash);
-          document.getElementById(url.hash.slice(1))?.scrollIntoView();
+          settleOn(url.hash.slice(1));
         } else {
           location.href = url.href;
         }
@@ -51,14 +72,36 @@ if (palette) {
 }
 
 // --- components page: the language of the examples' code (HTML / React /
-// Vue). One choice for every example, remembered for the next visit.
+// Vue). One choice for every example, remembered for the next visit. The
+// code itself (docs/code/<component>.html) is fetched when "Code" opens.
 const SOURCE_KEY = "ray-ds:code-language";
 const switches = $$("[data-source-switch]");
+let sourceLang = "html";
 function showSource(lang) {
+  sourceLang = lang;
   for (const sw of switches) {
     sw.value = lang;
     for (const pre of $$("[data-source]", sw.closest(".source"))) pre.hidden = pre.dataset.source !== lang;
   }
+}
+async function loadSource(details) {
+  if (details.dataset.loaded) return;
+  details.dataset.loaded = "loading";
+  const body = details.querySelector(".source-body");
+  try {
+    const res = await fetch(details.dataset.codeSrc);
+    if (!res.ok) throw new Error(String(res.status));
+    body.innerHTML = await res.text();
+    details.dataset.loaded = "yes";
+    for (const pre of $$("[data-source]", body)) pre.hidden = pre.dataset.source !== sourceLang;
+  } catch {
+    delete details.dataset.loaded;
+    body.querySelector(".source-status")?.replaceChildren("Could not load the code. ", Object.assign(document.createElement("a"), { href: details.dataset.codeSrc, textContent: "Open it" }), ".");
+  }
+}
+for (const d of $$("details[data-code-src]")) {
+  d.addEventListener("toggle", () => { if (d.open) loadSource(d); });
+  if (d.open) loadSource(d);
 }
 if (switches.length) {
   let saved = null;
