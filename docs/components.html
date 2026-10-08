@@ -2114,50 +2114,228 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="icon" class="component">
 <h2>Icon</h2>
 <p class="summary">An icon of the registry: the whole set (the components' too) changes with setIcons().</p>
-<div class="example"><div class="demo-row" style="font-size: 1.25rem">
-  <ray-icon name="info" color="blue" label="Information"></ray-icon>
-  <ray-icon name="circle-check" color="green"></ray-icon>
-  <ray-icon name="alert-triangle" color="yellow"></ray-icon>
-  <ray-icon name="circle-x" color="red"></ray-icon>
-  <ray-icon name="search" size="xl" stroke="1.5"></ray-icon>
-  <ray-button variant="default"><ray-icon slot="left" name="plus"></ray-icon>New</ray-button>
-  <ray-button id="demo-icons-swap" variant="light">Swap the icon set</ray-button>
+<div class="example"><div class="demo-caption">Registered icons</div>
+<div class="demo-panel-head">
+  <ray-search id="demo-icon-filter" aria-label="Filter icons" placeholder="Filter icons" size="sm" style="width: min(18rem, 100%)"></ray-search>
+  <span class="demo-muted" id="demo-icon-count"></span>
 </div>
-<p style="margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Registered: <code id="demo-icon-names"></code></p>
+<div class="demo-icon-grid" id="demo-icon-grid"></div>
+<p class="demo-muted" style="margin: 0">Click an icon to copy its markup. The same registry draws the components' own icons (dialog close, select chevron, alert status…).</p>
+
+<div class="demo-caption">Sizes</div>
+<div class="demo-row demo-icon-scale">
+  <span><ray-icon name="star" size="xs"></ray-icon><small>xs</small></span>
+  <span><ray-icon name="star" size="sm"></ray-icon><small>sm</small></span>
+  <span><ray-icon name="star" size="md"></ray-icon><small>md</small></span>
+  <span><ray-icon name="star" size="lg"></ray-icon><small>lg</small></span>
+  <span><ray-icon name="star" size="xl"></ray-icon><small>xl</small></span>
+  <span><ray-icon name="star" size="2.5rem"></ray-icon><small>2.5rem</small></span>
+</div>
+
+<div class="demo-caption">Stroke</div>
+<div class="demo-row demo-icon-scale">
+  <span><ray-icon name="folder" size="2rem" stroke="1"></ray-icon><small>1</small></span>
+  <span><ray-icon name="folder" size="2rem" stroke="1.5"></ray-icon><small>1.5</small></span>
+  <span><ray-icon name="folder" size="2rem" stroke="2"></ray-icon><small>2 (default)</small></span>
+  <span><ray-icon name="folder" size="2rem" stroke="2.5"></ray-icon><small>2.5</small></span>
+</div>
+
+<div class="demo-caption">Colors</div>
+<div class="demo-row demo-icon-scale">
+  <span><ray-icon name="info" size="lg" color="blue" label="Information"></ray-icon><small>blue</small></span>
+  <span><ray-icon name="circle-check" size="lg" color="green" label="Passed"></ray-icon><small>green</small></span>
+  <span><ray-icon name="alert-triangle" size="lg" color="yellow" label="Warning"></ray-icon><small>yellow</small></span>
+  <span><ray-icon name="circle-x" size="lg" color="red" label="Failed"></ray-icon><small>red</small></span>
+  <span><ray-icon name="star" size="lg" color="violet"></ray-icon><small>violet</small></span>
+  <span><ray-icon name="user" size="lg" color="#0ea5e9"></ray-icon><small>#0ea5e9</small></span>
+</div>
+
+<div class="demo-caption">In context</div>
+<div class="demo-row">
+  <ray-button><ray-icon slot="left" name="plus"></ray-icon>New project</ray-button>
+  <ray-button variant="default"><ray-icon slot="left" name="download"></ray-icon>Export<ray-icon slot="right" name="chevron-down"></ray-icon></ray-button>
+  <ray-icon-button variant="default" label="Settings"><ray-icon name="settings"></ray-icon></ray-icon-button>
+  <ray-badge variant="light" color="green" normal-case><ray-icon name="check"></ray-icon> Passing</ray-badge>
+</div>
+<p style="margin: 0">Inline with text, an icon follows the font: <ray-icon name="terminal"></ray-icon> run <code>ray test</code>, then open <ray-icon name="file"></ray-icon> report.html.</p>
+
+<div class="demo-caption">Swap the set</div>
+<div class="demo-row">
+  <ray-toggle id="demo-icons-swap" variant="outline">Filled icons</ray-toggle>
+  <ray-alert color="blue" label="setIcons()" style="flex: 1; min-width: min(18rem, 100%)">Replaces icons app-wide: the gallery above and every component follow.</ray-alert>
+</div>
+
 <script type="module">
-  import { setIcons, iconNames } from "../src/core/core.js";
-  document.getElementById("demo-icon-names").textContent = iconNames().join(", ");
-  // A "filled" set, to show every component (dialog close, select chevron…) following it.
-  const solid = (d) => `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="${d}"/></svg>`;
-  document.getElementById("demo-icons-swap").addEventListener("click", () => setIcons({
+  import { setIcons, getIcon, iconNames } from "../src/core/core.js";
+  import { notify } from "../src/components/notification/notification.js";
+
+  const grid = document.getElementById("demo-icon-grid");
+  const filter = document.getElementById("demo-icon-filter");
+  const count = document.getElementById("demo-icon-count");
+  const names = iconNames();
+  for (const name of names) {
+    const tile = document.createElement("button");
+    tile.type = "button";
+    tile.className = "demo-icon-tile";
+    tile.dataset.name = name;
+    tile.title = `<ray-icon name="${name}">`;
+    tile.innerHTML = `<ray-icon name="${name}" size="1.5rem"></ray-icon><span></span>`;
+    tile.querySelector("span").textContent = name;
+    grid.append(tile);
+  }
+  const show = () => {
+    const q = (filter.value ?? "").trim().toLowerCase();
+    let shown = 0;
+    for (const tile of grid.children) {
+      const hit = !q || tile.dataset.name.includes(q);
+      tile.hidden = !hit;
+      if (hit) shown++;
+    }
+    count.textContent = q ? `${shown} of ${names.length}` : `${names.length} icons`;
+  };
+  filter.addEventListener("input", show);
+  show();
+  grid.addEventListener("click", async (e) => {
+    const tile = e.target.closest(".demo-icon-tile");
+    if (!tile) return;
+    const markup = `<ray-icon name="${tile.dataset.name}"></ray-icon>`;
+    try {
+      await navigator.clipboard.writeText(markup);
+      notify({ message: `Copied ${markup}`, color: "green", autoClose: 2000 });
+    } catch {
+      notify({ message: markup, title: "Copy this markup", autoClose: 4000 });
+    }
+  });
+
+  // A "filled" set for a few icons, to show the gallery and the components
+  // (select chevron, alert status, button icons) following it; off restores.
+  const solid = (d) => `<svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="${d}"/></svg>`;
+  const filled = {
     "info": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"),
+    "circle-x": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM14.12 8.46 15.54 9.88 13.41 12 15.54 14.12 14.12 15.54 12 13.41 9.88 15.54 8.46 14.12 10.59 12 8.46 9.88 9.88 8.46 12 10.59z"),
+    "alert-triangle": solid("M10.3 3.2 1.6 18.1a2 2 0 0 0 1.7 3h17.4a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0zM11 8.5h2v5.5h-2zM12 16a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"),
     "circle-check": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"),
     "plus": solid("M11 5h2v14h-2zM5 11h14v2H5z"),
     "chevron-down": solid("M7 9h10l-5 6z"),
-  }));
+    "star": solid("m12 2 3 6.9 7.5.7-5.7 5 1.7 7.4L12 18.2 5.5 22l1.7-7.4-5.7-5 7.5-.7z"),
+    "user": `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>`,
+  };
+  const original = Object.fromEntries(Object.keys(filled).map((n) => [n, getIcon(n)]));
+  document.getElementById("demo-icons-swap").addEventListener("ray-change", (e) => {
+    setIcons(e.detail.pressed ? filled : original);
+  });
 </script>
 </div>
-<details class="source"><summary>HTML</summary><pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;font-size: 1.25rem&quot;</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;info&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;blue&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Information&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;circle-check&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;green&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;alert-triangle&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;yellow&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;circle-x&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;search&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;1.5&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;plus&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>New<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icons-swap&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Swap the icon set<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+<details class="source"><summary>HTML</summary><pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Registered icons<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-panel-head&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-search</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icon-filter&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Filter icons&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;Filter icons&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;width: min(18rem, 100%)&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-search</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icon-count&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)&quot;</span><span class="tk-punctuation">&gt;</span>Registered: <span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icon-names&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-icon-grid&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icon-grid&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Click an icon to copy its markup. The same registry draws the components' own icons (dialog close, select chevron, alert status…).<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Sizes<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row demo-icon-scale&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>xs<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>sm<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;md&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>md<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>lg<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>xl<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;2.5rem&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>2.5rem<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Stroke<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row demo-icon-scale&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;2rem&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;1&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>1<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;2rem&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;1.5&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>1.5<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;2rem&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;2&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>2 (default)<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;2rem&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;2.5&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>2.5<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Colors<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row demo-icon-scale&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;info&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;blue&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Information&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>blue<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;circle-check&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;green&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Passed&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>green<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;alert-triangle&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;yellow&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Warning&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>yellow<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;circle-x&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Failed&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>red<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;star&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;violet&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>violet<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;user&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;#0ea5e9&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span>#0ea5e9<span class="tk-punctuation">&lt;/</span><span class="tk-tag">small</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>In context<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;plus&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>New project<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;download&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Export<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;right&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;chevron-down&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-badge</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;green&quot;</span> <span class="tk-attr">normal-case</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;check&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span> Passing<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-badge</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>Inline with text, an icon follows the font: <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;terminal&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span> run <span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>ray test<span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>, then open <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;file&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span> report.html.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Swap the set<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-toggle</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-icons-swap&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;outline&quot;</span><span class="tk-punctuation">&gt;</span>Filled icons<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-toggle</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-alert</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;blue&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;setIcons()&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;flex: 1; min-width: min(18rem, 100%)&quot;</span><span class="tk-punctuation">&gt;</span>Replaces icons app-wide: the gallery above and every component follow.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-alert</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-keyword">import</span> { setIcons, iconNames } <span class="tk-keyword">from</span> <span class="tk-string">&quot;../src/core/core.js&quot;</span>;
-  document.getElementById(<span class="tk-string">&quot;demo-icon-names&quot;</span>).textContent = iconNames().join(<span class="tk-string">&quot;, &quot;</span>);
-  <span class="tk-comment">// A &quot;filled&quot; set, to show every component (dialog close, select chevron…) following it.</span>
-  <span class="tk-keyword">const</span> solid = (d) =&gt; <span class="tk-string">`&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;${d}&quot;/&gt;&lt;/svg&gt;`</span>;
-  document.getElementById(<span class="tk-string">&quot;demo-icons-swap&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; setIcons({
+  <span class="tk-keyword">import</span> { setIcons, getIcon, iconNames } <span class="tk-keyword">from</span> <span class="tk-string">&quot;../src/core/core.js&quot;</span>;
+  <span class="tk-keyword">import</span> { notify } <span class="tk-keyword">from</span> <span class="tk-string">&quot;../src/components/notification/notification.js&quot;</span>;
+
+  <span class="tk-keyword">const</span> grid = document.getElementById(<span class="tk-string">&quot;demo-icon-grid&quot;</span>);
+  <span class="tk-keyword">const</span> filter = document.getElementById(<span class="tk-string">&quot;demo-icon-filter&quot;</span>);
+  <span class="tk-keyword">const</span> count = document.getElementById(<span class="tk-string">&quot;demo-icon-count&quot;</span>);
+  <span class="tk-keyword">const</span> names = iconNames();
+  <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> name <span class="tk-keyword">of</span> names) {
+    <span class="tk-keyword">const</span> tile = document.createElement(<span class="tk-string">&quot;button&quot;</span>);
+    tile.<span class="tk-keyword">type</span> = <span class="tk-string">&quot;button&quot;</span>;
+    tile.className = <span class="tk-string">&quot;demo-icon-tile&quot;</span>;
+    tile.dataset.name = name;
+    tile.title = <span class="tk-string">`&lt;ray-icon name=&quot;${name}&quot;&gt;`</span>;
+    tile.innerHTML = <span class="tk-string">`&lt;ray-icon name=&quot;${name}&quot; size=&quot;1.5rem&quot;&gt;&lt;/ray-icon&gt;&lt;span&gt;&lt;/span&gt;`</span>;
+    tile.querySelector(<span class="tk-string">&quot;span&quot;</span>).textContent = name;
+    grid.append(tile);
+  }
+  <span class="tk-keyword">const</span> show = () =&gt; {
+    <span class="tk-keyword">const</span> q = (filter.value ?? <span class="tk-string">&quot;&quot;</span>).trim().toLowerCase();
+    <span class="tk-keyword">let</span> shown = <span class="tk-number">0</span>;
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> tile <span class="tk-keyword">of</span> grid.children) {
+      <span class="tk-keyword">const</span> hit = !q || tile.dataset.name.includes(q);
+      tile.hidden = !hit;
+      <span class="tk-keyword">if</span> (hit) shown++;
+    }
+    count.textContent = q ? <span class="tk-string">`${shown} of ${names.length}`</span> : <span class="tk-string">`${names.length} icons`</span>;
+  };
+  filter.addEventListener(<span class="tk-string">&quot;input&quot;</span>, show);
+  show();
+  grid.addEventListener(<span class="tk-string">&quot;click&quot;</span>, <span class="tk-keyword">async</span> (e) =&gt; {
+    <span class="tk-keyword">const</span> tile = e.target.closest(<span class="tk-string">&quot;.demo-icon-tile&quot;</span>);
+    <span class="tk-keyword">if</span> (!tile) <span class="tk-keyword">return</span>;
+    <span class="tk-keyword">const</span> markup = <span class="tk-string">`&lt;ray-icon name=&quot;${tile.dataset.name}&quot;&gt;&lt;/ray-icon&gt;`</span>;
+    <span class="tk-keyword">try</span> {
+      <span class="tk-keyword">await</span> navigator.clipboard.writeText(markup);
+      notify({ message: <span class="tk-string">`Copied ${markup}`</span>, color: <span class="tk-string">&quot;green&quot;</span>, autoClose: <span class="tk-number">2000</span> });
+    } <span class="tk-keyword">catch</span> {
+      notify({ message: markup, title: <span class="tk-string">&quot;Copy this markup&quot;</span>, autoClose: <span class="tk-number">4000</span> });
+    }
+  });
+
+  <span class="tk-comment">// A &quot;filled&quot; set for a few icons, to show the gallery and the components</span>
+  <span class="tk-comment">// (select chevron, alert status, button icons) following it; off restores.</span>
+  <span class="tk-keyword">const</span> solid = (d) =&gt; <span class="tk-string">`&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot; fill-rule=&quot;evenodd&quot; aria-hidden=&quot;true&quot;&gt;&lt;path d=&quot;${d}&quot;/&gt;&lt;/svg&gt;`</span>;
+  <span class="tk-keyword">const</span> filled = {
     <span class="tk-string">&quot;info&quot;</span>: solid(<span class="tk-string">&quot;M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z&quot;</span>),
+    <span class="tk-string">&quot;circle-x&quot;</span>: solid(<span class="tk-string">&quot;M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM14.12 8.46 15.54 9.88 13.41 12 15.54 14.12 14.12 15.54 12 13.41 9.88 15.54 8.46 14.12 10.59 12 8.46 9.88 9.88 8.46 12 10.59z&quot;</span>),
+    <span class="tk-string">&quot;alert-triangle&quot;</span>: solid(<span class="tk-string">&quot;M10.3 3.2 1.6 18.1a2 2 0 0 0 1.7 3h17.4a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0zM11 8.5h2v5.5h-2zM12 16a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z&quot;</span>),
     <span class="tk-string">&quot;circle-check&quot;</span>: solid(<span class="tk-string">&quot;M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z&quot;</span>),
     <span class="tk-string">&quot;plus&quot;</span>: solid(<span class="tk-string">&quot;M11 5h2v14h-2zM5 11h14v2H5z&quot;</span>),
     <span class="tk-string">&quot;chevron-down&quot;</span>: solid(<span class="tk-string">&quot;M7 9h10l-5 6z&quot;</span>),
-  }));
+    <span class="tk-string">&quot;star&quot;</span>: solid(<span class="tk-string">&quot;m12 2 3 6.9 7.5.7-5.7 5 1.7 7.4L12 18.2 5.5 22l1.7-7.4-5.7-5 7.5-.7z&quot;</span>),
+    <span class="tk-string">&quot;user&quot;</span>: <span class="tk-string">`&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;currentColor&quot; aria-hidden=&quot;true&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;8&quot; r=&quot;4&quot;/&gt;&lt;path d=&quot;M4 21a8 8 0 0 1 16 0z&quot;/&gt;&lt;/svg&gt;`</span>,
+  };
+  <span class="tk-keyword">const</span> original = Object.fromEntries(Object.keys(filled).map((n) =&gt; [n, getIcon(n)]));
+  document.getElementById(<span class="tk-string">&quot;demo-icons-swap&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
+    setIcons(e.detail.pressed ? filled : original);
+  });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-icon&gt;</code> &middot; <code>RayIcon</code></p>
 <p class="note">setIcons({ name: '&lt;svg…&gt;' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.</p>
@@ -2417,7 +2595,7 @@ if (location.protocol === "file:") window.__rayServeHint();
     notify({ title: <span class="tk-string">&quot;Build failed&quot;</span>, message: <span class="tk-string">&quot;type error at 12:5: 'f' expects 2 argument(s)&quot;</span>, color: <span class="tk-string">&quot;red&quot;</span>, autoClose: <span class="tk-keyword">false</span> }));
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <h3><code>&lt;ray-notification&gt;</code></h3>
-<p class="note">notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info.</p>
+<p class="note">notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info. The status icon and the loader are 1.5rem with a 1.5 stroke; set --ray-notification-icon-size and --ray-notification-icon-stroke to change them.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Title.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Status color: tints the status icon (and a slotted icon's circle).</td></tr><tr><td><code>icon</code></td><td><code>icon</code></td><td>string</td><td></td><td>Status icon from the registry (default: from the color); &quot;none&quot; for no icon.</td></tr><tr><td><code>loading</code></td><td><code>loading</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows a spinner (notify() does not auto-close it).</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button.</td></tr><tr><td><code>withBorder</code></td><td><code>with-border</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Draws a border.</td></tr><tr><td><code>actionLabel</code></td><td><code>action-label</code></td><td>string</td><td></td><td>Text of an action button (e.g. &quot;Undo&quot;); pressing it fires ray-action.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-close</code></td><td>The close button was pressed.</td></tr><tr><td><code>ray-action</code></td><td>The action button was pressed (notify() runs action.onClick and closes it).</td></tr></tbody></table></div>

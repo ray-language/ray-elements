@@ -282,11 +282,13 @@ export class RayElement extends HTMLElement {
   /**
    * Protected. Fills every [data-ray-icon="name"] under `root` (default: the
    * shadow root) with that icon of the registry (setIcons). Components call
-   * it for markup they create after the template.
+   * it for markup they create after the template. An empty name or "none"
+   * (the value components use to hide an icon) leaves the slot empty.
    */
   paintIcons(root = this.shadowRoot) {
     for (const slot of root.querySelectorAll("[data-ray-icon]")) {
-      slot.innerHTML = getIcon(slot.getAttribute("data-ray-icon"));
+      const name = slot.getAttribute("data-ray-icon");
+      slot.innerHTML = name && name !== "none" ? getIcon(name) : "";
     }
   }
 }

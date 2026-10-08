@@ -503,3 +503,31 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-ide-terminal pre { margin: 0; padding: 0 var(--ray-space-2); font-family: var(--ray-font-mono); font-size: 0.75rem; line-height: 1.6; color: var(--ray-foreground); }
 .demo-ide-terminal .p { color: var(--ray-muted-foreground); }
 .demo-ide-terminal .ok { color: var(--ray-green-light-color); }
+
+/* Icon example: the registry as a grid of tiles, and labeled scales. */
+.demo-icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr)); gap: var(--ray-space-2); }
+@media (max-width: 40em) {
+  .demo-icon-grid { grid-template-columns: repeat(auto-fill, minmax(5.75rem, 1fr)); }
+  .demo-icon-tile { padding: var(--ray-space-3) var(--ray-space-1) var(--ray-space-2); }
+}
+.demo-icon-tile {
+  display: grid;
+  justify-items: center;
+  gap: var(--ray-space-2);
+  min-width: 0;
+  padding: var(--ray-space-4) var(--ray-space-2) var(--ray-space-3);
+  font: inherit;
+  color: var(--ray-foreground);
+  background: transparent;
+  border: 1px solid var(--ray-border);
+  border-radius: var(--ray-radius-md);
+  cursor: pointer;
+  transition: background var(--ray-duration-fast), border-color var(--ray-duration-fast);
+}
+.demo-icon-tile:hover { background: var(--ray-default-hover); }
+.demo-icon-tile:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 2px; }
+.demo-icon-tile[hidden] { display: none; }
+.demo-icon-tile span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
+.demo-icon-scale { gap: var(--ray-space-6); align-items: end; }
+.demo-icon-scale > span { display: grid; justify-items: center; gap: var(--ray-space-2); }
+.demo-icon-scale small { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }

@@ -8,7 +8,7 @@
 
 import { RayElement, css, define } from "../../core/core.js";
 import { motionAllowed, play } from "../../core/motion.js";
-import { applyColor, loaderStyles } from "../../core/styles.js";
+import { applyColor } from "../../core/styles.js";
 
 const notificationStyles = css`
   :host { display: block; }
@@ -42,13 +42,43 @@ const notificationStyles = css`
     border-radius: 50%;
   }
   .card[data-icon] .icon { display: inline-flex; }
-  .loader { display: none; color: var(--_filled); --_loader: 1.25rem; margin-top: 0.125rem; }
+  /* The loader: an SVG ring drawn like the status icons' circle (r 9 of the
+     same 24 grid, same stroke), so it is not larger or heavier than a check
+     or a cross. A CSS border could not match: browsers round its width. */
+  .loader {
+    display: none;
+    flex: none;
+    color: var(--_light-color);
+    --ray-icon-size: var(--ray-notification-icon-size, 1.5rem);
+    --ray-icon-stroke: var(--ray-notification-icon-stroke, 1.5);
+  }
+  .loader svg {
+    width: var(--ray-icon-size);
+    height: var(--ray-icon-size);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--ray-icon-stroke);
+    stroke-linecap: round;
+    animation: ray-spin 0.75s linear infinite;
+  }
+  @keyframes ray-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .loader svg { animation-duration: 1.5s; }
+  }
   /* A colored notification's status icon, where the loader goes. The
-     light-color shade: legible on the card in both schemes (yellow too). */
-  .glyph { display: none; flex: none; margin-top: 0.125rem; color: var(--_light-color); --ray-icon-size: 1.25rem; }
+     light-color shade: legible on the card in both schemes (yellow too).
+     Larger and thinner than inline icons; tuned with --ray-notification-icon-size
+     and --ray-notification-icon-stroke. */
+  .glyph {
+    display: none;
+    flex: none;
+    color: var(--_light-color);
+    --ray-icon-size: var(--ray-notification-icon-size, 1.5rem);
+    --ray-icon-stroke: var(--ray-notification-icon-stroke, 1.5);
+  }
   .card[data-glyph] .glyph { display: inline-flex; }
   .card[data-loading] .glyph, .card[data-icon] .glyph { display: none !important; }
-  .card[data-loading] .loader { display: inline-block; }
+  .card[data-loading] .loader { display: inline-flex; }
   .card[data-loading] .icon { display: none; }
   ::slotted(svg) { width: 1rem; height: 1rem; }
   .body { flex: 1; min-width: 0; }
@@ -109,11 +139,11 @@ export class RayNotification extends RayElement {
     actionLabel: { type: String },
     icon: { type: String },
   };
-  static styles = [loaderStyles, notificationStyles];
+  static styles = [notificationStyles];
   static template = `
     <div class="card" part="card">
       <span class="icon" part="icon"><slot name="icon"></slot></span>
-      <span class="loader" aria-hidden="true"></span>
+      <span class="loader" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke-dasharray="42.4 14.1"/></svg></span>
       <span class="glyph" part="status-icon" aria-hidden="true"></span>
       <div class="body">
         <p class="title" part="title"></p>

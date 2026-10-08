@@ -1555,7 +1555,7 @@ export declare function hideNotification(id: string): boolean;
 export declare function clearNotifications(): void;
 /** The status icon a color gets: circle-check, circle-x, alert-triangle or info. */
 export declare function statusIcon(color: string): string;
-/** <ray-notification> notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info. */
+/** <ray-notification> notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info. The status icon and the loader are 1.5rem with a 1.5 stroke; set --ray-notification-icon-size and --ray-notification-icon-stroke to change them. */
 export declare class RayNotification extends RayElement {
   /** Title. */
   label: string | undefined;
