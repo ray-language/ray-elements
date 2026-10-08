@@ -94,7 +94,7 @@ export const RaySlider = createComponent("RaySlider", "ray-slider", {
   model: { prop: "value", events: ["input"] },
 });
 export const RaySwitch = createComponent("RaySwitch", "ray-switch", {
-  properties: ["checked", "value", "name", "label", "color", "size", "disabled", "indeterminate", "description", "error", "required", "variant", "labelPosition", "radius", "descriptionPosition"],
+  properties: ["checked", "value", "name", "label", "description", "error", "labelPosition", "color", "size", "disabled", "indeterminate", "required", "variant", "radius", "descriptionPosition"],
   booleans: ["checked", "disabled", "indeterminate", "required"],
   model: { prop: "checked", events: ["change"] },
 });

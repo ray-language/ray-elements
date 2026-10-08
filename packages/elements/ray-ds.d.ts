@@ -893,6 +893,12 @@ export declare class RaySwitch extends RayCheckbox {
   name: string | undefined;
   /** Label text (or the content). */
   label: string | undefined;
+  /** Help text. */
+  description: string | undefined;
+  /** Error text. */
+  error: string | undefined;
+  /** Side of the label. */
+  labelPosition: "right" | "left";
   /** Track color when on. */
   color: string | undefined;
   /** Track size. */

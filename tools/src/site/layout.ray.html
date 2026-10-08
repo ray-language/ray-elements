@@ -1,4 +1,4 @@
-{% params title: string, description: string, nav: [model.NavItem], home: bool, colors: [string], groups: [model.Group], main_class: string, body: string, head_guard: string, sidebar: bool, mark: string, mark_small: string, base: string %}
+{% params title: string, description: string, nav: [model.NavItem], home: bool, colors: [string], groups: [model.Group], main_class: string, body: string, head_guard: string, sidebar: bool, mark: string, mark_small: string, base: string, key: string %}
 {% import site/model %}
 <!doctype html>
 <html lang="en">
@@ -48,7 +48,7 @@
 {% endfor %}</div>
 {% endif %}</ray-drawer>
 {% if sidebar %}<div class="layout">
-<aside class="sidebar" aria-label="On this page">
+<aside class="sidebar" aria-label="On this page" style="view-transition-name: sidebar-{{ key }}">
 {% for g in groups %}<div class="nav-group">{% if g.title != "" %}<p class="nav-group-title">{{ g.title }}</p>{% endif %}
 {% for l in g.links %}<a class="side-link" href="{{ l.href }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.label }}</a>
 {% endfor %}</div>

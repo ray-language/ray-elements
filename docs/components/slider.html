@@ -45,6 +45,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <script type="importmap">{"imports": {"@ray-ds/elements": "./../elements.js"}}</script>
 <!-- site.js first: it registers the site's own icons before components paint. -->
 <script type="module" src="../site.js"></script>
+<link rel="modulepreload" href="../../src/components/button/button.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/icon-button/icon-button.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/segmented-control/segmented-control.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/select/select.js" fetchpriority="low">
@@ -52,7 +53,6 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/icon/icon.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/core.js" fetchpriority="low">
-<link rel="modulepreload" href="../../src/components/button/button.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/styles.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/form.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/position.js" fetchpriority="low">
@@ -60,7 +60,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -163,7 +163,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 </ray-drawer>
 <div class="layout">
-<aside class="sidebar" aria-label="On this page">
+<aside class="sidebar" aria-label="On this page" style="view-transition-name: sidebar-components">
 <div class="nav-group"><p class="nav-group-title">Buttons</p>
 <a class="side-link" href="button.html">Button</a>
 <a class="side-link" href="button-group.html">Button group</a>
@@ -254,12 +254,56 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="slider" class="component">
 <h1 class="page-title">Slider</h1>
 <p class="page-intro">A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.</p>
-<div class="example"><div class="demo-grid">
-  <ray-slider label="Volume" value="40" show-value unit="%" name="volume"></ray-slider>
-  <ray-slider id="demo-slider" label="Tempo" min="60" max="180" step="5" value="120" show-value unit=" bpm" color="orange" size="md"></ray-slider>
+<div class="example"><div class="demo-caption">Adjust a photo</div>
+<div class="demo-photo">
+  <div class="demo-photo-frame" id="demo-photo" role="img" aria-label="A landscape: sun, mountains and a lake"><span class="sun"></span><span class="far"></span><span class="near"></span><span class="lake"></span></div>
+  <div class="demo-stack">
+    <ray-slider data-filter="brightness" label="Brightness" value="100" min="40" max="160" show-value unit="%"></ray-slider>
+    <ray-slider data-filter="contrast" label="Contrast" value="100" min="40" max="160" show-value unit="%" color="violet"></ray-slider>
+    <ray-slider data-filter="saturate" label="Saturation" value="100" min="0" max="200" show-value unit="%" color="pink"></ray-slider>
+    <ray-slider data-filter="hue-rotate" label="Hue" value="0" min="-180" max="180" show-value unit="°" color="teal"></ray-slider>
+    <div class="demo-actions"><ray-button size="xs" variant="default" id="demo-photo-reset">Reset</ray-button></div>
+  </div>
 </div>
+
+<div class="demo-caption">Steps and marks</div>
+<div class="demo-grid">
+  <ray-slider id="demo-tempo" label="Tempo" min="60" max="180" step="5" value="120" show-value unit=" bpm" color="orange"></ray-slider>
+  <ray-slider id="demo-quality" label="Export quality" min="0" max="100" step="25" value="75" description="Snaps to each mark."></ray-slider>
+</div>
+
+<div class="demo-caption">Colors, sizes and states</div>
+<div class="demo-grid">
+  <div class="demo-stack">
+    <ray-slider aria-label="Extra small" size="xs" value="20" color="blue"></ray-slider>
+    <ray-slider aria-label="Small" size="sm" value="40" color="teal"></ray-slider>
+    <ray-slider aria-label="Medium" size="md" value="60" color="violet"></ray-slider>
+    <ray-slider aria-label="Large" size="lg" value="80" color="orange"></ray-slider>
+  </div>
+  <div class="demo-stack">
+    <ray-slider label="Storage" value="92" show-value unit=" GB" max="100" color="red" error="Over the 80 GB of your plan." name="storage"></ray-slider>
+    <ray-slider label="Disabled" value="30" disabled></ray-slider>
+  </div>
+</div>
+
 <script type="module">
-  document.getElementById("demo-slider").marks = [60, 90, 120, 150, 180];
+  // Photo: every slider is one CSS filter.
+  const photo = document.getElementById("demo-photo");
+  const sliders = [...document.querySelectorAll("[data-filter]")];
+  const apply = () => {
+    photo.style.filter = sliders.map((s) => `${s.dataset.filter}(${s.value}${s.dataset.filter === "hue-rotate" ? "deg" : "%"})`).join(" ");
+  };
+  for (const s of sliders) s.addEventListener("input", apply);
+  document.getElementById("demo-photo-reset").addEventListener("click", () => {
+    for (const s of sliders) s.value = s.dataset.filter === "hue-rotate" ? 0 : 100;
+    apply();
+  });
+
+  // Marks: numbers, or { value, label }.
+  document.getElementById("demo-tempo").marks = [60, 90, 120, 150, 180];
+  document.getElementById("demo-quality").marks = [
+    { value: 0, label: "Draft" }, { value: 25, label: "Low" }, { value: 50, label: "Medium" }, { value: 75, label: "High" }, { value: 100, label: "Max" },
+  ];
 </script>
 </div>
 <details class="source" data-code-src="code/slider.html"><summary>Code</summary>

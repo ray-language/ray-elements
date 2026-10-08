@@ -2057,6 +2057,26 @@
           "description": "Label text (or the content)."
         },
         {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "label-position",
+          "description": "Side of the label.",
+          "values": [
+            {
+              "name": "right"
+            },
+            {
+              "name": "left"
+            }
+          ]
+        },
+        {
           "name": "color",
           "description": "Track color when on."
         },
@@ -2092,14 +2112,6 @@
           "valueSet": "v"
         },
         {
-          "name": "description",
-          "description": "Help text."
-        },
-        {
-          "name": "error",
-          "description": "Error text."
-        },
-        {
           "name": "required",
           "description": "Must be checked to submit.",
           "valueSet": "v"
@@ -2113,18 +2125,6 @@
             },
             {
               "name": "outline"
-            }
-          ]
-        },
-        {
-          "name": "label-position",
-          "description": "Side of the label.",
-          "values": [
-            {
-              "name": "right"
-            },
-            {
-              "name": "left"
             }
           ]
         }

@@ -176,6 +176,17 @@ T.test("select: child options, data, placeholder and required", async (T) => {
   box.remove();
 });
 
+T.test("select: options set while disabled are enabled with it", async (T) => {
+  const box = await mount(`<ray-select placeholder="Pick" disabled></ray-select>`);
+  const el = box.querySelector("ray-select");
+  el.data = ["a", "b", { value: "c", disabled: true }];
+  el.disabled = false;
+  await T.settle();
+  const states = [...el.shadowRoot.querySelectorAll('[role="option"]')].map((o) => o.getAttribute("aria-disabled"));
+  T.eq(states.join(), "false,false,true", "only the disabled option stays disabled (the placeholder is not listed)");
+  box.remove();
+});
+
 T.test("select: own dropdown — mouse, keyboard, typeahead, groups, ARIA", async (T) => {
   const box = await mount(`<form><ray-select name="region" label="Region" value="eu">
     <optgroup label="Europe"><option value="eu">Frankfurt</option><option value="uk" disabled>London</option><option value="es">Madrid</option></optgroup>

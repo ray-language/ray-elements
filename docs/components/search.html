@@ -49,6 +49,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/search/search.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/segmented-control/segmented-control.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/select/select.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/dialog/dialog.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/icon/icon.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/core.js" fetchpriority="low">
@@ -60,9 +61,10 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/position.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/focus.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -165,7 +167,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 </ray-drawer>
 <div class="layout">
-<aside class="sidebar" aria-label="On this page">
+<aside class="sidebar" aria-label="On this page" style="view-transition-name: sidebar-components">
 <div class="nav-group"><p class="nav-group-title">Buttons</p>
 <a class="side-link" href="button.html">Button</a>
 <a class="side-link" href="button-group.html">Button group</a>
@@ -256,14 +258,72 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="search" class="component">
 <h1 class="page-title">Search</h1>
 <p class="page-intro">A search box: icon, clear button, an optional shortcut that focuses it, and a debounced ray-search event. A RayInput, so it has a label and takes part in forms.</p>
-<div class="example"><div class="demo-grid">
-  <ray-search aria-label="Search packages" placeholder="Search packages" shortcut="/" id="demo-search"></ray-search>
-  <ray-search label="Filter tests" variant="default" placeholder="Name or file" debounce="0" size="md" radius="full"></ray-search>
+<div class="example"><div class="demo-caption">Filter a list as you type</div>
+<div class="demo-filter">
+  <div class="demo-filter-bar">
+    <ray-search id="demo-pkg-search" aria-label="Search packages" placeholder="Search packages…" shortcut="/" debounce="0"></ray-search>
+    <span class="demo-muted" id="demo-pkg-count">8 packages</span>
+  </div>
+  <ul class="demo-pkg-list" id="demo-pkg-list">
+    <li data-keywords="http server router middleware"><strong>web</strong><span>The Express-style framework: routes, middleware, sessions.</span></li>
+    <li data-keywords="http server client tls websocket"><strong>net</strong><span>Production HTTP server and client, TLS, WebSocket.</span></li>
+    <li data-keywords="api calls typed"><strong>rpc</strong><span>Typed calls between a backend and its clients.</span></li>
+    <li data-keywords="sql postgres sqlite migrations"><strong>db</strong><span>SQL with migrations: SQLite and Postgres.</span></li>
+    <li data-keywords="components web design ui"><strong>ray-ds</strong><span>This design system: web components with raylang extras.</span></li>
+    <li data-keywords="test browser webview"><strong>webtest</strong><span>Browser tests that run in the real webview.</span></li>
+    <li data-keywords="queue jobs background cron"><strong>jobs</strong><span>Background jobs and schedules.</span></li>
+    <li data-keywords="log metrics tracing"><strong>observe</strong><span>Logs, metrics and traces.</span></li>
+  </ul>
+  <p class="demo-pkg-empty" id="demo-pkg-empty" hidden>No package matches <b id="demo-pkg-query"></b>.</p>
 </div>
-<p id="demo-search-out" style="margin: 0.75rem 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Type to search (ray-search fires after 200 ms of quiet).</p>
+
+<div class="demo-caption">ray-search: once the typing pauses</div>
+<div class="demo-split">
+  <div class="demo-stack">
+    <ray-search id="demo-search" label="Search the docs" placeholder="Try “dialog” or “tokens”"></ray-search>
+    <span class="demo-muted">ray-search fires 200 ms after the last key (debounce); input fires on every key.</span>
+  </div>
+  <ol class="demo-log" id="demo-search-log"><li class="demo-muted">Queries appear here.</li></ol>
+</div>
+
+<div class="demo-caption">Variants, sizes and radius</div>
+<div class="demo-grid">
+  <ray-search label="Filled (the default)" placeholder="Name or file"></ray-search>
+  <ray-search label="Bordered" variant="default" placeholder="Name or file"></ray-search>
+  <ray-search label="Large, round" size="lg" radius="full" placeholder="Search everything"></ray-search>
+  <ray-search label="Extra small" size="xs" placeholder="Filter"></ray-search>
+  <ray-search label="With a value" value="ray-dialog"></ray-search>
+  <ray-search label="Disabled" placeholder="Offline" disabled></ray-search>
+</div>
+<div class="demo-unstyled">
+  <ray-search aria-label="Search in the toolbar" variant="unstyled" placeholder="Unstyled: for a toolbar or a header"></ray-search>
+</div>
+
 <script type="module">
+  // Filter: name and keywords, on every key (debounce="0").
+  const search = document.getElementById("demo-pkg-search");
+  const items = [...document.querySelectorAll("#demo-pkg-list li")];
+  search.addEventListener("input", () => {
+    const q = (search.value ?? "").trim().toLowerCase();
+    let shown = 0;
+    for (const li of items) {
+      const hit = !q || li.textContent.toLowerCase().includes(q) || li.dataset.keywords.includes(q);
+      li.hidden = !hit;
+      shown += hit;
+    }
+    document.getElementById("demo-pkg-count").textContent = `${shown} package${shown === 1 ? "" : "s"}`;
+    document.getElementById("demo-pkg-empty").hidden = shown > 0;
+    document.getElementById("demo-pkg-query").textContent = `“${q}”`;
+  });
+
+  // The debounced event: the last five queries.
+  const log = document.getElementById("demo-search-log");
   document.getElementById("demo-search").addEventListener("ray-search", (e) => {
-    document.getElementById("demo-search-out").textContent = e.detail.value ? `ray-search: "${e.detail.value}"` : "Cleared.";
+    log.querySelector(".demo-muted")?.remove();
+    const li = document.createElement("li");
+    li.textContent = e.detail.value ? `“${e.detail.value}”` : "cleared";
+    log.prepend(li);
+    while (log.children.length > 5) log.lastElementChild.remove();
   });
 </script>
 </div>

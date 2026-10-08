@@ -32,7 +32,9 @@ const styles = css`
   /* The thumb takes the text color of the filled shade: white on dark fills,
      black on light ones (yellow, or "dark" in the dark scheme). */
   .control:checked + .indicator .thumb { left: calc(100% - var(--_s) + 4px); border-color: transparent; background: var(--_contrast); }
-  .control:disabled + .indicator .thumb { background: var(--ray-border); box-shadow: none; }
+  /* Disabled: a muted track (gray when on, like a disabled checkbox) and a
+     plain thumb that stays visible on it, on its side. */
+  .control:disabled + .indicator .thumb { background: var(--ray-background); border-color: var(--ray-border); box-shadow: none; }
 `;
 
 export class RaySwitch extends RayCheckbox {

@@ -5,6 +5,7 @@ from components/meta import Component, Element, Prop, Named, CATEGORIES, all_ele
 import site/frameworks;
 from site/model import Page, Group, Link, page, link;
 from site/highlight import escape;
+import site/thumbs;
 import site/highlight;
 
 // `import` lines for the given components, relative to the index file.
@@ -71,22 +72,29 @@ fn relocate(html: string, cs: [Component], to_pages: bool) -> string {
 
 // docs/components.html: the catalog — a card per component, by category.
 pub fn index(cs: [Component]) -> Page {
+    let cats = CATEGORIES.filter(fn(cat: string) -> bool { cs.filter(fn(c: Component) -> bool { c.category == cat }).len() > 0 });
+    let jumps = cats.map(fn(cat: string) -> string {
+        let n = cs.filter(fn(c: Component) -> bool { c.category == cat }).len();
+        "<a href=\"#${slug_of(cat)}\">${escape(cat)}<span>${n}</span></a>"
+    });
     let body: [string] = [
-        "<h1 class=\"page-title\">Components</h1>",
-        "<p class=\"page-intro\">${cs.len()} components, each with a live example, its code in HTML, React and Vue, and its API generated from its <code>component.toml</code>. <a href=\"components/all.html\">All of them on one page</a>.</p>"
+        `<header class="catalog-hero">
+<p class="catalog-eyebrow">ray·ds · components</p>
+<h1 class="page-title">Components</h1>
+<p class="page-intro">${cs.len()} web components for any app: a live example, its code in HTML, React and Vue, and its API generated from its <code>component.toml</code>.</p>
+<ul class="catalog-facts"><li><b>${cs.len()}</b> components</li><li><b>${cats.len()}</b> categories</li><li><b>3</b> ways to write them: HTML, React, Vue</li><li><a href="components/all.html">All on one page</a></li></ul>
+<nav class="catalog-jump" aria-label="Categories">${join(jumps, "")}</nav>
+</header>`
     ];
-    for cat in CATEGORIES {
+    for cat in cats {
         let in_cat = cs.filter(fn(c: Component) -> bool { c.category == cat });
-        if (in_cat.len() == 0) {
-            continue;
-        }
-        body.push("<h2 class=\"catalog-title\" id=\"${slug_of(cat)}\">${escape(cat)}</h2>");
+        body.push("<section class=\"catalog-group\" aria-labelledby=\"${slug_of(cat)}\"><div class=\"catalog-head\"><h2 class=\"catalog-title\" id=\"${slug_of(cat)}\">${escape(cat)}</h2><span class=\"catalog-count\">${in_cat.len()}</span><p>${escape(category_blurb(cat))}</p></div>");
         body.push("<div class=\"catalog\">");
         for c in in_cat {
             let tags = join(c.elements.map(fn(e: Element) -> string { "&lt;${e.tag}&gt;" }), " ");
-            body.push("<a class=\"catalog-card\" href=\"components/${c.dir}.html\"><strong>${escape(label_of(c))}</strong><span>${escape(first_sentence(c.summary))}</span><code>${tags}</code></a>");
+            body.push("<a class=\"catalog-card\" href=\"components/${c.dir}.html\">${thumbs.thumb(c.dir)}<span class=\"catalog-text\"><strong>${escape(label_of(c))}</strong><span>${escape(first_sentence(c.summary))}</span><code>${tags}</code></span></a>");
         }
-        body.push("</div>");
+        body.push("</div></section>");
     }
     // Links to the old single page (components.html#button) still land.
     let dirs = join(cs.map(fn(c: Component) -> string { "\"${c.dir}\"" }), ",");
@@ -147,6 +155,25 @@ pub fn all(cs: [Component]) -> Page {
         join(body, "\n"),
         "components-page"
     )
+}
+
+// One line under each category of the catalog.
+fn category_blurb(cat: string) -> string {
+    for (k, v) in [
+        ("Buttons", "Actions, on their own or grouped, with an icon or a pressed state."),
+        ("Inputs", "Form fields that take part in a <form>: name, value, validation."),
+        ("Navigation", "Moving around an app: links, tabs, pages, the side bar."),
+        ("Overlays", "Above the page: modals, drawers, menus, popovers, the command palette."),
+        ("Data display", "Content and data: tables, stats, code, media, badges."),
+        ("Feedback", "What the app says back: alerts, notifications, progress, loading."),
+        ("Layout", "The frame around the content: cards, panes, ratios, separators."),
+        ("Theme", "Light, dark or the system's choice.")
+    ] {
+        if (k == cat) {
+            return v;
+        }
+    }
+    ""
 }
 
 fn slug_of(s: string) -> string {

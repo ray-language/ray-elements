@@ -485,8 +485,11 @@ value = "{border}"
 # Text on the muted background, checked for AA in [checks] aa.
 # ---------------------------------------------------------------------------
 
+# In dark, a deep near-black (#19191a) rather than the muted step: code
+# reads as its own surface, between the page and the cards.
 [code.background]
-value = "{muted}"
+light = "{gray.0}"
+dark = "#19191a"
 [code.text]
 value = "{foreground}"
 [code.tag]

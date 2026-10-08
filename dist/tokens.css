@@ -318,7 +318,7 @@
     --ray-chart-tooltip-border: var(--ray-border);
 
     /* code */
-    --ray-code-background: var(--ray-muted);
+    --ray-code-background: light-dark(var(--ray-gray-0), #19191a);
     --ray-code-text: var(--ray-foreground);
     --ray-code-tag: var(--ray-green-light-color);
     --ray-code-attr: var(--ray-violet-light-color);

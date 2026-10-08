@@ -6016,6 +6016,31 @@
               "fieldName": "label"
             },
             {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "fieldName": "error"
+            },
+            {
+              "name": "label-position",
+              "type": {
+                "text": "\"right\" | \"left\""
+              },
+              "description": "Side of the label.",
+              "fieldName": "labelPosition",
+              "default": "right"
+            },
+            {
               "name": "color",
               "type": {
                 "text": "string"
@@ -6049,22 +6074,6 @@
               "fieldName": "indeterminate"
             },
             {
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "description": "Help text.",
-              "fieldName": "description"
-            },
-            {
-              "name": "error",
-              "type": {
-                "text": "string"
-              },
-              "description": "Error text.",
-              "fieldName": "error"
-            },
-            {
               "name": "required",
               "type": {
                 "text": "boolean"
@@ -6080,15 +6089,6 @@
               "description": "Checked look: filled box, or colored border and mark.",
               "fieldName": "variant",
               "default": "filled"
-            },
-            {
-              "name": "label-position",
-              "type": {
-                "text": "\"right\" | \"left\""
-              },
-              "description": "Side of the label.",
-              "fieldName": "labelPosition",
-              "default": "right"
             }
           ],
           "members": [
@@ -6133,6 +6133,37 @@
             },
             {
               "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "labelPosition",
+              "type": {
+                "text": "\"right\" | \"left\""
+              },
+              "description": "Side of the label.",
+              "attribute": "label-position",
+              "reflects": true,
+              "default": "right"
+            },
+            {
+              "kind": "field",
               "name": "color",
               "type": {
                 "text": "string"
@@ -6174,26 +6205,6 @@
             },
             {
               "kind": "field",
-              "name": "description",
-              "type": {
-                "text": "string"
-              },
-              "description": "Help text.",
-              "attribute": "description",
-              "reflects": false
-            },
-            {
-              "kind": "field",
-              "name": "error",
-              "type": {
-                "text": "string"
-              },
-              "description": "Error text.",
-              "attribute": "error",
-              "reflects": false
-            },
-            {
-              "kind": "field",
               "name": "required",
               "type": {
                 "text": "boolean"
@@ -6212,17 +6223,6 @@
               "attribute": "variant",
               "reflects": true,
               "default": "filled"
-            },
-            {
-              "kind": "field",
-              "name": "labelPosition",
-              "type": {
-                "text": "\"right\" | \"left\""
-              },
-              "description": "Side of the label.",
-              "attribute": "label-position",
-              "reflects": true,
-              "default": "right"
             }
           ],
           "events": [

@@ -103,7 +103,7 @@ export const RaySlider = createComponent("ray-slider", {
 });
 export const RaySwitch = createComponent("ray-switch", {
   displayName: "RaySwitch",
-  properties: ["checked", "value", "name", "label", "color", "size", "disabled", "indeterminate", "description", "error", "required", "variant", "labelPosition", "radius", "descriptionPosition"],
+  properties: ["checked", "value", "name", "label", "description", "error", "labelPosition", "color", "size", "disabled", "indeterminate", "required", "variant", "radius", "descriptionPosition"],
   events: { onChange: "change" },
 });
 export const RayTextarea = createComponent("ray-textarea", {

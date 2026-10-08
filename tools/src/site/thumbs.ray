@@ -1,0 +1,119 @@
+// The catalog's thumbnails: a sketch of each component in plain markup,
+// drawn by the .thumb rules of site.css. No component is loaded for them;
+// they follow the primary color and the theme through the tokens.
+
+fn ln(w: string) -> string { "<i class=\"t-ln\" style=\"--w:${w}\"></i>" }
+fn lp(w: string) -> string { "<i class=\"t-ln p\" style=\"--w:${w}\"></i>" }
+fn btn(v: string, w: string) -> string { "<i class=\"t-btn ${v}\" style=\"--w:${w}\"></i>" }
+fn sq(v: string, inner: string) -> string { "<i class=\"t-sq ${v}\">${inner}</i>" }
+fn row(inner: string) -> string { "<i class=\"t-row\">${inner}</i>" }
+fn col(inner: string) -> string { "<i class=\"t-col\">${inner}</i>" }
+fn sf(cls: string, inner: string) -> string { "<i class=\"t-sf ${cls}\">${inner}</i>" }
+fn inp(w: string, inner: string) -> string { "<i class=\"t-in\" style=\"--w:${w}\">${inner}</i>" }
+fn av(color: string) -> string { "<i class=\"t-av\" style=\"--c:var(--ray-${color}-light);--cc:var(--ray-${color}-light-color)\"></i>" }
+fn dot(color: string) -> string { "<i class=\"t-dot\" style=\"--c:var(--ray-${color}-light-color)\"></i>" }
+fn pill(v: string, color: string, w: string) -> string { "<i class=\"t-pill ${v}\" style=\"--c:var(--ray-${color}-light-color);--cl:var(--ray-${color}-light);--w:${w}\"></i>" }
+fn sw(on: bool) -> string { if (on) { "<i class=\"t-sw on\"></i>" } else { "<i class=\"t-sw\"></i>" } }
+fn cb(on: bool) -> string { if (on) { "<i class=\"t-cb on\"></i>" } else { "<i class=\"t-cb\"></i>" } }
+fn rd(on: bool) -> string { if (on) { "<i class=\"t-rd on\"></i>" } else { "<i class=\"t-rd\"></i>" } }
+fn txt(cls: string, s: string) -> string { "<i class=\"t-tx ${cls}\">${s}</i>" }
+
+// A 24×24 stroked icon.
+fn svg(paths: string) -> string {
+    "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\">${paths}</svg>"
+}
+
+const I_CHECK: string = "<path d=\"M5 12l5 5L20 7\"/>";
+const I_PLUS: string = "<path d=\"M12 5v14M5 12h14\"/>";
+const I_SEARCH: string = "<circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/>";
+const I_DOWN: string = "<path d=\"M6 9l6 6 6-6\"/>";
+const I_RIGHT: string = "<path d=\"M9 6l6 6-6 6\"/>";
+const I_STAR: string = "<path d=\"M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z\"/>";
+const I_BELL: string = "<path d=\"M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z\"/><path d=\"M10 21h4\"/>";
+const I_USER: string = "<circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21a8 8 0 0 1 16 0\"/>";
+const I_FILE: string = "<path d=\"M14 3H6v18h12V7z\"/><path d=\"M14 3v4h4\"/>";
+const I_UP: string = "<path d=\"M12 16V4M6 10l6-6 6 6\"/><path d=\"M4 20h16\"/>";
+const I_INFO: string = "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 11v5M12 8h.01\"/>";
+const I_EYE: string = "<path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>";
+const I_SUN: string = "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5\"/>";
+const I_MOON: string = "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>";
+const I_BOLD: string = "<path d=\"M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z\"/>";
+const I_ITALIC: string = "<path d=\"M10 4h8M6 20h8M14 4l-4 16\"/>";
+const I_X: string = "<path d=\"M6 6l12 12M18 6L6 18\"/>";
+const I_IMAGE: string = "<rect x=\"3\" y=\"4\" width=\"18\" height=\"16\" rx=\"2\"/><circle cx=\"9\" cy=\"10\" r=\"2\"/><path d=\"M21 16l-5-5-9 9\"/>";
+
+fn thumbs() -> [(string, string)] {
+    [
+        // Buttons
+        ("button", row(btn("", "2.25rem") + btn("l", "1.75rem") + btn("o", "1.5rem"))),
+        ("button-group", "<i class=\"t-join\">" + btn("o", "1.25rem") + btn("o sel", "1.25rem") + btn("o", "1.25rem") + "</i>"),
+        ("icon-button", row(sq("f", svg(I_PLUS)) + sq("l", svg(I_STAR)) + sq("o", svg(I_BELL)))),
+        ("toggle", row(sq("l", svg(I_BOLD)) + sq("o", svg(I_ITALIC)) + sq("o", svg(I_STAR)))),
+        ("toggle-group", "<i class=\"t-join\">" + sq("o on", svg(I_BOLD)) + sq("o", svg(I_ITALIC)) + sq("o on", svg(I_STAR)) + "</i>"),
+        // Inputs
+        ("checkbox", col(row(cb(true) + ln("4rem")) + row(cb(false) + ln("3rem")) + row(cb(true) + ln("3.5rem")))),
+        ("color-picker", sf("pad", "<i class=\"t-sat\"></i><i class=\"t-hue\"></i>" + row(dot("red") + dot("orange") + dot("green") + dot("teal") + dot("violet")))),
+        ("date-picker", sf("pad", row(ln("2.5rem") + "<i class=\"t-grow\"></i>" + ln("1rem")) + "<i class=\"t-cal\">" + "<i></i>".repeat(10) + "<i class=\"on\"></i>" + "<i></i>".repeat(10) + "</i>")),
+        ("file-upload", "<i class=\"t-drop\">" + svg(I_UP) + ln("4.5rem") + "</i>"),
+        ("input", col(ln("2.5rem") + inp("9rem", ln("4rem")))),
+        ("password-input", col(ln("3rem") + inp("9rem", txt("dots", "••••••••") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_EYE) + "</i>"))),
+        ("radio", col(row(rd(false) + ln("3.5rem")) + row(rd(true) + ln("4.5rem")) + row(rd(false) + ln("3rem")))),
+        ("search", inp("10rem", "<i class=\"t-gl\">" + svg(I_SEARCH) + "</i>" + ln("4rem") + "<i class=\"t-grow\"></i>" + txt("key", "⌘K"))),
+        ("segmented-control", "<i class=\"t-seg\"><i>" + ln("1.5rem") + "</i><i class=\"on\">" + lp("1.75rem") + "</i><i>" + ln("1.25rem") + "</i></i>"),
+        ("select", col(inp("8rem", ln("3.5rem") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_DOWN) + "</i>") + sf("list", "<i>" + ln("3rem") + "</i><i class=\"on\">" + lp("4rem") + "</i><i>" + ln("2.5rem") + "</i>"))),
+        ("slider", col("<i class=\"t-sl\" style=\"--v:62%\"></i><i class=\"t-sl\" style=\"--v:30%\"></i>")),
+        ("switch", col(row(sw(true) + ln("3.5rem")) + row(sw(false) + ln("2.75rem")))),
+        ("textarea", col(ln("3rem") + "<i class=\"t-in tall\" style=\"--w:10rem\">" + ln("8rem") + ln("7rem") + ln("4rem") + "</i>")),
+        // Navigation
+        ("nav-link", sf("nav", "<i>" + ln("3rem") + "</i><i class=\"on\">" + lp("4rem") + "</i><i>" + ln("3.5rem") + "</i>")),
+        ("pagination", row(sq("o sm", svg("<path d=\"M15 6l-6 6 6 6\"/>")) + sq("o sm", txt("", "1")) + sq("f sm", txt("", "2")) + sq("o sm", txt("", "3")) + sq("o sm", svg(I_RIGHT)))),
+        ("sidebar", sf("shell", "<i class=\"side\">" + lp("2rem") + ln("2.5rem") + ln("2rem") + ln("2.25rem") + "</i><i class=\"body\">" + ln("5rem") + ln("6rem") + ln("4rem") + "</i>")),
+        ("tabs", col("<i class=\"t-tabs\"><i class=\"on\">" + lp("2rem") + "</i><i>" + ln("2rem") + "</i><i>" + ln("1.75rem") + "</i></i>" + ln("8rem") + ln("6rem"))),
+        // Overlays
+        ("command-palette", sf("wide", "<i class=\"t-pal-q\"><i class=\"t-gl\">" + svg(I_SEARCH) + "</i>" + ln("4rem") + "</i><i class=\"t-pal-i on\">" + lp("5rem") + "<i class=\"t-grow\"></i>" + txt("key", "↵") + "</i><i class=\"t-pal-i\">" + ln("4rem") + "</i><i class=\"t-pal-i\">" + ln("4.5rem") + "</i>")),
+        ("dialog", "<i class=\"t-scrim\">" + sf("pad", ln("4rem") + ln("7rem") + ln("5.5rem") + row("<i class=\"t-grow\"></i>" + btn("o", "1rem") + btn("", "1.25rem"))) + "</i>"),
+        ("drawer", "<i class=\"t-scrim end\">" + sf("panel", ln("3rem") + ln("4rem") + ln("3.5rem") + ln("4rem")) + "</i>"),
+        ("menu", col(btn("o", "2.5rem") + sf("list", "<i>" + ln("3rem") + "</i><i class=\"on\">" + lp("3.5rem") + "</i><i>" + ln("2.5rem") + "</i>"))),
+        ("popover", col(sf("pad tip", ln("5rem") + ln("3.5rem")) + btn("o", "2.5rem"))),
+        ("tooltip", col("<i class=\"t-tip\">" + ln("3rem") + "</i>" + btn("", "2.25rem"))),
+        // Data display
+        ("accordion", sf("acc", "<i class=\"open\">" + ln("4rem") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg("<path d=\"M6 15l6-6 6 6\"/>") + "</i></i><i class=\"t-acc-body\">" + ln("7rem") + ln("5rem") + "</i><i>" + ln("3.5rem") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_DOWN) + "</i></i>")),
+        ("attachment", sf("pad", row("<i class=\"t-gl box\">" + svg(I_FILE) + "</i>" + col(ln("5rem") + ln("2.5rem"))))),
+        ("avatar", "<i class=\"t-stack\">" + av("violet") + av("teal") + av("orange") + av("pink") + "<i class=\"t-av more\">+3</i></i>"),
+        ("badge", col(row(pill("f", "blue", "2rem") + pill("l", "green", "2.5rem")) + row(pill("l", "red", "1.75rem") + pill("o", "violet", "2.25rem")))),
+        ("blockquote", "<i class=\"t-quote\">" + ln("8rem") + ln("7rem") + ln("5rem") + lp("3rem") + "</i>"),
+        ("carousel", col("<i class=\"t-car\"><i></i><i class=\"on\"></i><i></i></i>" + row(dot("gray") + "<i class=\"t-dot on\"></i>" + dot("gray")))),
+        ("code", "<i class=\"t-code\">" + row("<i class=\"t-ln\" style=\"--w:1.5rem;--lc:var(--ray-violet-light-color)\"></i>" + "<i class=\"t-ln\" style=\"--w:2.5rem;--lc:var(--ray-blue-light-color)\"></i>") + row("<i class=\"t-sp\"></i><i class=\"t-ln\" style=\"--w:2rem;--lc:var(--ray-teal-light-color)\"></i><i class=\"t-ln\" style=\"--w:3rem;--lc:var(--ray-orange-light-color)\"></i>") + row("<i class=\"t-sp\"></i><i class=\"t-ln\" style=\"--w:4rem\"></i>") + row("<i class=\"t-ln\" style=\"--w:1rem;--lc:var(--ray-violet-light-color)\"></i>") + "</i>"),
+        ("icon", "<i class=\"t-icons\">" + svg(I_STAR) + svg(I_BELL) + svg(I_USER) + svg(I_SEARCH) + svg(I_FILE) + svg(I_CHECK) + "</i>"),
+        ("indicator", row("<i class=\"t-ind\">" + sq("o", svg(I_BELL)) + "<i class=\"t-badge\">3</i></i><i class=\"t-ind\">" + av("teal") + "<i class=\"t-badge dot\"></i></i>")),
+        ("kbd", row(txt("cap", "⌘") + txt("cap", "Shift") + txt("cap", "K"))),
+        ("stat", sf("pad", ln("3rem") + row(txt("num", "2,481") + pill("l", "green", "1.5rem")) + ln("5rem"))),
+        ("table", sf("tbl", "<i class=\"hd\">" + ln("2rem") + ln("3rem") + ln("1.5rem") + "</i><i>" + ln("3rem") + ln("2.5rem") + pill("l", "green", "1.25rem") + "</i><i class=\"on\">" + lp("2.5rem") + ln("3rem") + pill("l", "yellow", "1.25rem") + "</i><i>" + ln("2rem") + ln("2rem") + pill("l", "red", "1.25rem") + "</i>")),
+        // Feedback
+        ("alert", sf("alert", "<i class=\"t-gl\">" + svg(I_INFO) + "</i>" + col(lp("4rem") + ln("7rem")))),
+        ("empty-state", col("<i class=\"t-gl big\">" + svg(I_SEARCH) + "</i>" + ln("5rem") + ln("3.5rem") + btn("l", "2rem"))),
+        ("notification", "<i class=\"t-toasts\">" + sf("pad", row("<i class=\"t-gl\">" + svg(I_CHECK) + "</i>" + col(ln("4.5rem") + ln("6rem")))) + sf("pad back", row(ln("6rem"))) + "</i>"),
+        ("progress", col("<i class=\"t-bar\" style=\"--v:72%\"></i><i class=\"t-bar\" style=\"--v:45%;--c:var(--ray-teal-light-color)\"></i><i class=\"t-bar\" style=\"--v:20%;--c:var(--ray-orange-light-color)\"></i>")),
+        ("skeleton", row("<i class=\"t-sk round\"></i>" + col("<i class=\"t-sk\" style=\"--w:6rem\"></i><i class=\"t-sk\" style=\"--w:4rem\"></i><i class=\"t-sk\" style=\"--w:5rem\"></i>"))),
+        ("spinner", row("<i class=\"t-spin\"></i><i class=\"t-spin dots\"><i></i><i></i><i></i></i>")),
+        // Layout
+        ("aspect-ratio", "<i class=\"t-ratio\">" + svg(I_IMAGE) + txt("", "16 : 9") + "</i>"),
+        ("card", sf("card", "<i class=\"img\"></i><i class=\"t-col\">" + ln("4rem") + ln("6rem") + "</i>")),
+        ("separator", col(ln("8rem") + "<i class=\"t-sep\">" + txt("", "or") + "</i>" + ln("6rem"))),
+        ("split", sf("split", "<i>" + ln("2.5rem") + ln("3rem") + "</i><i class=\"handle\"></i><i>" + ln("3.5rem") + ln("2.5rem") + ln("3rem") + "</i>")),
+        ("statusbar", sf("status", "<i class=\"top\">" + ln("5rem") + ln("4rem") + "</i><i class=\"bar\">" + dot("green") + ln("2.5rem") + "<i class=\"t-grow\"></i>" + ln("1.5rem") + ln("2rem") + "</i>")),
+        // Theme
+        ("theme-toggle", "<i class=\"t-theme\"><i class=\"light\">" + svg(I_SUN) + "</i><i class=\"dark\">" + svg(I_MOON) + "</i></i>")
+    ]
+}
+
+// The thumbnail of a component, or a generic one for a new component that
+// has none yet.
+pub fn thumb(dir: string) -> string {
+    for (d, html) in thumbs() {
+        if (d == dir) {
+            return "<span class=\"thumb\" aria-hidden=\"true\">${html}</span>";
+        }
+    }
+    "<span class=\"thumb\" aria-hidden=\"true\">${col(lp("4rem") + ln("6rem") + ln("5rem"))}</span>"
+}

@@ -29,6 +29,22 @@ description = "Form field name."
 type = "string"
 description = "Label text (or the content)."
 
+[ray-switch.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-switch.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-switch.properties.labelPosition]
+attribute = "label-position"
+type = "string"
+values = ["right", "left"]
+default = "right"
+reflect = true
+description = "Side of the label."
+
 [ray-switch.properties.color]
 type = "string"
 description = "Track color when on."

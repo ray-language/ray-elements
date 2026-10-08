@@ -1,6 +1,55 @@
-<div style="display: grid; gap: 0.75rem">
-  <ray-switch label="Wi-Fi" checked></ray-switch>
-  <ray-switch label="Bluetooth" color="teal" size="md"></ray-switch>
-  <ray-switch label="Airplane mode" disabled></ray-switch>
-  <ray-switch label="Label on the left" label-position="left" size="lg"></ray-switch>
+<div class="demo-caption">A settings panel</div>
+<div class="demo-prefs" id="demo-prefs">
+  <div class="demo-pref main">
+    <div><strong>Notifications</strong><span>Pause all of them at once.</span></div>
+    <ray-switch id="demo-notify-all" aria-label="Notifications" checked size="md"></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Email</strong><span>Mentions, replies and invitations.</span></div>
+    <ray-switch data-child aria-label="Email" checked></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Push</strong><span>On this device, while the app is closed.</span></div>
+    <ray-switch data-child aria-label="Push" checked></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Weekly digest</strong><span>Every Monday at 9:00.</span></div>
+    <ray-switch data-child aria-label="Weekly digest"></ray-switch>
+  </div>
+  <p class="demo-muted" id="demo-prefs-out">On: Email, Push.</p>
 </div>
+
+<div class="demo-caption">Labels, descriptions and sides</div>
+<div class="demo-grid">
+  <ray-switch label="Public profile" description="Anyone with the link can see it." checked></ray-switch>
+  <ray-switch label="Label on the left" label-position="left"></ray-switch>
+  <ray-switch label="Two-factor authentication" error="Required by your organization." color="red"></ray-switch>
+  <ray-switch label="Disabled, on" checked disabled></ray-switch>
+</div>
+
+<div class="demo-caption">Colors and sizes</div>
+<div class="demo-row">
+  <ray-switch label="xs" size="xs" checked color="blue"></ray-switch>
+  <ray-switch label="sm" size="sm" checked color="teal"></ray-switch>
+  <ray-switch label="md" size="md" checked color="violet"></ray-switch>
+  <ray-switch label="lg" size="lg" checked color="orange"></ray-switch>
+  <ray-switch label="xl" size="xl" checked color="pink"></ray-switch>
+  <ray-switch label="yellow" checked color="yellow"></ray-switch>
+</div>
+
+<script type="module">
+  // The main switch pauses the rest; the summary follows.
+  const all = document.getElementById("demo-notify-all");
+  const children = [...document.querySelectorAll("#demo-prefs [data-child]")];
+  const sum = () => {
+    const on = children.filter((s) => s.checked).map((s) => s.getAttribute("aria-label"));
+    document.getElementById("demo-prefs-out").textContent = !all.checked ? "All notifications paused."
+      : on.length ? `On: ${on.join(", ")}.` : "Every channel is off.";
+  };
+  all.addEventListener("change", () => {
+    for (const s of children) s.disabled = !all.checked;
+    sum();
+  });
+  for (const s of children) s.addEventListener("change", sum);
+  customElements.whenDefined("ray-switch").then(sum);
+</script>

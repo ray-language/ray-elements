@@ -742,6 +742,12 @@ export interface RaySwitchOwnProps {
   name?: string;
   /** Label text (or the content). */
   label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text. */
+  error?: string;
+  /** Side of the label. */
+  labelPosition?: "right" | "left";
   /** Track color when on. */
   color?: string;
   /** Track size. */
@@ -750,16 +756,10 @@ export interface RaySwitchOwnProps {
   disabled?: boolean;
   /** Mixed state; cleared on the next user change. */
   indeterminate?: boolean;
-  /** Help text. */
-  description?: string;
-  /** Error text. */
-  error?: string;
   /** Must be checked to submit. */
   required?: boolean;
   /** Checked look: filled box, or colored border and mark. */
   variant?: "filled" | "outline";
-  /** Side of the label. */
-  labelPosition?: "right" | "left";
   /** Corner radius. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Description before or after the control. */

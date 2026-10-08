@@ -232,7 +232,7 @@ export class RaySelect extends FieldControl {
       }
     }
     // Keep the current value, else the placeholder (if any) or a selected child.
-    if (keep !== undefined && [...c.options].some((o) => o.value === keep && !o.dataset.placeholder)) {
+    if (keep !== undefined && [...c.options].some((o) => o.value === keep && o.dataset.placeholder === undefined)) {
       c.value = keep;
     } else if (this.placeholder && ![...this.children].some((o) => o.selected && o.hasAttribute("selected"))) {
       c.value = "";
@@ -256,7 +256,10 @@ export class RaySelect extends FieldControl {
       el.id = `option-${n++}`;
       el.setAttribute("role", "option");
       el.setAttribute("part", "option");
-      const disabled = o.disabled || Boolean(o.parentElement?.disabled);
+      // A disabled optgroup disables its options; the model <select> itself
+      // is disabled while the host is, which must not stick to the options.
+      const group = o.parentElement?.localName === "optgroup" ? o.parentElement : null;
+      const disabled = o.disabled || Boolean(group?.disabled);
       el.setAttribute("aria-disabled", String(disabled));
       el.innerHTML = `<span class="text"></span><span class="mark" aria-hidden="true" data-ray-icon="check"></span>`;
       el.firstChild.textContent = o.label || o.text;
@@ -275,7 +278,7 @@ export class RaySelect extends FieldControl {
         group.setAttribute("aria-labelledby", gl.id);
         group.append(gl, ...[...child.children].map(optionEl));
         lb.append(group);
-      } else if (!child.dataset.placeholder) {
+      } else if (child.dataset.placeholder === undefined) {
         lb.append(optionEl(child));
       }
     }

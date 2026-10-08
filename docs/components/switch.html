@@ -164,7 +164,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 </ray-drawer>
 <div class="layout">
-<aside class="sidebar" aria-label="On this page">
+<aside class="sidebar" aria-label="On this page" style="view-transition-name: sidebar-components">
 <div class="nav-group"><p class="nav-group-title">Buttons</p>
 <a class="side-link" href="button.html">Button</a>
 <a class="side-link" href="button-group.html">Button group</a>
@@ -255,12 +255,61 @@ if (location.protocol === "file:") window.__rayServeHint();
 <section id="switch" class="component">
 <h1 class="page-title">Switch</h1>
 <p class="page-intro">An on/off toggle with the same API as Checkbox, announced as a switch.</p>
-<div class="example"><div style="display: grid; gap: 0.75rem">
-  <ray-switch label="Wi-Fi" checked></ray-switch>
-  <ray-switch label="Bluetooth" color="teal" size="md"></ray-switch>
-  <ray-switch label="Airplane mode" disabled></ray-switch>
-  <ray-switch label="Label on the left" label-position="left" size="lg"></ray-switch>
+<div class="example"><div class="demo-caption">A settings panel</div>
+<div class="demo-prefs" id="demo-prefs">
+  <div class="demo-pref main">
+    <div><strong>Notifications</strong><span>Pause all of them at once.</span></div>
+    <ray-switch id="demo-notify-all" aria-label="Notifications" checked size="md"></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Email</strong><span>Mentions, replies and invitations.</span></div>
+    <ray-switch data-child aria-label="Email" checked></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Push</strong><span>On this device, while the app is closed.</span></div>
+    <ray-switch data-child aria-label="Push" checked></ray-switch>
+  </div>
+  <div class="demo-pref">
+    <div><strong>Weekly digest</strong><span>Every Monday at 9:00.</span></div>
+    <ray-switch data-child aria-label="Weekly digest"></ray-switch>
+  </div>
+  <p class="demo-muted" id="demo-prefs-out">On: Email, Push.</p>
 </div>
+
+<div class="demo-caption">Labels, descriptions and sides</div>
+<div class="demo-grid">
+  <ray-switch label="Public profile" description="Anyone with the link can see it." checked></ray-switch>
+  <ray-switch label="Label on the left" label-position="left"></ray-switch>
+  <ray-switch label="Two-factor authentication" error="Required by your organization." color="red"></ray-switch>
+  <ray-switch label="Disabled, on" checked disabled></ray-switch>
+</div>
+
+<div class="demo-caption">Colors and sizes</div>
+<div class="demo-row">
+  <ray-switch label="xs" size="xs" checked color="blue"></ray-switch>
+  <ray-switch label="sm" size="sm" checked color="teal"></ray-switch>
+  <ray-switch label="md" size="md" checked color="violet"></ray-switch>
+  <ray-switch label="lg" size="lg" checked color="orange"></ray-switch>
+  <ray-switch label="xl" size="xl" checked color="pink"></ray-switch>
+  <ray-switch label="yellow" checked color="yellow"></ray-switch>
+</div>
+
+<script type="module">
+  // The main switch pauses the rest; the summary follows.
+  const all = document.getElementById("demo-notify-all");
+  const children = [...document.querySelectorAll("#demo-prefs [data-child]")];
+  const sum = () => {
+    const on = children.filter((s) => s.checked).map((s) => s.getAttribute("aria-label"));
+    document.getElementById("demo-prefs-out").textContent = !all.checked ? "All notifications paused."
+      : on.length ? `On: ${on.join(", ")}.` : "Every channel is off.";
+  };
+  all.addEventListener("change", () => {
+    for (const s of children) s.disabled = !all.checked;
+    sum();
+  });
+  for (const s of children) s.addEventListener("change", sum);
+  customElements.whenDefined("ray-switch").then(sum);
+</script>
 </div>
 <details class="source" data-code-src="code/switch.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
@@ -268,7 +317,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-switch&gt;</code> &middot; <code>RaySwitch</code></p>
 <p class="note">Same properties and events as ray-checkbox (indeterminate does not apply).</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>checked</code></td><td>&mdash;</td><td>boolean</td><td></td><td>Current state. The checked attribute is the initial state.</td></tr><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td><code>on</code></td><td>Submitted value when on.</td></tr><tr><td><code>name</code></td><td><code>name</code></td><td>string</td><td></td><td>Form field name.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Label text (or the content).</td></tr><tr><td><code>color</code></td><td><code>color</code></td><td>string</td><td></td><td>Track color when on.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Track size.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code></td><td>boolean</td><td></td><td>Not interactive nor submitted.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>checked</code></td><td>&mdash;</td><td>boolean</td><td></td><td>Current state. The checked attribute is the initial state.</td></tr><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td><code>on</code></td><td>Submitted value when on.</td></tr><tr><td><code>name</code></td><td><code>name</code></td><td>string</td><td></td><td>Form field name.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Label text (or the content).</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>Help text.</td></tr><tr><td><code>error</code></td><td><code>error</code></td><td>string</td><td></td><td>Error text.</td></tr><tr><td><code>labelPosition</code></td><td><code>label-position</code> <span class="reflects">reflects</span></td><td><code>right</code> | <code>left</code></td><td><code>right</code></td><td>Side of the label.</td></tr><tr><td><code>color</code></td><td><code>color</code></td><td>string</td><td></td><td>Track color when on.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Track size.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code></td><td>boolean</td><td></td><td>Not interactive nor submitted.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>When the user toggles it.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Label content.</td></tr></tbody></table></div>
