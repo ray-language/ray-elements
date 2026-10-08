@@ -1506,6 +1506,53 @@ export declare class RayCarousel extends RayElement {
   readonly slides: Element[];
 }
 
+// --- Code (code)
+/** Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one. */
+export declare function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void;
+/** The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text. */
+export declare function tokenize(code: string, lang?: string): [type: string, text: string][];
+/** <ray-code> The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme. */
+export declare class RayCode extends RayElement {
+  /** The code, from script (the most convenient in React and Vue). Wins over the content. */
+  code: string | undefined;
+  /** A file name or title in the header; also the scroll region's accessible name. */
+  filename: string | undefined;
+  /** Numbers each line (not copied, not selectable). */
+  lineNumbers: boolean | undefined;
+  /** Lines to highlight: "3, 5-7". */
+  highlight: string | undefined;
+  /** Wraps long lines instead of scrolling sideways. */
+  wrap: boolean | undefined;
+  /** Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button. */
+  maxHeight: string | undefined;
+  /** Shown whole, past max-height. */
+  expanded: boolean | undefined;
+  /** No copy button. */
+  hideCopy: boolean | undefined;
+  /** No header bar (the copy button floats in the corner). */
+  hideHeader: boolean | undefined;
+  /** Font size. */
+  size: "xs" | "sm" | "md";
+  /** Corner radius: xs…xl, none, or a CSS length. Default: md. */
+  radius: string | undefined;
+  /** Accessible name of the copy button. */
+  copyLabel: string;
+  /** Shown and announced after copying. */
+  copiedLabel: string;
+  /** The code shown (dedented), whatever its source. */
+  readonly source: string;
+  /** Copies the code; resolves to true when it worked. */
+  copy(): Promise<boolean>;
+  addEventListener<K extends keyof RayCodeEventMap>(type: K, listener: (this: RayCode, ev: RayCodeEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayCodeEventMap>(type: K, listener: (this: RayCode, ev: RayCodeEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayCodeEventMap extends HTMLElementEventMap {
+  /** The code was copied. */
+  "ray-copy": CustomEvent<{ code: string }>;
+}
+
 // --- Icon (icon)
 /** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
@@ -1934,6 +1981,7 @@ declare global {
     "ray-badge": RayBadge;
     "ray-blockquote": RayBlockquote;
     "ray-carousel": RayCarousel;
+    "ray-code": RayCode;
     "ray-icon": RayIcon;
     "ray-indicator": RayIndicator;
     "ray-kbd": RayKbd;

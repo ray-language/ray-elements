@@ -387,6 +387,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Code",
+    "group": "Components · Data display",
+    "description": "A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a \"show more\" height. A small built-in highlighter, or any library through setHighlighter(), painted with the --ray-code-* tokens.",
+    "href": "components.html#code",
+    "keywords": [
+      "code",
+      "ray-code"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Icon",
     "group": "Components · Data display",
     "description": "An icon of the registry: the whole set (the components' too) changes with setIcons().",

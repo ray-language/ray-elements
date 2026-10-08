@@ -11005,6 +11005,355 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/code/code.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayCode",
+          "tagName": "ray-code",
+          "customElement": true,
+          "description": "The code comes from the code property, a <script type=\"text/plain\"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "lang",
+              "type": {
+                "text": "string"
+              },
+              "description": "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header).",
+              "fieldName": "lang"
+            },
+            {
+              "name": "filename",
+              "type": {
+                "text": "string"
+              },
+              "description": "A file name or title in the header; also the scroll region's accessible name.",
+              "fieldName": "filename"
+            },
+            {
+              "name": "line-numbers",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Numbers each line (not copied, not selectable).",
+              "fieldName": "lineNumbers"
+            },
+            {
+              "name": "highlight",
+              "type": {
+                "text": "string"
+              },
+              "description": "Lines to highlight: \"3, 5-7\".",
+              "fieldName": "highlight"
+            },
+            {
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Wraps long lines instead of scrolling sideways.",
+              "fieldName": "wrap"
+            },
+            {
+              "name": "max-height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Height before it scrolls: px as a number, or a CSS length. A taller block gets a \"Show all N lines\" button.",
+              "fieldName": "maxHeight"
+            },
+            {
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shown whole, past max-height.",
+              "fieldName": "expanded"
+            },
+            {
+              "name": "hide-copy",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No copy button.",
+              "fieldName": "hideCopy"
+            },
+            {
+              "name": "hide-header",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No header bar (the copy button floats in the corner).",
+              "fieldName": "hideHeader"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\""
+              },
+              "description": "Font size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: md.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "copy-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the copy button.",
+              "fieldName": "copyLabel",
+              "default": "Copy code"
+            },
+            {
+              "name": "copied-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown and announced after copying.",
+              "fieldName": "copiedLabel",
+              "default": "Copied"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "code",
+              "type": {
+                "text": "string"
+              },
+              "description": "The code, from script (the most convenient in React and Vue). Wins over the content."
+            },
+            {
+              "kind": "field",
+              "name": "filename",
+              "type": {
+                "text": "string"
+              },
+              "description": "A file name or title in the header; also the scroll region's accessible name.",
+              "attribute": "filename",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "lineNumbers",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Numbers each line (not copied, not selectable).",
+              "attribute": "line-numbers",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "string"
+              },
+              "description": "Lines to highlight: \"3, 5-7\".",
+              "attribute": "highlight",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Wraps long lines instead of scrolling sideways.",
+              "attribute": "wrap",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "maxHeight",
+              "type": {
+                "text": "string"
+              },
+              "description": "Height before it scrolls: px as a number, or a CSS length. A taller block gets a \"Show all N lines\" button.",
+              "attribute": "max-height",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "expanded",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shown whole, past max-height.",
+              "attribute": "expanded",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideCopy",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No copy button.",
+              "attribute": "hide-copy",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideHeader",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No header bar (the copy button floats in the corner).",
+              "attribute": "hide-header",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\""
+              },
+              "description": "Font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: md.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "copyLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the copy button.",
+              "attribute": "copy-label",
+              "reflects": false,
+              "default": "Copy code"
+            },
+            {
+              "kind": "field",
+              "name": "copiedLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown and announced after copying.",
+              "attribute": "copied-label",
+              "reflects": false,
+              "default": "Copied"
+            },
+            {
+              "kind": "field",
+              "name": "source",
+              "description": "The code shown (dedented), whatever its source."
+            },
+            {
+              "kind": "method",
+              "name": "copy",
+              "description": "Copies the code; resolves to true when it worked."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-copy",
+              "type": {
+                "text": "CustomEvent<{ code: string }>"
+              },
+              "description": "The code was copied."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "The code: text, a <template> or a <script type=\"text/plain\">."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "frame",
+              "description": "The box."
+            },
+            {
+              "name": "header",
+              "description": "The bar with the file name, the language and the copy button."
+            },
+            {
+              "name": "copy",
+              "description": "The copy button."
+            },
+            {
+              "name": "scroller",
+              "description": "The scroll box (focusable, to scroll with the keyboard)."
+            },
+            {
+              "name": "code",
+              "description": "The <code> with one .line per line."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "setHighlighter",
+          "description": "Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one."
+        },
+        {
+          "kind": "function",
+          "name": "tokenize",
+          "description": "The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayCode",
+          "declaration": {
+            "name": "RayCode",
+            "module": "components/code/code.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-code",
+          "declaration": {
+            "name": "RayCode",
+            "module": "components/code/code.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "setHighlighter",
+          "declaration": {
+            "name": "setHighlighter",
+            "module": "components/code/code.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "tokenize",
+          "declaration": {
+            "name": "tokenize",
+            "module": "components/code/code.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/icon/icon.js",
       "declarations": [
         {

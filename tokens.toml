@@ -46,6 +46,10 @@ aa = [
     "code-keyword on code-background",
     "code-number on code-background",
     "code-comment on code-background",
+    "code-function on code-background",
+    "code-type on code-background",
+    "code-added on code-background",
+    "code-removed on code-background",
 ]
 
 [checks.chart]
@@ -499,6 +503,15 @@ value = "{orange.light-color}"
 value = "{muted-foreground}"
 [code.punctuation]
 value = "{muted-foreground}"
+[code.function]
+value = "{indigo.light-color}"
+[code.type]
+value = "{teal.light-color}"
+# Diff lines: the text color; their background is a tint of it.
+[code.added]
+value = "{green.light-color}"
+[code.removed]
+value = "{red.light-color}"
 
 # ---------------------------------------------------------------------------
 # Scales (scheme independent).

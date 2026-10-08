@@ -45,6 +45,7 @@ export { RayAvatar, initials } from "./components/avatar/avatar.js";
 export { RayBadge } from "./components/badge/badge.js";
 export { RayBlockquote } from "./components/blockquote/blockquote.js";
 export { RayCarousel } from "./components/carousel/carousel.js";
+export { RayCode, setHighlighter, tokenize } from "./components/code/code.js";
 export { RayIcon } from "./components/icon/icon.js";
 export { RayIndicator } from "./components/indicator/indicator.js";
 export { RayKbd } from "./components/kbd/kbd.js";

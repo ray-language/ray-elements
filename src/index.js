@@ -34,6 +34,7 @@ import "./components/avatar/avatar.js";
 import "./components/badge/badge.js";
 import "./components/blockquote/blockquote.js";
 import "./components/carousel/carousel.js";
+import "./components/code/code.js";
 import "./components/icon/icon.js";
 import "./components/indicator/indicator.js";
 import "./components/kbd/kbd.js";

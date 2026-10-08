@@ -1299,6 +1299,40 @@ export type RayCarouselProps = RayCarouselOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-carousel> as a React component. */
 export declare const RayCarousel: React.ForwardRefExoticComponent<RayCarouselProps & React.RefAttributes<Ray.RayCarousel>>;
 
+export interface RayCodeOwnProps {
+  /** The code, from script (the most convenient in React and Vue). Wins over the content. */
+  code?: string;
+  /** A file name or title in the header; also the scroll region's accessible name. */
+  filename?: string;
+  /** Numbers each line (not copied, not selectable). */
+  lineNumbers?: boolean;
+  /** Lines to highlight: "3, 5-7". */
+  highlight?: string;
+  /** Wraps long lines instead of scrolling sideways. */
+  wrap?: boolean;
+  /** Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button. */
+  maxHeight?: string;
+  /** Shown whole, past max-height. */
+  expanded?: boolean;
+  /** No copy button. */
+  hideCopy?: boolean;
+  /** No header bar (the copy button floats in the corner). */
+  hideHeader?: boolean;
+  /** Font size. */
+  size?: "xs" | "sm" | "md";
+  /** Corner radius: xs…xl, none, or a CSS length. Default: md. */
+  radius?: string;
+  /** Accessible name of the copy button. */
+  copyLabel?: string;
+  /** Shown and announced after copying. */
+  copiedLabel?: string;
+  /** The code was copied. */
+  onRayCopy?: (event: CustomEvent<{ code: string }>) => void;
+}
+export type RayCodeProps = RayCodeOwnProps & Omit<React.HTMLAttributes<Ray.RayCode>, keyof RayCodeOwnProps> & { children?: React.ReactNode };
+/** <ray-code> as a React component. */
+export declare const RayCode: React.ForwardRefExoticComponent<RayCodeProps & React.RefAttributes<Ray.RayCode>>;
+
 export interface RayIconOwnProps {
   /** Registered icon name (iconNames()). */
   name?: string;

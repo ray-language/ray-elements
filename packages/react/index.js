@@ -231,6 +231,11 @@ export const RayCarousel = createComponent("ray-carousel", {
   properties: ["index", "label", "slideSize", "slideGap", "align", "orientation", "loop", "autoplay", "hideControls", "hideIndicators"],
   events: { onChange: "change" },
 });
+export const RayCode = createComponent("ray-code", {
+  displayName: "RayCode",
+  properties: ["code", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
+  events: { onRayCopy: "ray-copy" },
+});
 export const RayIcon = createComponent("ray-icon", {
   displayName: "RayIcon",
   properties: ["name", "size", "label", "color", "stroke"],

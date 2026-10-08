@@ -327,6 +327,10 @@
     --ray-code-number: var(--ray-orange-light-color);
     --ray-code-comment: var(--ray-muted-foreground);
     --ray-code-punctuation: var(--ray-muted-foreground);
+    --ray-code-function: var(--ray-indigo-light-color);
+    --ray-code-type: var(--ray-teal-light-color);
+    --ray-code-added: var(--ray-green-light-color);
+    --ray-code-removed: var(--ray-red-light-color);
 
     /* font */
     --ray-font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

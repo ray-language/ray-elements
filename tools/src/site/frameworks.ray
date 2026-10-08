@@ -13,6 +13,8 @@ enum Tok {
     Open(string, [Attr], bool),
     Close(string),
     Comment(string),
+    // The raw text of a <template> or <script type="text/plain"> (code to show).
+    Raw(string),
 }
 
 struct Attr {
@@ -125,6 +127,13 @@ fn tokenize(s: string) -> Parsed {
                 j = k;
             }
         }
+        let plain = name == "script" && attrs.filter(fn(a: Attr) -> bool { a.name == "type" && a.value == "text/plain" }).len() > 0;
+        if (name == "template" || plain) {
+            let close = find_from(s, "</${name}>", j);
+            toks.push(Tok.Raw(s.substring(j, close)));
+            i = close + name.len() + 3;
+            continue;
+        }
         if (name == "script" || name == "style") {
             // Raw content up to the closing tag, and the newline after it.
             let close = find_from(s, "</${name}>", j);
@@ -138,7 +147,65 @@ fn tokenize(s: string) -> Parsed {
         toks.push(Tok.Open(name, attrs, self_closing));
         i = j;
     }
-    Parsed { toks: toks, dropped: dropped }
+    Parsed { toks: with_code(toks), dropped: dropped }
+}
+
+fn is_blank(t: Tok) -> bool {
+    match (t) {
+        Tok.Text(s) => s.trim() == "",
+        _ => false,
+    }
+}
+
+// <ray-code …><template>…</template></ray-code> → the element with its code
+// as an attribute (rendered as the code prop), closed right away.
+fn with_code(toks: [Tok]) -> [Tok] {
+    let out: [Tok] = [];
+    var i = 0;
+    while (i < toks.len()) {
+        var merged = false;
+        match (toks[i]) {
+            Tok.Open(name, attrs, self_closing) => {
+                var j = i + 1;
+                while (j < toks.len() && is_blank(toks[j])) {
+                    j = j + 1;
+                }
+                if (j < toks.len()) {
+                    match (toks[j]) {
+                        Tok.Raw(code) => {
+                            var k = j + 1;
+                            while (k < toks.len() && is_blank(toks[k])) {
+                                k = k + 1;
+                            }
+                            let closes = k < toks.len() && match (toks[k]) {
+                                Tok.Close(c) => c == name,
+                                _ => false,
+                            };
+                            if (closes) {
+                                out.push(Tok.Open(name, attrs + [Attr { name: "__code", value: code, bare: false }], self_closing));
+                                out.push(Tok.Close(name));
+                                i = k + 1;
+                                merged = true;
+                            }
+                        },
+                        _ => {},
+                    }
+                }
+            },
+            _ => {},
+        }
+        if (!merged) {
+            out.push(toks[i]);
+            i = i + 1;
+        }
+    }
+    out
+}
+
+// The code as a JS template literal, as written (ray-code removes the
+// common indentation).
+fn js_template(code: string) -> string {
+    "`" + code.replace("\\", "\\\\").replace("`", "\\`").replace("\${", "\\\${") + "`"
 }
 
 // --- shared helpers -----------------------------------------------------------
@@ -276,6 +343,7 @@ pub fn react(html: string, els: [Element], fn_name: string) -> string {
         match (toks[i]) {
             Tok.Text(t) => out.push(jsx_text(t)),
             Tok.Comment(c) => out.push("{/* ${c} */}"),
+            Tok.Raw(_) => {},
             Tok.Close(name) => {
                 let prev_open = i > 0 && match (toks[i - 1]) {
                     Tok.Open(o, _, _) => o == name,
@@ -300,6 +368,10 @@ pub fn react(html: string, els: [Element], fn_name: string) -> string {
                             add_unique(handlers, handler_name(ev.name));
                         }
                         for a in attrs {
+                            if (a.name == "__code") {
+                                parts.push("code={${js_template(a.value)}}");
+                                continue;
+                            }
                             match (prop_of(els, el, a.name)) {
                                 Option.Some(p) => {
                                     if (a.bare || (p.kind == "boolean" && a.value == "")) {
@@ -366,6 +438,7 @@ pub fn vue(html: string, els: [Element]) -> string {
         match (toks[i]) {
             Tok.Text(t) => out.push(t),
             Tok.Comment(c) => out.push("<!-- ${c} -->"),
+            Tok.Raw(_) => {},
             Tok.Close(name) => {
                 let ray = element_of(els, name);
                 let prev_open = ray.is_some() && i > 0 && match (toks[i - 1]) {
@@ -385,6 +458,10 @@ pub fn vue(html: string, els: [Element]) -> string {
                 match (element_of(els, name)) {
                     Option.Some(el) => {
                         for a in attrs {
+                            if (a.name == "__code") {
+                                parts.push(":code=\"${js_template(a.value).replace("&", "&amp;").replace("\"", "&quot;")}\"");
+                                continue;
+                            }
                             match (prop_of(els, el, a.name)) {
                                 Option.Some(p) => {
                                     if (p.kind == "number" && !a.bare) {
@@ -454,6 +531,10 @@ fn react_and_vue_from_html() {
     assert(react(`<input autocomplete="off" maxlength="4">`, [el], "Z").contains("<input autoComplete=\"off\" maxLength=\"4\" />"));
     assert(react(`<ray-x autocomplete="off"></ray-x>`, [el], "Z").contains("<RayX autocomplete=\"off\" />"));
     assert(react(`<td colspan="2">x</td>`, [el], "Z").contains("<td colSpan={2}>"));
+    let rc = react("<ray-x><template>\n  a < b `t`\n</template></ray-x>", [el], "C");
+    assert(rc.contains("<RayX code={`"));
+    assert(rc.contains("a < b \\`t\\`"));
+    assert(vue("<ray-x><script type=\"text/plain\">x = \"y\"</script></ray-x>", [el]).contains("<RayX :code=\"`x = &quot;y&quot;`\" />"));
     let v = vue(html, [el]);
     assert(v.contains("<RayX variant=\"light\" full-width :max=\"3\">Go</RayX><RayX /><br></div>"));
     assert(!v.contains("ignored"));

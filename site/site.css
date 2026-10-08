@@ -706,3 +706,6 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-article h3 { margin: 0 0 var(--ray-space-3); }
 .demo-article p { margin: 0 0 var(--ray-space-4); }
 .demo-article ray-blockquote { margin: var(--ray-space-5) 0; }
+
+/* Code example. */
+.demo-code-grid { grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); gap: var(--ray-space-4); }
