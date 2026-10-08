@@ -38,6 +38,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="stylesheet" href="../dist/tokens.css" onerror="window.__rayServeHint()">
 <link rel="stylesheet" href="../src/core/base.css">
 <link rel="stylesheet" href="site.css">
+<script type="importmap">{"imports": {"@ray-ds/elements": "./elements.js"}}</script>
 <script type="module" src="../src/index.js"></script>
 <script type="module" src="site.js"></script>
 </head>
@@ -128,6 +129,29 @@ build time, and <code>chartTheme()</code> to hand them to a chart library.</p>
 </tbody>
 </table>
 
+<p>Live, in the current theme (switch it in the header):</p>
+
+<div class="example"><div class="chart-palette">
+  <span style="--c: var(--ray-chart-1)">chart-1</span>
+  <span style="--c: var(--ray-chart-2)">chart-2</span>
+  <span style="--c: var(--ray-chart-3)">chart-3</span>
+  <span style="--c: var(--ray-chart-4)">chart-4</span>
+  <span style="--c: var(--ray-chart-5)">chart-5</span>
+  <span style="--c: var(--ray-chart-6)">chart-6</span>
+  <span style="--c: var(--ray-chart-7)">chart-7</span>
+  <span style="--c: var(--ray-chart-8)">chart-8</span>
+</div>
+</div>
+<details class="source"><summary>HTML</summary><pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-palette&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-1)&quot;</span><span class="tk-punctuation">&gt;</span>chart-1<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-2)&quot;</span><span class="tk-punctuation">&gt;</span>chart-2<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-3)&quot;</span><span class="tk-punctuation">&gt;</span>chart-3<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-4)&quot;</span><span class="tk-punctuation">&gt;</span>chart-4<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-5)&quot;</span><span class="tk-punctuation">&gt;</span>chart-5<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-6)&quot;</span><span class="tk-punctuation">&gt;</span>chart-6<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-7)&quot;</span><span class="tk-punctuation">&gt;</span>chart-7<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-chart-8)&quot;</span><span class="tk-punctuation">&gt;</span>chart-8<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p>Every token has a light and a dark value. <code>ray run tools/src/main.ray tokens</code>
 fails the build unless, in <strong>both</strong> schemes ([checks.chart] in <code>tokens.toml</code>):</p>
 
@@ -152,6 +176,115 @@ themselves:</p>
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">rect</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;fill: var(--ray-chart-1)&quot;</span> …/<span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">line</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;stroke: var(--ray-chart-grid)&quot;</span> …/<span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">text</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;fill: var(--ray-chart-axis)&quot;</span><span class="tk-punctuation">&gt;</span>…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">text</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p>A grouped bar chart drawn as SVG from data: the colors are <code>var()</code>, so a theme
+or primary change repaints it with no code. The same data is one click away as
+a table (see &quot;Accessibility is the chart's job&quot; below).</p>
+
+<div class="example"><figure class="chart-card">
+  <div class="chart-card-head">
+    <div><strong id="builds-title">Builds per month</strong><span id="builds-summary">macOS leads every month; all three platforms peak in August.</span></div>
+    <ray-segmented-control id="builds-view" size="xs" value="chart" aria-label="View"><option value="chart">Chart</option><option value="table">Table</option></ray-segmented-control>
+  </div>
+  <svg id="builds-chart" role="img" aria-labelledby="builds-title builds-summary"></svg>
+  <div id="builds-legend" class="chart-legend"></div>
+  <table id="builds-table" class="ray-table" hidden></table>
+</figure>
+<script type="module">
+  const months = ["May", "Jun", "Jul", "Aug", "Sep", "Oct"];
+  const series = [
+    { name: "macOS", data: [42, 51, 47, 63, 55, 49] },
+    { name: "Linux", data: [31, 36, 40, 52, 44, 38] },
+    { name: "Windows", data: [18, 22, 25, 34, 27, 24] },
+  ];
+  const chart = document.getElementById("builds-chart");
+  // Drawn at the element's own width, so the labels keep their size on a phone.
+  function draw() {
+    const W = chart.clientWidth || 560, H = 230, left = 32, bottom = 24, top = 8, max = 70;
+    const y = (v) => top + (H - top - bottom) * (1 - v / max);
+    const band = (W - left) / months.length, bar = Math.min(14, (band - 10) / series.length - 2);
+    let svg = "";
+    for (let v = 0; v <= max; v += 10) {
+      svg += `<line x1="${left}" x2="${W}" y1="${y(v)}" y2="${y(v)}" style="stroke: var(--ray-chart-grid)"/>`;
+      svg += `<text x="${left - 8}" y="${y(v) + 4}" text-anchor="end" style="fill: var(--ray-chart-axis)">${v}</text>`;
+    }
+    months.forEach((m, i) => {
+      const x0 = left + i * band + (band - (bar + 2) * series.length) / 2;
+      series.forEach((s, j) => {
+        const v = s.data[i];
+        svg += `<rect x="${x0 + j * (bar + 2)}" y="${y(v)}" width="${bar}" height="${y(0) - y(v)}" rx="2" style="fill: var(--ray-chart-${j + 1})"><title>${s.name}, ${m}: ${v}</title></rect>`;
+      });
+      svg += `<text x="${left + i * band + band / 2}" y="${H - 6}" text-anchor="middle" style="fill: var(--ray-chart-axis)">${m}</text>`;
+    });
+    chart.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    chart.innerHTML = svg;
+  }
+  new ResizeObserver(draw).observe(chart);
+  draw();
+  document.getElementById("builds-legend").innerHTML = series
+    .map((s, j) => `<span><i style="background: var(--ray-chart-${j + 1})"></i>${s.name}</span>`).join("");
+  const table = document.getElementById("builds-table");
+  table.innerHTML = `<thead><tr><th>Month</th>${series.map((s) => `<th>${s.name}</th>`).join("")}</tr></thead>` +
+    `<tbody>${months.map((m, i) => `<tr><td>${m}</td>${series.map((s) => `<td>${s.data[i]}</td>`).join("")}</tr>`).join("")}</tbody>`;
+  document.getElementById("builds-view").addEventListener("ray-change", (e) => {
+    const asTable = e.detail.value === "table";
+    table.hidden = !asTable;
+    chart.style.display = asTable ? "none" : "";
+    document.getElementById("builds-legend").hidden = asTable;
+  });
+</script>
+</div>
+<details class="source"><summary>HTML</summary><pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">figure</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-card&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-card-head&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-title&quot;</span><span class="tk-punctuation">&gt;</span>Builds per month<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-summary&quot;</span><span class="tk-punctuation">&gt;</span>macOS leads every month; all three platforms peak in August.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-segmented-control</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-view&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;chart&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;View&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;chart&quot;</span><span class="tk-punctuation">&gt;</span>Chart<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;table&quot;</span><span class="tk-punctuation">&gt;</span>Table<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-segmented-control</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">svg</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-chart&quot;</span> <span class="tk-attr">role</span>=<span class="tk-string">&quot;img&quot;</span> <span class="tk-attr">aria-labelledby</span>=<span class="tk-string">&quot;builds-title builds-summary&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">svg</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-legend&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-legend&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">table</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;builds-table&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;ray-table&quot;</span> <span class="tk-attr">hidden</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">table</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">figure</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">const</span> months = [<span class="tk-string">&quot;May&quot;</span>, <span class="tk-string">&quot;Jun&quot;</span>, <span class="tk-string">&quot;Jul&quot;</span>, <span class="tk-string">&quot;Aug&quot;</span>, <span class="tk-string">&quot;Sep&quot;</span>, <span class="tk-string">&quot;Oct&quot;</span>];
+  <span class="tk-keyword">const</span> series = [
+    { name: <span class="tk-string">&quot;macOS&quot;</span>, data: [<span class="tk-number">42</span>, <span class="tk-number">51</span>, <span class="tk-number">47</span>, <span class="tk-number">63</span>, <span class="tk-number">55</span>, <span class="tk-number">49</span>] },
+    { name: <span class="tk-string">&quot;Linux&quot;</span>, data: [<span class="tk-number">31</span>, <span class="tk-number">36</span>, <span class="tk-number">40</span>, <span class="tk-number">52</span>, <span class="tk-number">44</span>, <span class="tk-number">38</span>] },
+    { name: <span class="tk-string">&quot;Windows&quot;</span>, data: [<span class="tk-number">18</span>, <span class="tk-number">22</span>, <span class="tk-number">25</span>, <span class="tk-number">34</span>, <span class="tk-number">27</span>, <span class="tk-number">24</span>] },
+  ];
+  <span class="tk-keyword">const</span> chart = document.getElementById(<span class="tk-string">&quot;builds-chart&quot;</span>);
+  <span class="tk-comment">// Drawn at the element's own width, so the labels keep their size on a phone.</span>
+  <span class="tk-keyword">function</span> draw() {
+    <span class="tk-keyword">const</span> W = chart.clientWidth || <span class="tk-number">560</span>, H = <span class="tk-number">230</span>, left = <span class="tk-number">32</span>, bottom = <span class="tk-number">24</span>, top = <span class="tk-number">8</span>, max = <span class="tk-number">70</span>;
+    <span class="tk-keyword">const</span> y = (v) =&gt; top + (H - top - bottom) * (<span class="tk-number">1</span> - v / max);
+    <span class="tk-keyword">const</span> band = (W - left) / months.length, bar = Math.min(<span class="tk-number">14</span>, (band - <span class="tk-number">10</span>) / series.length - <span class="tk-number">2</span>);
+    <span class="tk-keyword">let</span> svg = <span class="tk-string">&quot;&quot;</span>;
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">let</span> v = <span class="tk-number">0</span>; v &lt;= max; v += <span class="tk-number">10</span>) {
+      svg += <span class="tk-string">`&lt;line x1=&quot;${left}&quot; x2=&quot;${W}&quot; y1=&quot;${y(v)}&quot; y2=&quot;${y(v)}&quot; style=&quot;stroke: var(--ray-chart-grid)&quot;/&gt;`</span>;
+      svg += <span class="tk-string">`&lt;text x=&quot;${left - 8}&quot; y=&quot;${y(v) + 4}&quot; text-anchor=&quot;end&quot; style=&quot;fill: var(--ray-chart-axis)&quot;&gt;${v}&lt;/text&gt;`</span>;
+    }
+    months.forEach((m, i) =&gt; {
+      <span class="tk-keyword">const</span> x0 = left + i * band + (band - (bar + <span class="tk-number">2</span>) * series.length) / <span class="tk-number">2</span>;
+      series.forEach((s, j) =&gt; {
+        <span class="tk-keyword">const</span> v = s.data[i];
+        svg += <span class="tk-string">`&lt;rect x=&quot;${x0 + j * (bar + 2)}&quot; y=&quot;${y(v)}&quot; width=&quot;${bar}&quot; height=&quot;${y(0) - y(v)}&quot; rx=&quot;2&quot; style=&quot;fill: var(--ray-chart-${j + 1})&quot;&gt;&lt;title&gt;${s.name}, ${m}: ${v}&lt;/title&gt;&lt;/rect&gt;`</span>;
+      });
+      svg += <span class="tk-string">`&lt;text x=&quot;${left + i * band + band / 2}&quot; y=&quot;${H - 6}&quot; text-anchor=&quot;middle&quot; style=&quot;fill: var(--ray-chart-axis)&quot;&gt;${m}&lt;/text&gt;`</span>;
+    });
+    chart.setAttribute(<span class="tk-string">&quot;viewBox&quot;</span>, <span class="tk-string">`0 0 ${W} ${H}`</span>);
+    chart.innerHTML = svg;
+  }
+  <span class="tk-keyword">new</span> ResizeObserver(draw).observe(chart);
+  draw();
+  document.getElementById(<span class="tk-string">&quot;builds-legend&quot;</span>).innerHTML = series
+    .map((s, j) =&gt; <span class="tk-string">`&lt;span&gt;&lt;i style=&quot;background: var(--ray-chart-${j + 1})&quot;&gt;&lt;/i&gt;${s.name}&lt;/span&gt;`</span>).join(<span class="tk-string">&quot;&quot;</span>);
+  <span class="tk-keyword">const</span> table = document.getElementById(<span class="tk-string">&quot;builds-table&quot;</span>);
+  table.innerHTML = <span class="tk-string">`&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Month&lt;/th&gt;${series.map((s) =&gt; `</span>&lt;th&gt;${s.name}&lt;/th&gt;<span class="tk-string">`).join(&quot;&quot;)}&lt;/tr&gt;&lt;/thead&gt;`</span> +
+    <span class="tk-string">`&lt;tbody&gt;${months.map((m, i) =&gt; `</span>&lt;tr&gt;&lt;td&gt;${m}&lt;/td&gt;${series.map((s) =&gt; <span class="tk-string">`&lt;td&gt;${s.data[i]}&lt;/td&gt;`</span>).join(<span class="tk-string">&quot;&quot;</span>)}&lt;/tr&gt;<span class="tk-string">`).join(&quot;&quot;)}&lt;/tbody&gt;`</span>;
+  document.getElementById(<span class="tk-string">&quot;builds-view&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
+    <span class="tk-keyword">const</span> asTable = e.detail.value === <span class="tk-string">&quot;table&quot;</span>;
+    table.hidden = !asTable;
+    chart.style.display = asTable ? <span class="tk-string">&quot;none&quot;</span> : <span class="tk-string">&quot;&quot;</span>;
+    document.getElementById(<span class="tk-string">&quot;builds-legend&quot;</span>).hidden = asTable;
+  });
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <h2 id="canvas-libraries-charttheme">Canvas libraries: <code>chartTheme()</code></h2>
 <p>Canvas does not understand <code>var()</code> nor <code>light-dark()</code>. <code>chartTheme(el?)</code>
 returns the tokens resolved to plain colors for the theme of <code>el</code> (default:
@@ -169,6 +302,121 @@ withAlpha(t.series[<span class="tk-number">0</span>], <span class="tk-number">0.
 
 <span class="tk-comment">// Redraw when the theme changes (setTheme, setPrimary, definePrimary, the system):</span>
 <span class="tk-keyword">const</span> stop = onChartThemeChange((t) =&gt; redraw(t));</code></pre>
+<p>Live: a line chart drawn on a canvas by hand, with no library. It reads the
+colors with <code>chartTheme(card)</code> and redraws on <code>onChartThemeChange</code>. The card
+has its own <code>data-theme</code>, so it can differ from the page:</p>
+
+<div class="example"><figure class="chart-card" id="latency-card">
+  <div class="chart-card-head">
+    <div><strong>p95 latency (ms)</strong><span>Last 24 hours, three regions</span></div>
+    <ray-segmented-control id="latency-theme" size="xs" value="page" aria-label="Theme of this card"><option value="page">Page</option><option value="light">Light</option><option value="dark">Dark</option></ray-segmented-control>
+  </div>
+  <canvas id="latency-chart" role="img" aria-label="p95 latency by region over the last 24 hours: eu-west stays lowest; us-east spikes at 14:00."></canvas>
+  <div id="latency-legend" class="chart-legend"></div>
+</figure>
+<script type="module">
+  import { chartTheme, onChartThemeChange, withAlpha } from "@ray-ds/elements";
+  const card = document.getElementById("latency-card");
+  const canvas = document.getElementById("latency-chart");
+  const regions = ["eu-west", "us-east", "ap-south"];
+  const hours = Array.from({ length: 25 }, (_, h) => h);
+  const wave = (base, amp, phase, spike) => hours.map((h) => Math.round(base + amp * Math.sin((h + phase) / 3.5) + (h === spike ? 70 : 0)));
+  const data = [wave(48, 8, 0, -1), wave(74, 12, 2, 14), wave(96, 10, 5, -1)];
+  const max = 180;
+
+  function draw() {
+    const t = chartTheme(card);
+    const dpr = devicePixelRatio || 1, w = canvas.clientWidth, h = 220;
+    canvas.width = w * dpr; canvas.height = h * dpr; canvas.style.height = h + "px";
+    const g = canvas.getContext("2d");
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, w, h);
+    const left = 36, bottom = 22, top = 8;
+    const x = (i) => left + (w - left - 24) * (i / (hours.length - 1));
+    const y = (v) => top + (h - top - bottom) * (1 - v / max);
+    g.font = `${t.font.size}px ${t.font.family}`;
+    g.lineWidth = 1;
+    for (let v = 0; v <= max; v += 60) {
+      g.strokeStyle = t.grid; g.beginPath(); g.moveTo(left, y(v)); g.lineTo(w, y(v)); g.stroke();
+      g.fillStyle = t.axis; g.textAlign = "right"; g.fillText(String(v), left - 8, y(v) + 4);
+    }
+    g.textAlign = "center";
+    for (let i = 0; i < hours.length; i += 6) g.fillText(`${String(hours[i]).padStart(2, "0")}:00`, x(i), h - 6);
+    data.forEach((d, s) => {
+      g.beginPath();
+      d.forEach((v, i) => (i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v))));
+      g.strokeStyle = t.series[s]; g.lineWidth = 2; g.stroke();
+      g.lineTo(x(d.length - 1), y(0)); g.lineTo(x(0), y(0)); g.closePath();
+      g.fillStyle = withAlpha(t.series[s], 0.06); g.fill();
+    });
+    document.getElementById("latency-legend").innerHTML = regions
+      .map((r, s) => `<span><i style="background: ${t.series[s]}"></i>${r}</span>`).join("");
+  }
+  document.getElementById("latency-theme").addEventListener("ray-change", (e) => {
+    if (e.detail.value === "page") card.removeAttribute("data-theme");
+    else card.setAttribute("data-theme", e.detail.value);
+    draw();
+  });
+  onChartThemeChange(draw);
+  new ResizeObserver(draw).observe(canvas);
+  draw();
+</script>
+</div>
+<details class="source"><summary>HTML</summary><pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">figure</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-card&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;latency-card&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-card-head&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>p95 latency (ms)<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Last 24 hours, three regions<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-segmented-control</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;latency-theme&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;page&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Theme of this card&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;page&quot;</span><span class="tk-punctuation">&gt;</span>Page<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Light<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;dark&quot;</span><span class="tk-punctuation">&gt;</span>Dark<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-segmented-control</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">canvas</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;latency-chart&quot;</span> <span class="tk-attr">role</span>=<span class="tk-string">&quot;img&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;p95 latency by region over the last 24 hours: eu-west stays lowest; us-east spikes at 14:00.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">canvas</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;latency-legend&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;chart-legend&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">figure</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">import</span> { chartTheme, onChartThemeChange, withAlpha } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+  <span class="tk-keyword">const</span> card = document.getElementById(<span class="tk-string">&quot;latency-card&quot;</span>);
+  <span class="tk-keyword">const</span> canvas = document.getElementById(<span class="tk-string">&quot;latency-chart&quot;</span>);
+  <span class="tk-keyword">const</span> regions = [<span class="tk-string">&quot;eu-west&quot;</span>, <span class="tk-string">&quot;us-east&quot;</span>, <span class="tk-string">&quot;ap-south&quot;</span>];
+  <span class="tk-keyword">const</span> hours = Array.<span class="tk-keyword">from</span>({ length: <span class="tk-number">25</span> }, (_, h) =&gt; h);
+  <span class="tk-keyword">const</span> wave = (base, amp, phase, spike) =&gt; hours.map((h) =&gt; Math.round(base + amp * Math.sin((h + phase) / <span class="tk-number">3.5</span>) + (h === spike ? <span class="tk-number">70</span> : <span class="tk-number">0</span>)));
+  <span class="tk-keyword">const</span> data = [wave(<span class="tk-number">48</span>, <span class="tk-number">8</span>, <span class="tk-number">0</span>, -<span class="tk-number">1</span>), wave(<span class="tk-number">74</span>, <span class="tk-number">12</span>, <span class="tk-number">2</span>, <span class="tk-number">14</span>), wave(<span class="tk-number">96</span>, <span class="tk-number">10</span>, <span class="tk-number">5</span>, -<span class="tk-number">1</span>)];
+  <span class="tk-keyword">const</span> max = <span class="tk-number">180</span>;
+
+  <span class="tk-keyword">function</span> draw() {
+    <span class="tk-keyword">const</span> t = chartTheme(card);
+    <span class="tk-keyword">const</span> dpr = devicePixelRatio || <span class="tk-number">1</span>, w = canvas.clientWidth, h = <span class="tk-number">220</span>;
+    canvas.width = w * dpr; canvas.height = h * dpr; canvas.style.height = h + <span class="tk-string">&quot;px&quot;</span>;
+    <span class="tk-keyword">const</span> g = canvas.getContext(<span class="tk-string">&quot;2d&quot;</span>);
+    g.setTransform(dpr, <span class="tk-number">0</span>, <span class="tk-number">0</span>, dpr, <span class="tk-number">0</span>, <span class="tk-number">0</span>);
+    g.clearRect(<span class="tk-number">0</span>, <span class="tk-number">0</span>, w, h);
+    <span class="tk-keyword">const</span> left = <span class="tk-number">36</span>, bottom = <span class="tk-number">22</span>, top = <span class="tk-number">8</span>;
+    <span class="tk-keyword">const</span> x = (i) =&gt; left + (w - left - <span class="tk-number">24</span>) * (i / (hours.length - <span class="tk-number">1</span>));
+    <span class="tk-keyword">const</span> y = (v) =&gt; top + (h - top - bottom) * (<span class="tk-number">1</span> - v / max);
+    g.font = <span class="tk-string">`${t.font.size}px ${t.font.family}`</span>;
+    g.lineWidth = <span class="tk-number">1</span>;
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">let</span> v = <span class="tk-number">0</span>; v &lt;= max; v += <span class="tk-number">60</span>) {
+      g.strokeStyle = t.grid; g.beginPath(); g.moveTo(left, y(v)); g.lineTo(w, y(v)); g.stroke();
+      g.fillStyle = t.axis; g.textAlign = <span class="tk-string">&quot;right&quot;</span>; g.fillText(String(v), left - <span class="tk-number">8</span>, y(v) + <span class="tk-number">4</span>);
+    }
+    g.textAlign = <span class="tk-string">&quot;center&quot;</span>;
+    <span class="tk-keyword">for</span> (<span class="tk-keyword">let</span> i = <span class="tk-number">0</span>; i &lt; hours.length; i += <span class="tk-number">6</span>) g.fillText(<span class="tk-string">`${String(hours[i]).padStart(2, &quot;0&quot;)}:00`</span>, x(i), h - <span class="tk-number">6</span>);
+    data.forEach((d, s) =&gt; {
+      g.beginPath();
+      d.forEach((v, i) =&gt; (i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v))));
+      g.strokeStyle = t.series[s]; g.lineWidth = <span class="tk-number">2</span>; g.stroke();
+      g.lineTo(x(d.length - <span class="tk-number">1</span>), y(<span class="tk-number">0</span>)); g.lineTo(x(<span class="tk-number">0</span>), y(<span class="tk-number">0</span>)); g.closePath();
+      g.fillStyle = withAlpha(t.series[s], <span class="tk-number">0.06</span>); g.fill();
+    });
+    document.getElementById(<span class="tk-string">&quot;latency-legend&quot;</span>).innerHTML = regions
+      .map((r, s) =&gt; <span class="tk-string">`&lt;span&gt;&lt;i style=&quot;background: ${t.series[s]}&quot;&gt;&lt;/i&gt;${r}&lt;/span&gt;`</span>).join(<span class="tk-string">&quot;&quot;</span>);
+  }
+  document.getElementById(<span class="tk-string">&quot;latency-theme&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-change&quot;</span>, (e) =&gt; {
+    <span class="tk-keyword">if</span> (e.detail.value === <span class="tk-string">&quot;page&quot;</span>) card.removeAttribute(<span class="tk-string">&quot;data-theme&quot;</span>);
+    <span class="tk-keyword">else</span> card.setAttribute(<span class="tk-string">&quot;data-theme&quot;</span>, e.detail.value);
+    draw();
+  });
+  onChartThemeChange(draw);
+  <span class="tk-keyword">new</span> ResizeObserver(draw).observe(canvas);
+  draw();
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p>The recipes below were checked against Chart.js 4.5, uPlot 1.6 and ECharts 6.1
 in light and dark, switching theme at runtime.</p>
 

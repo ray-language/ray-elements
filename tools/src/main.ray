@@ -210,7 +210,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     // The palette also lists foundations.html (written by `tokens`).
     let searchable = pages + [foundations.render(tokens)?];
     write(root, "docs/search-index.js", search.index_js(cs, searchable))?;
-    for asset in ["site.css", "site.js"] {
+    for asset in ["site.css", "site.js", "elements.js"] {
         write(root, "docs/${asset}", fs.read_file("${root}/site/${asset}")?)?;
     }
     for (name, svg) in brand.files() {

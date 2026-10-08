@@ -1,7 +1,8 @@
 // docs/components.html (live examples + API tables from component.toml) and
 // the import list of every component (src/index.js, or an `add` target's index.js).
 
-from components/meta import Component, Element, Prop, Named, CATEGORIES;
+from components/meta import Component, Element, Prop, Named, CATEGORIES, all_elements, base_elements, pascal;
+import site/frameworks;
 from site/model import Page, Group, Link, page, link;
 from site/highlight import escape;
 import site/highlight;
@@ -28,6 +29,8 @@ pub fn render(cs: [Component]) -> Page {
         "<h1 class=\"page-title\">Components</h1>",
         "<p class=\"page-intro\">Every component with a live example, its HTML and its API, generated from each <code>component.toml</code>. The same API is available in React and Vue.</p>"
     ];
+    // Every element, for the React and Vue versions of the examples.
+    let els = base_elements() + all_elements(cs);
     for cat in CATEGORIES {
         let in_cat = cs.filter(fn(c: Component) -> bool { c.category == cat });
         if (in_cat.len() == 0) {
@@ -36,7 +39,7 @@ pub fn render(cs: [Component]) -> Page {
         let links: [Link] = [];
         for c in in_cat {
             links.push(link(c.name, "#${c.dir}"));
-            body.push(component(c));
+            body.push(component(c, els));
         }
         groups.push(Group { title: cat, links: links });
     }
@@ -51,7 +54,7 @@ pub fn render(cs: [Component]) -> Page {
     )
 }
 
-fn component(c: Component) -> string {
+fn component(c: Component, els: [Element]) -> string {
     let api: [string] = [];
     for el in c.elements {
         api.push(element(el, c.elements.len() > 1));
@@ -59,8 +62,14 @@ fn component(c: Component) -> string {
     let example = if (c.example == "") {
         ""
     } else {
+        let react = frameworks.react(c.example, els, "${pascal(c.dir)}Example");
+        let vue = frameworks.vue(c.example, els);
         `<div class="example">${c.example}</div>
-<details class="source"><summary>HTML</summary><pre class="code"><code>${highlight.code(c.example.trim(), "html")}</code></pre></details>`
+<details class="source"><summary>Code</summary>
+<div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
+<pre class="code" data-source="html"><code>${highlight.code(c.example.trim(), "html")}</code></pre>
+<pre class="code" data-source="react" hidden><code>${highlight.code(react, "tsx")}</code></pre>
+<pre class="code" data-source="vue" hidden><code>${highlight.code(vue, "vue")}</code></pre></details>`
     };
     `<section id="${c.dir}" class="component">
 <h2>${escape(c.name)}</h2>

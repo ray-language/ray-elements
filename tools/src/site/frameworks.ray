@@ -1,0 +1,440 @@
+// The React and Vue versions of a component's example, for the components
+// page: the same markup as example.html, rewritten with the generated
+// wrappers (<ray-button variant="light"> → <RayButton variant="light">).
+// Attributes that are declared properties become typed props (numbers as
+// numbers, booleans bare); the rest pass through, as the wrappers do. The
+// example's <script> and <style> are left out (the snippet says so).
+
+from components/meta import Element, Prop, all_props;
+from integrations/ts import handler_name;
+
+enum Tok {
+    Text(string),
+    Open(string, [Attr], bool),
+    Close(string),
+    Comment(string),
+}
+
+struct Attr {
+    name: string,
+    value: string,
+    bare: bool,
+}
+
+struct Parsed {
+    toks: [Tok],
+    dropped: bool,
+}
+
+const VOID: [string] = ["area", "br", "col", "hr", "img", "input", "link", "meta", "source", "wbr"];
+
+// --- tokenizer ----------------------------------------------------------------
+
+fn find_from(s: string, needle: string, from: int) -> int {
+    match (s.substring(from, s.len()).index_of(needle)) {
+        Option.Some(i) => from + i,
+        Option.None => s.len(),
+    }
+}
+
+fn is_space(c: char) -> bool {
+    c == ' ' || c == '\n' || c == '\t' || c == '\r'
+}
+
+fn tokenize(s: string) -> Parsed {
+    let toks: [Tok] = [];
+    var dropped = false;
+    let n = s.len();
+    var i = 0;
+    while (i < n) {
+        if (s[i] != '<') {
+            let j = find_from(s, "<", i);
+            toks.push(Tok.Text(s.substring(i, j)));
+            i = j;
+            continue;
+        }
+        if (s.substring(i, i + 4) == "<!--") {
+            let j = find_from(s, "-->", i + 4);
+            toks.push(Tok.Comment(s.substring(i + 4, j).trim()));
+            i = j + 3;
+            continue;
+        }
+        if (i + 1 < n && s[i + 1] == '/') {
+            let j = find_from(s, ">", i);
+            toks.push(Tok.Close(s.substring(i + 2, j).trim().to_lower()));
+            i = j + 1;
+            continue;
+        }
+        // An opening tag: name, attributes, end.
+        var j = i + 1;
+        while (j < n && !is_space(s[j]) && s[j] != '>' && s[j] != '/') {
+            j = j + 1;
+        }
+        let name = s.substring(i + 1, j).to_lower();
+        let attrs: [Attr] = [];
+        var self_closing = false;
+        while (j < n) {
+            while (j < n && is_space(s[j])) {
+                j = j + 1;
+            }
+            if (j >= n || s[j] == '>') {
+                j = j + 1;
+                break;
+            }
+            if (s[j] == '/') {
+                self_closing = true;
+                j = j + 1;
+                continue;
+            }
+            var k = j;
+            while (k < n && !is_space(s[k]) && s[k] != '=' && s[k] != '>' && s[k] != '/') {
+                k = k + 1;
+            }
+            let an = s.substring(j, k);
+            // Inline handlers (onclick="…") are script too: left out.
+            let handler = an.to_lower().starts_with("on");
+            if (handler) {
+                dropped = true;
+            }
+            if (k < n && s[k] == '=') {
+                k = k + 1;
+                if (k < n && (s[k] == '"' || s[k] == '\'')) {
+                    let q = s[k];
+                    var e = k + 1;
+                    while (e < n && s[e] != q) {
+                        e = e + 1;
+                    }
+                    if (!handler) {
+                        attrs.push(Attr { name: an, value: s.substring(k + 1, e), bare: false });
+                    }
+                    j = e + 1;
+                } else {
+                    var e = k;
+                    while (e < n && !is_space(s[e]) && s[e] != '>') {
+                        e = e + 1;
+                    }
+                    if (!handler) {
+                        attrs.push(Attr { name: an, value: s.substring(k, e), bare: false });
+                    }
+                    j = e;
+                }
+            } else {
+                if (!handler) {
+                    attrs.push(Attr { name: an, value: "", bare: true });
+                }
+                j = k;
+            }
+        }
+        if (name == "script" || name == "style") {
+            // Raw content up to the closing tag, and the newline after it.
+            let close = find_from(s, "</${name}>", j);
+            i = close + name.len() + 3;
+            if (i < n && s[i] == '\n') {
+                i = i + 1;
+            }
+            dropped = true;
+            continue;
+        }
+        toks.push(Tok.Open(name, attrs, self_closing));
+        i = j;
+    }
+    Parsed { toks: toks, dropped: dropped }
+}
+
+// --- shared helpers -----------------------------------------------------------
+
+fn element_of(els: [Element], tag: string) -> Option<Element> {
+    for el in els {
+        if (el.tag == tag) {
+            return Option.Some(el);
+        }
+    }
+    Option.None
+}
+
+fn prop_of(els: [Element], el: Element, attr: string) -> Option<Prop> {
+    for p in all_props(els, el) {
+        if (p.attribute == attr) {
+            return Option.Some(p);
+        }
+    }
+    Option.None
+}
+
+// "stroke-width" → "strokeWidth".
+fn camel(s: string) -> string {
+    let parts = s.split("-");
+    var out = parts[0];
+    for i in 1..parts.len() {
+        let p = parts[i];
+        if (p.len() > 0) {
+            out = out + p.substring(0, 1).to_upper() + p.substring(1, p.len());
+        }
+    }
+    out
+}
+
+// The next token closes `name` right away: write the element self-closed.
+fn closes_next(toks: [Tok], i: int, name: string) -> bool {
+    if (i + 1 >= toks.len()) {
+        return false;
+    }
+    match (toks[i + 1]) {
+        Tok.Close(c) => c == name,
+        _ => false,
+    }
+}
+
+// Lines of the body, indented by `pad`; blank edges dropped.
+fn indent(body: string, pad: string) -> string {
+    let lines = body.trim().split("\n");
+    let out: [string] = [];
+    for l in lines {
+        out.push(if (l.trim() == "") { "" } else { pad + l });
+    }
+    join(out, "\n")
+}
+
+fn add_unique(xs: [string], x: string) {
+    if (!xs.contains(x)) {
+        xs.push(x);
+    }
+}
+
+// --- React --------------------------------------------------------------------
+
+fn jsx_text(t: string) -> string {
+    t.replace("{", "{\"{\"}").replace("}", "{\"}\"}")
+}
+
+fn jsx_style(css: string) -> string {
+    let pairs: [string] = [];
+    for decl in css.split(";") {
+        match (decl.index_of(":")) {
+            Option.Some(c) => {
+                let key = decl.substring(0, c).trim();
+                let value = decl.substring(c + 1, decl.len()).trim().replace("\"", "'");
+                if (key != "") {
+                    let k = if (key.starts_with("--")) { "\"${key}\"" } else { camel(key) };
+                    pairs.push("${k}: \"${value}\"");
+                }
+            },
+            Option.None => {},
+        }
+    }
+    let custom = css.contains("--");
+    if (custom) { "{{ ${join(pairs, ", ")} } as CSSProperties}" } else { "{{ ${join(pairs, ", ")} }}" }
+}
+
+fn jsx_attr(a: Attr) -> string {
+    let name = match (a.name) {
+        "class" => "className",
+        "for" => "htmlFor",
+        "tabindex" => "tabIndex",
+        "autofocus" => "autoFocus",
+        "readonly" => "readOnly",
+        "colspan" => "colSpan",
+        "rowspan" => "rowSpan",
+        _ => if (a.name.starts_with("aria-") || a.name.starts_with("data-")) { a.name } else { camel(a.name) },
+    };
+    if (a.bare) {
+        return name;
+    }
+    if (a.name == "style") {
+        return "style=${jsx_style(a.value)}";
+    }
+    if (a.name == "tabindex") {
+        return "tabIndex={${a.value}}";
+    }
+    "${name}=\"${a.value}\""
+}
+
+pub fn react(html: string, els: [Element], fn_name: string) -> string {
+    let parsed = tokenize(html);
+    let toks = parsed.toks;
+    let used: [string] = [];
+    let handlers: [string] = [];
+    let out: [string] = [];
+    for i in 0..toks.len() {
+        match (toks[i]) {
+            Tok.Text(t) => out.push(jsx_text(t)),
+            Tok.Comment(c) => out.push("{/* ${c} */}"),
+            Tok.Close(name) => {
+                let prev_open = i > 0 && match (toks[i - 1]) {
+                    Tok.Open(o, _, _) => o == name,
+                    _ => false,
+                };
+                if (!prev_open && !VOID.contains(name)) {
+                    let tag = match (element_of(els, name)) {
+                        Option.Some(el) => el.class_name,
+                        Option.None => name,
+                    };
+                    out.push("</${tag}>");
+                }
+            },
+            Tok.Open(name, attrs, self_closing) => {
+                let parts: [string] = [];
+                var tag = name;
+                match (element_of(els, name)) {
+                    Option.Some(el) => {
+                        tag = el.class_name;
+                        add_unique(used, tag);
+                        for ev in el.events {
+                            add_unique(handlers, handler_name(ev.name));
+                        }
+                        for a in attrs {
+                            match (prop_of(els, el, a.name)) {
+                                Option.Some(p) => {
+                                    if (a.bare || (p.kind == "boolean" && a.value == "")) {
+                                        parts.push(p.name);
+                                    } else if (p.kind == "number") {
+                                        parts.push("${p.name}={${a.value}}");
+                                    } else {
+                                        parts.push("${p.name}=\"${a.value}\"");
+                                    }
+                                },
+                                Option.None => parts.push(jsx_attr(a)),
+                            }
+                        }
+                    },
+                    Option.None => {
+                        for a in attrs {
+                            parts.push(jsx_attr(a));
+                        }
+                    },
+                }
+                let head = if (parts.len() == 0) { "<${tag}" } else { "<${tag} ${join(parts, " ")}" };
+                let closed = self_closing || VOID.contains(name) || closes_next(toks, i, name);
+                out.push(if (closed) { head + " />" } else { head + ">" });
+            },
+        }
+    }
+    let body = join(out, "");
+    let lines: [string] = [];
+    if (body.contains(" as CSSProperties}")) {
+        lines.push("import type { CSSProperties } from \"react\";");
+    }
+    if (used.len() > 0) {
+        lines.push("import { ${join(used, ", ")} } from \"@ray-ds/react\";");
+    }
+    if (lines.len() > 0) {
+        lines.push("");
+    }
+    if (parsed.dropped) {
+        let hint = if (handlers.len() > 0) { " (${join(handlers.slice(0, 3), ", ")}…)" } else { "" };
+        lines.push("// The live example's <script>/<style> is left out: pass data as props");
+        lines.push("// and listen with the on* handlers${hint}.");
+    }
+    lines.push("export function ${fn_name}() {");
+    lines.push("  return (");
+    lines.push("    <>");
+    lines.push(indent(body, "      "));
+    lines.push("    </>");
+    lines.push("  );");
+    lines.push("}");
+    join(lines, "\n")
+}
+
+// --- Vue ----------------------------------------------------------------------
+
+fn vue_attr(a: Attr) -> string {
+    if (a.bare) { a.name } else { "${a.name}=\"${a.value}\"" }
+}
+
+pub fn vue(html: string, els: [Element]) -> string {
+    let parsed = tokenize(html);
+    let toks = parsed.toks;
+    let out: [string] = [];
+    for i in 0..toks.len() {
+        match (toks[i]) {
+            Tok.Text(t) => out.push(t),
+            Tok.Comment(c) => out.push("<!-- ${c} -->"),
+            Tok.Close(name) => {
+                let ray = element_of(els, name);
+                let prev_open = ray.is_some() && i > 0 && match (toks[i - 1]) {
+                    Tok.Open(o, _, _) => o == name,
+                    _ => false,
+                };
+                if (!prev_open) {
+                    let tag = match (ray) {
+                        Option.Some(el) => el.class_name,
+                        Option.None => name,
+                    };
+                    out.push("</${tag}>");
+                }
+            },
+            Tok.Open(name, attrs, self_closing) => {
+                let parts: [string] = [];
+                match (element_of(els, name)) {
+                    Option.Some(el) => {
+                        for a in attrs {
+                            match (prop_of(els, el, a.name)) {
+                                Option.Some(p) => {
+                                    if (p.kind == "number" && !a.bare) {
+                                        parts.push(":${a.name}=\"${a.value}\"");
+                                    } else {
+                                        parts.push(vue_attr(a));
+                                    }
+                                },
+                                Option.None => parts.push(vue_attr(a)),
+                            }
+                        }
+                        let head = if (parts.len() == 0) { "<${el.class_name}" } else { "<${el.class_name} ${join(parts, " ")}" };
+                        out.push(if (self_closing || closes_next(toks, i, name)) { head + " />" } else { head + ">" });
+                    },
+                    Option.None => {
+                        for a in attrs {
+                            parts.push(vue_attr(a));
+                        }
+                        let head = if (parts.len() == 0) { "<${name}" } else { "<${name} ${join(parts, " ")}" };
+                        out.push(if (self_closing) { head + " />" } else { head + ">" });
+                    },
+                }
+            },
+        }
+    }
+    let lines: [string] = [];
+    lines.push("<!-- app.use(RayDs) (from \"@ray-ds/vue\") registers the components. -->");
+    if (parsed.dropped) {
+        lines.push("<!-- The live example's <script>/<style> is left out: bind data with :prop and listen with @event. -->");
+    }
+    lines.push("<template>");
+    lines.push(indent(join(out, ""), "  "));
+    lines.push("</template>");
+    join(lines, "\n")
+}
+
+@test
+fn react_and_vue_from_html() {
+    let el = Element {
+        tag: "ray-x",
+        class_name: "RayX",
+        extends_name: "",
+        summary: "",
+        props: [
+            Prop { name: "variant", attribute: "variant", kind: "string", values: [], default_value: "", reflect: true, ts: "", description: "" },
+            Prop { name: "fullWidth", attribute: "full-width", kind: "boolean", values: [], default_value: "", reflect: true, ts: "", description: "" },
+            Prop { name: "max", attribute: "max", kind: "number", values: [], default_value: "", reflect: false, ts: "", description: "" }
+        ],
+        attrs: [],
+        events: [],
+        slots: [],
+        parts: [],
+        members: [],
+        model_property: "",
+        model_events: []
+    };
+    let html = `<div class="row" style="gap: 4px; --c: red"><ray-x variant="light" full-width max="3">Go</ray-x><ray-x></ray-x><br></div>
+<script>ignored()</script>`;
+    let r = react(html, [el], "XExample");
+    assert(r.contains("import { RayX } from \"@ray-ds/react\";"));
+    assert(r.contains("<div className=\"row\" style={{ gap: \"4px\", \"--c\": \"red\" } as CSSProperties}>"));
+    assert(r.contains("<RayX variant=\"light\" fullWidth max={3}>Go</RayX><RayX /><br /></div>"));
+    assert(r.contains("left out"));
+    let h = react(`<div style="--a: 1" onclick="go()" tabindex="0"></div>`, [el], "Y");
+    assert(h.contains("import type { CSSProperties } from \"react\";"));
+    assert(h.contains("<div style={{ \"--a\": \"1\" } as CSSProperties} tabIndex={0} />"));
+    let v = vue(html, [el]);
+    assert(v.contains("<RayX variant=\"light\" full-width :max=\"3\">Go</RayX><RayX /><br></div>"));
+    assert(!v.contains("ignored"));
+}

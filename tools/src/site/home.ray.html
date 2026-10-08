@@ -136,14 +136,10 @@ Run the app to stream its output here.
 <h2 class="section-title">Same element, any stack</h2>
 <p class="section-lede">Write HTML, or use the generated wrappers. Events, forms and refs behave the same.</p>
 <div class="code-tabs">
-<ray-tabs value="html" variant="pills">
-<ray-tab value="html">HTML</ray-tab>
-<ray-tab value="react">React</ray-tab>
-<ray-tab value="vue">Vue</ray-tab>
-<ray-tab-panel value="html"><pre class="code"><code>{{& html }}</code></pre></ray-tab-panel>
-<ray-tab-panel value="react"><pre class="code"><code>{{& react }}</code></pre></ray-tab-panel>
-<ray-tab-panel value="vue"><pre class="code"><code>{{& vue }}</code></pre></ray-tab-panel>
-</ray-tabs>
+<ray-segmented-control value="html" aria-label="Stack" data-code-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control>
+<pre class="code" data-code="html"><code>{{& html }}</code></pre>
+<pre class="code" data-code="react" hidden><code>{{& react }}</code></pre>
+<pre class="code" data-code="vue" hidden><code>{{& vue }}</code></pre>
 </div>
 </div>
 </section>

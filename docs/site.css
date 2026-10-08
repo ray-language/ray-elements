@@ -403,8 +403,16 @@ pre.code code, .prose pre code { font-size: inherit; }
   border-bottom: 1px solid var(--ray-border);
 }
 .muted-band pre.code { background: var(--ray-background); }
-.code-tabs { max-width: 52rem; margin: 0 auto; }
-.code-tabs pre.code { margin-top: var(--ray-space-2); }
+.code-tabs { display: grid; justify-items: center; gap: var(--ray-space-4); max-width: 52rem; margin: 0 auto; }
+.code-tabs pre.code { justify-self: stretch; margin: 0; }
+.code-tabs pre.code[hidden] { display: none; }
+/* Components page: the language switch of an example's code. */
+/* The switch sits in the summary bar, right-aligned, while the code is open. */
+.source:has(.source-switch) { position: relative; }
+.source:has(.source-switch) summary { min-height: 2.75rem; box-sizing: border-box; padding-block: 0; line-height: 2.75rem; }
+.source-switch { position: absolute; top: 0; right: var(--ray-space-3); display: flex; align-items: center; height: 2.75rem; }
+.source:not([open]) .source-switch { display: none; }
+.source pre.code[hidden] { display: none; }
 .palette-strip { display: flex; gap: var(--ray-space-2); justify-content: center; flex-wrap: wrap; margin-top: var(--ray-space-6); }
 .palette-strip button {
   width: 2.25rem;
@@ -563,3 +571,31 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-icon-scale { gap: var(--ray-space-6); align-items: end; }
 .demo-icon-scale > span { display: grid; justify-items: center; gap: var(--ray-space-2); }
 .demo-icon-scale small { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
+
+/* Charts guide: live examples (the palette strip, chart cards and legends). */
+.chart-palette { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ray-space-2); }
+@media (max-width: 40em) { .chart-palette { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.chart-palette span {
+  display: grid;
+  align-content: end;
+  height: 4rem;
+  padding: var(--ray-space-2);
+  font-family: var(--ray-font-mono);
+  font-size: var(--ray-font-size-xs);
+  color: var(--ray-foreground);
+  background: linear-gradient(var(--c), var(--c)) top / 100% 2.25rem no-repeat;
+  border: 1px solid var(--ray-border);
+  border-radius: var(--ray-radius-md);
+}
+.chart-card { display: grid; gap: var(--ray-space-3); min-width: 0; margin: 0; color: var(--ray-chart-text); background: var(--ray-background); }
+.chart-card[data-theme] { padding: var(--ray-space-4); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); }
+.chart-card-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: var(--ray-space-3); }
+.chart-card-head > div { display: grid; gap: 0.125rem; }
+.chart-card-head span { font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+.chart-card svg { display: block; width: 100%; height: 230px; font-family: var(--ray-font-sans); font-size: 11px; }
+.chart-card canvas { display: block; width: 100%; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: var(--ray-space-4); font-size: var(--ray-font-size-sm); }
+.chart-legend span { display: inline-flex; align-items: center; gap: var(--ray-space-2); }
+.chart-legend i { width: 0.75rem; height: 0.75rem; border-radius: 3px; }
+.chart-card .ray-table { display: table; width: 100%; margin: 0; }
+.chart-card [hidden] { display: none !important; }

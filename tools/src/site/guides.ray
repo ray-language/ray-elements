@@ -38,10 +38,18 @@ pub fn render(src: string, file: string, key: string, title: string, description
                 }
                 out.push("<h${level} id=\"${id}\">${html}</h${level}>");
             },
+            // ```demo: live HTML (scripts run), then its source, like the
+            // components page; on GitHub it reads as a plain code block.
             Block.Code(lang, text) => {
-                out.push(
-                    "<pre class=\"code\"><code>${highlight.code(text.trim(), lang)}</code></pre>"
-                );
+                if (lang == "demo") {
+                    out.push(
+                        "<div class=\"example\">${text}</div>\n<details class=\"source\"><summary>HTML</summary><pre class=\"code\"><code>${highlight.code(text.trim(), "html")}</code></pre></details>"
+                    );
+                } else {
+                    out.push(
+                        "<pre class=\"code\"><code>${highlight.code(text.trim(), lang)}</code></pre>"
+                    );
+                }
             },
             _ => out.push(markdown.render([b])),
         }

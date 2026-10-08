@@ -50,6 +50,39 @@ if (palette) {
   for (const b of $$("[data-site-search]")) b.addEventListener("click", () => palette.show());
 }
 
+// --- components page: the language of the examples' code (HTML / React /
+// Vue). One choice for every example, remembered for the next visit.
+const SOURCE_KEY = "ray-ds:code-language";
+const switches = $$("[data-source-switch]");
+function showSource(lang) {
+  for (const sw of switches) {
+    sw.value = lang;
+    for (const pre of $$("[data-source]", sw.closest(".source"))) pre.hidden = pre.dataset.source !== lang;
+  }
+}
+if (switches.length) {
+  let saved = null;
+  try { saved = localStorage.getItem(SOURCE_KEY); } catch {}
+  if (saved && saved !== "html") customElements.whenDefined("ray-segmented-control").then(() => showSource(saved));
+  for (const sw of switches) {
+    const pick = () => {
+      showSource(sw.value);
+      try { localStorage.setItem(SOURCE_KEY, sw.value); } catch {}
+    };
+    sw.addEventListener("change", pick);
+    sw.addEventListener("input", pick);
+  }
+}
+
+// --- landing: the stack switch (HTML / React / Vue) of the code sample.
+for (const sw of $$("[data-code-switch]")) {
+  const show = () => {
+    for (const pre of $$("[data-code]", sw.parentElement)) pre.hidden = pre.dataset.code !== sw.value;
+  };
+  sw.addEventListener("change", show);
+  sw.addEventListener("input", show);
+}
+
 // --- landing demo: a toast from the "Run app" button.
 for (const b of $$("[data-demo-toast]")) {
   b.addEventListener("click", () => notify({ title: "ray run src/main.ray", message: "Listening on 127.0.0.1:45173", color: "green" }));
