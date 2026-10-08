@@ -387,6 +387,16 @@ pre.code code, .prose pre code { font-size: inherit; }
 .palette-strip button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--ray-foreground); }
 .palette-strip button:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 2px; }
 .cta-band { text-align: center; }
+.raylang-extras {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--ray-space-4);
+  max-width: 60rem;
+  margin: 0 auto var(--ray-space-8);
+  text-align: left;
+}
+.raylang-extras > div { padding: var(--ray-space-4); background: var(--ray-background); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-lg); }
+.raylang-extras p { margin: var(--ray-space-2) 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm); }
 
 /* --- responsive -------------------------------------------------------------- */
 

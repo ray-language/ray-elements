@@ -175,7 +175,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
             "getting-started.html",
             "start",
             "Get started",
-            "Install ray-ds, load it in a raylang app and theme it."
+            "Install ray-ds, load it in any app or a raylang app, and theme it."
         )?,
         guide(
             root,
@@ -192,6 +192,14 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
             "charts",
             "Charts",
             "Theme Chart.js, uPlot or ECharts with the ray-ds chart tokens."
+        )?,
+        guide(
+            root,
+            "RAYLANG.md",
+            "raylang.html",
+            "raylang",
+            "raylang",
+            "What ray-ds adds in a raylang app, and the plan for the native bridge and the package."
         )?
     ];
     for p in pages {

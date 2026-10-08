@@ -1,4 +1,4 @@
-// Guides: Markdown files of the repository (README, EXTENDING, CHARTS) as
+// Guides: Markdown files of the repository (README, EXTENDING, CHARTS, RAYLANG) as
 // pages of the site, rendered with std/markdown. Headings get ids (h2s make
 // the sidebar), code blocks are highlighted, and links between the .md
 // files point at their pages.
@@ -12,7 +12,8 @@ import site/highlight;
 const PAGES: [(string, string)] = [
     ("README.md", "getting-started.html"),
     ("EXTENDING.md", "extending.html"),
-    ("CHARTS.md", "charts.html")
+    ("CHARTS.md", "charts.html"),
+    ("RAYLANG.md", "raylang.html")
 ];
 
 pub fn render(src: string, file: string, key: string, title: string, description: string) -> Page {

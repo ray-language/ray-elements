@@ -117,7 +117,7 @@ pub fn render(components: int, version: string, colors: [string]) -> Page {
         "index.html",
         "home",
         "ray·ds",
-        "Accessible, themeable web components for raylang apps: plain HTML, React or Vue.",
+        "Accessible, themeable web components for any app — plain HTML, React or Vue — with extras for raylang.",
         [],
         body,
         "landing"

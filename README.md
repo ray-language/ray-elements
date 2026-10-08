@@ -1,13 +1,20 @@
 # ray-ds
 
-Design system for raylang apps: web components (Shadow DOM, no dependencies)
-inspired by shadcn/ui (semantic tokens, copy-the-code distribution) and Mantine
-(10-shade color scales, sizes `xs`–`xl`, `color` + `variant` on every component).
-They load as plain ES modules — from `ray://app` in a `std/ui` window, from a
-`web` server, or from React/Vue projects.
+Web components (Shadow DOM, no dependencies) inspired by shadcn/ui (semantic
+tokens, copy-the-code distribution) and Mantine (10-shade color scales, sizes
+`xs`–`xl`, `color` + `variant` on every component).
 
-All tooling (token generation, contrast checks, docs, webview tests) is written
-in raylang, in `tools/`.
+**ray-ds is framework-agnostic.** The components are standard custom elements:
+use them in any web app — plain HTML, React or Vue, in a browser or any
+webview. Nothing in a component requires raylang.
+
+**It comes with extras for raylang apps.** It loads as plain ES modules from
+`ray://app` in a `std/ui` window with no build step, all its tooling (tokens,
+contrast checks, docs, webview tests) is written in raylang in `tools/`, and
+the examples are raylang apps. Planned: a native bridge (file dialogs with real
+paths, native menus in the command palette, native confirm dialogs, window
+chrome) and a raylang package that serves the whole design system without npm.
+See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 

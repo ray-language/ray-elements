@@ -23,14 +23,15 @@ const NAV: [(string, string, string)] = [
     ("foundations", "foundations.html", "Foundations"),
     ("components", "components.html", "Components"),
     ("extending", "extending.html", "Extending"),
-    ("charts", "charts.html", "Charts")
+    ("charts", "charts.html", "Charts"),
+    ("raylang", "raylang.html", "raylang")
 ];
 
 // The whole HTML document of a page. `colors`: palette colors for the primary picker.
 pub fn render(p: Page, colors: [string]) -> string {
     let home = p.key == "home";
     let title = if (home) {
-        "ray·ds — web components for raylang apps"
+        "ray·ds — web components for any app, with raylang extras"
     } else {
         "${p.title} · ray·ds"
     };
