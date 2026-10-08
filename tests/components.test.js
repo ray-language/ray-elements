@@ -1,4 +1,4 @@
-// page: docs/components.html
+// page: docs/components/all.html
 //
 // Behavior of the phase-1 components in the real webview: form association
 // (FormData, validity, reset, fieldset), events, keyboard and ARIA.
@@ -6,8 +6,8 @@
 const T = window.__rayTest;
 const tags = ["ray-button", "ray-icon-button", "ray-input", "ray-search", "ray-textarea", "ray-select", "ray-checkbox", "ray-switch", "ray-radio-group", "ray-radio", "ray-badge", "ray-avatar", "ray-card", "ray-kbd", "ray-separator", "ray-spinner"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
-const { COLORS, VARIANT_TOKENS } = await import("../src/core/styles.js");
-const { initials } = await import("../src/components/avatar/avatar.js");
+const { COLORS, VARIANT_TOKENS } = await import("../../src/core/styles.js");
+const { initials } = await import("../../src/components/avatar/avatar.js");
 
 /** Mounts markup in a fresh container; returns the container. */
 async function mount(html) {
@@ -26,7 +26,7 @@ const typeInto = (el, value) => {
 };
 
 T.test("styles.js colors match tokens.json", async (T) => {
-  const tokens = await (await fetch("../dist/tokens.json")).json();
+  const tokens = await (await fetch("../../dist/tokens.json")).json();
   T.eq(COLORS.join(","), tokens.colors.join(","), "COLORS");
   T.eq(VARIANT_TOKENS.join(","), tokens.variants.join(","), "VARIANT_TOKENS");
 });

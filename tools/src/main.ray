@@ -159,8 +159,8 @@ fn cmd_tokens(o: Opts) -> Result<int, string> {
     write(root, "dist/tokens.css", css.render(m)?)?;
     write(root, "dist/tokens.json", json_out.render(m)?)?;
     let cs = meta.load_all(root)?;
-    let page = shell.render(foundations.render(m)?, m.colors);
-    write(root, "docs/foundations.html", modules.inject(root, page, cs)?)?;
+    let fp = foundations.render(m)?;
+    write(root, "docs/foundations.html", modules.inject(root, shell.render(fp, m.colors), fp.body, cs, "foundations.html")?)?;
     Result.Ok(0)
 }
 
@@ -173,7 +173,8 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     let version = package.info(root)?.version;
     let pages = [
         landing.render(cs.len(), version, colors),
-        docs.render(cs),
+        docs.index(cs),
+        docs.all(cs),
         guide(
             root,
             "README.md",
@@ -208,8 +209,14 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
         )?
     ];
     for p in pages {
-        write(root, "docs/${p.file}", modules.inject(root, shell.render(p, colors), cs)?)?;
+        write(root, "docs/${p.file}", modules.inject(root, shell.render(p, colors), p.body, cs, p.file)?)?;
     }
+    // One page per component (written quietly: there are dozens).
+    let component_pages = docs.pages(cs);
+    for p in component_pages {
+        fs.write_file("${root}/docs/${p.file}", modules.inject(root, shell.render(p, colors), p.body, cs, p.file)?)?;
+    }
+    print("  wrote docs/components/*.html (${component_pages.len()} components)");
     // The palette also lists foundations.html (written by `tokens`).
     let searchable = pages + [foundations.render(tokens)?];
     write(root, "docs/search-index.js", search.index_js(cs, searchable))?;

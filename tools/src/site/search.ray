@@ -13,7 +13,7 @@ pub fn index_js(cs: [Component], pages: [Page]) -> string {
             tags.push(el.tag);
         }
         let label = if (c.aliases.len() > 0) { "${c.name} (${join(c.aliases, ", ")})" } else { c.name };
-        items = items.item(entry(label, "Components · ${c.category}", c.summary, "components.html#${c.dir}", tags, "layers"));
+        items = items.item(entry(label, "Components · ${c.category}", c.summary, "components/${c.dir}.html", tags, "layers"));
     }
     for p in pages {
         if (p.key == "home" || p.key == "components") {

@@ -12,6 +12,10 @@
 (function () {
   try {
     var root = document.documentElement;
+    // A component's page shows its content once its components are defined
+    // (no layout shift); modules.ray clears this, and 3 s is the fallback.
+    root.setAttribute("data-ray-loading", "");
+    setTimeout(function () { root.removeAttribute("data-ray-loading"); }, 3000);
     var theme = localStorage.getItem("ray-ds:theme");
     if (theme === "light" || theme === "dark") root.setAttribute("data-theme", theme);
     var primary = localStorage.getItem("ray-ds:primary");
@@ -39,13 +43,11 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="stylesheet" href="../src/core/base.css">
 <link rel="stylesheet" href="site.css">
 <script type="importmap">{"imports": {"@ray-ds/elements": "./elements.js"}}</script>
+<!-- site.js first: it registers the site's own icons before components paint. -->
+<script type="module" src="site.js"></script>
 <link rel="modulepreload" href="../src/components/icon-button/icon-button.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/components/select/select.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/nav-link/nav-link.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/command-palette/command-palette.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/drawer/drawer.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/components/icon/icon.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/separator/separator.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/core.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/components/button/button.js" fetchpriority="low">
@@ -54,14 +56,10 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/form.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/core/hotkey.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/dialog/dialog.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/components/notification/notification.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/color.js" fetchpriority="low">
-<link rel="modulepreload" href="../src/core/focus.js" fetchpriority="low">
-<script type="module">import "../src/components/icon-button/icon-button.js"; import "../src/components/select/select.js"; import "../src/components/nav-link/nav-link.js"; import "../src/components/command-palette/command-palette.js"; import "../src/components/drawer/drawer.js"; import "../src/components/icon/icon.js"; import "../src/components/separator/separator.js"; import "../src/components/theme-toggle/theme-toggle.js";</script>
-<script type="module" src="site.js"></script>
+<script type="module" blocking="render">import "../src/components/icon-button/icon-button.js"; import "../src/components/select/select.js"; import "../src/components/icon/icon.js"; import "../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -103,12 +101,28 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="layout">
 <aside class="sidebar" aria-label="On this page">
 <div class="nav-group"><p class="nav-group-title">Extending</p>
-<ray-nav-link label="The contract" href="#the-contract"></ray-nav-link>
-<ray-nav-link label="Level 0: styling without a new component" href="#level-0-styling-without-a-new-component"></ray-nav-link>
-<ray-nav-link label="Level 1: extend a component" href="#level-1-extend-a-component"></ray-nav-link>
-<ray-nav-link label="Types, manifest and React/Vue wrappers for your components" href="#types-manifest-and-react-vue-wrappers-for-your-components"></ray-nav-link>
+<a class="side-link" href="#the-contract">The contract</a>
+<a class="side-link" href="#level-0-styling-without-a-new-component">Level 0: styling without a new component</a>
+<a class="side-link" href="#level-1-extend-a-component">Level 1: extend a component</a>
+<a class="side-link" href="#types-manifest-and-react-vue-wrappers-for-your-components">Types, manifest and React/Vue wrappers for your components</a>
 </div>
 </aside>
+<script>
+// Keep the sidebar's scroll from page to page (set before the first paint).
+(function () {
+  var box = document.querySelector(".sidebar");
+  try {
+    var top = sessionStorage.getItem("ray-ds:sidebar-scroll");
+    if (top !== null) box.scrollTop = Number(top);
+    addEventListener("pagehide", function () { sessionStorage.setItem("ray-ds:sidebar-scroll", String(box.scrollTop)); });
+  } catch (e) {}
+  var cur = box.querySelector('[aria-current="page"]');
+  if (cur) {
+    var r = cur.getBoundingClientRect(), b = box.getBoundingClientRect();
+    if (r.top < b.top + 40 || r.bottom > b.bottom - 40) box.scrollTop += r.top - b.top - b.height / 3;
+  }
+})();
+</script>
 <main id="main" class="guide">
 <article class="prose">
 <h1 id="extending-ray-ds">Extending ray-ds</h1>

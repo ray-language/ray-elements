@@ -10,7 +10,7 @@
 // module turns a Page into its context: the site nav with the current entry,
 // the document title, the palette colors of the primary picker.
 
-from site/model import Page, NavItem;
+from site/model import Page, NavItem, Group, Link;
 import site/layout;
 import site/brand;
 
@@ -35,9 +35,23 @@ pub fn render(p: Page, colors: [string]) -> string {
     } else {
         "${p.title} · ray·ds"
     };
+    // A page in a subdirectory (components/button.html) reaches the rest
+    // of the site through `base`.
+    let depth = p.file.split("/").len() - 1;
+    let base = "../".repeat(depth);
+    // The sidebar link to this very page is the current one.
+    let own = p.file.substring(p.file.last_index_of("/").map(fn(i: int) -> int { i + 1 }).unwrap_or(0), p.file.len());
+    let groups: [Group] = [];
+    for g in p.groups {
+        let ls: [Link] = [];
+        for l in g.links {
+            ls.push(Link { label: l.label, href: l.href, current: l.href == own || l.href == p.file });
+        }
+        groups.push(Group { title: g.title, links: ls });
+    }
     let nav: [NavItem] = [];
     for (k, href, label) in NAV {
-        nav.push(NavItem { label: label, href: href, current: k == p.key });
+        nav.push(NavItem { label: label, href: base + href, current: k == p.key });
     }
     layout.render(
         title,
@@ -45,13 +59,14 @@ pub fn render(p: Page, colors: [string]) -> string {
         nav,
         home,
         colors,
-        p.groups,
+        groups,
         p.main_class,
         p.body,
-        head_guard(),
+        head_guard(base),
         p.groups.len() > 0,
         brand.mark(INK, 28, false),
-        brand.mark(INK, 16, true)
+        brand.mark(INK, 16, true),
+        base
     )
 }
 
@@ -59,11 +74,15 @@ pub fn render(p: Page, colors: [string]) -> string {
 // runtime does it too, but as a module it runs after it: a dark flash on a
 // light choice), the serve hint, then the tokens stylesheet that triggers it
 // on error.
-pub fn head_guard() -> string {
+pub fn head_guard(base: string) -> string {
     `<script>
 (function () {
   try {
     var root = document.documentElement;
+    // A component's page shows its content once its components are defined
+    // (no layout shift); modules.ray clears this, and 3 s is the fallback.
+    root.setAttribute("data-ray-loading", "");
+    setTimeout(function () { root.removeAttribute("data-ray-loading"); }, 3000);
     var theme = localStorage.getItem("ray-ds:theme");
     if (theme === "light" || theme === "dark") root.setAttribute("data-theme", theme);
     var primary = localStorage.getItem("ray-ds:primary");
@@ -87,7 +106,7 @@ window.__rayServeHint = function () {
 };
 if (location.protocol === "file:") window.__rayServeHint();
 </script>
-<link rel="stylesheet" href="../dist/tokens.css" onerror="window.__rayServeHint()">`
+<link rel="stylesheet" href="${base}../dist/tokens.css" onerror="window.__rayServeHint()">`
 }
 
 // ray-ds/index.html: the server root sends you to the docs.

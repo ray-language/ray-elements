@@ -22,40 +22,145 @@ pub fn index_js(cs: [Component], prefix: string) -> string {
     join(out, "\n")
 }
 
-// The components page: one section per component, a sidebar group per category.
-pub fn render(cs: [Component]) -> Page {
+fn label_of(c: Component) -> string {
+    if (c.aliases.len() > 0) { "${c.name} (${join(c.aliases, ", ")})" } else { c.name }
+}
+
+// Components in category order.
+fn ordered(cs: [Component]) -> [Component] {
+    let out: [Component] = [];
+    for cat in CATEGORIES {
+        for c in cs {
+            if (c.category == cat) {
+                out.push(c);
+            }
+        }
+    }
+    out
+}
+
+// The sidebar: a group per category, each link `prefix + dir + suffix`.
+fn sidebar(cs: [Component], prefix: string, suffix: string) -> [Group] {
     let groups: [Group] = [];
+    for cat in CATEGORIES {
+        let links: [Link] = [];
+        for c in cs {
+            if (c.category == cat) {
+                links.push(link(label_of(c), "${prefix}${c.dir}${suffix}"));
+            }
+        }
+        if (links.len() > 0) {
+            groups.push(Group { title: cat, links: links });
+        }
+    }
+    groups
+}
+
+// An example placed one directory down (docs/components/): its module
+// imports climb one more level, and links to another component's section
+// (#button) go to its page when `to_pages`.
+fn relocate(html: string, cs: [Component], to_pages: bool) -> string {
+    var out = html.replace("\"../src/", "\"../../src/").replace("'../src/", "'../../src/").replace("href=\"code/", "href=\"../code/");
+    if (to_pages) {
+        for c in cs {
+            out = out.replace("href=\"#${c.dir}\"", "href=\"${c.dir}.html\"");
+        }
+    }
+    out
+}
+
+// docs/components.html: the catalog — a card per component, by category.
+pub fn index(cs: [Component]) -> Page {
     let body: [string] = [
         "<h1 class=\"page-title\">Components</h1>",
-        "<p class=\"page-intro\">Every component with a live example, its HTML and its API, generated from each <code>component.toml</code>. The same API is available in React and Vue.</p>"
+        "<p class=\"page-intro\">${cs.len()} components, each with a live example, its code in HTML, React and Vue, and its API generated from its <code>component.toml</code>. <a href=\"components/all.html\">All of them on one page</a>.</p>"
     ];
-    // Every element, for the React and Vue versions of the examples.
-    let els = base_elements() + all_elements(cs);
     for cat in CATEGORIES {
         let in_cat = cs.filter(fn(c: Component) -> bool { c.category == cat });
         if (in_cat.len() == 0) {
             continue;
         }
-        let links: [Link] = [];
+        body.push("<h2 class=\"catalog-title\" id=\"${slug_of(cat)}\">${escape(cat)}</h2>");
+        body.push("<div class=\"catalog\">");
         for c in in_cat {
-            let label = if (c.aliases.len() > 0) { "${c.name} (${join(c.aliases, ", ")})" } else { c.name };
-            links.push(link(label, "#${c.dir}"));
-            body.push(component(c, els));
+            let tags = join(c.elements.map(fn(e: Element) -> string { "&lt;${e.tag}&gt;" }), " ");
+            body.push("<a class=\"catalog-card\" href=\"components/${c.dir}.html\"><strong>${escape(label_of(c))}</strong><span>${escape(first_sentence(c.summary))}</span><code>${tags}</code></a>");
         }
-        groups.push(Group { title: cat, links: links });
+        body.push("</div>");
     }
+    // Links to the old single page (components.html#button) still land.
+    let dirs = join(cs.map(fn(c: Component) -> string { "\"${c.dir}\"" }), ",");
+    body.push("<script>(() => { const id = location.hash.slice(1); if ([${dirs}].includes(id)) location.replace(\"components/\" + id + \".html\"); })();</script>");
     page(
         "components.html",
         "components",
         "Components",
-        "Every ray·ds component with a live example, its HTML and its API.",
-        groups,
+        "Every ray·ds component: a live example, its code and its API.",
+        sidebar(ordered(cs), "components/", ".html"),
+        join(body, "\n"),
+        "components-index"
+    )
+}
+
+// docs/components/<dir>.html: one component.
+pub fn pages(cs: [Component]) -> [Page] {
+    let els = base_elements() + all_elements(cs);
+    let list = ordered(cs);
+    let out: [Page] = [];
+    for i in 0..list.len() {
+        let c = list[i];
+        let prev = if (i > 0) { "<a class=\"pager-prev\" href=\"${list[i - 1].dir}.html\"><small>Previous</small>${escape(list[i - 1].name)}</a>" } else { "<span></span>" };
+        let next = if (i + 1 < list.len()) { "<a class=\"pager-next\" href=\"${list[i + 1].dir}.html\"><small>Next</small>${escape(list[i + 1].name)}</a>" } else { "<span></span>" };
+        let body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="../components.html">Components</a><span aria-hidden="true">/</span><a href="../components.html#${slug_of(c.category)}">${escape(c.category)}</a></nav>
+${relocate(component(c, els, true), cs, true)}
+<nav class="pager" aria-label="Components">${prev}${next}</nav>`;
+        out.push(page(
+            "components/${c.dir}.html",
+            "components",
+            c.name,
+            c.summary,
+            sidebar(list, "", ".html"),
+            body,
+            "components-page"
+        ));
+    }
+    out
+}
+
+// docs/components/all.html: every component on one page (and the page the
+// browser tests run in).
+pub fn all(cs: [Component]) -> Page {
+    let els = base_elements() + all_elements(cs);
+    let body: [string] = [
+        "<h1 class=\"page-title\">All components</h1>",
+        "<p class=\"page-intro\">Every component on one page. Each also has <a href=\"../components.html\">its own page</a>.</p>"
+    ];
+    for c in ordered(cs) {
+        body.push(relocate(component(c, els, false), cs, false));
+    }
+    page(
+        "components/all.html",
+        "components",
+        "All components",
+        "Every ray·ds component on one page.",
+        sidebar(ordered(cs), "#", ""),
         join(body, "\n"),
         "components-page"
     )
 }
 
-fn component(c: Component, els: [Element]) -> string {
+fn slug_of(s: string) -> string {
+    s.to_lower().replace(" ", "-")
+}
+
+fn first_sentence(s: string) -> string {
+    match (s.index_of(". ")) {
+        Option.Some(i) => s.substring(0, i + 1),
+        Option.None => s,
+    }
+}
+
+fn component(c: Component, els: [Element], own_page: bool) -> string {
     let api: [string] = [];
     for el in c.elements {
         api.push(element(el, c.elements.len() > 1));
@@ -71,11 +176,20 @@ fn component(c: Component, els: [Element]) -> string {
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="code/${c.dir}.html">Open the code</a></p></div></details>`
     };
+    // On its own page the name is the page's heading.
+    let head = if (own_page) {
+        `<h1 class="page-title">${escape(c.name)}${aka(c)}</h1>
+<p class="page-intro">${escape(c.summary)}</p>`
+    } else {
+        `<h2>${escape(c.name)}${aka(c)}</h2>
+<p class="summary">${escape(c.summary)}</p>`
+    };
+    // On its own page the API gets its own heading (h1 → h2 → h3).
+    let api_head = if (own_page) { "<h2 class=\"api-title\">API</h2>\n" } else { "" };
     `<section id="${c.dir}" class="component">
-<h2>${escape(c.name)}${aka(c)}</h2>
-<p class="summary">${escape(c.summary)}</p>
+${head}
 ${example}
-${join(api, "\n")}
+${api_head}${join(api, "\n")}
 </section>`
 }
 

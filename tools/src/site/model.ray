@@ -5,6 +5,8 @@
 pub struct Link {
     label: string,
     href: string,
+    // The page this link goes to is the one shown (set by site/shell).
+    current: bool,
 }
 
 pub struct Group {
@@ -70,7 +72,7 @@ pub fn page(
 }
 
 pub fn link(label: string, href: string) -> Link {
-    Link { label: label, href: href }
+    Link { label: label, href: href, current: false }
 }
 
 // "Color palette" -> "color-palette" (ids of headings and sections).

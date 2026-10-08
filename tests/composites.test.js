@@ -1,4 +1,4 @@
-// page: docs/components.html
+// page: docs/components/all.html
 //
 // Phase 4 in the real webview: progress, slider, stat, empty state, status
 // bar, nav link, split, table, command palette.
@@ -6,7 +6,7 @@
 const T = window.__rayTest;
 const tags = ["ray-progress", "ray-slider", "ray-stat", "ray-empty-state", "ray-statusbar", "ray-statusbar-item", "ray-nav-link", "ray-split", "ray-table", "ray-command-palette"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
-const { score } = await import("../src/components/command-palette/command-palette.js");
+const { score } = await import("../../src/components/command-palette/command-palette.js");
 
 async function mount(html) {
   const box = document.createElement("div");

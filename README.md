@@ -33,7 +33,7 @@ src/integrations/      React and Vue runtime helpers (createComponent)
 src/components/<name>/ <name>.js + component.toml (metadata) + example.html
 src/index.js           generated: imports every component
 dist/                  generated: tokens.css, tokens.json
-docs/                  generated: foundations.html, components.html, index.html, code/<component>.html (each example's code, loaded on demand)
+docs/                  generated: index.html, foundations.html, components.html (the catalog), components/<component>.html (a page each, and all.html with every one), code/<component>.html (each example's code, loaded on demand)
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-ds CLI

@@ -4,7 +4,7 @@ export default [
     "label": "Button",
     "group": "Components · Buttons",
     "description": "A button, or a link styled as one with href. Submits or resets its form with type.",
-    "href": "components.html#button",
+    "href": "components/button.html",
     "keywords": [
       "button",
       "ray-button"
@@ -15,7 +15,7 @@ export default [
     "label": "Button group",
     "group": "Components · Buttons",
     "description": "Buttons joined into one control: inner corners squared, borders overlapped. Works with ray-button, ray-icon-button, menus with a button trigger and fields (ray-input, ray-select, ray-search).",
-    "href": "components.html#button-group",
+    "href": "components/button-group.html",
     "keywords": [
       "button-group",
       "ray-button-group"
@@ -26,7 +26,7 @@ export default [
     "label": "Icon button",
     "group": "Components · Buttons",
     "description": "A square button for an icon (Mantine's ActionIcon). Always give it a label.",
-    "href": "components.html#icon-button",
+    "href": "components/icon-button.html",
     "keywords": [
       "icon-button",
       "ray-icon-button"
@@ -37,7 +37,7 @@ export default [
     "label": "Toggle",
     "group": "Components · Buttons",
     "description": "A two-state button (aria-pressed): bold in a toolbar, mute, favorite. The variant is how \"on\" looks; \"off\" is always neutral, so the states differ by more than color. Has everything ray-button has and joins a ray-button-group.",
-    "href": "components.html#toggle",
+    "href": "components/toggle.html",
     "keywords": [
       "toggle",
       "ray-toggle"
@@ -48,7 +48,7 @@ export default [
     "label": "Toggle group",
     "group": "Components · Buttons",
     "description": "ray-toggle elements with one shared value: type=\"single\" (at most one on: alignment, view mode) or \"multiple\" (bold / italic / underline). Joined like a button group, or spaced; arrow keys move between toggles; submitted with its form.",
-    "href": "components.html#toggle-group",
+    "href": "components/toggle-group.html",
     "keywords": [
       "toggle-group",
       "ray-toggle-group"
@@ -59,7 +59,7 @@ export default [
     "label": "Checkbox",
     "group": "Components · Inputs",
     "description": "A checkbox with label, description and error. Submits value when checked.",
-    "href": "components.html#checkbox",
+    "href": "components/checkbox.html",
     "keywords": [
       "checkbox",
       "ray-checkbox"
@@ -70,7 +70,7 @@ export default [
     "label": "Color picker",
     "group": "Components · Inputs",
     "description": "Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper. Pointer and keyboard; form-associated; hex, rgb or hsl, with or without alpha.",
-    "href": "components.html#color-picker",
+    "href": "components/color-picker.html",
     "keywords": [
       "color-picker",
       "ray-color-picker",
@@ -82,7 +82,7 @@ export default [
     "label": "Date picker",
     "group": "Components · Inputs",
     "description": "A date field with a calendar dropdown, and the calendar on its own. Keyboard grid navigation, min/max, locale-aware. Form-associated.",
-    "href": "components.html#date-picker",
+    "href": "components/date-picker.html",
     "keywords": [
       "date-picker",
       "ray-date-picker",
@@ -94,7 +94,7 @@ export default [
     "label": "File upload",
     "group": "Components · Inputs",
     "description": "A drop zone to pick files: drag, click, keyboard or paste. Checks type, size and count as files arrive, lists them as ray-attachment rows (thumbnails, remove) and submits them with its form.",
-    "href": "components.html#file-upload",
+    "href": "components/file-upload.html",
     "keywords": [
       "file-upload",
       "ray-file-upload"
@@ -105,7 +105,7 @@ export default [
     "label": "Input",
     "group": "Components · Inputs",
     "description": "A text field with label, description and error (Mantine's TextInput). Form-associated.",
-    "href": "components.html#input",
+    "href": "components/input.html",
     "keywords": [
       "input",
       "ray-input"
@@ -116,7 +116,7 @@ export default [
     "label": "Password input",
     "group": "Components · Inputs",
     "description": "A password field with a button that shows or hides what was typed (Mantine's PasswordInput). Everything else is ray-input: label, description, error, sizes, validation, forms.",
-    "href": "components.html#password-input",
+    "href": "components/password-input.html",
     "keywords": [
       "password-input",
       "ray-password-input"
@@ -127,7 +127,7 @@ export default [
     "label": "Radio group",
     "group": "Components · Inputs",
     "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
-    "href": "components.html#radio",
+    "href": "components/radio.html",
     "keywords": [
       "radio",
       "ray-radio-group",
@@ -139,7 +139,7 @@ export default [
     "label": "Search",
     "group": "Components · Inputs",
     "description": "A search box: icon, clear button, an optional shortcut that focuses it, and a debounced ray-search event. A RayInput, so it has a label and takes part in forms.",
-    "href": "components.html#search",
+    "href": "components/search.html",
     "keywords": [
       "search",
       "ray-search"
@@ -150,7 +150,7 @@ export default [
     "label": "Segmented control",
     "group": "Components · Inputs",
     "description": "One choice among a few, as a segmented row with a sliding indicator. Options from child <option> elements or data. Form-associated.",
-    "href": "components.html#segmented-control",
+    "href": "components/segmented-control.html",
     "keywords": [
       "segmented-control",
       "ray-segmented-control"
@@ -161,7 +161,7 @@ export default [
     "label": "Select",
     "group": "Components · Inputs",
     "description": "A select with its own dropdown (keyboard, typeahead, groups); options from child <option> elements or the data property. Form-associated.",
-    "href": "components.html#select",
+    "href": "components/select.html",
     "keywords": [
       "select",
       "ray-select"
@@ -172,7 +172,7 @@ export default [
     "label": "Slider",
     "group": "Components · Inputs",
     "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
-    "href": "components.html#slider",
+    "href": "components/slider.html",
     "keywords": [
       "slider",
       "ray-slider"
@@ -183,7 +183,7 @@ export default [
     "label": "Switch",
     "group": "Components · Inputs",
     "description": "An on/off toggle with the same API as Checkbox, announced as a switch.",
-    "href": "components.html#switch",
+    "href": "components/switch.html",
     "keywords": [
       "switch",
       "ray-switch"
@@ -194,7 +194,7 @@ export default [
     "label": "Textarea",
     "group": "Components · Inputs",
     "description": "A multi-line text field that can grow with its content. Form-associated.",
-    "href": "components.html#textarea",
+    "href": "components/textarea.html",
     "keywords": [
       "textarea",
       "ray-textarea"
@@ -205,7 +205,7 @@ export default [
     "label": "Nav link",
     "group": "Components · Navigation",
     "description": "A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.",
-    "href": "components.html#nav-link",
+    "href": "components/nav-link.html",
     "keywords": [
       "nav-link",
       "ray-nav-link"
@@ -216,7 +216,7 @@ export default [
     "label": "Pagination",
     "group": "Components · Navigation",
     "description": "Page navigation: previous/next, optional first/last, page numbers with ellipses; the number of items stays constant so it does not jump.",
-    "href": "components.html#pagination",
+    "href": "components/pagination.html",
     "keywords": [
       "pagination",
       "ray-pagination"
@@ -227,7 +227,7 @@ export default [
     "label": "Sidebar",
     "group": "Components · Navigation",
     "description": "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen.",
-    "href": "components.html#sidebar",
+    "href": "components/sidebar.html",
     "keywords": [
       "sidebar",
       "ray-sidebar",
@@ -239,7 +239,7 @@ export default [
     "label": "Tabs",
     "group": "Components · Navigation",
     "description": "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.",
-    "href": "components.html#tabs",
+    "href": "components/tabs.html",
     "keywords": [
       "tabs",
       "ray-tabs",
@@ -252,7 +252,7 @@ export default [
     "label": "Command palette",
     "group": "Components · Overlays",
     "description": "Search and run actions from the keyboard (Mantine's Spotlight): fuzzy search, groups, shortcuts, ⌘K / Ctrl+K; combobox + listbox pattern in a modal dialog.",
-    "href": "components.html#command-palette",
+    "href": "components/command-palette.html",
     "keywords": [
       "command-palette",
       "ray-command-palette"
@@ -263,7 +263,7 @@ export default [
     "label": "Dialog (Modal)",
     "group": "Components · Overlays",
     "description": "ray-ds's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog().",
-    "href": "components.html#dialog",
+    "href": "components/dialog.html",
     "keywords": [
       "dialog",
       "modal",
@@ -275,7 +275,7 @@ export default [
     "label": "Drawer",
     "group": "Components · Overlays",
     "description": "A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive.",
-    "href": "components.html#drawer",
+    "href": "components/drawer.html",
     "keywords": [
       "drawer",
       "ray-drawer"
@@ -286,7 +286,7 @@ export default [
     "label": "Menu",
     "group": "Components · Overlays",
     "description": "A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.",
-    "href": "components.html#menu",
+    "href": "components/menu.html",
     "keywords": [
       "menu",
       "ray-menu",
@@ -300,7 +300,7 @@ export default [
     "label": "Popover",
     "group": "Components · Overlays",
     "description": "A floating panel anchored to a trigger, in the top layer; closes on Escape and outside clicks.",
-    "href": "components.html#popover",
+    "href": "components/popover.html",
     "keywords": [
       "popover",
       "ray-popover"
@@ -311,7 +311,7 @@ export default [
     "label": "Tooltip",
     "group": "Components · Overlays",
     "description": "A short hint on hover and focus of its child; the label also becomes the child's accessible description.",
-    "href": "components.html#tooltip",
+    "href": "components/tooltip.html",
     "keywords": [
       "tooltip",
       "ray-tooltip"
@@ -322,7 +322,7 @@ export default [
     "label": "Accordion",
     "group": "Components · Data display",
     "description": "Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple.",
-    "href": "components.html#accordion",
+    "href": "components/accordion.html",
     "keywords": [
       "accordion",
       "ray-accordion",
@@ -334,7 +334,7 @@ export default [
     "label": "Attachment",
     "group": "Components · Data display",
     "description": "A file in a composer, upload list or chat: thumbnail or type icon, name, size, upload progress, error, remove and download.",
-    "href": "components.html#attachment",
+    "href": "components/attachment.html",
     "keywords": [
       "attachment",
       "ray-attachment",
@@ -346,7 +346,7 @@ export default [
     "label": "Avatar",
     "group": "Components · Data display",
     "description": "An image, the initials of a name, or a placeholder icon.",
-    "href": "components.html#avatar",
+    "href": "components/avatar.html",
     "keywords": [
       "avatar",
       "ray-avatar"
@@ -357,7 +357,7 @@ export default [
     "label": "Badge",
     "group": "Components · Data display",
     "description": "A short status label.",
-    "href": "components.html#badge",
+    "href": "components/badge.html",
     "keywords": [
       "badge",
       "ray-badge"
@@ -368,7 +368,7 @@ export default [
     "label": "Blockquote",
     "group": "Components · Data display",
     "description": "A quotation set apart from the text (Mantine's Blockquote): a colored edge, a quote mark on it and the attribution below. A real <blockquote> inside, with the source's URL as its cite.",
-    "href": "components.html#blockquote",
+    "href": "components/blockquote.html",
     "keywords": [
       "blockquote",
       "ray-blockquote"
@@ -379,7 +379,7 @@ export default [
     "label": "Carousel",
     "group": "Components · Data display",
     "description": "Slides in a scroll-snap viewport: native swipe and scrolling, previous/next controls, indicators, keyboard, loop and autoplay with a pause button.",
-    "href": "components.html#carousel",
+    "href": "components/carousel.html",
     "keywords": [
       "carousel",
       "ray-carousel"
@@ -390,7 +390,7 @@ export default [
     "label": "Code",
     "group": "Components · Data display",
     "description": "A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a \"show more\" height. A small built-in highlighter, or any library through setHighlighter(), painted with the --ray-code-* tokens.",
-    "href": "components.html#code",
+    "href": "components/code.html",
     "keywords": [
       "code",
       "ray-code"
@@ -401,7 +401,7 @@ export default [
     "label": "Icon",
     "group": "Components · Data display",
     "description": "An icon of the registry: the whole set (the components' too) changes with setIcons().",
-    "href": "components.html#icon",
+    "href": "components/icon.html",
     "keywords": [
       "icon",
       "ray-icon"
@@ -412,7 +412,7 @@ export default [
     "label": "Indicator",
     "group": "Components · Data display",
     "description": "A dot or a small label on the edge of any element (Mantine's Indicator): \"New\" on an avatar, an unread count on a bell, an online dot. Nine positions, an inward offset, palette or CSS colors, a border and a live pulse.",
-    "href": "components.html#indicator",
+    "href": "components/indicator.html",
     "keywords": [
       "indicator",
       "ray-indicator"
@@ -423,7 +423,7 @@ export default [
     "label": "Kbd",
     "group": "Components · Data display",
     "description": "A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons.",
-    "href": "components.html#kbd",
+    "href": "components/kbd.html",
     "keywords": [
       "kbd",
       "ray-kbd"
@@ -434,7 +434,7 @@ export default [
     "label": "Stat",
     "group": "Components · Data display",
     "description": "A metric tile: label, value, change against a previous period, note.",
-    "href": "components.html#stat",
+    "href": "components/stat.html",
     "keywords": [
       "stat",
       "ray-stat"
@@ -445,7 +445,7 @@ export default [
     "label": "Table",
     "group": "Components · Data display",
     "description": "A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state. Plain HTML tables: the .ray-table class of base.css.",
-    "href": "components.html#table",
+    "href": "components/table.html",
     "keywords": [
       "table",
       "ray-table"
@@ -456,7 +456,7 @@ export default [
     "label": "Alert",
     "group": "Components · Feedback",
     "description": "An inline message: title, text, an icon of the registry, the color variants and an optional close button.",
-    "href": "components.html#alert",
+    "href": "components/alert.html",
     "keywords": [
       "alert",
       "ray-alert"
@@ -467,7 +467,7 @@ export default [
     "label": "Empty state",
     "group": "Components · Feedback",
     "description": "What a list, table or pane shows when it is empty: icon, title, text and the action that fills it.",
-    "href": "components.html#empty-state",
+    "href": "components/empty-state.html",
     "keywords": [
       "empty-state",
       "ray-empty-state"
@@ -478,7 +478,7 @@ export default [
     "label": "Notification",
     "group": "Components · Feedback",
     "description": "Toasts: notify(), updateNotification(), hideNotification(), clearNotifications(); shown in a ray-toaster (a polite live region in the top layer). ray-notification is usable on its own.",
-    "href": "components.html#notification",
+    "href": "components/notification.html",
     "keywords": [
       "notification",
       "ray-notification",
@@ -490,7 +490,7 @@ export default [
     "label": "Progress",
     "group": "Components · Feedback",
     "description": "A determinate or (without value) indeterminate progress bar, announced as a progressbar.",
-    "href": "components.html#progress",
+    "href": "components/progress.html",
     "keywords": [
       "progress",
       "ray-progress"
@@ -501,7 +501,7 @@ export default [
     "label": "Skeleton",
     "group": "Components · Feedback",
     "description": "A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.",
-    "href": "components.html#skeleton",
+    "href": "components/skeleton.html",
     "keywords": [
       "skeleton",
       "ray-skeleton"
@@ -512,7 +512,7 @@ export default [
     "label": "Spinner",
     "group": "Components · Feedback",
     "description": "An indeterminate loading indicator, announced as a status.",
-    "href": "components.html#spinner",
+    "href": "components/spinner.html",
     "keywords": [
       "spinner",
       "ray-spinner"
@@ -523,7 +523,7 @@ export default [
     "label": "Aspect ratio",
     "group": "Components · Layout",
     "description": "A box with a fixed width/height ratio; its image, video or iframe fills it.",
-    "href": "components.html#aspect-ratio",
+    "href": "components/aspect-ratio.html",
     "keywords": [
       "aspect-ratio",
       "ray-aspect-ratio"
@@ -534,7 +534,7 @@ export default [
     "label": "Card",
     "group": "Components · Layout",
     "description": "A surface for grouped content, with optional media, header and footer.",
-    "href": "components.html#card",
+    "href": "components/card.html",
     "keywords": [
       "card",
       "ray-card"
@@ -545,7 +545,7 @@ export default [
     "label": "Separator",
     "group": "Components · Layout",
     "description": "A horizontal or vertical rule, optionally labeled (Mantine's Divider).",
-    "href": "components.html#separator",
+    "href": "components/separator.html",
     "keywords": [
       "separator",
       "ray-separator"
@@ -556,7 +556,7 @@ export default [
     "label": "Split",
     "group": "Components · Layout",
     "description": "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.",
-    "href": "components.html#split",
+    "href": "components/split.html",
     "keywords": [
       "split",
       "ray-split"
@@ -567,7 +567,7 @@ export default [
     "label": "Status bar",
     "group": "Components · Layout",
     "description": "The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.",
-    "href": "components.html#statusbar",
+    "href": "components/statusbar.html",
     "keywords": [
       "statusbar",
       "ray-statusbar",
@@ -579,7 +579,7 @@ export default [
     "label": "Theme toggle",
     "group": "Components · Theme",
     "description": "Icon button that cycles the document theme: system, light, dark.",
-    "href": "components.html#theme-toggle",
+    "href": "components/theme-toggle.html",
     "keywords": [
       "theme-toggle",
       "ray-theme-toggle"

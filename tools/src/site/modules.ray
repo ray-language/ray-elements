@@ -107,15 +107,27 @@ fn tags_in(html: string, known: [string]) -> [string] {
     out
 }
 
-// The page with its scripts in place of MODULES_MARK (pages live in docs/).
-pub fn inject(root: string, html: string, cs: [Component]) -> Result<string, string> {
+// What the layout shows at once. Its search palette and mobile menu are
+// loaded by site.js on first use, so they are not counted.
+const LAYOUT_TAGS: [string] = ["ray-icon-button", "ray-icon", "ray-select", "ray-theme-toggle"];
+
+// The page with its scripts in place of MODULES_MARK. `body` is the page's
+// own content (scanned for the components it uses); `file` its path in docs/
+// (components/button.html sits one level down).
+pub fn inject(root: string, html: string, body: string, cs: [Component], file: string) -> Result<string, string> {
+    let base = "../".repeat(file.split("/").len() - 1);
     let known: [string] = [];
     for c in cs {
         for el in c.elements {
             known.push(el.tag);
         }
     }
-    let used = tags_in(html, known);
+    let used = tags_in(body, known);
+    for t in LAYOUT_TAGS {
+        if (!used.contains(t)) {
+            used.push(t);
+        }
+    }
     let entries: [string] = [];
     for c in cs {
         if (c.elements.filter(fn(e: Element) -> bool { used.contains(e.tag) }).len() > 0) {
@@ -129,17 +141,25 @@ pub fn inject(root: string, html: string, cs: [Component]) -> Result<string, str
     for m in modules {
         if (m != "docs/site.js") {
             // Low priority: they must not slow down the render-blocking CSS.
-            lines.push("<link rel=\"modulepreload\" href=\"${href(m)}\" fetchpriority=\"low\">");
+            lines.push("<link rel=\"modulepreload\" href=\"${href(m, base)}\" fetchpriority=\"low\">");
         }
     }
-    let imports = entries.map(fn(e: string) -> string { "import \"${href(e)}\";" });
-    lines.push("<script type=\"module\">${join(imports, " ")}</script>");
+    let imports: [string] = [];
+    for e in entries {
+        imports.push("import \"${href(e, base)}\";");
+    }
+    // Runs once every import has run, so every component is defined.
+    // blocking="render": the page is first painted with its components
+    // defined (no blank instant, no layout shift; a view transition keeps
+    // the previous page until then). Where it is not supported, the
+    // data-ray-loading veil does the same job.
+    lines.push("<script type=\"module\" blocking=\"render\">${join(imports, " ")} document.documentElement.removeAttribute(\"data-ray-loading\");</script>");
     Result.Ok(html.replace(MODULES_MARK, join(lines, "\n")))
 }
 
-// A root path as seen from docs/.
-fn href(path: string) -> string {
-    if (path.starts_with("docs/")) { path.substring(5, path.len()) } else { "../${path}" }
+// A root path as seen from a page in docs/ (`base` up to docs/).
+fn href(path: string, base: string) -> string {
+    if (path.starts_with("docs/")) { base + path.substring(5, path.len()) } else { "${base}../${path}" }
 }
 
 @test

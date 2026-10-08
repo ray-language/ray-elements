@@ -1,10 +1,10 @@
-// page: docs/components.html
+// page: docs/components/all.html
 //
 // System-wide features: the icon registry, theming (definePrimary, component
 // defaults) and the variants.
 
 const T = window.__rayTest;
-const core = await import("../src/core/core.js");
+const core = await import("../../src/core/core.js");
 await Promise.all(["ray-icon", "ray-dialog", "ray-select", "ray-checkbox", "ray-button"].map((t) => customElements.whenDefined(t)));
 
 async function mount(html) {
@@ -131,7 +131,7 @@ T.test("definePrimary: shades, primary and text color on the document", async (T
   const lum = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) & 255) * 0.3 + ((n >> 8) & 255) * 0.59 + (n & 255) * 0.11; };
   T.ok(r.shades.every((s, i) => i === 0 || lum(s) <= lum(r.shades[i - 1]) + 1), "monotonic lightness");
   // White fails on this orange (3.6:1) and it is not bright: the closest darker shade that reaches AA.
-  const { contrastRatio } = await import("../src/core/color.js");
+  const { contrastRatio } = await import("../../src/core/color.js");
   const o = core.definePrimary("#e8590c", { persist: false });
   const i = o.shades.indexOf(o.filled);
   T.ok(i > o.shades.indexOf("#e8590c"), "a darker shade");
@@ -175,7 +175,7 @@ T.test("definePrimary: light colors get black text; subtrees; invalid input", as
 // --- charts: palette and chartTheme ---------------------------------------------
 
 T.test("chartTheme: resolved colors per theme, withAlpha, change events", async (T) => {
-  const charts = await import("../src/core/charts.js");
+  const charts = await import("../../src/core/charts.js");
   core.setTheme("light", { persist: false });
   const light = charts.chartTheme();
   T.eq(light.series.length, charts.CHART_SERIES);

@@ -1,4 +1,4 @@
-// page: docs/components.html
+// page: docs/components/all.html
 //
 // Phase 2 in the real webview: dialog, popover, tooltip, menu, notifications,
 // tabs, segmented control, accordion.
@@ -6,8 +6,8 @@
 const T = window.__rayTest;
 const tags = ["ray-select", "ray-dialog", "ray-popover", "ray-tooltip", "ray-menu", "ray-menu-item", "ray-toaster", "ray-notification", "ray-tabs", "ray-tab", "ray-tab-panel", "ray-segmented-control", "ray-accordion", "ray-accordion-item"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
-const { confirmDialog } = await import("../src/components/dialog/dialog.js");
-const { notify, updateNotification, hideNotification, clearNotifications } = await import("../src/components/notification/notification.js");
+const { confirmDialog } = await import("../../src/components/dialog/dialog.js");
+const { notify, updateNotification, hideNotification, clearNotifications } = await import("../../src/components/notification/notification.js");
 
 async function mount(html) {
   const box = document.createElement("div");
@@ -53,7 +53,7 @@ T.test("dialog: opens modal, focuses content, locks scroll, restores focus", asy
 });
 
 T.test("dialog: overlay blur from the token, a subtree and the overlay-blur attribute", async (T) => {
-  const { configure } = await import("../src/core/core.js");
+  const { configure } = await import("../../src/core/core.js");
   const box = await mount(`<ray-dialog label="Blur"><p>x</p></ray-dialog><div style="--ray-overlay-blur: 9px"><ray-drawer label="Side"><p>y</p></ray-drawer></div>`);
   const d = box.querySelector("ray-dialog");
   const dr = box.querySelector("ray-drawer");
@@ -619,7 +619,7 @@ T.test("light dismiss: outside press, nesting, Escape over a dialog, one open at
 });
 
 T.test("motion: off with zero durations (the test window), play resolves at once", async (T) => {
-  const motion = await import("../src/core/motion.js");
+  const motion = await import("../../src/core/motion.js");
   const el = document.createElement("div");
   document.body.append(el);
   T.eq(motion.duration(el, "base"), 0, "the harness zeroes the duration tokens");

@@ -1,4 +1,4 @@
-// page: docs/components.html
+// page: docs/components/all.html
 //
 // App-shell pieces: ray-button-group and ray-sidebar (+ ray-sidebar-group).
 
