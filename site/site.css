@@ -738,15 +738,13 @@ pre.code code, .prose pre code { font-size: inherit; }
 /* Code example. */
 .demo-code-grid { grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr)); gap: var(--ray-space-4); }
 
-/* Navigating between pages: a cross-document view transition; the header
-   and the sidebar stay put, the content cross-fades. */
+/* Navigating between pages: a cross-document view transition that keeps
+   the previous page on screen until the new one is ready, then swaps them
+   at once (a cross-fade shows both pages half transparent: a pale flash). */
 @view-transition { navigation: auto; }
 .site-header { view-transition-name: site-header; }
 .sidebar { view-transition-name: site-sidebar; }
-::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--ray-duration-fast); }
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
-}
+::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none; }
 
 /* The components catalog. */
 .catalog-title { margin: var(--ray-space-10) 0 var(--ray-space-4); font-size: var(--ray-font-size-lg); scroll-margin-top: calc(var(--site-header) + 1rem); }
@@ -781,7 +779,8 @@ pre.code code, .prose pre code { font-size: inherit; }
 .pager small { font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 .pager-next { text-align: right; grid-column: 2; }
 
-/* A component's page: hidden for the instant before its components are
-   defined (their size changes when they upgrade). See shell.head_guard. */
-html[data-ray-loading] main.components-page { visibility: hidden; }
+/* A component's page before its components are defined, where the module
+   script cannot block rendering (Safari, Firefox): the components wait
+   hidden, the text around them shows. See shell.head_guard. */
+html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden; }
 .api-title { margin: var(--ray-space-10) 0 var(--ray-space-2); font-size: var(--ray-font-size-xl); }
