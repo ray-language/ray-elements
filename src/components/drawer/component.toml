@@ -23,6 +23,10 @@ description = "Shown."
 type = "string"
 description = "Heading (also the accessible name)."
 
+[ray-drawer.properties.description]
+type = "string"
+description = "A line under the title (the drawer's accessible description)."
+
 [ray-drawer.properties.position]
 type = "string"
 values = ["right", "left", "top", "bottom"]

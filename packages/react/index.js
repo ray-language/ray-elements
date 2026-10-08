@@ -138,12 +138,12 @@ export const RayCommandPalette = createComponent("ray-command-palette", {
 });
 export const RayDialog = createComponent("ray-dialog", {
   displayName: "RayDialog",
-  properties: ["open", "label", "size", "position", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "overlayBlur"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close", onRayRequestClose: "ray-request-close" },
 });
 export const RayDrawer = createComponent("ray-drawer", {
   displayName: "RayDrawer",
-  properties: ["open", "label", "position", "size", "modeless", "floating", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "position", "size", "modeless", "floating", "persistent", "hideClose", "overlayBlur"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close", onRayRequestClose: "ray-request-close" },
 });
 export const RayMenu = createComponent("ray-menu", {

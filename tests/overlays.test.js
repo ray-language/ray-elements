@@ -124,6 +124,32 @@ T.test("dialog: Escape closes; persistent and preventDefault keep it open", asyn
   box.remove();
 });
 
+T.test("dialog: description, free size and height, radius", async (T) => {
+  const box = await mount(`<ray-dialog label="Settings" description="Project ray-remote" size="70%" height="70%" radius="none"><p>Body</p></ray-dialog>`);
+  const d = box.querySelector("ray-dialog");
+  d.show();
+  await T.settle();
+  const desc = d.shadowRoot.querySelector("#description");
+  T.eq(desc.hidden, false);
+  T.eq(desc.textContent, "Project ray-remote");
+  T.eq(d.dialog.getAttribute("aria-describedby"), "description");
+  const r = d.dialog.getBoundingClientRect();
+  const want = Math.min(Math.max(innerWidth * 0.7, 640), innerWidth - 32);
+  T.ok(Math.abs(r.width - want) <= 2, `width ${r.width} ≈ ${want}`);
+  const wantH = Math.min(Math.max(innerHeight * 0.7, 480), innerHeight - 64);
+  T.ok(Math.abs(r.height - wantH) <= 2, `height ${r.height} ≈ ${wantH}`);
+  T.eq(getComputedStyle(d.dialog).borderTopLeftRadius, "0px");
+  d.description = "";
+  d.size = "sm";
+  await T.settle();
+  T.eq(desc.hidden, true);
+  T.eq(d.dialog.hasAttribute("aria-describedby"), false);
+  T.ok(d.dialog.getBoundingClientRect().width <= 380 + 1, "back to a preset");
+  d.close();
+  await T.settle();
+  box.remove();
+});
+
 T.test("dialog: hide-close hides the close button", async (T) => {
   const box = await mount(`<ray-dialog label="X" hide-close><ray-button>OK</ray-button></ray-dialog>`);
   const d = box.querySelector("ray-dialog");

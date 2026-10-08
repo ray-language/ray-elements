@@ -7073,13 +7073,37 @@
               "fieldName": "label"
             },
             {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title (the dialog's accessible description).",
+              "fieldName": "description"
+            },
+            {
               "name": "size",
               "type": {
-                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\" | (string & {})"
               },
-              "description": "Width.",
+              "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window.",
               "fieldName": "size",
               "default": "md"
+            },
+            {
+              "name": "height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window.",
+              "fieldName": "height"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: lg.",
+              "fieldName": "radius"
             },
             {
               "name": "position",
@@ -7095,7 +7119,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Escape and backdrop clicks do not close it.",
+              "description": "Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.",
               "fieldName": "persistent"
             },
             {
@@ -7138,14 +7162,44 @@
             },
             {
               "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title (the dialog's accessible description).",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
               "name": "size",
               "type": {
-                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\" | (string & {})"
               },
-              "description": "Width.",
+              "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window.",
               "attribute": "size",
               "reflects": true,
               "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "height",
+              "type": {
+                "text": "string"
+              },
+              "description": "Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window.",
+              "attribute": "height",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "string"
+              },
+              "description": "Corner radius: xs…xl, none, or a CSS length. Default: lg.",
+              "attribute": "radius",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -7164,7 +7218,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Escape and backdrop clicks do not close it.",
+              "description": "Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.",
               "attribute": "persistent",
               "reflects": true
             },
@@ -7251,6 +7305,14 @@
               "description": "The heading."
             },
             {
+              "name": "description",
+              "description": "The line under the heading."
+            },
+            {
+              "name": "header",
+              "description": "The header: title, description, the header slot and the close button."
+            },
+            {
               "name": "body",
               "description": "The scrollable body."
             },
@@ -7326,6 +7388,14 @@
               },
               "description": "Heading (also the accessible name).",
               "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title (the drawer's accessible description).",
+              "fieldName": "description"
             },
             {
               "name": "position",
@@ -7405,6 +7475,16 @@
               },
               "description": "Heading (also the accessible name).",
               "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the title (the drawer's accessible description).",
+              "attribute": "description",
               "reflects": false
             },
             {

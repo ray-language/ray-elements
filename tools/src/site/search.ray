@@ -8,11 +8,12 @@ from site/model import Page;
 pub fn index_js(cs: [Component], pages: [Page]) -> string {
     var items = json.arr();
     for c in cs {
-        let tags: [string] = [c.dir];
+        let tags: [string] = [c.dir] + c.aliases.map(fn(a: string) -> string { a.to_lower() });
         for el in c.elements {
             tags.push(el.tag);
         }
-        items = items.item(entry(c.name, "Components · ${c.category}", c.summary, "components.html#${c.dir}", tags, "layers"));
+        let label = if (c.aliases.len() > 0) { "${c.name} (${join(c.aliases, ", ")})" } else { c.name };
+        items = items.item(entry(label, "Components · ${c.category}", c.summary, "components.html#${c.dir}", tags, "layers"));
     }
     for p in pages {
         if (p.key == "home" || p.key == "components") {

@@ -1,6 +1,7 @@
 // Component metadata: src/components/<dir>/component.toml (+ example.html).
 //
-//   [component]                  name, category, summary, files, requires, tags
+//   [component]                  name, aliases (other names it is known by), category, summary,
+//                                files, requires, tags
 //   [component.exports.<name>]   ts (a TypeScript declaration), description
 //   [component.types.<Name>]     ts (the type), description
 //   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-ds class)
@@ -70,6 +71,8 @@ pub struct Element {
 pub struct Component {
     dir: string,
     name: string,
+    // Other names the component is known by ("Modal" for Dialog): searchable.
+    aliases: [string],
     category: string,
     summary: string,
     files: [string],
@@ -221,6 +224,7 @@ pub fn parse(dir: string, src: string) -> Result<Component, string> {
     let c = Component {
         dir: dir,
         name: dir,
+        aliases: [],
         category: "",
         summary: "",
         files: [],
@@ -236,6 +240,8 @@ pub fn parse(dir: string, src: string) -> Result<Component, string> {
             let k = parts[1];
             if (k == "name") {
                 c.name = str_of(e)?;
+            } else if (k == "aliases") {
+                c.aliases = strs_of(e)?;
             } else if (k == "category") {
                 c.category = str_of(e)?;
             } else if (k == "summary") {

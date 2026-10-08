@@ -1038,11 +1038,17 @@ export declare class RayDialog extends RayElement {
   open: boolean | undefined;
   /** Heading (also the dialog's accessible name). */
   label: string | undefined;
-  /** Width. */
-  size: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** A line under the title (the dialog's accessible description). */
+  description: string | undefined;
+  /** Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window. */
+  size: "xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {});
+  /** Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window. */
+  height: string | undefined;
+  /** Corner radius: xs…xl, none, or a CSS length. Default: lg. */
+  radius: string | undefined;
   /** Vertical placement. */
   position: "center" | "top";
-  /** Escape and backdrop clicks do not close it. */
+  /** Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source. */
   persistent: boolean | undefined;
   /** No close button in the header. */
   hideClose: boolean | undefined;
@@ -1075,6 +1081,8 @@ export declare class RayDrawer extends RayElement {
   open: boolean | undefined;
   /** Heading (also the accessible name). */
   label: string | undefined;
+  /** A line under the title (the drawer's accessible description). */
+  description: string | undefined;
   /** The edge it slides from. */
   position: "right" | "left" | "top" | "bottom";
   /** Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length. */

@@ -2225,28 +2225,20 @@
           "description": "Heading (also the dialog's accessible name)."
         },
         {
+          "name": "description",
+          "description": "A line under the title (the dialog's accessible description)."
+        },
+        {
           "name": "size",
-          "description": "Width.",
-          "values": [
-            {
-              "name": "xs"
-            },
-            {
-              "name": "sm"
-            },
-            {
-              "name": "md"
-            },
-            {
-              "name": "lg"
-            },
-            {
-              "name": "xl"
-            },
-            {
-              "name": "full"
-            }
-          ]
+          "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window."
+        },
+        {
+          "name": "height",
+          "description": "Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window."
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: lg."
         },
         {
           "name": "position",
@@ -2262,7 +2254,7 @@
         },
         {
           "name": "persistent",
-          "description": "Escape and backdrop clicks do not close it.",
+          "description": "Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.",
           "valueSet": "v"
         },
         {
@@ -2288,6 +2280,10 @@
         {
           "name": "label",
           "description": "Heading (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "A line under the title (the drawer's accessible description)."
         },
         {
           "name": "position",

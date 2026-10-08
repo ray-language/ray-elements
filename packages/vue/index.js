@@ -126,12 +126,12 @@ export const RayCommandPalette = createComponent("RayCommandPalette", "ray-comma
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayDialog = createComponent("RayDialog", "ray-dialog", {
-  properties: ["open", "label", "size", "position", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "overlayBlur"],
   booleans: ["open", "persistent", "hideClose"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayDrawer = createComponent("RayDrawer", "ray-drawer", {
-  properties: ["open", "label", "position", "size", "modeless", "floating", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "position", "size", "modeless", "floating", "persistent", "hideClose", "overlayBlur"],
   booleans: ["open", "modeless", "floating", "persistent", "hideClose"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });

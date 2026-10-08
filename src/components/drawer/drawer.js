@@ -70,7 +70,13 @@ const styles = css`
 
   .header { display: flex; align-items: center; gap: var(--ray-space-3); padding: var(--ray-space-md); border-bottom: 1px solid var(--ray-border); }
   .header[data-empty] { display: none; }
-  .title { flex: 1; margin: 0; font-size: var(--ray-font-size-lg); font-weight: var(--ray-font-weight-semibold); line-height: var(--ray-line-height-heading); }
+  .header:has(.description:not([hidden])) { align-items: flex-start; }
+  /* The header slot and the close button, centered on the title's line
+     whether or not a description follows it. */
+  .actions { display: flex; flex: none; align-items: center; gap: var(--ray-space-3); height: calc(var(--ray-font-size-lg) * var(--ray-line-height-heading)); }
+  .heading { display: grid; flex: 1; gap: var(--ray-space-1); min-width: 0; }
+  .title { margin: 0; font-size: var(--ray-font-size-lg); font-weight: var(--ray-font-weight-semibold); line-height: var(--ray-line-height-heading); }
+  .description { margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
   .close {
     display: inline-flex;
     align-items: center;
@@ -104,9 +110,8 @@ export class RayDrawer extends RayDialog {
   static template = `
     <dialog part="drawer" aria-labelledby="title">
       <header class="header" part="header">
-        <h2 class="title" id="title" part="title"></h2>
-        <slot name="header"></slot>
-        <button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="close" aria-hidden="true"></span></button>
+        <div class="heading"><h2 class="title" id="title" part="title"></h2><p class="description" id="description" part="description" hidden></p></div>
+        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="close" aria-hidden="true"></span></button></div>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <footer class="footer" part="footer"><slot name="footer"></slot></footer>

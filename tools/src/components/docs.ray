@@ -38,7 +38,8 @@ pub fn render(cs: [Component]) -> Page {
         }
         let links: [Link] = [];
         for c in in_cat {
-            links.push(link(c.name, "#${c.dir}"));
+            let label = if (c.aliases.len() > 0) { "${c.name} (${join(c.aliases, ", ")})" } else { c.name };
+            links.push(link(label, "#${c.dir}"));
             body.push(component(c, els));
         }
         groups.push(Group { title: cat, links: links });
@@ -72,7 +73,7 @@ fn component(c: Component, els: [Element]) -> string {
 <pre class="code" data-source="vue" hidden><code>${highlight.code(vue, "vue")}</code></pre></details>`
     };
     `<section id="${c.dir}" class="component">
-<h2>${escape(c.name)}</h2>
+<h2>${escape(c.name)}${aka(c)}</h2>
 <p class="summary">${escape(c.summary)}</p>
 ${example}
 ${join(api, "\n")}
@@ -136,4 +137,12 @@ fn named_table(title: string, items: [Named]) -> string {
 fn table(head: [string], rows: [string]) -> string {
     let th = join(head.map(fn(h: string) -> string { "<th>${h}</th>" }), "");
     "<div class=\"api\"><table><thead><tr>${th}</tr></thead><tbody>${join(rows, "")}</tbody></table></div>"
+}
+
+// "Also: Modal" next to the heading of a component with aliases.
+fn aka(c: Component) -> string {
+    if (c.aliases.len() == 0) {
+        return "";
+    }
+    " <span class=\"aka\">also ${escape(join(c.aliases, ", "))}</span>"
 }

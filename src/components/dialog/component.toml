@@ -1,7 +1,8 @@
 [component]
 name = "Dialog"
+aliases = ["Modal"]
 category = "Overlays"
-summary = "A modal dialog on the native <dialog>: top layer, rest of the page inert, focus moved in and restored. Also exports confirmDialog()."
+summary = "ray-ds's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog()."
 files = ["dialog.js"]
 requires = ["button"]
 tags = ["ray-dialog"]
@@ -20,12 +21,26 @@ description = "Shown as a modal."
 type = "string"
 description = "Heading (also the dialog's accessible name)."
 
+[ray-dialog.properties.description]
+type = "string"
+description = "A line under the title (the dialog's accessible description)."
+
 [ray-dialog.properties.size]
 type = "string"
-values = ["xs", "sm", "md", "lg", "xl", "full"]
 default = "md"
 reflect = true
-description = "Width."
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})'
+description = "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window."
+
+[ray-dialog.properties.height]
+type = "string"
+reflect = true
+description = "Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window."
+
+[ray-dialog.properties.radius]
+type = "string"
+reflect = true
+description = "Corner radius: xs…xl, none, or a CSS length. Default: lg."
 
 [ray-dialog.properties.position]
 type = "string"
@@ -37,7 +52,7 @@ description = "Vertical placement."
 [ray-dialog.properties.persistent]
 type = "boolean"
 reflect = true
-description = "Escape and backdrop clicks do not close it."
+description = "Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source."
 
 [ray-dialog.properties.hideClose]
 attribute = "hide-close"
@@ -75,6 +90,12 @@ description = "The native <dialog>."
 
 [ray-dialog.parts.title]
 description = "The heading."
+
+[ray-dialog.parts.description]
+description = "The line under the heading."
+
+[ray-dialog.parts.header]
+description = "The header: title, description, the header slot and the close button."
 
 [ray-dialog.parts.body]
 description = "The scrollable body."

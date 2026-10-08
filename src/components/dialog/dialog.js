@@ -1,5 +1,7 @@
-// <ray-dialog>: a modal dialog (Mantine's Modal) on the native <dialog>:
-// top layer, the rest of the page inert, Escape to close.
+// <ray-dialog>: ray-ds's modal (Mantine's Modal, shadcn's Dialog) on the
+// native <dialog>: top layer, the rest of the page inert, focus trapped and
+// restored, Escape to close. Stacks: a dialog opened from another one goes
+// on top of it.
 //
 // `label` is the heading (not `title`, which would show the browser tooltip
 // over the whole dialog). Any slotted element with data-dialog-close closes
@@ -32,9 +34,11 @@ const styles = css`
     background: var(--ray-card);
     border: 1px solid var(--ray-overlay-border);
     background-clip: padding-box;
-    border-radius: var(--ray-radius-lg);
+    border-radius: var(--_radius, var(--ray-radius-lg));
     box-shadow: var(--ray-shadow-xl);
   }
+  /* Without height it is as tall as its content; with it, fixed (the body scrolls). */
+  :host([height]) dialog { height: min(var(--_h), calc(100dvh - 4rem)); }
   :host([size="full"]) dialog { width: calc(100vw - 2rem); height: calc(100dvh - 2rem); max-height: none; }
   dialog[open] { display: flex; flex-direction: column; animation: ray-dialog-in var(--ray-duration-base) var(--ray-easing-out); }
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
@@ -48,7 +52,13 @@ const styles = css`
     padding: var(--ray-space-md) var(--ray-space-md) 0;
   }
   .header[data-empty] { display: none; }
-  .title { flex: 1; margin: 0; font-size: var(--ray-font-size-lg); font-weight: var(--ray-font-weight-semibold); line-height: var(--ray-line-height-heading); }
+  .header:has(.description:not([hidden])) { align-items: flex-start; }
+  /* The header slot and the close button, centered on the title's line
+     whether or not a description follows it. */
+  .actions { display: flex; flex: none; align-items: center; gap: var(--ray-space-3); height: calc(var(--ray-font-size-lg) * var(--ray-line-height-heading)); }
+  .heading { display: grid; flex: 1; gap: var(--ray-space-1); min-width: 0; }
+  .title { margin: 0; font-size: var(--ray-font-size-lg); font-weight: var(--ray-font-weight-semibold); line-height: var(--ray-line-height-heading); }
+  .description { margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
   .close {
     display: inline-flex;
     align-items: center;
@@ -86,14 +96,16 @@ export class RayDialog extends RayElement {
     persistent: { type: Boolean, reflect: true },
     hideClose: { type: Boolean, reflect: true },
     overlayBlur: { type: String },
+    description: { type: String },
+    height: { type: String, reflect: true },
+    radius: { type: String, reflect: true },
   };
   static styles = [overlayStyles, styles];
   static template = `
     <dialog part="dialog" aria-labelledby="title">
       <header class="header" part="header">
-        <h2 class="title" id="title" part="title"></h2>
-        <slot name="header"></slot>
-        <button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="close" aria-hidden="true"></span></button>
+        <div class="heading"><h2 class="title" id="title" part="title"></h2><p class="description" id="description" part="description" hidden></p></div>
+        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="close" aria-hidden="true"></span></button></div>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <footer class="footer" part="footer"><slot name="footer"></slot></footer>
@@ -147,6 +159,14 @@ export class RayDialog extends RayElement {
   update(changed) {
     if (changed.has("overlayBlur")) applyOverlayBlur(this, this.overlayBlur);
     this.$("#title").textContent = this.label ?? "";
+    const description = this.$("#description");
+    if (description) {
+      description.textContent = this.description ?? "";
+      description.hidden = !this.description;
+      if (this.description) this.dialog.setAttribute("aria-describedby", "description");
+      else this.dialog.removeAttribute("aria-describedby");
+    }
+    this._dimensions();
     this.$(".close").hidden = Boolean(this.hideClose);
     this.$(".header").toggleAttribute("data-empty", !this.label && this.hideClose && !this.querySelector('[slot="header"]'));
     if (this.label) this.dialog.setAttribute("aria-labelledby", "title");
@@ -163,6 +183,21 @@ export class RayDialog extends RayElement {
         this._leave();
       }
     }
+  }
+
+  // size beyond the presets, height and radius: any CSS length. A percentage
+  // is of the window (70% wide = 70vw, 70% high = 70dvh), but never smaller
+  // than a comfortable minimum (40rem × 30rem), so on a phone it fills it.
+  _dimensions() {
+    const length = (v, unit, floor) => (/^\d+(\.\d+)?%$/.test(v) ? `max(${v.replace("%", unit)}, ${floor})` : v);
+    const custom = this.size && !["xs", "sm", "md", "lg", "xl", "full"].includes(this.size);
+    if (custom && this.localName === "ray-dialog") this.style.setProperty("--_w", length(this.size, "vw", "40rem"));
+    else if (this.localName === "ray-dialog") this.style.removeProperty("--_w");
+    if (this.height) this.style.setProperty("--_h", length(this.height, "dvh", "30rem"));
+    else this.style.removeProperty("--_h");
+    const r = this.radius;
+    if (r) this.style.setProperty("--_radius", ["xs", "sm", "md", "lg", "xl"].includes(r) ? `var(--ray-radius-${r})` : r === "none" ? "0" : r);
+    else this.style.removeProperty("--_radius");
   }
 
   /** Protected hook: the keyframes the dialog leaves with. */

@@ -1,3 +1,107 @@
+<div class="demo-caption">The modal</div>
+<div class="demo-modal-hero">
+  <div class="demo-modal-hero-text">
+    <strong>ray-dialog is the modal of ray-ds</strong>
+    <span>Backdrop, inert page, trapped and restored focus, Escape, stacking. This one takes 70% of the window (<code>size="70%" height="70%"</code>) and holds a whole settings screen: vertical tabs, fields, a table, sliders, switches and a confirmation stacked on top.</span>
+  </div>
+  <ray-button data-open="dlg-settings"><ray-icon slot="left" name="settings"></ray-icon>Project settings</ray-button>
+  <span data-out="dlg-settings"></span>
+</div>
+
+<ray-dialog id="dlg-settings" label="Project settings" description="ray-remote · desktop app · last deployed 2 hours ago" size="70%" height="70%">
+  <ray-badge slot="header" variant="dot" color="green" normal-case>Live</ray-badge>
+  <ray-tabs class="demo-settings" variant="outline" orientation="vertical" value="general">
+    <ray-tab value="general"><ray-icon slot="left" name="settings"></ray-icon>General</ray-tab>
+    <ray-tab value="members"><ray-icon slot="left" name="user"></ray-icon>Members</ray-tab>
+    <ray-tab value="build"><ray-icon slot="left" name="terminal"></ray-icon>Build</ray-tab>
+    <ray-tab value="notifications"><ray-icon slot="left" name="info"></ray-icon>Notifications</ray-tab>
+    <ray-tab value="danger"><ray-icon slot="left" name="alert-triangle"></ray-icon>Danger zone</ray-tab>
+
+    <ray-tab-panel value="general">
+      <div class="demo-settings-section">
+        <div class="demo-settings-identity">
+          <ray-avatar name="Ray Remote" color="violet" size="xl" radius="md"></ray-avatar>
+          <ray-file-upload variant="compact" accept="image/*" list="none" drop-label="Drop a new icon" browse-label="browse"></ray-file-upload>
+        </div>
+        <div class="demo-dialog-form">
+          <ray-input name="name" label="Name" value="ray-remote" required></ray-input>
+          <ray-input name="id" label="Bundle id" value="dev.ray.remote" description="Reverse DNS, used by the installers."></ray-input>
+        </div>
+        <ray-textarea name="about" label="Description" rows="2" value="Control a machine from your phone: terminal, files and screen."></ray-textarea>
+        <div class="demo-dialog-form">
+          <ray-select name="region" label="Update channel" value="stable">
+            <option value="stable">Stable</option>
+            <option value="beta">Beta</option>
+            <option value="nightly">Nightly</option>
+          </ray-select>
+          <div class="demo-field">Visibility
+            <ray-segmented-control name="visibility" value="team" aria-label="Visibility"><option value="private">Private</option><option value="team">Team</option><option value="public">Public</option></ray-segmented-control>
+          </div>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="members">
+      <div class="demo-settings-section">
+        <div class="demo-settings-invite">
+          <ray-input label="Invite by email" placeholder="name@company.com" type="email" style="flex: 1"></ray-input>
+          <ray-select label="Role" value="developer" style="width: 9rem"><option value="admin">Admin</option><option value="developer">Developer</option><option value="viewer">Viewer</option></ray-select>
+          <ray-button variant="light">Invite</ray-button>
+        </div>
+        <ray-table id="dlg-settings-members" with-border label="Members"></ray-table>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="build">
+      <div class="demo-settings-section">
+        <div class="demo-dialog-form">
+          <ray-select label="Target" value="native"><option value="vm">VM</option><option value="native">Native (--release)</option></ray-select>
+          <ray-input label="Entry" value="src/main.ray"></ray-input>
+        </div>
+        <ray-slider label="Parallel jobs" min="1" max="16" value="6" show-value></ray-slider>
+        <ray-slider label="Cache size" min="0" max="8" step="0.5" value="2" show-value unit=" GB" color="teal"></ray-slider>
+        <div class="demo-settings-toggles">
+          <ray-switch label="Run tests before every build" checked></ray-switch>
+          <ray-switch label="Sign the macOS bundle" checked></ray-switch>
+          <ray-switch label="Publish to the update channel"></ray-switch>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="notifications">
+      <div class="demo-settings-section">
+        <ray-radio-group label="Email me about" value="failures">
+          <ray-radio value="all">Every build</ray-radio>
+          <ray-radio value="failures">Failures only</ray-radio>
+          <ray-radio value="none">Nothing</ray-radio>
+        </ray-radio-group>
+        <div class="demo-settings-toggles">
+          <ray-checkbox label="New member joined" checked></ray-checkbox>
+          <ray-checkbox label="Release published" checked></ray-checkbox>
+          <ray-checkbox label="Weekly usage report"></ray-checkbox>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="danger">
+      <div class="demo-settings-section">
+        <ray-alert color="red" label="Careful">These actions affect everyone in the project and cannot be undone.</ray-alert>
+        <div class="demo-settings-danger">
+          <div><strong>Transfer ownership</strong><span>Move ray-remote to another team.</span></div>
+          <ray-button variant="default">Transfer…</ray-button>
+        </div>
+        <div class="demo-settings-danger">
+          <div><strong>Delete project</strong><span>Removes builds, releases and the update channel.</span></div>
+          <ray-button variant="light" color="red" id="dlg-settings-delete">Delete…</ray-button>
+        </div>
+      </div>
+    </ray-tab-panel>
+  </ray-tabs>
+  <span slot="footer" class="demo-settings-saved">Last saved 2 minutes ago</span>
+  <ray-button slot="footer" variant="default" data-dialog-close="cancel">Cancel</ray-button>
+  <ray-button slot="footer" data-dialog-close="save">Save changes</ray-button>
+</ray-dialog>
+
 <div class="demo-caption">Patterns</div>
 <div class="demo-launchers">
   <article class="demo-launcher" style="--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)">
@@ -157,6 +261,38 @@
 <script type="module">
   import { confirmDialog } from "../src/components/dialog/dialog.js";
   const out = (id, text) => { document.querySelector(`[data-out="${id}"]`).textContent = text; };
+
+  // Project settings: members, the stacked confirmation, how it closed.
+  const members = document.getElementById("dlg-settings-members");
+  members.columns = [
+    { key: "name", label: "Name", sortable: true },
+    { key: "email", label: "Email" },
+    { key: "role", label: "Role", sortable: true, render: (r) => {
+      const b = document.createElement("ray-badge");
+      b.variant = "light";
+      b.color = r.role === "Admin" ? "violet" : r.role === "Developer" ? "blue" : "gray";
+      b.textContent = r.role;
+      return b;
+    } },
+  ];
+  members.data = [
+    { id: 1, name: "Ada Lovelace", email: "ada@ray.dev", role: "Admin" },
+    { id: 2, name: "Grace Hopper", email: "grace@ray.dev", role: "Developer" },
+    { id: 3, name: "Alan Turing", email: "alan@ray.dev", role: "Developer" },
+    { id: 4, name: "Katherine Johnson", email: "katherine@ray.dev", role: "Viewer" },
+    { id: 5, name: "Edsger Dijkstra", email: "edsger@ray.dev", role: "Viewer" },
+  ];
+  document.getElementById("dlg-settings-delete").addEventListener("click", async () => {
+    const ok = await confirmDialog({ label: "Delete ray-remote?", message: "The project, its builds and its releases are removed for everyone.", confirmLabel: "Delete project", color: "red" });
+    if (ok) document.getElementById("dlg-settings").close("deleted");
+  });
+  document.getElementById("dlg-settings").addEventListener("ray-close", (e) => out("dlg-settings", `returnValue: "${e.detail.returnValue}"`));
+  // On a narrow window the side tabs go on top.
+  const settingsTabs = document.querySelector("#dlg-settings ray-tabs");
+  const narrow = matchMedia("(max-width: 40em)");
+  const placeTabs = () => { settingsTabs.orientation = narrow.matches ? "horizontal" : "vertical"; };
+  narrow.addEventListener("change", placeTabs);
+  placeTabs();
 
   // Every launcher opens its dialog; most report how it closed.
   for (const button of document.querySelectorAll("[data-open]")) {

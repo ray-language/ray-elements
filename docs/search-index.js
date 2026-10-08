@@ -237,12 +237,13 @@ export default [
     "icon": "layers"
   },
   {
-    "label": "Dialog",
+    "label": "Dialog (Modal)",
     "group": "Components · Overlays",
-    "description": "A modal dialog on the native <dialog>: top layer, rest of the page inert, focus moved in and restored. Also exports confirmDialog().",
+    "description": "ray-ds's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog().",
     "href": "components.html#dialog",
     "keywords": [
       "dialog",
+      "modal",
       "ray-dialog"
     ],
     "icon": "layers"

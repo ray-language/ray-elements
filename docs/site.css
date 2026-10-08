@@ -634,3 +634,24 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-dialog-hero { display: grid; place-items: center; height: 7rem; margin-bottom: var(--ray-space-4); color: var(--ray-pink-light-color); background: radial-gradient(circle at 30% 20%, var(--ray-pink-light), transparent 60%), radial-gradient(circle at 75% 80%, var(--ray-violet-light), transparent 60%), var(--ray-muted); border-radius: var(--ray-radius-md); }
 .demo-dialog-list { display: grid; gap: var(--ray-space-3); margin: 0; padding: 0; list-style: none; font-size: var(--ray-font-size-sm); }
 .demo-dialog-list li { display: flex; align-items: center; gap: var(--ray-space-2); }
+
+/* Components page: another name of a component, next to its heading. */
+.component h2 .aka { margin-left: var(--ray-space-2); padding: 0.125rem var(--ray-space-2); font-size: var(--ray-font-size-xs); font-weight: var(--ray-font-weight-medium); vertical-align: middle; color: var(--ray-muted-foreground); background: var(--ray-muted); border-radius: var(--ray-radius-sm); }
+
+/* Dialog example: the featured large modal. */
+.demo-modal-hero { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ray-space-4); padding: var(--ray-space-5, 1.25rem); background: radial-gradient(circle at 0 0, var(--ray-primary-light), transparent 55%), var(--ray-background); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-lg); }
+.demo-modal-hero-text { display: grid; gap: var(--ray-space-1); flex: 1 1 22rem; min-width: 0; }
+.demo-modal-hero-text span { font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+.demo-modal-hero > span { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
+.demo-settings { height: 100%; }
+.demo-settings ray-tab-panel { min-width: 0; }
+.demo-settings-section { display: grid; gap: var(--ray-space-5, 1.25rem); max-width: 56rem; }
+.demo-settings-identity { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ray-space-4); }
+.demo-settings-identity ray-file-upload { flex: 1 1 16rem; }
+.demo-settings-invite { display: flex; flex-wrap: wrap; align-items: end; gap: var(--ray-space-3); }
+.demo-settings-toggles { display: grid; gap: var(--ray-space-3); }
+.demo-settings-danger { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ray-space-3); padding: var(--ray-space-4); border: 1px solid color-mix(in srgb, var(--ray-red-outline) 35%, var(--ray-border)); border-radius: var(--ray-radius-md); }
+.demo-settings-danger div { display: grid; gap: 0.125rem; }
+.demo-settings-danger span { font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+.demo-settings-saved { margin-inline-end: auto; align-self: center; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+@media (max-width: 40em) { .demo-settings-saved { display: none; } }

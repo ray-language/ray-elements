@@ -99,7 +99,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 <div class="nav-group"><p class="nav-group-title">Overlays</p>
 <ray-nav-link label="Command palette" href="#command-palette"></ray-nav-link>
-<ray-nav-link label="Dialog" href="#dialog"></ray-nav-link>
+<ray-nav-link label="Dialog (Modal)" href="#dialog"></ray-nav-link>
 <ray-nav-link label="Drawer" href="#drawer"></ray-nav-link>
 <ray-nav-link label="Menu" href="#menu"></ray-nav-link>
 <ray-nav-link label="Popover" href="#popover"></ray-nav-link>
@@ -166,7 +166,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 <div class="nav-group"><p class="nav-group-title">Overlays</p>
 <ray-nav-link label="Command palette" href="#command-palette"></ray-nav-link>
-<ray-nav-link label="Dialog" href="#dialog"></ray-nav-link>
+<ray-nav-link label="Dialog (Modal)" href="#dialog"></ray-nav-link>
 <ray-nav-link label="Drawer" href="#drawer"></ray-nav-link>
 <ray-nav-link label="Menu" href="#menu"></ray-nav-link>
 <ray-nav-link label="Popover" href="#popover"></ray-nav-link>
@@ -2738,9 +2738,113 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dialog</code></td><td>The dialog.</td></tr><tr><td><code>input</code></td><td>The search field.</td></tr><tr><td><code>option</code></td><td>Each result.</td></tr></tbody></table></div>
 </section>
 <section id="dialog" class="component">
-<h2>Dialog</h2>
-<p class="summary">A modal dialog on the native &lt;dialog&gt;: top layer, rest of the page inert, focus moved in and restored. Also exports confirmDialog().</p>
-<div class="example"><div class="demo-caption">Patterns</div>
+<h2>Dialog <span class="aka">also Modal</span></h2>
+<p class="summary">ray-ds's modal, on the native &lt;dialog&gt;: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog().</p>
+<div class="example"><div class="demo-caption">The modal</div>
+<div class="demo-modal-hero">
+  <div class="demo-modal-hero-text">
+    <strong>ray-dialog is the modal of ray-ds</strong>
+    <span>Backdrop, inert page, trapped and restored focus, Escape, stacking. This one takes 70% of the window (<code>size="70%" height="70%"</code>) and holds a whole settings screen: vertical tabs, fields, a table, sliders, switches and a confirmation stacked on top.</span>
+  </div>
+  <ray-button data-open="dlg-settings"><ray-icon slot="left" name="settings"></ray-icon>Project settings</ray-button>
+  <span data-out="dlg-settings"></span>
+</div>
+
+<ray-dialog id="dlg-settings" label="Project settings" description="ray-remote · desktop app · last deployed 2 hours ago" size="70%" height="70%">
+  <ray-badge slot="header" variant="dot" color="green" normal-case>Live</ray-badge>
+  <ray-tabs class="demo-settings" variant="outline" orientation="vertical" value="general">
+    <ray-tab value="general"><ray-icon slot="left" name="settings"></ray-icon>General</ray-tab>
+    <ray-tab value="members"><ray-icon slot="left" name="user"></ray-icon>Members</ray-tab>
+    <ray-tab value="build"><ray-icon slot="left" name="terminal"></ray-icon>Build</ray-tab>
+    <ray-tab value="notifications"><ray-icon slot="left" name="info"></ray-icon>Notifications</ray-tab>
+    <ray-tab value="danger"><ray-icon slot="left" name="alert-triangle"></ray-icon>Danger zone</ray-tab>
+
+    <ray-tab-panel value="general">
+      <div class="demo-settings-section">
+        <div class="demo-settings-identity">
+          <ray-avatar name="Ray Remote" color="violet" size="xl" radius="md"></ray-avatar>
+          <ray-file-upload variant="compact" accept="image/*" list="none" drop-label="Drop a new icon" browse-label="browse"></ray-file-upload>
+        </div>
+        <div class="demo-dialog-form">
+          <ray-input name="name" label="Name" value="ray-remote" required></ray-input>
+          <ray-input name="id" label="Bundle id" value="dev.ray.remote" description="Reverse DNS, used by the installers."></ray-input>
+        </div>
+        <ray-textarea name="about" label="Description" rows="2" value="Control a machine from your phone: terminal, files and screen."></ray-textarea>
+        <div class="demo-dialog-form">
+          <ray-select name="region" label="Update channel" value="stable">
+            <option value="stable">Stable</option>
+            <option value="beta">Beta</option>
+            <option value="nightly">Nightly</option>
+          </ray-select>
+          <div class="demo-field">Visibility
+            <ray-segmented-control name="visibility" value="team" aria-label="Visibility"><option value="private">Private</option><option value="team">Team</option><option value="public">Public</option></ray-segmented-control>
+          </div>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="members">
+      <div class="demo-settings-section">
+        <div class="demo-settings-invite">
+          <ray-input label="Invite by email" placeholder="name@company.com" type="email" style="flex: 1"></ray-input>
+          <ray-select label="Role" value="developer" style="width: 9rem"><option value="admin">Admin</option><option value="developer">Developer</option><option value="viewer">Viewer</option></ray-select>
+          <ray-button variant="light">Invite</ray-button>
+        </div>
+        <ray-table id="dlg-settings-members" with-border label="Members"></ray-table>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="build">
+      <div class="demo-settings-section">
+        <div class="demo-dialog-form">
+          <ray-select label="Target" value="native"><option value="vm">VM</option><option value="native">Native (--release)</option></ray-select>
+          <ray-input label="Entry" value="src/main.ray"></ray-input>
+        </div>
+        <ray-slider label="Parallel jobs" min="1" max="16" value="6" show-value></ray-slider>
+        <ray-slider label="Cache size" min="0" max="8" step="0.5" value="2" show-value unit=" GB" color="teal"></ray-slider>
+        <div class="demo-settings-toggles">
+          <ray-switch label="Run tests before every build" checked></ray-switch>
+          <ray-switch label="Sign the macOS bundle" checked></ray-switch>
+          <ray-switch label="Publish to the update channel"></ray-switch>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="notifications">
+      <div class="demo-settings-section">
+        <ray-radio-group label="Email me about" value="failures">
+          <ray-radio value="all">Every build</ray-radio>
+          <ray-radio value="failures">Failures only</ray-radio>
+          <ray-radio value="none">Nothing</ray-radio>
+        </ray-radio-group>
+        <div class="demo-settings-toggles">
+          <ray-checkbox label="New member joined" checked></ray-checkbox>
+          <ray-checkbox label="Release published" checked></ray-checkbox>
+          <ray-checkbox label="Weekly usage report"></ray-checkbox>
+        </div>
+      </div>
+    </ray-tab-panel>
+
+    <ray-tab-panel value="danger">
+      <div class="demo-settings-section">
+        <ray-alert color="red" label="Careful">These actions affect everyone in the project and cannot be undone.</ray-alert>
+        <div class="demo-settings-danger">
+          <div><strong>Transfer ownership</strong><span>Move ray-remote to another team.</span></div>
+          <ray-button variant="default">Transfer…</ray-button>
+        </div>
+        <div class="demo-settings-danger">
+          <div><strong>Delete project</strong><span>Removes builds, releases and the update channel.</span></div>
+          <ray-button variant="light" color="red" id="dlg-settings-delete">Delete…</ray-button>
+        </div>
+      </div>
+    </ray-tab-panel>
+  </ray-tabs>
+  <span slot="footer" class="demo-settings-saved">Last saved 2 minutes ago</span>
+  <ray-button slot="footer" variant="default" data-dialog-close="cancel">Cancel</ray-button>
+  <ray-button slot="footer" data-dialog-close="save">Save changes</ray-button>
+</ray-dialog>
+
+<div class="demo-caption">Patterns</div>
 <div class="demo-launchers">
   <article class="demo-launcher" style="--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)">
     <span class="demo-launcher-icon"><ray-icon name="file"></ray-icon></span>
@@ -2900,6 +3004,38 @@ if (location.protocol === "file:") window.__rayServeHint();
   import { confirmDialog } from "../src/components/dialog/dialog.js";
   const out = (id, text) => { document.querySelector(`[data-out="${id}"]`).textContent = text; };
 
+  // Project settings: members, the stacked confirmation, how it closed.
+  const members = document.getElementById("dlg-settings-members");
+  members.columns = [
+    { key: "name", label: "Name", sortable: true },
+    { key: "email", label: "Email" },
+    { key: "role", label: "Role", sortable: true, render: (r) => {
+      const b = document.createElement("ray-badge");
+      b.variant = "light";
+      b.color = r.role === "Admin" ? "violet" : r.role === "Developer" ? "blue" : "gray";
+      b.textContent = r.role;
+      return b;
+    } },
+  ];
+  members.data = [
+    { id: 1, name: "Ada Lovelace", email: "ada@ray.dev", role: "Admin" },
+    { id: 2, name: "Grace Hopper", email: "grace@ray.dev", role: "Developer" },
+    { id: 3, name: "Alan Turing", email: "alan@ray.dev", role: "Developer" },
+    { id: 4, name: "Katherine Johnson", email: "katherine@ray.dev", role: "Viewer" },
+    { id: 5, name: "Edsger Dijkstra", email: "edsger@ray.dev", role: "Viewer" },
+  ];
+  document.getElementById("dlg-settings-delete").addEventListener("click", async () => {
+    const ok = await confirmDialog({ label: "Delete ray-remote?", message: "The project, its builds and its releases are removed for everyone.", confirmLabel: "Delete project", color: "red" });
+    if (ok) document.getElementById("dlg-settings").close("deleted");
+  });
+  document.getElementById("dlg-settings").addEventListener("ray-close", (e) => out("dlg-settings", `returnValue: "${e.detail.returnValue}"`));
+  // On a narrow window the side tabs go on top.
+  const settingsTabs = document.querySelector("#dlg-settings ray-tabs");
+  const narrow = matchMedia("(max-width: 40em)");
+  const placeTabs = () => { settingsTabs.orientation = narrow.matches ? "horizontal" : "vertical"; };
+  narrow.addEventListener("change", placeTabs);
+  placeTabs();
+
   // Every launcher opens its dialog; most report how it closed.
   for (const button of document.querySelectorAll("[data-open]")) {
     button.addEventListener("click", () => document.getElementById(button.dataset.open).show());
@@ -2955,7 +3091,111 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 <details class="source"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
-<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Patterns<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>The modal<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-modal-hero&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-modal-hero-text&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>ray-dialog is the modal of ray-ds<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Backdrop, inert page, trapped and restored focus, Escape, stacking. This one takes 70% of the window (<span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>size=&quot;70%&quot; height=&quot;70%&quot;<span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>) and holds a whole settings screen: vertical tabs, fields, a table, sliders, switches and a confirmation stacked on top.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">data-open</span>=<span class="tk-string">&quot;dlg-settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Project settings<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">data-out</span>=<span class="tk-string">&quot;dlg-settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-dialog</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Project settings&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;ray-remote · desktop app · last deployed 2 hours ago&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;70%&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;70%&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-badge</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;header&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dot&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;green&quot;</span> <span class="tk-attr">normal-case</span><span class="tk-punctuation">&gt;</span>Live<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-badge</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tabs</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;outline&quot;</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>General<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;members&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;user&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Members<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;build&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;terminal&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Build<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;notifications&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;info&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Notifications<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;danger&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;alert-triangle&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span>Danger zone<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab</span><span class="tk-punctuation">&gt;</span>
+
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab-panel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-identity&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-avatar</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;Ray Remote&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;violet&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;md&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-avatar</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-file-upload</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;compact&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;image/*&quot;</span> <span class="tk-attr">list</span>=<span class="tk-string">&quot;none&quot;</span> <span class="tk-attr">drop-label</span>=<span class="tk-string">&quot;Drop a new icon&quot;</span> <span class="tk-attr">browse-label</span>=<span class="tk-string">&quot;browse&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-file-upload</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;name&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Name&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;ray-remote&quot;</span> <span class="tk-attr">required</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;id&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Bundle id&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;dev.ray.remote&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Reverse DNS, used by the installers.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-textarea</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;about&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Description&quot;</span> <span class="tk-attr">rows</span>=<span class="tk-string">&quot;2&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;Control a machine from your phone: terminal, files and screen.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-textarea</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-select</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;region&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Update channel&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;stable&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;stable&quot;</span><span class="tk-punctuation">&gt;</span>Stable<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;beta&quot;</span><span class="tk-punctuation">&gt;</span>Beta<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;nightly&quot;</span><span class="tk-punctuation">&gt;</span>Nightly<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-select</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-field&quot;</span><span class="tk-punctuation">&gt;</span>Visibility
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-segmented-control</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;visibility&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;team&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Visibility&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;private&quot;</span><span class="tk-punctuation">&gt;</span>Private<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;team&quot;</span><span class="tk-punctuation">&gt;</span>Team<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;public&quot;</span><span class="tk-punctuation">&gt;</span>Public<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-segmented-control</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab-panel</span><span class="tk-punctuation">&gt;</span>
+
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab-panel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;members&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-invite&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Invite by email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;name@company.com&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;flex: 1&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-select</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Role&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;developer&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;width: 9rem&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;admin&quot;</span><span class="tk-punctuation">&gt;</span>Admin<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;developer&quot;</span><span class="tk-punctuation">&gt;</span>Developer<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;viewer&quot;</span><span class="tk-punctuation">&gt;</span>Viewer<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-select</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Invite<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-table</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings-members&quot;</span> <span class="tk-attr">with-border</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Members&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-table</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab-panel</span><span class="tk-punctuation">&gt;</span>
+
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab-panel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;build&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-select</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Target&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;native&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;vm&quot;</span><span class="tk-punctuation">&gt;</span>VM<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;native&quot;</span><span class="tk-punctuation">&gt;</span>Native (--release)<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-select</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Entry&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;src/main.ray&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-slider</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Parallel jobs&quot;</span> <span class="tk-attr">min</span>=<span class="tk-string">&quot;1&quot;</span> <span class="tk-attr">max</span>=<span class="tk-string">&quot;16&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;6&quot;</span> <span class="tk-attr">show-value</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-slider</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-slider</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Cache size&quot;</span> <span class="tk-attr">min</span>=<span class="tk-string">&quot;0&quot;</span> <span class="tk-attr">max</span>=<span class="tk-string">&quot;8&quot;</span> <span class="tk-attr">step</span>=<span class="tk-string">&quot;0.5&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;2&quot;</span> <span class="tk-attr">show-value</span> <span class="tk-attr">unit</span>=<span class="tk-string">&quot; GB&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-slider</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-toggles&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Run tests before every build&quot;</span> <span class="tk-attr">checked</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Sign the macOS bundle&quot;</span> <span class="tk-attr">checked</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Publish to the update channel&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab-panel</span><span class="tk-punctuation">&gt;</span>
+
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab-panel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;notifications&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-radio-group</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Email me about&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;failures&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-radio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;all&quot;</span><span class="tk-punctuation">&gt;</span>Every build<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-radio</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-radio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;failures&quot;</span><span class="tk-punctuation">&gt;</span>Failures only<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-radio</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-radio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;none&quot;</span><span class="tk-punctuation">&gt;</span>Nothing<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-radio</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-radio-group</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-toggles&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-checkbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;New member joined&quot;</span> <span class="tk-attr">checked</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-checkbox</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-checkbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Release published&quot;</span> <span class="tk-attr">checked</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-checkbox</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-checkbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Weekly usage report&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-checkbox</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab-panel</span><span class="tk-punctuation">&gt;</span>
+
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-tab-panel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;danger&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-alert</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Careful&quot;</span><span class="tk-punctuation">&gt;</span>These actions affect everyone in the project and cannot be undone.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-alert</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-danger&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Transfer ownership<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Move ray-remote to another team.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span>Transfer…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-danger&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Delete project<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Removes builds, releases and the update channel.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings-delete&quot;</span><span class="tk-punctuation">&gt;</span>Delete…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tab-panel</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-tabs</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-saved&quot;</span><span class="tk-punctuation">&gt;</span>Last saved 2 minutes ago<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">data-dialog-close</span>=<span class="tk-string">&quot;cancel&quot;</span><span class="tk-punctuation">&gt;</span>Cancel<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">data-dialog-close</span>=<span class="tk-string">&quot;save&quot;</span><span class="tk-punctuation">&gt;</span>Save changes<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-dialog</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Patterns<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-launchers&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">article</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-launcher&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)&quot;</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-launcher-icon&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-icon</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;file&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-icon</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
@@ -3115,6 +3355,38 @@ if (location.protocol === "file:") window.__rayServeHint();
   <span class="tk-keyword">import</span> { confirmDialog } <span class="tk-keyword">from</span> <span class="tk-string">&quot;../src/components/dialog/dialog.js&quot;</span>;
   <span class="tk-keyword">const</span> out = (id, text) =&gt; { document.querySelector(<span class="tk-string">`[data-out=&quot;${id}&quot;]`</span>).textContent = text; };
 
+  <span class="tk-comment">// Project settings: members, the stacked confirmation, how it closed.</span>
+  <span class="tk-keyword">const</span> members = document.getElementById(<span class="tk-string">&quot;dlg-settings-members&quot;</span>);
+  members.columns = [
+    { key: <span class="tk-string">&quot;name&quot;</span>, label: <span class="tk-string">&quot;Name&quot;</span>, sortable: <span class="tk-keyword">true</span> },
+    { key: <span class="tk-string">&quot;email&quot;</span>, label: <span class="tk-string">&quot;Email&quot;</span> },
+    { key: <span class="tk-string">&quot;role&quot;</span>, label: <span class="tk-string">&quot;Role&quot;</span>, sortable: <span class="tk-keyword">true</span>, render: (r) =&gt; {
+      <span class="tk-keyword">const</span> b = document.createElement(<span class="tk-string">&quot;ray-badge&quot;</span>);
+      b.variant = <span class="tk-string">&quot;light&quot;</span>;
+      b.color = r.role === <span class="tk-string">&quot;Admin&quot;</span> ? <span class="tk-string">&quot;violet&quot;</span> : r.role === <span class="tk-string">&quot;Developer&quot;</span> ? <span class="tk-string">&quot;blue&quot;</span> : <span class="tk-string">&quot;gray&quot;</span>;
+      b.textContent = r.role;
+      <span class="tk-keyword">return</span> b;
+    } },
+  ];
+  members.data = [
+    { id: <span class="tk-number">1</span>, name: <span class="tk-string">&quot;Ada Lovelace&quot;</span>, email: <span class="tk-string">&quot;ada@ray.dev&quot;</span>, role: <span class="tk-string">&quot;Admin&quot;</span> },
+    { id: <span class="tk-number">2</span>, name: <span class="tk-string">&quot;Grace Hopper&quot;</span>, email: <span class="tk-string">&quot;grace@ray.dev&quot;</span>, role: <span class="tk-string">&quot;Developer&quot;</span> },
+    { id: <span class="tk-number">3</span>, name: <span class="tk-string">&quot;Alan Turing&quot;</span>, email: <span class="tk-string">&quot;alan@ray.dev&quot;</span>, role: <span class="tk-string">&quot;Developer&quot;</span> },
+    { id: <span class="tk-number">4</span>, name: <span class="tk-string">&quot;Katherine Johnson&quot;</span>, email: <span class="tk-string">&quot;katherine@ray.dev&quot;</span>, role: <span class="tk-string">&quot;Viewer&quot;</span> },
+    { id: <span class="tk-number">5</span>, name: <span class="tk-string">&quot;Edsger Dijkstra&quot;</span>, email: <span class="tk-string">&quot;edsger@ray.dev&quot;</span>, role: <span class="tk-string">&quot;Viewer&quot;</span> },
+  ];
+  document.getElementById(<span class="tk-string">&quot;dlg-settings-delete&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, <span class="tk-keyword">async</span> () =&gt; {
+    <span class="tk-keyword">const</span> ok = <span class="tk-keyword">await</span> confirmDialog({ label: <span class="tk-string">&quot;Delete ray-remote?&quot;</span>, message: <span class="tk-string">&quot;The project, its builds and its releases are removed for everyone.&quot;</span>, confirmLabel: <span class="tk-string">&quot;Delete project&quot;</span>, color: <span class="tk-string">&quot;red&quot;</span> });
+    <span class="tk-keyword">if</span> (ok) document.getElementById(<span class="tk-string">&quot;dlg-settings&quot;</span>).close(<span class="tk-string">&quot;deleted&quot;</span>);
+  });
+  document.getElementById(<span class="tk-string">&quot;dlg-settings&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-close&quot;</span>, (e) =&gt; out(<span class="tk-string">&quot;dlg-settings&quot;</span>, <span class="tk-string">`returnValue: &quot;${e.detail.returnValue}&quot;`</span>));
+  <span class="tk-comment">// On a narrow window the side tabs go on top.</span>
+  <span class="tk-keyword">const</span> settingsTabs = document.querySelector(<span class="tk-string">&quot;#dlg-settings ray-tabs&quot;</span>);
+  <span class="tk-keyword">const</span> narrow = matchMedia(<span class="tk-string">&quot;(max-width: 40em)&quot;</span>);
+  <span class="tk-keyword">const</span> placeTabs = () =&gt; { settingsTabs.orientation = narrow.matches ? <span class="tk-string">&quot;horizontal&quot;</span> : <span class="tk-string">&quot;vertical&quot;</span>; };
+  narrow.addEventListener(<span class="tk-string">&quot;change&quot;</span>, placeTabs);
+  placeTabs();
+
   <span class="tk-comment">// Every launcher opens its dialog; most report how it closed.</span>
   <span class="tk-keyword">for</span> (<span class="tk-keyword">const</span> button <span class="tk-keyword">of</span> document.querySelectorAll(<span class="tk-string">&quot;[data-open]&quot;</span>)) {
     button.addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; document.getElementById(button.dataset.open).show());
@@ -3168,13 +3440,117 @@ if (location.protocol === "file:") window.__rayServeHint();
   });
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;
-<span class="tk-keyword">import</span> { RayIcon, RayButton, RayDialog, RayInput, RayBadge, RaySelect, RaySegmentedControl, RaySwitch, RayTextarea, RaySearch, RayKbd } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+<span class="tk-keyword">import</span> { RayButton, RayIcon, RayDialog, RayBadge, RayTabs, RayTab, RayTabPanel, RayAvatar, RayFileUpload, RayInput, RayTextarea, RaySelect, RaySegmentedControl, RayTable, RaySlider, RaySwitch, RayRadioGroup, RayRadio, RayCheckbox, RayAlert, RaySearch, RayKbd } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
 <span class="tk-comment">// and listen with the on* handlers (onRayOpen, onRayClose, onRayRequestClose…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> DialogExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;The modal&lt;/div&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-modal-hero&quot;</span>&gt;
+        &lt;div className=<span class="tk-string">&quot;demo-modal-hero-text&quot;</span>&gt;
+          &lt;strong&gt;ray-dialog is the modal <span class="tk-keyword">of</span> ray-ds&lt;/strong&gt;
+          &lt;span&gt;Backdrop, inert page, trapped and restored focus, Escape, stacking. This one takes <span class="tk-number">70</span>% <span class="tk-keyword">of</span> the window (&lt;code&gt;size=<span class="tk-string">&quot;70%&quot;</span> height=<span class="tk-string">&quot;70%&quot;</span>&lt;/code&gt;) and holds a whole settings screen: vertical tabs, fields, a table, sliders, switches and a confirmation stacked on top.&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;RayButton data-open=<span class="tk-string">&quot;dlg-settings&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;settings&quot;</span> /&gt;Project settings&lt;/RayButton&gt;
+        &lt;span data-out=<span class="tk-string">&quot;dlg-settings&quot;</span> /&gt;
+      &lt;/div&gt;
+
+      &lt;RayDialog id=<span class="tk-string">&quot;dlg-settings&quot;</span> label=<span class="tk-string">&quot;Project settings&quot;</span> description=<span class="tk-string">&quot;ray-remote · desktop app · last deployed 2 hours ago&quot;</span> size=<span class="tk-string">&quot;70%&quot;</span> height=<span class="tk-string">&quot;70%&quot;</span>&gt;
+        &lt;RayBadge slot=<span class="tk-string">&quot;header&quot;</span> variant=<span class="tk-string">&quot;dot&quot;</span> color=<span class="tk-string">&quot;green&quot;</span> normalCase&gt;Live&lt;/RayBadge&gt;
+        &lt;RayTabs className=<span class="tk-string">&quot;demo-settings&quot;</span> variant=<span class="tk-string">&quot;outline&quot;</span> orientation=<span class="tk-string">&quot;vertical&quot;</span> value=<span class="tk-string">&quot;general&quot;</span>&gt;
+          &lt;RayTab value=<span class="tk-string">&quot;general&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;settings&quot;</span> /&gt;General&lt;/RayTab&gt;
+          &lt;RayTab value=<span class="tk-string">&quot;members&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;user&quot;</span> /&gt;Members&lt;/RayTab&gt;
+          &lt;RayTab value=<span class="tk-string">&quot;build&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;terminal&quot;</span> /&gt;Build&lt;/RayTab&gt;
+          &lt;RayTab value=<span class="tk-string">&quot;notifications&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;info&quot;</span> /&gt;Notifications&lt;/RayTab&gt;
+          &lt;RayTab value=<span class="tk-string">&quot;danger&quot;</span>&gt;&lt;RayIcon slot=<span class="tk-string">&quot;left&quot;</span> name=<span class="tk-string">&quot;alert-triangle&quot;</span> /&gt;Danger zone&lt;/RayTab&gt;
+
+          &lt;RayTabPanel value=<span class="tk-string">&quot;general&quot;</span>&gt;
+            &lt;div className=<span class="tk-string">&quot;demo-settings-section&quot;</span>&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-identity&quot;</span>&gt;
+                &lt;RayAvatar name=<span class="tk-string">&quot;Ray Remote&quot;</span> color=<span class="tk-string">&quot;violet&quot;</span> size=<span class="tk-string">&quot;xl&quot;</span> radius=<span class="tk-string">&quot;md&quot;</span> /&gt;
+                &lt;RayFileUpload variant=<span class="tk-string">&quot;compact&quot;</span> accept=<span class="tk-string">&quot;image/*&quot;</span> list=<span class="tk-string">&quot;none&quot;</span> dropLabel=<span class="tk-string">&quot;Drop a new icon&quot;</span> browseLabel=<span class="tk-string">&quot;browse&quot;</span> /&gt;
+              &lt;/div&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-dialog-form&quot;</span>&gt;
+                &lt;RayInput name=<span class="tk-string">&quot;name&quot;</span> label=<span class="tk-string">&quot;Name&quot;</span> value=<span class="tk-string">&quot;ray-remote&quot;</span> required /&gt;
+                &lt;RayInput name=<span class="tk-string">&quot;id&quot;</span> label=<span class="tk-string">&quot;Bundle id&quot;</span> value=<span class="tk-string">&quot;dev.ray.remote&quot;</span> description=<span class="tk-string">&quot;Reverse DNS, used by the installers.&quot;</span> /&gt;
+              &lt;/div&gt;
+              &lt;RayTextarea name=<span class="tk-string">&quot;about&quot;</span> label=<span class="tk-string">&quot;Description&quot;</span> rows={<span class="tk-number">2</span>} value=<span class="tk-string">&quot;Control a machine from your phone: terminal, files and screen.&quot;</span> /&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-dialog-form&quot;</span>&gt;
+                &lt;RaySelect name=<span class="tk-string">&quot;region&quot;</span> label=<span class="tk-string">&quot;Update channel&quot;</span> value=<span class="tk-string">&quot;stable&quot;</span>&gt;
+                  &lt;option value=<span class="tk-string">&quot;stable&quot;</span>&gt;Stable&lt;/option&gt;
+                  &lt;option value=<span class="tk-string">&quot;beta&quot;</span>&gt;Beta&lt;/option&gt;
+                  &lt;option value=<span class="tk-string">&quot;nightly&quot;</span>&gt;Nightly&lt;/option&gt;
+                &lt;/RaySelect&gt;
+                &lt;div className=<span class="tk-string">&quot;demo-field&quot;</span>&gt;Visibility
+                  &lt;RaySegmentedControl name=<span class="tk-string">&quot;visibility&quot;</span> value=<span class="tk-string">&quot;team&quot;</span> aria-label=<span class="tk-string">&quot;Visibility&quot;</span>&gt;&lt;option value=<span class="tk-string">&quot;private&quot;</span>&gt;Private&lt;/option&gt;&lt;option value=<span class="tk-string">&quot;team&quot;</span>&gt;Team&lt;/option&gt;&lt;option value=<span class="tk-string">&quot;public&quot;</span>&gt;Public&lt;/option&gt;&lt;/RaySegmentedControl&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/RayTabPanel&gt;
+
+          &lt;RayTabPanel value=<span class="tk-string">&quot;members&quot;</span>&gt;
+            &lt;div className=<span class="tk-string">&quot;demo-settings-section&quot;</span>&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-invite&quot;</span>&gt;
+                &lt;RayInput label=<span class="tk-string">&quot;Invite by email&quot;</span> placeholder=<span class="tk-string">&quot;name@company.com&quot;</span> <span class="tk-keyword">type</span>=<span class="tk-string">&quot;email&quot;</span> style={{ flex: <span class="tk-string">&quot;1&quot;</span> }} /&gt;
+                &lt;RaySelect label=<span class="tk-string">&quot;Role&quot;</span> value=<span class="tk-string">&quot;developer&quot;</span> style={{ width: <span class="tk-string">&quot;9rem&quot;</span> }}&gt;&lt;option value=<span class="tk-string">&quot;admin&quot;</span>&gt;Admin&lt;/option&gt;&lt;option value=<span class="tk-string">&quot;developer&quot;</span>&gt;Developer&lt;/option&gt;&lt;option value=<span class="tk-string">&quot;viewer&quot;</span>&gt;Viewer&lt;/option&gt;&lt;/RaySelect&gt;
+                &lt;RayButton variant=<span class="tk-string">&quot;light&quot;</span>&gt;Invite&lt;/RayButton&gt;
+              &lt;/div&gt;
+              &lt;RayTable id=<span class="tk-string">&quot;dlg-settings-members&quot;</span> withBorder label=<span class="tk-string">&quot;Members&quot;</span> /&gt;
+            &lt;/div&gt;
+          &lt;/RayTabPanel&gt;
+
+          &lt;RayTabPanel value=<span class="tk-string">&quot;build&quot;</span>&gt;
+            &lt;div className=<span class="tk-string">&quot;demo-settings-section&quot;</span>&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-dialog-form&quot;</span>&gt;
+                &lt;RaySelect label=<span class="tk-string">&quot;Target&quot;</span> value=<span class="tk-string">&quot;native&quot;</span>&gt;&lt;option value=<span class="tk-string">&quot;vm&quot;</span>&gt;VM&lt;/option&gt;&lt;option value=<span class="tk-string">&quot;native&quot;</span>&gt;Native (--release)&lt;/option&gt;&lt;/RaySelect&gt;
+                &lt;RayInput label=<span class="tk-string">&quot;Entry&quot;</span> value=<span class="tk-string">&quot;src/main.ray&quot;</span> /&gt;
+              &lt;/div&gt;
+              &lt;RaySlider label=<span class="tk-string">&quot;Parallel jobs&quot;</span> min={<span class="tk-number">1</span>} max={<span class="tk-number">16</span>} value={<span class="tk-number">6</span>} showValue /&gt;
+              &lt;RaySlider label=<span class="tk-string">&quot;Cache size&quot;</span> min={<span class="tk-number">0</span>} max={<span class="tk-number">8</span>} step={<span class="tk-number">0.5</span>} value={<span class="tk-number">2</span>} showValue unit=<span class="tk-string">&quot; GB&quot;</span> color=<span class="tk-string">&quot;teal&quot;</span> /&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-toggles&quot;</span>&gt;
+                &lt;RaySwitch label=<span class="tk-string">&quot;Run tests before every build&quot;</span> checked /&gt;
+                &lt;RaySwitch label=<span class="tk-string">&quot;Sign the macOS bundle&quot;</span> checked /&gt;
+                &lt;RaySwitch label=<span class="tk-string">&quot;Publish to the update channel&quot;</span> /&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/RayTabPanel&gt;
+
+          &lt;RayTabPanel value=<span class="tk-string">&quot;notifications&quot;</span>&gt;
+            &lt;div className=<span class="tk-string">&quot;demo-settings-section&quot;</span>&gt;
+              &lt;RayRadioGroup label=<span class="tk-string">&quot;Email me about&quot;</span> value=<span class="tk-string">&quot;failures&quot;</span>&gt;
+                &lt;RayRadio value=<span class="tk-string">&quot;all&quot;</span>&gt;Every build&lt;/RayRadio&gt;
+                &lt;RayRadio value=<span class="tk-string">&quot;failures&quot;</span>&gt;Failures only&lt;/RayRadio&gt;
+                &lt;RayRadio value=<span class="tk-string">&quot;none&quot;</span>&gt;Nothing&lt;/RayRadio&gt;
+              &lt;/RayRadioGroup&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-toggles&quot;</span>&gt;
+                &lt;RayCheckbox label=<span class="tk-string">&quot;New member joined&quot;</span> checked /&gt;
+                &lt;RayCheckbox label=<span class="tk-string">&quot;Release published&quot;</span> checked /&gt;
+                &lt;RayCheckbox label=<span class="tk-string">&quot;Weekly usage report&quot;</span> /&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/RayTabPanel&gt;
+
+          &lt;RayTabPanel value=<span class="tk-string">&quot;danger&quot;</span>&gt;
+            &lt;div className=<span class="tk-string">&quot;demo-settings-section&quot;</span>&gt;
+              &lt;RayAlert color=<span class="tk-string">&quot;red&quot;</span> label=<span class="tk-string">&quot;Careful&quot;</span>&gt;These actions affect everyone <span class="tk-keyword">in</span> the project and cannot be undone.&lt;/RayAlert&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-danger&quot;</span>&gt;
+                &lt;div&gt;&lt;strong&gt;Transfer ownership&lt;/strong&gt;&lt;span&gt;Move ray-remote to another team.&lt;/span&gt;&lt;/div&gt;
+                &lt;RayButton variant=<span class="tk-string">&quot;default&quot;</span>&gt;Transfer…&lt;/RayButton&gt;
+              &lt;/div&gt;
+              &lt;div className=<span class="tk-string">&quot;demo-settings-danger&quot;</span>&gt;
+                &lt;div&gt;&lt;strong&gt;Delete project&lt;/strong&gt;&lt;span&gt;Removes builds, releases and the update channel.&lt;/span&gt;&lt;/div&gt;
+                &lt;RayButton variant=<span class="tk-string">&quot;light&quot;</span> color=<span class="tk-string">&quot;red&quot;</span> id=<span class="tk-string">&quot;dlg-settings-delete&quot;</span>&gt;Delete…&lt;/RayButton&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/RayTabPanel&gt;
+        &lt;/RayTabs&gt;
+        &lt;span slot=<span class="tk-string">&quot;footer&quot;</span> className=<span class="tk-string">&quot;demo-settings-saved&quot;</span>&gt;Last saved <span class="tk-number">2</span> minutes ago&lt;/span&gt;
+        &lt;RayButton slot=<span class="tk-string">&quot;footer&quot;</span> variant=<span class="tk-string">&quot;default&quot;</span> data-dialog-close=<span class="tk-string">&quot;cancel&quot;</span>&gt;Cancel&lt;/RayButton&gt;
+        &lt;RayButton slot=<span class="tk-string">&quot;footer&quot;</span> data-dialog-close=<span class="tk-string">&quot;save&quot;</span>&gt;Save changes&lt;/RayButton&gt;
+      &lt;/RayDialog&gt;
+
       &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Patterns&lt;/div&gt;
       &lt;div className=<span class="tk-string">&quot;demo-launchers&quot;</span>&gt;
         &lt;article className=<span class="tk-string">&quot;demo-launcher&quot;</span> style={{ <span class="tk-string">&quot;--c&quot;</span>: <span class="tk-string">&quot;var(--ray-blue-light-color)&quot;</span>, <span class="tk-string">&quot;--bg&quot;</span>: <span class="tk-string">&quot;var(--ray-blue-light)&quot;</span> } <span class="tk-keyword">as</span> CSSProperties}&gt;
@@ -3336,6 +3712,110 @@ if (location.protocol === "file:") window.__rayServeHint();
 <pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
 <span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>The modal<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-modal-hero&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-modal-hero-text&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>ray-dialog is the modal of ray-ds<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Backdrop, inert page, trapped and restored focus, Escape, stacking. This one takes 70% of the window (<span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>size=&quot;70%&quot; height=&quot;70%&quot;<span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>) and holds a whole settings screen: vertical tabs, fields, a table, sliders, switches and a confirmation stacked on top.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">data-open</span>=<span class="tk-string">&quot;dlg-settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;settings&quot;</span> /<span class="tk-punctuation">&gt;</span>Project settings<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">data-out</span>=<span class="tk-string">&quot;dlg-settings&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayDialog</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Project settings&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;ray-remote · desktop app · last deployed 2 hours ago&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;70%&quot;</span> <span class="tk-attr">height</span>=<span class="tk-string">&quot;70%&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayBadge</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;header&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dot&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;green&quot;</span> <span class="tk-attr">normal-case</span><span class="tk-punctuation">&gt;</span>Live<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayBadge</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabs</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;outline&quot;</span> <span class="tk-attr">orientation</span>=<span class="tk-string">&quot;vertical&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;settings&quot;</span> /<span class="tk-punctuation">&gt;</span>General<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTab</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;members&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;user&quot;</span> /<span class="tk-punctuation">&gt;</span>Members<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTab</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;build&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;terminal&quot;</span> /<span class="tk-punctuation">&gt;</span>Build<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTab</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;notifications&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;info&quot;</span> /<span class="tk-punctuation">&gt;</span>Notifications<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTab</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTab</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;danger&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayIcon</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;left&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;alert-triangle&quot;</span> /<span class="tk-punctuation">&gt;</span>Danger zone<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTab</span><span class="tk-punctuation">&gt;</span>
+
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabPanel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;general&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-identity&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayAvatar</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;Ray Remote&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;violet&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> <span class="tk-attr">radius</span>=<span class="tk-string">&quot;md&quot;</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayFileUpload</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;compact&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;image/*&quot;</span> <span class="tk-attr">list</span>=<span class="tk-string">&quot;none&quot;</span> <span class="tk-attr">drop-label</span>=<span class="tk-string">&quot;Drop a new icon&quot;</span> <span class="tk-attr">browse-label</span>=<span class="tk-string">&quot;browse&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;name&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Name&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;ray-remote&quot;</span> <span class="tk-attr">required</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;id&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Bundle id&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;dev.ray.remote&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Reverse DNS, used by the installers.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTextarea</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;about&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Description&quot;</span> <span class="tk-attr">:rows</span>=<span class="tk-string">&quot;2&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;Control a machine from your phone: terminal, files and screen.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySelect</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;region&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Update channel&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;stable&quot;</span><span class="tk-punctuation">&gt;</span>
+              <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;stable&quot;</span><span class="tk-punctuation">&gt;</span>Stable<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+              <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;beta&quot;</span><span class="tk-punctuation">&gt;</span>Beta<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+              <span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;nightly&quot;</span><span class="tk-punctuation">&gt;</span>Nightly<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RaySelect</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-field&quot;</span><span class="tk-punctuation">&gt;</span>Visibility
+              <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySegmentedControl</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;visibility&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;team&quot;</span> <span class="tk-attr">aria-label</span>=<span class="tk-string">&quot;Visibility&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;private&quot;</span><span class="tk-punctuation">&gt;</span>Private<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;team&quot;</span><span class="tk-punctuation">&gt;</span>Team<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;public&quot;</span><span class="tk-punctuation">&gt;</span>Public<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RaySegmentedControl</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabPanel</span><span class="tk-punctuation">&gt;</span>
+
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabPanel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;members&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-invite&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Invite by email&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;name@company.com&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;flex: 1&quot;</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySelect</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Role&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;developer&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;width: 9rem&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;admin&quot;</span><span class="tk-punctuation">&gt;</span>Admin<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;developer&quot;</span><span class="tk-punctuation">&gt;</span>Developer<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;viewer&quot;</span><span class="tk-punctuation">&gt;</span>Viewer<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RaySelect</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span><span class="tk-punctuation">&gt;</span>Invite<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTable</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings-members&quot;</span> <span class="tk-attr">with-border</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Members&quot;</span> /<span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabPanel</span><span class="tk-punctuation">&gt;</span>
+
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabPanel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;build&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-dialog-form&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySelect</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Target&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;native&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;vm&quot;</span><span class="tk-punctuation">&gt;</span>VM<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">option</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;native&quot;</span><span class="tk-punctuation">&gt;</span>Native (--release)<span class="tk-punctuation">&lt;/</span><span class="tk-tag">option</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">RaySelect</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Entry&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;src/main.ray&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySlider</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Parallel jobs&quot;</span> <span class="tk-attr">:min</span>=<span class="tk-string">&quot;1&quot;</span> <span class="tk-attr">:max</span>=<span class="tk-string">&quot;16&quot;</span> <span class="tk-attr">:value</span>=<span class="tk-string">&quot;6&quot;</span> <span class="tk-attr">show-value</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySlider</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Cache size&quot;</span> <span class="tk-attr">:min</span>=<span class="tk-string">&quot;0&quot;</span> <span class="tk-attr">:max</span>=<span class="tk-string">&quot;8&quot;</span> <span class="tk-attr">:step</span>=<span class="tk-string">&quot;0.5&quot;</span> <span class="tk-attr">:value</span>=<span class="tk-string">&quot;2&quot;</span> <span class="tk-attr">show-value</span> <span class="tk-attr">unit</span>=<span class="tk-string">&quot; GB&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-toggles&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Run tests before every build&quot;</span> <span class="tk-attr">checked</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Sign the macOS bundle&quot;</span> <span class="tk-attr">checked</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Publish to the update channel&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabPanel</span><span class="tk-punctuation">&gt;</span>
+
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabPanel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;notifications&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayRadioGroup</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Email me about&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;failures&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayRadio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;all&quot;</span><span class="tk-punctuation">&gt;</span>Every build<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayRadio</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayRadio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;failures&quot;</span><span class="tk-punctuation">&gt;</span>Failures only<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayRadio</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayRadio</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;none&quot;</span><span class="tk-punctuation">&gt;</span>Nothing<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayRadio</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayRadioGroup</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-toggles&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCheckbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;New member joined&quot;</span> <span class="tk-attr">checked</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCheckbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Release published&quot;</span> <span class="tk-attr">checked</span> /<span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCheckbox</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Weekly usage report&quot;</span> /<span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabPanel</span><span class="tk-punctuation">&gt;</span>
+
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayTabPanel</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;danger&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-section&quot;</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayAlert</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Careful&quot;</span><span class="tk-punctuation">&gt;</span>These actions affect everyone in the project and cannot be undone.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayAlert</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-danger&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Transfer ownership<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Move ray-remote to another team.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span>Transfer…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-danger&quot;</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Delete project<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>Removes builds, releases and the update channel.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+            <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;light&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;dlg-settings-delete&quot;</span><span class="tk-punctuation">&gt;</span>Delete…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+          <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabPanel</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayTabs</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-settings-saved&quot;</span><span class="tk-punctuation">&gt;</span>Last saved 2 minutes ago<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">data-dialog-close</span>=<span class="tk-string">&quot;cancel&quot;</span><span class="tk-punctuation">&gt;</span>Cancel<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">data-dialog-close</span>=<span class="tk-string">&quot;save&quot;</span><span class="tk-punctuation">&gt;</span>Save changes<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayDialog</span><span class="tk-punctuation">&gt;</span>
+
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Patterns<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-launchers&quot;</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">article</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-launcher&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)&quot;</span><span class="tk-punctuation">&gt;</span>
@@ -3494,11 +3974,11 @@ if (location.protocol === "file:") window.__rayServeHint();
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-dialog&gt;</code> &middot; <code>RayDialog</code></p>
 <p class="note">Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color }) -&gt; Promise&lt;boolean&gt;.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown as a modal.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the dialog's accessible name).</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code> | <code>full</code></td><td><code>md</code></td><td>Width.</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>center</code> | <code>top</code></td><td><code>center</code></td><td>Vertical placement.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown as a modal.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the dialog's accessible name).</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>A line under the title (the dialog's accessible description).</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window.</td></tr><tr><td><code>height</code></td><td><code>height</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window.</td></tr><tr><td><code>radius</code></td><td><code>radius</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Corner radius: xs…xl, none, or a CSS length. Default: lg.</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>center</code> | <code>top</code></td><td><code>center</code></td><td>Vertical placement.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-open</code></td><td>After it opened.</td></tr><tr><td><code>ray-close</code></td><td>After it closed; detail: { returnValue }.</td></tr><tr><td><code>ray-request-close</code></td><td>Escape, backdrop or close button; cancelable (preventDefault keeps it open). detail: { source }.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Body.</td></tr><tr><td><code>header</code></td><td>Extra header content, next to the title.</td></tr><tr><td><code>footer</code></td><td>Actions, aligned to the end.</td></tr></tbody></table></div>
-<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dialog</code></td><td>The native &lt;dialog&gt;.</td></tr><tr><td><code>title</code></td><td>The heading.</td></tr><tr><td><code>body</code></td><td>The scrollable body.</td></tr><tr><td><code>footer</code></td><td>The footer.</td></tr><tr><td><code>close</code></td><td>The close button.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dialog</code></td><td>The native &lt;dialog&gt;.</td></tr><tr><td><code>title</code></td><td>The heading.</td></tr><tr><td><code>description</code></td><td>The line under the heading.</td></tr><tr><td><code>header</code></td><td>The header: title, description, the header slot and the close button.</td></tr><tr><td><code>body</code></td><td>The scrollable body.</td></tr><tr><td><code>footer</code></td><td>The footer.</td></tr><tr><td><code>close</code></td><td>The close button.</td></tr></tbody></table></div>
 </section>
 <section id="drawer" class="component">
 <h2>Drawer</h2>
@@ -3650,7 +4130,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre></details>
 <p class="tag"><code>&lt;ray-drawer&gt;</code> &middot; <code>RayDrawer</code></p>
 <p class="note">Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue).</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the accessible name).</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>right</code> | <code>left</code> | <code>top</code> | <code>bottom</code></td><td><code>right</code></td><td>The edge it slides from.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.</td></tr><tr><td><code>modeless</code></td><td><code>modeless</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No backdrop nor scroll lock: the page stays interactive (a side panel).</td></tr><tr><td><code>floating</code></td><td><code>floating</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Detached from the edge, with rounded corners.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the accessible name).</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>A line under the title (the drawer's accessible description).</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>right</code> | <code>left</code> | <code>top</code> | <code>bottom</code></td><td><code>right</code></td><td>The edge it slides from.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.</td></tr><tr><td><code>modeless</code></td><td><code>modeless</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No backdrop nor scroll lock: the page stays interactive (a side panel).</td></tr><tr><td><code>floating</code></td><td><code>floating</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Detached from the edge, with rounded corners.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-open</code></td><td>After it opened.</td></tr><tr><td><code>ray-close</code></td><td>After it closed; detail: { returnValue }.</td></tr><tr><td><code>ray-request-close</code></td><td>Escape, backdrop or close button; cancelable.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Body (scrolls).</td></tr><tr><td><code>header</code></td><td>Extra header content.</td></tr><tr><td><code>footer</code></td><td>Actions, at the bottom.</td></tr></tbody></table></div>
