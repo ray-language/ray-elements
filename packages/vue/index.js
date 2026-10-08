@@ -167,7 +167,7 @@ export const RayAccordion = createComponent("RayAccordion", "ray-accordion", {
   model: { prop: "value", events: ["change"] },
 });
 export const RayAccordionItem = createComponent("RayAccordionItem", "ray-accordion-item", {
-  properties: ["value", "label", "disabled", "headingLevel"],
+  properties: ["value", "label", "description", "disabled", "headingLevel"],
   booleans: ["disabled"],
 });
 export const RayAttachment = createComponent("RayAttachment", "ray-attachment", {

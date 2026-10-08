@@ -8535,6 +8535,14 @@
               "fieldName": "label"
             },
             {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A secondary line under the label, in the header.",
+              "fieldName": "description"
+            },
+            {
               "name": "disabled",
               "type": {
                 "text": "boolean"
@@ -8571,6 +8579,16 @@
               },
               "description": "Header text (or slot=label).",
               "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A secondary line under the label, in the header.",
+              "attribute": "description",
               "reflects": false
             },
             {
@@ -8619,6 +8637,10 @@
             {
               "name": "control",
               "description": "The header button."
+            },
+            {
+              "name": "description",
+              "description": "The secondary line under the label."
             },
             {
               "name": "panel",

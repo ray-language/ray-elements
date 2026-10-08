@@ -422,6 +422,23 @@ T.test("segmented control: form value, arrows, data, reset", async (T) => {
 
 // --- accordion --------------------------------------------------------------
 
+T.test("accordion: description under the label, content spaced from the header", async (T) => {
+  const box = await mount(`<ray-accordion variant="filled" value="a"><ray-accordion-item value="a" label="Account" description="Name and email">Body</ray-accordion-item></ray-accordion>`);
+  const item = box.querySelector("ray-accordion-item");
+  await T.settle();
+  const sr = item.shadowRoot;
+  T.eq(sr.querySelector(".label-text").textContent, "Account");
+  T.eq(sr.querySelector(".description").textContent, "Name and email");
+  const header = sr.querySelector(".control").getBoundingClientRect();
+  const text = sr.querySelector(".content").getBoundingClientRect();
+  T.eq(text.top - header.bottom, 0, "the content box starts under the header");
+  T.ok(parseFloat(getComputedStyle(sr.querySelector(".content")).paddingTop) >= 8, "and keeps its text away from it");
+  item.description = "";
+  await T.settle();
+  T.eq(getComputedStyle(sr.querySelector(".description")).display, "none", "no description, no line");
+  box.remove();
+});
+
 T.test("accordion: single, multiple, ARIA, inert panels, keyboard", async (T) => {
   const box = await mount(`<ray-accordion value="a">
     <ray-accordion-item value="a" label="A">x</ray-accordion-item>

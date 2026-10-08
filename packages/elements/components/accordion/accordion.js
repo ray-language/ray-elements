@@ -99,7 +99,7 @@ const itemStyles = css`
     gap: var(--ray-space-3);
     width: 100%;
     min-height: 3rem;
-    padding: 0 var(--ray-space-md);
+    padding: var(--ray-space-2) var(--ray-space-md);
     font: inherit;
     font-size: var(--ray-font-size-md);
     font-weight: var(--ray-font-weight-medium);
@@ -113,7 +113,9 @@ const itemStyles = css`
   .control:hover:not(:disabled) { background: var(--ray-accent); }
   :host([data-variant="default"]) .control:hover:not(:disabled) { background: var(--ray-muted); }
   .control:disabled { color: var(--ray-muted-foreground); cursor: not-allowed; }
-  .label { flex: 1; }
+  .label { display: grid; flex: 1; gap: 0.125rem; min-width: 0; }
+  .description { font-size: var(--ray-font-size-sm); font-weight: var(--ray-font-weight-normal, 400); color: var(--ray-muted-foreground); }
+  .description:empty { display: none; }
   :host([data-chevron="left"]) .chevron { order: -1; }
   .chevron { display: inline-flex; color: var(--ray-muted-foreground); transition: transform var(--ray-duration-base) var(--ray-easing-standard); }
   .chevron svg { width: 1rem; height: 1rem; }
@@ -127,7 +129,9 @@ const itemStyles = css`
   }
   :host([data-open]) .panel { grid-template-rows: 1fr; }
   .inner { overflow: hidden; }
-  .content { padding: 0 var(--ray-space-md) var(--ray-space-md); font-size: var(--ray-font-size-sm); }
+  /* Space above too: the header may have a background (hover, filled,
+     contained) and the content must not touch it. */
+  .content { padding: var(--ray-space-3) var(--ray-space-md) var(--ray-space-md); font-size: var(--ray-font-size-sm); }
 `;
 
 export class RayAccordionItem extends RayElement {
@@ -135,6 +139,7 @@ export class RayAccordionItem extends RayElement {
   static properties = {
     value: { type: String, reflect: true },
     label: { type: String },
+    description: { type: String },
     disabled: { type: Boolean, reflect: true },
     headingLevel: { type: Number, default: 3 },
   };
@@ -143,7 +148,7 @@ export class RayAccordionItem extends RayElement {
     <h3 part="heading">
       <button class="control focus-ring" id="control" part="control" type="button" aria-expanded="false" aria-controls="panel">
         <span class="section" part="left-section"><slot name="left"></slot></span>
-        <span class="label" part="label"><span class="label-text"></span><slot name="label"></slot></span>
+        <span class="label" part="label"><span class="label-text"><slot name="label"></slot></span><span class="description" part="description"></span></span>
         <span class="chevron" part="chevron" aria-hidden="true" data-ray-icon="chevron-down"></span>
       </button>
     </h3>
@@ -175,7 +180,11 @@ export class RayAccordionItem extends RayElement {
   }
 
   update(changed) {
-    this.$(".label-text").textContent = this.label ?? "";
+    // The label text sits before the label slot (rich content).
+    const text = this.$(".label-text");
+    if (text.firstChild?.nodeType === Node.TEXT_NODE) text.firstChild.remove();
+    if (this.label) text.prepend(document.createTextNode(this.label));
+    this.$(".description").textContent = this.description ?? "";
     this.$(".control").disabled = Boolean(this.disabled);
     const h = this.$("h3");
     h.setAttribute("role", "heading");

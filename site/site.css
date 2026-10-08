@@ -655,3 +655,9 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-settings-danger span { font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
 .demo-settings-saved { margin-inline-end: auto; align-self: center; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
 @media (max-width: 40em) { .demo-settings-saved { display: none; } }
+
+/* Accordion example. */
+.demo-accordion-variants { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr)); gap: var(--ray-space-6) var(--ray-space-5); align-items: start; }
+.demo-accordion-icon { display: inline-grid; place-items: center; width: 2rem; height: 2rem; color: var(--c); background: var(--bg); border-radius: var(--ray-radius-md); }
+.demo-accordion-icon ray-icon { --_size: 1rem; }
+.demo-accordion-head { display: flex; align-items: center; justify-content: space-between; gap: var(--ray-space-3); margin-inline-end: var(--ray-space-2); }

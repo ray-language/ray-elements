@@ -1014,6 +1014,8 @@ export interface RayAccordionItemOwnProps {
   value?: string;
   /** Header text (or slot=label). */
   label?: string;
+  /** A secondary line under the label, in the header. */
+  description?: string;
   /** Cannot be toggled. */
   disabled?: boolean;
   /** aria-level of the header. */

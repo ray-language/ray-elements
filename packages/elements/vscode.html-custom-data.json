@@ -2620,6 +2620,10 @@
           "description": "Header text (or slot=label)."
         },
         {
+          "name": "description",
+          "description": "A secondary line under the label, in the header."
+        },
+        {
           "name": "disabled",
           "description": "Cannot be toggled.",
           "valueSet": "v"

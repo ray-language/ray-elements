@@ -183,7 +183,7 @@ export const RayAccordion = createComponent("ray-accordion", {
 });
 export const RayAccordionItem = createComponent("ray-accordion-item", {
   displayName: "RayAccordionItem",
-  properties: ["value", "label", "disabled", "headingLevel"],
+  properties: ["value", "label", "description", "disabled", "headingLevel"],
   events: {  },
 });
 export const RayAttachment = createComponent("ray-attachment", {

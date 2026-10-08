@@ -1251,6 +1251,8 @@ export declare class RayAccordionItem extends RayElement {
   value: string | undefined;
   /** Header text (or slot=label). */
   label: string | undefined;
+  /** A secondary line under the label, in the header. */
+  description: string | undefined;
   /** Cannot be toggled. */
   disabled: boolean | undefined;
   /** aria-level of the header. */
