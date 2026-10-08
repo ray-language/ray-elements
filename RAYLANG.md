@@ -156,8 +156,10 @@ ray-ds app without npm. Until raylang offers templates from a repository
 
 - **Typed HTML from raylang.** From the same `component.toml`, generate a
   raylang module for compiled `.ray.html` templates with typed attributes
-  (`variant` as an enum), so a misspelled variant fails at compile time. Waits
-  for the compiled templates to mature (findings #126, #127, #131).
+  (`variant` as an enum), so a misspelled variant fails at compile time. Since
+  raylang 1.27.39 the compiled templates are documented and report clear
+  errors (findings #126, #127 and #131 are resolved), so this no longer waits
+  on raylang; it is the next candidate after plans 1 and 2.
 - **Tokens in raylang.** A generated `tokens.ray`, so charts drawn by the
   program, icons, the `Info.plist` colors or a native shell use the same
   palette as the UI.

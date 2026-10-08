@@ -282,8 +282,10 @@ a raylang test that serves every file.</li>
 <ul>
 <li><strong>Typed HTML from raylang.</strong> From the same <code>component.toml</code>, generate a
 raylang module for compiled <code>.ray.html</code> templates with typed attributes
-(<code>variant</code> as an enum), so a misspelled variant fails at compile time. Waits
-for the compiled templates to mature (findings #126, #127, #131).</li>
+(<code>variant</code> as an enum), so a misspelled variant fails at compile time. Since
+raylang 1.27.39 the compiled templates are documented and report clear
+errors (findings #126, #127 and #131 are resolved), so this no longer waits
+on raylang; it is the next candidate after plans 1 and 2.</li>
 <li><strong>Tokens in raylang.</strong> A generated <code>tokens.ray</code>, so charts drawn by the
 program, icons, the <code>Info.plist</code> colors or a native shell use the same
 palette as the UI.</li>
