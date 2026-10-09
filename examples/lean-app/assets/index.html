@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Lean notes</title>
-<link rel="stylesheet" href="ray-ds/tokens.css">
-<link rel="stylesheet" href="ray-ds/base.css">
-<!-- Not ray-ds/index.js (every component): app.js imports the few it uses. -->
+<!-- @ray-ds/elements, served by raylang where npm would put it. -->
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
+<!-- Not the whole package: app.js imports the few components it uses. -->
 <script type="module" src="app.js"></script>
 <style>
   body { margin: 0; padding: var(--ray-space-6); box-sizing: border-box; min-height: 100vh; }

@@ -18,8 +18,8 @@ system file dialogs with real paths (`ray-file-upload native`,
 menus (`ray-menu native`), the app's menu bar in the command palette
 (`native-menus`) and the window (`ray-app-shell` under a transparent title
 bar, window colors that follow the theme, `trackEdits()` for the unsaved
-mark). A raylang package (`ray_ds/assets`) serves the whole design system
-from the program, without npm. See [RAYLANG.md](RAYLANG.md).
+mark). A raylang package (`ray_ds`) brings `@ray-ds/elements` to the pages
+of a raylang app by its npm name, without npm. See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 
@@ -177,10 +177,12 @@ warns for every palette color whose filled/light/outline variant text is.
 
 `ray_ds/` is a raylang package, published to its own repository:
 `ray_ds = "git+https://github.com/ray-language/ray_ds@v0.3.0"` in
-`[dependencies]` (or `path:` to `ray_ds/` of a checkout), then
-`assets.mount("ray-ds")` (`import ray_ds/assets;`) serves every component,
-`tokens.css` and `base.css` from the program, the same under `ray run` and in
-a native binary.
+`[dependencies]` (or `path:` to `ray_ds/` of a checkout), and the app's pages
+import `@ray-ds/elements` by its npm name, as with a bundler
+(`import "@ray-ds/elements/button"`): raylang serves the package at
+`ray://app/node_modules/@ray-ds/elements/` with an import map, the same under
+`ray run` and in a native binary, and links it into the app's
+`node_modules/` for the editor.
 `examples/starter` is the smallest such app; `examples/lean-app` loads only
 the components it uses. See [RAYLANG.md](RAYLANG.md).
 

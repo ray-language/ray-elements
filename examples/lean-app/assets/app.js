@@ -1,16 +1,17 @@
-// Only what the page uses, from ray-ds/ (the raylang package's files):
-// - the API from core.js, which registers no element;
+// Only what the page uses, from @ray-ds/elements by its npm name (the
+// import map raylang gives the page, the same names as with a bundler):
+// - the API from @ray-ds/elements/core, which registers no element;
 // - each component from its own module (it brings what it uses:
 //   ray-icon-button brings ray-button);
 // - the settings dialog on first open, with import(): an app that is never
 //   configured never loads it.
 
-import { enableRaylang } from "./ray-ds/core.js";
-import "./ray-ds/components/badge/badge.js";
-import "./ray-ds/components/button/button.js";
-import "./ray-ds/components/icon/icon.js";
-import "./ray-ds/components/icon-button/icon-button.js";
-import "./ray-ds/components/input/input.js";
+import { enableRaylang } from "@ray-ds/elements/core";
+import "@ray-ds/elements/badge";
+import "@ray-ds/elements/button";
+import "@ray-ds/elements/icon";
+import "@ray-ds/elements/icon-button";
+import "@ray-ds/elements/input";
 
 const $ = (id) => document.getElementById(id);
 const notes = ["Read the ray-ds README", "Try a native binary"];
@@ -46,8 +47,8 @@ let settings = null;
 async function openSettings() {
   if (!settings) {
     await Promise.all([
-      import("./ray-ds/components/dialog/dialog.js"),
-      import("./ray-ds/components/switch/switch.js"),
+      import("@ray-ds/elements/dialog"),
+      import("@ray-ds/elements/switch"),
     ]);
     settings = document.createElement("ray-dialog");
     settings.setAttribute("label", "Settings");

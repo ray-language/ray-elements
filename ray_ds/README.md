@@ -1,9 +1,10 @@
 # ray_ds
 
 [ray-ds](https://github.com/ray-language/ray-ds) for raylang apps: the design
-system's web components served from the program, with no npm and no copied
-files, and the native bridge that gives them the system's dialogs, menus and
-window in a `std/ui` window.
+system's web components, which the app's pages import by their npm name
+(`@ray-ds/elements`) with no npm and no copied files, and the native bridge
+that gives them the system's dialogs, menus and window in a `std/ui` window.
+Needs raylang 1.27.44 or later.
 
 This repository is the `ray_ds/` directory of
 [ray-language/ray-ds](https://github.com/ray-language/ray-ds), split out with
@@ -20,11 +21,9 @@ ray_ds = "git+https://github.com/ray-language/ray_ds@v0.3.0"
 
 ```ray
 import std/ui;
-import ray_ds/assets;
 import ray_ds/bridge;
 
 fn main() -> int {
-    assets.mount("ray-ds").unwrap();          // ray://app/ray-ds/index.js, tokens.css, base.css…
     ui.mount_embed_at("", "assets").unwrap(); // the app's own page ([native] embed)
     let h = ui.open("App", "ray://app/index.html", 960, 640).unwrap();
     for e in ui.events() {
@@ -41,17 +40,21 @@ fn main() -> int {
 ```
 
 ```html
-<link rel="stylesheet" href="ray-ds/tokens.css">
-<link rel="stylesheet" href="ray-ds/base.css">
-<script type="module" src="ray-ds/index.js"></script>
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
 <script type="module">
-  import { enableRaylang } from "./ray-ds/index.js";
+  import { enableRaylang } from "@ray-ds/elements";   // every component, and the API
   await enableRaylang();   // the system dialogs, menus and window for the components
 </script>
 ```
 
-- `ray_ds/assets`: every component, the core, `tokens.css` and `base.css`;
-  `assets.mount(prefix)`, `assets.files()`, `assets.read(path)`.
+- `web/`: the npm package `@ray-ds/elements`, declared with
+  `[web] package = "web"`. raylang serves it at
+  `ray://app/node_modules/@ray-ds/elements/`, gives every page an import map
+  of its `exports` (`@ray-ds/elements`, `@ray-ds/elements/core`,
+  `@ray-ds/elements/<component>`), and links it into the app's
+  `node_modules/` so the editor resolves the same imports with their types
+  (add `node_modules/` to `.gitignore`).
 - `ray_ds/version`: `version.VERSION`, the version of ray-ds.
 - `ray_ds/bridge`: `bridge.handle(e)`, or `bridge.system()` +
   `bridge.route(n, e)` and `bridge.menu(n, …)` for the menu bar in the

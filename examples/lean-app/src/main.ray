@@ -1,16 +1,21 @@
-// Using only the components a page needs. The raylang package serves all of
-// ray-ds (assets.mount), but the page does not load ray-ds/index.js: it
-// imports the API from core.js and each component it uses from its own
-// module, and loads the settings dialog the first time it opens.
+// Using only the components a page needs. The ray_ds dependency brings the
+// npm package @ray-ds/elements: raylang serves it at
+// ray://app/node_modules/@ray-ds/elements/ and gives the page an import map,
+// so app.js imports it by its npm name, as with a bundler
+// (import "@ray-ds/elements/button"). The page does not load the whole
+// package: it imports the API from @ray-ds/elements/core and each component
+// it uses, and loads the settings dialog the first time it opens. `ray run`
+// also links the package into node_modules/, where the editor finds its
+// types.
 //
 //   ray run                    open the window; close it to quit
 //   ray run src/main.ray --check
 //                              check what the page defined at start and after
 //                              opening the settings, and that it works; exit 0/1
 
+import std/embed;
 import std/time;
 import std/ui;
-import ray_ds/assets;
 import ray_ds/bridge;
 
 // The elements defined once the page is ready: what app.js imports and what
@@ -30,7 +35,6 @@ fn main() -> int {
 }
 
 fn run(check: bool) -> Result<int, string> {
-    assets.mount("ray-ds")?;
     ui.mount_embed_at("", "assets")?;
     var o = ui.options(560, 480);
     o.background = "#ffffff";
@@ -58,7 +62,7 @@ fn run(check: bool) -> Result<int, string> {
             continue;
         }
         if (check && e.tag.starts_with("ready:")) {
-            ui.eval_js(h, probe(tags()))?;
+            ui.eval_js(h, probe(tags()?))?;
         } else if (check && e.tag.starts_with("state:")) {
             close(h);
             return Result.Ok(verify(e.tag.substring(6, e.tag.len())));
@@ -66,16 +70,21 @@ fn run(check: bool) -> Result<int, string> {
     }
 }
 
-// Every component of ray-ds, by its module: components/<name>/<name>.js.
-fn tags() -> [string] {
+// Every component of ray-ds, by its module:
+// node_modules/@ray-ds/elements/components/<name>/<name>.js.
+fn tags() -> Result<[string], string> {
+    let base = "node_modules/@ray-ds/elements/";
     var out: [string] = [];
-    for f in assets.files() {
-        let parts = f.split("/");
+    for key in embed.list()? {
+        if (!key.starts_with(base)) {
+            continue;
+        }
+        let parts = key.substring(base.len(), key.len()).split("/");
         if (parts.len() == 3 && parts[0] == "components" && parts[2] == "${parts[1]}.js") {
             out.push("ray-${parts[1]}");
         }
     }
-    out
+    Result.Ok(out)
 }
 
 // Which of `all` the page defined at start, then adds a note and opens the
@@ -109,7 +118,7 @@ fn verify(got: string) -> int {
         ("at start, only the components it imports", parts[0], AT_START),
         ("the settings load on first open", parts[1], AFTER_SETTINGS),
         ("adding a note", parts[2], "3"),
-        ("the settings dialog is open", parts[3], "true"),
+        ("the settings dialog is open", parts[3], "true")
     ];
     var failed = 0;
     for (what, value, want) in checks {

@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Workspace</title>
-<link rel="stylesheet" href="ray-ds/tokens.css">
-<link rel="stylesheet" href="ray-ds/base.css">
-<script type="module" src="ray-ds/index.js"></script>
+<!-- @ray-ds/elements, served by raylang where npm would put it. -->
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
+<script type="module">import "@ray-ds/elements";</script>
 <style>
   html, body { height: 100%; margin: 0; }
   ray-app-shell:not(:defined) { visibility: hidden; }

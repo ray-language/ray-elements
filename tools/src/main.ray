@@ -156,7 +156,7 @@ fn cmd_package(o: Opts) -> Result<int, string> {
     let written = package.run(o.root, cs)?;
     print("package: ${written.len()} files in packages/ (elements, react, vue)");
     let carried = raylang.run(o.root, package.info(o.root)?.version)?;
-    print("package: ray_ds/assets.ray carries ${carried} files (the raylang package)");
+    print("package: ray_ds/web carries ${carried} files (@ray-ds/elements in the raylang package)");
     Result.Ok(0)
 }
 

@@ -27,7 +27,7 @@ Never edit these by hand; change their sources and run `build`:
 | `docs/` (every page, the search index, the code samples) | `src/components/*/component.toml` and `example.html`, the `*.md` guides, `tools/src/site/` |
 | `packages/` (`@ray-ds/elements`, `react`, `vue`) | `src/`, `ray-ds.toml` |
 | `src/index.js` | the components present |
-| `ray_ds/assets.ray`, `ray_ds/version.ray`, the version in `ray_ds/ray.toml` and in the install line of `ray_ds/README.md`, `ray_ds/LICENSE`, `ray_ds/NOTICE` | `packages/elements`, `ray-ds.toml`, `LICENSE`, `NOTICE` |
+| `ray_ds/web/` (a copy of `packages/elements`), `ray_ds/version.ray`, the version in `ray_ds/ray.toml` and in the install line of `ray_ds/README.md`, `ray_ds/LICENSE`, `ray_ds/NOTICE` | `packages/elements`, `ray-ds.toml`, `LICENSE`, `NOTICE` |
 | `dist/site/` (not committed: the site to publish) | `tools/run.sh site` |
 
 The generated output is committed, and CI fails when it does not match what

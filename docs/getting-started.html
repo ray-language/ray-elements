@@ -158,8 +158,8 @@ system file dialogs with real paths (<code>ray-file-upload native</code>,
 menus (<code>ray-menu native</code>), the app's menu bar in the command palette
 (<code>native-menus</code>) and the window (<code>ray-app-shell</code> under a transparent title
 bar, window colors that follow the theme, <code>trackEdits()</code> for the unsaved
-mark). A raylang package (<code>ray_ds/assets</code>) serves the whole design system
-from the program, without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
+mark). A raylang package (<code>ray_ds</code>) brings <code>@ray-ds/elements</code> to the pages
+of a raylang app by its npm name, without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h2 id="layout">Layout</h2>
 <pre class="code"><code>tokens.toml            design tokens: the single source of truth
@@ -370,10 +370,12 @@ warns for every palette color whose filled/light/outline variant text is.</p>
 <h3 id="in-a-raylang-app-from-the-package">In a raylang app, from the package</h3>
 <p><code>ray_ds/</code> is a raylang package, published to its own repository:
 <code>ray_ds = &quot;git+https://github.com/ray-language/ray_ds@v0.3.0&quot;</code> in
-<code>[dependencies]</code> (or <code>path:</code> to <code>ray_ds/</code> of a checkout), then
-<code>assets.mount(&quot;ray-ds&quot;)</code> (<code>import ray_ds/assets;</code>) serves every component,
-<code>tokens.css</code> and <code>base.css</code> from the program, the same under <code>ray run</code> and in
-a native binary.
+<code>[dependencies]</code> (or <code>path:</code> to <code>ray_ds/</code> of a checkout), and the app's pages
+import <code>@ray-ds/elements</code> by its npm name, as with a bundler
+(<code>import &quot;@ray-ds/elements/button&quot;</code>): raylang serves the package at
+<code>ray://app/node_modules/@ray-ds/elements/</code> with an import map, the same under
+<code>ray run</code> and in a native binary, and links it into the app's
+<code>node_modules/</code> for the editor.
 <code>examples/starter</code> is the smallest such app; <code>examples/lean-app</code> loads only
 the components it uses. See <a href="raylang.html">RAYLANG.md</a>.</p>
 

@@ -1,7 +1,8 @@
 // The smallest std/ui app with ray-ds: copy this directory to start one.
-// ray-ds comes from the raylang package (no npm, no copied files) and the
-// page from assets/ ([native] embed: from disk under `ray run`, baked into a
-// native binary). The bridge gives the page the system dialogs.
+// ray-ds comes from the ray_ds dependency (no npm, no copied files): the page
+// imports @ray-ds/elements by its npm name. The page comes from assets/
+// ([native] embed: from disk under `ray run`, baked into a native binary).
+// The bridge gives the page the system dialogs.
 //
 //   ray run                    open the window; close it to quit
 //   ray run src/main.ray --check
@@ -9,7 +10,6 @@
 
 import std/time;
 import std/ui;
-import ray_ds/assets;
 import ray_ds/bridge;
 
 fn main() -> int {
@@ -23,7 +23,6 @@ fn main() -> int {
 }
 
 fn run(check: bool) -> Result<int, string> {
-    assets.mount("ray-ds")?;
     ui.mount_embed_at("", "assets")?;
     var o = ui.options(560, 420);
     o.background = "#ffffff";

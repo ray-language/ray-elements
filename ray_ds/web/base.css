@@ -1,0 +1,111 @@
+/* ray-ds base: document defaults on top of tokens.css. Optional — load it
+   for pages built with ray-ds, skip it when embedding components in an app
+   that has its own base styles. Layered, so any unlayered app CSS wins. */
+
+@layer ray.tokens, ray.base;
+
+@layer ray.base {
+  html {
+    font-family: var(--ray-font-sans);
+    font-size: 100%;
+    line-height: var(--ray-line-height-md);
+    color: var(--ray-foreground);
+    background: var(--ray-background);
+    accent-color: var(--ray-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    font-size: var(--ray-font-size-md);
+  }
+
+  /* Subtrees with their own data-theme repaint with their own scheme. */
+  [data-theme] {
+    color: var(--ray-foreground);
+    background: var(--ray-background);
+  }
+
+  /* Overlays take no room before their definition loads: their light DOM
+     (a drawer's navigation, a dialog's form) would otherwise lay out in the
+     page for an instant and push it down when it leaves (layout shift). */
+  :where(ray-dialog, ray-drawer, ray-command-palette, ray-toaster):not(:defined) {
+    display: none;
+  }
+  /* A navigation list keeps its rows' height while its links load. */
+  :where(ray-nav-link):not(:defined) {
+    display: block;
+    min-height: 2.25rem;
+  }
+
+  ::selection {
+    background: var(--ray-selection);
+  }
+
+  :focus-visible {
+    outline: var(--ray-focus-ring-width) solid var(--ray-ring);
+    outline-offset: var(--ray-focus-ring-offset);
+  }
+
+  :where(h1, h2, h3, h4, h5, h6) {
+    line-height: var(--ray-line-height-heading);
+    font-weight: var(--ray-font-weight-bold);
+  }
+
+  :where(code, kbd, samp, pre) {
+    font-family: var(--ray-font-mono);
+  }
+
+  :where(a) {
+    color: var(--ray-primary-light-color);
+  }
+
+  :where(hr) {
+    border: 0;
+    border-top: 1px solid var(--ray-border);
+  }
+
+  :where(img, svg, video, canvas) {
+    max-width: 100%;
+  }
+
+  /* Plain HTML tables (server-rendered pages, no JS): <table class="ray-table">.
+     Modifiers: .ray-table-striped, .ray-table-bordered. <ray-table> is the
+     data-driven component with sorting and selection. */
+  :where(table.ray-table) {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: var(--ray-font-size-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  :where(.ray-table) :where(th, td) {
+    padding: var(--ray-space-2) var(--ray-space-3);
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--ray-border);
+  }
+  :where(.ray-table) :where(th) {
+    font-size: var(--ray-font-size-xs);
+    font-weight: var(--ray-font-weight-semibold);
+    color: var(--ray-muted-foreground);
+    white-space: nowrap;
+  }
+  :where(.ray-table) :where(tbody tr:hover td) {
+    background: var(--ray-default-hover);
+  }
+  :where(.ray-table-striped) :where(tbody tr:nth-child(even) td) {
+    background: color-mix(in srgb, var(--ray-muted) 60%, transparent);
+  }
+  :where(.ray-table-bordered) {
+    border: 1px solid var(--ray-border);
+    border-radius: var(--ray-radius-default);
+    overflow: hidden;
+  }
+  :where(.ray-table-bordered) :where(tbody tr:last-child td) {
+    border-bottom: 0;
+  }
+}

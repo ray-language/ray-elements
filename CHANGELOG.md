@@ -78,9 +78,13 @@ The first public release.
   follow the theme, and `trackEdits(form)` shows unsaved changes.
 - An "In a raylang app" section on the pages of the components that use the
   bridge, and `examples/desktop-app`, a folder browser that uses all of it.
-- The raylang package `ray_ds`: `ray_ds/assets` (generated) serves every
-  component, `tokens.css` and `base.css` from the program with
-  `assets.mount("ray-ds")`, under `ray run` and in a native binary;
+- The raylang package `ray_ds` (raylang 1.27.44 or later): it carries
+  `@ray-ds/elements` as published (`ray_ds/web`, `[web] package`), and the
+  app's pages import it by its npm name, as with a bundler
+  (`import "@ray-ds/elements/button"`): raylang serves it at
+  `ray://app/node_modules/@ray-ds/elements/` with an import map, under
+  `ray run` and in a native binary, and links it into the app's
+  `node_modules/` so the editor resolves the imports with their types;
   `examples/starter` is the smallest app with it. It is published to its own
   repository, `github.com/ray-language/ray_ds` (`git+https://…/ray_ds@v0.3.0`),
   split out of `ray_ds/` with its history on every version tag.

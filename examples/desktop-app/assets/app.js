@@ -2,11 +2,9 @@
 // the ray-ds native bridge. The program (src/main.ray) answers the bridge
 // with ray_ds/bridge and the page's own requests ({ app: "list", dir }).
 
-import { enableRaylang } from "./ray-ds/core/raylang.js";
-import { titlebar, trackEdits } from "./ray-ds/core/host.js";
-import { setTheme, resolvedTheme } from "./ray-ds/core/core.js";
-import { confirmDialog } from "./ray-ds/components/dialog/dialog.js";
-import { notify } from "./ray-ds/components/notification/notification.js";
+import { enableRaylang, titlebar, trackEdits, setTheme, resolvedTheme } from "@ray-ds/elements/core";
+import { confirmDialog } from "@ray-ds/elements/dialog";
+import { notify } from "@ray-ds/elements/notification";
 
 const $ = (s) => document.querySelector(s);
 const send = (m) => window.ray?.send(m);

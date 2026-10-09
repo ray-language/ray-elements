@@ -149,10 +149,11 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
-<li><strong>The raylang package</strong> (plan 2): <code>ray_ds/assets</code> serves the whole design
-system from the program, with no npm and no copied files;
-<code>examples/starter</code> is the app to copy. It is published to its own
-repository, <code>github.com/ray-language/ray_ds</code>.</li>
+<li><strong>The raylang package</strong> (plan 2): the <code>ray_ds</code> dependency brings
+<code>@ray-ds/elements</code> to the app's pages by its npm name
+(<code>import &quot;@ray-ds/elements/button&quot;</code>, as with a bundler), with no npm and
+no copied files; <code>examples/starter</code> is the app to copy. It is published to
+its own repository, <code>github.com/ray-language/ray_ds</code>.</li>
 <li><strong>The native bridge</strong> (plan 1, done): system file dialogs with
 real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>), native
 confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>),
@@ -179,7 +180,7 @@ published):</p>
 }</code></pre>
 <p>In the page, once:</p>
 
-<pre class="code"><code><span class="tk-keyword">import</span> { enableRaylang } <span class="tk-keyword">from</span> <span class="tk-string">&quot;ray-ds/core/raylang.js&quot;</span>;   <span class="tk-comment">// or from &quot;@ray-ds/elements&quot;</span>
+<pre class="code"><code><span class="tk-keyword">import</span> { enableRaylang } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements/core&quot;</span>;   <span class="tk-comment">// or from &quot;@ray-ds/elements&quot;</span>
 <span class="tk-keyword">await</span> enableRaylang();   <span class="tk-comment">// the host, or null in a browser</span></code></pre>
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-file-upload</span> <span class="tk-attr">native</span> <span class="tk-attr">multiple</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.png,.jpg&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Photos&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-file-upload</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;out&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Export to&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;save&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.csv&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span></code></pre>
@@ -410,12 +411,10 @@ the whole design system from it, with no npm, no Node and no copied files.</p>
 ray_ds = &quot;git+https://github.com/ray-language/ray_ds@v0.3.0&quot;
 # or, next to a checkout of this repository: ray_ds = &quot;path:../ray-ds/ray_ds&quot;</code></pre>
 <pre class="code"><code><span class="tk-keyword">import</span> std/ui;
-<span class="tk-keyword">import</span> ray_ds/assets;
 <span class="tk-keyword">import</span> ray_ds/bridge;
 
 <span class="tk-keyword">fn</span> main() -&gt; int {
-    assets.mount(<span class="tk-string">&quot;ray-ds&quot;</span>).unwrap();   <span class="tk-comment">// ray://app/ray-ds/index.js, tokens.css, base.css…</span>
-    ui.mount_embed_at(<span class="tk-string">&quot;&quot;</span>, <span class="tk-string">&quot;assets&quot;</span>).unwrap();
+    ui.mount_embed_at(<span class="tk-string">&quot;&quot;</span>, <span class="tk-string">&quot;assets&quot;</span>).unwrap();   <span class="tk-comment">// the app's page ([native] embed)</span>
     <span class="tk-keyword">let</span> h = ui.open(<span class="tk-string">&quot;App&quot;</span>, <span class="tk-string">&quot;ray://app/index.html&quot;</span>, <span class="tk-number">960</span>, <span class="tk-number">640</span>).unwrap();
     <span class="tk-keyword">for</span> e <span class="tk-keyword">in</span> ui.events() {
         <span class="tk-keyword">if</span> (bridge.handle(e)) {
@@ -425,23 +424,48 @@ ray_ds = &quot;git+https://github.com/ray-language/ray_ds@v0.3.0&quot;
     }
     <span class="tk-number">0</span>
 }</code></pre>
-<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-ds/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-ds/base.css&quot;</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span> <span class="tk-attr">src</span>=<span class="tk-string">&quot;ray-ds/index.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;/node_modules/@ray-ds/elements/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;/node_modules/@ray-ds/elements/base.css&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">import</span> { enableRaylang } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;   <span class="tk-comment">// every component, and the API</span>
+  <span class="tk-keyword">await</span> enableRaylang();
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p>The page imports <code>@ray-ds/elements</code> by its npm name, the same as an app built
+with Vite: <code>import &quot;@ray-ds/elements/button&quot;</code>,
+<code>import { enableRaylang } from &quot;@ray-ds/elements/core&quot;</code>. The package's
+<code>ray.toml</code> declares it (<code>[web] package = &quot;web&quot;</code>), and raylang (1.27.44 or
+later) does the rest, under <code>ray run</code> and in a native binary:</p>
+
+<ul>
+<li>it serves the package at <code>ray://app/node_modules/@ray-ds/elements/</code>, where
+npm would put it (so the stylesheets are linked by that path);</li>
+<li>it injects an import map built from the package's <code>exports</code> into every
+HTML page of <code>ray://app/</code> (<code>ui.import_map()</code> returns it; a page with its
+own import map is left as is);</li>
+<li><code>ray run</code> and <code>ray fetch</code> link the package into the app's
+<code>node_modules/@ray-ds/elements</code>, so the editor resolves the same imports
+with their types (<code>ray-ds.d.ts</code>) and goes to their definitions. Add
+<code>node_modules/</code> to the app's <code>.gitignore</code>. Two files make the editor see
+everything, the same as in a Vite project (<code>examples/lean-app</code> has both):
+a <code>jsconfig.json</code> with <code>&quot;moduleResolution&quot;: &quot;bundler&quot;</code>, and
+<code>.vscode/settings.json</code> with
+<code>&quot;html.customData&quot;: [&quot;./node_modules/@ray-ds/elements/vscode.html-custom-data.json&quot;]</code>
+for the <code>&lt;ray-*&gt;</code> tags and their attributes.</li>
+</ul>
+
 <p><code>examples/starter</code> is that app, ready to copy (<code>ray new --frontend</code> takes
 <code>npm create vite</code> templates, so it cannot start one without npm).
 <code>examples/desktop-app</code> uses the package and the whole bridge.</p>
 
 <h3 id="contents">Contents</h3>
 <ul>
-<li><code>ray_ds/assets</code> (generated by <code>build</code>): the files of <code>@ray-ds/elements</code> —
-<code>index.js</code> (every component, and the API: <code>enableRaylang</code>, <code>notify</code>,
-<code>confirmDialog</code>…), <code>core/</code>, <code>components/</code>, <code>tokens.css</code>, <code>base.css</code> — as
-constants. <code>assets.mount(prefix)</code> serves them with <code>ui.mount_bytes</code>;
-<code>assets.files()</code> and <code>assets.read(path)</code> list and read them. Its test
-checks every file byte for byte. A page that uses a few components can
-load <code>ray-ds/components/&lt;name&gt;/&lt;name&gt;.js</code> instead of <code>ray-ds/index.js</code>,
-and <code>ray-ds/core.js</code> for the API alone (<code>enableRaylang</code>, <code>setIcons</code>…).
+<li><code>ray_ds/web</code> (generated by <code>build</code>): a copy of <code>packages/elements</code>, the npm
+package <code>@ray-ds/elements</code> as it is published — <code>index.js</code> (every
+component, and the API: <code>enableRaylang</code>, <code>notify</code>, <code>confirmDialog</code>…),
+<code>core.js</code>, <code>core/</code>, <code>components/</code>, <code>tokens.css</code>, <code>base.css</code>, the types and
+the editor data. A page that uses a few components imports
+<code>@ray-ds/elements/&lt;name&gt;</code> instead of <code>@ray-ds/elements</code>, and
+<code>@ray-ds/elements/core</code> for the API alone (<code>enableRaylang</code>, <code>setIcons</code>…).
 <code>examples/lean-app</code> does it, and loads its settings dialog with <code>import()</code>
 on first open; its <code>--check</code> fails if the page defines any other element.</li>
 <li><code>ray_ds/version</code> (generated): <code>version.VERSION</code>, the version of
@@ -453,7 +477,7 @@ import it as <code>ray_ds/version</code>, the only form that also works from an 
 repository's): the package is the whole directory. <code>build</code> keeps the
 version of <code>ray.toml</code> and of the README's install line.</li>
 <li>No <code>mod.ray</code>: it would make the other modules internal to the capsule, so
-the package is <code>import ray_ds/assets;</code> and <code>import ray_ds/bridge;</code>.</li>
+the package is <code>import ray_ds/bridge;</code> (and <code>ray_ds/version</code>).</li>
 </ul>
 
 <h3 id="how-the-assets-travel-decided-by-the-spike">How the assets travel: decided by the spike</h3>
@@ -465,16 +489,23 @@ where the app runs from any directory and only what was baked in exists.</p>
 A dependency's <code>embed</code> is ignored, under <code>ray run</code> and in a native binary:
 <code>std/embed</code> only has the app's own files, also when the package reads it
 (finding #139).</li>
-<li><strong>Generated module</strong> (chosen): <code>build</code> writes the 86 files (about 690 KB of
-source) as string constants of <code>ray_ds/assets.ray</code>. Measured on macOS with
-raylang 1.27.39: generating it takes under half a second, a native build
-of <code>examples/desktop-app</code> takes 7.5 s and weighs 2.5 MB, and the files
-arrive byte for byte under <code>ray run</code> and in the native binary (its
-<code>--check</code> passes with the binary).</li>
+<li><strong>Generated module</strong> (chosen until 0.3.0): <code>build</code> wrote the 86 files
+(about 690 KB of source) as string constants of <code>ray_ds/assets.ray</code>, and
+<code>assets.mount(&quot;ray-ds&quot;)</code> served them at <code>ray://app/ray-ds/…</code>. It worked
+under <code>ray run</code> and in a native binary, but the pages imported
+<code>./ray-ds/components/button/button.js</code>: a path that only existed in the
+window, that the editor could not resolve, and that looked nothing like
+the npm names.</li>
+<li><strong>The npm package, served by raylang</strong> (chosen): raylang 1.27.43 made a
+dependency's <code>[native] embed</code> reach the app (#139), and 1.27.44 added
+<code>[web] package</code>, which serves a dependency's npm package by its npm name,
+with an import map, and links it into the app's <code>node_modules/</code> for the
+editor. <code>ray_ds/web</code> is now <code>packages/elements</code> as published; the
+generated module is gone, and the pages read the same as with a bundler.
+<code>examples/lean-app</code>, <code>examples/starter</code> and <code>examples/desktop-app</code> pass
+their <code>--check</code> under <code>ray run</code>, and <code>examples/lean-app</code> also as a native
+binary run from another directory.</li>
 </ol>
-
-<p>The cost is a ~700 KB generated file in the repository, rewritten when a
-component changes (git stores the difference).</p>
 
 <h3 id="milestones-2">Milestones</h3>
 <ol>
@@ -503,6 +534,9 @@ that <code>ray add ray_ds</code> works too. A manual command until then; later a
 last step of the release job, with a deploy key on <code>ray-index</code>.</li>
 </ul>
 </li>
+<li>✅ <strong>By the npm name</strong>: the package carries <code>@ray-ds/elements</code> as
+published (<code>[web] package</code>, raylang 1.27.44); the pages import it as with
+a bundler and the editor resolves it from <code>node_modules/</code>.</li>
 </ol>
 
 <h2 id="later-ideas">Later ideas</h2>
