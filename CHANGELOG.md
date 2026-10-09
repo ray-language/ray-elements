@@ -64,6 +64,8 @@ The first public release.
   into the title bar (room for the window buttons, drags the window;
   `dragRegion()` for any element), the window's background and title bar
   follow the theme, and `trackEdits(form)` shows unsaved changes.
+- An "In a raylang app" section on the pages of the components that use the
+  bridge, and `examples/desktop-app`, a folder browser that uses all of it.
 
 ### Docs site
 

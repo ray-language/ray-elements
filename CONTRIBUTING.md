@@ -49,7 +49,9 @@ updated: run `cp ray_ds/*.ray tools/src/ray_ds/` once, then `build`.
    React/Vue wrappers come from it.
 3. `example.html`: a real use case first, then the variants. Examples run on
    one page together too (`docs/components/all.html`): keep ids unique
-   (`demo-<name>-…`) and their CSS in `site/site.css` (`.demo-…`).
+   (`demo-<name>-…`) and their CSS in `site/site.css` (`.demo-…`). If the
+   component does more in a raylang app (the native bridge), say what in
+   `raylang.md`: it becomes the "In a raylang app" section of its page.
 4. A thumbnail for the catalog in `tools/src/site/thumbs.ray`.
 5. Tests in `tests/` (see below) and a line in the README's component table.
 

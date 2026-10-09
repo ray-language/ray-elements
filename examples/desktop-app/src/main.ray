@@ -1,0 +1,368 @@
+// A folder browser in a std/ui window that uses all of the ray-ds native
+// bridge: the system dialogs (folder, files, save target, confirmation), a
+// native context menu, the menu bar in the command palette, the page under a
+// transparent title bar, window colors that follow the theme and the
+// "unsaved changes" mark. The page is assets/index.html + app.js; ray-ds is
+// served from the repository's src/ (an app of its own copies it with `add`).
+//
+//   ray run                    open the window; close it to quit
+//   ray run src/main.ray --check
+//                              drive it by script, with scripted dialogs; exit 0/1
+
+import std/fs;
+import std/json;
+import std/time;
+import std/ui;
+import ray_ds/bridge;
+
+fn main() -> int {
+    let check = args().contains("--check");
+    match (run(check)) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("desktop-app: ${e}");
+            1
+        },
+    }
+}
+
+fn run(check: bool) -> Result<int, string> {
+    ui.mount_dir("ray-ds", "../../src")?;
+    ui.mount_dir("tokens", "../../dist")?;
+    ui.mount_dir("", "assets")?;
+    // One Native for the whole loop: it records the menus for the palette.
+    let n = bridge.system();
+    let seen: [string] = [];
+    let tmp = if (check) { script(n, seen)? } else { "" };
+    ui.app_menu("Workspace", [])?;
+    menus(n)?;
+    var o = ui.options(1100, 720);
+    o.min_width = 640;
+    o.min_height = 480;
+    o.kind = "full_content";
+    let h = ui.open_with("Workspace", "ray://app/index.html", o)?;
+    if (check) {
+        let r = self_check(h, n, seen);
+        close(h);
+        fs.remove_all(tmp)?;
+        return r;
+    }
+    while (true) {
+        let e = ui.next_event()?;
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        dispatch(h, n, e, true)?;
+    }
+}
+
+fn menus(n: bridge.Native) -> Result<int, string> {
+    bridge.menu(n, "File", [
+        ui.item("open_folder", "Open Folder…", "cmd+o"),
+        ui.item("export", "Export List…", "cmd+e"),
+        ui.separator(),
+        ui.item("role:close", "", ""),
+    ])?;
+    bridge.menu(n, "View", [
+        ui.item("commands", "Commands…", "cmd+k"),
+        ui.item("toggle_theme", "Toggle Dark Mode", "cmd+shift+d"),
+    ])?;
+    bridge.menu(n, "Go", [ui.item("go_files", "Files", "cmd+1"), ui.item("go_settings", "Settings", "cmd+2")])
+}
+
+// One event: the bridge's, a menu item (from the bar or the palette), a
+// request of the page ({app: "list"}) or one of its messages. Returns the
+// message, if it was one.
+fn dispatch(h: int, n: bridge.Native, raw: ui.UiEvent, act: bool) -> Result<Option<string>, string> {
+    let e = match (bridge.route(n, raw)) {
+        Option.Some(e) => e,
+        Option.None => return Result.Ok(Option.None),
+    };
+    if (e.kind == "menu") {
+        on_menu(h, e.tag)?;
+        return Result.Ok(Option.Some("menu:${e.tag}"));
+    }
+    if (e.kind != "message") {
+        return Result.Ok(Option.None);
+    }
+    match (ui.as_request(e)) {
+        Option.Some((id, body)) => {
+            ui.reply_json(e.window, id, answer(body))?;
+            return Result.Ok(Option.None);
+        },
+        Option.None => { },
+    }
+    if (act) {
+        on_message(e.tag)?;
+    }
+    Result.Ok(Option.Some(e.tag))
+}
+
+fn on_menu(h: int, tag: string) -> Result<int, string> {
+    let js = match (tag) {
+        "open_folder" => "app.browse()",
+        "export" => "app.exportTo()",
+        "commands" => "document.getElementById('palette').show()",
+        "toggle_theme" => "app.toggleTheme()",
+        "go_files" => "app.show('files')",
+        "go_settings" => "app.show('settings')",
+        _ => "",
+    };
+    if (js == "") { Result.Ok(0) } else { ui.eval_js(h, js) }
+}
+
+// What the page tells the program: act on a file, the attached notes, the settings.
+fn on_message(tag: string) -> Result<int, string> {
+    let (kind, rest) = match (tag.index_of(":")) {
+        Option.Some(i) => (tag.substring(0, i), tag.substring(i + 1, tag.len())),
+        Option.None => (tag, ""),
+    };
+    match (kind) {
+        "open" => ui.open_path(rest),
+        "reveal" => ui.reveal(rest),
+        "copy" => ui.clipboard_write(rest),
+        "export" => export_list(rest),
+        k if (k == "attach" || k == "settings") => {
+            print("${kind}: ${rest}");
+            Result.Ok(0)
+        },
+        _ => Result.Ok(0),
+    }
+}
+
+// The page's own request: {app: "list", dir, hidden} -> {ok, entries: [{name, path, size, dir}]}.
+fn answer(body: string) -> string {
+    match (list(body)) {
+        Result.Ok(entries) => "{\"ok\":true,\"entries\":${entries}}",
+        Result.Err(e) => json.obj().field("ok", false).field("error", e).render(),
+    }
+}
+
+fn list(body: string) -> Result<string, string> {
+    let j = json.parse(body)?;
+    let dir = json.get_string(j, "dir").unwrap_or("");
+    let hidden = json.get_bool(j, "hidden").unwrap_or(false);
+    if (!fs.is_dir(dir)) {
+        return Result.Err("${dir} is not a folder");
+    }
+    var dirs = json.arr();
+    var files = json.arr();
+    for name in sort(fs.list_dir(dir)?) {
+        if (!hidden && name.starts_with(".")) {
+            continue;
+        }
+        let path = if (dir.ends_with("/")) { dir + name } else { "${dir}/${name}" };
+        let is_dir = fs.is_dir(path);
+        let size = if (is_dir) { -1 } else { fs.file_size(path).unwrap_or(-1) };
+        let entry = json.obj().field("name", name).field("path", path).field("size", size).field("dir", is_dir);
+        if (is_dir) {
+            dirs = dirs.item(entry);
+        } else {
+            files = files.item(entry);
+        }
+    }
+    // Folders first.
+    let a = json.render_arr(dirs);
+    let b = json.render_arr(files);
+    Result.Ok(if (a == "[]") { b } else if (b == "[]") { a } else { a.substring(0, a.len() - 1) + "," + b.substring(1, b.len()) })
+}
+
+// {to, dir}: the listing of `dir` as CSV at `to` (a path from the save dialog).
+fn export_list(payload: string) -> Result<int, string> {
+    let j = json.parse(payload)?;
+    let to = json.get_string(j, "to").unwrap_or("");
+    let dir = json.get_string(j, "dir").unwrap_or("");
+    if (!to.starts_with("/") && !to.contains(":\\")) {
+        print("export: choose where to save it (Browse…) first");
+        return Result.Ok(0);
+    }
+    let entries = json.parse(list("{\"dir\":${dir.to_json()}}")?)?;
+    var csv = "name,size,kind\n";
+    for e in json.as_array(entries).unwrap_or([]) {
+        let kind = if (json.get_bool(e, "dir").unwrap_or(false)) { "folder" } else { "file" };
+        csv = csv + "${json.get_string(e, "name").unwrap_or("")},${json.get_int(e, "size").unwrap_or(-1)},${kind}\n";
+    }
+    fs.write_file(to, csv)?;
+    print("exported ${dir} to ${to}");
+    Result.Ok(0)
+}
+
+// --- --check -------------------------------------------------------------------
+
+// The dialogs of the check, around a temporary folder (returned, for the
+// end): the folder dialog picks assets/, the files dialog a notes.md written
+// there, the save dialog a file there; the confirmation says yes and the
+// context menu picks "Copy path". What the window calls do is noted in
+// `seen` (and still done).
+fn script(n: bridge.Native, seen: [string]) -> Result<string, string> {
+    let assets = fs.real_path("assets")?;
+    let tmp = fs.make_temp_dir("ray-ds-desktop-app")?;
+    fs.write_file("${tmp}/notes.md", "# Notes\n")?;
+    n.pick_path = fn(mode: string, o: ui.FileDialogOptions) -> Result<Option<string>, string> {
+        if (mode == "save") { Result.Ok(Option.Some("${tmp}/${o.suggested}")) } else { Result.Ok(Option.Some(assets)) }
+    };
+    n.pick_files = fn(o: ui.FileDialogOptions) -> Result<[string], string> { Result.Ok(["${tmp}/notes.md"]) };
+    n.confirm = fn(title: string, text: string, ok: string, cancel: string, style: string) -> Result<bool, string> {
+        seen.push("confirm:${title}|${style}");
+        Result.Ok(true)
+    };
+    n.popup = fn(h: int, items: [ui.MenuItem]) -> Result<int, string> {
+        for it in items {
+            if (it.title == "Copy path") {
+                match (bridge.popup_choice_js(it.tag)) {
+                    Option.Some(js) => {
+                        ui.eval_js(h, js)?;
+                    },
+                    Option.None => { },
+                }
+            }
+        }
+        seen.push("popup:${items.len()}");
+        Result.Ok(0)
+    };
+    n.set_edited = fn(h: int, edited: bool) -> Result<int, string> {
+        seen.push("edited:${edited}");
+        ui.set_edited(h, edited)
+    };
+    n.window_colors = fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+        seen.push("colors:${background}");
+        ui.set_background(h, background)?;
+        ui.set_titlebar_color(h, titlebar)
+    };
+    Result.Ok(tmp)
+}
+
+fn self_check(h: int, n: bridge.Native, seen: [string]) -> Result<int, string> {
+    let failed: [string] = [];
+    let ready = after(wait(h, n, "ready:", 15000)?, "ready:");
+    let r = json.parse(ready)?;
+    check(failed, json.get_string(r, "host").unwrap_or("") == "raylang", "the page has the raylang host (${ready})");
+    if (platform() == "macos") {
+        let height = json.get_object(r, "titlebar").map(fn(t: Map<string, json.Json>) -> int {
+            json.as_int(t.get_or("height", json.Json.JNull)).unwrap_or(0)
+        }).unwrap_or(0);
+        check(failed, height > 0, "full_content: the page runs under the title bar (${height} px)");
+    }
+    wait_seen(h, n, seen, "colors:", 5000)?;
+    let first = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") })[0];
+    check(failed, first.len() == 14, "the window takes the theme's background (${first})");
+
+    // Files: Browse… (the folder dialog), the listing (the page's own request).
+    ui.eval_js(h, "app.browse()")?;
+    let listed = after(wait(h, n, "listed:", 5000)?, "listed:");
+    let want = fs.list_dir("assets")?.filter(fn(f: string) -> bool { !f.starts_with(".") }).len();
+    check(failed, listed == "${want}", "Browse… lists the chosen folder (${listed} of ${want})");
+
+    // The native context menu on the first row: the script picks Copy path.
+    ui.eval_js(
+        h,
+        "document.querySelector('#file-list .file').dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 20, clientY: 20 }))"
+    )?;
+    let copied = after(wait(h, n, "copy:", 5000)?, "copy:");
+    check(failed, copied.ends_with("/app.js"), "the context menu acts on the row (${copied})");
+    check(failed, seen.contains("popup:4"), "the menu has its 3 items and the divider");
+
+    // Attach notes: the files dialog gives paths.
+    ui.eval_js(h, "document.getElementById('attach').open()")?;
+    let attached = after(wait(h, n, "attach:", 5000)?, "attach:");
+    check(failed, attached.contains("/notes.md"), "native file upload gives paths (${attached})");
+
+    // The palette lists the menu bar; running Go > Settings reaches the program as a menu event.
+    ui.eval_js(h, `(async () => {
+        const p = document.getElementById("palette");
+        p.show();
+        const items = await p._loadMenus();
+        p.hide();
+        window.ray.send("palette:" + items.map((a) => a.tag).join(","));
+        await items.find((a) => a.tag === "go_settings").onSelect();
+    })()`)?;
+    let tags = after(wait(h, n, "palette:", 5000)?, "palette:");
+    check(failed, tags == "open_folder,export,commands,toggle_theme,go_files,go_settings", "the palette lists the menu bar (${tags})");
+    let ran = wait(h, n, "menu:", 5000)?;
+    check(failed, ran == "menu:go_settings", "running it from the palette is the menu's event (${ran})");
+    let section = wait(h, n, "section:", 5000)?;
+    check(failed, section == "section:settings", "and the program acts on it (${section})");
+
+    // Unsaved changes: the window's mark, the native confirmation to discard them.
+    ui.eval_js(h, "const i = document.querySelector('ray-input[name=name]'); i.value = 'ray-ds 2'; i.dispatchEvent(new Event('input', { bubbles: true }))")?;
+    wait_seen(h, n, seen, "edited:true", 5000)?;
+    check(failed, true, "an edit marks the window as edited");
+    ui.eval_js(h, "document.getElementById('discard').click()")?;
+    wait(h, n, "discarded", 5000)?;
+    check(failed, seen.contains("confirm:Discard your changes?|warning"), "discarding asks with the native dialog, warning style");
+    wait_seen(h, n, seen, "edited:false", 5000)?;
+    check(failed, true, "discarded: the mark goes away");
+
+    // Save: the form reaches the program; the save dialog picked the export target.
+    ui.eval_js(h, "document.querySelector('ray-path-input[name=export]').browse().then(() => document.getElementById('settings-form').requestSubmit())")?;
+    let saved = after(wait(h, n, "settings:", 5000)?, "settings:");
+    check(failed, saved.contains("\"name\":\"ray-ds\"") && saved.contains("ray-ds-desktop-app"), "the settings arrive, with the save dialog's path (${saved})");
+
+    // The theme: the window follows it.
+    let before = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") }).len();
+    ui.eval_js(h, "app.toggleTheme()")?;
+    wait_count(h, n, seen, "colors:", before + 1, 5000)?;
+    let colors = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") });
+    check(failed, colors[colors.len() - 1] != colors[0], "the window follows the theme (${colors[0]} -> ${colors[colors.len() - 1]})");
+
+    if (failed.len() > 0) {
+        eprint("${failed.len()} check(s) failed");
+        return Result.Ok(1);
+    }
+    print("check ok");
+    Result.Ok(0)
+}
+
+fn check(failed: [string], ok: bool, what: string) {
+    if (ok) {
+        print("  ok   ${what}");
+    } else {
+        print("  FAIL ${what}");
+        failed.push(what);
+    }
+}
+
+fn after(s: string, prefix: string) -> string {
+    s.strip_prefix(prefix).unwrap_or(s)
+}
+
+// Runs the loop (without acting on the files) until the page sends a message
+// starting with `prefix`.
+fn wait(h: int, n: bridge.Native, prefix: string, timeout_ms: int) -> Result<string, string> {
+    let deadline = time.now() + timeout_ms;
+    while (time.now() < deadline) {
+        match (ui.next_event_timeout(deadline - time.now())?) {
+            Option.Some(e) => match (dispatch(h, n, e, false)?) {
+                Option.Some(tag) => {
+                    if (tag.starts_with(prefix)) {
+                        return Result.Ok(tag);
+                    }
+                },
+                Option.None => { },
+            },
+            Option.None => { },
+        }
+    }
+    Result.Err("no '${prefix}' in ${timeout_ms} ms")
+}
+
+// Runs the loop until `seen` holds an entry starting with `prefix`.
+fn wait_seen(h: int, n: bridge.Native, seen: [string], prefix: string, timeout_ms: int) -> Result<int, string> {
+    wait_count(h, n, seen, prefix, 1, timeout_ms)
+}
+
+fn wait_count(h: int, n: bridge.Native, seen: [string], prefix: string, count: int, timeout_ms: int) -> Result<int, string> {
+    let deadline = time.now() + timeout_ms;
+    while (seen.filter(fn(x: string) -> bool { x.starts_with(prefix) }).len() < count) {
+        if (time.now() >= deadline) {
+            return Result.Err("no '${prefix}' (x${count}) from the window calls in ${timeout_ms} ms");
+        }
+        match (ui.next_event_timeout(100)?) {
+            Option.Some(e) => {
+                dispatch(h, n, e, false)?;
+            },
+            Option.None => { },
+        }
+    }
+    Result.Ok(0)
+}

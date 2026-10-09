@@ -82,6 +82,24 @@ pub fn strip_tags(html: string) -> string {
         .replace("&amp;", "&")
 }
 
+// A Markdown fragment inside a page `up` levels below docs/ ("../" for a
+// component page): code highlighted, links to the guides rewritten.
+pub fn fragment(src: string, up: string) -> string {
+    let out: [string] = [];
+    for b in markdown.parse(src) {
+        match (b) {
+            Block.Code(lang, text) => out.push(
+                "<pre class=\"code\"><code>${highlight.code(text.trim(), lang)}</code></pre>"
+            ),
+            _ => out.push(markdown.render([b])),
+        }
+    }
+    let html = rewrite_links(join(out, "\n"));
+    // rewrite_links is for pages at docs/: one level more below it.
+    html.replace("href=\"../", "href=\"${up}../").replace("href=\"raylang.html", "href=\"${up}raylang.html")
+        .replace("href=\"extending.html", "href=\"${up}extending.html")
+}
+
 // href="EXTENDING.md#x" -> href="extending.html#x"; other relative links are
 // relative to the repository root, one level above docs/.
 fn rewrite_links(html: string) -> string {

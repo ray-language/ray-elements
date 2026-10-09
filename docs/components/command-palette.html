@@ -313,6 +313,23 @@ if (location.protocol === "file:") window.__rayServeHint();
 <details class="source" data-code-src="code/command-palette.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/command-palette.html">Open the code</a></p></div></details>
+<h2 class="api-title" id="command-palette-raylang">In a raylang app</h2>
+<div class="prose raylang-note"><p>With <code>native-menus</code> and <a href="../raylang.html#using-the-bridge">the native bridge</a>, the palette also lists the app's menu bar: every item, grouped by its menu, with its shortcut, the disabled ones greyed out. Running one gives the program the same <code>&quot;menu&quot;</code> event as choosing it in the menu bar, so the program handles it in one place.</p>
+
+<pre class="code"><code><span class="tk-keyword">let</span> n = bridge.system();
+bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span class="tk-string">&quot;new&quot;</span>, <span class="tk-string">&quot;New window&quot;</span>, <span class="tk-string">&quot;cmd+n&quot;</span>), ui.item(<span class="tk-string">&quot;open&quot;</span>, <span class="tk-string">&quot;Open…&quot;</span>, <span class="tk-string">&quot;cmd+o&quot;</span>)])?;
+<span class="tk-keyword">for</span> raw <span class="tk-keyword">in</span> ui.events() {
+    <span class="tk-keyword">let</span> e = <span class="tk-keyword">match</span> (bridge.route(n, raw)) {
+        Option.Some(e) =&gt; e,
+        Option.None =&gt; <span class="tk-keyword">continue</span>,
+    };
+    <span class="tk-keyword">if</span> (e.kind == <span class="tk-string">&quot;menu&quot;</span> &amp;&amp; e.tag == <span class="tk-string">&quot;new&quot;</span>) {
+        new_window()?;
+    }
+}</code></pre>
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-command-palette</span> <span class="tk-attr">native-menus</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-command-palette</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p>Declare the menus with <code>bridge.menu</code> (and change them with <code>bridge.replace_menu</code> and <code>bridge.set_menu_item</code>) so the palette knows them.</p>
+</div>
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-command-palette&gt;</code> &middot; <code>RayCommandPalette</code></p>
 <p class="note">Running an action fires ray-select and calls its onSelect. The best matches come first, grouped.</p>

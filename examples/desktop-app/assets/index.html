@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Workspace</title>
+<link rel="stylesheet" href="tokens/tokens.css">
+<link rel="stylesheet" href="ray-ds/core/base.css">
+<script type="module" src="ray-ds/index.js"></script>
+<style>
+  html, body { height: 100%; margin: 0; }
+  ray-app-shell:not(:defined) { visibility: hidden; }
+  main { display: grid; gap: var(--ray-space-6); max-width: 46rem; }
+  .brand { display: flex; align-items: center; gap: var(--ray-space-2); padding: var(--ray-space-1) var(--ray-space-2); font-size: var(--ray-font-size-sm); }
+  .files { display: grid; border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); overflow: hidden; }
+  .files:empty { display: none; }
+  .file { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--ray-space-3); padding: var(--ray-space-2) var(--ray-space-3); font-size: var(--ray-font-size-sm); cursor: default; }
+  .file + .file { border-top: 1px solid var(--ray-border); }
+  .file:hover, .file[data-active] { background: var(--ray-default-hover); }
+  .file span:first-of-type { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file .size { color: var(--ray-muted-foreground); font-variant-numeric: tabular-nums; }
+  .hint { margin: 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm); }
+  form { display: grid; gap: var(--ray-space-4); }
+  .actions { display: flex; justify-content: flex-end; gap: var(--ray-space-2); }
+</style>
+</head>
+<body>
+<ray-app-shell padding="lg">
+  <ray-app-bar slot="header" id="bar" label="Files" description="No folder chosen">
+    <ray-button slot="end" variant="default" size="xs" id="open-palette" title="Commands (⌘K)">Commands</ray-button>
+    <ray-theme-toggle slot="end"></ray-theme-toggle>
+  </ray-app-bar>
+  <ray-sidebar slot="navbar" label="Workspace">
+    <div slot="header" class="brand"><ray-avatar name="ray ds" size="sm" color="blue" radius="md" variant="filled"></ray-avatar><strong>Workspace</strong></div>
+    <ray-nav-link label="Files" href="#files" data-section="files" active><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Settings" href="#settings" data-section="settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </ray-sidebar>
+
+  <main>
+    <section id="files" data-section-panel>
+      <ray-stack gap="md">
+        <ray-path-input id="workspace" label="Folder" mode="folder" placeholder="/path/to/a/folder" description="Browse… opens the system dialog; a path can also be typed."></ray-path-input>
+        <ray-menu native context id="file-menu">
+          <div slot="trigger" class="files" id="file-list" role="list"></div>
+          <ray-menu-item value="open">Open</ray-menu-item>
+          <ray-menu-item value="reveal">Show in the file manager</ray-menu-item>
+          <ray-menu-divider></ray-menu-divider>
+          <ray-menu-item value="copy">Copy path</ray-menu-item>
+        </ray-menu>
+        <p class="hint" id="files-hint">Right-click a file for its native menu.</p>
+        <ray-file-upload id="attach" native multiple accept=".log,.txt,.md" label="Attach notes" variant="compact"></ray-file-upload>
+      </ray-stack>
+    </section>
+
+    <section id="settings" data-section-panel hidden>
+      <form id="settings-form">
+        <ray-input name="name" label="Project name" value="ray-ds" required></ray-input>
+        <ray-path-input name="export" label="Export the list to" mode="save" accept=".csv" value="files.csv"></ray-path-input>
+        <ray-switch name="hidden" label="Show hidden files"></ray-switch>
+        <div class="actions">
+          <ray-button type="button" variant="default" id="discard">Discard changes</ray-button>
+          <ray-button type="submit">Save</ray-button>
+        </div>
+      </form>
+    </section>
+  </main>
+</ray-app-shell>
+<ray-command-palette native-menus id="palette"></ray-command-palette>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

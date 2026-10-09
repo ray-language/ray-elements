@@ -47,6 +47,7 @@ tools/                 raylang project: the ray-ds CLI
 ray_ds/                raylang package: bridge.ray, the program's half of the bridge
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
+examples/desktop-app/  std/ui app using the native bridge (ray_ds/bridge)
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
 examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
 examples/extending/    app components on the extension API (+ `wrap` output)
@@ -190,7 +191,11 @@ adds everything. In a std/ui app, serve the directory with
 ```
 
 See `examples/desktop-form` (`ray run src/main.ray --check` fills and submits
-its form by script and checks what reaches the raylang side).
+its form by script and checks what reaches the raylang side), and
+`examples/desktop-app` for the native bridge: a folder browser under a
+transparent title bar, with the system dialogs, a native context menu and the
+menu bar in the command palette (`cd examples/desktop-app && ray run`, or
+`ray run src/main.ray --check` to drive it with scripted dialogs).
 
 ## React and Vue
 

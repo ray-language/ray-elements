@@ -325,6 +325,14 @@ if (location.protocol === "file:") window.__rayServeHint();
 <details class="source" data-code-src="code/app-shell.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/app-shell.html">Open the code</a></p></div></details>
+<h2 class="api-title" id="app-shell-raylang">In a raylang app</h2>
+<div class="prose raylang-note"><p>In a <code>std/ui</code> window opened as <code>full_content</code> (the page under a transparent title bar, macOS), with <a href="../raylang.html#using-the-bridge">the native bridge</a>, the header becomes the title bar: at least as tall, with room for the window buttons, and dragging it moves the window (buttons in it stay buttons). With <code>layout=&quot;alt&quot;</code> or without a header, the navbar and the main content start below the title bar.</p>
+
+<pre class="code"><code><span class="tk-keyword">var</span> o = ui.options(<span class="tk-number">1100</span>, <span class="tk-number">720</span>);
+o.kind = <span class="tk-string">&quot;full_content&quot;</span>;
+<span class="tk-keyword">let</span> h = ui.open_with(<span class="tk-string">&quot;Builds&quot;</span>, <span class="tk-string">&quot;ray://app/index.html&quot;</span>, o)?;</code></pre>
+<p>The bridge also keeps the window's background and title bar in the theme's background, so switching to dark, resizing or reopening never flashes the other theme.</p>
+</div>
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-app-shell&gt;</code> &middot; <code>RayAppShell</code></p>
 <p class="note">The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-ds/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout=&quot;alt&quot; or no header, the navbar and main start below it.</p>

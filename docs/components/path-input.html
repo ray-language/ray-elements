@@ -349,6 +349,20 @@ if (location.protocol === "file:") window.__rayServeHint();
 <details class="source" data-code-src="code/path-input.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/path-input.html">Open the code</a></p></div></details>
+<h2 class="api-title" id="path-input-raylang">In a raylang app</h2>
+<div class="prose raylang-note"><p>Browse… shows only in a <code>std/ui</code> window with <a href="../raylang.html#using-the-bridge">the native bridge</a>. It opens the system's dialog for the <code>mode</code>, starting in the folder of the current path (<code>save</code> also suggests the current file name). The chosen path fills the field and fires <code>input</code> and <code>change</code>; the program gets it with the form like any other field.</p>
+
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;workspace&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Workspace&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;folder&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;export&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Export to&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;save&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.csv&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code"><code><span class="tk-comment">// The program's side: ui.events() through bridge.handle, then the form arrives as usual.</span>
+<span class="tk-keyword">for</span> e <span class="tk-keyword">in</span> ui.events() {
+    <span class="tk-keyword">if</span> (bridge.handle(e)) {
+        <span class="tk-keyword">continue</span>;
+    }
+    <span class="tk-keyword">if</span> (e.kind == <span class="tk-string">&quot;message&quot;</span> &amp;&amp; e.tag.starts_with(<span class="tk-string">&quot;settings:&quot;</span>)) {
+        save_settings(e.tag.substring(<span class="tk-number">9</span>, e.tag.len()))?;
+    }
+}</code></pre></div>
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-path-input&gt;</code> &middot; <code>RayPathInput</code></p>
 <p class="note">Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.</p>

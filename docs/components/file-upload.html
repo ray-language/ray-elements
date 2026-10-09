@@ -323,6 +323,17 @@ if (location.protocol === "file:") window.__rayServeHint();
 <details class="source" data-code-src="code/file-upload.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/file-upload.html">Open the code</a></p></div></details>
+<h2 class="api-title" id="file-upload-raylang">In a raylang app</h2>
+<div class="prose raylang-note"><p>In a <code>std/ui</code> window with <a href="../raylang.html#using-the-bridge">the native bridge</a>, <code>native</code> makes browsing open the system's file dialog, with the <code>accept</code> types as its filter. The files it gives are paths on the user's disk, not bytes: they list like any other file (name, size, type) and the program reads them.</p>
+
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">form</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;import&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-file-upload</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;photos&quot;</span> <span class="tk-attr">native</span> <span class="tk-attr">multiple</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;image/*&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Photos&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-file-upload</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">form</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code"><code>upload.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+  window.ray.send(<span class="tk-string">&quot;import:&quot;</span> + JSON.stringify(upload.paths));   <span class="tk-comment">// [&quot;/Users/ada/Pictures/a.jpg&quot;, …]</span>
+});</code></pre>
+<p>The form submits those paths under <code>name</code>. Dropped and pasted files are still <code>File</code> objects (<code>upload.files</code> holds both; a chosen one is a <code>HostFile</code> with a <code>path</code>). Without the bridge, or in a browser, <code>native</code> changes nothing.</p>
+</div>
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-file-upload&gt;</code> &middot; <code>RayFileUpload</code></p>
 <p class="note">A drag that can only be refused turns the zone red before the drop; refused files fire ray-reject and are explained under the zone. Without multiple a new file replaces the current one. Uploading is the app's: attachmentFor(file) gives the row whose progress/status/error to set.</p>

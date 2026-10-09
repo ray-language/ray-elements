@@ -150,12 +150,14 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
-<li><strong>The native bridge</strong> (plan 1, milestones 1 to 4): system file dialogs with
+<li><strong>The native bridge</strong> (plan 1, done): system file dialogs with
 real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>), native
 confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>),
 the app's menu bar in the command palette (<code>native-menus</code>), and the window:
 <code>ray-app-shell</code> under a transparent title bar, window colors that follow
-the theme, and the &quot;unsaved changes&quot; mark (<code>trackEdits</code>). See below.</li>
+the theme, and the &quot;unsaved changes&quot; mark (<code>trackEdits</code>). See below, the
+&quot;In a raylang app&quot; section of each component's page, and
+<code>examples/desktop-app</code>.</li>
 </ul>
 
 <h2 id="using-the-bridge">Using the bridge</h2>
@@ -386,9 +388,12 @@ to the real bridge in the webview runner (scripted dialogs).</li>
 title bar, <code>dragRegion</code>), theme to window colors, <code>trackEdits</code>. The drag
 handle works around finding #138 (the shell's <code>data-ray-drag</code> does not see
 shadow DOM).</li>
-<li><strong>Docs and example.</strong> A &quot;raylang&quot; section in each affected component's
-docs and an <code>examples/desktop-app</code> that uses all of it, driven by <code>--check</code>
-like the other examples.</li>
+<li>✅ <strong>Docs and example.</strong> An &quot;In a raylang app&quot; section on the pages of
+file upload, path input, dialog, menu, command palette and app shell (from
+each component's <code>raylang.md</code>), and <code>examples/desktop-app</code>, which uses all
+of it: <code>ray run src/main.ray --check</code> drives it in a real <code>full_content</code>
+window with scripted dialogs (the system's dialogs and menus cannot be
+clicked by a script; try them with <code>ray run</code>).</li>
 </ol>
 
 <p>Each milestone ships on its own and keeps the components working without the

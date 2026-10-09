@@ -656,6 +656,14 @@ if (location.protocol === "file:") window.__rayServeHint();
 <details class="source" data-code-src="code/dialog.html"><summary>Code</summary>
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/dialog.html">Open the code</a></p></div></details>
+<h2 class="api-title" id="dialog-raylang">In a raylang app</h2>
+<div class="prose raylang-note"><p>With <a href="../raylang.html#using-the-bridge">the native bridge</a>, <code>confirmDialog()</code> asks with the system's modal dialog instead of a <code>ray-dialog</code>, with the same answer. A red confirmation (a destructive action) gets the warning style. <code>native: false</code> keeps the page's dialog, for a question that needs more than a sentence.</p>
+
+<pre class="code"><code><span class="tk-keyword">if</span> (<span class="tk-keyword">await</span> confirmDialog({ label: <span class="tk-string">&quot;Delete 3 builds?&quot;</span>, message: <span class="tk-string">&quot;This cannot be undone.&quot;</span>, confirmLabel: <span class="tk-string">&quot;Delete&quot;</span>, color: <span class="tk-string">&quot;red&quot;</span> })) {
+  window.ray.send(<span class="tk-string">&quot;delete:&quot;</span> + ids.join(<span class="tk-string">&quot;,&quot;</span>));
+}</code></pre>
+<p><code>ray-dialog</code> itself is always the page's: a form, a settings panel or a wizard stay in the page.</p>
+</div>
 <h2 class="api-title">API</h2>
 <p class="tag"><code>&lt;ray-dialog&gt;</code> &middot; <code>RayDialog</code></p>
 <p class="note">Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -&gt; Promise&lt;boolean&gt;; with a native host (ray-ds/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.</p>

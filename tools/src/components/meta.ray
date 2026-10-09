@@ -1,4 +1,5 @@
-// Component metadata: src/components/<dir>/component.toml (+ example.html).
+// Component metadata: src/components/<dir>/component.toml (+ example.html,
+// raylang.md).
 //
 //   [component]                  name, aliases (other names it is known by), category, summary,
 //                                files, requires, tags
@@ -81,6 +82,8 @@ pub struct Component {
     exports: [Decl],
     types: [Decl],
     example: string,
+    // raylang.md: what the component does in a raylang app (Markdown).
+    raylang: string,
 }
 
 // Every component under <root>/src/components, by category then name.
@@ -127,6 +130,10 @@ fn load_from(base: string, dir: string) -> Result<Component, string> {
     let ex = "${base}/${dir}/example.html";
     if (fs.exists(ex)) {
         c.example = fs.read_file(ex)?;
+    }
+    let rl = "${base}/${dir}/raylang.md";
+    if (fs.exists(rl)) {
+        c.raylang = fs.read_file(rl)?;
     }
     for f in c.files {
         if (!fs.exists("${base}/${dir}/${f}")) {
@@ -232,7 +239,8 @@ pub fn parse(dir: string, src: string) -> Result<Component, string> {
         elements: [],
         exports: [],
         types: [],
-        example: ""
+        example: "",
+        raylang: ""
     };
     for e in entries {
         let parts = e.key.split(".");

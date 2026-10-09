@@ -21,12 +21,14 @@ that brings the whole design system without npm.
 - **Examples.** `examples/desktop-form` (plain HTML), `examples/react-app` and
   `examples/vue-app` (made with `ray new --frontend react-ts|vue-ts`) drive the
   page in the real webview and check what reaches raylang.
-- **The native bridge** (plan 1, milestones 1 to 4): system file dialogs with
+- **The native bridge** (plan 1, done): system file dialogs with
   real paths (`ray-file-upload native`, `ray-path-input`), native
   confirmations (`confirmDialog()`), native context menus (`ray-menu native`),
   the app's menu bar in the command palette (`native-menus`), and the window:
   `ray-app-shell` under a transparent title bar, window colors that follow
-  the theme, and the "unsaved changes" mark (`trackEdits`). See below.
+  the theme, and the "unsaved changes" mark (`trackEdits`). See below, the
+  "In a raylang app" section of each component's page, and
+  `examples/desktop-app`.
 
 ## Using the bridge
 
@@ -190,9 +192,12 @@ dialogs.
    title bar, `dragRegion`), theme to window colors, `trackEdits`. The drag
    handle works around finding #138 (the shell's `data-ray-drag` does not see
    shadow DOM).
-5. **Docs and example.** A "raylang" section in each affected component's
-   docs and an `examples/desktop-app` that uses all of it, driven by `--check`
-   like the other examples.
+5. ✅ **Docs and example.** An "In a raylang app" section on the pages of
+   file upload, path input, dialog, menu, command palette and app shell (from
+   each component's `raylang.md`), and `examples/desktop-app`, which uses all
+   of it: `ray run src/main.ray --check` drives it in a real `full_content`
+   window with scripted dialogs (the system's dialogs and menus cannot be
+   clicked by a script; try them with `ray run`).
 
 Each milestone ships on its own and keeps the components working without the
 bridge.

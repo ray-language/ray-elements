@@ -185,6 +185,7 @@ tools/                 raylang project: the ray-ds CLI
 ray_ds/                raylang package: bridge.ray, the program's half of the bridge
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
+examples/desktop-app/  std/ui app using the native bridge (ray_ds/bridge)
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
 examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
 examples/extending/    app components on the extension API (+ `wrap` output)</code></pre>
@@ -377,7 +378,11 @@ adds everything. In a std/ui app, serve the directory with
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-ds/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span> <span class="tk-attr">src</span>=<span class="tk-string">&quot;ray-ds/index.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <p>See <code>examples/desktop-form</code> (<code>ray run src/main.ray --check</code> fills and submits
-its form by script and checks what reaches the raylang side).</p>
+its form by script and checks what reaches the raylang side), and
+<code>examples/desktop-app</code> for the native bridge: a folder browser under a
+transparent title bar, with the system dialogs, a native context menu and the
+menu bar in the command palette (<code>cd examples/desktop-app &amp;&amp; ray run</code>, or
+<code>ray run src/main.ray --check</code> to drive it with scripted dialogs).</p>
 
 <h2 id="react-and-vue">React and Vue</h2>
 <p><code>package</code> generates three npm packages from the same <code>component.toml</code> files:</p>

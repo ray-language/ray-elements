@@ -7,6 +7,7 @@ from site/model import Page, Group, Link, page, link;
 from site/highlight import escape;
 import site/thumbs;
 import site/highlight;
+import site/guides;
 
 // `import` lines for the given components, relative to the index file.
 pub fn index_js(cs: [Component], prefix: string) -> string {
@@ -213,10 +214,16 @@ fn component(c: Component, els: [Element], own_page: bool) -> string {
     };
     // On its own page the API gets its own heading (h1 → h2 → h3).
     let api_head = if (own_page) { "<h2 class=\"api-title\">API</h2>\n" } else { "" };
+    let raylang = if (c.raylang == "") {
+        ""
+    } else {
+        let h = if (own_page) { "h2" } else { "h3" };
+        "<${h} class=\"api-title\" id=\"${c.dir}-raylang\">In a raylang app</${h}>\n<div class=\"prose raylang-note\">${guides.fragment(c.raylang, "../")}</div>\n"
+    };
     `<section id="${c.dir}" class="component">
 ${head}
 ${example}
-${api_head}${join(api, "\n")}
+${raylang}${api_head}${join(api, "\n")}
 </section>`
 }
 
