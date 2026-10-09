@@ -292,10 +292,23 @@ export interface FileFilter {
 /** What the program around the page can do natively; components use it when it is there. */
 export interface Host {
   name: string;
-  can(op: "pick_files" | "pick_path" | "confirm" | (string & {})): boolean;
+  can(op: "pick_files" | "pick_path" | "confirm" | "menu_items" | "run_menu" | "popup_menu" | (string & {})): boolean;
   pickFiles?(options?: { title?: string; multiple?: boolean; directory?: string; filters?: FileFilter[] }): Promise<HostFile[]>;
   pickPath?(options?: { mode?: "open" | "folder" | "save"; title?: string; directory?: string; suggested?: string; filters?: FileFilter[] }): Promise<string | null>;
+  menuItems?(): Promise<HostMenuItem[]>;
+  runMenu?(tag: string): Promise<true>;
+  popupMenu?(items: { title?: string; enabled?: boolean; checked?: boolean; separator?: boolean }[]): Promise<number | null>;
   confirm?(options?: { title?: string; message?: string; confirmLabel?: string; cancelLabel?: string; style?: "" | "info" | "warning" | "error" }): Promise<boolean>;
+}
+/** An item of the app's native menu bar, as a host lists it. */
+export interface HostMenuItem {
+  menu: string;
+  tag: string;
+  title: string;
+  /** A chord such as "cmd+shift+s" (cmd: ⌘ on macOS, Ctrl elsewhere); "" for none. */
+  shortcut: string;
+  enabled: boolean;
+  checked: boolean;
 }
 export declare function setHost(host: Host | null): void;
 export declare function getHost(): Host | null;
@@ -1414,7 +1427,7 @@ export declare class RayTabPanel extends RayElement {
 
 // --- Command palette (command-palette)
 /** An action of ray-command-palette. */
-export type CommandAction = { id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; disabled?: boolean; onSelect?: (action: CommandAction) => void };
+export type CommandAction = { id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void };
 /** How well an action matches a query (0 = not at all). */
 export declare function score(action: CommandAction, query: string): number;
 /** <ray-command-palette> Running an action fires ray-select and calls its onSelect. The best matches come first, grouped. */
@@ -1437,6 +1450,8 @@ export declare class RayCommandPalette extends RayElement {
   label: string;
   /** No keyboard hint at the bottom. */
   hideHint: boolean | undefined;
+  /** With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event. */
+  nativeMenus: boolean | undefined;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur: string | undefined;
   /** Opens it. */
@@ -1562,6 +1577,10 @@ export declare class RayMenu extends Floating {
   context: boolean | undefined;
   /** Choosing an item does not close the menu. */
   keepOpen: boolean | undefined;
+  /** With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
+  native: boolean | undefined;
+  /** Opens the items as the system's context menu (needs a native host); resolves to the chosen item, or null. */
+  popupNative(): Promise<RayMenuItem | null>;
   /** Opens it. */
   show(): void;
   /** Closes it. */

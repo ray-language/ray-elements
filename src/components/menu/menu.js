@@ -4,11 +4,17 @@
 //
 // Choosing an item fires `ray-select` ({ value, item }) on the menu and
 // closes it (unless keep-open).
+//
+// With `native` and a native host that offers "popup_menu" (core/host.js; a
+// std/ui window with core/raylang.js), it opens as the system's context menu
+// at the pointer instead: its items and dividers (not labels nor nested
+// menus), with the same ray-select.
 
 import { RayElement, css, define } from "../../core/core.js";
 import { Floating, floatingStyles } from "../../core/floating.js";
 import { applyColor } from "../../core/styles.js";
 import { pointRect } from "../../core/position.js";
+import { getHost, hostCan } from "../../core/host.js";
 
 const menuStyles = css`
   .panel { min-width: 12rem; padding: var(--ray-space-1); }
@@ -22,6 +28,7 @@ export class RayMenu extends Floating {
     offset: { type: Number, default: 4 },
     context: { type: Boolean, reflect: true },
     keepOpen: { type: Boolean, reflect: true },
+    native: { type: Boolean, reflect: true },
   };
   static styles = [floatingStyles, menuStyles];
   static haspopup = "menu";
@@ -57,6 +64,10 @@ export class RayMenu extends Floating {
     if (this.context) {
       t.addEventListener("contextmenu", (e) => {
         e.preventDefault();
+        if (this._native()) {
+          this.popupNative();
+          return;
+        }
         this._point = pointRect(e.clientX, e.clientY);
         this._focusOnOpen = "first";
         const openNow = () => {
@@ -74,6 +85,10 @@ export class RayMenu extends Floating {
       return;
     }
     t.addEventListener("click", () => {
+      if (this._native()) {
+        this.popupNative();
+        return;
+      }
       if (!this.open && this.justClosed()) return;
       this._focusOnOpen = "first";
       this.toggle();
@@ -86,6 +101,27 @@ export class RayMenu extends Floating {
         else this.open = true;
       }
     });
+  }
+
+  _native() {
+    return Boolean(this.native) && hostCan("popup_menu");
+  }
+
+  /**
+   * Opens the items as the system's context menu at the pointer (needs a
+   * native host); resolves to the chosen item, or null when dismissed.
+   */
+  async popupNative() {
+    if (!hostCan("popup_menu")) return null;
+    const entries = [...this.querySelectorAll("ray-menu-item, ray-menu-divider")].filter((el) => el.closest("ray-menu") === this);
+    const items = entries.map((el) => (el.localName === "ray-menu-divider"
+      ? { separator: true }
+      : { title: itemLabel(el), enabled: !el.disabled }));
+    const index = await getHost().popupMenu(items);
+    const item = index === null || index === undefined ? null : entries[index];
+    if (!item || item.localName !== "ray-menu-item") return null;
+    this._choose(item);
+    return item;
   }
 
   anchorRect() {
@@ -160,6 +196,16 @@ export class RayMenu extends Floating {
     this.emit("ray-select", { value: item.value ?? item.textContent.trim(), item });
     if (!this.keepOpen) this.open = false;
   }
+}
+
+// The text of an item without its left and right sections (icon, shortcut).
+function itemLabel(item) {
+  return [...item.childNodes]
+    .filter((n) => n.nodeType === Node.TEXT_NODE || (n.nodeType === Node.ELEMENT_NODE && !n.slot))
+    .map((n) => n.textContent)
+    .join("")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 const itemStyles = css`

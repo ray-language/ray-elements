@@ -180,8 +180,8 @@ export const RayTabPanel = createComponent("RayTabPanel", "ray-tab-panel", {
   booleans: [],
 });
 export const RayCommandPalette = createComponent("RayCommandPalette", "ray-command-palette", {
-  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "overlayBlur"],
-  booleans: ["open", "hideHint"],
+  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "nativeMenus", "overlayBlur"],
+  booleans: ["open", "hideHint", "nativeMenus"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayDialog = createComponent("RayDialog", "ray-dialog", {
@@ -195,8 +195,8 @@ export const RayDrawer = createComponent("RayDrawer", "ray-drawer", {
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayMenu = createComponent("RayMenu", "ray-menu", {
-  properties: ["open", "placement", "context", "keepOpen", "offset"],
-  booleans: ["open", "context", "keepOpen"],
+  properties: ["open", "placement", "context", "keepOpen", "native", "offset"],
+  booleans: ["open", "context", "keepOpen", "native"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayMenuItem = createComponent("RayMenuItem", "ray-menu-item", {

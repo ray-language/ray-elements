@@ -198,7 +198,7 @@ export const RayTabPanel = createComponent("ray-tab-panel", {
 });
 export const RayCommandPalette = createComponent("ray-command-palette", {
   displayName: "RayCommandPalette",
-  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "overlayBlur"],
+  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "nativeMenus", "overlayBlur"],
   events: { onRaySelect: "ray-select", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
 export const RayDialog = createComponent("ray-dialog", {
@@ -213,7 +213,7 @@ export const RayDrawer = createComponent("ray-drawer", {
 });
 export const RayMenu = createComponent("ray-menu", {
   displayName: "RayMenu",
-  properties: ["open", "placement", "context", "keepOpen", "offset"],
+  properties: ["open", "placement", "context", "keepOpen", "native", "offset"],
   events: { onRaySelect: "ray-select", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
 export const RayMenuItem = createComponent("ray-menu-item", {

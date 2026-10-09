@@ -38,6 +38,17 @@ async function connect(ray, timeout) {
     return null;
   }
   const ops = new Set(hello?.ops ?? []);
+  // Context menus: the choice comes back as a "ray-ds:menu" event pushed by
+  // the program ({ id, index }); a dismissed menu sends nothing, so opening
+  // the next one settles the previous with null.
+  let popups = 0;
+  let pending = null;
+  document.addEventListener("ray-ds:menu", (e) => {
+    if (pending && e.detail?.id === pending.id) {
+      pending.resolve(e.detail.index);
+      pending = null;
+    }
+  });
   const host = {
     name: "raylang",
     platform: hello.platform ?? "",
@@ -49,6 +60,24 @@ async function connect(ray, timeout) {
     },
     async pickPath({ mode = "open", title = "", directory = "", suggested = "", filters = [] } = {}) {
       return (await call("pick_path", { mode, title, directory, suggested, filters })) ?? null;
+    },
+    menuItems() {
+      return call("menu_items");
+    },
+    runMenu(tag) {
+      return call("run_menu", { tag });
+    },
+    async popupMenu(items) {
+      pending?.resolve(null);
+      const id = ++popups;
+      const chosen = new Promise((resolve) => { pending = { id, resolve }; });
+      try {
+        await call("popup_menu", { id, items });
+      } catch (e) {
+        if (pending?.id === id) pending = null;
+        throw e;
+      }
+      return chosen;
     },
     async confirm({ title = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", style = "" } = {}) {
       return Boolean(await call("confirm", { title, message, confirmLabel, cancelLabel, style }));

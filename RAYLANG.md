@@ -21,9 +21,10 @@ that brings the whole design system without npm.
 - **Examples.** `examples/desktop-form` (plain HTML), `examples/react-app` and
   `examples/vue-app` (made with `ray new --frontend react-ts|vue-ts`) drive the
   page in the real webview and check what reaches raylang.
-- **The native bridge** (plan 1, milestones 1 and 2): system file dialogs with
-  real paths (`ray-file-upload native`, `ray-path-input`) and native
-  confirmations (`confirmDialog()`). See below.
+- **The native bridge** (plan 1, milestones 1 to 3): system file dialogs with
+  real paths (`ray-file-upload native`, `ray-path-input`), native
+  confirmations (`confirmDialog()`), native context menus (`ray-menu native`)
+  and the app's menu bar in the command palette (`native-menus`). See below.
 
 ## Using the bridge
 
@@ -59,7 +60,34 @@ await enableRaylang();   // the host, or null in a browser
 type and `path`), gives their paths in `paths` and submits the paths with its
 form; drop and paste still give `File`s. `ray-path-input` shows Browse… only
 with the host. `confirmDialog()` asks with the system dialog unless
-`native: false`. In a browser all three behave as before.
+`native: false`. In a browser all of them behave as before.
+
+For menus, keep one `Native` for the whole loop, declare the menus through it
+and use `route()`, which turns an item run from the palette into the same
+`"menu"` event the menu bar sends:
+
+```ray
+let n = bridge.system();
+bridge.menu(n, "File", [ui.item("new", "New", "cmd+n"), ui.item("open", "Open…", "cmd+o")])?;
+for raw in ui.events() {
+    let e = match (bridge.route(n, raw)) {
+        Option.Some(e) => e,      // for the app
+        Option.None => continue,  // answered by the bridge
+    };
+    if (e.kind == "menu") { … }   // from the menu bar or from the palette
+}
+```
+
+```html
+<ray-command-palette native-menus></ray-command-palette>
+<ray-menu native context>
+  <div slot="trigger">…</div>
+  <ray-menu-item value="rename">Rename</ray-menu-item>
+</ray-menu>
+```
+
+`bridge.menu_at`, `replace_menu` and `set_menu_item` keep the record up to
+date the same way (`bridge.record` records a menu without touching the bar).
 
 ## Principles
 
@@ -109,6 +137,9 @@ dialogs.
 | `pick_files` | `title`, `directory`, `multiple`, `filters` | `[{path, name, size}]`, `[]` if cancelled |
 | `pick_path` | `mode` (`open`, `folder`, `save`), `title`, `directory`, `suggested`, `filters` | the path, or `null` |
 | `confirm` | `title`, `message`, `confirmLabel`, `cancelLabel`, `style` | `true` / `false` |
+| `menu_items` | | `[{menu, tag, title, shortcut, enabled, checked}]` (no separators, no `role:*`) |
+| `run_menu` | `tag` | `true`; `route()` gives the app the `"menu"` event |
+| `popup_menu` | `id`, `items` (`title`, `enabled`, `checked`, `separator`) | `true` once shown; the choice comes later as the page event `ray-ds:menu` (`{id, index}`), nothing when dismissed |
 
 ### What the components get
 
@@ -132,8 +163,9 @@ dialogs.
    to the real bridge in the webview runner (scripted dialogs).
 2. ✅ **Files.** `ray-file-upload native` and the new `ray-path-input`
    (`pick_path`), with their React/Vue wrappers and types.
-3. **Menus.** `bridge.menu`, the palette listing native items, `ray-menu
-   native`.
+3. ✅ **Menus.** `bridge.menu` (and `menu_at`, `replace_menu`,
+   `set_menu_item`), `route()`, the palette listing native items
+   (`native-menus`), `ray-menu native`.
 4. **Window.** `full_content` support in the app header and sidebar, theme to
    window colors, `edited` tracking.
 5. **Docs and example.** A "raylang" section in each affected component's

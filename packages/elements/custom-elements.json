@@ -10414,6 +10414,14 @@
               "fieldName": "hideHint"
             },
             {
+              "name": "native-menus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+              "fieldName": "nativeMenus"
+            },
+            {
               "name": "overlay-blur",
               "type": {
                 "text": "string"
@@ -10514,6 +10522,16 @@
               },
               "description": "No keyboard hint at the bottom.",
               "attribute": "hide-hint",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "nativeMenus",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+              "attribute": "native-menus",
               "reflects": true
             },
             {
@@ -11266,6 +11284,14 @@
               },
               "description": "Choosing an item does not close the menu.",
               "fieldName": "keepOpen"
+            },
+            {
+              "name": "native",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "fieldName": "native"
             }
           ],
           "members": [
@@ -11309,6 +11335,21 @@
               "description": "Choosing an item does not close the menu.",
               "attribute": "keep-open",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "native",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "attribute": "native",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "popupNative",
+              "description": "Opens the items as the system's context menu (needs a native host); resolves to the chosen item, or null."
             },
             {
               "kind": "method",

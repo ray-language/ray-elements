@@ -1338,6 +1338,8 @@ export interface RayCommandPaletteProps {
   label?: string;
   /** No keyboard hint at the bottom. */
   hideHint?: boolean;
+  /** With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event. */
+  nativeMenus?: boolean;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur?: string;
   /** v-model: the element's `open`. */
@@ -1430,6 +1432,8 @@ export interface RayMenuProps {
   context?: boolean;
   /** Choosing an item does not close the menu. */
   keepOpen?: boolean;
+  /** With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
+  native?: boolean;
   /** Gap to the anchor in px. */
   offset?: number;
   /** v-model: the element's `open`. */

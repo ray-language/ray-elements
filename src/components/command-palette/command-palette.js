@@ -10,9 +10,15 @@
 //
 // Running an action fires ray-select ({ action }) and calls action.onSelect.
 // `hotkey` ("mod+k" by default; mod = ⌘ on macOS, Ctrl elsewhere) toggles it.
+//
+// With `native-menus` and a native host that offers "menu_items" (a std/ui
+// window with core/raylang.js), it also lists the app's menu bar, grouped by
+// menu, with their shortcuts; running one gives the program the same event
+// as the menu (action.native is true, action.id is "menu:<tag>").
 
 import { RayElement, css, define, getIcon } from "../../core/core.js";
-import { matchesHotkey } from "../../core/hotkey.js";
+import { matchesHotkey, formatHotkey } from "../../core/hotkey.js";
+import { getHost, hostCan } from "../../core/host.js";
 import { play, playAll } from "../../core/motion.js";
 import { overlayStyles, applyOverlayBlur } from "../../core/styles.js";
 
@@ -182,6 +188,7 @@ export class RayCommandPalette extends RayElement {
     label: { type: String, default: "Command palette" },
     hideHint: { type: Boolean, reflect: true },
     overlayBlur: { type: String },
+    nativeMenus: { type: Boolean, attribute: "native-menus", reflect: true },
   };
   static styles = [overlayStyles, styles];
   static template = `
@@ -200,6 +207,7 @@ export class RayCommandPalette extends RayElement {
     this.list = this.$(".list");
     this._active = 0;
     this._shown = [];
+    this._menuActions = [];
     this.input.addEventListener("input", () => {
       this.commitProperty("query", this.input.value);
       this._active = 0;
@@ -254,7 +262,7 @@ export class RayCommandPalette extends RayElement {
 
   /** The actions matching the current query, best first, grouped. */
   get results() {
-    const all = Array.isArray(this.actions) ? this.actions : [];
+    const all = (Array.isArray(this.actions) ? this.actions : []).concat(this._menuActions);
     const scored = all
       .map((action, i) => ({ action, i, s: score(action, this.query ?? "") }))
       .filter((x) => x.s > 0);
@@ -285,11 +293,42 @@ export class RayCommandPalette extends RayElement {
         this.dialog.showModal();
         this.input.focus();
         this.input.select();
+        this._loadMenus();
         this.emit("ray-open");
       } else if (!this.open && this.dialog.open && !this._exit) {
         this._leave();
       }
     }
+  }
+
+  /** Refreshes the native menu items (with `native-menus`); resolves to them. */
+  async _loadMenus() {
+    if (!this.nativeMenus || !hostCan("menu_items")) {
+      if (this._menuActions.length) {
+        this._menuActions = [];
+        this.requestUpdate();
+      }
+      return [];
+    }
+    const host = getHost();
+    let items = [];
+    try {
+      items = await host.menuItems();
+    } catch {
+      items = [];
+    }
+    this._menuActions = items.map((m) => ({
+      id: `menu:${m.tag}`,
+      label: m.title,
+      group: m.menu,
+      shortcut: m.shortcut ? formatHotkey(m.shortcut.replace(/\bcmd\b/i, "mod")) : "",
+      disabled: !m.enabled,
+      native: true,
+      tag: m.tag,
+      onSelect: () => host.runMenu(m.tag),
+    }));
+    this.requestUpdate();
+    return this._menuActions;
   }
 
   // Animate out (panel and backdrop), then really close.

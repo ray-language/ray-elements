@@ -67,8 +67,10 @@ window.ray.send("ray-test:" + JSON.stringify(results));
 
 // The dialogs of the tests: the file dialog "chooses" the comma-separated
 // paths of its title (relative to the ray-ds root, so their sizes are real),
-// the path dialog describes what it was asked, and a confirmation says yes
-// when its title starts with "yes".
+// the path dialog describes what it was asked, a confirmation says yes
+// when its title starts with "yes", and a context menu "chooses" its first
+// enabled item at once. The menus File (New, Close: disabled) and View (Zoom)
+// are declared; a menu event for the app reaches the page as "ray-test:menu".
 fn scripted(root: string) -> bridge.Native {
     var n = bridge.system();
     n.pick_files = fn(o: ui.FileDialogOptions) -> Result<[string], string> {
@@ -84,6 +86,24 @@ fn scripted(root: string) -> bridge.Native {
         }
         Result.Ok(Option.Some("${mode}:${o.directory}|${o.suggested}|${o.filters.len()}"))
     };
+    n.popup = fn(h: int, items: [ui.MenuItem]) -> Result<int, string> {
+        for it in items {
+            if (it.enabled && it.tag != "") {
+                match (bridge.popup_choice_js(it.tag)) {
+                    Option.Some(js) => {
+                        ui.eval_js(h, js)?;
+                    },
+                    Option.None => { },
+                }
+                return Result.Ok(0);
+            }
+        }
+        Result.Ok(0)
+    };
+    var close = ui.item("close", "Close window", "W");
+    close.enabled = false;
+    bridge.record(n, "File", [ui.item("new", "New document", "cmd+n"), ui.separator(), close]);
+    bridge.record(n, "View", [ui.item("zoom", "Zoom in", "cmd+=")]);
     n.confirm = fn(title: string, text: string, ok: string, cancel: string, style: string) -> Result<bool, string> {
         Result.Ok(title.starts_with("yes"))
     };
@@ -122,7 +142,15 @@ fn wait_message(h: int, prefix: string, timeout_ms: int, n: bridge.Native) -> Re
     while (time.now() < deadline) {
         match (ui.next_event_timeout(deadline - time.now())?) {
             Option.Some(e) => {
-                if (bridge.handle_with(e, n)) {
+                let e = match (bridge.route(n, e)) {
+                    Option.Some(x) => x,
+                    Option.None => continue,
+                };
+                if (e.kind == "menu") {
+                    ui.eval_js(
+                        h,
+                        "document.dispatchEvent(new CustomEvent('ray-test:menu', { detail: ${e.tag.to_json()} }))"
+                    )?;
                     continue;
                 }
                 if (e.window == h && e.kind == "message") {

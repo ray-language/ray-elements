@@ -206,3 +206,88 @@ T.test("path-input: Browse… follows the host", async (T) => {
   T.ok(!btn.hidden, "back");
   box.remove();
 });
+
+// --- menus (the runner declares File: New document ⌘N, Close window
+// (disabled); View: Zoom in ⌘=; its context menus choose the first enabled item)
+
+const menuEvent = () => new Promise((resolve) => document.addEventListener("ray-test:menu", (e) => resolve(e.detail), { once: true }));
+
+T.test("menu native: the system's context menu", async (T) => {
+  const box = await mount(`
+    <ray-menu native context>
+      <div slot="trigger" style="width: 10rem; height: 4rem">Right-click here</div>
+      <ray-menu-label>File</ray-menu-label>
+      <ray-menu-item value="lock" disabled>Lock</ray-menu-item>
+      <ray-menu-divider></ray-menu-divider>
+      <ray-menu-item value="rename"><ray-icon slot="left" name="file"></ray-icon>Rename <ray-kbd slot="right">F2</ray-kbd></ray-menu-item>
+      <ray-menu-item value="delete">Delete</ray-menu-item>
+    </ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const host = getHost();
+  const original = host.popupMenu;
+  let sent = null;
+  host.popupMenu = (items) => { sent = items; return original(items); };
+  const selected = new Promise((resolve) => menu.addEventListener("ray-select", (e) => resolve(e.detail.value), { once: true }));
+  menu.querySelector("[slot=trigger]").dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
+  T.eq(await selected, "rename", "the first enabled item, chosen in the scripted menu");
+  host.popupMenu = original;
+  T.eq(JSON.stringify(sent), JSON.stringify([{ title: "Lock", enabled: false }, { separator: true }, { title: "Rename", enabled: true }, { title: "Delete", enabled: true }]), "items and dividers, no labels, no sections");
+  T.ok(!menu.open, "the page's panel stays closed");
+  box.remove();
+});
+
+T.test("menu native: a dropdown too; a newer popup settles the older", async (T) => {
+  const box = await mount(`<ray-menu native><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const host = getHost();
+  const first = host.popupMenu.call(host, [{ title: "never chosen", enabled: false }]);
+  const item = await menu.popupNative();
+  T.eq(item?.value, "a");
+  T.eq(await first, null, "the dismissed one");
+  box.remove();
+});
+
+T.test("menu: without native, the page's menu even with a host", async (T) => {
+  const box = await mount(`<ray-menu><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  menu.querySelector("[slot=trigger]").click();
+  await T.settle();
+  T.ok(menu.open, "the ray-menu panel");
+  menu.open = false;
+  box.remove();
+});
+
+T.test("command palette native-menus: the menu bar as commands", async (T) => {
+  const box = await mount(`<ray-command-palette native-menus></ray-command-palette>`);
+  const palette = box.querySelector("ray-command-palette");
+  palette.actions = [{ id: "own", label: "Own command", group: "App" }];
+  palette.show();
+  const actions = await palette._loadMenus();
+  await T.settle();
+  T.eq(actions.map((a) => `${a.group}/${a.label}`).join(), "File/New document,File/Close window,View/Zoom in");
+  T.ok(actions[1].disabled, "a disabled menu item");
+  T.ok(actions[0].native && actions[0].id === "menu:new", "marked native");
+  T.ok(/N$/.test(actions[0].shortcut) && actions[0].shortcut.length <= 8, `shortcut ${actions[0].shortcut}`);
+  T.eq(palette.results.length, 4, "the app's own and the menu's");
+  const got = menuEvent();
+  palette.query = "new doc";
+  await T.settle();
+  palette.shadowRoot.querySelector(".option").click();
+  T.eq(await got, "new", "the program got the menu event");
+  T.ok(!palette.open, "closed");
+  let error = null;
+  try { await getHost().runMenu("close"); } catch (e) { error = e; }
+  T.ok(error && /disabled/.test(error.message), String(error));
+  box.remove();
+});
+
+T.test("command palette: without native-menus, only its actions", async (T) => {
+  const box = await mount(`<ray-command-palette></ray-command-palette>`);
+  const palette = box.querySelector("ray-command-palette");
+  palette.actions = [{ id: "own", label: "Own command" }];
+  palette.show();
+  T.eq((await palette._loadMenus()).length, 0);
+  T.eq(palette.results.length, 1);
+  palette.hide();
+  box.remove();
+});

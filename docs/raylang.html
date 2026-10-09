@@ -150,9 +150,10 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
-<li><strong>The native bridge</strong> (plan 1, milestones 1 and 2): system file dialogs with
-real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>) and native
-confirmations (<code>confirmDialog()</code>). See below.</li>
+<li><strong>The native bridge</strong> (plan 1, milestones 1 to 3): system file dialogs with
+real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>), native
+confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>)
+and the app's menu bar in the command palette (<code>native-menus</code>). See below.</li>
 </ul>
 
 <h2 id="using-the-bridge">Using the bridge</h2>
@@ -179,7 +180,28 @@ published):</p>
 type and <code>path</code>), gives their paths in <code>paths</code> and submits the paths with its
 form; drop and paste still give <code>File</code>s. <code>ray-path-input</code> shows Browse… only
 with the host. <code>confirmDialog()</code> asks with the system dialog unless
-<code>native: false</code>. In a browser all three behave as before.</p>
+<code>native: false</code>. In a browser all of them behave as before.</p>
+
+<p>For menus, keep one <code>Native</code> for the whole loop, declare the menus through it
+and use <code>route()</code>, which turns an item run from the palette into the same
+<code>&quot;menu&quot;</code> event the menu bar sends:</p>
+
+<pre class="code"><code><span class="tk-keyword">let</span> n = bridge.system();
+bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span class="tk-string">&quot;new&quot;</span>, <span class="tk-string">&quot;New&quot;</span>, <span class="tk-string">&quot;cmd+n&quot;</span>), ui.item(<span class="tk-string">&quot;open&quot;</span>, <span class="tk-string">&quot;Open…&quot;</span>, <span class="tk-string">&quot;cmd+o&quot;</span>)])?;
+<span class="tk-keyword">for</span> raw <span class="tk-keyword">in</span> ui.events() {
+    <span class="tk-keyword">let</span> e = <span class="tk-keyword">match</span> (bridge.route(n, raw)) {
+        Option.Some(e) =&gt; e,      <span class="tk-comment">// for the app</span>
+        Option.None =&gt; <span class="tk-keyword">continue</span>,  <span class="tk-comment">// answered by the bridge</span>
+    };
+    <span class="tk-keyword">if</span> (e.kind == <span class="tk-string">&quot;menu&quot;</span>) { … }   <span class="tk-comment">// from the menu bar or from the palette</span>
+}</code></pre>
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-command-palette</span> <span class="tk-attr">native-menus</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-command-palette</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-menu</span> <span class="tk-attr">native</span> <span class="tk-attr">context</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span><span class="tk-punctuation">&gt;</span>…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-menu-item</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;rename&quot;</span><span class="tk-punctuation">&gt;</span>Rename<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu-item</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p><code>bridge.menu_at</code>, <code>replace_menu</code> and <code>set_menu_item</code> keep the record up to
+date the same way (<code>bridge.record</code> records a menu without touching the bar).</p>
 
 <h2 id="principles">Principles</h2>
 <ul>
@@ -248,6 +270,21 @@ dialogs.</p>
 <td><code>confirm</code></td>
 <td><code>title</code>, <code>message</code>, <code>confirmLabel</code>, <code>cancelLabel</code>, <code>style</code></td>
 <td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>menu_items</code></td>
+<td></td>
+<td><code>[{menu, tag, title, shortcut, enabled, checked}]</code> (no separators, no <code>role:*</code>)</td>
+</tr>
+<tr>
+<td><code>run_menu</code></td>
+<td><code>tag</code></td>
+<td><code>true</code>; <code>route()</code> gives the app the <code>&quot;menu&quot;</code> event</td>
+</tr>
+<tr>
+<td><code>popup_menu</code></td>
+<td><code>id</code>, <code>items</code> (<code>title</code>, <code>enabled</code>, <code>checked</code>, <code>separator</code>)</td>
+<td><code>true</code> once shown; the choice comes later as the page event <code>ray-ds:menu</code> (<code>{id, index}</code>), nothing when dismissed</td>
 </tr>
 </tbody>
 </table>
@@ -318,7 +355,9 @@ tests of <code>bridge.answer</code>, and <code>tests/bridge.test.js</code>, wher
 to the real bridge in the webview runner (scripted dialogs).</li>
 <li>✅ <strong>Files.</strong> <code>ray-file-upload native</code> and the new <code>ray-path-input</code>
 (<code>pick_path</code>), with their React/Vue wrappers and types.</li>
-<li><strong>Menus.</strong> <code>bridge.menu</code>, the palette listing native items, <code>ray-menu native</code>.</li>
+<li>✅ <strong>Menus.</strong> <code>bridge.menu</code> (and <code>menu_at</code>, <code>replace_menu</code>,
+<code>set_menu_item</code>), <code>route()</code>, the palette listing native items
+(<code>native-menus</code>), <code>ray-menu native</code>.</li>
 <li><strong>Window.</strong> <code>full_content</code> support in the app header and sidebar, theme to
 window colors, <code>edited</code> tracking.</li>
 <li><strong>Docs and example.</strong> A &quot;raylang&quot; section in each affected component's

@@ -56,7 +56,10 @@ The first public release.
   never the bridge, and keep their web behavior without one.
 - With it: `ray-file-upload native` opens the system file dialog and gives
   paths (`paths`), `ray-path-input` gets a Browse… button for a file, a
-  folder or a save target, and `confirmDialog()` asks with the system dialog.
+  folder or a save target, `confirmDialog()` asks with the system dialog,
+  `ray-menu native` opens as the system's context menu, and
+  `ray-command-palette native-menus` lists and runs the app's menu bar
+  (declared with `bridge.menu`; `bridge.route` gives the app the menu event).
 
 ### Docs site
 

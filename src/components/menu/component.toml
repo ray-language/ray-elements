@@ -33,6 +33,11 @@ type = "boolean"
 reflect = true
 description = "Choosing an item does not close the menu."
 
+[ray-menu.properties.native]
+type = "boolean"
+reflect = true
+description = "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select."
+
 [ray-menu.events.ray-select]
 description = "An item was chosen; detail: { value, item }."
 detail = "{ value: string; item: RayMenuItem }"
@@ -93,6 +98,10 @@ extends = "RayElement"
 [ray-menu.model]
 property = "open"
 events = ["ray-open", "ray-close"]
+
+[ray-menu.members.popupNative]
+ts = "popupNative(): Promise<RayMenuItem | null>"
+description = "Opens the items as the system's context menu (needs a native host); resolves to the chosen item, or null."
 
 [ray-menu.members.show]
 ts = "show(): void"

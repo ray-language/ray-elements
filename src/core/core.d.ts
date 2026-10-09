@@ -290,10 +290,23 @@ export interface FileFilter {
 /** What the program around the page can do natively; components use it when it is there. */
 export interface Host {
   name: string;
-  can(op: "pick_files" | "pick_path" | "confirm" | (string & {})): boolean;
+  can(op: "pick_files" | "pick_path" | "confirm" | "menu_items" | "run_menu" | "popup_menu" | (string & {})): boolean;
   pickFiles?(options?: { title?: string; multiple?: boolean; directory?: string; filters?: FileFilter[] }): Promise<HostFile[]>;
   pickPath?(options?: { mode?: "open" | "folder" | "save"; title?: string; directory?: string; suggested?: string; filters?: FileFilter[] }): Promise<string | null>;
+  menuItems?(): Promise<HostMenuItem[]>;
+  runMenu?(tag: string): Promise<true>;
+  popupMenu?(items: { title?: string; enabled?: boolean; checked?: boolean; separator?: boolean }[]): Promise<number | null>;
   confirm?(options?: { title?: string; message?: string; confirmLabel?: string; cancelLabel?: string; style?: "" | "info" | "warning" | "error" }): Promise<boolean>;
+}
+/** An item of the app's native menu bar, as a host lists it. */
+export interface HostMenuItem {
+  menu: string;
+  tag: string;
+  title: string;
+  /** A chord such as "cmd+shift+s" (cmd: ⌘ on macOS, Ctrl elsewhere); "" for none. */
+  shortcut: string;
+  enabled: boolean;
+  checked: boolean;
 }
 export declare function setHost(host: Host | null): void;
 export declare function getHost(): Host | null;

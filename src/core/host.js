@@ -12,6 +12,13 @@
 //     -> Promise<string|null>  (mode: "open", "folder" or "save"; null = cancelled)
 //   confirm({ title, message, confirmLabel, cancelLabel, style })
 //     -> Promise<boolean>      (style: "", "info", "warning" or "error")
+//   menuItems()
+//     -> Promise<[{ menu, tag, title, shortcut, enabled, checked }]>  (the app's menu bar)
+//   runMenu(tag)
+//     -> Promise<true>         (the program gets the item as if chosen in the menu bar)
+//   popupMenu([{ title, enabled, checked, separator }])
+//     -> Promise<number|null>  (a native context menu at the pointer: the index
+//                               chosen, null when dismissed or replaced)
 
 let current = null;
 const listeners = new Set();
