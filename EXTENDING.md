@@ -163,7 +163,7 @@ Describe each component in a `component.toml` (same format as ray-ds's, any
 `category`, `extends` naming its parent class) next to its JS, then:
 
 ```sh
-ray run tools/src/main.ray wrap --components ../my-app/src/components --out ../my-app/src/ray-wrappers
+tools/run.sh wrap --components ../my-app/src/components --out ../my-app/src/ray-wrappers
 ```
 
 It writes `index.js` (registers your components, re-exports ray-ds),

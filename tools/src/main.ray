@@ -1,21 +1,23 @@
-// ray-ds tools. Run from ray-ds/ (or ray-ds/tools/):
+// ray-ds tools. Run them with tools/run.sh from anywhere (or `ray run
+// src/main.ray …` inside tools/, whose ray.toml brings the ray_ds package):
 //
-//   ray run tools/src/main.ray build                 tokens + docs + package
-//   ray run tools/src/main.ray tokens [--check]      tokens.toml -> dist/tokens.css, dist/tokens.json, docs/foundations.html
-//   ray run tools/src/main.ray docs                  component.toml + *.md -> docs/ (site), src/index.js
-//   ray run tools/src/main.ray add NAME... --into DIR [--all] [--overwrite]
-//   ray run tools/src/main.ray package               packages/{elements,react,vue} (npm)
-//   ray run tools/src/main.ray wrap --components DIR --out DIR
+//   tools/run.sh build                 tokens + docs + package
+//   tools/run.sh tokens [--check]      tokens.toml -> dist/tokens.css, dist/tokens.json, docs/foundations.html
+//   tools/run.sh docs                  component.toml + *.md -> docs/ (site), src/index.js
+//   tools/run.sh add NAME... --into DIR [--all] [--overwrite]
+//   tools/run.sh package               packages/{elements,react,vue} (npm)
+//   tools/run.sh wrap --components DIR --out DIR
 //                                                    types, manifest and React/Vue wrappers for an app's components
-//   ray run tools/src/main.ray webtest [FILTER]      tests/*.test.js in a std/ui webview
-//   ray run tools/src/main.ray site [--out DIR] [--base PATH]
+//   tools/run.sh webtest [FILTER]      tests/*.test.js in a std/ui webview
+//   tools/run.sh site [--out DIR] [--base PATH]
 //                                                    the site ready to publish (default dist/site/, base /)
 //
 // Every command takes --root DIR (the ray-ds directory); by default the
-// current directory or its parent, whichever holds tokens.toml.
+// current directory or its parent, whichever holds tokens.toml. Relative
+// paths in --root, --into, --components and wrap's --out are the caller's:
+// tools/run.sh passes its directory in RAY_DS_CWD.
 
 import std/fs;
-import std/process;
 import tokens/model;
 import tokens/refs;
 import tokens/css;
@@ -41,7 +43,7 @@ import integrations/elements;
 import integrations/wrappers;
 import integrations/manifest;
 
-const USAGE: string = `usage: ray run tools/src/main.ray <command> [--root DIR] …
+const USAGE: string = `usage: tools/run.sh <command> [--root DIR] …
   build                                tokens + docs + package
   tokens [--check]                     generate dist/tokens.* and docs/foundations.html (--check: validate only)
   docs                                 generate the docs site (docs/) and src/index.js
@@ -51,9 +53,7 @@ const USAGE: string = `usage: ray run tools/src/main.ray <command> [--root DIR] 
   wrap --components DIR --out DIR      types, manifest and React/Vue wrappers for an app's own components
   webtest [FILTER]                     run tests/*.test.js in a std/ui webview
   site [--out DIR] [--base PATH]       the site ready to publish: every page and asset in DIR (default
-                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)
-  raylang-package --out DIR            the raylang package as its own repository holds it (a checkout of
-                                       github.com/ray-language/ray_ds): ray_ds/ at the root, LICENSE, README`;
+                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)`;
 
 struct Opts {
     root: string,
@@ -81,7 +81,6 @@ fn main() -> int {
             "wrap" => cmd_wrap(o),
             "webtest" => cmd_webtest(o),
             "site" => cmd_site(o),
-            "raylang-package" => cmd_raylang_package(o),
             other => Result.Err("unknown command '${other}'\n${USAGE}"),
         }
     });
@@ -104,11 +103,11 @@ fn parse_opts(a: [string]) -> Result<Opts, string> {
             if (x == "--base") {
                 o.base = a[i + 1];
             } else if (x == "--root") {
-                o.root = a[i + 1];
+                o.root = from_caller(a[i + 1]);
             } else if (x == "--into") {
-                o.into = a[i + 1];
+                o.into = from_caller(a[i + 1]);
             } else if (x == "--components") {
-                o.components = a[i + 1];
+                o.components = from_caller(a[i + 1]);
             } else {
                 o.out = a[i + 1];
             }
@@ -124,6 +123,15 @@ fn parse_opts(a: [string]) -> Result<Opts, string> {
         o.root = find_root()?;
     }
     Result.Ok(o)
+}
+
+// A path the caller wrote, relative to where they are (RAY_DS_CWD, set by
+// tools/run.sh, which runs the tools from tools/).
+fn from_caller(p: string) -> string {
+    match (env("RAY_DS_CWD")) {
+        Option.Some(cwd) if (cwd != "" && !p.starts_with("/")) => "${cwd}/${p}",
+        _ => p,
+    }
 }
 
 fn only_flags(o: Opts, allowed: [string]) -> Result<int, string> {
@@ -149,25 +157,6 @@ fn cmd_package(o: Opts) -> Result<int, string> {
     print("package: ${written.len()} files in packages/ (elements, react, vue)");
     let carried = raylang.run(o.root, package.info(o.root)?.version)?;
     print("package: ray_ds/assets.ray carries ${carried} files (the raylang package)");
-    vendor_ray_ds(o.root)
-}
-
-// The tools use the raylang package ray_ds (webtest answers the bridge), but
-// `ray run tools/src/main.ray` from the root does not read tools/ray.toml, so
-// a path dependency would not resolve: its modules are copied to
-// tools/src/ray_ds/, where the import finds them from any directory.
-fn vendor_ray_ds(root: string) -> Result<int, string> {
-    let into = "tools/src/ray_ds";
-    if (fs.exists("${root}/${into}")) {
-        fs.remove_all("${root}/${into}")?;
-    }
-    for f in sort(fs.list_dir("${root}/ray_ds")?) {
-        // assets.ray is for apps: the tools only use the bridge.
-        if (f.ends_with(".ray") && f != "assets.ray") {
-            let note = "// Generated by ray-ds tools from ray_ds/${f}. Do not edit: change that file and run build.\n\n";
-            write(root, "${into}/${f}", note + fs.read_file("${root}/ray_ds/${f}")?)?;
-        }
-    }
     Result.Ok(0)
 }
 
@@ -327,6 +316,8 @@ fn cmd_wrap(o: Opts) -> Result<int, string> {
     if (o.components == "" || o.out == "") {
         return Result.Err("wrap: --components DIR and --out DIR are required\n${USAGE}");
     }
+    // wrap's --out is the caller's path (site's is inside the ray-ds directory).
+    o.out = from_caller(o.out);
     let cs = meta.load_dir(o.components)?;
     if (cs.len() == 0) {
         return Result.Err("wrap: no */component.toml under ${o.components}");
@@ -416,23 +407,6 @@ fn cmd_site(o: Opts) -> Result<int, string> {
     let rep = publish.run(o.root, out, base)?;
     let kb = rep.size / 1024;
     print("site: ${rep.files} files, ${kb} KB in ${out}/ (base ${base})");
-    Result.Ok(0)
-}
-
-fn cmd_raylang_package(o: Opts) -> Result<int, string> {
-    only_flags(o, [])?;
-    if (o.out == "") {
-        return Result.Err("raylang-package needs --out DIR (a checkout of the package's repository)");
-    }
-    // The package comes from what build writes: build first.
-    cmd_build(Opts { root: o.root, into: "", components: "", out: "", base: "", flags: [], rest: [] })?;
-    let version = package.info(o.root)?.version;
-    let commit = match (process.cmd("git", ["rev-parse", "--short", "HEAD"]).dir(o.root).run()) {
-        Result.Ok(r) => from_utf8(r.stdout).unwrap_or("").trim(),
-        Result.Err(_) => "",
-    };
-    let written = raylang.export(o.root, o.out, version, commit)?;
-    print("raylang-package: ray_ds ${version} -> ${o.out} (${join(written, ", ")})");
     Result.Ok(0)
 }
 

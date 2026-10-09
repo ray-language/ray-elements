@@ -129,18 +129,18 @@ is inserted as HTML.
 
 ## Commands
 
-Run from `ray-ds/` (or `ray-ds/tools/`):
+From anywhere (`tools/run.sh` runs them from `tools/`; paths stay yours):
 
 ```sh
-ray run tools/src/main.ray build                 # tokens + docs + package
-ray run tools/src/main.ray tokens [--check]      # tokens.toml -> dist/tokens.*, docs/foundations.html
-ray run tools/src/main.ray docs                  # component.toml + *.md -> docs/ (site), src/index.js
-ray run tools/src/main.ray add button input --into ../my-app/assets/ray-ds
-ray run tools/src/main.ray package               # packages/{elements,react,vue}
-ray run tools/src/main.ray site --base /ray-ds/  # build, then the site ready to publish in dist/site/
-ray run tools/src/main.ray wrap --components DIR --out DIR   # types + wrappers for an app's components
-ray run tools/src/main.ray webtest [FILTER]      # tests/*.test.js in a std/ui webview
-(cd tools && ray test)                           # unit tests of the tools
+tools/run.sh build                 # tokens + docs + package
+tools/run.sh tokens [--check]      # tokens.toml -> dist/tokens.*, docs/foundations.html
+tools/run.sh docs                  # component.toml + *.md -> docs/ (site), src/index.js
+tools/run.sh add button input --into ../my-app/assets/ray-ds
+tools/run.sh package               # packages/{elements,react,vue}
+tools/run.sh site --base /ray-ds/  # build, then the site ready to publish in dist/site/
+tools/run.sh wrap --components DIR --out DIR   # types + wrappers for an app's components
+tools/run.sh webtest [FILTER]      # tests/*.test.js in a std/ui webview
+(cd tools && ray test)             # unit tests of the tools
 ```
 
 ### Brand

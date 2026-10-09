@@ -30,11 +30,10 @@
 import std/fs;
 import std/json;
 import std/ui;
+import ray_ds/version;
 
 // The version of the protocol: a page asking with a newer one gets an error.
 pub const PROTOCOL: int = 1;
-
-pub const VERSION: string = "0.3.0";
 
 // What the requests reach: the system (system()) or fakes in tests.
 pub struct Native {
@@ -259,7 +258,7 @@ fn run(n: Native, window: int, op: string, j: json.Json) -> Result<string, strin
 const OPS: [string] = ["hello", "pick_files", "pick_path", "confirm", "menu_items", "run_menu", "popup_menu", "window_colors", "set_edited"];
 
 fn hello() -> string {
-    json.obj().field("protocol", PROTOCOL).field("version", VERSION).field("platform", platform()).field(
+    json.obj().field("protocol", PROTOCOL).field("version", version.VERSION).field("platform", platform()).field(
         "ops",
         json.list(OPS)
     ).render()

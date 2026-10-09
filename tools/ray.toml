@@ -2,3 +2,7 @@
 name = "ray-ds-tools"
 version = "0.1.0"
 raylang = "1.27.37"
+
+# The tools answer the native bridge in the webview tests (webtest).
+[dependencies]
+ray_ds = "path:../ray_ds"

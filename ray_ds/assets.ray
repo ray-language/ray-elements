@@ -7,8 +7,6 @@
 
 import std/ui;
 
-pub const VERSION: string = "0.3.0";
-
 // (path, content, size in bytes): the size checks the content in the tests.
 fn table() -> [(string, string, int)] {
     [

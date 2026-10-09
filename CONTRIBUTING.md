@@ -10,7 +10,7 @@ toolchain.
 ```sh
 curl -sSfL https://raylang.dev/install.sh | sh     # macOS / Linux (Windows: irm https://raylang.dev/install.ps1 | iex)
 git clone https://github.com/ray-language/ray-ds && cd ray-ds
-ray run tools/src/main.ray build                   # tokens, docs, packages
+tools/run.sh build                                 # tokens, docs, packages
 ray serve . --port 0                               # then open the printed URL + /docs/
 ```
 
@@ -27,20 +27,23 @@ Never edit these by hand; change their sources and run `build`:
 | `docs/` (every page, the search index, the code samples) | `src/components/*/component.toml` and `example.html`, the `*.md` guides, `tools/src/site/` |
 | `packages/` (`@ray-ds/elements`, `react`, `vue`) | `src/`, `ray-ds.toml` |
 | `src/index.js` | the components present |
-| `ray_ds/assets.ray`, the version in `ray_ds/ray.toml` | `packages/elements`, `ray-ds.toml` |
-| `tools/src/ray_ds/` | `ray_ds/bridge.ray` (the tools use the bridge; see below) |
-| `dist/site/` (not committed: the site to publish) | `ray run tools/src/main.ray site` |
+| `ray_ds/assets.ray`, `ray_ds/version.ray`, the version in `ray_ds/ray.toml` and in the install line of `ray_ds/README.md`, `ray_ds/LICENSE`, `ray_ds/NOTICE` | `packages/elements`, `ray-ds.toml`, `LICENSE`, `NOTICE` |
+| `dist/site/` (not committed: the site to publish) | `tools/run.sh site` |
 
 The generated output is committed, and CI fails when it does not match what
 the sources produce: run `build` and commit both.
 
-`ray_ds/` is the raylang package for apps: `assets.ray` (generated) and
-`bridge.ray` (the program's half of the native bridge, hand-written; its
-`VERSION` must match `ray-ds.toml`, `build` checks it). The webview tests answer the bridge with it, but `ray run
-tools/src/main.ray` from the root does not read `tools/ray.toml`, so `build`
-copies its modules into `tools/src/ray_ds/`. When you change something of
-`ray_ds/` that the tools use, the tools do not compile until that copy is
-updated: run `cp ray_ds/*.ray tools/src/ray_ds/` once, then `build`.
+`ray_ds/` is the raylang package for apps, the whole of it: `bridge.ray` (the
+program's half of the native bridge) and `README.md` are hand-written, the rest
+is generated. Its repository, `github.com/ray-language/ray_ds`, is this
+directory split out with its history on every release.
+
+The tools run from `tools/` (`tools/run.sh` does the `cd`): its `ray.toml`
+brings `ray_ds` as a path dependency (the webview tests answer the bridge with
+it), and `ray run` only reads the `ray.toml` of the directory it runs in.
+Paths you give the tools (`--into`, `--components`, `wrap --out`) are relative
+to where you are. Without a POSIX shell: `cd tools && ray run src/main.ray
+<command>`.
 
 ## A new component
 
@@ -81,12 +84,12 @@ in the README has the checklist of conventions.
 ## Tests
 
 ```sh
-(cd tools && ray test)                      # the tools (tokens, generator, publishing) and ray_ds
+(cd tools && ray test)                      # the tools (tokens, generator, publishing)
 (cd ray_ds && ray test)                     # ray_ds: the bridge and every file of assets.ray
 (cd examples/starter && ray run src/main.ray --check)       # the package in a real window
 (cd examples/desktop-app && ray run src/main.ray --check)   # the whole bridge, scripted dialogs
-ray run tools/src/main.ray webtest          # tests/*.test.js in a real webview
-ray run tools/src/main.ray webtest layout   # only the files whose name contains "layout"
+tools/run.sh webtest          # tests/*.test.js in a real webview
+tools/run.sh webtest layout   # only the files whose name contains "layout"
 ```
 
 The browser tests open a `std/ui` window, so run them from a graphical
@@ -104,21 +107,28 @@ there (use `T.settle()`; see `tests/harness.js`).
 
 ## Releases
 
-1. Set the version in `ray-ds.toml` and `ray_ds/bridge.ray` (`VERSION`), run
-   `build`, move the changelog's "Unreleased" entry under the version and date.
+1. Set the version in `ray-ds.toml`, run `build`, move the changelog's
+   "Unreleased" entry under the version and date.
 2. Commit, then tag `vX.Y.Z` and push the tag.
-3. The `raylang-package` workflow writes the raylang package to
-   `github.com/ray-language/ray_ds` with the same tag (it checks that the tag
-   is `ray-ds.toml`'s version).
-4. The `npm-publish` workflow publishes `@ray-ds/elements`, `@ray-ds/react`
-   and `@ray-ds/vue` from the same tag, after the tool tests and a check that
-   `packages/` matches the sources. A version already on npm is skipped, so a
-   failed run can be run again; a prerelease (`0.4.0-rc.1`) goes to the `next`
-   dist-tag. It authenticates with the secret `NPM_TOKEN` when it is set, and
-   otherwise with npm's trusted publishing (each package trusts
-   `ray-language/ray-ds` and `npm-publish.yml` on npmjs.com, which needs the
-   package to exist: the first release uses the token). Run it by hand for a
-   dry run.
+3. The `release` workflow checks that the tag is `ray-ds.toml`'s version, runs
+   the tests and checks the generated output, then:
+   - **raylang**: pushes `git subtree split --prefix ray_ds` to `main` of
+     `github.com/ray-language/ray_ds` and gives it the same tag. It needs the
+     secret `RAY_DS_DEPLOY_KEY` (a deploy key of `ray_ds` with write access).
+   - **npm**: publishes `@ray-ds/elements`, then `@ray-ds/react` and
+     `@ray-ds/vue`. A version already on npm is skipped, so a failed run can
+     be run again; a prerelease (`0.4.0-rc.1`) goes to the `next` dist-tag.
+     It authenticates with the secret `NPM_TOKEN` when it is set, and
+     otherwise with npm's trusted publishing (each package trusts
+     `ray-language/ray-ds` and `release.yml` on npmjs.com, which needs the
+     package to exist: the first release uses the token).
+   - **site**: deploys the site to GitHub Pages when the variable
+     `PAGES_DEPLOY` is `true` (the `github-pages` environment must allow `v*`
+     tags).
+
+   Run it by hand for a dry run: the same jobs, with nothing pushed,
+   published or deployed.
+4. The raylang index (`ray registry publish`) is a manual step for now.
 
 ## License
 

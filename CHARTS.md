@@ -29,7 +29,7 @@ Live, in the current theme (switch it in the header):
 </div>
 ```
 
-Every token has a light and a dark value. `ray run tools/src/main.ray tokens`
+Every token has a light and a dark value. `tools/run.sh tokens`
 fails the build unless, in **both** schemes ([checks.chart] in `tokens.toml`):
 
 - each series color reaches 3:1 against the background (non-text contrast,

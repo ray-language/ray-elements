@@ -1,6 +1,6 @@
 /* The ray·ds documentation site: shared shell (header, sidebar, footer),
    landing, guides and the components/foundations pages. Built on the tokens
-   only. Copied to docs/ by `ray run tools/src/main.ray docs`. */
+   only. Copied to docs/ by `tools/run.sh docs`. */
 
 :root {
   --site-header: 3.5rem;

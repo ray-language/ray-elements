@@ -11,5 +11,5 @@ examples/*/build/
 .DS_Store
 *.log
 
-# The site ready to publish (ray run tools/src/main.ray site)
+# The site ready to publish (tools/run.sh site)
 dist/site/

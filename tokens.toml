@@ -1,7 +1,7 @@
 # ray-ds design tokens — the single source of truth.
 #
 # Regenerate dist/tokens.css, dist/tokens.json and docs/foundations.html with:
-#   ray run tools/src/main.ray tokens
+#   tools/run.sh tokens
 #
 # Value syntax
 #   "#fff", "1rem", "200ms"       literal CSS value
@@ -21,7 +21,7 @@ json_only = ["breakpoint"]
 runtime_colors = ["custom"]
 
 # WCAG AA (4.5:1) text/background pairs checked in both schemes by
-# `ray run tools/src/main.ray tokens` (the build fails if one does not pass).
+# `tools/run.sh tokens` (the build fails if one does not pass).
 # Every color's `contrast on filled` is checked too, as a warning.
 [checks]
 aa = [
@@ -244,7 +244,7 @@ contrast = "{white}"
 
 # Per-color overrides. [variants.override.<c>] applies to both schemes;
 # [variants.override-light.<c>] / [variants.override-dark.<c>] to one (and win).
-# The AA checks of `ray run tools/src/main.ray tokens` drive these values.
+# The AA checks of `tools/run.sh tokens` drive these values.
 
 # Yellow: a light filled shade with dark text (white fails on every yellow).
 [variants.override.yellow]

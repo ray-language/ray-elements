@@ -11,8 +11,8 @@ package that brings the whole design system without npm (plan 2).
 ## Today
 
 - **Tooling in raylang.** Tokens, contrast checks, docs, the npm packages and
-  the browser tests are generated and run by `tools/` (`ray run
-  tools/src/main.ray build`).
+  the browser tests are generated and run by `tools/` (`tools/run.sh
+  build`).
 - **Made for the `std/ui` webview.** No build step: the elements load as ES
   modules from `ray://app`, and form fields are form-associated, so a
   `FormData` reaches the program through `window.ray.send` or
@@ -251,12 +251,16 @@ fn main() -> int {
   `index.js` (every component, and the API: `enableRaylang`, `notify`,
   `confirmDialog`…), `core/`, `components/`, `tokens.css`, `base.css` — as
   constants. `assets.mount(prefix)` serves them with `ui.mount_bytes`;
-  `assets.files()` and `assets.read(path)` list and read them;
-  `assets.VERSION` is the version of ray-ds. Its test checks every file
-  byte for byte.
+  `assets.files()` and `assets.read(path)` list and read them. Its test
+  checks every file byte for byte.
+- `ray_ds/version` (generated): `version.VERSION`, the version of
+  `ray-ds.toml`; the bridge's `hello` answers with it. The other modules
+  import it as `ray_ds/version`, the only form that also works from an app
+  (finding #142).
 - `ray_ds/bridge` (plan 1, hand-written).
-- `ray_ds/ray.toml` takes its version from `ray-ds.toml`, and `build` fails if
-  `bridge.VERSION` says another one.
+- `ray_ds/README.md` (hand-written), `LICENSE` and `NOTICE` (copies of the
+  repository's): the package is the whole directory. `build` keeps the
+  version of `ray.toml` and of the README's install line.
 - No `mod.ray`: it would make the other modules internal to the capsule, so
   the package is `import ray_ds/assets;` and `import ray_ds/bridge;`.
 
@@ -294,15 +298,15 @@ component changes (git stores the difference).
      instance). So `ray_ds/` cannot be installed from this repository as it
      is: `git+https://github.com/ray-language/ray-ds` would give the docs
      site's repository, not the package.
-   - So the package has a repository of its own, `ray-language/ray_ds`,
-     with `ray_ds/` at its root: `ray run tools/src/main.ray raylang-package
-     --out DIR` writes it into a checkout (the modules, `ray.toml`, `LICENSE`,
-     `NOTICE` and a generated README), and the `raylang-package` workflow
-     does it on every version tag of this repository, giving `ray_ds` the
-     same tag. An app installs it with `git+https://…/ray_ds@v0.3.0`
-     (checked with a copy of `examples/starter` outside this repository).
-   - Left: `ray registry publish` from `ray_ds` once both repositories are
-     public, so that `ray add ray_ds` works too.
+   - So the package has a repository of its own, `ray-language/ray_ds`:
+     `git subtree split --prefix ray_ds`, with the history of the directory.
+     The `release` workflow pushes it on every version tag of this
+     repository and gives it the same tag. An app installs it with
+     `git+https://…/ray_ds@v0.3.0` (checked with a copy of
+     `examples/starter` outside this repository).
+   - Left: `ray registry publish` once both repositories are public, so
+     that `ray add ray_ds` works too. A manual command until then; later a
+     last step of the release job, with a deploy key on `ray-index`.
 
 ## Later ideas
 

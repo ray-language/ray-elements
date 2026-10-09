@@ -46,9 +46,10 @@ The first public release.
   wrappers and Vue wrappers with `v-model`. Each names its source (repository,
   directory, issues) and publishes with public access; the repository's
   `repository` and `homepage` live in `ray-ds.toml`.
-- The `npm-publish` workflow publishes the three packages on a version tag
-  (`NPM_TOKEN` or trusted publishing, with provenance from a public repository).
-- Tools: `ray run tools/src/main.ray add` copies components (and what they
+- The `release` workflow, on a version tag: the raylang package to its
+  repository (`git subtree split`), the npm packages (`NPM_TOKEN` or trusted
+  publishing, with provenance from a public repository) and the site.
+- Tools: `tools/run.sh add` copies components (and what they
   need) into an app; `wrap` generates types and React/Vue wrappers for an
   app's own components.
 
@@ -75,14 +76,14 @@ The first public release.
   `assets.mount("ray-ds")`, under `ray run` and in a native binary;
   `examples/starter` is the smallest app with it. It is published to its own
   repository, `github.com/ray-language/ray_ds` (`git+https://…/ray_ds@v0.3.0`),
-  on every version tag.
+  split out of `ray_ds/` with its history on every version tag.
 
 ### Docs site
 
 - A page per component with live examples, their code in HTML, React and
   Vue, and the API generated from `component.toml`; a catalog with
   thumbnails, ⌘K search, guides and the foundations page.
-- `ray run tools/src/main.ray site` writes the site ready to publish, with a
+- `tools/run.sh site` writes the site ready to publish, with a
   404 page.
 
 [0.3.0]: https://github.com/ray-language/ray-ds/releases/tag/v0.3.0

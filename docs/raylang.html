@@ -141,7 +141,7 @@ package that brings the whole design system without npm (plan 2).</p>
 <h2 id="today">Today</h2>
 <ul>
 <li><strong>Tooling in raylang.</strong> Tokens, contrast checks, docs, the npm packages and
-the browser tests are generated and run by <code>tools/</code> (<code>ray run tools/src/main.ray build</code>).</li>
+the browser tests are generated and run by <code>tools/</code> (<code>tools/run.sh build</code>).</li>
 <li><strong>Made for the <code>std/ui</code> webview.</strong> No build step: the elements load as ES
 modules from <code>ray://app</code>, and form fields are form-associated, so a
 <code>FormData</code> reaches the program through <code>window.ray.send</code> or
@@ -438,12 +438,16 @@ ray_ds = &quot;git+https://github.com/ray-language/ray_ds@v0.3.0&quot;
 <code>index.js</code> (every component, and the API: <code>enableRaylang</code>, <code>notify</code>,
 <code>confirmDialog</code>…), <code>core/</code>, <code>components/</code>, <code>tokens.css</code>, <code>base.css</code> — as
 constants. <code>assets.mount(prefix)</code> serves them with <code>ui.mount_bytes</code>;
-<code>assets.files()</code> and <code>assets.read(path)</code> list and read them;
-<code>assets.VERSION</code> is the version of ray-ds. Its test checks every file
-byte for byte.</li>
+<code>assets.files()</code> and <code>assets.read(path)</code> list and read them. Its test
+checks every file byte for byte.</li>
+<li><code>ray_ds/version</code> (generated): <code>version.VERSION</code>, the version of
+<code>ray-ds.toml</code>; the bridge's <code>hello</code> answers with it. The other modules
+import it as <code>ray_ds/version</code>, the only form that also works from an app
+(finding #142).</li>
 <li><code>ray_ds/bridge</code> (plan 1, hand-written).</li>
-<li><code>ray_ds/ray.toml</code> takes its version from <code>ray-ds.toml</code>, and <code>build</code> fails if
-<code>bridge.VERSION</code> says another one.</li>
+<li><code>ray_ds/README.md</code> (hand-written), <code>LICENSE</code> and <code>NOTICE</code> (copies of the
+repository's): the package is the whole directory. <code>build</code> keeps the
+version of <code>ray.toml</code> and of the README's install line.</li>
 <li>No <code>mod.ray</code>: it would make the other modules internal to the capsule, so
 the package is <code>import ray_ds/assets;</code> and <code>import ray_ds/bridge;</code>.</li>
 </ul>
@@ -484,14 +488,15 @@ repository each, with the modules at the root (<code>greeting</code>, for
 instance). So <code>ray_ds/</code> cannot be installed from this repository as it
 is: <code>git+https://github.com/ray-language/ray-ds</code> would give the docs
 site's repository, not the package.</li>
-<li>So the package has a repository of its own, <code>ray-language/ray_ds</code>,
-with <code>ray_ds/</code> at its root: <code>ray run tools/src/main.ray raylang-package --out DIR</code> writes it into a checkout (the modules, <code>ray.toml</code>, <code>LICENSE</code>,
-<code>NOTICE</code> and a generated README), and the <code>raylang-package</code> workflow
-does it on every version tag of this repository, giving <code>ray_ds</code> the
-same tag. An app installs it with <code>git+https://…/ray_ds@v0.3.0</code>
-(checked with a copy of <code>examples/starter</code> outside this repository).</li>
-<li>Left: <code>ray registry publish</code> from <code>ray_ds</code> once both repositories are
-public, so that <code>ray add ray_ds</code> works too.</li>
+<li>So the package has a repository of its own, <code>ray-language/ray_ds</code>:
+<code>git subtree split --prefix ray_ds</code>, with the history of the directory.
+The <code>release</code> workflow pushes it on every version tag of this
+repository and gives it the same tag. An app installs it with
+<code>git+https://…/ray_ds@v0.3.0</code> (checked with a copy of
+<code>examples/starter</code> outside this repository).</li>
+<li>Left: <code>ray registry publish</code> once both repositories are public, so
+that <code>ray add ray_ds</code> works too. A manual command until then; later a
+last step of the release job, with a deploy key on <code>ray-index</code>.</li>
 </ul>
 </li>
 </ol>
@@ -519,7 +524,7 @@ notification API today.</li>
 </div>
 <footer class="site-footer"><div class="inner">
 <span class="footer-brand"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><rect x="8" y="8" width="22" height="22" rx="6" fill="#2B7CE0"/><rect x="34" y="8" width="22" height="22" rx="6" fill="#34D2C6"/><rect x="8" y="34" width="22" height="22" rx="6" fill="#4BA3F5"/><rect x="34" y="34" width="22" height="22" rx="6" style="fill: var(--site-logo-ink, #0B1F33)"/><g transform="translate(19 19.6) scale(.088) translate(-100 -113)"><path d="M100 50 C108 49 113 53 115 60 C150 66 175 84 191 116 C166 127 141 137 119 150 C111 154 105 159 100 165 C95 159 89 154 81 150 C59 137 34 127 9 116 C25 84 50 66 85 60 C87 53 92 49 100 50 Z" fill="#fff"/><path d="M100 160 C101 176 100 186 100 196" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></g></svg> ray·ds — web components for any app, with raylang extras</span>
-<span>Tokens, docs, tests and wrappers generated by <code>ray run tools/src/main.ray build</code></span>
+<span>Tokens, docs, tests and wrappers generated by <code>tools/run.sh build</code></span>
 </div></footer>
 </body>
 </html>

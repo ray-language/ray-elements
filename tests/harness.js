@@ -1,4 +1,4 @@
-// Test API injected by `ray run tools/src/main.ray webtest` into the page
+// Test API injected by `tools/run.sh webtest` into the page
 // under test, before the test file. A test file registers cases with
 // T.test(name, async (T) => { ... }); the runner sends the results back to the
 // raylang program through window.ray.send.
