@@ -15,9 +15,11 @@ the examples are raylang apps. A native bridge (`ray_ds/bridge` in the program,
 `core/raylang.js` in the page) gives the components what a browser cannot:
 system file dialogs with real paths (`ray-file-upload native`,
 `ray-path-input`), native confirmations (`confirmDialog()`), native context
-menus (`ray-menu native`) and the app's menu bar in the command palette
-(`native-menus`). Planned: window chrome, and a raylang package that serves
-the whole design system without npm. See [RAYLANG.md](RAYLANG.md).
+menus (`ray-menu native`), the app's menu bar in the command palette
+(`native-menus`) and the window (`ray-app-shell` under a transparent title
+bar, window colors that follow the theme, `trackEdits()` for the unsaved
+mark). Planned: a raylang package that serves the whole design system
+without npm. See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 

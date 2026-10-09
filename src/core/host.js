@@ -19,6 +19,13 @@
 //   popupMenu([{ title, enabled, checked, separator }])
 //     -> Promise<number|null>  (a native context menu at the pointer: the index
 //                               chosen, null when dismissed or replaced)
+//   setEdited(edited)          (the window's "unsaved changes" mark)
+//     -> Promise<true>
+//   titlebar                   ({ height, inset } in px when the page runs under a
+//                               transparent title bar, else null: reserve `height`
+//                               at the top, `inset` at the start for the window
+//                               buttons; also --ray-titlebar-height and
+//                               --ray-titlebar-inset on <html>)
 
 let current = null;
 const listeners = new Set();
@@ -43,6 +50,96 @@ export function hostCan(op) {
 export function onHostChange(cb) {
   listeners.add(cb);
   return () => listeners.delete(cb);
+}
+
+/** The title bar the page runs under ({ height, inset } px), or null. */
+export function titlebar() {
+  const t = current?.titlebar;
+  return t && t.height > 0 ? t : null;
+}
+
+// Interactive elements inside a drag handle stay clickable.
+const INTERACTIVE = "button, a[href], input, select, textarea, label, summary, [contenteditable], [role=button], [role=tab], [role=link], [role=menuitem], [tabindex]:not([tabindex='-1']), [data-ray-no-drag]";
+
+/**
+ * Makes `el` drag the window when the page runs under a host's title bar
+ * (titlebar() is not null): it gets data-ray-drag, the attribute the std/ui
+ * shell reads. The shell looks at the event's target, which a shadow root
+ * retargets to its host, so for a pointer down on anything interactive
+ * inside `el` (a button in its shadow root too) the attribute steps aside
+ * until the pointer is up. Returns the function that undoes it.
+ */
+export function dragRegion(el) {
+  const guard = (e) => {
+    if (!el.hasAttribute("data-ray-drag")) return;
+    const path = e.composedPath();
+    const end = path.indexOf(el);
+    const hit = path.slice(0, end < 0 ? 0 : end).some((n) => n instanceof Element && n.matches(INTERACTIVE));
+    if (!hit) return;
+    el.removeAttribute("data-ray-drag");
+    const back = () => {
+      removeEventListener("pointerup", back, true);
+      removeEventListener("pointercancel", back, true);
+      if (titlebar()) el.setAttribute("data-ray-drag", "");
+    };
+    addEventListener("pointerup", back, true);
+    addEventListener("pointercancel", back, true);
+  };
+  const sync = () => el.toggleAttribute("data-ray-drag", Boolean(titlebar()));
+  el.addEventListener("pointerdown", guard, true);
+  const stop = onHostChange(sync);
+  sync();
+  return () => {
+    stop();
+    el.removeEventListener("pointerdown", guard, true);
+    el.removeAttribute("data-ray-drag");
+  };
+}
+
+const formKey = (data) => JSON.stringify([...data].map(([k, v]) => [k, typeof v === "string" ? v : `${v.name}:${v.size}:${v.lastModified}`]));
+
+/**
+ * Follows whether `form` has unsaved changes: its FormData differs from the
+ * one it had when tracking started (or since clean()). With a host that
+ * offers "set_edited", the window shows it (the macOS close button's dot).
+ * `onChange(dirty)` is called when it flips. Submit and reset make it clean.
+ */
+export function trackEdits(form, { onChange } = {}) {
+  let saved = formKey(new FormData(form));
+  let dirty = false;
+  const set = (next) => {
+    if (next === dirty) return;
+    dirty = next;
+    if (hostCan("set_edited")) current.setEdited(dirty).catch(() => {});
+    onChange?.(dirty);
+  };
+  const compare = () => set(formKey(new FormData(form)) !== saved);
+  // After the controls' own updates (form-associated elements set their
+  // value in a microtask when it is assigned by code).
+  const check = () => queueMicrotask(() => queueMicrotask(compare));
+  const clean = () => {
+    saved = formKey(new FormData(form));
+    set(false);
+  };
+  const onReset = () => setTimeout(clean, 0);
+  form.addEventListener("input", check);
+  form.addEventListener("change", check);
+  form.addEventListener("submit", clean);
+  form.addEventListener("reset", onReset);
+  return {
+    get dirty() { return dirty; },
+    /** Takes the current values as saved (after saving them some other way). */
+    clean,
+    /** Compares now (the events already do it). */
+    check: compare,
+    stop() {
+      form.removeEventListener("input", check);
+      form.removeEventListener("change", check);
+      form.removeEventListener("submit", clean);
+      form.removeEventListener("reset", onReset);
+      set(false);
+    },
+  };
 }
 
 const TYPES = {

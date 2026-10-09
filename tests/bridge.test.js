@@ -291,3 +291,126 @@ T.test("command palette: without native-menus, only its actions", async (T) => {
   palette.hide();
   box.remove();
 });
+
+// --- the window (the runner's window calls come back as "ray-test:native")
+
+const native = () => new Promise((resolve) => document.addEventListener("ray-test:native", (e) => resolve(e.detail), { once: true }));
+const { titlebar, dragRegion, trackEdits } = await import("../../src/core/host.js");
+const { setTheme } = await import("../../src/core/core.js");
+
+T.test("raylang: window colors and the edited mark reach the program", async (T) => {
+  const host = getHost();
+  T.ok(host.can("window_colors") && host.can("set_edited"), "ops");
+  let got = native();
+  await host.setWindowColors({ background: "#112233" });
+  T.eq(await got, "window_colors:#112233|#112233");
+  let error = null;
+  try { await host.setWindowColors({ background: "blue" }); } catch (e) { error = e; }
+  T.ok(error && /not a #rrggbb/.test(error.message), String(error));
+  got = native();
+  await host.setEdited(true);
+  T.eq(await got, "set_edited:true");
+  T.eq(titlebar(), null, "a document window has no title bar over the page");
+});
+
+T.test("trackEdits: dirty while the form differs from what was saved", async (T) => {
+  const box = await mount(`<form><ray-input name="title" value="Draft"></ray-input></form>`);
+  const form = box.querySelector("form");
+  const input = form.querySelector("ray-input");
+  const flips = [];
+  const marks = [];
+  const onNative = (e) => marks.push(e.detail);
+  document.addEventListener("ray-test:native", onNative);
+  const t = trackEdits(form, { onChange: (d) => flips.push(d) });
+  T.ok(!t.dirty);
+  const edit = async (value, type = "input") => {
+    input.value = value;
+    input.dispatchEvent(new Event(type, { bubbles: true }));
+    await T.settle();
+  };
+  await edit("Draft 2");
+  T.ok(t.dirty, "changed");
+  await edit("Draft");
+  T.ok(!t.dirty, "typed back to what was saved");
+  await edit("Final", "change");
+  T.ok(t.dirty);
+  form.dispatchEvent(new Event("submit", { cancelable: true }));
+  T.ok(!t.dirty, "submitted: saved");
+  T.eq(flips.join(), "true,false,true,false");
+  await new Promise((r) => setTimeout(r, 100));
+  T.eq(marks.join(), "set_edited:true,set_edited:false,set_edited:true,set_edited:false", "the window's mark follows");
+  t.stop();
+  document.removeEventListener("ray-test:native", onNative);
+  box.remove();
+});
+
+T.test("raylang: under a title bar (full_content)", async (T) => {
+  const real = getHost();
+  const calls = [];
+  const ray = {
+    titlebar_height: 28,
+    request: async (m) => {
+      calls.push(m);
+      return m.op === "hello" ? { ok: true, value: { ops: ["hello", "window_colors"], platform: "macos", version: "t" } } : { ok: true, value: true };
+    },
+  };
+  const root = document.documentElement;
+  try {
+    const host = await enableRaylang({ ray });
+    T.eq(JSON.stringify(titlebar()), JSON.stringify({ height: 28, inset: 78 }));
+    T.eq(root.style.getPropertyValue("--ray-titlebar-height"), "28px");
+    T.eq(root.style.getPropertyValue("--ray-titlebar-inset"), "78px");
+    T.ok(root.hasAttribute("data-ray-titlebar"));
+    const painted = calls.filter((c) => c.op === "window_colors");
+    T.eq(painted.length, 1, "the window takes the theme's background at once");
+    T.ok(/^#[0-9a-f]{6}$/.test(painted[0].background) && painted[0].titlebar === painted[0].background, JSON.stringify(painted[0]));
+    setTheme(painted[0].background === "#ffffff" ? "dark" : "light", { persist: false });
+    await T.settle();
+    const again = calls.filter((c) => c.op === "window_colors");
+    T.ok(again.length >= 2 && again.at(-1).background !== painted[0].background, "and follows the theme");
+    setTheme("system", { persist: false });
+
+    // ray-app-shell: the header is the title bar and drags the window.
+    const box = await mount(`
+      <ray-app-shell style="height: 300px">
+        <ray-app-bar slot="header" label="Inbox"><ray-button slot="end" id="tb-new">New</ray-button></ray-app-bar>
+        <p>Content</p>
+      </ray-app-shell>`);
+    const shell = box.querySelector("ray-app-shell");
+    const bar = box.querySelector("ray-app-bar");
+    T.ok(shell.hasAttribute("data-titlebar"), "the shell knows");
+    T.ok(bar.hasAttribute("data-ray-drag"), "the header drags the window");
+    T.eq(getComputedStyle(shell.shadowRoot.querySelector(".header")).paddingInlineStart, "78px", "room for the window buttons");
+    // A button inside the bar stays a button: the attribute steps aside on pointer down.
+    const inner = box.querySelector("#tb-new").shadowRoot.querySelector("button");
+    inner.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true }));
+    T.ok(!bar.hasAttribute("data-ray-drag"), "not while pressing a button");
+    dispatchEvent(new PointerEvent("pointerup"));
+    T.ok(bar.hasAttribute("data-ray-drag"), "back after");
+    bar.shadowRoot.querySelector(".title").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true }));
+    T.ok(bar.hasAttribute("data-ray-drag"), "the title drags");
+    dispatchEvent(new PointerEvent("pointerup"));
+    shell.setAttribute("layout", "alt");
+    await T.settle();
+    T.ok(host === getHost(), "the fake host");
+    // No title bar any more: everything back.
+    setHost(real);
+    await T.settle();
+    T.ok(!shell.hasAttribute("data-titlebar") && !bar.hasAttribute("data-ray-drag"), "undone without a title bar");
+    box.remove();
+  } finally {
+    setHost(real);
+    root.style.removeProperty("--ray-titlebar-height");
+    root.style.removeProperty("--ray-titlebar-inset");
+    root.removeAttribute("data-ray-titlebar");
+  }
+});
+
+T.test("dragRegion: only under a title bar", async (T) => {
+  const box = await mount(`<header>Toolbar</header>`);
+  const el = box.firstElementChild;
+  const undo = dragRegion(el);
+  T.ok(!el.hasAttribute("data-ray-drag"), "the runner's window has no title bar over the page");
+  undo();
+  box.remove();
+});

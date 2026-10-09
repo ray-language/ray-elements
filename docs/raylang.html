@@ -150,10 +150,12 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
-<li><strong>The native bridge</strong> (plan 1, milestones 1 to 3): system file dialogs with
+<li><strong>The native bridge</strong> (plan 1, milestones 1 to 4): system file dialogs with
 real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>), native
-confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>)
-and the app's menu bar in the command palette (<code>native-menus</code>). See below.</li>
+confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>),
+the app's menu bar in the command palette (<code>native-menus</code>), and the window:
+<code>ray-app-shell</code> under a transparent title bar, window colors that follow
+the theme, and the &quot;unsaved changes&quot; mark (<code>trackEdits</code>). See below.</li>
 </ul>
 
 <h2 id="using-the-bridge">Using the bridge</h2>
@@ -203,6 +205,18 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
 <p><code>bridge.menu_at</code>, <code>replace_menu</code> and <code>set_menu_item</code> keep the record up to
 date the same way (<code>bridge.record</code> records a menu without touching the bar).</p>
 
+<p>The window: open it with <code>o.kind = &quot;full_content&quot;</code> and <code>enableRaylang()</code> sets
+<code>--ray-titlebar-height</code> and <code>--ray-titlebar-inset</code> (the room for the macOS
+window buttons) on <code>&lt;html&gt;</code>; a <code>ray-app-shell</code> then makes its header the title
+bar (taller, indented, dragging the window) or, with <code>layout=&quot;alt&quot;</code> or no
+header, starts its navbar and main below it. <code>dragRegion(el)</code> does the same
+for any element of your own. <code>enableRaylang()</code> also keeps the window's
+background and title bar in the theme's background color (<code>windowColors: false</code> to opt out), and <code>trackEdits(form)</code> marks the window as edited while
+the form differs from what was saved:</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> { enableRaylang, trackEdits } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+<span class="tk-keyword">await</span> enableRaylang();
+<span class="tk-keyword">const</span> edits = trackEdits(document.querySelector(<span class="tk-string">&quot;form&quot;</span>));   <span class="tk-comment">// edits.dirty, edits.clean()</span></code></pre>
 <h2 id="principles">Principles</h2>
 <ul>
 <li><strong>The components stay agnostic.</strong> No component imports the bridge. Without
@@ -286,6 +300,16 @@ dialogs.</p>
 <td><code>id</code>, <code>items</code> (<code>title</code>, <code>enabled</code>, <code>checked</code>, <code>separator</code>)</td>
 <td><code>true</code> once shown; the choice comes later as the page event <code>ray-ds:menu</code> (<code>{id, index}</code>), nothing when dismissed</td>
 </tr>
+<tr>
+<td><code>window_colors</code></td>
+<td><code>background</code>, <code>titlebar</code> (<code>#rrggbb</code>, <code>&quot;&quot;</code> = system)</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>set_edited</code></td>
+<td><code>edited</code></td>
+<td><code>true</code></td>
+</tr>
 </tbody>
 </table>
 
@@ -358,8 +382,10 @@ to the real bridge in the webview runner (scripted dialogs).</li>
 <li>✅ <strong>Menus.</strong> <code>bridge.menu</code> (and <code>menu_at</code>, <code>replace_menu</code>,
 <code>set_menu_item</code>), <code>route()</code>, the palette listing native items
 (<code>native-menus</code>), <code>ray-menu native</code>.</li>
-<li><strong>Window.</strong> <code>full_content</code> support in the app header and sidebar, theme to
-window colors, <code>edited</code> tracking.</li>
+<li>✅ <strong>Window.</strong> <code>full_content</code> support in <code>ray-app-shell</code> (header as the
+title bar, <code>dragRegion</code>), theme to window colors, <code>trackEdits</code>. The drag
+handle works around finding #138 (the shell's <code>data-ray-drag</code> does not see
+shadow DOM).</li>
 <li><strong>Docs and example.</strong> A &quot;raylang&quot; section in each affected component's
 docs and an <code>examples/desktop-app</code> that uses all of it, driven by <code>--check</code>
 like the other examples.</li>

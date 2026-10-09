@@ -60,6 +60,10 @@ The first public release.
   `ray-menu native` opens as the system's context menu, and
   `ray-command-palette native-menus` lists and runs the app's menu bar
   (declared with `bridge.menu`; `bridge.route` gives the app the menu event).
+- The window: in a `full_content` window `ray-app-shell` turns its header
+  into the title bar (room for the window buttons, drags the window;
+  `dragRegion()` for any element), the window's background and title bar
+  follow the theme, and `trackEdits(form)` shows unsaved changes.
 
 ### Docs site
 

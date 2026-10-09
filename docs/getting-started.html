@@ -155,9 +155,11 @@ the examples are raylang apps. A native bridge (<code>ray_ds/bridge</code> in th
 <code>core/raylang.js</code> in the page) gives the components what a browser cannot:
 system file dialogs with real paths (<code>ray-file-upload native</code>,
 <code>ray-path-input</code>), native confirmations (<code>confirmDialog()</code>), native context
-menus (<code>ray-menu native</code>) and the app's menu bar in the command palette
-(<code>native-menus</code>). Planned: window chrome, and a raylang package that serves
-the whole design system without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
+menus (<code>ray-menu native</code>), the app's menu bar in the command palette
+(<code>native-menus</code>) and the window (<code>ray-app-shell</code> under a transparent title
+bar, window colors that follow the theme, <code>trackEdits()</code> for the unsaved
+mark). Planned: a raylang package that serves the whole design system
+without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h2 id="layout">Layout</h2>
 <pre class="code"><code>tokens.toml            design tokens: the single source of truth

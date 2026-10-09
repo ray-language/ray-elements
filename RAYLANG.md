@@ -21,10 +21,12 @@ that brings the whole design system without npm.
 - **Examples.** `examples/desktop-form` (plain HTML), `examples/react-app` and
   `examples/vue-app` (made with `ray new --frontend react-ts|vue-ts`) drive the
   page in the real webview and check what reaches raylang.
-- **The native bridge** (plan 1, milestones 1 to 3): system file dialogs with
+- **The native bridge** (plan 1, milestones 1 to 4): system file dialogs with
   real paths (`ray-file-upload native`, `ray-path-input`), native
-  confirmations (`confirmDialog()`), native context menus (`ray-menu native`)
-  and the app's menu bar in the command palette (`native-menus`). See below.
+  confirmations (`confirmDialog()`), native context menus (`ray-menu native`),
+  the app's menu bar in the command palette (`native-menus`), and the window:
+  `ray-app-shell` under a transparent title bar, window colors that follow
+  the theme, and the "unsaved changes" mark (`trackEdits`). See below.
 
 ## Using the bridge
 
@@ -89,6 +91,22 @@ for raw in ui.events() {
 `bridge.menu_at`, `replace_menu` and `set_menu_item` keep the record up to
 date the same way (`bridge.record` records a menu without touching the bar).
 
+The window: open it with `o.kind = "full_content"` and `enableRaylang()` sets
+`--ray-titlebar-height` and `--ray-titlebar-inset` (the room for the macOS
+window buttons) on `<html>`; a `ray-app-shell` then makes its header the title
+bar (taller, indented, dragging the window) or, with `layout="alt"` or no
+header, starts its navbar and main below it. `dragRegion(el)` does the same
+for any element of your own. `enableRaylang()` also keeps the window's
+background and title bar in the theme's background color (`windowColors:
+false` to opt out), and `trackEdits(form)` marks the window as edited while
+the form differs from what was saved:
+
+```js
+import { enableRaylang, trackEdits } from "@ray-ds/elements";
+await enableRaylang();
+const edits = trackEdits(document.querySelector("form"));   // edits.dirty, edits.clean()
+```
+
 ## Principles
 
 - **The components stay agnostic.** No component imports the bridge. Without
@@ -140,6 +158,8 @@ dialogs.
 | `menu_items` | | `[{menu, tag, title, shortcut, enabled, checked}]` (no separators, no `role:*`) |
 | `run_menu` | `tag` | `true`; `route()` gives the app the `"menu"` event |
 | `popup_menu` | `id`, `items` (`title`, `enabled`, `checked`, `separator`) | `true` once shown; the choice comes later as the page event `ray-ds:menu` (`{id, index}`), nothing when dismissed |
+| `window_colors` | `background`, `titlebar` (`#rrggbb`, `""` = system) | `true` |
+| `set_edited` | `edited` | `true` |
 
 ### What the components get
 
@@ -166,8 +186,10 @@ dialogs.
 3. ✅ **Menus.** `bridge.menu` (and `menu_at`, `replace_menu`,
    `set_menu_item`), `route()`, the palette listing native items
    (`native-menus`), `ray-menu native`.
-4. **Window.** `full_content` support in the app header and sidebar, theme to
-   window colors, `edited` tracking.
+4. ✅ **Window.** `full_content` support in `ray-app-shell` (header as the
+   title bar, `dragRegion`), theme to window colors, `trackEdits`. The drag
+   handle works around finding #138 (the shell's `data-ray-drag` does not see
+   shadow DOM).
 5. **Docs and example.** A "raylang" section in each affected component's
    docs and an `examples/desktop-app` that uses all of it, driven by `--check`
    like the other examples.

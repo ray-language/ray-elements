@@ -46,6 +46,10 @@ pub struct Native {
     // A context menu over a window (ui.popup_menu): the choice comes back
     // later as a "menu" event, which route() hands to the page.
     popup: fn(int, [ui.MenuItem]) -> Result<int, string>,
+    // The window's background and title bar colors ("#rrggbb"; "" = system).
+    window_colors: fn(int, string, string) -> Result<int, string>,
+    // The "unsaved changes" mark of a window.
+    set_edited: fn(int, bool) -> Result<int, string>,
     // The menus declared with menu(), menu_at() and replace_menu().
     menus: [Menu],
 }
@@ -77,6 +81,11 @@ pub fn system() -> Native {
         },
         file_size: fn(path: string) -> Result<int, string> { fs.file_size(path) },
         popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> { ui.popup_menu(h, items) },
+        window_colors: fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+            ui.set_background(h, background)?;
+            ui.set_titlebar_color(h, titlebar)
+        },
+        set_edited: fn(h: int, edited: bool) -> Result<int, string> { ui.set_edited(h, edited) },
         menus: [],
     }
 }
@@ -234,11 +243,16 @@ fn run(n: Native, window: int, op: string, j: json.Json) -> Result<string, strin
         "menu_items" => Result.Ok(menu_items(n)),
         "run_menu" => run_menu(n, j),
         "popup_menu" => popup_menu(n, window, j),
+        "window_colors" => window_colors(n, window, j),
+        "set_edited" => {
+            n.set_edited(window, json.get_bool(j, "edited").unwrap_or(false))?;
+            Result.Ok("true")
+        },
         _ => Result.Err("unknown ray-ds operation '${op}'"),
     }
 }
 
-const OPS: [string] = ["hello", "pick_files", "pick_path", "confirm", "menu_items", "run_menu", "popup_menu"];
+const OPS: [string] = ["hello", "pick_files", "pick_path", "confirm", "menu_items", "run_menu", "popup_menu", "window_colors", "set_edited"];
 
 fn hello() -> string {
     json.obj().field("protocol", PROTOCOL).field("version", VERSION).field("platform", platform()).field(
@@ -305,6 +319,36 @@ fn popup_menu(n: Native, window: int, j: json.Json) -> Result<string, string> {
     }
     n.popup(window, items)?;
     Result.Ok("true")
+}
+
+// {background, titlebar}: "#rrggbb" each ("" = the system's; a missing
+// titlebar takes the background) -> true.
+fn window_colors(n: Native, window: int, j: json.Json) -> Result<string, string> {
+    let background = json.get_string(j, "background").unwrap_or("");
+    let titlebar = json.get_string(j, "titlebar").unwrap_or(background);
+    for c in [background, titlebar] {
+        if (!is_color(c)) {
+            return Result.Err("window_colors: '${c}' is not a #rrggbb color");
+        }
+    }
+    n.window_colors(window, background, titlebar)?;
+    Result.Ok("true")
+}
+
+// "" or "#rrggbb".
+fn is_color(c: string) -> bool {
+    if (c == "") {
+        return true;
+    }
+    if (c.len() != 7 || c[0] != '#') {
+        return false;
+    }
+    for ch in c.substring(1, 7).to_lower().chars() {
+        if (!"0123456789abcdef".contains(to_string(ch))) {
+            return false;
+        }
+    }
+    true
 }
 
 // A shortcut as a chord: the one-character form ("s" = cmd+s, "S" =
@@ -417,6 +461,10 @@ fn fake() -> Native {
         popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> {
             if (items.len() == 0) { Result.Err("empty menu") } else { Result.Ok(0) }
         },
+        window_colors: fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+            if (h == 0) { Result.Err("no window") } else { Result.Ok(0) }
+        },
+        set_edited: fn(h: int, edited: bool) -> Result<int, string> { Result.Ok(0) },
         menus: [],
         file_size: fn(path: string) -> Result<int, string> {
             if (path.ends_with(".missing")) { Result.Err("gone") } else { Result.Ok(base_name(path).len() * 10) }
@@ -435,7 +483,7 @@ fn ignores_what_is_not_a_bridge_request() {
 fn says_hello() {
     let a = answer(fake(), "{\"ray-ds\":1,\"op\":\"hello\"}").unwrap();
     assert(a.starts_with("{\"ok\":true,\"value\":{\"protocol\":1,\"version\":\"0.3.0\",\"platform\":\""));
-    assert(a.ends_with("\"ops\":[\"hello\",\"pick_files\",\"pick_path\",\"confirm\",\"menu_items\",\"run_menu\",\"popup_menu\"]}}"));
+    assert(a.ends_with("\"ops\":[\"hello\",\"pick_files\",\"pick_path\",\"confirm\",\"menu_items\",\"run_menu\",\"popup_menu\",\"window_colors\",\"set_edited\"]}}"));
 }
 
 @test
@@ -542,4 +590,15 @@ fn spells_out_shortcuts() {
     assert_eq(chord("S"), "cmd+shift+s");
     assert_eq(chord("cmd+alt+p"), "cmd+alt+p");
     assert_eq(chord(""), "");
+}
+
+@test
+fn sets_the_window_colors() {
+    let ok = "{\"ok\":true,\"value\":true}";
+    assert_eq(respond(fake(), 2, "{\"ray-ds\":1,\"op\":\"window_colors\",\"background\":\"#19191A\"}").unwrap().0, ok);
+    assert_eq(respond(fake(), 2, "{\"ray-ds\":1,\"op\":\"window_colors\",\"background\":\"\",\"titlebar\":\"\"}").unwrap().0, ok);
+    assert(answer(fake(), "{\"ray-ds\":1,\"op\":\"window_colors\",\"background\":\"#fff\"}").unwrap().contains("'#fff' is not a #rrggbb color"));
+    assert(answer(fake(), "{\"ray-ds\":1,\"op\":\"window_colors\",\"background\":\"#gg0000\"}").unwrap().contains("not a #rrggbb"));
+    assert(answer(fake(), "{\"ray-ds\":1,\"op\":\"window_colors\",\"background\":\"#000000\"}").unwrap().contains("no window"));
+    assert_eq(respond(fake(), 2, "{\"ray-ds\":1,\"op\":\"set_edited\",\"edited\":true}").unwrap().0, ok);
 }

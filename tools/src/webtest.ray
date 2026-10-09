@@ -71,6 +71,7 @@ window.ray.send("ray-test:" + JSON.stringify(results));
 // when its title starts with "yes", and a context menu "chooses" its first
 // enabled item at once. The menus File (New, Close: disabled) and View (Zoom)
 // are declared; a menu event for the app reaches the page as "ray-test:menu".
+// Window colors and the edited mark reach it as "ray-test:native" events.
 fn scripted(root: string) -> bridge.Native {
     var n = bridge.system();
     n.pick_files = fn(o: ui.FileDialogOptions) -> Result<[string], string> {
@@ -100,6 +101,10 @@ fn scripted(root: string) -> bridge.Native {
         }
         Result.Ok(0)
     };
+    n.window_colors = fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+        tell(h, "window_colors:${background}|${titlebar}")
+    };
+    n.set_edited = fn(h: int, edited: bool) -> Result<int, string> { tell(h, "set_edited:${edited}") };
     var close = ui.item("close", "Close window", "W");
     close.enabled = false;
     bridge.record(n, "File", [ui.item("new", "New document", "cmd+n"), ui.separator(), close]);
@@ -108,6 +113,11 @@ fn scripted(root: string) -> bridge.Native {
         Result.Ok(title.starts_with("yes"))
     };
     n
+}
+
+// What a scripted window call did, as a "ray-test:native" event on the page.
+fn tell(h: int, what: string) -> Result<int, string> {
+    ui.eval_js(h, "document.dispatchEvent(new CustomEvent('ray-test:native', { detail: ${what.to_json()} }))")
 }
 
 fn page_of(body: string) -> Option<string> {

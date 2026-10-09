@@ -16667,7 +16667,7 @@
           "name": "RayAppShell",
           "tagName": "ray-app-shell",
           "customElement": true,
-          "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized.",
+          "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-ds/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout=\"alt\" or no header, the navbar and main start below it.",
           "superclass": {
             "name": "RayElement"
           },

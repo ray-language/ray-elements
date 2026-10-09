@@ -12,23 +12,31 @@
 // does not call bridge.handle), it resolves to null and nothing changes.
 
 import { setHost, HostFile } from "./host.js";
+import { chartTheme, onChartThemeChange } from "./charts.js";
+import { parseColor, toHex } from "./color.js";
 
 /** The version of the protocol this page speaks. */
 export const PROTOCOL = 1;
 
 let enabling = null;
 
+// The width macOS keeps for the window buttons at the start of the title bar.
+const MAC_BUTTONS = 78;
+
 /**
  * Installs the raylang host once the program answers. `timeout` (ms) is how
  * long to wait for that answer; `ray` replaces window.ray (tests).
+ * `windowColors` (default true) keeps the window's background and title bar
+ * in the theme's background color, so a resize or a reopen never shows the
+ * other theme.
  */
-export function enableRaylang({ timeout = 2000, ray = globalThis.ray } = {}) {
-  if (ray !== globalThis.ray) return connect(ray, timeout);
-  enabling ??= connect(ray, timeout);
+export function enableRaylang({ timeout = 2000, ray = globalThis.ray, windowColors = true } = {}) {
+  if (ray !== globalThis.ray) return connect(ray, timeout, windowColors);
+  enabling ??= connect(ray, timeout, windowColors);
   return enabling;
 }
 
-async function connect(ray, timeout) {
+async function connect(ray, timeout, windowColors) {
   if (typeof ray?.request !== "function") return null;
   const call = (op, args = {}) => request(ray, op, args);
   let hello;
@@ -79,13 +87,47 @@ async function connect(ray, timeout) {
       }
       return chosen;
     },
+    setEdited(edited) {
+      return call("set_edited", { edited: Boolean(edited) });
+    },
+    setWindowColors({ background = "", titlebar = background } = {}) {
+      return call("window_colors", { background, titlebar });
+    },
     async confirm({ title = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", style = "" } = {}) {
       return Boolean(await call("confirm", { title, message, confirmLabel, cancelLabel, style }));
     },
   };
+  // Under a transparent title bar (a full_content window): what to reserve.
+  const height = Number(ray.titlebar_height) || 0;
+  host.titlebar = height > 0 ? { height, inset: host.platform === "macos" ? MAC_BUTTONS : 0 } : null;
+  const root = document.documentElement;
+  if (host.titlebar) {
+    root.style.setProperty("--ray-titlebar-height", `${height}px`);
+    root.style.setProperty("--ray-titlebar-inset", `${host.titlebar.inset}px`);
+    root.setAttribute("data-ray-titlebar", "");
+  }
   setHost(host);
-  document.documentElement.setAttribute("data-ray-host", "raylang");
+  root.setAttribute("data-ray-host", "raylang");
+  if (windowColors && ops.has("window_colors")) {
+    const paint = (theme) => {
+      const background = hex(theme.background);
+      if (background) host.setWindowColors({ background }).catch(() => {});
+    };
+    paint(chartTheme());
+    onChartThemeChange(paint);
+  }
   return host;
+}
+
+// "#rrggbb" of a CSS color, "" when it cannot be read.
+function hex(color) {
+  if (/^#[0-9a-f]{6}$/i.test(color ?? "")) return color.toLowerCase();
+  try {
+    const rgb = parseColor(String(color ?? ""));
+    return rgb ? toHex(rgb).slice(0, 7).toLowerCase() : "";
+  } catch {
+    return "";
+  }
 }
 
 async function request(ray, op, args) {

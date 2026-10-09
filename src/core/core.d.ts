@@ -290,12 +290,16 @@ export interface FileFilter {
 /** What the program around the page can do natively; components use it when it is there. */
 export interface Host {
   name: string;
-  can(op: "pick_files" | "pick_path" | "confirm" | "menu_items" | "run_menu" | "popup_menu" | (string & {})): boolean;
+  can(op: "pick_files" | "pick_path" | "confirm" | "menu_items" | "run_menu" | "popup_menu" | "window_colors" | "set_edited" | (string & {})): boolean;
   pickFiles?(options?: { title?: string; multiple?: boolean; directory?: string; filters?: FileFilter[] }): Promise<HostFile[]>;
   pickPath?(options?: { mode?: "open" | "folder" | "save"; title?: string; directory?: string; suggested?: string; filters?: FileFilter[] }): Promise<string | null>;
   menuItems?(): Promise<HostMenuItem[]>;
   runMenu?(tag: string): Promise<true>;
   popupMenu?(items: { title?: string; enabled?: boolean; checked?: boolean; separator?: boolean }[]): Promise<number | null>;
+  setEdited?(edited: boolean): Promise<true>;
+  setWindowColors?(colors: { background?: string; titlebar?: string }): Promise<true>;
+  /** Set when the page runs under a transparent title bar (px). */
+  titlebar?: { height: number; inset: number } | null;
   confirm?(options?: { title?: string; message?: string; confirmLabel?: string; cancelLabel?: string; style?: "" | "info" | "warning" | "error" }): Promise<boolean>;
 }
 /** An item of the app's native menu bar, as a host lists it. */
@@ -313,6 +317,19 @@ export declare function getHost(): Host | null;
 export declare function hostCan(op: string): boolean;
 /** Calls cb whenever the host changes; returns the unsubscribe function. */
 export declare function onHostChange(cb: (host: Host | null) => void): () => void;
+/** The title bar the page runs under ({ height, inset } px), or null. */
+export declare function titlebar(): { height: number; inset: number } | null;
+/** Makes el drag the window under a host's title bar (data-ray-drag); returns the undo function. */
+export declare function dragRegion(el: Element): () => void;
+export interface EditTracker {
+  readonly dirty: boolean;
+  /** Takes the current values as saved. */
+  clean(): void;
+  check(): void;
+  stop(): void;
+}
+/** Follows whether a form has unsaved changes; with a host, the window shows it. */
+export declare function trackEdits(form: HTMLFormElement, options?: { onChange?: (dirty: boolean) => void }): EditTracker;
 /** The MIME type of a file name, from its extension ("" when unknown). */
 export declare function typeOfName(name: string): string;
 /** The file dialog filters of an accept list ([] = any file); `name` defaults to the extensions. */
@@ -331,4 +348,4 @@ export interface RaylangHost extends Host {
  * In a std/ui window whose program calls ray_ds/bridge's handle(), installs the
  * raylang host; null in a browser or when the program does not answer in `timeout` ms.
  */
-export declare function enableRaylang(options?: { timeout?: number; ray?: unknown }): Promise<RaylangHost | null>;
+export declare function enableRaylang(options?: { timeout?: number; ray?: unknown; windowColors?: boolean }): Promise<RaylangHost | null>;

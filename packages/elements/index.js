@@ -12,7 +12,7 @@ export { duration, motionAllowed, play, playAll, collapseOut, POP_OUT } from "./
 export { dismissable } from "./core/dismiss.js";
 export { matchesHotkey, formatHotkey } from "./core/hotkey.js";
 export { CHART_SERIES, chartTheme, onChartThemeChange, withAlpha } from "./core/charts.js";
-export { setHost, getHost, hostCan, onHostChange, HostFile, typeOfName, extensionsOfType, acceptFilters } from "./core/host.js";
+export { setHost, getHost, hostCan, onHostChange, HostFile, typeOfName, extensionsOfType, acceptFilters, titlebar, dragRegion, trackEdits } from "./core/host.js";
 export { enableRaylang, PROTOCOL } from "./core/raylang.js";
 export { RayButton } from "./components/button/button.js";
 export { RayButtonGroup } from "./components/button-group/button-group.js";
