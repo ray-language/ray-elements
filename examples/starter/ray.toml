@@ -1,0 +1,10 @@
+[package]
+name = "starter"
+version = "0.1.0"
+raylang = "1.27.39"
+
+[dependencies]
+ray_ds = "path:../../ray_ds"
+
+[native]
+embed = ["assets"]

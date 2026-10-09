@@ -158,8 +158,8 @@ system file dialogs with real paths (<code>ray-file-upload native</code>,
 menus (<code>ray-menu native</code>), the app's menu bar in the command palette
 (<code>native-menus</code>) and the window (<code>ray-app-shell</code> under a transparent title
 bar, window colors that follow the theme, <code>trackEdits()</code> for the unsaved
-mark). Planned: a raylang package that serves the whole design system
-without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
+mark). A raylang package (<code>ray_ds/assets</code>) serves the whole design system
+from the program, without npm. See <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h2 id="layout">Layout</h2>
 <pre class="code"><code>tokens.toml            design tokens: the single source of truth
@@ -182,10 +182,11 @@ docs/                  generated: index.html, foundations.html, components.html 
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-ds CLI
-ray_ds/                raylang package: bridge.ray, the program's half of the bridge
+ray_ds/                raylang package: assets.ray (generated: ray-ds served from the program), bridge.ray
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
-examples/desktop-app/  std/ui app using the native bridge (ray_ds/bridge)
+examples/desktop-app/  std/ui app using the raylang package and the native bridge
+examples/starter/      the smallest std/ui app with the raylang package, to copy
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
 examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
 examples/extending/    app components on the extension API (+ `wrap` output)</code></pre>
@@ -364,6 +365,12 @@ show a banner saying so instead of rendering. <code>--port 0</code> picks a free
 
 <p><code>tokens</code> fails if a <code>[checks] aa</code> pair is below 4.5:1 in either scheme, and
 warns for every palette color whose filled/light/outline variant text is.</p>
+
+<h3 id="in-a-raylang-app-from-the-package">In a raylang app, from the package</h3>
+<p><code>ray_ds/</code> is a raylang package: <code>ray_ds = &quot;path:…/ray_ds&quot;</code> in <code>[dependencies]</code>
+(until it is published), then <code>assets.mount(&quot;ray-ds&quot;)</code> (<code>import ray_ds/assets;</code>) serves every component, <code>tokens.css</code> and <code>base.css</code> from the
+program, the same under <code>ray run</code> and in a native binary.
+<code>examples/starter</code> is the smallest such app; see <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h3 id="adding-components-to-an-app">Adding components to an app</h3>
 <p><code>add</code> copies, shadcn-style: the code becomes the app's own.</p>

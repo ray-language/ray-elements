@@ -27,14 +27,16 @@ Never edit these by hand; change their sources and run `build`:
 | `docs/` (every page, the search index, the code samples) | `src/components/*/component.toml` and `example.html`, the `*.md` guides, `tools/src/site/` |
 | `packages/` (`@ray-ds/elements`, `react`, `vue`) | `src/`, `ray-ds.toml` |
 | `src/index.js` | the components present |
-| `tools/src/ray_ds/` | `ray_ds/*.ray` (the tools use the bridge; see below) |
+| `ray_ds/assets.ray`, the version in `ray_ds/ray.toml` | `packages/elements`, `ray-ds.toml` |
+| `tools/src/ray_ds/` | `ray_ds/bridge.ray` (the tools use the bridge; see below) |
 | `dist/site/` (not committed: the site to publish) | `ray run tools/src/main.ray site` |
 
 The generated output is committed, and CI fails when it does not match what
 the sources produce: run `build` and commit both.
 
-`ray_ds/` is the raylang package for apps (the program's half of the native
-bridge). The webview tests answer the bridge with it, but `ray run
+`ray_ds/` is the raylang package for apps: `assets.ray` (generated) and
+`bridge.ray` (the program's half of the native bridge, hand-written; its
+`VERSION` must match `ray-ds.toml`, `build` checks it). The webview tests answer the bridge with it, but `ray run
 tools/src/main.ray` from the root does not read `tools/ray.toml`, so `build`
 copies its modules into `tools/src/ray_ds/`. When you change something of
 `ray_ds/` that the tools use, the tools do not compile until that copy is
@@ -80,7 +82,9 @@ in the README has the checklist of conventions.
 
 ```sh
 (cd tools && ray test)                      # the tools (tokens, generator, publishing) and ray_ds
-(cd ray_ds && ray test)                     # ray_ds alone
+(cd ray_ds && ray test)                     # ray_ds: the bridge and every file of assets.ray
+(cd examples/starter && ray run src/main.ray --check)       # the package in a real window
+(cd examples/desktop-app && ray run src/main.ray --check)   # the whole bridge, scripted dialogs
 ray run tools/src/main.ray webtest          # tests/*.test.js in a real webview
 ray run tools/src/main.ray webtest layout   # only the files whose name contains "layout"
 ```

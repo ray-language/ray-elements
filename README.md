@@ -18,8 +18,8 @@ system file dialogs with real paths (`ray-file-upload native`,
 menus (`ray-menu native`), the app's menu bar in the command palette
 (`native-menus`) and the window (`ray-app-shell` under a transparent title
 bar, window colors that follow the theme, `trackEdits()` for the unsaved
-mark). Planned: a raylang package that serves the whole design system
-without npm. See [RAYLANG.md](RAYLANG.md).
+mark). A raylang package (`ray_ds/assets`) serves the whole design system
+from the program, without npm. See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 
@@ -44,10 +44,11 @@ docs/                  generated: index.html, foundations.html, components.html 
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-ds CLI
-ray_ds/                raylang package: bridge.ray, the program's half of the bridge
+ray_ds/                raylang package: assets.ray (generated: ray-ds served from the program), bridge.ray
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
-examples/desktop-app/  std/ui app using the native bridge (ray_ds/bridge)
+examples/desktop-app/  std/ui app using the raylang package and the native bridge
+examples/starter/      the smallest std/ui app with the raylang package, to copy
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
 examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
 examples/extending/    app components on the extension API (+ `wrap` output)
@@ -170,6 +171,14 @@ show a banner saying so instead of rendering. `--port 0` picks a free port;
 
 `tokens` fails if a `[checks] aa` pair is below 4.5:1 in either scheme, and
 warns for every palette color whose filled/light/outline variant text is.
+
+### In a raylang app, from the package
+
+`ray_ds/` is a raylang package: `ray_ds = "path:…/ray_ds"` in `[dependencies]`
+(until it is published), then `assets.mount("ray-ds")` (`import
+ray_ds/assets;`) serves every component, `tokens.css` and `base.css` from the
+program, the same under `ray run` and in a native binary.
+`examples/starter` is the smallest such app; see [RAYLANG.md](RAYLANG.md).
 
 ### Adding components to an app
 

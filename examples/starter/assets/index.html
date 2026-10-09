@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Starter</title>
+<link rel="stylesheet" href="ray-ds/tokens.css">
+<link rel="stylesheet" href="ray-ds/base.css">
+<script type="module" src="ray-ds/index.js"></script>
+<style>
+  body { display: grid; min-height: 100vh; place-items: center; margin: 0; padding: var(--ray-space-6); box-sizing: border-box; }
+  ray-card { width: min(100%, 26rem); }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: var(--ray-space-3); }
+  h1 { margin: 0; font-size: var(--ray-font-size-lg); }
+</style>
+</head>
+<body>
+<ray-card with-border padding="lg">
+  <div class="row" slot="header"><h1>Hello, ray-ds</h1><ray-theme-toggle></ray-theme-toggle></div>
+  <ray-stack gap="md">
+    <ray-path-input id="folder" label="A folder" mode="folder" placeholder="/path/to/folder"></ray-path-input>
+    <div class="row"><span id="out" class="ray-muted">Browse… opens the system dialog.</span><ray-button id="hello">Say hello</ray-button></div>
+  </ray-stack>
+</ray-card>
+<script type="module">
+  import { enableRaylang, notify } from "./ray-ds/index.js";
+
+  const host = await enableRaylang();
+  document.getElementById("folder").addEventListener("change", (e) => {
+    document.getElementById("out").textContent = e.target.value;
+  });
+  document.getElementById("hello").addEventListener("click", () => {
+    notify({ title: "Hello from the page", message: host ? `Running in a ${host.platform} window.` : "Running in a browser." });
+    window.ray?.send("hello");
+  });
+  await customElements.whenDefined("ray-button");
+  window.ray?.send(`ready:${host?.name ?? "browser"}`);
+</script>
+</body>
+</html>

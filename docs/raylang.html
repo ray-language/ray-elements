@@ -135,9 +135,8 @@ no dependencies, and they work in any page, in React, in Vue, in a browser or
 in any webview. Nothing in a component requires raylang.</p>
 
 <p>raylang is where ray-ds comes from and where it gets extras. This page says
-what those extras are today and the plan for the ones that make a raylang app
-better than any other host: a bridge to the native side, and a raylang package
-that brings the whole design system without npm.</p>
+what those extras are: a bridge to the native side (plan 1), and a raylang
+package that brings the whole design system without npm (plan 2).</p>
 
 <h2 id="today">Today</h2>
 <ul>
@@ -150,6 +149,9 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
+<li><strong>The raylang package</strong> (plan 2, all but publishing): <code>ray_ds/assets</code>
+serves the whole design system from the program, with no npm and no
+copied files; <code>examples/starter</code> is the app to copy.</li>
 <li><strong>The native bridge</strong> (plan 1, done): system file dialogs with
 real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>), native
 confirmations (<code>confirmDialog()</code>), native context menus (<code>ray-menu native</code>),
@@ -400,61 +402,91 @@ clicked by a script; try them with <code>ray run</code>).</li>
 bridge.</p>
 
 <h2 id="plan-2-the-raylang-package">Plan 2: the raylang package</h2>
-<p>A Tier-2 package, <code>ray-ds</code>, so a raylang app gets the design system with <code>ray add ray-ds</code>, with no npm, no Node and no copied files.</p>
+<p>The <code>ray_ds/</code> directory of this repo is a raylang package: a raylang app gets
+the whole design system from it, with no npm, no Node and no copied files.</p>
 
+<pre class="code"><code>[dependencies]
+ray_ds = &quot;path:../ray-ds/ray_ds&quot;     # until it is published (see milestone 4)</code></pre>
 <pre class="code"><code><span class="tk-keyword">import</span> std/ui;
-<span class="tk-keyword">import</span> ray_ds;
+<span class="tk-keyword">import</span> ray_ds/assets;
+<span class="tk-keyword">import</span> ray_ds/bridge;
 
 <span class="tk-keyword">fn</span> main() -&gt; int {
-    ray_ds.mount(<span class="tk-string">&quot;ray-ds&quot;</span>)?;      <span class="tk-comment">// serves ray://app/ray-ds/… from the binary</span>
-    <span class="tk-keyword">let</span> h = ui.open(<span class="tk-string">&quot;App&quot;</span>, <span class="tk-string">&quot;ray://app/index.html&quot;</span>, <span class="tk-number">960</span>, <span class="tk-number">640</span>)?;
-    …
+    assets.mount(<span class="tk-string">&quot;ray-ds&quot;</span>).unwrap();   <span class="tk-comment">// ray://app/ray-ds/index.js, tokens.css, base.css…</span>
+    ui.mount_embed_at(<span class="tk-string">&quot;&quot;</span>, <span class="tk-string">&quot;assets&quot;</span>).unwrap();
+    <span class="tk-keyword">let</span> h = ui.open(<span class="tk-string">&quot;App&quot;</span>, <span class="tk-string">&quot;ray://app/index.html&quot;</span>, <span class="tk-number">960</span>, <span class="tk-number">640</span>).unwrap();
+    <span class="tk-keyword">for</span> e <span class="tk-keyword">in</span> ui.events() {
+        <span class="tk-keyword">if</span> (bridge.handle(e)) {
+            <span class="tk-keyword">continue</span>;
+        }
+        <span class="tk-comment">// the app's own events</span>
+    }
+    <span class="tk-number">0</span>
 }</code></pre>
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-ds/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-ds/base.css&quot;</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span> <span class="tk-attr">src</span>=<span class="tk-string">&quot;ray-ds/index.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p><code>examples/starter</code> is that app, ready to copy (<code>ray new --frontend</code> takes
+<code>npm create vite</code> templates, so it cannot start one without npm).
+<code>examples/desktop-app</code> uses the package and the whole bridge.</p>
+
 <h3 id="contents">Contents</h3>
 <ul>
-<li><code>ray_ds.mount(prefix)</code>: mounts the elements, <code>tokens.css</code>, <code>base.css</code> and
-<code>raylang.js</code> in the app's <code>ray://app</code> tree.</li>
-<li><code>ray_ds/bridge</code> (plan 1).</li>
-<li>The package is the <code>ray_ds/</code> directory of this repo (it exists since plan
-1 with <code>bridge.ray</code>); <code>build</code> adds the generated modules to it, the way it
-writes <code>src/index.js</code>. Its version is the version in <code>ray-ds.toml</code>.</li>
-<li>The directory is <code>ray_ds</code>, not <code>ray-ds</code>: a path dependency is imported by
-the name of its directory, whatever its key in <code>[dependencies]</code> (finding
-#135). What name a <code>git+</code> or index dependency gets is part of the spike.</li>
+<li><code>ray_ds/assets</code> (generated by <code>build</code>): the files of <code>@ray-ds/elements</code> —
+<code>index.js</code> (every component, and the API: <code>enableRaylang</code>, <code>notify</code>,
+<code>confirmDialog</code>…), <code>core/</code>, <code>components/</code>, <code>tokens.css</code>, <code>base.css</code> — as
+constants. <code>assets.mount(prefix)</code> serves them with <code>ui.mount_bytes</code>;
+<code>assets.files()</code> and <code>assets.read(path)</code> list and read them;
+<code>assets.VERSION</code> is the version of ray-ds. Its test checks every file
+byte for byte.</li>
+<li><code>ray_ds/bridge</code> (plan 1, hand-written).</li>
+<li><code>ray_ds/ray.toml</code> takes its version from <code>ray-ds.toml</code>, and <code>build</code> fails if
+<code>bridge.VERSION</code> says another one.</li>
+<li>No <code>mod.ray</code>: it would make the other modules internal to the capsule, so
+the package is <code>import ray_ds/assets;</code> and <code>import ray_ds/bridge;</code>.</li>
 </ul>
 
-<h3 id="how-the-assets-travel">How the assets travel</h3>
-<p>The package must work in <code>ray run</code>, in a native build and in a bundle, where
-the app runs with <code>cwd=/</code> and only embedded assets exist. Two routes, to be
-decided by a spike:</p>
+<h3 id="how-the-assets-travel-decided-by-the-spike">How the assets travel: decided by the spike</h3>
+<p>The package must work under <code>ray run</code>, in a native binary and in a bundle,
+where the app runs from any directory and only what was baked in exists.</p>
 
 <ol>
-<li><strong>The package embeds them</strong> (<code>[native] embed</code> in the package's own
-<code>ray.toml</code>, mounted with <code>ui.mount_embed_at</code>). The raylang docs do not say
-whether a dependency's <code>embed</code> reaches the app's binary. If it does not,
-that goes to <code>RAYLANG-FINDINGS.md</code>.</li>
-<li><strong>Generated module.</strong> <code>build</code> writes the assets as constants of a raylang
-module and <code>mount</code> serves them with <code>ui.mount_bytes</code>. It works with what the
-docs describe today; the spike measures the compile time and binary size.</li>
+<li><strong>The package embeds them</strong> (its own <code>[native] embed</code>): <strong>does not work.</strong>
+A dependency's <code>embed</code> is ignored, under <code>ray run</code> and in a native binary:
+<code>std/embed</code> only has the app's own files, also when the package reads it
+(finding #139).</li>
+<li><strong>Generated module</strong> (chosen): <code>build</code> writes the 86 files (about 690 KB of
+source) as string constants of <code>ray_ds/assets.ray</code>. Measured on macOS with
+raylang 1.27.39: generating it takes under half a second, a native build
+of <code>examples/desktop-app</code> takes 7.5 s and weighs 2.5 MB, and the files
+arrive byte for byte under <code>ray run</code> and in the native binary (its
+<code>--check</code> passes with the binary).</li>
 </ol>
 
-<h3 id="starting-a-project">Starting a project</h3>
-<p><code>ray new --frontend</code> takes <code>npm create vite</code> templates, so it cannot start a
-ray-ds app without npm. Until raylang offers templates from a repository
-(another candidate finding), the package docs start from a minimal app
-(<code>ray.toml</code>, <code>src/main.ray</code>, <code>assets/index.html</code>) that is also kept as
-<code>examples/starter</code> and tested by the build.</p>
+<p>The cost is a ~700 KB generated file in the repository, rewritten when a
+component changes (git stores the difference).</p>
 
 <h3 id="milestones-2">Milestones</h3>
 <ol>
-<li><strong>Spike</strong> on the two asset routes; pick one.</li>
-<li><strong>Package</strong> in <code>packages/raylang/</code>, generated by <code>build</code>, with <code>mount</code> and
-a raylang test that serves every file.</li>
-<li><strong>Starter</strong> example and its <code>--check</code>.</li>
-<li><strong>Publish</strong> in the index (<code>github.com/ray-language/ray-index</code>) and document
-<code>ray add ray-ds</code> in the README.</li>
+<li>✅ <strong>Spike</strong> on the two asset routes: the generated module.</li>
+<li>✅ <strong>Package</strong> in <code>ray_ds/</code>, generated by <code>build</code>, with <code>mount</code> and a raylang
+test that checks every file.</li>
+<li>✅ <strong>Starter</strong> example and its <code>--check</code>.</li>
+<li><strong>Publish.</strong> What the spike found about dependencies decides how:
+<ul>
+<li>a <code>git+</code> dependency puts the <strong>root</strong> of the repository in
+<code>.ray-deps/&lt;key&gt;</code> and imports it by the key; there is no way to point at
+a subdirectory (finding #140), and the packages of the index are one
+repository each, with the modules at the root (<code>greeting</code>, for
+instance). So <code>ray_ds/</code> cannot be installed from this repository as it
+is: <code>git+https://github.com/ray-language/ray-ds</code> would give the docs
+site's repository, not the package.</li>
+<li>The proposal: a repository of its own, <code>ray-language/ray_ds</code>, whose
+contents are <code>ray_ds/</code> of a tagged version of this one (copied by a
+release step or by CI), published with <code>ray registry publish</code> from it.
+Then <code>ray add ray_ds</code> and <code>import ray_ds/assets;</code> work as above.</li>
+</ul>
+</li>
 </ol>
 
 <h2 id="later-ideas">Later ideas</h2>

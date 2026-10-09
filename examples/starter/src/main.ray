@@ -1,0 +1,60 @@
+// The smallest std/ui app with ray-ds: copy this directory to start one.
+// ray-ds comes from the raylang package (no npm, no copied files) and the
+// page from assets/ ([native] embed: from disk under `ray run`, baked into a
+// native binary). The bridge gives the page the system dialogs.
+//
+//   ray run                    open the window; close it to quit
+//   ray run src/main.ray --check
+//                              open it, check the components run, exit 0/1
+
+import std/time;
+import std/ui;
+import ray_ds/assets;
+import ray_ds/bridge;
+
+fn main() -> int {
+    match (run(args().contains("--check"))) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("starter: ${e}");
+            1
+        },
+    }
+}
+
+fn run(check: bool) -> Result<int, string> {
+    assets.mount("ray-ds")?;
+    ui.mount_embed_at("", "assets")?;
+    var o = ui.options(560, 420);
+    o.background = "#ffffff";
+    let h = ui.open_with("Starter", "ray://app/index.html", o)?;
+    let deadline = time.now() + 15000;
+    while (true) {
+        let e = if (check) {
+            match (ui.next_event_timeout(deadline - time.now())?) {
+                Option.Some(e) => e,
+                Option.None => {
+                    eprint("starter: the page did not answer in 15 s");
+                    return Result.Ok(1);
+                },
+            }
+        } else {
+            ui.next_event()?
+        };
+        if (bridge.handle(e)) {
+            continue;
+        }
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        if (e.kind == "message") {
+            print(e.tag);
+            if (check && e.tag.starts_with("ready:")) {
+                close(h);
+                let ok = e.tag == "ready:raylang";
+                print(if (ok) { "check ok" } else { "check failed: expected ready:raylang" });
+                return Result.Ok(if (ok) { 0 } else { 1 });
+            }
+        }
+    }
+}

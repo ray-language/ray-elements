@@ -1,7 +1,7 @@
 # The docs site, built from the sources and published to GitHub Pages.
 #
 # Every push to main (and every pull request) builds it and checks that the
-# committed output (docs/, packages/, dist/tokens.*, src/index.js,
+# committed output (docs/, packages/, dist/tokens.*, src/index.js, ray_ds/,
 # tools/src/ray_ds/) matches
 # what the sources generate. Publishing is a second job, off until the repo
 # variable PAGES_DEPLOY is "true" (Settings → Secrets and variables →
@@ -42,6 +42,10 @@ jobs:
         working-directory: tools
         run: ray test
 
+      - name: raylang package tests
+        working-directory: ray_ds
+        run: ray test
+
       # Served at /<repo>/ on GitHub Pages; a custom domain would be "/".
       - name: Build the site
         run: ray run tools/src/main.ray site --base "${PAGES_BASE:-/${{ github.event.repository.name }}/}"
@@ -50,9 +54,9 @@ jobs:
 
       - name: Committed output matches the sources
         run: |
-          if ! git diff --quiet -- docs packages dist src/index.js tools/src/ray_ds || [ -n "$(git status --porcelain -- docs packages dist src/index.js tools/src/ray_ds)" ]; then
+          if ! git diff --quiet -- docs packages dist src/index.js tools/src/ray_ds ray_ds || [ -n "$(git status --porcelain -- docs packages dist src/index.js tools/src/ray_ds ray_ds)" ]; then
             echo "::error::The generated files differ from what the sources produce. Run 'ray run tools/src/main.ray build' and commit the result."
-            git status --short -- docs packages dist src/index.js tools/src/ray_ds
+            git status --short -- docs packages dist src/index.js tools/src/ray_ds ray_ds
             exit 1
           fi
 

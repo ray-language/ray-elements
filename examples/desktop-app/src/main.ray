@@ -2,8 +2,8 @@
 // bridge: the system dialogs (folder, files, save target, confirmation), a
 // native context menu, the menu bar in the command palette, the page under a
 // transparent title bar, window colors that follow the theme and the
-// "unsaved changes" mark. The page is assets/index.html + app.js; ray-ds is
-// served from the repository's src/ (an app of its own copies it with `add`).
+// "unsaved changes" mark. The page is assets/index.html + app.js; ray-ds
+// comes from the raylang package (ray_ds/assets), served from the program.
 //
 //   ray run                    open the window; close it to quit
 //   ray run src/main.ray --check
@@ -13,6 +13,7 @@ import std/fs;
 import std/json;
 import std/time;
 import std/ui;
+import ray_ds/assets;
 import ray_ds/bridge;
 
 fn main() -> int {
@@ -27,9 +28,10 @@ fn main() -> int {
 }
 
 fn run(check: bool) -> Result<int, string> {
-    ui.mount_dir("ray-ds", "../../src")?;
-    ui.mount_dir("tokens", "../../dist")?;
-    ui.mount_dir("", "assets")?;
+    // ray-ds from the package; the page from [native] embed (from disk under
+    // `ray run`, baked into a native binary).
+    assets.mount("ray-ds")?;
+    ui.mount_embed_at("", "assets")?;
     // One Native for the whole loop: it records the menus for the palette.
     let n = bridge.system();
     let seen: [string] = [];

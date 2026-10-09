@@ -66,6 +66,10 @@ The first public release.
   follow the theme, and `trackEdits(form)` shows unsaved changes.
 - An "In a raylang app" section on the pages of the components that use the
   bridge, and `examples/desktop-app`, a folder browser that uses all of it.
+- The raylang package `ray_ds`: `ray_ds/assets` (generated) serves every
+  component, `tokens.css` and `base.css` from the program with
+  `assets.mount("ray-ds")`, under `ray run` and in a native binary;
+  `examples/starter` is the smallest app with it.
 
 ### Docs site
 
