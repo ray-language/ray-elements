@@ -29,8 +29,9 @@ const MAC_BUTTONS = 78;
  * long to wait for that answer; `ray` replaces window.ray (tests).
  * `windowColors` (default true) keeps the window's background in the
  * theme's background color, so a resize or a reopen never shows the other
- * theme, and the title bar in it too when the theme is light or dark (with
- * "system" the bar stays the system's, so the page keeps following it).
+ * theme. The title bar is tinted too only when the window has its own bar
+ * (not full_content) and the theme is light or dark: with "system" it stays
+ * the system's, so the page keeps following the system.
  */
 export function enableRaylang({ timeout = 2000, ray = globalThis.ray, windowColors = true } = {}) {
   if (ray !== globalThis.ray) return connect(ray, timeout, windowColors);
@@ -92,8 +93,8 @@ async function connect(ray, timeout, windowColors) {
     setEdited(edited) {
       return call("set_edited", { edited: Boolean(edited) });
     },
-    setWindowColors({ background = "", titlebar = background } = {}) {
-      return call("window_colors", { background, titlebar });
+    setWindowColors({ background = "", titlebar } = {}) {
+      return call("window_colors", titlebar === undefined ? { background } : { background, titlebar });
     },
     async confirm({ title = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", style = "" } = {}) {
       return Boolean(await call("confirm", { title, message, confirmLabel, cancelLabel, style }));
@@ -111,15 +112,26 @@ async function connect(ray, timeout, windowColors) {
   setHost(host);
   root.setAttribute("data-ray-host", "raylang");
   if (windowColors && ops.has("window_colors")) {
-    // The title bar color also sets the window's appearance (macOS picks
-    // light or dark by its luminance), and the page's prefers-color-scheme
-    // follows it: with the "system" theme the bar stays the system's, or a
-    // dark bar would keep the page dark after the system turns light.
+    // A title bar color also sets the window's appearance (macOS picks light
+    // or dark by its luminance), which the page's prefers-color-scheme
+    // follows, and in a full_content window it brings back the opaque bar.
+    // So the bar is tinted only in a window with its own bar and a chosen
+    // theme (light or dark), and given back to the system once after that.
+    let tinted = false;
     const paint = (theme) => {
       const background = hex(theme.background);
       if (!background) return;
-      const titlebar = getTheme() === "system" ? "" : background;
-      host.setWindowColors({ background, titlebar }).catch(() => {});
+      const colors = { background };
+      if (!host.titlebar) {
+        if (getTheme() !== "system") {
+          colors.titlebar = background;
+          tinted = true;
+        } else if (tinted) {
+          colors.titlebar = "";
+          tinted = false;
+        }
+      }
+      host.setWindowColors(colors).catch(() => {});
     };
     paint(chartTheme());
     onChartThemeChange(paint);

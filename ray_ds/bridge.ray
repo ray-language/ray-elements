@@ -46,8 +46,9 @@ pub struct Native {
     // A context menu over a window (ui.popup_menu): the choice comes back
     // later as a "menu" event, which route() hands to the page.
     popup: fn(int, [ui.MenuItem]) -> Result<int, string>,
-    // The window's background and title bar colors ("#rrggbb"; "" = system).
-    window_colors: fn(int, string, string) -> Result<int, string>,
+    // The window's background and, if given, title bar colors ("#rrggbb";
+    // "" = the system's).
+    window_colors: fn(int, string, Option<string>) -> Result<int, string>,
     // The "unsaved changes" mark of a window.
     set_edited: fn(int, bool) -> Result<int, string>,
     // The menus declared with menu(), menu_at() and replace_menu().
@@ -81,9 +82,12 @@ pub fn system() -> Native {
         },
         file_size: fn(path: string) -> Result<int, string> { fs.file_size(path) },
         popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> { ui.popup_menu(h, items) },
-        window_colors: fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+        window_colors: fn(h: int, background: string, titlebar: Option<string>) -> Result<int, string> {
             ui.set_background(h, background)?;
-            ui.set_titlebar_color(h, titlebar)
+            match (titlebar) {
+                Option.Some(t) => ui.set_titlebar_color(h, t),
+                Option.None => Result.Ok(0),
+            }
         },
         set_edited: fn(h: int, edited: bool) -> Result<int, string> { ui.set_edited(h, edited) },
         menus: [],
@@ -321,12 +325,15 @@ fn popup_menu(n: Native, window: int, j: json.Json) -> Result<string, string> {
     Result.Ok("true")
 }
 
-// {background, titlebar}: "#rrggbb" each ("" = the system's; a missing
-// titlebar takes the background) -> true.
+// {background, titlebar?}: "#rrggbb" each ("" = the system's) -> true. The
+// title bar is left as it is when `titlebar` is missing: on macOS any title
+// bar color also sets the window's appearance (and the page's
+// prefers-color-scheme), and in a full_content window it brings back the
+// opaque bar (finding #141).
 fn window_colors(n: Native, window: int, j: json.Json) -> Result<string, string> {
     let background = json.get_string(j, "background").unwrap_or("");
-    let titlebar = json.get_string(j, "titlebar").unwrap_or(background);
-    for c in [background, titlebar] {
+    let titlebar = json.get_string(j, "titlebar");
+    for c in [background, titlebar.unwrap_or("")] {
         if (!is_color(c)) {
             return Result.Err("window_colors: '${c}' is not a #rrggbb color");
         }
@@ -461,7 +468,7 @@ fn fake() -> Native {
         popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> {
             if (items.len() == 0) { Result.Err("empty menu") } else { Result.Ok(0) }
         },
-        window_colors: fn(h: int, background: string, titlebar: string) -> Result<int, string> {
+        window_colors: fn(h: int, background: string, titlebar: Option<string>) -> Result<int, string> {
             if (h == 0) { Result.Err("no window") } else { Result.Ok(0) }
         },
         set_edited: fn(h: int, edited: bool) -> Result<int, string> { Result.Ok(0) },

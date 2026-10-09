@@ -296,14 +296,17 @@ T.test("command palette: without native-menus, only its actions", async (T) => {
 
 const native = () => new Promise((resolve) => document.addEventListener("ray-test:native", (e) => resolve(e.detail), { once: true }));
 const { titlebar, dragRegion, trackEdits } = await import("../../src/core/host.js");
-const { setTheme } = await import("../../src/core/core.js");
+const { setTheme, setPrimary } = await import("../../src/core/core.js");
 
 T.test("raylang: window colors and the edited mark reach the program", async (T) => {
   const host = getHost();
   T.ok(host.can("window_colors") && host.can("set_edited"), "ops");
   let got = native();
   await host.setWindowColors({ background: "#112233" });
-  T.eq(await got, "window_colors:#112233|#112233");
+  T.eq(await got, "window_colors:#112233|-", "the title bar untouched");
+  got = native();
+  await host.setWindowColors({ background: "#112233", titlebar: "" });
+  T.eq(await got, "window_colors:#112233|", "the title bar back to the system's");
   let error = null;
   try { await host.setWindowColors({ background: "blue" }); } catch (e) { error = e; }
   T.ok(error && /not a #rrggbb/.test(error.message), String(error));
@@ -363,15 +366,16 @@ T.test("raylang: under a title bar (full_content)", async (T) => {
     T.ok(root.hasAttribute("data-ray-titlebar"));
     const painted = calls.filter((c) => c.op === "window_colors");
     T.eq(painted.length, 1, "the window takes the theme's background at once");
-    T.ok(/^#[0-9a-f]{6}$/.test(painted[0].background) && painted[0].titlebar === "", `the system theme leaves the title bar to the system: ${JSON.stringify(painted[0])}`);
+    T.ok(/^#[0-9a-f]{6}$/.test(painted[0].background), JSON.stringify(painted[0]));
     setTheme(painted[0].background === "#ffffff" ? "dark" : "light", { persist: false });
     await T.settle();
     const again = calls.filter((c) => c.op === "window_colors");
     T.ok(again.length >= 2 && again.at(-1).background !== painted[0].background, "and follows the theme");
-    T.eq(again.at(-1).titlebar, again.at(-1).background, "a chosen theme tints the title bar");
     setTheme("system", { persist: false });
     await T.settle();
-    T.eq(calls.filter((c) => c.op === "window_colors").at(-1).titlebar, "", "back to the system's bar");
+    // Under a transparent title bar any bar color brings back the opaque bar
+    // and sets the window's appearance: never sent.
+    T.ok(calls.filter((c) => c.op === "window_colors").every((c) => !("titlebar" in c)), "the title bar is never touched");
 
     // ray-app-shell: the header is the title bar and drags the window.
     const box = await mount(`
@@ -416,4 +420,33 @@ T.test("dragRegion: only under a title bar", async (T) => {
   T.ok(!el.hasAttribute("data-ray-drag"), "the runner's window has no title bar over the page");
   undo();
   box.remove();
+});
+
+T.test("raylang: a window with its own title bar tints it only for a chosen theme", async (T) => {
+  const real = getHost();
+  const calls = [];
+  const ray = {
+    titlebar_height: 0,
+    request: async (m) => {
+      calls.push(m);
+      return m.op === "hello" ? { ok: true, value: { ops: ["hello", "window_colors"], platform: "macos", version: "t" } } : { ok: true, value: true };
+    },
+  };
+  try {
+    await enableRaylang({ ray });
+    const last = () => calls.filter((c) => c.op === "window_colors").at(-1);
+    T.ok(!("titlebar" in last()), "system theme: the bar is the system's");
+    setTheme("dark", { persist: false });
+    await T.settle();
+    T.eq(last().titlebar, last().background, "dark: the bar takes the background");
+    setTheme("system", { persist: false });
+    await T.settle();
+    T.eq(last().titlebar, "", "back to system: the bar is given back once");
+    setPrimary("#7c3aed", { persist: false });
+    await T.settle();
+    T.ok(!("titlebar" in last()), "and left alone afterwards");
+    setPrimary(null, { persist: false });
+  } finally {
+    setHost(real);
+  }
 });

@@ -113,7 +113,7 @@ window.app = {
   browse: () => workspace.browse(),
   // persist: false for the --check, which must not change the user's choice.
   systemTheme: () => setTheme("system", { persist: false }),
-  resolved: () => send(`resolved:${resolvedTheme()}`),
+  resolved: () => send(`resolved:${resolvedTheme()}, ${innerHeight} px high`),
   toggleTheme: (persist = true) => setTheme(resolvedTheme() === "dark" ? "light" : "dark", { persist }),
   exportTo: () => send(`export:${JSON.stringify({ to: new FormData(form).get("export"), dir: workspace.value ?? "" })}`),
   load,

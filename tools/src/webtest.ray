@@ -101,8 +101,8 @@ fn scripted(root: string) -> bridge.Native {
         }
         Result.Ok(0)
     };
-    n.window_colors = fn(h: int, background: string, titlebar: string) -> Result<int, string> {
-        tell(h, "window_colors:${background}|${titlebar}")
+    n.window_colors = fn(h: int, background: string, titlebar: Option<string>) -> Result<int, string> {
+        tell(h, "window_colors:${background}|${titlebar.unwrap_or("-")}")
     };
     n.set_edited = fn(h: int, edited: bool) -> Result<int, string> { tell(h, "set_edited:${edited}") };
     var close = ui.item("close", "Close window", "W");
