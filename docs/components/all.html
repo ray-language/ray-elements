@@ -4326,149 +4326,27 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
   <span class="demo-muted" id="demo-shell-mode">phone layout: app bar, content, bottom nav</span>
 </ray-group>
 <div class="demo-device" id="demo-device" data-size="phone">
-  <ray-app-shell id="demo-shell" style="height: 100%">
-    <ray-app-bar slot="header" id="demo-shell-bar" label="Home" description="ray-remote">
-      <ray-icon-button slot="start" variant="subtle" label="Menu" id="demo-shell-menu"><ray-icon name="menu"></ray-icon></ray-icon-button>
-      <ray-icon-button slot="end" variant="subtle" label="Search" data-go="search"><ray-icon name="search"></ray-icon></ray-icon-button>
-      <ray-indicator slot="end" label="3" color="red" offset="7"><ray-icon-button variant="subtle" label="Notifications, 3 unread"><ray-icon name="bell"></ray-icon></ray-icon-button></ray-indicator>
-    </ray-app-bar>
-
-    <ray-sidebar slot="navbar" id="demo-shell-side" label="App" breakpoint="0px">
-      <ray-group slot="header" gap="sm" class="demo-shell-brand"><ray-avatar name="Ray Remote" color="violet" size="sm" radius="md"></ray-avatar><strong>ray-remote</strong></ray-group>
-      <ray-nav-link label="Home" data-page="home" active><ray-icon slot="left" name="home"></ray-icon></ray-nav-link>
-      <ray-nav-link label="Search" data-page="search"><ray-icon slot="left" name="search"></ray-icon></ray-nav-link>
-      <ray-nav-link label="Messages" data-page="messages"><ray-icon slot="left" name="message-circle"></ray-icon><ray-badge slot="right" size="xs" variant="filled" color="red">3</ray-badge></ray-nav-link>
-      <ray-nav-link label="Profile" data-page="profile"><ray-icon slot="left" name="user"></ray-icon></ray-nav-link>
-    </ray-sidebar>
-
-    <ray-container size="md" padding="md" class="demo-shell-main">
-      <section data-page="home">
-        <ray-stack gap="lg">
-          <ray-stack gap="2"><strong class="demo-title">Good morning, Ada</strong><span class="demo-muted">2 builds running · last deploy 2 h ago</span></ray-stack>
-          <ray-grid cols="1 xs:2" gap="sm">
-            <ray-stat label="Builds today" value="48" diff="12"></ray-stat>
-            <ray-stat label="Success rate" value="98.2%" diff="0.4"></ray-stat>
-          </ray-grid>
-          <ray-stack gap="xs">
-            <strong>Recent builds</strong>
-            <ul class="demo-shell-list" data-builds></ul>
-          </ray-stack>
-        </ray-stack>
-      </section>
-      <section data-page="search" hidden>
-        <ray-stack gap="md">
-          <ray-search aria-label="Search builds" placeholder="Search builds, people, files" debounce="0" id="demo-shell-search"></ray-search>
-          <ul class="demo-shell-list" data-results></ul>
-        </ray-stack>
-      </section>
-      <section data-page="messages" hidden>
-        <ul class="demo-shell-list">
-          <li><ray-avatar name="Alan Turing" color="blue" size="sm"></ray-avatar><span><b>Alan Turing</b><small>The new docs load in half the time.</small></span><small>10:42</small></li>
-          <li><ray-avatar name="Grace Hopper" color="teal" size="sm"></ray-avatar><span><b>Grace Hopper</b><small>Can you review #482?</small></span><small>09:15</small></li>
-          <li><ray-avatar name="Katherine Johnson" color="orange" size="sm"></ray-avatar><span><b>Katherine Johnson</b><small>Numbers look right to me.</small></span><small>Mon</small></li>
-        </ul>
-      </section>
-      <section data-page="profile" hidden>
-        <ray-center class="demo-shell-profile">
-          <ray-stack align="center" gap="xs">
-            <ray-avatar name="Ada Lovelace" color="pink" size="xl"></ray-avatar>
-            <strong class="demo-title">Ada Lovelace</strong>
-            <span class="demo-muted">ada@ray.dev · Pro plan</span>
-            <ray-group gap="xs"><ray-button size="sm" variant="default">Edit profile</ray-button><ray-button size="sm" variant="subtle" color="red">Sign out</ray-button></ray-group>
-          </ray-stack>
-        </ray-center>
-      </section>
-    </ray-container>
-
-    <aside slot="aside" class="demo-shell-aside" aria-label="Activity">
-      <strong>Activity</strong>
-      <ol>
-        <li><ray-badge variant="dot" color="green" normal-case>#482 passed</ray-badge><small>2 min ago</small></li>
-        <li><ray-badge variant="dot" color="blue" normal-case>Deploy to stable</ray-badge><small>2 h ago</small></li>
-        <li><ray-badge variant="dot" color="orange" normal-case>#479 slow</ray-badge><small>yesterday</small></li>
-      </ol>
-    </aside>
-
-    <ray-bottom-nav slot="bottom" id="demo-shell-nav" value="home" hide-on-scroll>
-      <ray-bottom-nav-item value="home" label="Home" icon="home"></ray-bottom-nav-item>
-      <ray-bottom-nav-item value="search" label="Search" icon="search"></ray-bottom-nav-item>
-      <ray-bottom-nav-item value="new" label="New" icon="plus" action></ray-bottom-nav-item>
-      <ray-bottom-nav-item value="messages" label="Messages" icon="message-circle" badge="3"></ray-bottom-nav-item>
-      <ray-bottom-nav-item value="profile" label="Profile" icon="user" dot></ray-bottom-nav-item>
-    </ray-bottom-nav>
-  </ray-app-shell>
+  <iframe id="demo-shell-frame" src="../../src/components/app-shell/demo.html" title="ray-app-shell demo: an app in a device"></iframe>
 </div>
-
-<ray-drawer id="demo-shell-drawer" label="ray-remote" position="left" size="xs">
-  <nav class="demo-drawer-nav" aria-label="More">
-    <ray-nav-link label="Settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
-    <ray-nav-link label="Files"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
-    <ray-nav-link label="Releases"><ray-icon slot="left" name="download"></ray-icon></ray-nav-link>
-  </nav>
-</ray-drawer>
-<ray-drawer id="demo-shell-new" label="Create" position="bottom" size="15rem">
-  <ray-grid cols="3" gap="sm">
-    <ray-button variant="light" data-dialog-close="build"><ray-icon slot="left" name="terminal"></ray-icon>Build</ray-button>
-    <ray-button variant="light" color="teal" data-dialog-close="file"><ray-icon slot="left" name="file"></ray-icon>File</ray-button>
-    <ray-button variant="light" color="violet" data-dialog-close="invite"><ray-icon slot="left" name="user"></ray-icon>Invite</ray-button>
-  </ray-grid>
-</ray-drawer>
+<p class="demo-muted">The app is a page of its own (<a href="../../src/components/app-shell/demo.html" target="_blank" rel="noopener">open it</a>) in an iframe: its drawers, menus and sheets open inside the device, and the shell picks its layout from the frame's width.</p>
 
 <script type="module">
-  const shell = document.getElementById("demo-shell");
+  // Frame width: the shell inside measures itself and picks its layout.
   const device = document.getElementById("demo-device");
-  const nav = document.getElementById("demo-shell-nav");
-  const side = document.getElementById("demo-shell-side");
-  const bar = document.getElementById("demo-shell-bar");
-  const titles = { home: "Home", search: "Search", messages: "Messages", profile: "Profile" };
-
-  // Frame width: the shell measures itself and picks its layout.
+  const frame = document.getElementById("demo-shell-frame");
+  const label = document.getElementById("demo-shell-mode");
   document.getElementById("demo-shell-width").addEventListener("change", (e) => { device.dataset.size = e.target.value; });
-  const mode = () => {
-    document.getElementById("demo-shell-mode").textContent = shell.mobile
-      ? "phone layout: app bar, content, bottom nav"
-      : "wide layout: header, sidebar, content, aside";
+  const watch = () => {
+    const shell = frame.contentDocument?.querySelector("ray-app-shell");
+    if (!shell) return;
+    const mode = () => {
+      label.textContent = shell.mobile ? "phone layout: app bar, content, bottom nav" : "wide layout: header, sidebar, content, aside";
+    };
+    shell.addEventListener("ray-breakpoint", mode);
+    frame.contentWindow.customElements.whenDefined("ray-app-shell").then(mode);
   };
-  shell.addEventListener("ray-breakpoint", mode);
-  customElements.whenDefined("ray-app-shell").then(() => requestAnimationFrame(mode));
-
-  // One destination, shown by the bottom nav, the sidebar and the bar.
-  const go = (page) => {
-    for (const s of shell.querySelectorAll("section[data-page]")) s.hidden = s.dataset.page !== page;
-    for (const l of side.querySelectorAll("ray-nav-link")) l.active = l.dataset.page === page;
-    nav.value = page;
-    bar.label = titles[page];
-    shell.scroller.scrollTop = 0;
-  };
-  nav.addEventListener("change", () => go(nav.value));
-  side.addEventListener("click", (e) => { const link = e.target.closest("ray-nav-link"); if (link) go(link.dataset.page); });
-  for (const b of shell.querySelectorAll("[data-go]")) b.addEventListener("click", () => go(b.dataset.go));
-
-  // The menu: the drawer on a phone, the sidebar's rail on wide screens.
-  document.getElementById("demo-shell-menu").addEventListener("click", () => {
-    if (shell.mobile) document.getElementById("demo-shell-drawer").show();
-    else side.toggle();
-  });
-  nav.addEventListener("ray-select", () => document.getElementById("demo-shell-new").show());
-
-  // Content to scroll: the bar elevates, the bottom nav hides going down.
-  const builds = shell.querySelector("[data-builds]");
-  const states = [["green", "passed"], ["green", "passed"], ["orange", "slow"], ["green", "passed"], ["red", "failed"]];
-  for (let i = 0; i < 14; i++) {
-    const [color, state] = states[i % states.length];
-    const li = document.createElement("li");
-    li.innerHTML = `<span class="ic" style="--c: var(--ray-${color}-light-color); --b: var(--ray-${color}-light)"><ray-icon name="terminal"></ray-icon></span><span><b>#${482 - i} ${state}</b><small>main · ${(3 + (i % 4) * 0.7).toFixed(1)} s</small></span><small>${i * 7 + 2} min</small>`;
-    builds.append(li);
-  }
-  const results = shell.querySelector("[data-results]");
-  const all = ["#482 passed", "#481 passed", "#480 slow", "Ada Lovelace", "Grace Hopper", "release-notes.md", "bundles/"];
-  const search = document.getElementById("demo-shell-search");
-  const find = () => {
-    const q = (search.value ?? "").toLowerCase();
-    results.replaceChildren(...all.filter((r) => r.toLowerCase().includes(q)).map((r) => { const li = document.createElement("li"); li.innerHTML = "<span><b></b></span>"; li.querySelector("b").textContent = r; return li; }));
-  };
-  search.addEventListener("input", find);
-  find();
+  frame.addEventListener("load", watch);
+  if (frame.contentDocument?.readyState === "complete") watch();
 </script>
 </div>
 <details class="source" data-code-src="code/app-shell.html"><summary>Code</summary>

@@ -1281,7 +1281,7 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 /* Device frames: a shell sized by its frame picks its layout from it. */
 .demo-device-bar { margin-bottom: var(--ray-space-3); }
 .demo-device { box-sizing: border-box; height: 40rem; max-width: 100%; margin-inline: auto; overflow: hidden; background: var(--ray-background); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-xl); box-shadow: var(--ray-shadow-md); transition: width var(--ray-duration-slow) var(--ray-easing-standard); }
-.demo-device[data-size="phone"] { width: 24.375rem; border: 8px solid color-mix(in srgb, var(--ray-foreground) 88%, var(--ray-background)); border-radius: 2.75rem; }
+.demo-device[data-size="phone"] { width: 24.375rem; height: auto; aspect-ratio: 71.5 / 146.7; /* an iPhone 12: 71.5 × 146.7 mm */ border: 8px solid color-mix(in srgb, var(--ray-foreground) 88%, var(--ray-background)); border-radius: 2.75rem; }
 .demo-device[data-size="tablet"] { width: 51.25rem; }
 .demo-device[data-size="desktop"] { width: 100%; }
 .demo-shell-main { padding-block: var(--ray-space-4); }
@@ -1360,3 +1360,5 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .thumb .t-num .s { display: grid; width: 1.2rem; border-left: 1px solid var(--ray-border); color: var(--ray-muted-foreground); }
 .thumb .t-num .s svg { width: 0.55rem; height: 0.55rem; margin: auto; }
 .thumb .t-num .s svg + svg { border-top: 1px solid var(--ray-border); }
+.demo-device iframe { display: block; width: 100%; height: 100%; border: 0; border-radius: calc(var(--ray-radius-xl) - 1px); }
+.demo-device[data-size="phone"] iframe { border-radius: calc(2.75rem - 8px); }

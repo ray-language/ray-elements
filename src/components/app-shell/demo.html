@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ray-app-shell demo</title>
+<!-- The ray-app-shell example of the docs, in a page of its own: the docs
+     show it in a device frame (an iframe), so its drawers, menus and sheets
+     open inside the device. It copies the docs page's theme and primary. -->
+<script>
+(function () {
+  // The theme and primary color of the page around (same origin), live.
+  try {
+    var outer = window.parent !== window ? window.parent.document.documentElement : null;
+    if (!outer) return;
+    var copy = function () {
+      var root = document.documentElement;
+      for (var a of ["data-theme", "data-primary", "style"]) {
+        var v = outer.getAttribute(a);
+        if (v === null) root.removeAttribute(a); else root.setAttribute(a, v);
+      }
+    };
+    copy();
+    new MutationObserver(copy).observe(outer, { attributes: true, attributeFilter: ["data-theme", "data-primary", "style"] });
+  } catch (e) {}
+})();
+</script>
+<link rel="stylesheet" href="../../../dist/tokens.css">
+<link rel="stylesheet" href="../../core/base.css">
+<link rel="stylesheet" href="../../../site/site.css">
+<style>
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--ray-background); }
+  ray-app-shell[data-mobile] .wide-only { display: none; }
+  /* In the docs' device frame: the backdrops follow its rounded corners. */
+  ray-drawer::part(drawer)::backdrop { border-radius: var(--ray-radius-xl); }
+  /* The sidebar's rail: the brand shows only its icon. */
+  ray-sidebar[collapsed] .brand-name { display: none; }
+  ray-sidebar[collapsed] .demo-shell-brand { justify-content: center; padding-inline: 0; }
+  .demo-shell-toast { position: fixed; left: 50%; bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); z-index: 10; translate: -50% 0; padding: var(--ray-space-2) var(--ray-space-4); font-size: var(--ray-font-size-sm); color: var(--ray-background); background: var(--ray-foreground); border-radius: var(--ray-radius-full); box-shadow: var(--ray-shadow-md); }
+  ray-app-shell:not([data-mobile]) ~ .demo-shell-toast { bottom: var(--ray-space-6); }
+</style>
+<script type="module">
+  import "../stack/stack.js";
+  import "../group/group.js";
+  import "../grid/grid.js";
+  import "../container/container.js";
+  import "../center/center.js";
+  import "./app-shell.js";
+  import "../app-bar/app-bar.js";
+  import "../bottom-nav/bottom-nav.js";
+  import "../sidebar/sidebar.js";
+  import "../nav-link/nav-link.js";
+  import "../drawer/drawer.js";
+  import "../menu/menu.js";
+  import "../button/button.js";
+  import "../icon-button/icon-button.js";
+  import "../icon/icon.js";
+  import "../indicator/indicator.js";
+  import "../avatar/avatar.js";
+  import "../badge/badge.js";
+  import "../stat/stat.js";
+  import "../search/search.js";
+</script>
+</head>
+<body>
+<ray-app-shell id="demo-shell">
+  <ray-app-bar slot="header" id="demo-shell-bar" label="Home" description="ray-remote">
+    <ray-icon-button slot="start" variant="subtle" label="Menu" id="demo-shell-menu"><ray-icon name="menu"></ray-icon></ray-icon-button>
+    <ray-menu slot="end" placement="bottom-end" class="wide-only" id="demo-shell-new-menu">
+      <ray-button slot="trigger" size="xs"><ray-icon slot="left" name="plus"></ray-icon>New</ray-button>
+      <ray-menu-item value="build"><ray-icon slot="left" name="terminal"></ray-icon>Build</ray-menu-item>
+      <ray-menu-item value="file"><ray-icon slot="left" name="file"></ray-icon>File</ray-menu-item>
+      <ray-menu-item value="invite"><ray-icon slot="left" name="user"></ray-icon>Invite people</ray-menu-item>
+    </ray-menu>
+    <ray-icon-button slot="end" variant="subtle" label="Search" data-go="search"><ray-icon name="search"></ray-icon></ray-icon-button>
+    <ray-indicator slot="end" label="3" color="red" offset="7"><ray-icon-button variant="subtle" label="Notifications, 3 unread"><ray-icon name="bell"></ray-icon></ray-icon-button></ray-indicator>
+  </ray-app-bar>
+
+  <ray-sidebar slot="navbar" id="demo-shell-side" label="App" breakpoint="0px">
+    <ray-group slot="header" gap="sm" nowrap class="demo-shell-brand"><ray-avatar name="Ray Remote" color="violet" size="sm" radius="md"></ray-avatar><strong class="brand-name">ray-remote</strong></ray-group>
+    <ray-nav-link label="Home" data-page="home" active><ray-icon slot="left" name="home"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Search" data-page="search"><ray-icon slot="left" name="search"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Messages" data-page="messages"><ray-icon slot="left" name="message-circle"></ray-icon><ray-badge slot="right" size="xs" variant="filled" color="red">3</ray-badge></ray-nav-link>
+    <ray-nav-link label="Profile" data-page="profile"><ray-icon slot="left" name="user"></ray-icon></ray-nav-link>
+  </ray-sidebar>
+
+  <ray-container size="md" padding="md" class="demo-shell-main">
+    <section data-page="home">
+      <ray-stack gap="lg">
+        <ray-stack gap="2"><strong class="demo-title">Good morning, Ada</strong><span class="demo-muted">2 builds running · last deploy 2 h ago</span></ray-stack>
+        <ray-grid cols="1 xs:2" gap="sm">
+          <ray-stat label="Builds today" value="48" diff="12"></ray-stat>
+          <ray-stat label="Success rate" value="98.2%" diff="0.4"></ray-stat>
+        </ray-grid>
+        <ray-stack gap="xs">
+          <strong>Recent builds</strong>
+          <ul class="demo-shell-list" data-builds></ul>
+        </ray-stack>
+      </ray-stack>
+    </section>
+    <section data-page="search" hidden>
+      <ray-stack gap="md">
+        <ray-search aria-label="Search builds" placeholder="Search builds, people, files" debounce="0" id="demo-shell-search"></ray-search>
+        <ul class="demo-shell-list" data-results></ul>
+      </ray-stack>
+    </section>
+    <section data-page="messages" hidden>
+      <ul class="demo-shell-list">
+        <li><ray-avatar name="Alan Turing" color="blue" size="sm"></ray-avatar><span><b>Alan Turing</b><small>The new docs load in half the time.</small></span><small>10:42</small></li>
+        <li><ray-avatar name="Grace Hopper" color="teal" size="sm"></ray-avatar><span><b>Grace Hopper</b><small>Can you review #482?</small></span><small>09:15</small></li>
+        <li><ray-avatar name="Katherine Johnson" color="orange" size="sm"></ray-avatar><span><b>Katherine Johnson</b><small>Numbers look right to me.</small></span><small>Mon</small></li>
+      </ul>
+    </section>
+    <section data-page="profile" hidden>
+      <ray-center class="demo-shell-profile">
+        <ray-stack align="center" gap="xs">
+          <ray-avatar name="Ada Lovelace" color="pink" size="xl"></ray-avatar>
+          <strong class="demo-title">Ada Lovelace</strong>
+          <span class="demo-muted">ada@ray.dev · Pro plan</span>
+          <ray-group gap="xs"><ray-button size="sm" variant="default">Edit profile</ray-button><ray-button size="sm" variant="subtle" color="red">Sign out</ray-button></ray-group>
+        </ray-stack>
+      </ray-center>
+    </section>
+  </ray-container>
+
+  <aside slot="aside" class="demo-shell-aside" aria-label="Activity">
+    <strong>Activity</strong>
+    <ol>
+      <li><ray-badge variant="dot" color="green" normal-case>#482 passed</ray-badge><small>2 min ago</small></li>
+      <li><ray-badge variant="dot" color="blue" normal-case>Deploy to stable</ray-badge><small>2 h ago</small></li>
+      <li><ray-badge variant="dot" color="orange" normal-case>#479 slow</ray-badge><small>yesterday</small></li>
+    </ol>
+  </aside>
+
+  <ray-bottom-nav slot="bottom" id="demo-shell-nav" value="home" hide-on-scroll>
+    <ray-bottom-nav-item value="home" label="Home" icon="home"></ray-bottom-nav-item>
+    <ray-bottom-nav-item value="search" label="Search" icon="search"></ray-bottom-nav-item>
+    <ray-bottom-nav-item value="new" label="New" icon="plus" action></ray-bottom-nav-item>
+    <ray-bottom-nav-item value="messages" label="Messages" icon="message-circle" badge="3"></ray-bottom-nav-item>
+    <ray-bottom-nav-item value="profile" label="Profile" icon="user" dot></ray-bottom-nav-item>
+  </ray-bottom-nav>
+</ray-app-shell>
+
+<ray-drawer id="demo-shell-drawer" label="ray-remote" position="left" size="xs">
+  <nav class="demo-drawer-nav" aria-label="More">
+    <ray-nav-link label="Settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Files"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Releases"><ray-icon slot="left" name="download"></ray-icon></ray-nav-link>
+  </nav>
+</ray-drawer>
+<ray-drawer id="demo-shell-new" label="Create" position="bottom" size="15rem">
+  <ray-grid cols="3" gap="sm">
+    <ray-button variant="light" data-dialog-close="build"><ray-icon slot="left" name="terminal"></ray-icon>Build</ray-button>
+    <ray-button variant="light" color="teal" data-dialog-close="file"><ray-icon slot="left" name="file"></ray-icon>File</ray-button>
+    <ray-button variant="light" color="violet" data-dialog-close="invite"><ray-icon slot="left" name="user"></ray-icon>Invite</ray-button>
+  </ray-grid>
+</ray-drawer>
+<p class="demo-shell-toast" id="demo-shell-toast" role="status" hidden></p>
+
+<script type="module">
+  const shell = document.getElementById("demo-shell");
+  const nav = document.getElementById("demo-shell-nav");
+  const side = document.getElementById("demo-shell-side");
+  const bar = document.getElementById("demo-shell-bar");
+  const titles = { home: "Home", search: "Search", messages: "Messages", profile: "Profile" };
+
+  // One destination, shown by the bottom nav, the sidebar and the bar.
+  const go = (page) => {
+    for (const s of shell.querySelectorAll("section[data-page]")) s.hidden = s.dataset.page !== page;
+    for (const l of side.querySelectorAll("ray-nav-link")) l.active = l.dataset.page === page;
+    nav.value = page;
+    bar.label = titles[page];
+    shell.scroller.scrollTop = 0;
+  };
+  nav.addEventListener("change", () => go(nav.value));
+  side.addEventListener("click", (e) => { const link = e.target.closest("ray-nav-link"); if (link) go(link.dataset.page); });
+  for (const b of shell.querySelectorAll("[data-go]")) b.addEventListener("click", () => go(b.dataset.go));
+
+  // The menu: the drawer on a phone, the sidebar's rail on wide screens.
+  document.getElementById("demo-shell-menu").addEventListener("click", () => {
+    if (shell.mobile) document.getElementById("demo-shell-drawer").show();
+    else side.toggle();
+  });
+  // New: the bottom nav's action opens a sheet on a phone; wide screens have a menu in the bar.
+  nav.addEventListener("ray-select", () => document.getElementById("demo-shell-new").show());
+  const toast = document.getElementById("demo-shell-toast");
+  const created = (what) => { toast.textContent = `Created: ${what}`; toast.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => { toast.hidden = true; }, 1800); };
+  document.getElementById("demo-shell-new-menu").addEventListener("ray-select", (e) => created(e.detail.value));
+  document.getElementById("demo-shell-new").addEventListener("ray-close", (e) => { if (e.detail.returnValue) created(e.detail.returnValue); });
+
+  // Content to scroll: the bar elevates, the bottom nav hides going down.
+  const builds = shell.querySelector("[data-builds]");
+  const states = [["green", "passed"], ["green", "passed"], ["orange", "slow"], ["green", "passed"], ["red", "failed"]];
+  for (let i = 0; i < 14; i++) {
+    const [color, state] = states[i % states.length];
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="ic" style="--c: var(--ray-${color}-light-color); --b: var(--ray-${color}-light)"><ray-icon name="terminal"></ray-icon></span><span><b>#${482 - i} ${state}</b><small>main · ${(3 + (i % 4) * 0.7).toFixed(1)} s</small></span><small>${i * 7 + 2} min</small>`;
+    builds.append(li);
+  }
+  const results = shell.querySelector("[data-results]");
+  const all = ["#482 passed", "#481 passed", "#480 slow", "Ada Lovelace", "Grace Hopper", "release-notes.md", "bundles/"];
+  const search = document.getElementById("demo-shell-search");
+  const find = () => {
+    const q = (search.value ?? "").toLowerCase();
+    results.replaceChildren(...all.filter((r) => r.toLowerCase().includes(q)).map((r) => { const li = document.createElement("li"); li.innerHTML = "<span><b></b></span>"; li.querySelector("b").textContent = r; return li; }));
+  };
+  search.addEventListener("input", find);
+  find();
+</script>
