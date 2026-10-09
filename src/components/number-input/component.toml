@@ -34,6 +34,8 @@ description = "Fixed decimals (2: 3 shows as 3.00)."
 
 [ray-number-input.properties.prefix]
 type = "string"
+# Element.prefix (the namespace prefix, null in HTML) is a string | null.
+ts = "string | null"
 description = "Shown before the number (\"$\")."
 
 [ray-number-input.properties.suffix]

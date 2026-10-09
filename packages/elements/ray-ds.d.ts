@@ -434,7 +434,7 @@ export declare class RayToggleGroup extends RayButtonGroup {
   /** single: choosing one turns the others off; multiple: each toggle is independent. */
   type: "single" | "multiple";
   /** The selected key (single) or keys (multiple: an array, or a comma-separated attribute). */
-  value: string | string[] | undefined | undefined;
+  value: string | string[] | undefined;
   /** Form field name: the value (multiple: one entry per key). */
   name: string | undefined;
   /** Needs a value; with single the selected toggle cannot be turned off. */
@@ -856,7 +856,7 @@ export declare class RayNumberInput extends FieldControl {
   /** Fixed decimals (2: 3 shows as 3.00). */
   decimals: number | undefined;
   /** Shown before the number ("$"). */
-  prefix: string | undefined;
+  prefix: string | null;
   /** Shown after the number (" kg", "%"). */
   suffix: string | undefined;
   /** Groups thousands in the shown text (",", ".", " "). */
@@ -1703,7 +1703,7 @@ export declare class RayTooltip extends Floating {
 /** <ray-accordion> Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple. */
 export declare class RayAccordion extends RayElement {
   /** Open item's value; with multiple, an array (attribute: comma-separated). */
-  value: string | string[] | undefined | undefined;
+  value: string | string[] | undefined;
   /** Several items may be open. */
   multiple: boolean | undefined;
   /** Visual style. */
@@ -2008,7 +2008,7 @@ export declare class RayTable extends RayElement {
   /** Keys of the selected rows. */
   selection: unknown[] | undefined;
   /** Current sort; set it, or let header clicks change it. */
-  sort: TableSort | null | undefined;
+  sort: TableSort | null;
   /** Do not sort here: listen to ray-sort and pass sorted data. */
   manualSort: boolean | undefined;
   /** Rows are focusable and fire ray-row-click (Enter too; arrows move between rows). */
@@ -2242,12 +2242,12 @@ export declare class RayAppBar extends RayElement {
   /** Height: 48, 56 or 64 px. */
   size: "sm" | "md" | "lg";
   /** While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none. */
-  scroll: "elevate" | "hide" | "none";
+  scrollBehavior: "elevate" | "hide" | "none";
   /** Sticks to the top of the window (outside a shell). */
   sticky: boolean | undefined;
   /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */
   scrollTarget: string | undefined;
-  /** Whether scroll="hide" has slid it away. */
+  /** Whether scroll-behavior="hide" has slid it away. */
   readonly concealed: boolean;
 }
 

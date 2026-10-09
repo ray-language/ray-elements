@@ -4,6 +4,6 @@ import "@ray-ds/elements/app-bar";
 import { createComponent } from "../create.js";
 
 export const RayAppBar = /*#__PURE__*/ createComponent("RayAppBar", "ray-app-bar", {
-  properties: ["label", "description", "center", "variant", "size", "scroll", "sticky", "scrollTarget"],
+  properties: ["label", "description", "center", "variant", "size", "scrollBehavior", "sticky", "scrollTarget"],
   booleans: ["center", "sticky"],
 });

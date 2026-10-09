@@ -128,7 +128,7 @@ T.test("scroll-area: edge shadows, ray-reach-end once per arrival, scrollToEnd",
 });
 
 const shellHtml = `<ray-app-shell style="height: 400px">
-  <ray-app-bar slot="header" label="Home" scroll="hide"></ray-app-bar>
+  <ray-app-bar slot="header" label="Home" scroll-behavior="hide"></ray-app-bar>
   <nav slot="navbar" style="width: 200px">nav</nav>
   <div style="height: 2000px">content</div>
   <aside slot="aside" style="width: 150px">aside</aside>

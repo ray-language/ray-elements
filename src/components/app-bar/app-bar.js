@@ -2,8 +2,8 @@
 // iOS navigation bar): a back or menu button, the title (and a subtitle),
 // actions, and an optional row under it (tabs, a search field).
 //
-// scroll="elevate" (default) draws its border and shadow once the content
-// scrolls; scroll="hide" also slides it away while scrolling down and back
+// scroll-behavior="elevate" (default) draws its border and shadow once the content
+// scrolls; scroll-behavior="hide" also slides it away while scrolling down and back
 // on the way up. It follows the scroller of its ray-app-shell, else
 // `scroll-target`, else the window. Clear of the notch (safe-area inset).
 
@@ -82,7 +82,8 @@ export class RayAppBar extends RayElement {
     center: { type: Boolean, reflect: true },
     variant: { type: String, reflect: true, default: "default" },
     size: { type: String, reflect: true, default: "md" },
-    scroll: { type: String, reflect: true, default: "elevate" },
+    // Not `scroll`: that would hide the element's scroll() method.
+    scrollBehavior: { type: String, attribute: "scroll-behavior", reflect: true, default: "elevate" },
     sticky: { type: Boolean, reflect: true },
     scrollTarget: { type: String, attribute: "scroll-target" },
   };
@@ -124,7 +125,7 @@ export class RayAppBar extends RayElement {
     this.#stop = null;
   }
 
-  /** Whether scroll="hide" has slid it away. */
+  /** Whether scroll-behavior="hide" has slid it away. */
   get concealed() {
     return this.hasAttribute("data-concealed");
   }
@@ -132,7 +133,7 @@ export class RayAppBar extends RayElement {
   update(changed) {
     this.$(".label").textContent = this.label ?? "";
     this.$(".description").textContent = this.description ?? "";
-    if (changed.has("scroll") || changed.has("scrollTarget")) this._watch();
+    if (changed.has("scrollBehavior") || changed.has("scrollTarget")) this._watch();
   }
 
   _watch() {
@@ -140,14 +141,14 @@ export class RayAppBar extends RayElement {
     this.#stop = null;
     this.removeAttribute("data-concealed");
     this.toggleAttribute("data-elevated", false);
-    if (!this.isConnected || this.scroll === "none") return;
+    if (!this.isConnected || this.scrollBehavior === "none") return;
     const scroller = scrollerOf(this, this.scrollTarget);
     // In a shell the bar sits above the scroller: hiding gives its room to
     // the content. Over the window it slides away.
     const inFlow = scroller !== window;
     this.#stop = watchScroll(scroller, ({ y, direction }) => {
       this.toggleAttribute("data-elevated", y > 0);
-      if (this.scroll !== "hide") return;
+      if (this.scrollBehavior !== "hide") return;
       if (y <= 0) this.removeAttribute("data-concealed");
       else this._conceal(direction === "down" && y > this.offsetHeight + 8, inFlow);
     });

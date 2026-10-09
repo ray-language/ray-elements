@@ -98,11 +98,12 @@ jobs:
         with:
           node-version: 22
 
-      # Small uses of packages/ bundled with esbuild take only what they use.
-      - name: Bundle check
+      # packages/ as an app uses them: small bundles take only what they use
+      # (esbuild), and the declarations compile (tsc).
+      - name: Package checks
         run: |
-          npm --prefix tests/bundle ci
-          npm --prefix tests/bundle run check
+          npm --prefix tests/packages ci
+          npm --prefix tests/packages run check
 
       - uses: actions/upload-pages-artifact@v3
         with:

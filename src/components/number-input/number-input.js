@@ -68,7 +68,8 @@ export class RayNumberInput extends FieldControl {
     max: { type: Number },
     step: { type: Number, default: 1 },
     decimals: { type: Number },
-    prefix: { type: String },
+    // Shadows Element.prefix (the namespace prefix): null when unset, like it.
+    prefix: { type: String, default: null },
     suffix: { type: String },
     thousandsSeparator: { type: String, attribute: "thousands-separator" },
     decimalSeparator: { type: String, attribute: "decimal-separator", default: "." },

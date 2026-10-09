@@ -576,7 +576,7 @@ export interface RayNumberInputProps {
   /** Fixed decimals (2: 3 shows as 3.00). */
   decimals?: number;
   /** Shown before the number ("$"). */
-  prefix?: string;
+  prefix?: string | null;
   /** Shown after the number (" kg", "%"). */
   suffix?: string;
   /** Groups thousands in the shown text (",", ".", " "). */
@@ -1987,7 +1987,7 @@ export interface RayAppBarProps {
   /** Height: 48, 56 or 64 px. */
   size?: "sm" | "md" | "lg";
   /** While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none. */
-  scroll?: "elevate" | "hide" | "none";
+  scrollBehavior?: "elevate" | "hide" | "none";
   /** Sticks to the top of the window (outside a shell). */
   sticky?: boolean;
   /** A selector of the element whose scrolling it follows (default: its shell's, else the window). */

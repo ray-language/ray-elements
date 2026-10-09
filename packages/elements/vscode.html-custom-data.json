@@ -4898,7 +4898,7 @@
           ]
         },
         {
-          "name": "scroll",
+          "name": "scroll-behavior",
           "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
           "values": [
             {

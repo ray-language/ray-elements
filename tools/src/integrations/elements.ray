@@ -102,7 +102,9 @@ fn element_class(els: [Element], el: Element, c: Component, parent: string) -> s
         if (is_dom_prop(p.name)) {
             continue;
         }
-        let optional = if (p.default_value == "") { " | undefined" } else { "" };
+        // An explicit type that already says how it is empty stays as it is.
+        let says_empty = p.ts.contains("null") || p.ts.contains("undefined");
+        let optional = if (p.default_value == "" && !says_empty) { " | undefined" } else { "" };
         lines.push("${doc(p.description, "  ")}  ${p.name}: ${prop_type(p)}${optional};");
     }
     for m in el.members {

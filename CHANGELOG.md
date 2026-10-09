@@ -50,7 +50,8 @@ The first public release.
   uses) and `@ray-ds/elements/core` (the API alone); `@ray-ds/react` and
   `@ray-ds/vue` are a module per component with `sideEffects: false`, so a
   bundle keeps the wrappers it imports and their elements (a button with an
-  icon: 9.5 KB gzip instead of 94 KB). `tests/bundle` checks it with esbuild.
+  icon: 9.5 KB gzip instead of 94 KB). `tests/packages` checks it with esbuild,
+  and compiles the generated declarations with `tsc`.
 - The `release` workflow, on a version tag: the raylang package to its
   repository (`git subtree split`), the npm packages (`NPM_TOKEN` or trusted
   publishing, with provenance from a public repository) and the site.

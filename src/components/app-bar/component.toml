@@ -38,7 +38,8 @@ default = "md"
 reflect = true
 description = "Height: 48, 56 or 64 px."
 
-[ray-app-bar.properties.scroll]
+[ray-app-bar.properties.scrollBehavior]
+attribute = "scroll-behavior"
 type = "string"
 values = ["elevate", "hide", "none"]
 default = "elevate"
@@ -84,4 +85,4 @@ description = "The row under the bar."
 
 [ray-app-bar.members.concealed]
 ts = "readonly concealed: boolean"
-description = "Whether scroll=\"hide\" has slid it away."
+description = "Whether scroll-behavior=\"hide\" has slid it away."

@@ -4593,7 +4593,7 @@
             {
               "name": "prefix",
               "type": {
-                "text": "string"
+                "text": "string | null"
               },
               "description": "Shown before the number (\"$\").",
               "fieldName": "prefix"
@@ -4713,7 +4713,7 @@
               "kind": "field",
               "name": "prefix",
               "type": {
-                "text": "string"
+                "text": "string | null"
               },
               "description": "Shown before the number (\"$\").",
               "attribute": "prefix",
@@ -16481,12 +16481,12 @@
               "default": "md"
             },
             {
-              "name": "scroll",
+              "name": "scroll-behavior",
               "type": {
                 "text": "\"elevate\" | \"hide\" | \"none\""
               },
               "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
-              "fieldName": "scroll",
+              "fieldName": "scrollBehavior",
               "default": "elevate"
             },
             {
@@ -16561,12 +16561,12 @@
             },
             {
               "kind": "field",
-              "name": "scroll",
+              "name": "scrollBehavior",
               "type": {
                 "text": "\"elevate\" | \"hide\" | \"none\""
               },
               "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
-              "attribute": "scroll",
+              "attribute": "scroll-behavior",
               "reflects": true,
               "default": "elevate"
             },
@@ -16593,7 +16593,7 @@
             {
               "kind": "field",
               "name": "concealed",
-              "description": "Whether scroll=\"hide\" has slid it away."
+              "description": "Whether scroll-behavior=\"hide\" has slid it away."
             }
           ],
           "events": [],

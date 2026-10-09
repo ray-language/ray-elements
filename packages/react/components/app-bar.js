@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayAppBar = /*#__PURE__*/ createComponent("ray-app-bar", {
   displayName: "RayAppBar",
-  properties: ["label", "description", "center", "variant", "size", "scroll", "sticky", "scrollTarget"],
+  properties: ["label", "description", "center", "variant", "size", "scrollBehavior", "sticky", "scrollTarget"],
   events: {  },
 });

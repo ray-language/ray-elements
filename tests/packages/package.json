@@ -1,0 +1,15 @@
+{
+  "name": "ray-ds-package-checks",
+  "private": true,
+  "type": "module",
+  "description": "Checks packages/* as an app would use them: small bundles take only what they use, and the types compile",
+  "scripts": {
+    "check": "node check.mjs"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.12",
+    "esbuild": "0.25.10",
+    "typescript": "5.9.2",
+    "vue": "3.5.21"
+  }
+}

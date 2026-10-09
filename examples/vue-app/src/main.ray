@@ -130,8 +130,12 @@ fn check_reset(h: int) -> Result<int, string> {
         await wait(150);
         const dialog = q("ray-dialog");
         const opened = dialog.open && dialog.dialog.open;
+        // ray-close comes after the exit animation: wait for it, then a
+        // moment for the framework to render the cleared state.
+        const closed = new Promise((r) => dialog.addEventListener("ray-close", r, { once: true }));
         q('ray-dialog ray-button[data-dialog-close="reset"]').click();
-        await wait(150);
+        await Promise.race([closed, wait(3000)]);
+        await wait(50);
         const state = [
           opened,
           dialog.open,

@@ -1,21 +1,25 @@
-// Bundles small uses of the generated packages (packages/*) with esbuild and
-// checks that each takes only what it uses: the elements it should define
-// and none other, within a size budget (minified + gzip).
+// Checks the generated packages (packages/*) as an app uses them:
 //
-//   npm --prefix tests/bundle ci && npm --prefix tests/bundle run check
+// 1. Small uses bundled with esbuild take only what they use: the elements
+//    they should define and none other, within a size budget (minified +
+//    gzip). react and vue stay external: only ray-ds's code is measured.
+// 2. The declarations compile: tsc over types.tsx, with skipLibCheck off.
+//
+//   npm --prefix tests/packages ci && npm --prefix tests/packages run check
 //
 // The packages resolve as installed ones (through their package.json
-// "exports" and "sideEffects"), from a temporary node_modules that links to
-// packages/. react and vue stay external: only ray-ds's code is measured.
+// "exports", "types" and "sideEffects"): node_modules/@ray-ds links to
+// packages/ while it runs.
 
 import * as esbuild from "esbuild";
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import zlib from "node:zlib";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const here = path.dirname(fileURLToPath(import.meta.url));
+const root = path.resolve(here, "../..");
 
 // name, source, the tags it must define, budget in KB (gzip).
 const CASES = [
@@ -31,15 +35,15 @@ const CASES = [
 const allTags = [...fs.readFileSync(path.join(root, "packages/elements/index.js"), "utf8").matchAll(/from "\.\/components\/([^/]+)\//g)].map((m) => m[1]);
 const defines = (code) => new Set([...code.matchAll(/["'](ray-[a-z-]+)["']/g)].map((m) => m[1]));
 
-const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "ray-ds-bundle-"));
+const scope = path.join(here, "node_modules/@ray-ds");
+const entry = path.join(here, ".entry.js");
 let failed = 0;
 try {
-  const scope = path.join(tmp, "node_modules/@ray-ds");
+  fs.rmSync(scope, { recursive: true, force: true });
   fs.mkdirSync(scope, { recursive: true });
   for (const p of ["elements", "react", "vue"]) fs.symlinkSync(path.join(root, "packages", p), path.join(scope, p), "dir");
 
   for (const [name, source, tags, budget] of CASES) {
-    const entry = path.join(tmp, "entry.js");
     fs.writeFileSync(entry, source);
     const out = await esbuild.build({
       entryPoints: [entry],
@@ -67,7 +71,16 @@ try {
     for (const p of problems) console.log(`       ${p}`);
     failed += problems.length ? 1 : 0;
   }
+
+  const tsc = spawnSync(process.execPath, [path.join(here, "node_modules/typescript/bin/tsc"), "-p", here], { encoding: "utf8" });
+  const errors = (tsc.stdout + tsc.stderr).trim();
+  console.log(`${tsc.status === 0 ? "ok  " : "FAIL"} types: tsc over types.tsx (elements, react, vue)`);
+  if (tsc.status !== 0) {
+    console.log(errors.replace(/^/gm, "       "));
+    failed += 1;
+  }
 } finally {
-  fs.rmSync(tmp, { recursive: true, force: true });
+  fs.rmSync(scope, { recursive: true, force: true });
+  fs.rmSync(entry, { force: true });
 }
 process.exit(failed ? 1 : 0);
