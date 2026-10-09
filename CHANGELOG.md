@@ -43,7 +43,9 @@ The first public release.
 
 - `@ray-ds/elements`, `@ray-ds/react` and `@ray-ds/vue` packages (not yet on
   npm): typed (`.d.ts`), `custom-elements.json`, VS Code HTML data, React
-  wrappers and Vue wrappers with `v-model`.
+  wrappers and Vue wrappers with `v-model`. Each names its source (repository,
+  directory, issues) and publishes with public access; the repository's
+  `repository` and `homepage` live in `ray-ds.toml`.
 - Tools: `ray run tools/src/main.ray add` copies components (and what they
   need) into an app; `wrap` generates types and React/Vue wrappers for an
   app's own components.

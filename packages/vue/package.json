@@ -3,6 +3,19 @@
   "version": "0.3.0",
   "description": "Vue 3 wrappers (with v-model) of the ray-ds web components",
   "license": "Apache-2.0",
+  "keywords": ["web-components", "design-system", "ui", "raylang", "vue"],
+  "homepage": "https://github.com/ray-language/ray-ds#readme",
+  "bugs": {
+    "url": "https://github.com/ray-language/ray-ds/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ray-language/ray-ds.git",
+    "directory": "packages/vue"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",

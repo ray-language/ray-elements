@@ -3,6 +3,19 @@
   "version": "0.3.0",
   "description": "Web components for any app, with raylang extras (shadcn/ui + Mantine inspired)",
   "license": "Apache-2.0",
+  "keywords": ["web-components", "custom-elements", "design-system", "ui", "raylang"],
+  "homepage": "https://github.com/ray-language/ray-ds#readme",
+  "bugs": {
+    "url": "https://github.com/ray-language/ray-ds/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ray-language/ray-ds.git",
+    "directory": "packages/elements"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",
