@@ -1,0 +1,59 @@
+# Changelog
+
+All notable changes to ray-ds. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
+[Semantic Versioning](https://semver.org/): before 1.0, a minor version may
+change the API.
+
+## [0.3.0] - Unreleased
+
+The first public release.
+
+### Components (67)
+
+- **Buttons:** button, button group, icon button, toggle, toggle group.
+- **Inputs:** input, number input, password input, search, textarea, select,
+  combobox (searchable, multiple, creatable), checkbox and checkbox group,
+  radio group, switch, segmented control, slider, date picker and calendar,
+  color picker and color input, file upload.
+- **Navigation:** tabs, nav link, sidebar, bottom nav, breadcrumbs, stepper,
+  pagination.
+- **Overlays:** dialog (the modal, with `confirmDialog()`), drawer, popover,
+  tooltip, menu (also as a context menu), command palette.
+- **Data display:** icon, badge, avatar, indicator, blockquote, code
+  (pluggable highlighter), kbd, accordion, table, stat, carousel, timeline,
+  attachment.
+- **Feedback:** alert, spinner, progress, empty state, skeleton,
+  notifications (`notify()`).
+- **Layout:** app shell, app bar, stack, group, grid, container, center,
+  scroll area, card, separator, split, status bar, aspect ratio.
+- **Theme:** theme toggle.
+
+### Foundations
+
+- Design tokens in `tokens.toml` → `dist/tokens.css` and `tokens.json`:
+  palette, light and dark themes, primary color, spacing, radius, shadows,
+  motion, charts; contrast checked at build time (AA).
+- Runtime theming: `setTheme()`, `setPrimary()`, `definePrimary()` with any
+  CSS color, `chartTheme()` for chart libraries.
+- `RayElement`, `FormControl`, `FieldControl` and `Floating` base classes for
+  components of your own; an icon registry (`setIcons()`).
+
+### Integrations
+
+- `@ray-ds/elements`, `@ray-ds/react` and `@ray-ds/vue` packages (not yet on
+  npm): typed (`.d.ts`), `custom-elements.json`, VS Code HTML data, React
+  wrappers and Vue wrappers with `v-model`.
+- Tools: `ray run tools/src/main.ray add` copies components (and what they
+  need) into an app; `wrap` generates types and React/Vue wrappers for an
+  app's own components.
+
+### Docs site
+
+- A page per component with live examples, their code in HTML, React and
+  Vue, and the API generated from `component.toml`; a catalog with
+  thumbnails, ⌘K search, guides and the foundations page.
+- `ray run tools/src/main.ray site` writes the site ready to publish, with a
+  404 page.
+
+[0.3.0]: https://github.com/ray-language/ray-ds/releases/tag/v0.3.0

@@ -849,6 +849,14 @@ export default [
     "icon": "file"
   },
   {
+    "label": "Contributing",
+    "group": "Get started",
+    "description": "",
+    "href": "getting-started.html#contributing",
+    "keywords": [],
+    "icon": "file"
+  },
+  {
     "label": "License",
     "group": "Get started",
     "description": "",

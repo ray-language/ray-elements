@@ -386,6 +386,10 @@ contrast, separation and color blindness) and `chartTheme()` /
 Own chart components (SVG primitives; an adapter for dense real-time series)
 stay open for later, when an app needs them.
 
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/ray-language/ray-ds/blob/main/CONTRIBUTING.md) and the [changelog](https://github.com/ray-language/ray-ds/blob/main/CHANGELOG.md).
+
 ## License
 
 Apache License 2.0: see [LICENSE](https://github.com/ray-language/ray-ds/blob/main/LICENSE) and [NOTICE](https://github.com/ray-language/ray-ds/blob/main/NOTICE).
