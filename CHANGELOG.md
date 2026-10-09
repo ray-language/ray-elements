@@ -69,7 +69,9 @@ The first public release.
 - The raylang package `ray_ds`: `ray_ds/assets` (generated) serves every
   component, `tokens.css` and `base.css` from the program with
   `assets.mount("ray-ds")`, under `ray run` and in a native binary;
-  `examples/starter` is the smallest app with it.
+  `examples/starter` is the smallest app with it. It is published to its own
+  repository, `github.com/ray-language/ray_ds` (`git+https://…/ray_ds@v0.3.0`),
+  on every version tag.
 
 ### Docs site
 

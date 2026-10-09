@@ -102,6 +102,15 @@ there (use `T.settle()`; see `tests/harness.js`).
 - New behavior comes with tests and, for a component, its example.
 - Commit messages: a short summary line, then what and why.
 
+## Releases
+
+1. Set the version in `ray-ds.toml` and `ray_ds/bridge.ray` (`VERSION`), run
+   `build`, move the changelog's "Unreleased" entry under the version and date.
+2. Commit, then tag `vX.Y.Z` and push the tag.
+3. The `raylang-package` workflow writes the raylang package to
+   `github.com/ray-language/ray_ds` with the same tag (it checks that the tag
+   is `ray-ds.toml`'s version).
+
 ## License
 
 By contributing you agree that your contributions are licensed under the

@@ -174,10 +174,12 @@ warns for every palette color whose filled/light/outline variant text is.
 
 ### In a raylang app, from the package
 
-`ray_ds/` is a raylang package: `ray_ds = "path:…/ray_ds"` in `[dependencies]`
-(until it is published), then `assets.mount("ray-ds")` (`import
-ray_ds/assets;`) serves every component, `tokens.css` and `base.css` from the
-program, the same under `ray run` and in a native binary.
+`ray_ds/` is a raylang package, published to its own repository:
+`ray_ds = "git+https://github.com/ray-language/ray_ds@v0.3.0"` in
+`[dependencies]` (or `path:` to `ray_ds/` of a checkout), then
+`assets.mount("ray-ds")` (`import ray_ds/assets;`) serves every component,
+`tokens.css` and `base.css` from the program, the same under `ray run` and in
+a native binary.
 `examples/starter` is the smallest such app; see [RAYLANG.md](RAYLANG.md).
 
 ### Adding components to an app

@@ -367,9 +367,12 @@ show a banner saying so instead of rendering. <code>--port 0</code> picks a free
 warns for every palette color whose filled/light/outline variant text is.</p>
 
 <h3 id="in-a-raylang-app-from-the-package">In a raylang app, from the package</h3>
-<p><code>ray_ds/</code> is a raylang package: <code>ray_ds = &quot;path:…/ray_ds&quot;</code> in <code>[dependencies]</code>
-(until it is published), then <code>assets.mount(&quot;ray-ds&quot;)</code> (<code>import ray_ds/assets;</code>) serves every component, <code>tokens.css</code> and <code>base.css</code> from the
-program, the same under <code>ray run</code> and in a native binary.
+<p><code>ray_ds/</code> is a raylang package, published to its own repository:
+<code>ray_ds = &quot;git+https://github.com/ray-language/ray_ds@v0.3.0&quot;</code> in
+<code>[dependencies]</code> (or <code>path:</code> to <code>ray_ds/</code> of a checkout), then
+<code>assets.mount(&quot;ray-ds&quot;)</code> (<code>import ray_ds/assets;</code>) serves every component,
+<code>tokens.css</code> and <code>base.css</code> from the program, the same under <code>ray run</code> and in
+a native binary.
 <code>examples/starter</code> is the smallest such app; see <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h3 id="adding-components-to-an-app">Adding components to an app</h3>
