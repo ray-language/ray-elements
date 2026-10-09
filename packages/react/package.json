@@ -2,7 +2,7 @@
   "name": "@ray-ds/react",
   "version": "0.3.0",
   "description": "React wrappers of the ray-ds web components",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",

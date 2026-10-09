@@ -1,0 +1,152 @@
+// The site, ready to publish: dist/site/ holds every page and asset a
+// static host needs (GitHub Pages, any web server), and nothing else.
+//
+// The pages of docs/ move to the root of the site (components/button.html,
+// not docs/components/button.html), next to the files they load from the
+// repo: src/ (the components' modules, the app-shell demo page), dist/
+// (tokens) and site/site.css (for the demo page). Links that left docs/
+// ("../src/…" from docs/, "../../src/…" from docs/components/) lose one
+// "../" ("./src/…" at the root). 404.html is served at any address, so its links are made absolute
+// with the base path the site is published under ("/ray-ds/" on GitHub
+// Pages for this repo, "/" on a domain of its own).
+
+import std/fs;
+
+// What a page in docs/ may load from the repo, besides docs/ itself.
+const FROM_REPO: [string] = ["src", "dist", "site"];
+
+pub struct Report {
+    files: int,
+    size: int,
+}
+
+// Builds `out` (a directory under root, emptied first) for `base`.
+pub fn run(root: string, out: string, base: string) -> Result<Report, string> {
+    let dest = "${root}/${out}";
+    if (fs.exists(dest)) {
+        fs.remove_all(dest)?;
+    }
+    fs.mkdir(dest)?;
+    // The pages and the site's own assets, one level up.
+    copy_docs(root, "docs", "", dest)?;
+    // The repo files they load, where the rewritten links expect them.
+    copy_src(root, "src", dest)?;
+    for f in ["dist/tokens.css", "dist/tokens.json", "site/site.css"] {
+        put(dest, f, fs.read_file("${root}/${f}")?)?;
+    }
+    // 404.html: absolute links (it is served at any address).
+    let nf = "${dest}/404.html";
+    if (fs.exists(nf)) {
+        fs.write_file(nf, absolutize(fs.read_file(nf)?, base))?;
+    }
+    // No Jekyll on GitHub Pages: serve the files as they are.
+    put(dest, ".nojekyll", "")?;
+    measure(dest)
+}
+
+fn put(dest: string, rel: string, content: string) -> Result<int, string> {
+    let path = "${dest}/${rel}";
+    fs.mkdir(path.substring(0, path.last_index_of("/").unwrap_or(0)))?;
+    fs.write_file(path, content)
+}
+
+// How many files, and how many bytes, under `dir`.
+fn measure(dir: string) -> Result<Report, string> {
+    var files = 0;
+    var size = 0;
+    for name in fs.list_dir(dir)? {
+        let path = "${dir}/${name}";
+        if (fs.is_dir(path)) {
+            let sub = measure(path)?;
+            files = files + sub.files;
+            size = size + sub.size;
+        } else {
+            files = files + 1;
+            size = size + fs.file_size(path)?;
+        }
+    }
+    Result.Ok(Report { files: files, size: size })
+}
+
+// docs/<dir>/<file> -> <dest>/<dir>/<file>, links that leave docs/ rewritten.
+fn copy_docs(root: string, src: string, rel: string, dest: string) -> Result<int, string> {
+    let here = if (rel == "") { "${root}/${src}" } else { "${root}/${src}/${rel}" };
+    for name in fs.list_dir(here)? {
+        let child = if (rel == "") { name } else { "${rel}/${name}" };
+        if (fs.is_dir("${here}/${name}")) {
+            copy_docs(root, src, child, dest)?;
+        } else {
+            let depth = child.split("/").len() - 1;
+            put(dest, child, lift(fs.read_file("${here}/${name}")?, depth))?;
+        }
+    }
+    Result.Ok(0)
+}
+
+// A file `depth` directories down in docs/ reaches the repo with depth + 1
+// "../"; at the site's root the same file is one level closer.
+pub fn lift(text: string, depth: int) -> string {
+    let up = "../".repeat(depth + 1);
+    // At the root "./src/…", not "src/…": a module import needs the "./".
+    let less = if (depth == 0) { "./" } else { "../".repeat(depth) };
+    var out = text;
+    for dir in FROM_REPO {
+        for q in ["\"", "'", "("] {
+            out = out.replace("${q}${up}${dir}/", "${q}${less}${dir}/");
+        }
+    }
+    out
+}
+
+// src/: the modules and stylesheets, and the demo pages (not the examples
+// nor the metadata, which the generator already turned into pages).
+fn copy_src(root: string, rel: string, dest: string) -> Result<int, string> {
+    for name in fs.list_dir("${root}/${rel}")? {
+        let path = "${rel}/${name}";
+        if (fs.is_dir("${root}/${path}")) {
+            copy_src(root, path, dest)?;
+        } else if (name.ends_with(".js") || name.ends_with(".css") || name == "demo.html") {
+            put(dest, path, fs.read_file("${root}/${path}")?)?;
+        }
+    }
+    Result.Ok(0)
+}
+
+// Relative links (href, src, the import map, module imports) prefixed with
+// `base`; anchors, absolute URLs and data: stay.
+pub fn absolutize(html: string, base: string) -> string {
+    var out = html;
+    for attr in ["href=\"", "src=\""] {
+        out = prefix_after(out, attr, base);
+    }
+    // The import map and the modules the page imports.
+    out = out.replace("\"@ray-ds/elements\": \"./", "\"@ray-ds/elements\": \"${base}");
+    out = prefix_after(out, "import \"", base);
+    out
+}
+
+// Every `marker` followed by a relative URL gets `base` before the URL.
+fn prefix_after(text: string, marker: string, base: string) -> string {
+    let parts = text.split(marker);
+    var out = parts[0];
+    for i in 1..parts.len() {
+        let p = parts[i];
+        let keep = p.starts_with("#") || p.starts_with("/") || p.starts_with("http:") || p.starts_with("https:")
+            || p.starts_with("data:") || p.starts_with("mailto:") || p.starts_with("javascript:") || p.starts_with("\"");
+        let rest = if (!keep && p.starts_with("./")) { p.substring(2, p.len()) } else { p };
+        out = out + marker + (if (keep) { p } else { base + rest });
+    }
+    out
+}
+
+@test
+fn lifts_links_that_leave_docs() {
+    assert_eq(lift("<script src=\"../src/a.js\"></script> import \"../src/b.js\"; href=\"code/x.html\"", 0), "<script src=\"./src/a.js\"></script> import \"./src/b.js\"; href=\"code/x.html\"");
+    assert_eq(lift("href=\"../../dist/tokens.css\" href=\"../code/x.html\" url('../../site/x.svg')", 1), "href=\"../dist/tokens.css\" href=\"../code/x.html\" url('../site/x.svg')");
+}
+
+@test
+fn absolutizes_relative_links() {
+    let html = "<a href=\"index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"site.js\"></script>{\"@ray-ds/elements\": \"./elements.js\"} import \"src/c.js\";";
+    assert_eq(absolutize(html, "/ray-ds/"), "<a href=\"/ray-ds/index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"/ray-ds/site.js\"></script>{\"@ray-ds/elements\": \"/ray-ds/elements.js\"} import \"/ray-ds/src/c.js\";");
+}

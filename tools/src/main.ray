@@ -8,6 +8,8 @@
 //   ray run tools/src/main.ray wrap --components DIR --out DIR
 //                                                    types, manifest and React/Vue wrappers for an app's components
 //   ray run tools/src/main.ray webtest [FILTER]      tests/*.test.js in a std/ui webview
+//   ray run tools/src/main.ray site [--out DIR] [--base PATH]
+//                                                    the site ready to publish (default dist/site/, base /)
 //
 // Every command takes --root DIR (the ray-ds directory); by default the
 // current directory or its parent, whichever holds tokens.toml.
@@ -29,6 +31,8 @@ import site/landing;
 import site/brand;
 import site/search;
 import site/modules;
+import site/notfound;
+import site/publish;
 from site/model import Page;
 import integrations/package;
 import integrations/elements;
@@ -43,13 +47,16 @@ const USAGE: string = `usage: ray run tools/src/main.ray <command> [--root DIR] 
                                        copy components (and what they need) into an app
   package                              generate the npm packages in packages/ (elements, react, vue)
   wrap --components DIR --out DIR      types, manifest and React/Vue wrappers for an app's own components
-  webtest [FILTER]                     run tests/*.test.js in a std/ui webview`;
+  webtest [FILTER]                     run tests/*.test.js in a std/ui webview
+  site [--out DIR] [--base PATH]       the site ready to publish: every page and asset in DIR (default
+                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)`;
 
 struct Opts {
     root: string,
     into: string,
     components: string,
     out: string,
+    base: string,
     flags: [string],
     rest: [string],
 }
@@ -69,6 +76,7 @@ fn main() -> int {
             "package" => cmd_package(o),
             "wrap" => cmd_wrap(o),
             "webtest" => cmd_webtest(o),
+            "site" => cmd_site(o),
             other => Result.Err("unknown command '${other}'\n${USAGE}"),
         }
     });
@@ -82,13 +90,15 @@ fn main() -> int {
 }
 
 fn parse_opts(a: [string]) -> Result<Opts, string> {
-    let o = Opts { root: "", into: "", components: "", out: "", flags: [], rest: [] };
+    let o = Opts { root: "", into: "", components: "", out: "", base: "", flags: [], rest: [] };
     var i = 0;
     while (i < a.len()) {
         let x = a[i];
-        if ((x == "--root" || x == "--into" || x == "--components" || x == "--out")
+        if ((x == "--root" || x == "--into" || x == "--components" || x == "--out" || x == "--base")
             && i + 1 < a.len()) {
-            if (x == "--root") {
+            if (x == "--base") {
+                o.base = a[i + 1];
+            } else if (x == "--root") {
                 o.root = a[i + 1];
             } else if (x == "--into") {
                 o.into = a[i + 1];
@@ -173,6 +183,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
     let version = package.info(root)?.version;
     let pages = [
         landing.render(cs.len(), version, colors),
+        notfound.render(),
         docs.index(cs),
         docs.all(cs),
         guide(
@@ -355,6 +366,31 @@ fn find_root() -> Result<string, string> {
         return Result.Ok("..");
     }
     Result.Err("tokens.toml not found here or in the parent directory (use --root)")
+}
+
+// The site, ready to publish (site/publish.ray). The docs are generated
+// first, so what is published is what the sources say.
+fn cmd_site(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    cmd_build(Opts { root: o.root, into: "", components: "", out: "", base: "", flags: [], rest: [] })?;
+    var out = if (o.out == "") { "dist/site" } else { o.out };
+    while (out.ends_with("/")) {
+        out = out.substring(0, out.len() - 1);
+    }
+    if (out.starts_with("/") || out.contains("..") || out == "docs" || out == "src" || out == "dist") {
+        return Result.Err("--out must be a new directory inside the ray-ds directory (got '${out}')");
+    }
+    var base = if (o.base == "") { "/" } else { o.base };
+    if (!base.starts_with("/")) {
+        base = "/" + base;
+    }
+    if (!base.ends_with("/")) {
+        base = base + "/";
+    }
+    let rep = publish.run(o.root, out, base)?;
+    let kb = rep.size / 1024;
+    print("site: ${rep.files} files, ${kb} KB in ${out}/ (base ${base})");
+    Result.Ok(0)
 }
 
 fn write(root: string, rel: string, content: string) -> Result<int, string> {

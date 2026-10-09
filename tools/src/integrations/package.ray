@@ -24,7 +24,7 @@ pub struct Info {
 
 pub fn info(root: string) -> Result<Info, string> {
     let entries = toml.parse_toml(fs.read_file("${root}/ray-ds.toml")?)?;
-    let i = Info { scope: "@ray-ds", version: "0.0.0", description: "", license: "MIT" };
+    let i = Info { scope: "@ray-ds", version: "0.0.0", description: "", license: "Apache-2.0" };
     for e in entries {
         let v = match (e.value) {
             TomlValue.TStr(s) => s,
@@ -76,6 +76,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${el}/vscode.html-custom-data.json", manifest.vscode_data(cs)?)?;
     put(written, "${el}/package.json", elements_package(i))?;
     put(written, "${el}/README.md", readme(i, "elements"))?;
+    put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
 
     // --- react (and vue): the package target; no components beyond ray-ds's own
     let t = wrappers.package_target();
@@ -96,6 +97,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
         )
     )?;
     put(written, "${r}/README.md", readme(i, "react"))?;
+    put(written, "${r}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
 
     // --- vue
     let v = "${base}/vue";
@@ -114,6 +116,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
         )
     )?;
     put(written, "${v}/README.md", readme(i, "vue"))?;
+    put(written, "${v}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     Result.Ok(written)
 }
 

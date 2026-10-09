@@ -127,6 +127,7 @@ ray run tools/src/main.ray tokens [--check]      # tokens.toml -> dist/tokens.*,
 ray run tools/src/main.ray docs                  # component.toml + *.md -> docs/ (site), src/index.js
 ray run tools/src/main.ray add button input --into ../my-app/assets/ray-ds
 ray run tools/src/main.ray package               # packages/{elements,react,vue}
+ray run tools/src/main.ray site --base /ray-ds/  # build, then the site ready to publish in dist/site/
 ray run tools/src/main.ray wrap --components DIR --out DIR   # types + wrappers for an app's components
 ray run tools/src/main.ray webtest [FILTER]      # tests/*.test.js in a std/ui webview
 (cd tools && ray test)                           # unit tests of the tools
@@ -384,3 +385,7 @@ contrast, separation and color blindness) and `chartTheme()` /
 `onChartThemeChange()` for chart libraries — see [CHARTS.md](CHARTS.md).
 Own chart components (SVG primitives; an adapter for dense real-time series)
 stay open for later, when an app needs them.
+
+## License
+
+Apache License 2.0: see [LICENSE](https://github.com/ray-language/ray-ds/blob/main/LICENSE) and [NOTICE](https://github.com/ray-language/ray-ds/blob/main/NOTICE).

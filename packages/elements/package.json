@@ -1,8 +1,8 @@
 {
   "name": "@ray-ds/elements",
   "version": "0.3.0",
-  "description": "Web components design system for raylang apps (shadcn/ui + Mantine inspired)",
-  "license": "MIT",
+  "description": "Web components for any app, with raylang extras (shadcn/ui + Mantine inspired)",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",

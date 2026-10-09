@@ -1,0 +1,74 @@
+// docs/404.html: the page a static host (GitHub Pages) serves for any
+// address it does not have. It is served at that address, so `publish`
+// makes its links absolute (the site's base path).
+//
+// It shows the missing path, guesses what was meant from the search index
+// ("Did you mean Button?"), and sends the old /docs/… addresses (the repo
+// layout) to the published ones.
+
+from site/model import Page, page;
+import site/brand;
+import site/shell;
+
+pub fn render() -> Page {
+    let mark = brand.mark(shell.INK, 132, false);
+    let body = `<section class="nf">
+<div class="nf-art" aria-hidden="true"><span class="nf-digit">4</span><span class="nf-mark">${mark}</span><span class="nf-digit">4</span></div>
+<p class="nf-eyebrow">Error 404</p>
+<h1 class="nf-title">This page is not part of the system</h1>
+<p class="nf-lede">Nothing lives at <code class="nf-path" data-nf-path></code>. It may have moved: every component now has a page of its own.</p>
+<p class="nf-guess" data-nf-guess hidden>Did you mean <a data-nf-guess-link href="components.html"></a>?</p>
+<div class="nf-actions">
+<a class="nf-btn primary" href="index.html">Go home</a>
+<a class="nf-btn" href="components.html">Browse components</a>
+<button class="nf-btn" type="button" data-site-search>Search <kbd data-site-search-key>⌘K</kbd></button>
+</div>
+<nav class="nf-links" aria-label="More">
+<a href="getting-started.html"><b>Get started</b><span>Install it, load it, theme it</span></a>
+<a href="foundations.html"><b>Foundations</b><span>Colors, type, spacing, motion</span></a>
+<a href="extending.html"><b>Extending</b><span>Components of your own</span></a>
+<a href="charts.html"><b>Charts</b><span>Chart libraries, themed</span></a>
+</nav>
+</section>
+<script type="module">
+  // The address that was asked for (the old repo layout redirects).
+  const path = decodeURIComponent(location.pathname);
+  if (path.includes("/docs/")) location.replace(location.pathname.replace("/docs/", "/") + location.search + location.hash);
+  document.querySelector("[data-nf-path]").textContent = path;
+  // A guess from the search index: the last word of the address.
+  const word = path.split("/").filter(Boolean).pop()?.replace(/[.]html?$/, "").replace(/[-_]+/g, " ").toLowerCase() ?? "";
+  if (word) {
+    const base = document.querySelector('a.nf-btn.primary').href.replace(/index[.]html$/, "");
+    const { default: index } = await import(base + "search-index.js");
+    const dist = (a, b) => {
+      const d = Array.from({ length: b.length + 1 }, (_, i) => i);
+      for (let i = 1; i <= a.length; i++) {
+        let prev = d[0];
+        d[0] = i;
+        for (let j = 1; j <= b.length; j++) {
+          const t = d[j];
+          d[j] = Math.min(d[j] + 1, d[j - 1] + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+          prev = t;
+        }
+      }
+      return d[b.length];
+    };
+    let best = null;
+    for (const item of index) {
+      if (!item.href || item.href.includes("#")) continue;
+      const names = [item.label.toLowerCase(), ...(item.keywords ?? []).map((k) => k.toLowerCase().replace(/[-_]+/g, " "))];
+      // Exact first, then one name inside the other, then the fewest typos.
+      const score = Math.min(...names.map((n) => (n === word ? 0 : word.length >= 3 && (n.includes(word) || word.includes(n)) ? 0.5 : dist(word, n))));
+      if (!best || score < best.score) best = { item, score };
+    }
+    // At most one typo per three letters ("buton", "dialgo"; not "nope").
+    if (best && best.score <= Math.max(1, Math.floor(word.length / 3))) {
+      const link = document.querySelector("[data-nf-guess-link]");
+      link.href = base + best.item.href;
+      link.textContent = best.item.label;
+      document.querySelector("[data-nf-guess]").hidden = false;
+    }
+  }
+</script>`;
+    page("404.html", "404", "Page not found", "This address is not part of the ray·ds site.", [], body, "notfound")
+}

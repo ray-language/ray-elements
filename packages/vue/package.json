@@ -2,7 +2,7 @@
   "name": "@ray-ds/vue",
   "version": "0.3.0",
   "description": "Vue 3 wrappers (with v-model) of the ray-ds web components",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",

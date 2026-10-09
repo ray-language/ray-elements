@@ -10,3 +10,6 @@ examples/*/build/
 # OS / editor
 .DS_Store
 *.log
+
+# The site ready to publish (ray run tools/src/main.ray site)
+dist/site/

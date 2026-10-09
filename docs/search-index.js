@@ -757,6 +757,16 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Page not found",
+    "group": "Pages",
+    "description": "This address is not part of the ray·ds site.",
+    "href": "404.html",
+    "keywords": [
+      "404"
+    ],
+    "icon": "book"
+  },
+  {
     "label": "Get started",
     "group": "Pages",
     "description": "Install ray-ds, load it in any app or a raylang app, and theme it.",
@@ -835,6 +845,14 @@ export default [
     "group": "Get started",
     "description": "",
     "href": "getting-started.html#roadmap",
+    "keywords": [],
+    "icon": "file"
+  },
+  {
+    "label": "License",
+    "group": "Get started",
+    "description": "",
+    "href": "getting-started.html#license",
     "keywords": [],
     "icon": "file"
   },

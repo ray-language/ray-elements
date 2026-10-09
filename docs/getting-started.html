@@ -100,6 +100,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Extending" href="#extending"></ray-nav-link>
 <ray-nav-link label="Writing a component" href="#writing-a-component"></ray-nav-link>
 <ray-nav-link label="Roadmap" href="#roadmap"></ray-nav-link>
+<ray-nav-link label="License" href="#license"></ray-nav-link>
 </div>
 </div>
 </ray-drawer>
@@ -115,6 +116,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#extending">Extending</a>
 <a class="side-link" href="#writing-a-component">Writing a component</a>
 <a class="side-link" href="#roadmap">Roadmap</a>
+<a class="side-link" href="#license">License</a>
 </div>
 </aside>
 <script>
@@ -324,6 +326,7 @@ is inserted as HTML.</p>
 <span class="tk-keyword">ray</span> run tools/src/main.ray docs                  <span class="tk-comment"># component.toml + *.md -&gt; docs/ (site), src/index.js</span>
 <span class="tk-keyword">ray</span> run tools/src/main.ray add button input <span class="tk-attr">--into</span> ../my-app/assets/ray-ds
 <span class="tk-keyword">ray</span> run tools/src/main.ray package               <span class="tk-comment"># packages/{elements,react,vue}</span>
+<span class="tk-keyword">ray</span> run tools/src/main.ray site <span class="tk-attr">--base</span> /ray-ds/  <span class="tk-comment"># build, then the site ready to publish in dist/site/</span>
 <span class="tk-keyword">ray</span> run tools/src/main.ray wrap <span class="tk-attr">--components</span> DIR <span class="tk-attr">--out</span> DIR   <span class="tk-comment"># types + wrappers for an app's components</span>
 <span class="tk-keyword">ray</span> run tools/src/main.ray webtest [FILTER]      <span class="tk-comment"># tests/*.test.js in a std/ui webview</span>
 <span class="tk-keyword">(cd</span> tools &amp;&amp; ray test)                           <span class="tk-comment"># unit tests of the tools</span></code></pre>
@@ -596,6 +599,9 @@ contrast, separation and color blindness) and <code>chartTheme()</code> /
 <code>onChartThemeChange()</code> for chart libraries — see <a href="charts.html">CHARTS.md</a>.
 Own chart components (SVG primitives; an adapter for dense real-time series)
 stay open for later, when an app needs them.</p>
+
+<h2 id="license">License</h2>
+<p>Apache License 2.0: see <a href="https://github.com/ray-language/ray-ds/blob/main/LICENSE">LICENSE</a> and <a href="https://github.com/ray-language/ray-ds/blob/main/NOTICE">NOTICE</a>.</p>
 
 </article>
 </main>
