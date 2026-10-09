@@ -1,0 +1,81 @@
+[component]
+name = "Breadcrumbs"
+category = "Navigation"
+summary = "Where a page sits (Mantine's Breadcrumbs, the WAI-ARIA breadcrumb pattern): links in a labelled nav, the last one the current page. Any separator or a chevron; a long path collapses into an expandable \"…\"."
+files = ["breadcrumbs.js"]
+requires = []
+tags = ["ray-breadcrumbs", "ray-breadcrumb"]
+
+[ray-breadcrumbs]
+class = "RayBreadcrumbs"
+extends = "RayElement"
+summary = "A <nav aria-label=\"Breadcrumb\"> around a list. The last crumb is the current page (aria-current=\"page\") unless one says current."
+
+[ray-breadcrumbs.properties.separator]
+type = "string"
+default = "/"
+description = "Text between crumbs (\"/\", \"›\", \"·\") or \"chevron\" (an icon)."
+
+[ray-breadcrumbs.properties.maxItems]
+attribute = "max-items"
+type = "number"
+description = "Longer paths show the first crumb, \"…\" (a button that expands them) and the last max-items − 1."
+
+[ray-breadcrumbs.properties.label]
+type = "string"
+default = "Breadcrumb"
+description = "Accessible name of the nav."
+
+[ray-breadcrumbs.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg"]
+default = "sm"
+reflect = true
+description = "Font size."
+
+[ray-breadcrumbs.slots.default]
+description = "ray-breadcrumb elements."
+
+[ray-breadcrumbs.parts.nav]
+description = "The <nav>."
+
+[ray-breadcrumbs.parts.list]
+description = "The <ol>."
+
+[ray-breadcrumbs.members.items]
+ts = "readonly items: RayBreadcrumb[]"
+description = "The crumbs, in order."
+
+[ray-breadcrumbs.members.expand]
+ts = "expand(): void"
+description = "Shows every crumb of a collapsed path."
+
+[ray-breadcrumb]
+class = "RayBreadcrumb"
+extends = "RayElement"
+summary = "A link with href (text without, or when current)."
+
+[ray-breadcrumb.properties.href]
+type = "string"
+reflect = true
+description = "Where it leads."
+
+[ray-breadcrumb.properties.current]
+type = "boolean"
+reflect = true
+description = "This crumb is the current page (default: the last)."
+
+[ray-breadcrumb.slots.default]
+description = "The text."
+
+[ray-breadcrumb.slots.icon]
+description = "An icon before the text."
+
+[ray-breadcrumb.parts.link]
+description = "The link (or the text of the current page)."
+
+[ray-breadcrumb.parts.separator]
+description = "The separator before it."
+
+[ray-breadcrumb.parts.more]
+description = "The \"…\" button of a collapsed path."

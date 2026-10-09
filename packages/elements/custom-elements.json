@@ -1690,6 +1690,282 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/checkbox-group/checkbox-group.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayCheckboxGroup",
+          "tagName": "ray-checkbox-group",
+          "customElement": true,
+          "description": "The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role=\"group\" named by its label.",
+          "superclass": {
+            "name": "FormControl"
+          },
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Group label (also its accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "At least one must be checked.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disables every checkbox.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many: the others are disabled once reached; the label shows the count.",
+              "fieldName": "max"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\""
+              },
+              "description": "Layout of the checkboxes.",
+              "fieldName": "orientation",
+              "default": "vertical"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the checkboxes that set none.",
+              "fieldName": "size"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Color of the checkboxes that set none.",
+              "fieldName": "color"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the checkboxes or after them.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The checked values. The value attribute: \"a,b\"."
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Group label (also its accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "At least one must be checked.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Disables every checkbox.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many: the others are disabled once reached; the label shows the count.",
+              "attribute": "max",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\""
+              },
+              "description": "Layout of the checkboxes.",
+              "attribute": "orientation",
+              "reflects": true,
+              "default": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the checkboxes that set none.",
+              "attribute": "size",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Color of the checkboxes that set none.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the checkboxes or after them.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "checkboxes",
+              "description": "The checkboxes of this group."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The user checked or unchecked one (read value)."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Same moment as change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-checkbox elements (also nested in other markup)."
+            }
+          ],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayCheckboxGroup",
+          "declaration": {
+            "name": "RayCheckboxGroup",
+            "module": "components/checkbox-group/checkbox-group.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-checkbox-group",
+          "declaration": {
+            "name": "RayCheckboxGroup",
+            "module": "components/checkbox-group/checkbox-group.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/color-picker/color-picker.js",
       "declarations": [
         {
@@ -2383,6 +2659,285 @@
           "declaration": {
             "name": "formatColor",
             "module": "components/color-picker/color-picker.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/combobox/combobox.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayCombobox",
+          "tagName": "ray-combobox",
+          "customElement": true,
+          "description": "The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.",
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "attributes": [
+            {
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Several values, shown as chips.",
+              "fieldName": "multiple"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "creatable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "What was typed can be added when no option matches it (\"+ Create …\"); fires ray-create.",
+              "fieldName": "creatable"
+            },
+            {
+              "name": "clearable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A button that clears the value.",
+              "fieldName": "clearable"
+            },
+            {
+              "name": "max-values",
+              "type": {
+                "text": "number"
+              },
+              "description": "With multiple: at most this many.",
+              "fieldName": "maxValues"
+            },
+            {
+              "name": "limit",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many options shown (large lists: keep typing).",
+              "fieldName": "limit"
+            },
+            {
+              "name": "nothing-found",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown when nothing matches.",
+              "fieldName": "nothingFound",
+              "default": "No matches"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The dropdown is shown.",
+              "fieldName": "open"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "The chosen value; an array with multiple. The value attribute: \"a,b\" with multiple."
+            },
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>"
+              },
+              "description": "Options instead of child <option>/<optgroup> elements."
+            },
+            {
+              "kind": "field",
+              "name": "multiple",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Several values, shown as chips.",
+              "attribute": "multiple",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "creatable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "What was typed can be added when no option matches it (\"+ Create …\"); fires ray-create.",
+              "attribute": "creatable",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "clearable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A button that clears the value.",
+              "attribute": "clearable",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "maxValues",
+              "type": {
+                "text": "number"
+              },
+              "description": "With multiple: at most this many.",
+              "attribute": "max-values",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "limit",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many options shown (large lists: keep typing).",
+              "attribute": "limit",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "nothingFound",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown when nothing matches.",
+              "attribute": "nothing-found",
+              "reflects": false,
+              "default": "No matches"
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The dropdown is shown.",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "values",
+              "description": "The value as an array (with or without multiple)."
+            },
+            {
+              "kind": "method",
+              "name": "toggle",
+              "description": "Opens or closes the dropdown."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The value changed (read value)."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Same moment as change."
+            },
+            {
+              "name": "ray-create",
+              "type": {
+                "text": "CustomEvent<{ value: string }>"
+              },
+              "description": "A new value was created from the typed text."
+            },
+            {
+              "name": "ray-open",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "The dropdown opened."
+            },
+            {
+              "name": "ray-close",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "The dropdown closed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "<option> and <optgroup> elements."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input",
+              "description": "The text field."
+            },
+            {
+              "name": "chips",
+              "description": "The chips container."
+            },
+            {
+              "name": "chip",
+              "description": "A chip."
+            },
+            {
+              "name": "clear",
+              "description": "The clear button."
+            },
+            {
+              "name": "dropdown",
+              "description": "The listbox."
+            },
+            {
+              "name": "option",
+              "description": "An option."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayCombobox",
+          "declaration": {
+            "name": "RayCombobox",
+            "module": "components/combobox/combobox.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-combobox",
+          "declaration": {
+            "name": "RayCombobox",
+            "module": "components/combobox/combobox.js"
           }
         }
       ]
@@ -3946,6 +4501,359 @@
           "declaration": {
             "name": "RayInput",
             "module": "components/input/input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/number-input/number-input.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayNumberInput",
+          "tagName": "ray-number-input",
+          "customElement": true,
+          "description": "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow).",
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The number (undefined when empty).",
+              "fieldName": "value"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum.",
+              "fieldName": "min"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum.",
+              "fieldName": "max"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "What + and − add.",
+              "fieldName": "step",
+              "default": "1"
+            },
+            {
+              "name": "decimals",
+              "type": {
+                "text": "number"
+              },
+              "description": "Fixed decimals (2: 3 shows as 3.00).",
+              "fieldName": "decimals"
+            },
+            {
+              "name": "prefix",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown before the number (\"$\").",
+              "fieldName": "prefix"
+            },
+            {
+              "name": "suffix",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown after the number (\" kg\", \"%\").",
+              "fieldName": "suffix"
+            },
+            {
+              "name": "thousands-separator",
+              "type": {
+                "text": "string"
+              },
+              "description": "Groups thousands in the shown text (\",\", \".\", \" \").",
+              "fieldName": "thousandsSeparator"
+            },
+            {
+              "name": "decimal-separator",
+              "type": {
+                "text": "string"
+              },
+              "description": "The decimal mark shown and typed (\",\" in many locales).",
+              "fieldName": "decimalSeparator",
+              "default": "."
+            },
+            {
+              "name": "clamp",
+              "type": {
+                "text": "\"blur\" | \"strict\" | \"none\""
+              },
+              "description": "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).",
+              "fieldName": "clamp",
+              "default": "blur"
+            },
+            {
+              "name": "hide-controls",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No + and − buttons (the keys still step).",
+              "fieldName": "hideControls"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "fieldName": "readonly"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The number (undefined when empty).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum.",
+              "attribute": "min",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum.",
+              "attribute": "max",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "What + and − add.",
+              "attribute": "step",
+              "reflects": false,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "decimals",
+              "type": {
+                "text": "number"
+              },
+              "description": "Fixed decimals (2: 3 shows as 3.00).",
+              "attribute": "decimals",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "prefix",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown before the number (\"$\").",
+              "attribute": "prefix",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "suffix",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown after the number (\" kg\", \"%\").",
+              "attribute": "suffix",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "thousandsSeparator",
+              "type": {
+                "text": "string"
+              },
+              "description": "Groups thousands in the shown text (\",\", \".\", \" \").",
+              "attribute": "thousands-separator",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "decimalSeparator",
+              "type": {
+                "text": "string"
+              },
+              "description": "The decimal mark shown and typed (\",\" in many locales).",
+              "attribute": "decimal-separator",
+              "reflects": false,
+              "default": "."
+            },
+            {
+              "kind": "field",
+              "name": "clamp",
+              "type": {
+                "text": "\"blur\" | \"strict\" | \"none\""
+              },
+              "description": "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).",
+              "attribute": "clamp",
+              "reflects": false,
+              "default": "blur"
+            },
+            {
+              "kind": "field",
+              "name": "hideControls",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No + and − buttons (the keys still step).",
+              "attribute": "hide-controls",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while empty.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "attribute": "readonly",
+              "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "stepBy",
+              "description": "Adds steps (negative: subtracts), clamped; fires input and change."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "On every change of the value (typing, keys, buttons)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "When the value is committed (blur, a step)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "left",
+              "description": "Left section (an icon)."
+            },
+            {
+              "name": "right",
+              "description": "Right section."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input",
+              "description": "The text field."
+            },
+            {
+              "name": "controls",
+              "description": "The + and − column."
+            },
+            {
+              "name": "increment",
+              "description": "The + button."
+            },
+            {
+              "name": "decrement",
+              "description": "The − button."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseNumber",
+          "description": "The number in a text with separators, prefix or suffix (NaN if none)."
+        },
+        {
+          "kind": "function",
+          "name": "formatNumber",
+          "description": "A number as text with fixed decimals and separators."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayNumberInput",
+          "declaration": {
+            "name": "RayNumberInput",
+            "module": "components/number-input/number-input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-number-input",
+          "declaration": {
+            "name": "RayNumberInput",
+            "module": "components/number-input/number-input.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseNumber",
+          "declaration": {
+            "name": "parseNumber",
+            "module": "components/number-input/number-input.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "formatNumber",
+          "declaration": {
+            "name": "formatNumber",
+            "module": "components/number-input/number-input.js"
           }
         }
       ]
@@ -7091,6 +7999,240 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/breadcrumbs/breadcrumbs.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayBreadcrumbs",
+          "tagName": "ray-breadcrumbs",
+          "customElement": true,
+          "description": "A <nav aria-label=\"Breadcrumb\"> around a list. The last crumb is the current page (aria-current=\"page\") unless one says current.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "separator",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text between crumbs (\"/\", \"›\", \"·\") or \"chevron\" (an icon).",
+              "fieldName": "separator",
+              "default": "/"
+            },
+            {
+              "name": "max-items",
+              "type": {
+                "text": "number"
+              },
+              "description": "Longer paths show the first crumb, \"…\" (a button that expands them) and the last max-items − 1.",
+              "fieldName": "maxItems"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the nav.",
+              "fieldName": "label",
+              "default": "Breadcrumb"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Font size.",
+              "fieldName": "size",
+              "default": "sm"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "separator",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text between crumbs (\"/\", \"›\", \"·\") or \"chevron\" (an icon).",
+              "attribute": "separator",
+              "reflects": false,
+              "default": "/"
+            },
+            {
+              "kind": "field",
+              "name": "maxItems",
+              "type": {
+                "text": "number"
+              },
+              "description": "Longer paths show the first crumb, \"…\" (a button that expands them) and the last max-items − 1.",
+              "attribute": "max-items",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the nav.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Breadcrumb"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "description": "The crumbs, in order."
+            },
+            {
+              "kind": "method",
+              "name": "expand",
+              "description": "Shows every crumb of a collapsed path."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-breadcrumb elements."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "nav",
+              "description": "The <nav>."
+            },
+            {
+              "name": "list",
+              "description": "The <ol>."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "RayBreadcrumb",
+          "tagName": "ray-breadcrumb",
+          "customElement": true,
+          "description": "A link with href (text without, or when current).",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "Where it leads.",
+              "fieldName": "href"
+            },
+            {
+              "name": "current",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "This crumb is the current page (default: the last).",
+              "fieldName": "current"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "href",
+              "type": {
+                "text": "string"
+              },
+              "description": "Where it leads.",
+              "attribute": "href",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "current",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "This crumb is the current page (default: the last).",
+              "attribute": "current",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The text."
+            },
+            {
+              "name": "icon",
+              "description": "An icon before the text."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "link",
+              "description": "The link (or the text of the current page)."
+            },
+            {
+              "name": "separator",
+              "description": "The separator before it."
+            },
+            {
+              "name": "more",
+              "description": "The \"…\" button of a collapsed path."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayBreadcrumbs",
+          "declaration": {
+            "name": "RayBreadcrumbs",
+            "module": "components/breadcrumbs/breadcrumbs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-breadcrumbs",
+          "declaration": {
+            "name": "RayBreadcrumbs",
+            "module": "components/breadcrumbs/breadcrumbs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayBreadcrumb",
+          "declaration": {
+            "name": "RayBreadcrumb",
+            "module": "components/breadcrumbs/breadcrumbs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-breadcrumb",
+          "declaration": {
+            "name": "RayBreadcrumb",
+            "module": "components/breadcrumbs/breadcrumbs.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/nav-link/nav-link.js",
       "declarations": [
         {
@@ -7976,6 +9118,428 @@
           "declaration": {
             "name": "RaySidebarGroup",
             "module": "components/sidebar/sidebar.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/stepper/stepper.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayStepper",
+          "tagName": "ray-stepper",
+          "customElement": true,
+          "description": "The steps are a labelled list; the active one has aria-current=\"step\" and each reads \"Step 2 of 4: Shipping, completed\". Only the active step's content shows; past the last step, the completed slot.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "active",
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the active step (steps.length: completed).",
+              "fieldName": "active",
+              "default": "0"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "\"horizontal\" | \"vertical\""
+              },
+              "description": "Steps in a row above the content, or in a column beside it.",
+              "fieldName": "orientation",
+              "default": "horizontal"
+            },
+            {
+              "name": "icon-position",
+              "type": {
+                "text": "\"left\" | \"top\""
+              },
+              "description": "Label beside the number, or under it (narrow screens, many steps).",
+              "fieldName": "iconPosition",
+              "default": "left"
+            },
+            {
+              "name": "allow-step-select",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Completed steps are buttons that go back to them.",
+              "fieldName": "allowStepSelect"
+            },
+            {
+              "name": "linear",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With allow-step-select off, false lets the user jump to any step.",
+              "fieldName": "linear",
+              "default": "true"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Size of the numbers.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for active and completed steps (default: primary).",
+              "fieldName": "color"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the list of steps.",
+              "fieldName": "label",
+              "default": "Progress"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the active step (steps.length: completed).",
+              "attribute": "active",
+              "reflects": true,
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "type": {
+                "text": "\"horizontal\" | \"vertical\""
+              },
+              "description": "Steps in a row above the content, or in a column beside it.",
+              "attribute": "orientation",
+              "reflects": true,
+              "default": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "iconPosition",
+              "type": {
+                "text": "\"left\" | \"top\""
+              },
+              "description": "Label beside the number, or under it (narrow screens, many steps).",
+              "attribute": "icon-position",
+              "reflects": true,
+              "default": "left"
+            },
+            {
+              "kind": "field",
+              "name": "allowStepSelect",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Completed steps are buttons that go back to them.",
+              "attribute": "allow-step-select",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "linear",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With allow-step-select off, false lets the user jump to any step.",
+              "attribute": "linear",
+              "reflects": false,
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"sm\" | \"md\" | \"lg\""
+              },
+              "description": "Size of the numbers.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for active and completed steps (default: primary).",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the list of steps.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Progress"
+            },
+            {
+              "kind": "field",
+              "name": "steps",
+              "description": "The steps, in order."
+            },
+            {
+              "kind": "method",
+              "name": "next",
+              "description": "To the next step (past the last: completed)."
+            },
+            {
+              "kind": "method",
+              "name": "prev",
+              "description": "To the previous step."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "active changed by the user (a step clicked, next(), prev())."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-step elements."
+            },
+            {
+              "name": "completed",
+              "description": "Shown once every step is done."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "steps",
+              "description": "The list of steps."
+            },
+            {
+              "name": "step",
+              "description": "A step (also step-done, step-active, step-todo)."
+            },
+            {
+              "name": "indicator",
+              "description": "A step's number or icon."
+            },
+            {
+              "name": "label",
+              "description": "A step's label."
+            },
+            {
+              "name": "description",
+              "description": "A step's description."
+            },
+            {
+              "name": "connector",
+              "description": "The line between steps."
+            },
+            {
+              "name": "content",
+              "description": "The content area."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "RayStep",
+          "tagName": "ray-step",
+          "customElement": true,
+          "description": "A step: its header is drawn by the stepper, its content shows while it is active.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label.",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon instead of the number.",
+              "fieldName": "icon"
+            },
+            {
+              "name": "completed-icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "The icon once done (default: check).",
+              "fieldName": "completedIcon"
+            },
+            {
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A spinner instead of the number.",
+              "fieldName": "loading"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "An error message: red step, the message as its description.",
+              "fieldName": "error"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be selected.",
+              "fieldName": "disabled"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The label.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "A line under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon instead of the number.",
+              "attribute": "icon",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "completedIcon",
+              "type": {
+                "text": "string"
+              },
+              "description": "The icon once done (default: check).",
+              "attribute": "completed-icon",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A spinner instead of the number.",
+              "attribute": "loading",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "An error message: red step, the message as its description.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be selected.",
+              "attribute": "disabled",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The content shown while it is active."
+            }
+          ],
+          "cssParts": []
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayStepper",
+          "declaration": {
+            "name": "RayStepper",
+            "module": "components/stepper/stepper.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-stepper",
+          "declaration": {
+            "name": "RayStepper",
+            "module": "components/stepper/stepper.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayStep",
+          "declaration": {
+            "name": "RayStep",
+            "module": "components/stepper/stepper.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-step",
+          "declaration": {
+            "name": "RayStep",
+            "module": "components/stepper/stepper.js"
           }
         }
       ]
@@ -12808,6 +14372,324 @@
           "declaration": {
             "name": "RayTable",
             "module": "components/table/table.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/timeline/timeline.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayTimeline",
+          "tagName": "ray-timeline",
+          "customElement": true,
+          "description": "A list (role=\"list\") of ray-timeline-item.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "active",
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the last reached item (-1: none).",
+              "fieldName": "active",
+              "default": "-1"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "\"left\" | \"right\""
+              },
+              "description": "Side of the line.",
+              "fieldName": "align",
+              "default": "left"
+            },
+            {
+              "name": "bullet-size",
+              "type": {
+                "text": "string"
+              },
+              "description": "Bullet size: px as a number or a CSS length (default 20px).",
+              "fieldName": "bulletSize"
+            },
+            {
+              "name": "line-width",
+              "type": {
+                "text": "number"
+              },
+              "description": "Line width in px (default 2).",
+              "fieldName": "lineWidth"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for what is reached (default: primary).",
+              "fieldName": "color"
+            },
+            {
+              "name": "reverse-active",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Counts active from the end (the latest event at the top).",
+              "fieldName": "reverseActive"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "active",
+              "type": {
+                "text": "number"
+              },
+              "description": "Index of the last reached item (-1: none).",
+              "attribute": "active",
+              "reflects": true,
+              "default": "-1"
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "\"left\" | \"right\""
+              },
+              "description": "Side of the line.",
+              "attribute": "align",
+              "reflects": true,
+              "default": "left"
+            },
+            {
+              "kind": "field",
+              "name": "bulletSize",
+              "type": {
+                "text": "string"
+              },
+              "description": "Bullet size: px as a number or a CSS length (default 20px).",
+              "attribute": "bullet-size",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "lineWidth",
+              "type": {
+                "text": "number"
+              },
+              "description": "Line width in px (default 2).",
+              "attribute": "line-width",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for what is reached (default: primary).",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "reverseActive",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Counts active from the end (the latest event at the top).",
+              "attribute": "reverse-active",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "items",
+              "description": "The items, in order."
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-timeline-item elements."
+            }
+          ],
+          "cssParts": []
+        },
+        {
+          "kind": "class",
+          "name": "RayTimelineItem",
+          "tagName": "ray-timeline-item",
+          "customElement": true,
+          "description": "Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the event.",
+              "fieldName": "label"
+            },
+            {
+              "name": "time",
+              "type": {
+                "text": "string"
+              },
+              "description": "When (\"2 h ago\", a date).",
+              "fieldName": "time"
+            },
+            {
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon of the registry in the bullet.",
+              "fieldName": "icon"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its own color (a failed step in red).",
+              "fieldName": "color"
+            },
+            {
+              "name": "line-variant",
+              "type": {
+                "text": "\"solid\" | \"dashed\" | \"dotted\""
+              },
+              "description": "The line to the next item (dashed: not happened yet).",
+              "fieldName": "lineVariant",
+              "default": "solid"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The title of the event.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "time",
+              "type": {
+                "text": "string"
+              },
+              "description": "When (\"2 h ago\", a date).",
+              "attribute": "time",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "icon",
+              "type": {
+                "text": "string"
+              },
+              "description": "An icon of the registry in the bullet.",
+              "attribute": "icon",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its own color (a failed step in red).",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "lineVariant",
+              "type": {
+                "text": "\"solid\" | \"dashed\" | \"dotted\""
+              },
+              "description": "The line to the next item (dashed: not happened yet).",
+              "attribute": "line-variant",
+              "reflects": true,
+              "default": "solid"
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "Details under the title."
+            },
+            {
+              "name": "bullet",
+              "description": "A custom bullet (an avatar, an image)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "bullet",
+              "description": "The bullet."
+            },
+            {
+              "name": "line",
+              "description": "The line to the next item."
+            },
+            {
+              "name": "body",
+              "description": "Title, details and time."
+            },
+            {
+              "name": "title",
+              "description": "The title."
+            },
+            {
+              "name": "time",
+              "description": "The time."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayTimeline",
+          "declaration": {
+            "name": "RayTimeline",
+            "module": "components/timeline/timeline.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-timeline",
+          "declaration": {
+            "name": "RayTimeline",
+            "module": "components/timeline/timeline.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayTimelineItem",
+          "declaration": {
+            "name": "RayTimelineItem",
+            "module": "components/timeline/timeline.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-timeline-item",
+          "declaration": {
+            "name": "RayTimelineItem",
+            "module": "components/timeline/timeline.js"
           }
         }
       ]

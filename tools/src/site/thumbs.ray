@@ -113,6 +113,12 @@ fn thumbs() -> [(string, string)] {
         ("app-shell", sf("appsh", "<i class=\"hd\">" + lp("2rem") + "</i><i class=\"nv\">" + ln("1.75rem") + ln("2rem") + ln("1.5rem") + "</i><i class=\"mn\">" + ln("4.5rem") + ln("5rem") + ln("3.5rem") + "</i>")),
         ("app-bar", "<i class=\"t-phone\"><i class=\"top\">" + svg(I_LEFT) + "<i class=\"t-col\">" + ln("3rem") + ln("2rem") + "</i><i class=\"t-grow\"></i>" + svg(I_SEARCH) + "</i>" + ln("5rem") + ln("4rem") + "</i>"),
         ("bottom-nav", "<i class=\"t-phone\">" + ln("5rem") + ln("4rem") + "<i class=\"t-grow\"></i><i class=\"bot\"><i class=\"on\">" + svg(I_HOME) + "</i>" + svg(I_SEARCH) + svg(I_BELL) + svg(I_USER) + "</i></i>"),
+        ("breadcrumbs", "<i class=\"t-crumbs\">" + svg(I_HOME) + svg(I_RIGHT) + ln("2rem") + svg(I_RIGHT) + ln("2.5rem") + svg(I_RIGHT) + lp("2rem") + "</i>"),
+        ("stepper", col("<i class=\"t-steps\"><i class=\"n done\">" + svg(I_CHECK) + "</i><i class=\"c done\"></i><i class=\"n on\">2</i><i class=\"c\"></i><i class=\"n\">3</i><i class=\"c\"></i><i class=\"n\">4</i></i>" + ln("7rem") + ln("5rem"))),
+        ("timeline", "<i class=\"t-tl\"><i class=\"on\">" + ln("4rem") + "</i><i class=\"on\">" + ln("5.5rem") + "</i><i class=\"on\">" + lp("3.5rem") + "</i><i>" + ln("4.5rem") + "</i></i>"),
+        ("checkbox-group", col(ln("3.5rem") + row(cb(true) + ln("3rem")) + row(cb(true) + ln("4rem")) + row(cb(false) + ln("2.5rem")))),
+        ("number-input", col(ln("3rem") + "<i class=\"t-num\"><i class=\"v\">$1,249.50</i><i class=\"s\">" + svg("<path d=\"M6 15l6-6 6 6\"/>") + svg(I_DOWN) + "</i></i>")),
+        ("combobox", col(inp("10rem", "<i class=\"t-chip\">" + ln("1.5rem") + svg(I_X) + "</i><i class=\"t-chip\">" + ln("1.25rem") + svg(I_X) + "</i><i class=\"t-grow\"></i>" + svg(I_DOWN)) + sf("list", "<i class=\"on\">" + lp("4rem") + "</i><i>" + ln("3rem") + "</i>"))),
         // Theme
         ("theme-toggle", "<i class=\"t-theme\"><i class=\"light\">" + svg(I_SUN) + "</i><i class=\"dark\">" + svg(I_MOON) + "</i></i>")
     ]

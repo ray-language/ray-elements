@@ -650,6 +650,91 @@
       ]
     },
     {
+      "name": "ray-checkbox-group",
+      "description": "The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role=\"group\" named by its label.",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Group label (also its accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "At least one must be checked.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Disables every checkbox.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max",
+          "description": "At most this many: the others are disabled once reached; the label shows the count."
+        },
+        {
+          "name": "orientation",
+          "description": "Layout of the checkboxes.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Size of the checkboxes that set none.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Color of the checkboxes that set none."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the checkboxes or after them.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "ray-color-picker",
       "description": "Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha.",
       "attributes": [
@@ -826,6 +911,48 @@
               "name": "below"
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "ray-combobox",
+      "description": "The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.",
+      "attributes": [
+        {
+          "name": "multiple",
+          "description": "Several values, shown as chips.",
+          "valueSet": "v"
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "creatable",
+          "description": "What was typed can be added when no option matches it (\"+ Create …\"); fires ray-create.",
+          "valueSet": "v"
+        },
+        {
+          "name": "clearable",
+          "description": "A button that clears the value.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max-values",
+          "description": "With multiple: at most this many."
+        },
+        {
+          "name": "limit",
+          "description": "At most this many options shown (large lists: keep typing)."
+        },
+        {
+          "name": "nothing-found",
+          "description": "Shown when nothing matches."
+        },
+        {
+          "name": "open",
+          "description": "The dropdown is shown.",
+          "valueSet": "v"
         }
       ]
     },
@@ -1317,6 +1444,77 @@
         {
           "name": "list",
           "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-number-input",
+      "description": "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow).",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The number (undefined when empty)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum."
+        },
+        {
+          "name": "max",
+          "description": "Maximum."
+        },
+        {
+          "name": "step",
+          "description": "What + and − add."
+        },
+        {
+          "name": "decimals",
+          "description": "Fixed decimals (2: 3 shows as 3.00)."
+        },
+        {
+          "name": "prefix",
+          "description": "Shown before the number (\"$\")."
+        },
+        {
+          "name": "suffix",
+          "description": "Shown after the number (\" kg\", \"%\")."
+        },
+        {
+          "name": "thousands-separator",
+          "description": "Groups thousands in the shown text (\",\", \".\", \" \")."
+        },
+        {
+          "name": "decimal-separator",
+          "description": "The decimal mark shown and typed (\",\" in many locales)."
+        },
+        {
+          "name": "clamp",
+          "description": "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).",
+          "values": [
+            {
+              "name": "blur"
+            },
+            {
+              "name": "strict"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "hide-controls",
+          "description": "No + and − buttons (the keys still step).",
+          "valueSet": "v"
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
         }
       ]
     },
@@ -2373,6 +2571,57 @@
       ]
     },
     {
+      "name": "ray-breadcrumbs",
+      "description": "A <nav aria-label=\"Breadcrumb\"> around a list. The last crumb is the current page (aria-current=\"page\") unless one says current.",
+      "attributes": [
+        {
+          "name": "separator",
+          "description": "Text between crumbs (\"/\", \"›\", \"·\") or \"chevron\" (an icon)."
+        },
+        {
+          "name": "max-items",
+          "description": "Longer paths show the first crumb, \"…\" (a button that expands them) and the last max-items − 1."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the nav."
+        },
+        {
+          "name": "size",
+          "description": "Font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-breadcrumb",
+      "description": "A link with href (text without, or when current).",
+      "attributes": [
+        {
+          "name": "href",
+          "description": "Where it leads."
+        },
+        {
+          "name": "current",
+          "description": "This crumb is the current page (default: the last).",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ray-nav-link",
       "description": "A link with href (aria-current=page when active), or a button that toggles its nested links.",
       "attributes": [
@@ -2582,6 +2831,109 @@
         {
           "name": "label",
           "description": "Section title."
+        }
+      ]
+    },
+    {
+      "name": "ray-stepper",
+      "description": "The steps are a labelled list; the active one has aria-current=\"step\" and each reads \"Step 2 of 4: Shipping, completed\". Only the active step's content shows; past the last step, the completed slot.",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "Index of the active step (steps.length: completed)."
+        },
+        {
+          "name": "orientation",
+          "description": "Steps in a row above the content, or in a column beside it.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "icon-position",
+          "description": "Label beside the number, or under it (narrow screens, many steps).",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "top"
+            }
+          ]
+        },
+        {
+          "name": "allow-step-select",
+          "description": "Completed steps are buttons that go back to them.",
+          "valueSet": "v"
+        },
+        {
+          "name": "linear",
+          "description": "With allow-step-select off, false lets the user jump to any step.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Size of the numbers.",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for active and completed steps (default: primary)."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the list of steps."
+        }
+      ]
+    },
+    {
+      "name": "ray-step",
+      "description": "A step: its header is drawn by the stepper, its content shows while it is active.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The label."
+        },
+        {
+          "name": "description",
+          "description": "A line under the label."
+        },
+        {
+          "name": "icon",
+          "description": "An icon instead of the number."
+        },
+        {
+          "name": "completed-icon",
+          "description": "The icon once done (default: check)."
+        },
+        {
+          "name": "loading",
+          "description": "A spinner instead of the number.",
+          "valueSet": "v"
+        },
+        {
+          "name": "error",
+          "description": "An error message: red step, the message as its description."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be selected.",
+          "valueSet": "v"
         }
       ]
     },
@@ -3852,6 +4204,82 @@
         {
           "name": "empty-label",
           "description": "Text without rows (or put a ray-empty-state in slot=empty)."
+        }
+      ]
+    },
+    {
+      "name": "ray-timeline",
+      "description": "A list (role=\"list\") of ray-timeline-item.",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "Index of the last reached item (-1: none)."
+        },
+        {
+          "name": "align",
+          "description": "Side of the line.",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "right"
+            }
+          ]
+        },
+        {
+          "name": "bullet-size",
+          "description": "Bullet size: px as a number or a CSS length (default 20px)."
+        },
+        {
+          "name": "line-width",
+          "description": "Line width in px (default 2)."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for what is reached (default: primary)."
+        },
+        {
+          "name": "reverse-active",
+          "description": "Counts active from the end (the latest event at the top).",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-timeline-item",
+      "description": "Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The title of the event."
+        },
+        {
+          "name": "time",
+          "description": "When (\"2 h ago\", a date)."
+        },
+        {
+          "name": "icon",
+          "description": "An icon of the registry in the bullet."
+        },
+        {
+          "name": "color",
+          "description": "Its own color (a failed step in red)."
+        },
+        {
+          "name": "line-variant",
+          "description": "The line to the next item (dashed: not happened yet).",
+          "values": [
+            {
+              "name": "solid"
+            },
+            {
+              "name": "dashed"
+            },
+            {
+              "name": "dotted"
+            }
+          ]
         }
       ]
     },

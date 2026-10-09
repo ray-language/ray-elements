@@ -191,11 +191,11 @@ examples/extending/    app components on the extension API (+ `wrap` output)</co
 </tr>
 <tr>
 <td>Inputs</td>
-<td><code>ray-input</code>, <code>ray-search</code>, <code>ray-textarea</code>, <code>ray-select</code>, <code>ray-checkbox</code>, <code>ray-switch</code>, <code>ray-radio-group</code> + <code>ray-radio</code>, <code>ray-segmented-control</code>, <code>ray-slider</code>, <code>ray-date-picker</code> + <code>ray-calendar</code>, <code>ray-color-picker</code> + <code>ray-color-input</code> (saturation area, hue and opacity sliders, swatches; a text field with the picker in a dropdown and an eyedropper; hex, rgb or hsl with or without alpha), <code>ray-file-upload</code> (drop zone: drag, click or paste; type/size/count checks; files listed as attachments; submitted with the form)</td>
+<td><code>ray-input</code>, <code>ray-number-input</code> (+/− with hold-to-repeat, min/max/step, decimals, prefix/suffix, thousands), <code>ray-combobox</code> (a searchable select; <code>multiple</code> chips, <code>creatable</code> tags, clearable, groups), <code>ray-search</code>, <code>ray-textarea</code>, <code>ray-select</code>, <code>ray-checkbox</code> + <code>ray-checkbox-group</code> (one entry per value, max, required), <code>ray-switch</code>, <code>ray-radio-group</code> + <code>ray-radio</code>, <code>ray-segmented-control</code>, <code>ray-slider</code>, <code>ray-date-picker</code> + <code>ray-calendar</code>, <code>ray-color-picker</code> + <code>ray-color-input</code> (saturation area, hue and opacity sliders, swatches; a text field with the picker in a dropdown and an eyedropper; hex, rgb or hsl with or without alpha), <code>ray-file-upload</code> (drop zone: drag, click or paste; type/size/count checks; files listed as attachments; submitted with the form)</td>
 </tr>
 <tr>
 <td>Navigation</td>
-<td><code>ray-tabs</code> + <code>ray-tab</code> + <code>ray-tab-panel</code>, <code>ray-nav-link</code>, <code>ray-sidebar</code> + <code>ray-sidebar-group</code> (icon rail on wide screens, drawer on narrow ones), <code>ray-pagination</code></td>
+<td><code>ray-tabs</code> + <code>ray-tab</code> + <code>ray-tab-panel</code>, <code>ray-nav-link</code>, <code>ray-sidebar</code> + <code>ray-sidebar-group</code> (icon rail on wide screens, drawer on narrow ones), <code>ray-bottom-nav</code> + <code>ray-bottom-nav-item</code> (a phone app's tab bar: icons, labels, badges, a raised action, hides on scroll), <code>ray-breadcrumbs</code> + <code>ray-breadcrumb</code> (collapsible with max-items), <code>ray-stepper</code> + <code>ray-step</code> (wizards: loading, error, revisit completed steps), <code>ray-pagination</code></td>
 </tr>
 <tr>
 <td>Overlays</td>
@@ -203,7 +203,7 @@ examples/extending/    app components on the extension API (+ `wrap` output)</co
 </tr>
 <tr>
 <td>Data display</td>
-<td><code>ray-icon</code>, <code>ray-badge</code>, <code>ray-avatar</code>, <code>ray-indicator</code> (a dot or label on any element), <code>ray-blockquote</code>, <code>ray-code</code> (copy, line numbers, highlighted and diff lines; a built-in highlighter or any library via <code>setHighlighter()</code>), <code>ray-kbd</code> (raised, filled or outline), <code>ray-accordion</code> + <code>ray-accordion-item</code>, <code>ray-table</code>, <code>ray-stat</code>, <code>ray-carousel</code> (scroll-snap, swipe, autoplay), <code>ray-attachment</code> + <code>ray-attachments</code></td>
+<td><code>ray-timeline</code> + <code>ray-timeline-item</code> (reached items, icon or avatar bullets, line variants), <code>ray-icon</code>, <code>ray-badge</code>, <code>ray-avatar</code>, <code>ray-indicator</code> (a dot or label on any element), <code>ray-blockquote</code>, <code>ray-code</code> (copy, line numbers, highlighted and diff lines; a built-in highlighter or any library via <code>setHighlighter()</code>), <code>ray-kbd</code> (raised, filled or outline), <code>ray-accordion</code> + <code>ray-accordion-item</code>, <code>ray-table</code>, <code>ray-stat</code>, <code>ray-carousel</code> (scroll-snap, swipe, autoplay), <code>ray-attachment</code> + <code>ray-attachments</code></td>
 </tr>
 <tr>
 <td>Feedback</td>
@@ -211,7 +211,7 @@ examples/extending/    app components on the extension API (+ `wrap` output)</co
 </tr>
 <tr>
 <td>Layout</td>
-<td><code>ray-card</code>, <code>ray-separator</code>, <code>ray-split</code> (resizable panes), <code>ray-statusbar</code> + <code>ray-statusbar-item</code>, <code>ray-aspect-ratio</code></td>
+<td><code>ray-app-shell</code> (header, navbar, main, aside, footer; a phone layout with a bottom bar below its breakpoint, measured on itself), <code>ray-app-bar</code> (a phone screen's top bar: back, title, actions; elevates or hides on scroll), <code>ray-stack</code>, <code>ray-group</code>, <code>ray-grid</code> (columns per width of the grid itself, spans, auto-fill), <code>ray-container</code>, <code>ray-center</code>, <code>ray-scroll-area</code> (themed scrollbar, edge shadows, <code>ray-reach-end</code>), <code>ray-card</code>, <code>ray-separator</code>, <code>ray-split</code> (resizable panes), <code>ray-statusbar</code> + <code>ray-statusbar-item</code>, <code>ray-aspect-ratio</code></td>
 </tr>
 </tbody>
 </table>

@@ -1,0 +1,49 @@
+<div class="demo-caption">An order: quantity × price</div>
+<div class="demo-split">
+  <ray-stack gap="sm">
+    <ray-number-input id="demo-ni-qty" label="Quantity" value="2" min="1" max="20" description="1 to 20 seats."></ray-number-input>
+    <ray-number-input id="demo-ni-price" label="Price per seat" value="1249.5" prefix="$" decimals="2" thousands-separator="," step="50" min="0"></ray-number-input>
+    <ray-number-input id="demo-ni-off" label="Discount" value="10" suffix="%" min="0" max="50" step="5"></ray-number-input>
+  </ray-stack>
+  <dl class="demo-summary">
+    <div><dt>Subtotal</dt><dd id="demo-ni-sub"></dd></div>
+    <div><dt>Discount</dt><dd id="demo-ni-disc"></dd></div>
+    <div class="total"><dt>Total</dt><dd id="demo-ni-total"></dd></div>
+    <p class="demo-muted">Arrows step, Shift+arrows ×10, hold + or − to repeat.</p>
+  </dl>
+</div>
+
+<div class="demo-caption">Units, steps and locales</div>
+<div class="demo-grid">
+  <ray-number-input label="Weight" value="72.5" suffix=" kg" decimals="1" step="0.5" min="0"></ray-number-input>
+  <ray-number-input label="Temperature" value="-4" suffix=" °C" min="-40" max="50"></ray-number-input>
+  <ray-number-input label="Precio (es)" value="1234567.8" prefix="€ " decimals="2" thousands-separator="." decimal-separator=","></ray-number-input>
+  <ray-number-input label="Port" value="8080" min="1" max="65535" hide-controls description="hide-controls: the keys still step."></ray-number-input>
+</div>
+
+<div class="demo-caption">Clamping, states and variants</div>
+<div class="demo-grid">
+  <ray-number-input label="clamp=&quot;blur&quot; (default)" value="5" min="0" max="10" description="Type 99, then leave the field."></ray-number-input>
+  <ray-number-input label="clamp=&quot;strict&quot;" value="5" min="0" max="10" clamp="strict" description="Never above 10, even while typing."></ray-number-input>
+  <ray-number-input label="clamp=&quot;none&quot;" value="12" min="0" max="10" clamp="none" error="The maximum is 10."></ray-number-input>
+  <ray-number-input label="Filled, large" variant="filled" size="lg" value="3"></ray-number-input>
+  <ray-number-input label="Required" required placeholder="Enter a number"></ray-number-input>
+  <ray-number-input label="Disabled" value="42" disabled></ray-number-input>
+</div>
+
+<script type="module">
+  // The total follows every change (input fires on each step and keystroke).
+  const qty = document.getElementById("demo-ni-qty");
+  const price = document.getElementById("demo-ni-price");
+  const off = document.getElementById("demo-ni-off");
+  const money = (n) => `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const total = () => {
+    const sub = (qty.value ?? 0) * (price.value ?? 0);
+    const disc = sub * ((off.value ?? 0) / 100);
+    document.getElementById("demo-ni-sub").textContent = money(sub);
+    document.getElementById("demo-ni-disc").textContent = `−${money(disc)}`;
+    document.getElementById("demo-ni-total").textContent = money(sub - disc);
+  };
+  for (const el of [qty, price, off]) el.addEventListener("input", total);
+  customElements.whenDefined("ray-number-input").then(total);
+</script>

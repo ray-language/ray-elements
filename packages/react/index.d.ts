@@ -201,6 +201,40 @@ export type RayCheckboxProps = RayCheckboxOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-checkbox> as a React component. */
 export declare const RayCheckbox: React.ForwardRefExoticComponent<RayCheckboxProps & React.RefAttributes<Ray.RayCheckbox>>;
 
+export interface RayCheckboxGroupOwnProps {
+  /** The checked values. The value attribute: "a,b". */
+  value?: string[];
+  /** Form field name. */
+  name?: string;
+  /** Group label (also its accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text. */
+  error?: string;
+  /** At least one must be checked. */
+  required?: boolean;
+  /** Disables every checkbox. */
+  disabled?: boolean;
+  /** At most this many: the others are disabled once reached; the label shows the count. */
+  max?: number;
+  /** Layout of the checkboxes. */
+  orientation?: "vertical" | "horizontal";
+  /** Size of the checkboxes that set none. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Color of the checkboxes that set none. */
+  color?: string;
+  /** The description before the checkboxes or after them. */
+  descriptionPosition?: "above" | "below";
+  /** The user checked or unchecked one (read value). */
+  onChange?: (event: Event) => void;
+  /** Same moment as change. */
+  onInput?: (event: Event) => void;
+}
+export type RayCheckboxGroupProps = RayCheckboxGroupOwnProps & Omit<React.HTMLAttributes<Ray.RayCheckboxGroup>, keyof RayCheckboxGroupOwnProps> & { children?: React.ReactNode };
+/** <ray-checkbox-group> as a React component. */
+export declare const RayCheckboxGroup: React.ForwardRefExoticComponent<RayCheckboxGroupProps & React.RefAttributes<Ray.RayCheckboxGroup>>;
+
 export interface RayColorPickerOwnProps {
   /** The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset). */
   value?: string;
@@ -278,6 +312,62 @@ export interface RayColorInputOwnProps {
 export type RayColorInputProps = RayColorInputOwnProps & Omit<React.HTMLAttributes<Ray.RayColorInput>, keyof RayColorInputOwnProps> & { children?: React.ReactNode };
 /** <ray-color-input> as a React component. */
 export declare const RayColorInput: React.ForwardRefExoticComponent<RayColorInputProps & React.RefAttributes<Ray.RayColorInput>>;
+
+export interface RayComboboxOwnProps {
+  /** The chosen value; an array with multiple. The value attribute: "a,b" with multiple. */
+  value?: string | string[];
+  /** Options instead of child <option>/<optgroup> elements. */
+  data?: Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>;
+  /** Several values, shown as chips. */
+  multiple?: boolean;
+  /** Shown while empty. */
+  placeholder?: string;
+  /** What was typed can be added when no option matches it ("+ Create …"); fires ray-create. */
+  creatable?: boolean;
+  /** A button that clears the value. */
+  clearable?: boolean;
+  /** With multiple: at most this many. */
+  maxValues?: number;
+  /** At most this many options shown (large lists: keep typing). */
+  limit?: number;
+  /** Shown when nothing matches. */
+  nothingFound?: string;
+  /** The dropdown is shown. */
+  open?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text; marks the field invalid. */
+  error?: string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** Size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** The value changed (read value). */
+  onChange?: (event: Event) => void;
+  /** Same moment as change. */
+  onInput?: (event: Event) => void;
+  /** A new value was created from the typed text. */
+  onRayCreate?: (event: CustomEvent<{ value: string }>) => void;
+  /** The dropdown opened. */
+  onRayOpen?: (event: CustomEvent<unknown>) => void;
+  /** The dropdown closed. */
+  onRayClose?: (event: CustomEvent<unknown>) => void;
+}
+export type RayComboboxProps = RayComboboxOwnProps & Omit<React.HTMLAttributes<Ray.RayCombobox>, keyof RayComboboxOwnProps> & { children?: React.ReactNode };
+/** <ray-combobox> as a React component. */
+export declare const RayCombobox: React.ForwardRefExoticComponent<RayComboboxProps & React.RefAttributes<Ray.RayCombobox>>;
 
 export interface RayDatePickerOwnProps {
   /** The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset). */
@@ -456,6 +546,62 @@ export interface RayInputOwnProps {
 export type RayInputProps = RayInputOwnProps & Omit<React.HTMLAttributes<Ray.RayInput>, keyof RayInputOwnProps> & { children?: React.ReactNode };
 /** <ray-input> as a React component. */
 export declare const RayInput: React.ForwardRefExoticComponent<RayInputProps & React.RefAttributes<Ray.RayInput>>;
+
+export interface RayNumberInputOwnProps {
+  /** The number (undefined when empty). */
+  value?: number;
+  /** Minimum. */
+  min?: number;
+  /** Maximum. */
+  max?: number;
+  /** What + and − add. */
+  step?: number;
+  /** Fixed decimals (2: 3 shows as 3.00). */
+  decimals?: number;
+  /** Shown before the number ("$"). */
+  prefix?: string;
+  /** Shown after the number (" kg", "%"). */
+  suffix?: string;
+  /** Groups thousands in the shown text (",", ".", " "). */
+  thousandsSeparator?: string;
+  /** The decimal mark shown and typed ("," in many locales). */
+  decimalSeparator?: string;
+  /** When out-of-range input is clamped: on blur, while typing, or never (then it is invalid). */
+  clamp?: "blur" | "strict" | "none";
+  /** No + and − buttons (the keys still step). */
+  hideControls?: boolean;
+  /** Shown while empty. */
+  placeholder?: string;
+  /** Not editable, still submitted. */
+  readonly?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text; marks the field invalid. */
+  error?: string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** Size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** On every change of the value (typing, keys, buttons). */
+  onInput?: (event: Event) => void;
+  /** When the value is committed (blur, a step). */
+  onChange?: (event: Event) => void;
+}
+export type RayNumberInputProps = RayNumberInputOwnProps & Omit<React.HTMLAttributes<Ray.RayNumberInput>, keyof RayNumberInputOwnProps> & { children?: React.ReactNode };
+/** <ray-number-input> as a React component. */
+export declare const RayNumberInput: React.ForwardRefExoticComponent<RayNumberInputProps & React.RefAttributes<Ray.RayNumberInput>>;
 
 export interface RayPasswordInputOwnProps {
   /** The password is shown as text. */
@@ -873,6 +1019,30 @@ export type RayBottomNavItemProps = RayBottomNavItemOwnProps & Omit<React.HTMLAt
 /** <ray-bottom-nav-item> as a React component. */
 export declare const RayBottomNavItem: React.ForwardRefExoticComponent<RayBottomNavItemProps & React.RefAttributes<Ray.RayBottomNavItem>>;
 
+export interface RayBreadcrumbsOwnProps {
+  /** Text between crumbs ("/", "›", "·") or "chevron" (an icon). */
+  separator?: string;
+  /** Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1. */
+  maxItems?: number;
+  /** Accessible name of the nav. */
+  label?: string;
+  /** Font size. */
+  size?: "xs" | "sm" | "md" | "lg";
+}
+export type RayBreadcrumbsProps = RayBreadcrumbsOwnProps & Omit<React.HTMLAttributes<Ray.RayBreadcrumbs>, keyof RayBreadcrumbsOwnProps> & { children?: React.ReactNode };
+/** <ray-breadcrumbs> as a React component. */
+export declare const RayBreadcrumbs: React.ForwardRefExoticComponent<RayBreadcrumbsProps & React.RefAttributes<Ray.RayBreadcrumbs>>;
+
+export interface RayBreadcrumbOwnProps {
+  /** Where it leads. */
+  href?: string;
+  /** This crumb is the current page (default: the last). */
+  current?: boolean;
+}
+export type RayBreadcrumbProps = RayBreadcrumbOwnProps & Omit<React.HTMLAttributes<Ray.RayBreadcrumb>, keyof RayBreadcrumbOwnProps> & { children?: React.ReactNode };
+/** <ray-breadcrumb> as a React component. */
+export declare const RayBreadcrumb: React.ForwardRefExoticComponent<RayBreadcrumbProps & React.RefAttributes<Ray.RayBreadcrumb>>;
+
 export interface RayNavLinkOwnProps {
   /** Text. */
   label?: string;
@@ -964,6 +1134,50 @@ export interface RaySidebarGroupOwnProps {
 export type RaySidebarGroupProps = RaySidebarGroupOwnProps & Omit<React.HTMLAttributes<Ray.RaySidebarGroup>, keyof RaySidebarGroupOwnProps> & { children?: React.ReactNode };
 /** <ray-sidebar-group> as a React component. */
 export declare const RaySidebarGroup: React.ForwardRefExoticComponent<RaySidebarGroupProps & React.RefAttributes<Ray.RaySidebarGroup>>;
+
+export interface RayStepperOwnProps {
+  /** Index of the active step (steps.length: completed). */
+  active?: number;
+  /** Steps in a row above the content, or in a column beside it. */
+  orientation?: "horizontal" | "vertical";
+  /** Label beside the number, or under it (narrow screens, many steps). */
+  iconPosition?: "left" | "top";
+  /** Completed steps are buttons that go back to them. */
+  allowStepSelect?: boolean;
+  /** With allow-step-select off, false lets the user jump to any step. */
+  linear?: boolean;
+  /** Size of the numbers. */
+  size?: "sm" | "md" | "lg";
+  /** A palette color or any CSS color for active and completed steps (default: primary). */
+  color?: string;
+  /** Accessible name of the list of steps. */
+  label?: string;
+  /** active changed by the user (a step clicked, next(), prev()). */
+  onChange?: (event: Event) => void;
+}
+export type RayStepperProps = RayStepperOwnProps & Omit<React.HTMLAttributes<Ray.RayStepper>, keyof RayStepperOwnProps> & { children?: React.ReactNode };
+/** <ray-stepper> as a React component. */
+export declare const RayStepper: React.ForwardRefExoticComponent<RayStepperProps & React.RefAttributes<Ray.RayStepper>>;
+
+export interface RayStepOwnProps {
+  /** The label. */
+  label?: string;
+  /** A line under the label. */
+  description?: string;
+  /** An icon instead of the number. */
+  icon?: string;
+  /** The icon once done (default: check). */
+  completedIcon?: string;
+  /** A spinner instead of the number. */
+  loading?: boolean;
+  /** An error message: red step, the message as its description. */
+  error?: string;
+  /** Cannot be selected. */
+  disabled?: boolean;
+}
+export type RayStepProps = RayStepOwnProps & Omit<React.HTMLAttributes<Ray.RayStep>, keyof RayStepOwnProps> & { children?: React.ReactNode };
+/** <ray-step> as a React component. */
+export declare const RayStep: React.ForwardRefExoticComponent<RayStepProps & React.RefAttributes<Ray.RayStep>>;
 
 export interface RayTabsOwnProps {
   /** Value of the active tab (default: the first enabled one). */
@@ -1504,6 +1718,40 @@ export interface RayTableOwnProps {
 export type RayTableProps = RayTableOwnProps & Omit<React.HTMLAttributes<Ray.RayTable>, keyof RayTableOwnProps> & { children?: React.ReactNode };
 /** <ray-table> as a React component. */
 export declare const RayTable: React.ForwardRefExoticComponent<RayTableProps & React.RefAttributes<Ray.RayTable>>;
+
+export interface RayTimelineOwnProps {
+  /** Index of the last reached item (-1: none). */
+  active?: number;
+  /** Side of the line. */
+  align?: "left" | "right";
+  /** Bullet size: px as a number or a CSS length (default 20px). */
+  bulletSize?: string;
+  /** Line width in px (default 2). */
+  lineWidth?: number;
+  /** A palette color or any CSS color for what is reached (default: primary). */
+  color?: string;
+  /** Counts active from the end (the latest event at the top). */
+  reverseActive?: boolean;
+}
+export type RayTimelineProps = RayTimelineOwnProps & Omit<React.HTMLAttributes<Ray.RayTimeline>, keyof RayTimelineOwnProps> & { children?: React.ReactNode };
+/** <ray-timeline> as a React component. */
+export declare const RayTimeline: React.ForwardRefExoticComponent<RayTimelineProps & React.RefAttributes<Ray.RayTimeline>>;
+
+export interface RayTimelineItemOwnProps {
+  /** The title of the event. */
+  label?: string;
+  /** When ("2 h ago", a date). */
+  time?: string;
+  /** An icon of the registry in the bullet. */
+  icon?: string;
+  /** Its own color (a failed step in red). */
+  color?: string;
+  /** The line to the next item (dashed: not happened yet). */
+  lineVariant?: "solid" | "dashed" | "dotted";
+}
+export type RayTimelineItemProps = RayTimelineItemOwnProps & Omit<React.HTMLAttributes<Ray.RayTimelineItem>, keyof RayTimelineItemOwnProps> & { children?: React.ReactNode };
+/** <ray-timeline-item> as a React component. */
+export declare const RayTimelineItem: React.ForwardRefExoticComponent<RayTimelineItemProps & React.RefAttributes<Ray.RayTimelineItem>>;
 
 export interface RayAlertOwnProps {
   /** Title. */

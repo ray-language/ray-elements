@@ -1330,3 +1330,33 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .thumb .t-phone .bot { display: flex; justify-content: space-around; align-items: center; padding-top: 0.3rem; color: var(--ray-muted-foreground); border-top: 1px solid var(--ray-border); }
 .thumb .t-phone .bot svg { width: 0.7rem; height: 0.7rem; }
 .thumb .t-phone .bot .on { display: grid; place-items: center; width: 1.4rem; height: 0.9rem; color: var(--ray-primary-light-color); background: var(--ray-primary-light); border-radius: 99px; }
+
+/* Block 2 examples: checkbox group, breadcrumbs, stepper, timeline. */
+.demo-cbg-all { display: grid; gap: var(--ray-space-2); }
+.demo-cbg-nested { padding-left: var(--ray-space-6); }
+.demo-bc-header { display: grid; gap: var(--ray-space-3); padding: var(--ray-space-4); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-lg); }
+.demo-st-done { min-height: 9rem; }
+.demo-st-nav { padding-top: var(--ray-space-4); border-top: 1px solid var(--ray-border); }
+.demo-tl-quote { margin: var(--ray-space-1) 0 0; padding: var(--ray-space-2) var(--ray-space-3); font-style: italic; background: var(--ray-muted); border-radius: var(--ray-radius-md); }
+.thumb .t-crumbs { display: flex; align-items: center; gap: 0.35rem; color: var(--ray-muted-foreground); }
+.thumb .t-crumbs svg { width: 0.6rem; height: 0.6rem; }
+.thumb .t-steps { display: flex; align-items: center; gap: 0.3rem; }
+.thumb .t-steps .n { display: grid; place-items: center; width: 1.2rem; height: 1.2rem; font-size: 0.55rem; font-weight: 700; color: var(--ray-muted-foreground); background: var(--ray-muted); border: 2px solid var(--ray-border); border-radius: 50%; box-sizing: border-box; }
+.thumb .t-steps .n.done { color: var(--ray-primary-contrast, #fff); background: var(--ray-primary); border-color: var(--ray-primary); }
+.thumb .t-steps .n.on { color: var(--ray-primary); background: var(--ray-background); border-color: var(--ray-primary); }
+.thumb .t-steps .c { width: 1.4rem; height: 2px; background: var(--ray-border); }
+.thumb .t-steps .c.done { background: var(--ray-primary); }
+.thumb .t-steps svg { width: 0.65rem; height: 0.65rem; }
+.thumb .t-tl { display: grid; gap: 0.5rem; }
+.thumb .t-tl > i { position: relative; display: flex; align-items: center; gap: 0.5rem; }
+.thumb .t-tl > i::before { content: ""; flex: none; width: 0.65rem; height: 0.65rem; border: 2px solid var(--ray-border); border-radius: 50%; background: var(--ray-background); box-sizing: border-box; z-index: 1; }
+.thumb .t-tl > i.on::before { background: var(--ray-primary); border-color: var(--ray-primary); }
+.thumb .t-tl > i:not(:last-child)::after { content: ""; position: absolute; left: calc(0.325rem - 1px); top: 0.65rem; height: 0.5rem; border-left: 2px solid var(--ray-border); }
+.thumb .t-tl > i.on:not(:last-child)::after { border-color: var(--ray-primary); }
+.thumb .t-in .t-chip { display: flex; align-items: center; gap: 0.2rem; height: 0.95rem; padding: 0 0.3rem; background: var(--ray-muted); border: 1px solid var(--ray-border); border-radius: 0.2rem; }
+.thumb .t-in .t-chip svg { width: 0.45rem; height: 0.45rem; }
+.thumb .t-num { display: flex; align-items: stretch; width: 7.5rem; height: 1.6rem; padding-left: 0.5rem; box-sizing: border-box; background: var(--ray-background); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-sm); overflow: hidden; }
+.thumb .t-num .v { flex: 1; display: flex; align-items: center; font-size: 0.65rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ray-foreground); }
+.thumb .t-num .s { display: grid; width: 1.2rem; border-left: 1px solid var(--ray-border); color: var(--ray-muted-foreground); }
+.thumb .t-num .s svg { width: 0.55rem; height: 0.55rem; margin: auto; }
+.thumb .t-num .s svg + svg { border-top: 1px solid var(--ray-border); }

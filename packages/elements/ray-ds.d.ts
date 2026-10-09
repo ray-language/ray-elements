@@ -412,6 +412,37 @@ export declare class RayCheckbox extends FieldControl {
   labelPosition: "right" | "left";
 }
 
+// --- Checkbox group (checkbox-group)
+/** <ray-checkbox-group> The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role="group" named by its label. */
+export declare class RayCheckboxGroup extends FormControl {
+  /** The checked values. The value attribute: "a,b". */
+  value: string[] | undefined;
+  /** Form field name. */
+  name: string | undefined;
+  /** Group label (also its accessible name). */
+  label: string | undefined;
+  /** Help text. */
+  description: string | undefined;
+  /** Error text. */
+  error: string | undefined;
+  /** At least one must be checked. */
+  required: boolean | undefined;
+  /** Disables every checkbox. */
+  disabled: boolean | undefined;
+  /** At most this many: the others are disabled once reached; the label shows the count. */
+  max: number | undefined;
+  /** Layout of the checkboxes. */
+  orientation: "vertical" | "horizontal";
+  /** Size of the checkboxes that set none. */
+  size: "xs" | "sm" | "md" | "lg" | "xl" | undefined;
+  /** Color of the checkboxes that set none. */
+  color: string | undefined;
+  /** The description before the checkboxes or after them. */
+  descriptionPosition: "above" | "below";
+  /** The checkboxes of this group. */
+  readonly checkboxes: HTMLElement[];
+}
+
 // --- Color picker (color-picker)
 /** How a color value is written. */
 export type ColorFormat = "hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla";
@@ -492,6 +523,47 @@ export declare class RayColorInput extends FieldControl {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RayColorInputEventMap extends HTMLElementEventMap {
+  /** The dropdown opened. */
+  "ray-open": CustomEvent<unknown>;
+  /** The dropdown closed. */
+  "ray-close": CustomEvent<unknown>;
+}
+
+// --- Combobox (combobox)
+/** <ray-combobox> The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value. */
+export declare class RayCombobox extends FieldControl {
+  /** The chosen value; an array with multiple. The value attribute: "a,b" with multiple. */
+  value: string | string[] | undefined;
+  /** Options instead of child <option>/<optgroup> elements. */
+  data: Array<string | { value: string; label?: string; disabled?: boolean; group?: string }> | undefined;
+  /** Several values, shown as chips. */
+  multiple: boolean | undefined;
+  /** Shown while empty. */
+  placeholder: string | undefined;
+  /** What was typed can be added when no option matches it ("+ Create …"); fires ray-create. */
+  creatable: boolean | undefined;
+  /** A button that clears the value. */
+  clearable: boolean | undefined;
+  /** With multiple: at most this many. */
+  maxValues: number | undefined;
+  /** At most this many options shown (large lists: keep typing). */
+  limit: number | undefined;
+  /** Shown when nothing matches. */
+  nothingFound: string;
+  /** The dropdown is shown. */
+  open: boolean | undefined;
+  /** The value as an array (with or without multiple). */
+  readonly values: string[];
+  /** Opens or closes the dropdown. */
+  toggle(force?: boolean): void;
+  addEventListener<K extends keyof RayComboboxEventMap>(type: K, listener: (this: RayCombobox, ev: RayComboboxEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayComboboxEventMap>(type: K, listener: (this: RayCombobox, ev: RayComboboxEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayComboboxEventMap extends HTMLElementEventMap {
+  /** A new value was created from the typed text. */
+  "ray-create": CustomEvent<{ value: string }>;
   /** The dropdown opened. */
   "ray-open": CustomEvent<unknown>;
   /** The dropdown closed. */
@@ -680,6 +752,43 @@ export declare class RayInput extends FieldControl {
   variant: "default" | "filled" | "unstyled";
   /** Selects the text. */
   select(): void;
+}
+
+// --- Number input (number-input)
+/** The number in a text with separators, prefix or suffix (NaN if none). */
+export declare function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number;
+/** A number as text with fixed decimals and separators. */
+export declare function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string;
+/** <ray-number-input> Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). */
+export declare class RayNumberInput extends FieldControl {
+  /** The number (undefined when empty). */
+  value: number | undefined;
+  /** Minimum. */
+  min: number | undefined;
+  /** Maximum. */
+  max: number | undefined;
+  /** What + and − add. */
+  step: number;
+  /** Fixed decimals (2: 3 shows as 3.00). */
+  decimals: number | undefined;
+  /** Shown before the number ("$"). */
+  prefix: string | undefined;
+  /** Shown after the number (" kg", "%"). */
+  suffix: string | undefined;
+  /** Groups thousands in the shown text (",", ".", " "). */
+  thousandsSeparator: string | undefined;
+  /** The decimal mark shown and typed ("," in many locales). */
+  decimalSeparator: string;
+  /** When out-of-range input is clamped: on blur, while typing, or never (then it is invalid). */
+  clamp: "blur" | "strict" | "none";
+  /** No + and − buttons (the keys still step). */
+  hideControls: boolean | undefined;
+  /** Shown while empty. */
+  placeholder: string | undefined;
+  /** Not editable, still submitted. */
+  readonly: boolean | undefined;
+  /** Adds steps (negative: subtracts), clamped; fires input and change. */
+  stepBy(steps: number): void;
 }
 
 // --- Password input (password-input)
@@ -1003,6 +1112,30 @@ export declare class RayBottomNavItem extends RayElement {
   action: boolean | undefined;
 }
 
+// --- Breadcrumbs (breadcrumbs)
+/** <ray-breadcrumbs> A <nav aria-label="Breadcrumb"> around a list. The last crumb is the current page (aria-current="page") unless one says current. */
+export declare class RayBreadcrumbs extends RayElement {
+  /** Text between crumbs ("/", "›", "·") or "chevron" (an icon). */
+  separator: string;
+  /** Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1. */
+  maxItems: number | undefined;
+  /** Accessible name of the nav. */
+  label: string;
+  /** Font size. */
+  size: "xs" | "sm" | "md" | "lg";
+  /** The crumbs, in order. */
+  readonly items: RayBreadcrumb[];
+  /** Shows every crumb of a collapsed path. */
+  expand(): void;
+}
+/** <ray-breadcrumb> A link with href (text without, or when current). */
+export declare class RayBreadcrumb extends RayElement {
+  /** Where it leads. */
+  href: string | undefined;
+  /** This crumb is the current page (default: the last). */
+  current: boolean | undefined;
+}
+
 // --- Nav link (nav-link)
 /** <ray-nav-link> A link with href (aria-current=page when active), or a button that toggles its nested links. */
 export declare class RayNavLink extends RayElement {
@@ -1117,6 +1250,50 @@ export interface RaySidebarEventMap extends HTMLElementEventMap {
 export declare class RaySidebarGroup extends RayElement {
   /** Section title. */
   label: string | undefined;
+}
+
+// --- Stepper (stepper)
+/** <ray-stepper> The steps are a labelled list; the active one has aria-current="step" and each reads "Step 2 of 4: Shipping, completed". Only the active step's content shows; past the last step, the completed slot. */
+export declare class RayStepper extends RayElement {
+  /** Index of the active step (steps.length: completed). */
+  active: number;
+  /** Steps in a row above the content, or in a column beside it. */
+  orientation: "horizontal" | "vertical";
+  /** Label beside the number, or under it (narrow screens, many steps). */
+  iconPosition: "left" | "top";
+  /** Completed steps are buttons that go back to them. */
+  allowStepSelect: boolean | undefined;
+  /** With allow-step-select off, false lets the user jump to any step. */
+  linear: boolean;
+  /** Size of the numbers. */
+  size: "sm" | "md" | "lg";
+  /** A palette color or any CSS color for active and completed steps (default: primary). */
+  color: string | undefined;
+  /** Accessible name of the list of steps. */
+  label: string;
+  /** The steps, in order. */
+  readonly steps: RayStep[];
+  /** To the next step (past the last: completed). */
+  next(): void;
+  /** To the previous step. */
+  prev(): void;
+}
+/** <ray-step> A step: its header is drawn by the stepper, its content shows while it is active. */
+export declare class RayStep extends RayElement {
+  /** The label. */
+  label: string | undefined;
+  /** A line under the label. */
+  description: string | undefined;
+  /** An icon instead of the number. */
+  icon: string | undefined;
+  /** The icon once done (default: check). */
+  completedIcon: string | undefined;
+  /** A spinner instead of the number. */
+  loading: boolean | undefined;
+  /** An error message: red step, the message as its description. */
+  error: string | undefined;
+  /** Cannot be selected. */
+  disabled: boolean | undefined;
 }
 
 // --- Tabs (tabs)
@@ -1749,6 +1926,38 @@ export interface RayTableEventMap extends HTMLElementEventMap {
   "ray-row-click": CustomEvent<{ row: any; index: number }>;
 }
 
+// --- Timeline (timeline)
+/** <ray-timeline> A list (role="list") of ray-timeline-item. */
+export declare class RayTimeline extends RayElement {
+  /** Index of the last reached item (-1: none). */
+  active: number;
+  /** Side of the line. */
+  align: "left" | "right";
+  /** Bullet size: px as a number or a CSS length (default 20px). */
+  bulletSize: string | undefined;
+  /** Line width in px (default 2). */
+  lineWidth: number | undefined;
+  /** A palette color or any CSS color for what is reached (default: primary). */
+  color: string | undefined;
+  /** Counts active from the end (the latest event at the top). */
+  reverseActive: boolean | undefined;
+  /** The items, in order. */
+  readonly items: RayTimelineItem[];
+}
+/** <ray-timeline-item> Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar. */
+export declare class RayTimelineItem extends RayElement {
+  /** The title of the event. */
+  label: string | undefined;
+  /** When ("2 h ago", a date). */
+  time: string | undefined;
+  /** An icon of the registry in the bullet. */
+  icon: string | undefined;
+  /** Its own color (a failed step in red). */
+  color: string | undefined;
+  /** The line to the next item (dashed: not happened yet). */
+  lineVariant: "solid" | "dashed" | "dotted";
+}
+
 // --- Alert (alert)
 /** <ray-alert> Announced as an alert. The icon follows the color (info, circle-check, alert-triangle, circle-x) unless icon or slot=icon. */
 export declare class RayAlert extends RayElement {
@@ -2159,12 +2368,15 @@ declare global {
     "ray-toggle": RayToggle;
     "ray-toggle-group": RayToggleGroup;
     "ray-checkbox": RayCheckbox;
+    "ray-checkbox-group": RayCheckboxGroup;
     "ray-color-picker": RayColorPicker;
     "ray-color-input": RayColorInput;
+    "ray-combobox": RayCombobox;
     "ray-date-picker": RayDatePicker;
     "ray-calendar": RayCalendar;
     "ray-file-upload": RayFileUpload;
     "ray-input": RayInput;
+    "ray-number-input": RayNumberInput;
     "ray-password-input": RayPasswordInput;
     "ray-radio-group": RayRadioGroup;
     "ray-radio": RayRadio;
@@ -2176,10 +2388,14 @@ declare global {
     "ray-textarea": RayTextarea;
     "ray-bottom-nav": RayBottomNav;
     "ray-bottom-nav-item": RayBottomNavItem;
+    "ray-breadcrumbs": RayBreadcrumbs;
+    "ray-breadcrumb": RayBreadcrumb;
     "ray-nav-link": RayNavLink;
     "ray-pagination": RayPagination;
     "ray-sidebar": RaySidebar;
     "ray-sidebar-group": RaySidebarGroup;
+    "ray-stepper": RayStepper;
+    "ray-step": RayStep;
     "ray-tabs": RayTabs;
     "ray-tab": RayTab;
     "ray-tab-panel": RayTabPanel;
@@ -2206,6 +2422,8 @@ declare global {
     "ray-kbd": RayKbd;
     "ray-stat": RayStat;
     "ray-table": RayTable;
+    "ray-timeline": RayTimeline;
+    "ray-timeline-item": RayTimelineItem;
     "ray-alert": RayAlert;
     "ray-empty-state": RayEmptyState;
     "ray-notification": RayNotification;

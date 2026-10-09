@@ -201,6 +201,42 @@ export interface RayCheckboxProps {
 /** <ray-checkbox> as a Vue component. */
 export declare const RayCheckbox: DefineComponent<RayCheckboxProps>;
 
+export interface RayCheckboxGroupProps {
+  /** The checked values. The value attribute: "a,b". */
+  value?: string[];
+  /** Form field name. */
+  name?: string;
+  /** Group label (also its accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text. */
+  error?: string;
+  /** At least one must be checked. */
+  required?: boolean;
+  /** Disables every checkbox. */
+  disabled?: boolean;
+  /** At most this many: the others are disabled once reached; the label shows the count. */
+  max?: number;
+  /** Layout of the checkboxes. */
+  orientation?: "vertical" | "horizontal";
+  /** Size of the checkboxes that set none. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Color of the checkboxes that set none. */
+  color?: string;
+  /** The description before the checkboxes or after them. */
+  descriptionPosition?: "above" | "below";
+  /** v-model: the element's `value`. */
+  modelValue?: string[];
+  "onUpdate:modelValue"?: (value: string[]) => void;
+  /** The user checked or unchecked one (read value). */
+  onChange?: (event: Event) => void;
+  /** Same moment as change. */
+  onInput?: (event: Event) => void;
+}
+/** <ray-checkbox-group> as a Vue component. */
+export declare const RayCheckboxGroup: DefineComponent<RayCheckboxGroupProps>;
+
 export interface RayColorPickerProps {
   /** The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset). */
   value?: string;
@@ -282,6 +318,64 @@ export interface RayColorInputProps {
 }
 /** <ray-color-input> as a Vue component. */
 export declare const RayColorInput: DefineComponent<RayColorInputProps>;
+
+export interface RayComboboxProps {
+  /** The chosen value; an array with multiple. The value attribute: "a,b" with multiple. */
+  value?: string | string[];
+  /** Options instead of child <option>/<optgroup> elements. */
+  data?: Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>;
+  /** Several values, shown as chips. */
+  multiple?: boolean;
+  /** Shown while empty. */
+  placeholder?: string;
+  /** What was typed can be added when no option matches it ("+ Create …"); fires ray-create. */
+  creatable?: boolean;
+  /** A button that clears the value. */
+  clearable?: boolean;
+  /** With multiple: at most this many. */
+  maxValues?: number;
+  /** At most this many options shown (large lists: keep typing). */
+  limit?: number;
+  /** Shown when nothing matches. */
+  nothingFound?: string;
+  /** The dropdown is shown. */
+  open?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text; marks the field invalid. */
+  error?: string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** Size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** v-model: the element's `value`. */
+  modelValue?: string | string[];
+  "onUpdate:modelValue"?: (value: string | string[]) => void;
+  /** The value changed (read value). */
+  onChange?: (event: Event) => void;
+  /** Same moment as change. */
+  onInput?: (event: Event) => void;
+  /** A new value was created from the typed text. */
+  onRayCreate?: (event: CustomEvent<{ value: string }>) => void;
+  /** The dropdown opened. */
+  onRayOpen?: (event: CustomEvent<unknown>) => void;
+  /** The dropdown closed. */
+  onRayClose?: (event: CustomEvent<unknown>) => void;
+}
+/** <ray-combobox> as a Vue component. */
+export declare const RayCombobox: DefineComponent<RayComboboxProps>;
 
 export interface RayDatePickerProps {
   /** The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset). */
@@ -465,6 +559,64 @@ export interface RayInputProps {
 }
 /** <ray-input> as a Vue component. */
 export declare const RayInput: DefineComponent<RayInputProps>;
+
+export interface RayNumberInputProps {
+  /** The number (undefined when empty). */
+  value?: number;
+  /** Minimum. */
+  min?: number;
+  /** Maximum. */
+  max?: number;
+  /** What + and − add. */
+  step?: number;
+  /** Fixed decimals (2: 3 shows as 3.00). */
+  decimals?: number;
+  /** Shown before the number ("$"). */
+  prefix?: string;
+  /** Shown after the number (" kg", "%"). */
+  suffix?: string;
+  /** Groups thousands in the shown text (",", ".", " "). */
+  thousandsSeparator?: string;
+  /** The decimal mark shown and typed ("," in many locales). */
+  decimalSeparator?: string;
+  /** When out-of-range input is clamped: on blur, while typing, or never (then it is invalid). */
+  clamp?: "blur" | "strict" | "none";
+  /** No + and − buttons (the keys still step). */
+  hideControls?: boolean;
+  /** Shown while empty. */
+  placeholder?: string;
+  /** Not editable, still submitted. */
+  readonly?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text; marks the field invalid. */
+  error?: string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** Size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** v-model: the element's `value`. */
+  modelValue?: number;
+  "onUpdate:modelValue"?: (value: number) => void;
+  /** On every change of the value (typing, keys, buttons). */
+  onInput?: (event: Event) => void;
+  /** When the value is committed (blur, a step). */
+  onChange?: (event: Event) => void;
+}
+/** <ray-number-input> as a Vue component. */
+export declare const RayNumberInput: DefineComponent<RayNumberInputProps>;
 
 export interface RayPasswordInputProps {
   /** The password is shown as text. */
@@ -895,6 +1047,28 @@ export interface RayBottomNavItemProps {
 /** <ray-bottom-nav-item> as a Vue component. */
 export declare const RayBottomNavItem: DefineComponent<RayBottomNavItemProps>;
 
+export interface RayBreadcrumbsProps {
+  /** Text between crumbs ("/", "›", "·") or "chevron" (an icon). */
+  separator?: string;
+  /** Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1. */
+  maxItems?: number;
+  /** Accessible name of the nav. */
+  label?: string;
+  /** Font size. */
+  size?: "xs" | "sm" | "md" | "lg";
+}
+/** <ray-breadcrumbs> as a Vue component. */
+export declare const RayBreadcrumbs: DefineComponent<RayBreadcrumbsProps>;
+
+export interface RayBreadcrumbProps {
+  /** Where it leads. */
+  href?: string;
+  /** This crumb is the current page (default: the last). */
+  current?: boolean;
+}
+/** <ray-breadcrumb> as a Vue component. */
+export declare const RayBreadcrumb: DefineComponent<RayBreadcrumbProps>;
+
 export interface RayNavLinkProps {
   /** Text. */
   label?: string;
@@ -988,6 +1162,51 @@ export interface RaySidebarGroupProps {
 }
 /** <ray-sidebar-group> as a Vue component. */
 export declare const RaySidebarGroup: DefineComponent<RaySidebarGroupProps>;
+
+export interface RayStepperProps {
+  /** Index of the active step (steps.length: completed). */
+  active?: number;
+  /** Steps in a row above the content, or in a column beside it. */
+  orientation?: "horizontal" | "vertical";
+  /** Label beside the number, or under it (narrow screens, many steps). */
+  iconPosition?: "left" | "top";
+  /** Completed steps are buttons that go back to them. */
+  allowStepSelect?: boolean;
+  /** With allow-step-select off, false lets the user jump to any step. */
+  linear?: boolean;
+  /** Size of the numbers. */
+  size?: "sm" | "md" | "lg";
+  /** A palette color or any CSS color for active and completed steps (default: primary). */
+  color?: string;
+  /** Accessible name of the list of steps. */
+  label?: string;
+  /** v-model: the element's `active`. */
+  modelValue?: number;
+  "onUpdate:modelValue"?: (value: number) => void;
+  /** active changed by the user (a step clicked, next(), prev()). */
+  onChange?: (event: Event) => void;
+}
+/** <ray-stepper> as a Vue component. */
+export declare const RayStepper: DefineComponent<RayStepperProps>;
+
+export interface RayStepProps {
+  /** The label. */
+  label?: string;
+  /** A line under the label. */
+  description?: string;
+  /** An icon instead of the number. */
+  icon?: string;
+  /** The icon once done (default: check). */
+  completedIcon?: string;
+  /** A spinner instead of the number. */
+  loading?: boolean;
+  /** An error message: red step, the message as its description. */
+  error?: string;
+  /** Cannot be selected. */
+  disabled?: boolean;
+}
+/** <ray-step> as a Vue component. */
+export declare const RayStep: DefineComponent<RayStepProps>;
 
 export interface RayTabsProps {
   /** Value of the active tab (default: the first enabled one). */
@@ -1524,6 +1743,38 @@ export interface RayTableProps {
 /** <ray-table> as a Vue component. */
 export declare const RayTable: DefineComponent<RayTableProps>;
 
+export interface RayTimelineProps {
+  /** Index of the last reached item (-1: none). */
+  active?: number;
+  /** Side of the line. */
+  align?: "left" | "right";
+  /** Bullet size: px as a number or a CSS length (default 20px). */
+  bulletSize?: string;
+  /** Line width in px (default 2). */
+  lineWidth?: number;
+  /** A palette color or any CSS color for what is reached (default: primary). */
+  color?: string;
+  /** Counts active from the end (the latest event at the top). */
+  reverseActive?: boolean;
+}
+/** <ray-timeline> as a Vue component. */
+export declare const RayTimeline: DefineComponent<RayTimelineProps>;
+
+export interface RayTimelineItemProps {
+  /** The title of the event. */
+  label?: string;
+  /** When ("2 h ago", a date). */
+  time?: string;
+  /** An icon of the registry in the bullet. */
+  icon?: string;
+  /** Its own color (a failed step in red). */
+  color?: string;
+  /** The line to the next item (dashed: not happened yet). */
+  lineVariant?: "solid" | "dashed" | "dotted";
+}
+/** <ray-timeline-item> as a Vue component. */
+export declare const RayTimelineItem: DefineComponent<RayTimelineItemProps>;
+
 export interface RayAlertProps {
   /** Title. */
   label?: string;
@@ -1857,12 +2108,15 @@ export declare const components: {
   RayToggle: typeof RayToggle;
   RayToggleGroup: typeof RayToggleGroup;
   RayCheckbox: typeof RayCheckbox;
+  RayCheckboxGroup: typeof RayCheckboxGroup;
   RayColorPicker: typeof RayColorPicker;
   RayColorInput: typeof RayColorInput;
+  RayCombobox: typeof RayCombobox;
   RayDatePicker: typeof RayDatePicker;
   RayCalendar: typeof RayCalendar;
   RayFileUpload: typeof RayFileUpload;
   RayInput: typeof RayInput;
+  RayNumberInput: typeof RayNumberInput;
   RayPasswordInput: typeof RayPasswordInput;
   RayRadioGroup: typeof RayRadioGroup;
   RayRadio: typeof RayRadio;
@@ -1874,10 +2128,14 @@ export declare const components: {
   RayTextarea: typeof RayTextarea;
   RayBottomNav: typeof RayBottomNav;
   RayBottomNavItem: typeof RayBottomNavItem;
+  RayBreadcrumbs: typeof RayBreadcrumbs;
+  RayBreadcrumb: typeof RayBreadcrumb;
   RayNavLink: typeof RayNavLink;
   RayPagination: typeof RayPagination;
   RaySidebar: typeof RaySidebar;
   RaySidebarGroup: typeof RaySidebarGroup;
+  RayStepper: typeof RayStepper;
+  RayStep: typeof RayStep;
   RayTabs: typeof RayTabs;
   RayTab: typeof RayTab;
   RayTabPanel: typeof RayTabPanel;
@@ -1904,6 +2162,8 @@ export declare const components: {
   RayKbd: typeof RayKbd;
   RayStat: typeof RayStat;
   RayTable: typeof RayTable;
+  RayTimeline: typeof RayTimeline;
+  RayTimelineItem: typeof RayTimelineItem;
   RayAlert: typeof RayAlert;
   RayEmptyState: typeof RayEmptyState;
   RayNotification: typeof RayNotification;
@@ -1939,12 +2199,15 @@ declare module "vue" {
     RayToggle: typeof RayToggle;
     RayToggleGroup: typeof RayToggleGroup;
     RayCheckbox: typeof RayCheckbox;
+    RayCheckboxGroup: typeof RayCheckboxGroup;
     RayColorPicker: typeof RayColorPicker;
     RayColorInput: typeof RayColorInput;
+    RayCombobox: typeof RayCombobox;
     RayDatePicker: typeof RayDatePicker;
     RayCalendar: typeof RayCalendar;
     RayFileUpload: typeof RayFileUpload;
     RayInput: typeof RayInput;
+    RayNumberInput: typeof RayNumberInput;
     RayPasswordInput: typeof RayPasswordInput;
     RayRadioGroup: typeof RayRadioGroup;
     RayRadio: typeof RayRadio;
@@ -1956,10 +2219,14 @@ declare module "vue" {
     RayTextarea: typeof RayTextarea;
     RayBottomNav: typeof RayBottomNav;
     RayBottomNavItem: typeof RayBottomNavItem;
+    RayBreadcrumbs: typeof RayBreadcrumbs;
+    RayBreadcrumb: typeof RayBreadcrumb;
     RayNavLink: typeof RayNavLink;
     RayPagination: typeof RayPagination;
     RaySidebar: typeof RaySidebar;
     RaySidebarGroup: typeof RaySidebarGroup;
+    RayStepper: typeof RayStepper;
+    RayStep: typeof RayStep;
     RayTabs: typeof RayTabs;
     RayTab: typeof RayTab;
     RayTabPanel: typeof RayTabPanel;
@@ -1986,6 +2253,8 @@ declare module "vue" {
     RayKbd: typeof RayKbd;
     RayStat: typeof RayStat;
     RayTable: typeof RayTable;
+    RayTimeline: typeof RayTimeline;
+    RayTimelineItem: typeof RayTimelineItem;
     RayAlert: typeof RayAlert;
     RayEmptyState: typeof RayEmptyState;
     RayNotification: typeof RayNotification;

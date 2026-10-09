@@ -1,0 +1,113 @@
+[component]
+name = "Number input"
+category = "Inputs"
+summary = "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton."
+files = ["number-input.js"]
+requires = []
+tags = ["ray-number-input"]
+
+[ray-number-input]
+class = "RayNumberInput"
+extends = "FieldControl"
+summary = "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow)."
+
+[ray-number-input.properties.value]
+type = "number"
+description = "The number (undefined when empty)."
+
+[ray-number-input.properties.min]
+type = "number"
+description = "Minimum."
+
+[ray-number-input.properties.max]
+type = "number"
+description = "Maximum."
+
+[ray-number-input.properties.step]
+type = "number"
+default = "1"
+description = "What + and − add."
+
+[ray-number-input.properties.decimals]
+type = "number"
+description = "Fixed decimals (2: 3 shows as 3.00)."
+
+[ray-number-input.properties.prefix]
+type = "string"
+description = "Shown before the number (\"$\")."
+
+[ray-number-input.properties.suffix]
+type = "string"
+description = "Shown after the number (\" kg\", \"%\")."
+
+[ray-number-input.properties.thousandsSeparator]
+attribute = "thousands-separator"
+type = "string"
+description = "Groups thousands in the shown text (\",\", \".\", \" \")."
+
+[ray-number-input.properties.decimalSeparator]
+attribute = "decimal-separator"
+type = "string"
+default = "."
+description = "The decimal mark shown and typed (\",\" in many locales)."
+
+[ray-number-input.properties.clamp]
+type = "string"
+values = ["blur", "strict", "none"]
+default = "blur"
+description = "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid)."
+
+[ray-number-input.properties.hideControls]
+attribute = "hide-controls"
+type = "boolean"
+reflect = true
+description = "No + and − buttons (the keys still step)."
+
+[ray-number-input.properties.placeholder]
+type = "string"
+description = "Shown while empty."
+
+[ray-number-input.properties.readonly]
+type = "boolean"
+reflect = true
+description = "Not editable, still submitted."
+
+[ray-number-input.events.input]
+description = "On every change of the value (typing, keys, buttons)."
+
+[ray-number-input.events.change]
+description = "When the value is committed (blur, a step)."
+
+[ray-number-input.slots.left]
+description = "Left section (an icon)."
+
+[ray-number-input.slots.right]
+description = "Right section."
+
+[ray-number-input.parts.input]
+description = "The text field."
+
+[ray-number-input.parts.controls]
+description = "The + and − column."
+
+[ray-number-input.parts.increment]
+description = "The + button."
+
+[ray-number-input.parts.decrement]
+description = "The − button."
+
+[ray-number-input.members.stepBy]
+ts = "stepBy(steps: number): void"
+description = "Adds steps (negative: subtracts), clamped; fires input and change."
+
+[ray-number-input.model]
+property = "value"
+events = ["input"]
+
+[component.exports.parseNumber]
+ts = "function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number"
+description = "The number in a text with separators, prefix or suffix (NaN if none)."
+
+[component.exports.formatNumber]
+ts = "function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string"
+description = "A number as text with fixed decimals and separators."

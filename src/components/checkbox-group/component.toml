@@ -1,0 +1,92 @@
+[component]
+name = "Checkbox group"
+category = "Inputs"
+summary = "Several choices among options (Mantine's Checkbox.Group): a label, description and error around ray-checkbox elements; the value is the array of the checked ones. max caps how many; required asks for one."
+files = ["checkbox-group.js"]
+requires = ["checkbox"]
+tags = ["ray-checkbox-group"]
+
+[ray-checkbox-group]
+class = "RayCheckboxGroup"
+extends = "FormControl"
+summary = "The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role=\"group\" named by its label."
+
+[ray-checkbox-group.properties.value]
+attribute = false
+type = "array"
+ts = "string[]"
+description = "The checked values. The value attribute: \"a,b\"."
+
+[ray-checkbox-group.properties.name]
+type = "string"
+reflect = true
+description = "Form field name."
+
+[ray-checkbox-group.properties.label]
+type = "string"
+description = "Group label (also its accessible name)."
+
+[ray-checkbox-group.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-checkbox-group.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-checkbox-group.properties.required]
+type = "boolean"
+reflect = true
+description = "At least one must be checked."
+
+[ray-checkbox-group.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Disables every checkbox."
+
+[ray-checkbox-group.properties.max]
+type = "number"
+description = "At most this many: the others are disabled once reached; the label shows the count."
+
+[ray-checkbox-group.properties.orientation]
+type = "string"
+values = ["vertical", "horizontal"]
+default = "vertical"
+reflect = true
+description = "Layout of the checkboxes."
+
+[ray-checkbox-group.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+reflect = true
+description = "Size of the checkboxes that set none."
+
+[ray-checkbox-group.properties.color]
+type = "string"
+reflect = true
+description = "Color of the checkboxes that set none."
+
+[ray-checkbox-group.properties.descriptionPosition]
+attribute = "description-position"
+type = "string"
+values = ["above", "below"]
+default = "above"
+reflect = true
+description = "The description before the checkboxes or after them."
+
+[ray-checkbox-group.events.change]
+description = "The user checked or unchecked one (read value)."
+
+[ray-checkbox-group.events.input]
+description = "Same moment as change."
+
+[ray-checkbox-group.slots.default]
+description = "ray-checkbox elements (also nested in other markup)."
+
+[ray-checkbox-group.members.checkboxes]
+ts = "readonly checkboxes: HTMLElement[]"
+description = "The checkboxes of this group."
+
+[ray-checkbox-group.model]
+property = "value"
+events = ["change"]

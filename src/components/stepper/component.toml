@@ -1,0 +1,146 @@
+[component]
+name = "Stepper"
+category = "Navigation"
+summary = "A task in steps (Mantine's Stepper): a wizard, a checkout, an onboarding. Numbers or icons, labels, connectors, the content of the active step; loading and error states; completed steps can be revisited."
+files = ["stepper.js"]
+requires = []
+tags = ["ray-stepper", "ray-step"]
+
+[ray-stepper]
+class = "RayStepper"
+extends = "RayElement"
+summary = "The steps are a labelled list; the active one has aria-current=\"step\" and each reads \"Step 2 of 4: Shipping, completed\". Only the active step's content shows; past the last step, the completed slot."
+
+[ray-stepper.properties.active]
+type = "number"
+default = "0"
+reflect = true
+description = "Index of the active step (steps.length: completed)."
+
+[ray-stepper.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "Steps in a row above the content, or in a column beside it."
+
+[ray-stepper.properties.iconPosition]
+attribute = "icon-position"
+type = "string"
+values = ["left", "top"]
+default = "left"
+reflect = true
+description = "Label beside the number, or under it (narrow screens, many steps)."
+
+[ray-stepper.properties.allowStepSelect]
+attribute = "allow-step-select"
+type = "boolean"
+reflect = true
+description = "Completed steps are buttons that go back to them."
+
+[ray-stepper.properties.linear]
+type = "boolean"
+default = "true"
+description = "With allow-step-select off, false lets the user jump to any step."
+
+[ray-stepper.properties.size]
+type = "string"
+values = ["sm", "md", "lg"]
+default = "md"
+reflect = true
+description = "Size of the numbers."
+
+[ray-stepper.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color for active and completed steps (default: primary)."
+
+[ray-stepper.properties.label]
+type = "string"
+default = "Progress"
+description = "Accessible name of the list of steps."
+
+[ray-stepper.events.change]
+description = "active changed by the user (a step clicked, next(), prev())."
+
+[ray-stepper.slots.default]
+description = "ray-step elements."
+
+[ray-stepper.slots.completed]
+description = "Shown once every step is done."
+
+[ray-stepper.parts.steps]
+description = "The list of steps."
+
+[ray-stepper.parts.step]
+description = "A step (also step-done, step-active, step-todo)."
+
+[ray-stepper.parts.indicator]
+description = "A step's number or icon."
+
+[ray-stepper.parts.label]
+description = "A step's label."
+
+[ray-stepper.parts.description]
+description = "A step's description."
+
+[ray-stepper.parts.connector]
+description = "The line between steps."
+
+[ray-stepper.parts.content]
+description = "The content area."
+
+[ray-stepper.members.steps]
+ts = "readonly steps: RayStep[]"
+description = "The steps, in order."
+
+[ray-stepper.members.next]
+ts = "next(): void"
+description = "To the next step (past the last: completed)."
+
+[ray-stepper.members.prev]
+ts = "prev(): void"
+description = "To the previous step."
+
+[ray-stepper.model]
+property = "active"
+events = ["change"]
+
+[ray-step]
+class = "RayStep"
+extends = "RayElement"
+summary = "A step: its header is drawn by the stepper, its content shows while it is active."
+
+[ray-step.properties.label]
+type = "string"
+description = "The label."
+
+[ray-step.properties.description]
+type = "string"
+description = "A line under the label."
+
+[ray-step.properties.icon]
+type = "string"
+description = "An icon instead of the number."
+
+[ray-step.properties.completedIcon]
+attribute = "completed-icon"
+type = "string"
+description = "The icon once done (default: check)."
+
+[ray-step.properties.loading]
+type = "boolean"
+reflect = true
+description = "A spinner instead of the number."
+
+[ray-step.properties.error]
+type = "string"
+description = "An error message: red step, the message as its description."
+
+[ray-step.properties.disabled]
+type = "boolean"
+reflect = true
+description = "Cannot be selected."
+
+[ray-step.slots.default]
+description = "The content shown while it is active."

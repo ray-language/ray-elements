@@ -67,6 +67,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Checkbox group",
+    "group": "Components · Inputs",
+    "description": "Several choices among options (Mantine's Checkbox.Group): a label, description and error around ray-checkbox elements; the value is the array of the checked ones. max caps how many; required asks for one.",
+    "href": "components/checkbox-group.html",
+    "keywords": [
+      "checkbox-group",
+      "ray-checkbox-group"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Color picker",
     "group": "Components · Inputs",
     "description": "Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper. Pointer and keyboard; form-associated; hex, rgb or hsl, with or without alpha.",
@@ -75,6 +86,18 @@ export default [
       "color-picker",
       "ray-color-picker",
       "ray-color-input"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Combobox (Multi select)",
+    "group": "Components · Inputs",
+    "description": "A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.",
+    "href": "components/combobox.html",
+    "keywords": [
+      "combobox",
+      "multi select",
+      "ray-combobox"
     ],
     "icon": "layers"
   },
@@ -109,6 +132,17 @@ export default [
     "keywords": [
       "input",
       "ray-input"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Number input",
+    "group": "Components · Inputs",
+    "description": "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton.",
+    "href": "components/number-input.html",
+    "keywords": [
+      "number-input",
+      "ray-number-input"
     ],
     "icon": "layers"
   },
@@ -214,6 +248,18 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Breadcrumbs",
+    "group": "Components · Navigation",
+    "description": "Where a page sits (Mantine's Breadcrumbs, the WAI-ARIA breadcrumb pattern): links in a labelled nav, the last one the current page. Any separator or a chevron; a long path collapses into an expandable \"…\".",
+    "href": "components/breadcrumbs.html",
+    "keywords": [
+      "breadcrumbs",
+      "ray-breadcrumbs",
+      "ray-breadcrumb"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Nav link",
     "group": "Components · Navigation",
     "description": "A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.",
@@ -244,6 +290,18 @@ export default [
       "sidebar",
       "ray-sidebar",
       "ray-sidebar-group"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Stepper",
+    "group": "Components · Navigation",
+    "description": "A task in steps (Mantine's Stepper): a wizard, a checkout, an onboarding. Numbers or icons, labels, connectors, the content of the active step; loading and error states; completed steps can be revisited.",
+    "href": "components/stepper.html",
+    "keywords": [
+      "stepper",
+      "ray-stepper",
+      "ray-step"
     ],
     "icon": "layers"
   },
@@ -461,6 +519,18 @@ export default [
     "keywords": [
       "table",
       "ray-table"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Timeline",
+    "group": "Components · Data display",
+    "description": "Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar.",
+    "href": "components/timeline.html",
+    "keywords": [
+      "timeline",
+      "ray-timeline",
+      "ray-timeline-item"
     ],
     "icon": "layers"
   },

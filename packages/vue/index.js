@@ -31,6 +31,11 @@ export const RayCheckbox = createComponent("RayCheckbox", "ray-checkbox", {
   booleans: ["checked", "indeterminate", "required", "disabled"],
   model: { prop: "checked", events: ["change"] },
 });
+export const RayCheckboxGroup = createComponent("RayCheckboxGroup", "ray-checkbox-group", {
+  properties: ["value", "name", "label", "description", "error", "required", "disabled", "max", "orientation", "size", "color", "descriptionPosition"],
+  booleans: ["required", "disabled"],
+  model: { prop: "value", events: ["change"] },
+});
 export const RayColorPicker = createComponent("RayColorPicker", "ray-color-picker", {
   properties: ["value", "format", "swatches", "swatchesPerRow", "swatchesOnly", "size", "fullWidth", "name", "disabled", "label"],
   booleans: ["swatchesOnly", "fullWidth", "disabled"],
@@ -40,6 +45,11 @@ export const RayColorInput = createComponent("RayColorInput", "ray-color-input",
   properties: ["value", "format", "swatches", "swatchesPerRow", "placeholder", "hideEyedropper", "open", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
   booleans: ["hideEyedropper", "open", "required", "disabled"],
   model: { prop: "value", events: ["input"] },
+});
+export const RayCombobox = createComponent("RayCombobox", "ray-combobox", {
+  properties: ["value", "data", "multiple", "placeholder", "creatable", "clearable", "maxValues", "limit", "nothingFound", "open", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
+  booleans: ["multiple", "creatable", "clearable", "open", "required", "disabled"],
+  model: { prop: "value", events: ["change"] },
 });
 export const RayDatePicker = createComponent("RayDatePicker", "ray-date-picker", {
   properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
@@ -58,6 +68,11 @@ export const RayFileUpload = createComponent("RayFileUpload", "ray-file-upload",
 export const RayInput = createComponent("RayInput", "ray-input", {
   properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
   booleans: ["required", "disabled", "readonly"],
+  model: { prop: "value", events: ["input"] },
+});
+export const RayNumberInput = createComponent("RayNumberInput", "ray-number-input", {
+  properties: ["value", "min", "max", "step", "decimals", "prefix", "suffix", "thousandsSeparator", "decimalSeparator", "clamp", "hideControls", "placeholder", "readonly", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
+  booleans: ["hideControls", "readonly", "required", "disabled"],
   model: { prop: "value", events: ["input"] },
 });
 export const RayPasswordInput = createComponent("RayPasswordInput", "ray-password-input", {
@@ -112,6 +127,14 @@ export const RayBottomNavItem = createComponent("RayBottomNavItem", "ray-bottom-
   properties: ["value", "label", "icon", "href", "badge", "dot", "active", "disabled", "action"],
   booleans: ["dot", "active", "disabled", "action"],
 });
+export const RayBreadcrumbs = createComponent("RayBreadcrumbs", "ray-breadcrumbs", {
+  properties: ["separator", "maxItems", "label", "size"],
+  booleans: [],
+});
+export const RayBreadcrumb = createComponent("RayBreadcrumb", "ray-breadcrumb", {
+  properties: ["href", "current"],
+  booleans: ["current"],
+});
 export const RayNavLink = createComponent("RayNavLink", "ray-nav-link", {
   properties: ["label", "description", "href", "active", "opened", "disabled", "variant", "color", "iconOnly"],
   booleans: ["active", "opened", "disabled", "iconOnly"],
@@ -129,6 +152,15 @@ export const RaySidebar = createComponent("RaySidebar", "ray-sidebar", {
 export const RaySidebarGroup = createComponent("RaySidebarGroup", "ray-sidebar-group", {
   properties: ["label"],
   booleans: [],
+});
+export const RayStepper = createComponent("RayStepper", "ray-stepper", {
+  properties: ["active", "orientation", "iconPosition", "allowStepSelect", "linear", "size", "color", "label"],
+  booleans: ["allowStepSelect", "linear"],
+  model: { prop: "active", events: ["change"] },
+});
+export const RayStep = createComponent("RayStep", "ray-step", {
+  properties: ["label", "description", "icon", "completedIcon", "loading", "error", "disabled"],
+  booleans: ["loading", "disabled"],
 });
 export const RayTabs = createComponent("RayTabs", "ray-tabs", {
   properties: ["value", "variant", "orientation", "color", "activation", "grow"],
@@ -241,6 +273,14 @@ export const RayTable = createComponent("RayTable", "ray-table", {
   properties: ["columns", "data", "rowKey", "selectable", "selection", "sort", "manualSort", "clickableRows", "striped", "withBorder", "withColumnBorders", "stickyHeader", "noHover", "density", "label", "emptyLabel"],
   booleans: ["selectable", "manualSort", "clickableRows", "striped", "withBorder", "withColumnBorders", "stickyHeader", "noHover"],
 });
+export const RayTimeline = createComponent("RayTimeline", "ray-timeline", {
+  properties: ["active", "align", "bulletSize", "lineWidth", "color", "reverseActive"],
+  booleans: ["reverseActive"],
+});
+export const RayTimelineItem = createComponent("RayTimelineItem", "ray-timeline-item", {
+  properties: ["label", "time", "icon", "color", "lineVariant"],
+  booleans: [],
+});
 export const RayAlert = createComponent("RayAlert", "ray-alert", {
   properties: ["label", "color", "variant", "radius", "icon", "closable", "closeLabel"],
   booleans: ["closable"],
@@ -330,7 +370,7 @@ export const RayThemeToggle = createComponent("RayThemeToggle", "ray-theme-toggl
   booleans: [],
 });
 
-export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayColorPicker, RayColorInput, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayBottomNav, RayBottomNavItem, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAppBar, RayAppShell, RayAspectRatio, RayCard, RayCenter, RayContainer, RayGrid, RayGroup, RayScrollArea, RaySeparator, RaySplit, RayStack, RayStatusbar, RayStatusbarItem, RayThemeToggle };
+export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayCheckboxGroup, RayColorPicker, RayColorInput, RayCombobox, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayNumberInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayBottomNav, RayBottomNavItem, RayBreadcrumbs, RayBreadcrumb, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayStepper, RayStep, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayTimeline, RayTimelineItem, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAppBar, RayAppShell, RayAspectRatio, RayCard, RayCenter, RayContainer, RayGrid, RayGroup, RayScrollArea, RaySeparator, RaySplit, RayStack, RayStatusbar, RayStatusbarItem, RayThemeToggle };
 
 /** app.use(RayDs) registers every component globally. */
 export const RayDs = createPlugin(components);

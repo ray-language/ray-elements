@@ -1,0 +1,111 @@
+[component]
+name = "Combobox"
+category = "Inputs"
+summary = "A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit."
+files = ["combobox.js"]
+requires = []
+tags = ["ray-combobox"]
+aliases = ["Multi select"]
+
+[ray-combobox]
+class = "RayCombobox"
+extends = "FieldControl"
+summary = "The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value."
+
+[ray-combobox.properties.value]
+attribute = false
+type = "string"
+ts = "string | string[]"
+description = "The chosen value; an array with multiple. The value attribute: \"a,b\" with multiple."
+
+[ray-combobox.properties.data]
+attribute = false
+type = "array"
+ts = "Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>"
+description = "Options instead of child <option>/<optgroup> elements."
+
+[ray-combobox.properties.multiple]
+type = "boolean"
+reflect = true
+description = "Several values, shown as chips."
+
+[ray-combobox.properties.placeholder]
+type = "string"
+description = "Shown while empty."
+
+[ray-combobox.properties.creatable]
+type = "boolean"
+description = "What was typed can be added when no option matches it (\"+ Create …\"); fires ray-create."
+
+[ray-combobox.properties.clearable]
+type = "boolean"
+description = "A button that clears the value."
+
+[ray-combobox.properties.maxValues]
+attribute = "max-values"
+type = "number"
+description = "With multiple: at most this many."
+
+[ray-combobox.properties.limit]
+type = "number"
+description = "At most this many options shown (large lists: keep typing)."
+
+[ray-combobox.properties.nothingFound]
+attribute = "nothing-found"
+type = "string"
+default = "No matches"
+description = "Shown when nothing matches."
+
+[ray-combobox.properties.open]
+type = "boolean"
+reflect = true
+description = "The dropdown is shown."
+
+[ray-combobox.events.change]
+description = "The value changed (read value)."
+
+[ray-combobox.events.input]
+description = "Same moment as change."
+
+[ray-combobox.events.ray-create]
+detail = "{ value: string }"
+description = "A new value was created from the typed text."
+
+[ray-combobox.events.ray-open]
+description = "The dropdown opened."
+
+[ray-combobox.events.ray-close]
+description = "The dropdown closed."
+
+[ray-combobox.slots.default]
+description = "<option> and <optgroup> elements."
+
+[ray-combobox.parts.input]
+description = "The text field."
+
+[ray-combobox.parts.chips]
+description = "The chips container."
+
+[ray-combobox.parts.chip]
+description = "A chip."
+
+[ray-combobox.parts.clear]
+description = "The clear button."
+
+[ray-combobox.parts.dropdown]
+description = "The listbox."
+
+[ray-combobox.parts.option]
+description = "An option."
+
+[ray-combobox.members.values]
+ts = "readonly values: string[]"
+description = "The value as an array (with or without multiple)."
+
+[ray-combobox.members.toggle]
+ts = "toggle(force?: boolean): void"
+description = "Opens or closes the dropdown."
+
+[ray-combobox.model]
+property = "value"
+events = ["change"]

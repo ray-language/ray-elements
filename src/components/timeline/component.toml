@@ -1,0 +1,103 @@
+[component]
+name = "Timeline"
+category = "Data display"
+summary = "Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar."
+files = ["timeline.js"]
+requires = []
+tags = ["ray-timeline", "ray-timeline-item"]
+
+[ray-timeline]
+class = "RayTimeline"
+extends = "RayElement"
+summary = "A list (role=\"list\") of ray-timeline-item."
+
+[ray-timeline.properties.active]
+type = "number"
+default = "-1"
+reflect = true
+description = "Index of the last reached item (-1: none)."
+
+[ray-timeline.properties.align]
+type = "string"
+values = ["left", "right"]
+default = "left"
+reflect = true
+description = "Side of the line."
+
+[ray-timeline.properties.bulletSize]
+attribute = "bullet-size"
+type = "string"
+description = "Bullet size: px as a number or a CSS length (default 20px)."
+
+[ray-timeline.properties.lineWidth]
+attribute = "line-width"
+type = "number"
+description = "Line width in px (default 2)."
+
+[ray-timeline.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color for what is reached (default: primary)."
+
+[ray-timeline.properties.reverseActive]
+attribute = "reverse-active"
+type = "boolean"
+reflect = true
+description = "Counts active from the end (the latest event at the top)."
+
+[ray-timeline.slots.default]
+description = "ray-timeline-item elements."
+
+[ray-timeline.members.items]
+ts = "readonly items: RayTimelineItem[]"
+description = "The items, in order."
+
+[ray-timeline-item]
+class = "RayTimelineItem"
+extends = "RayElement"
+
+[ray-timeline-item.properties.label]
+type = "string"
+description = "The title of the event."
+
+[ray-timeline-item.properties.time]
+type = "string"
+description = "When (\"2 h ago\", a date)."
+
+[ray-timeline-item.properties.icon]
+type = "string"
+description = "An icon of the registry in the bullet."
+
+[ray-timeline-item.properties.color]
+type = "string"
+reflect = true
+description = "Its own color (a failed step in red)."
+
+[ray-timeline-item.properties.lineVariant]
+attribute = "line-variant"
+type = "string"
+values = ["solid", "dashed", "dotted"]
+default = "solid"
+reflect = true
+description = "The line to the next item (dashed: not happened yet)."
+
+[ray-timeline-item.slots.default]
+description = "Details under the title."
+
+[ray-timeline-item.slots.bullet]
+description = "A custom bullet (an avatar, an image)."
+
+[ray-timeline-item.parts.bullet]
+description = "The bullet."
+
+[ray-timeline-item.parts.line]
+description = "The line to the next item."
+
+[ray-timeline-item.parts.body]
+description = "Title, details and time."
+
+[ray-timeline-item.parts.title]
+description = "The title."
+
+[ray-timeline-item.parts.time]
+description = "The time."
