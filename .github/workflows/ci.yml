@@ -1,0 +1,53 @@
+# Every push to main and every pull request: the tests, and a check that the
+# committed output (docs/, packages/, dist/tokens.*, src/index.js, ray_ds/)
+# matches what the sources generate. Releases (the raylang package, npm,
+# the site) are release.yml.
+
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install raylang
+        run: |
+          curl -sSfL https://raylang.dev/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Toolchain
+        run: ray --version
+
+      - name: Tool tests
+        working-directory: tools
+        run: ray test
+
+      - name: raylang package tests
+        working-directory: ray_ds
+        run: ray test
+
+      - name: Build the site
+        run: tools/run.sh site --base "/${{ github.event.repository.name }}/"
+
+      - name: Committed output matches the sources
+        run: |
+          paths="docs packages dist src/index.js ray_ds"
+          if ! git diff --quiet -- $paths || [ -n "$(git status --porcelain -- $paths)" ]; then
+            echo "::error::The generated files differ from what the sources produce. Run 'tools/run.sh build' and commit the result."
+            git status --short -- $paths
+            exit 1
+          fi

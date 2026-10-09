@@ -1,0 +1,200 @@
+# A release, on a version tag (v0.3.0…): one check, then three jobs.
+#
+#   check    the tag is ray-ds.toml's version, the tests pass, the committed
+#            output matches the sources, and the site is built
+#   raylang  ray_ds/ to github.com/ray-language/ray_ds with its history
+#            (git subtree split --prefix ray_ds), main and the same tag
+#   npm      @ray-ds/elements, then @ray-ds/react and @ray-ds/vue
+#   site     the site on GitHub Pages
+#
+# Run it by hand (workflow_dispatch) for a dry run of the same jobs from any
+# branch: the split is made but not pushed, npm publishes with --dry-run and
+# the site is built but not deployed. A real release by hand must be run
+# from the tag.
+#
+# Secrets and settings:
+# - RAY_DS_DEPLOY_KEY: the private half of a deploy key of ray-language/ray_ds
+#   with write access (the organization must allow deploy keys).
+# - NPM_TOKEN: a granular token with read and write on @ray-ds. Without it,
+#   npm's trusted publishing: each package on npmjs.com trusts this
+#   repository and release.yml (a package must exist before it can trust a
+#   publisher, so the first release needs the token). Provenance is attached
+#   when this repository is public; npm refuses it from a private one.
+# - The site deploys when the variable PAGES_DEPLOY is "true", Pages uses
+#   "GitHub Actions" as its source and the github-pages environment allows
+#   v* tags (by default it only allows the default branch).
+
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (nothing is pushed, published or deployed)"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: A real release comes from a tag
+        if: env.DRY_RUN != 'true' && github.ref_type != 'tag'
+        run: |
+          echo "::error::A release runs from a vX.Y.Z tag; run it by hand from the tag, or as a dry run."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      - name: The tag is the version of ray-ds.toml
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' ray-ds.toml)
+          if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "::error::The tag $GITHUB_REF_NAME does not match ray-ds.toml's version ($version)."
+            exit 1
+          fi
+
+      - name: Install raylang
+        run: |
+          curl -sSfL https://raylang.dev/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Tool tests
+        working-directory: tools
+        run: ray test
+
+      - name: raylang package tests
+        working-directory: ray_ds
+        run: ray test
+
+      # Served at /<repo>/ on GitHub Pages; a custom domain would be "/".
+      - name: Build the site
+        run: tools/run.sh site --base "${PAGES_BASE:-/${{ github.event.repository.name }}/}"
+        env:
+          PAGES_BASE: ${{ vars.PAGES_BASE }}
+
+      - name: Committed output matches the sources
+        run: |
+          paths="docs packages dist src/index.js ray_ds"
+          if ! git diff --quiet -- $paths || [ -n "$(git status --porcelain -- $paths)" ]; then
+            echo "::error::The generated files differ from what the sources produce. Run 'tools/run.sh build' and commit the result."
+            git status --short -- $paths
+            exit 1
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+  raylang:
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the split carries the history of ray_ds/
+
+      # The split commits keep the authors, committers and dates of the
+      # originals, so every release extends the same history.
+      - name: Split ray_ds/
+        run: |
+          git subtree split -q --prefix ray_ds -b ray_ds-release
+          git log --oneline -5 ray_ds-release
+          git ls-tree --name-only ray_ds-release
+
+      - name: Push to ray-language/ray_ds
+        if: env.DRY_RUN != 'true'
+        env:
+          KEY: ${{ secrets.RAY_DS_DEPLOY_KEY }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "::error::Add the secret RAY_DS_DEPLOY_KEY: the private half of a deploy key of ray-language/ray_ds with write access."
+            exit 1
+          fi
+          key="$RUNNER_TEMP/ray_ds_key"
+          printf '%s\n' "$KEY" > "$key"
+          chmod 600 "$key"
+          export GIT_SSH_COMMAND="ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+          remote=git@github.com:ray-language/ray_ds.git
+          if [ -n "$(git ls-remote --tags "$remote" "refs/tags/$TAG")" ]; then
+            echo "::error::ray_ds already has the tag $TAG."
+            exit 1
+          fi
+          git push "$remote" ray_ds-release:refs/heads/main
+          git push "$remote" "ray_ds-release:refs/tags/$TAG"
+          rm -f "$key"
+
+  npm:
+    needs: check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # trusted publishing and provenance
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or later.
+      - name: npm
+        run: |
+          npm install -g npm@11
+          npm --version
+
+      # packages/ is what check compared with the sources. A version npm
+      # already has is skipped, so a failed run can be run again; a
+      # prerelease (0.4.0-rc.1) goes to the "next" dist-tag.
+      - name: Publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          PUBLIC: ${{ !github.event.repository.private }}
+        run: |
+          flags=()
+          [ "$DRY_RUN" = "true" ] && flags+=(--dry-run)
+          [ "$PUBLIC" = "true" ] && flags+=(--provenance)
+          if [ -n "$NODE_AUTH_TOKEN" ]; then
+            echo "Authenticating with NPM_TOKEN."
+          else
+            echo "No NPM_TOKEN: trusted publishing."
+          fi
+          for dir in elements react vue; do
+            name=$(node -p "require('./packages/$dir/package.json').name")
+            version=$(node -p "require('./packages/$dir/package.json').version")
+            case "$version" in *-*) tag=next ;; *) tag=latest ;; esac
+            if npm view "$name@$version" version >/dev/null 2>&1; then
+              echo "$name@$version is already on npm: skipped."
+              continue
+            fi
+            echo "Publishing $name@$version to $tag$([ "$DRY_RUN" = "true" ] && echo " (dry run)")"
+            (cd "packages/$dir" && npm publish --tag "$tag" "${flags[@]}")
+          done
+
+  site:
+    needs: check
+    if: vars.PAGES_DEPLOY == 'true' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
