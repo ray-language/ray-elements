@@ -111,7 +111,10 @@ $("#open-palette").addEventListener("click", () => palette.show());
 window.app = {
   show,
   browse: () => workspace.browse(),
-  toggleTheme: () => setTheme(resolvedTheme() === "dark" ? "light" : "dark"),
+  // persist: false for the --check, which must not change the user's choice.
+  systemTheme: () => setTheme("system", { persist: false }),
+  resolved: () => send(`resolved:${resolvedTheme()}`),
+  toggleTheme: (persist = true) => setTheme(resolvedTheme() === "dark" ? "light" : "dark", { persist }),
   exportTo: () => send(`export:${JSON.stringify({ to: new FormData(form).get("export"), dir: workspace.value ?? "" })}`),
   load,
 };

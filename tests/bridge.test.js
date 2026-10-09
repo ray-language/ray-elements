@@ -363,12 +363,15 @@ T.test("raylang: under a title bar (full_content)", async (T) => {
     T.ok(root.hasAttribute("data-ray-titlebar"));
     const painted = calls.filter((c) => c.op === "window_colors");
     T.eq(painted.length, 1, "the window takes the theme's background at once");
-    T.ok(/^#[0-9a-f]{6}$/.test(painted[0].background) && painted[0].titlebar === painted[0].background, JSON.stringify(painted[0]));
+    T.ok(/^#[0-9a-f]{6}$/.test(painted[0].background) && painted[0].titlebar === "", `the system theme leaves the title bar to the system: ${JSON.stringify(painted[0])}`);
     setTheme(painted[0].background === "#ffffff" ? "dark" : "light", { persist: false });
     await T.settle();
     const again = calls.filter((c) => c.op === "window_colors");
     T.ok(again.length >= 2 && again.at(-1).background !== painted[0].background, "and follows the theme");
+    T.eq(again.at(-1).titlebar, again.at(-1).background, "a chosen theme tints the title bar");
     setTheme("system", { persist: false });
+    await T.settle();
+    T.eq(calls.filter((c) => c.op === "window_colors").at(-1).titlebar, "", "back to the system's bar");
 
     // ray-app-shell: the header is the title bar and drags the window.
     const box = await mount(`

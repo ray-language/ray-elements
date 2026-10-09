@@ -13,6 +13,7 @@
 
 import { setHost, HostFile } from "./host.js";
 import { chartTheme, onChartThemeChange } from "./charts.js";
+import { getTheme } from "./core.js";
 import { parseColor, toHex } from "./color.js";
 
 /** The version of the protocol this page speaks. */
@@ -26,9 +27,10 @@ const MAC_BUTTONS = 78;
 /**
  * Installs the raylang host once the program answers. `timeout` (ms) is how
  * long to wait for that answer; `ray` replaces window.ray (tests).
- * `windowColors` (default true) keeps the window's background and title bar
- * in the theme's background color, so a resize or a reopen never shows the
- * other theme.
+ * `windowColors` (default true) keeps the window's background in the
+ * theme's background color, so a resize or a reopen never shows the other
+ * theme, and the title bar in it too when the theme is light or dark (with
+ * "system" the bar stays the system's, so the page keeps following it).
  */
 export function enableRaylang({ timeout = 2000, ray = globalThis.ray, windowColors = true } = {}) {
   if (ray !== globalThis.ray) return connect(ray, timeout, windowColors);
@@ -109,9 +111,15 @@ async function connect(ray, timeout, windowColors) {
   setHost(host);
   root.setAttribute("data-ray-host", "raylang");
   if (windowColors && ops.has("window_colors")) {
+    // The title bar color also sets the window's appearance (macOS picks
+    // light or dark by its luminance), and the page's prefers-color-scheme
+    // follows it: with the "system" theme the bar stays the system's, or a
+    // dark bar would keep the page dark after the system turns light.
     const paint = (theme) => {
       const background = hex(theme.background);
-      if (background) host.setWindowColors({ background }).catch(() => {});
+      if (!background) return;
+      const titlebar = getTheme() === "system" ? "" : background;
+      host.setWindowColors({ background, titlebar }).catch(() => {});
     };
     paint(chartTheme());
     onChartThemeChange(paint);

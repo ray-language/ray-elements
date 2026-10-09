@@ -301,11 +301,18 @@ fn self_check(h: int, n: bridge.Native, seen: [string]) -> Result<int, string> {
     check(failed, saved.contains("\"name\":\"ray-ds\"") && saved.contains("ray-ds-desktop-app"), "the settings arrive, with the save dialog's path (${saved})");
 
     // The theme: the window follows it.
+    ui.eval_js(h, "app.resolved()")?;
+    let start = wait(h, n, "resolved:", 5000)?;
     let before = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") }).len();
-    ui.eval_js(h, "app.toggleTheme()")?;
+    ui.eval_js(h, "app.toggleTheme(false)")?;
     wait_count(h, n, seen, "colors:", before + 1, 5000)?;
     let colors = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") });
     check(failed, colors[colors.len() - 1] != colors[0], "the window follows the theme (${colors[0]} -> ${colors[colors.len() - 1]})");
+    // Back to the system theme: the page follows the system again (a tinted
+    // title bar would have left the window's appearance, and the page, dark).
+    ui.eval_js(h, "app.systemTheme(); setTimeout(() => app.resolved(), 300)")?;
+    let back = wait(h, n, "resolved:", 5000)?;
+    check(failed, back == start, "back to the system theme, the page follows the system (${start} -> ${back})");
 
     if (failed.len() > 0) {
         eprint("${failed.len()} check(s) failed");
