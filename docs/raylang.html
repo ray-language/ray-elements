@@ -441,7 +441,9 @@ constants. <code>assets.mount(prefix)</code> serves them with <code>ui.mount_byt
 <code>assets.files()</code> and <code>assets.read(path)</code> list and read them. Its test
 checks every file byte for byte. A page that uses a few components can
 load <code>ray-ds/components/&lt;name&gt;/&lt;name&gt;.js</code> instead of <code>ray-ds/index.js</code>,
-and <code>ray-ds/core.js</code> for the API alone (<code>enableRaylang</code>, <code>setIcons</code>…).</li>
+and <code>ray-ds/core.js</code> for the API alone (<code>enableRaylang</code>, <code>setIcons</code>…).
+<code>examples/lean-app</code> does it, and loads its settings dialog with <code>import()</code>
+on first open; its <code>--check</code> fails if the page defines any other element.</li>
 <li><code>ray_ds/version</code> (generated): <code>version.VERSION</code>, the version of
 <code>ray-ds.toml</code>; the bridge's <code>hello</code> answers with it. The other modules
 import it as <code>ray_ds/version</code>, the only form that also works from an app

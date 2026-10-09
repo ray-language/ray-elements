@@ -255,6 +255,8 @@ fn main() -> int {
   checks every file byte for byte. A page that uses a few components can
   load `ray-ds/components/<name>/<name>.js` instead of `ray-ds/index.js`,
   and `ray-ds/core.js` for the API alone (`enableRaylang`, `setIcons`…).
+  `examples/lean-app` does it, and loads its settings dialog with `import()`
+  on first open; its `--check` fails if the page defines any other element.
 - `ray_ds/version` (generated): `version.VERSION`, the version of
   `ray-ds.toml`; the bridge's `hello` answers with it. The other modules
   import it as `ray_ds/version`, the only form that also works from an app

@@ -87,6 +87,7 @@ in the README has the checklist of conventions.
 (cd tools && ray test)                      # the tools (tokens, generator, publishing)
 (cd ray_ds && ray test)                     # ray_ds: the bridge and every file of assets.ray
 (cd examples/starter && ray run src/main.ray --check)       # the package in a real window
+(cd examples/lean-app && ray run src/main.ray --check)      # only the components it imports are defined
 (cd examples/desktop-app && ray run src/main.ray --check)   # the whole bridge, scripted dialogs
 npm --prefix tests/packages ci && npm --prefix tests/packages run check   # small bundles take only what they use; the .d.ts compile
 tools/run.sh webtest          # tests/*.test.js in a real webview

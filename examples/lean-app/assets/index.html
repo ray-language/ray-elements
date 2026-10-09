@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lean notes</title>
+<link rel="stylesheet" href="ray-ds/tokens.css">
+<link rel="stylesheet" href="ray-ds/base.css">
+<!-- Not ray-ds/index.js (every component): app.js imports the few it uses. -->
+<script type="module" src="app.js"></script>
+<style>
+  body { margin: 0; padding: var(--ray-space-6); box-sizing: border-box; min-height: 100vh; }
+  main { max-width: 32rem; margin: 0 auto; display: grid; gap: var(--ray-space-4); }
+  header, form, li { display: flex; align-items: center; gap: var(--ray-space-3); }
+  header h1 { margin: 0; font-size: var(--ray-font-size-lg); flex: 1; }
+  form ray-input { flex: 1; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ray-space-2); }
+  li { padding: var(--ray-space-2) var(--ray-space-3); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); }
+  li span { flex: 1; }
+  body.compact li { padding-block: var(--ray-space-1); }
+  /* Until its module has run, an element is unknown: keep it from flashing. */
+  :not(:defined) { visibility: hidden; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Notes</h1>
+    <ray-badge id="count" variant="light">0</ray-badge>
+    <ray-icon-button id="settings" label="Settings" variant="subtle"><ray-icon name="settings"></ray-icon></ray-icon-button>
+  </header>
+  <form id="add">
+    <ray-input id="text" name="text" label="New note" placeholder="Buy coffee"></ray-input>
+    <ray-button type="submit"><ray-icon slot="start" name="plus"></ray-icon>Add</ray-button>
+  </form>
+  <ul id="notes"></ul>
+</main>
+</body>
+</html>

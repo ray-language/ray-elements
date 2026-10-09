@@ -187,6 +187,7 @@ packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
 examples/desktop-app/  std/ui app using the raylang package and the native bridge
 examples/starter/      the smallest std/ui app with the raylang package, to copy
+examples/lean-app/     loads only the components it uses, and the settings dialog on first open
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
 examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
 examples/extending/    app components on the extension API (+ `wrap` output)</code></pre>
@@ -373,7 +374,8 @@ warns for every palette color whose filled/light/outline variant text is.</p>
 <code>assets.mount(&quot;ray-ds&quot;)</code> (<code>import ray_ds/assets;</code>) serves every component,
 <code>tokens.css</code> and <code>base.css</code> from the program, the same under <code>ray run</code> and in
 a native binary.
-<code>examples/starter</code> is the smallest such app; see <a href="raylang.html">RAYLANG.md</a>.</p>
+<code>examples/starter</code> is the smallest such app; <code>examples/lean-app</code> loads only
+the components it uses. See <a href="raylang.html">RAYLANG.md</a>.</p>
 
 <h3 id="adding-components-to-an-app">Adding components to an app</h3>
 <p><code>add</code> copies, shadcn-style: the code becomes the app's own.</p>

@@ -1,0 +1,125 @@
+// Using only the components a page needs. The raylang package serves all of
+// ray-ds (assets.mount), but the page does not load ray-ds/index.js: it
+// imports the API from core.js and each component it uses from its own
+// module, and loads the settings dialog the first time it opens.
+//
+//   ray run                    open the window; close it to quit
+//   ray run src/main.ray --check
+//                              check what the page defined at start and after
+//                              opening the settings, and that it works; exit 0/1
+
+import std/time;
+import std/ui;
+import ray_ds/assets;
+import ray_ds/bridge;
+
+// The elements defined once the page is ready: what app.js imports and what
+// those bring (ray-icon-button is a ray-button).
+const AT_START: string = "ray-badge,ray-button,ray-icon,ray-icon-button,ray-input";
+// After opening the settings: the dialog and its switch (a ray-checkbox).
+const AFTER_SETTINGS: string = "ray-badge,ray-button,ray-checkbox,ray-dialog,ray-icon,ray-icon-button,ray-input,ray-switch";
+
+fn main() -> int {
+    match (run(args().contains("--check"))) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint("lean-app: ${e}");
+            1
+        },
+    }
+}
+
+fn run(check: bool) -> Result<int, string> {
+    assets.mount("ray-ds")?;
+    ui.mount_embed_at("", "assets")?;
+    var o = ui.options(560, 480);
+    o.background = "#ffffff";
+    let h = ui.open_with("Lean notes", "ray://app/index.html", o)?;
+    let deadline = time.now() + 20000;
+    while (true) {
+        let e = if (check) {
+            match (ui.next_event_timeout(deadline - time.now())?) {
+                Option.Some(e) => e,
+                Option.None => {
+                    eprint("lean-app: the page did not answer in 20 s");
+                    return Result.Ok(1);
+                },
+            }
+        } else {
+            ui.next_event()?
+        };
+        if (bridge.handle(e)) {
+            continue;
+        }
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        if (e.kind != "message") {
+            continue;
+        }
+        if (check && e.tag.starts_with("ready:")) {
+            ui.eval_js(h, probe(tags()))?;
+        } else if (check && e.tag.starts_with("state:")) {
+            close(h);
+            return Result.Ok(verify(e.tag.substring(6, e.tag.len())));
+        }
+    }
+}
+
+// Every component of ray-ds, by its module: components/<name>/<name>.js.
+fn tags() -> [string] {
+    var out: [string] = [];
+    for f in assets.files() {
+        let parts = f.split("/");
+        if (parts.len() == 3 && parts[0] == "components" && parts[2] == "${parts[1]}.js") {
+            out.push("ray-${parts[1]}");
+        }
+    }
+    out
+}
+
+// Which of `all` the page defined at start, then adds a note and opens the
+// settings, and reports again.
+fn probe(all: [string]) -> string {
+    let list = join(all.map(fn(t: string) -> string { "\"${t}\"" }), ",");
+    `(async () => {
+      const all = [${list}];
+      const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+      const start = leanApp.defined(all).sort().join(",");
+      const text = document.getElementById("text");
+      text.value = "Check the lean app";
+      document.getElementById("add").requestSubmit();
+      await wait(50);
+      const count = document.getElementById("count").textContent;
+      const dialog = await leanApp.openSettings();
+      await wait(100);
+      const after = leanApp.defined(all).sort().join(",");
+      const open = dialog.open && dialog.dialog.open;
+      window.ray.send(["state:" + start, after, count, open].join(";"));
+    })().catch((e) => window.ray.send("state:error " + e));`
+}
+
+fn verify(got: string) -> int {
+    let parts = got.split(";");
+    if (parts.len() != 4) {
+        eprint("lean-app: unexpected state: ${got}");
+        return 1;
+    }
+    let checks = [
+        ("at start, only the components it imports", parts[0], AT_START),
+        ("the settings load on first open", parts[1], AFTER_SETTINGS),
+        ("adding a note", parts[2], "3"),
+        ("the settings dialog is open", parts[3], "true"),
+    ];
+    var failed = 0;
+    for (what, value, want) in checks {
+        if (value == want) {
+            print("  ok   ${what}: ${value}");
+        } else {
+            print("  FAIL ${what}: ${value} (expected ${want})");
+            failed = failed + 1;
+        }
+    }
+    print(if (failed == 0) { "check ok" } else { "check failed" });
+    if (failed == 0) { 0 } else { 1 }
+}
