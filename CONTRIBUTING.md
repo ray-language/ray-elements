@@ -88,6 +88,7 @@ in the README has the checklist of conventions.
 (cd ray_ds && ray test)                     # ray_ds: the bridge and every file of assets.ray
 (cd examples/starter && ray run src/main.ray --check)       # the package in a real window
 (cd examples/desktop-app && ray run src/main.ray --check)   # the whole bridge, scripted dialogs
+npm --prefix tests/bundle ci && npm --prefix tests/bundle run check   # small bundles take only what they use
 tools/run.sh webtest          # tests/*.test.js in a real webview
 tools/run.sh webtest layout   # only the files whose name contains "layout"
 ```

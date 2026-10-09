@@ -26,7 +26,7 @@
       "default": "./index.js"
     }
   },
-  "sideEffects": ["./index.js"],
+  "sideEffects": false,
   "peerDependencies": {
     "@ray-ds/elements": "^0.3.0",
     "vue": ">=3.3"

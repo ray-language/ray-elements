@@ -252,7 +252,9 @@ fn main() -> int {
   `confirmDialog`…), `core/`, `components/`, `tokens.css`, `base.css` — as
   constants. `assets.mount(prefix)` serves them with `ui.mount_bytes`;
   `assets.files()` and `assets.read(path)` list and read them. Its test
-  checks every file byte for byte.
+  checks every file byte for byte. A page that uses a few components can
+  load `ray-ds/components/<name>/<name>.js` instead of `ray-ds/index.js`,
+  and `ray-ds/core.js` for the API alone (`enableRaylang`, `setIcons`…).
 - `ray_ds/version` (generated): `version.VERSION`, the version of
   `ray-ds.toml`; the bridge's `hello` answers with it. The other modules
   import it as `ray_ds/version`, the only form that also works from an app

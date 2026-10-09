@@ -214,8 +214,8 @@ menu bar in the command palette (`cd examples/desktop-app && ray run`, or
 
 | Package | Contents |
 |---|---|
-| `@ray-ds/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `ray-ds.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
-| `@ray-ds/react` | a component per element (`RayButton`…): declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
+| `@ray-ds/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@ray-ds/elements/<name>` (one component), `@ray-ds/elements/core` (the API alone), `ray-ds.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
+| `@ray-ds/react` | a component per element (`RayButton`…), each registering only its element: declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
 | `@ray-ds/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayDs)` and `GlobalComponents` types |
 
 ```tsx
@@ -267,6 +267,37 @@ ports (45173, 45174).
 <ray-input label="Email" name="email" type="email" required></ray-input>
 <ray-button type="submit">Save</ray-button>
 ```
+
+`index.js` registers every component. A page that uses a few loads only those
+(each brings what it uses: `ray-icon-button` brings `ray-button`):
+
+```html
+<script type="module">
+  import "./ray-ds/src/components/button/button.js";
+  import "./ray-ds/src/components/icon/icon.js";
+</script>
+```
+
+### Only what you use
+
+With a bundler, `@ray-ds/elements` has an entry per component and one for the
+API alone; `@ray-ds/react` and `@ray-ds/vue` leave out the wrappers you do not
+import, and their elements. Measured with esbuild (minified, gzip):
+
+| Import | gzip |
+|---|---|
+| `import "@ray-ds/elements"` (everything) | 94 KB |
+| `import "@ray-ds/elements/button"` + `"@ray-ds/elements/icon"` | 9.5 KB |
+| `import { setIcons } from "@ray-ds/elements/core"` | 4.3 KB |
+| `import { RayButton } from "@ray-ds/react"` | 9.5 KB |
+
+`import { RayButton } from "@ray-ds/elements"` still takes everything: that
+entry registers every element. A wrapper registers only its own element, so a
+plain `<ray-*>` tag in JSX or a Vue template needs its import
+(`import "@ray-ds/elements/badge"`) or `import "@ray-ds/elements"`; Vue's
+`app.use(RayDs)` takes them all. The icons are one registry by name
+(`setIcons`, `<ray-icon name>`), about 2 KB gzip, always included: a bundler
+cannot know which names your markup uses.
 
 Style your own markup with the tokens:
 

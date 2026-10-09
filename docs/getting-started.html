@@ -407,11 +407,11 @@ menu bar in the command palette (<code>cd examples/desktop-app &amp;&amp; ray ru
 <tbody>
 <tr>
 <td><code>@ray-ds/elements</code></td>
-<td>the components, <code>tokens.css</code>, <code>base.css</code>, <code>index.js</code> (registers every element, re-exports the API), <code>ray-ds.d.ts</code> (a class per element, <code>HTMLElementTagNameMap</code>, typed <code>detail</code> of events), <code>custom-elements.json</code>, <code>vscode.html-custom-data.json</code></td>
+<td>the components, <code>tokens.css</code>, <code>base.css</code>, <code>index.js</code> (registers every element, re-exports the API), <code>@ray-ds/elements/&lt;name&gt;</code> (one component), <code>@ray-ds/elements/core</code> (the API alone), <code>ray-ds.d.ts</code> (a class per element, <code>HTMLElementTagNameMap</code>, typed <code>detail</code> of events), <code>custom-elements.json</code>, <code>vscode.html-custom-data.json</code></td>
 </tr>
 <tr>
 <td><code>@ray-ds/react</code></td>
-<td>a component per element (<code>RayButton</code>…): declared props are set as DOM properties, events are <code>on</code> + PascalCase (<code>onRaySelect</code>, <code>onChange</code>); React 18 and 19</td>
+<td>a component per element (<code>RayButton</code>…), each registering only its element: declared props are set as DOM properties, events are <code>on</code> + PascalCase (<code>onRaySelect</code>, <code>onChange</code>); React 18 and 19</td>
 </tr>
 <tr>
 <td><code>@ray-ds/vue</code></td>
@@ -457,6 +457,53 @@ ports (45173, 45174).</p>
 
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Email&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;email&quot;</span> <span class="tk-attr">required</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;submit&quot;</span><span class="tk-punctuation">&gt;</span>Save<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p><code>index.js</code> registers every component. A page that uses a few loads only those
+(each brings what it uses: <code>ray-icon-button</code> brings <code>ray-button</code>):</p>
+
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">import</span> <span class="tk-string">&quot;./ray-ds/src/components/button/button.js&quot;</span>;
+  <span class="tk-keyword">import</span> <span class="tk-string">&quot;./ray-ds/src/components/icon/icon.js&quot;</span>;
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<h3 id="only-what-you-use">Only what you use</h3>
+<p>With a bundler, <code>@ray-ds/elements</code> has an entry per component and one for the
+API alone; <code>@ray-ds/react</code> and <code>@ray-ds/vue</code> leave out the wrappers you do not
+import, and their elements. Measured with esbuild (minified, gzip):</p>
+
+<table>
+<thead>
+<tr>
+<th>Import</th>
+<th>gzip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>import &quot;@ray-ds/elements&quot;</code> (everything)</td>
+<td>94 KB</td>
+</tr>
+<tr>
+<td><code>import &quot;@ray-ds/elements/button&quot;</code> + <code>&quot;@ray-ds/elements/icon&quot;</code></td>
+<td>9.5 KB</td>
+</tr>
+<tr>
+<td><code>import { setIcons } from &quot;@ray-ds/elements/core&quot;</code></td>
+<td>4.3 KB</td>
+</tr>
+<tr>
+<td><code>import { RayButton } from &quot;@ray-ds/react&quot;</code></td>
+<td>9.5 KB</td>
+</tr>
+</tbody>
+</table>
+
+<p><code>import { RayButton } from &quot;@ray-ds/elements&quot;</code> still takes everything: that
+entry registers every element. A wrapper registers only its own element, so a
+plain <code>&lt;ray-*&gt;</code> tag in JSX or a Vue template needs its import
+(<code>import &quot;@ray-ds/elements/badge&quot;</code>) or <code>import &quot;@ray-ds/elements&quot;</code>; Vue's
+<code>app.use(RayDs)</code> takes them all. The icons are one registry by name
+(<code>setIcons</code>, <code>&lt;ray-icon name&gt;</code>), about 2 KB gzip, always included: a bundler
+cannot know which names your markup uses.</p>
+
 <p>Style your own markup with the tokens:</p>
 
 <pre class="code"><code>.panel {

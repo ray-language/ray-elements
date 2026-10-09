@@ -79,6 +79,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${el}/tokens.json", fs.read_file("${root}/dist/tokens.json")?)?;
     put(written, "${el}/base.css", fs.read_file("${root}/src/core/base.css")?)?;
     put(written, "${el}/index.js", elements.index_js(cs))?;
+    put(written, "${el}/core.js", elements.core_js())?;
     put(
         written,
         "${el}/ray-ds.d.ts",
@@ -86,7 +87,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     )?;
     put(written, "${el}/custom-elements.json", manifest.custom_elements(cs, "components/")?)?;
     put(written, "${el}/vscode.html-custom-data.json", manifest.vscode_data(cs)?)?;
-    put(written, "${el}/package.json", elements_package(i))?;
+    put(written, "${el}/package.json", elements_package(i, cs))?;
     put(written, "${el}/README.md", readme(i, "elements"))?;
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${el}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
@@ -97,7 +98,9 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     let r = "${base}/react";
     fresh(r)?;
     put(written, "${r}/create.js", fs.read_file("${root}/src/integrations/react/create.js")?)?;
-    put(written, "${r}/index.js", wrappers.react_js(cs, none, t))?;
+    for (rel, content) in wrappers.react_modules(cs) {
+        put(written, "${r}/${rel}", content)?;
+    }
     put(written, "${r}/index.d.ts", wrappers.react_dts(cs, none, t))?;
     put(
         written,
@@ -117,7 +120,9 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     let v = "${base}/vue";
     fresh(v)?;
     put(written, "${v}/create.js", fs.read_file("${root}/src/integrations/vue/create.js")?)?;
-    put(written, "${v}/index.js", wrappers.vue_js(cs, none, t))?;
+    for (rel, content) in wrappers.vue_modules(cs) {
+        put(written, "${v}/${rel}", content)?;
+    }
     put(written, "${v}/index.d.ts", wrappers.vue_dts(cs, none, t))?;
     put(
         written,
@@ -159,7 +164,17 @@ fn copy_tree(root: string, from_dir: string, to: string, ext: string) -> Result<
     Result.Ok(0)
 }
 
-fn elements_package(i: Info) -> string {
+// The entries: "." registers everything; "./core" is the API alone; one per
+// component ("./button") registers it and what it uses, so a bundler takes
+// only those (the components are side effects: importing one defines it).
+fn elements_package(i: Info, cs: [Component]) -> string {
+    var entries: [string] = [];
+    for c in cs {
+        entries.push(`    "./${c.dir}": {
+      "types": "./ray-ds.d.ts",
+      "default": "./components/${c.dir}/${c.files[0]}"
+    },`);
+    }
     `{
   "name": "${i.scope}/elements",
   "version": "${i.version}",
@@ -175,6 +190,11 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
       "types": "./ray-ds.d.ts",
       "default": "./index.js"
     },
+    "./core": {
+      "types": "./ray-ds.d.ts",
+      "default": "./core.js"
+    },
+${join(entries, "\n")}
     "./tokens.css": "./tokens.css",
     "./tokens.json": "./tokens.json",
     "./base.css": "./base.css",
@@ -206,7 +226,7 @@ ${source(i, kind, ["web-components", "design-system", "ui", "raylang", kind])}
       "default": "./index.js"
     }
   },
-  "sideEffects": ["./index.js"],
+  "sideEffects": false,
   "peerDependencies": {
     "${i.scope}/elements": "^${i.version}",
     ${peer}
@@ -281,6 +301,7 @@ fn packages_name_their_source() {
     assert(p.contains("\"keywords\": [\"web-components\", \"design-system\", \"ui\", \"raylang\", \"vue\"]"));
     assert(p.contains("\"homepage\": \"https://o.github.io/r/\""));
     assert(p.contains("\"access\": \"public\""));
-    assert(elements_package(i).contains("\"directory\": \"packages/elements\""));
+    let none: [Component] = [];
+    assert(elements_package(i, none).contains("\"directory\": \"packages/elements\""));
     assert(readme(i, "react").contains("[ray-ds](https://github.com/o/r) (its `packages/react`"));
 }

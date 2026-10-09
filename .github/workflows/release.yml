@@ -94,6 +94,16 @@ jobs:
             exit 1
           fi
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Small uses of packages/ bundled with esbuild take only what they use.
+      - name: Bundle check
+        run: |
+          npm --prefix tests/bundle ci
+          npm --prefix tests/bundle run check
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site

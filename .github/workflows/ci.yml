@@ -43,6 +43,16 @@ jobs:
       - name: Build the site
         run: tools/run.sh site --base "/${{ github.event.repository.name }}/"
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Small uses of packages/ bundled with esbuild take only what they use.
+      - name: Bundle check
+        run: |
+          npm --prefix tests/bundle ci
+          npm --prefix tests/bundle run check
+
       - name: Committed output matches the sources
         run: |
           paths="docs packages dist src/index.js ray_ds"

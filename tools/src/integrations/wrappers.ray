@@ -86,18 +86,59 @@ pub fn react_js(cs: [Component], extra: [Component], t: Target) -> string {
         out.push("");
     }
     for el in all_elements(cs) {
-        let events: [string] = [];
-        for n in all_events(els, el) {
-            events.push("${handler_name(n.name)}: ${quote(n.name)}");
-        }
-        out.push(`export const ${el.class_name} = createComponent(${quote(el.tag)}, {
-  displayName: ${quote(el.class_name)},
-  properties: [${js_list(wrapper_props(els, el))}],
-  events: { ${join(events, ", ")} },
-});`);
+        out.push(react_element(els, el));
     }
     out.push("");
     join(out, "\n")
+}
+
+// `export const RayX = createComponent(…)`, pure: a bundler drops it unused.
+fn react_element(els: [Element], el: Element) -> string {
+    let events: [string] = [];
+    for n in all_events(els, el) {
+        events.push("${handler_name(n.name)}: ${quote(n.name)}");
+    }
+    `export const ${el.class_name} = /*#__PURE__*/ createComponent(${quote(el.tag)}, {
+  displayName: ${quote(el.class_name)},
+  properties: [${js_list(wrapper_props(els, el))}],
+  events: { ${join(events, ", ")} },
+});`
+}
+
+// @ray-ds/react as modules: components/<dir>.js per component, which
+// registers only its element (@ray-ds/elements/<dir>), and index.js
+// re-exporting them. With "sideEffects": false a bundler leaves out the
+// modules whose wrappers are not used, and with them their elements.
+pub fn react_modules(cs: [Component]) -> [(string, string)] {
+    let els = lookup(cs, []);
+    var files: [(string, string)] = [];
+    let index: [string] = [
+        HEADER,
+        "// Each wrapper registers its own element: unused ones (and their elements) are left out of a bundle.",
+        "",
+        "// The factory, to wrap your own custom elements the same way.",
+        "export { createComponent } from \"./create.js\";",
+        ""
+    ];
+    for c in cs {
+        let names: [string] = c.elements.map(fn(e: Element) -> string { e.class_name });
+        index.push("export { ${join(names, ", ")} } from \"./components/${c.dir}.js\";");
+        let out: [string] = [
+            HEADER,
+            "",
+            "import \"@ray-ds/elements/${c.dir}\";",
+            "import { createComponent } from \"../create.js\";",
+            ""
+        ];
+        for el in c.elements {
+            out.push(react_element(els, el));
+        }
+        out.push("");
+        files.push(("components/${c.dir}.js", join(out, "\n")));
+    }
+    index.push("");
+    files.push(("index.js", join(index, "\n")));
+    files
 }
 
 pub fn react_dts(cs: [Component], extra: [Component], t: Target) -> string {
@@ -164,7 +205,7 @@ pub fn react_dts(cs: [Component], extra: [Component], t: Target) -> string {
 
 pub fn vue_js(cs: [Component], extra: [Component], t: Target) -> string {
     let els = lookup(cs, extra);
-    let out: [string] = [
+    var out: [string] = [
         HEADER,
         "",
         "import ${quote(t.registers)};",
@@ -176,36 +217,86 @@ pub fn vue_js(cs: [Component], extra: [Component], t: Target) -> string {
         out.push("export { createComponent, createPlugin };");
         out.push("");
     }
-    for el in all_elements(
-        cs
-    ) {
-        let model = if (el.model_property == "") {
-            ""
-        } else {
-            ",\n  model: { prop: ${quote(el.model_property)}, events: [${js_list(el.model_events)}] }"
-        };
-        let booleans: [string] = [];
-        for p in all_props(els, el) {
-            if (p.kind == "boolean" && !is_dom_prop(p.name)) {
-                booleans.push(p.name);
-            }
-        }
-        out.push(
-            `export const ${el.class_name} = createComponent(${quote(el.class_name)}, ${quote(el.tag)}, {
-  properties: [${js_list(wrapper_props(els, el))}],
-  booleans: [${js_list(booleans)}]${model},
-});`
-        );
+    for el in all_elements(cs) {
+        out.push(vue_element(els, el));
     }
     let names: [string] = all_elements(cs).map(fn(e: Element) -> string { e.class_name });
     out.push("");
-    out.push("export const components = { ${join(names, ", ")} };");
-    out.push("");
-    out.push("/** app.use(${t.plugin}) registers every component globally. */");
-    out.push("export const ${t.plugin} = createPlugin(components);");
-    out.push("export default ${t.plugin};");
-    out.push("");
+    out = out + vue_plugin(names, t.plugin);
     join(out, "\n")
+}
+
+// `export const RayX = createComponent(…)`, pure: a bundler drops it unused.
+fn vue_element(els: [Element], el: Element) -> string {
+    let model = if (el.model_property == "") {
+        ""
+    } else {
+        ",\n  model: { prop: ${quote(el.model_property)}, events: [${js_list(el.model_events)}] }"
+    };
+    let booleans: [string] = [];
+    for p in all_props(els, el) {
+        if (p.kind == "boolean" && !is_dom_prop(p.name)) {
+            booleans.push(p.name);
+        }
+    }
+    `export const ${el.class_name} = /*#__PURE__*/ createComponent(${quote(el.class_name)}, ${quote(el.tag)}, {
+  properties: [${js_list(wrapper_props(els, el))}],
+  booleans: [${js_list(booleans)}]${model},
+});`
+}
+
+// The components object and the plugin (app.use), pure too: an app that
+// imports wrappers by name and never uses the plugin keeps only those.
+fn vue_plugin(names: [string], plugin: string) -> [string] {
+    [
+        "export const components = { ${join(names, ", ")} };",
+        "",
+        "/** app.use(${plugin}) registers every component globally. */",
+        "export const ${plugin} = /*#__PURE__*/ createPlugin(components);",
+        "export default ${plugin};",
+        ""
+    ]
+}
+
+// @ray-ds/vue as modules, like react_modules.
+pub fn vue_modules(cs: [Component]) -> [(string, string)] {
+    let els = lookup(cs, []);
+    var files: [(string, string)] = [];
+    var index: [string] = [
+        HEADER,
+        "// Each wrapper registers its own element: unused ones (and their elements) are left out of a",
+        "// bundle; app.use(RayDs) takes them all.",
+        "",
+        "import { createPlugin } from \"./create.js\";",
+        ""
+    ];
+    var imports: [string] = [];
+    for c in cs {
+        let names: [string] = c.elements.map(fn(e: Element) -> string { e.class_name });
+        imports.push("import { ${join(names, ", ")} } from \"./components/${c.dir}.js\";");
+        let out: [string] = [
+            HEADER,
+            "",
+            "import \"@ray-ds/elements/${c.dir}\";",
+            "import { createComponent } from \"../create.js\";",
+            ""
+        ];
+        for el in c.elements {
+            out.push(vue_element(els, el));
+        }
+        out.push("");
+        files.push(("components/${c.dir}.js", join(out, "\n")));
+    }
+    let names: [string] = all_elements(cs).map(fn(e: Element) -> string { e.class_name });
+    index = index + imports;
+    index.push("");
+    index.push("// The factories, to wrap your own custom elements the same way.");
+    index.push("export { createComponent, createPlugin } from \"./create.js\";");
+    index.push("export { ${join(names, ", ")} };");
+    index.push("");
+    index = index + vue_plugin(names, "RayDs");
+    files.push(("index.js", join(index, "\n")));
+    files
 }
 
 pub fn vue_dts(cs: [Component], extra: [Component], t: Target) -> string {

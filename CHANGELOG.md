@@ -46,6 +46,11 @@ The first public release.
   wrappers and Vue wrappers with `v-model`. Each names its source (repository,
   directory, issues) and publishes with public access; the repository's
   `repository` and `homepage` live in `ray-ds.toml`.
+- Only what you use: `@ray-ds/elements/<name>` (one component and what it
+  uses) and `@ray-ds/elements/core` (the API alone); `@ray-ds/react` and
+  `@ray-ds/vue` are a module per component with `sideEffects: false`, so a
+  bundle keeps the wrappers it imports and their elements (a button with an
+  icon: 9.5 KB gzip instead of 94 KB). `tests/bundle` checks it with esbuild.
 - The `release` workflow, on a version tag: the raylang package to its
   repository (`git subtree split`), the npm packages (`NPM_TOKEN` or trusted
   publishing, with provenance from a public repository) and the site.
