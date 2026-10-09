@@ -110,6 +110,15 @@ there (use `T.settle()`; see `tests/harness.js`).
 3. The `raylang-package` workflow writes the raylang package to
    `github.com/ray-language/ray_ds` with the same tag (it checks that the tag
    is `ray-ds.toml`'s version).
+4. The `npm-publish` workflow publishes `@ray-ds/elements`, `@ray-ds/react`
+   and `@ray-ds/vue` from the same tag, after the tool tests and a check that
+   `packages/` matches the sources. A version already on npm is skipped, so a
+   failed run can be run again; a prerelease (`0.4.0-rc.1`) goes to the `next`
+   dist-tag. It authenticates with the secret `NPM_TOKEN` when it is set, and
+   otherwise with npm's trusted publishing (each package trusts
+   `ray-language/ray-ds` and `npm-publish.yml` on npmjs.com, which needs the
+   package to exist: the first release uses the token). Run it by hand for a
+   dry run.
 
 ## License
 

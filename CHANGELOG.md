@@ -46,6 +46,8 @@ The first public release.
   wrappers and Vue wrappers with `v-model`. Each names its source (repository,
   directory, issues) and publishes with public access; the repository's
   `repository` and `homepage` live in `ray-ds.toml`.
+- The `npm-publish` workflow publishes the three packages on a version tag
+  (`NPM_TOKEN` or trusted publishing, with provenance from a public repository).
 - Tools: `ray run tools/src/main.ray add` copies components (and what they
   need) into an app; `wrap` generates types and React/Vue wrappers for an
   app's own components.
