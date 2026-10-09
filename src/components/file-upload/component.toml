@@ -101,14 +101,23 @@ default = "rows"
 reflect = true
 description = "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change)."
 
+[ray-file-upload.properties.native]
+type = "boolean"
+reflect = true
+description = "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files."
+
 [ray-file-upload.properties.color]
 type = "string"
 reflect = true
 description = "Accent of hover, drag and the browse link (default: primary)."
 
 [ray-file-upload.members.files]
-ts = "files: File[]"
+ts = "files: (File | HostFile)[]"
 description = "The chosen files (assign to replace them, without events)."
+
+[ray-file-upload.members.paths]
+ts = "readonly paths: string[]"
+description = "The paths of the files chosen with the native dialog (`native`), in order; they are also what the form submits for them."
 
 [ray-file-upload.members.lastChange]
 ts = "readonly lastChange: FileUploadChange | null"
@@ -141,6 +150,10 @@ description = "Files were added or removed (read `files`, and `lastChange` for w
 detail = "{ rejected: FileRejection[] }"
 description = "Some files were refused (type, size or count)."
 
+[ray-file-upload.events.ray-error]
+detail = "{ error: Error }"
+description = "The native dialog failed (with `native`)."
+
 [ray-file-upload.slots.icon]
 description = "Replaces the upload icon."
 
@@ -163,7 +176,7 @@ description = "The label."
 description = "The error text."
 
 [component.types.FileUploadChange]
-ts = "{ added: File[]; removed: File[] }"
+ts = "{ added: (File | HostFile)[]; removed: (File | HostFile)[] }"
 description = "The files a change added and removed."
 
 [component.types.FileRejection]
@@ -181,3 +194,4 @@ description = "Whether a file passes an accept list."
 [component.exports.describeAccept]
 ts = "function describeAccept(accept: string | null | undefined): string"
 description = "A short human list of an accept value (\"PNG, JPG or PDF\")."
+

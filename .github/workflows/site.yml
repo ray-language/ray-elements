@@ -1,7 +1,8 @@
 # The docs site, built from the sources and published to GitHub Pages.
 #
 # Every push to main (and every pull request) builds it and checks that the
-# committed output (docs/, packages/, dist/tokens.*, src/index.js) matches
+# committed output (docs/, packages/, dist/tokens.*, src/index.js,
+# tools/src/ray_ds/) matches
 # what the sources generate. Publishing is a second job, off until the repo
 # variable PAGES_DEPLOY is "true" (Settings → Secrets and variables →
 # Actions → Variables) and Pages uses "GitHub Actions" as its source.
@@ -49,9 +50,9 @@ jobs:
 
       - name: Committed output matches the sources
         run: |
-          if ! git diff --quiet -- docs packages dist src/index.js || [ -n "$(git status --porcelain -- docs packages dist src/index.js)" ]; then
+          if ! git diff --quiet -- docs packages dist src/index.js tools/src/ray_ds || [ -n "$(git status --porcelain -- docs packages dist src/index.js tools/src/ray_ds)" ]; then
             echo "::error::The generated files differ from what the sources produce. Run 'ray run tools/src/main.ray build' and commit the result."
-            git status --short -- docs packages dist src/index.js
+            git status --short -- docs packages dist src/index.js tools/src/ray_ds
             exit 1
           fi
 

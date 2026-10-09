@@ -9,13 +9,13 @@ change the API.
 
 The first public release.
 
-### Components (67)
+### Components (68)
 
 - **Buttons:** button, button group, icon button, toggle, toggle group.
 - **Inputs:** input, number input, password input, search, textarea, select,
   combobox (searchable, multiple, creatable), checkbox and checkbox group,
   radio group, switch, segmented control, slider, date picker and calendar,
-  color picker and color input, file upload.
+  color picker and color input, file upload, path input.
 - **Navigation:** tabs, nav link, sidebar, bottom nav, breadcrumbs, stepper,
   pagination.
 - **Overlays:** dialog (the modal, with `confirmDialog()`), drawer, popover,
@@ -47,6 +47,16 @@ The first public release.
 - Tools: `ray run tools/src/main.ray add` copies components (and what they
   need) into an app; `wrap` generates types and React/Vue wrappers for an
   app's own components.
+
+### raylang
+
+- A native bridge between the page and a raylang program: `ray_ds/bridge`
+  (`bridge.handle(e)` in the app's event loop) and `enableRaylang()` in the
+  page (`core/raylang.js`). Components ask a host registry (`core/host.js`),
+  never the bridge, and keep their web behavior without one.
+- With it: `ray-file-upload native` opens the system file dialog and gives
+  paths (`paths`), `ray-path-input` gets a Browse… button for a file, a
+  folder or a save target, and `confirmDialog()` asks with the system dialog.
 
 ### Docs site
 

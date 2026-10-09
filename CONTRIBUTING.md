@@ -27,10 +27,18 @@ Never edit these by hand; change their sources and run `build`:
 | `docs/` (every page, the search index, the code samples) | `src/components/*/component.toml` and `example.html`, the `*.md` guides, `tools/src/site/` |
 | `packages/` (`@ray-ds/elements`, `react`, `vue`) | `src/`, `ray-ds.toml` |
 | `src/index.js` | the components present |
+| `tools/src/ray_ds/` | `ray_ds/*.ray` (the tools use the bridge; see below) |
 | `dist/site/` (not committed: the site to publish) | `ray run tools/src/main.ray site` |
 
 The generated output is committed, and CI fails when it does not match what
 the sources produce: run `build` and commit both.
+
+`ray_ds/` is the raylang package for apps (the program's half of the native
+bridge). The webview tests answer the bridge with it, but `ray run
+tools/src/main.ray` from the root does not read `tools/ray.toml`, so `build`
+copies its modules into `tools/src/ray_ds/`. When you change something of
+`ray_ds/` that the tools use, the tools do not compile until that copy is
+updated: run `cp ray_ds/*.ray tools/src/ray_ds/` once, then `build`.
 
 ## A new component
 
@@ -69,7 +77,8 @@ in the README has the checklist of conventions.
 ## Tests
 
 ```sh
-(cd tools && ray test)                      # the tools (tokens, generator, publishing)
+(cd tools && ray test)                      # the tools (tokens, generator, publishing) and ray_ds
+(cd ray_ds && ray test)                     # ray_ds alone
 ray run tools/src/main.ray webtest          # tests/*.test.js in a real webview
 ray run tools/src/main.ray webtest layout   # only the files whose name contains "layout"
 ```

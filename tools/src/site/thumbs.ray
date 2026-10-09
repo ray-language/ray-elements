@@ -34,6 +34,7 @@ const I_USER: string = "<circle cx=\"12\" cy=\"8\" r=\"4\"/><path d=\"M4 21a8 8 
 const I_FILE: string = "<path d=\"M14 3H6v18h12V7z\"/><path d=\"M14 3v4h4\"/>";
 const I_UP: string = "<path d=\"M12 16V4M6 10l6-6 6 6\"/><path d=\"M4 20h16\"/>";
 const I_INFO: string = "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 11v5M12 8h.01\"/>";
+const I_FOLDER: string = "<path d=\"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>";
 const I_EYE: string = "<path d=\"M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z\"/><circle cx=\"12\" cy=\"12\" r=\"3\"/>";
 const I_SUN: string = "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5\"/>";
 const I_MOON: string = "<path d=\"M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z\"/>";
@@ -58,6 +59,7 @@ fn thumbs() -> [(string, string)] {
         ("date-picker", sf("pad", row(ln("2.5rem") + "<i class=\"t-grow\"></i>" + ln("1rem")) + "<i class=\"t-cal\">" + "<i></i>".repeat(10) + "<i class=\"on\"></i>" + "<i></i>".repeat(10) + "</i>")),
         ("file-upload", "<i class=\"t-drop\">" + svg(I_UP) + ln("4.5rem") + "</i>"),
         ("input", col(ln("2.5rem") + inp("9rem", ln("4rem")))),
+        ("path-input", col(ln("3rem") + inp("10rem", "<i class=\"t-gl\">" + svg(I_FOLDER) + "</i>" + ln("3.5rem") + "<i class=\"t-grow\"></i>" + btn("l", "1.6rem")))),
         ("password-input", col(ln("3rem") + inp("9rem", txt("dots", "••••••••") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_EYE) + "</i>"))),
         ("radio", col(row(rd(false) + ln("3.5rem")) + row(rd(true) + ln("4.5rem")) + row(rd(false) + ln("3rem")))),
         ("search", inp("10rem", "<i class=\"t-gl\">" + svg(I_SEARCH) + "</i>" + ln("4rem") + "<i class=\"t-grow\"></i>" + txt("key", "⌘K"))),

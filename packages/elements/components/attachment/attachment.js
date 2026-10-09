@@ -223,7 +223,8 @@ export class RayAttachment extends RayElement {
       this.name = f.name;
       this.size = f.size;
       this.type = f.type;
-      if (IMAGE.test(f.type) && typeof URL.createObjectURL === "function") {
+      // A Blob has bytes to show; a file the host chose (HostFile) is only a path.
+      if (IMAGE.test(f.type) && f instanceof Blob && typeof URL.createObjectURL === "function") {
         this.#objectUrl = URL.createObjectURL(f);
         this.src = this.#objectUrl;
       }

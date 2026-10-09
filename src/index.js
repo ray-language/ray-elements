@@ -14,6 +14,7 @@ import "./components/file-upload/file-upload.js";
 import "./components/input/input.js";
 import "./components/number-input/number-input.js";
 import "./components/password-input/password-input.js";
+import "./components/path-input/path-input.js";
 import "./components/radio/radio.js";
 import "./components/search/search.js";
 import "./components/segmented-control/segmented-control.js";

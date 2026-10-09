@@ -1411,3 +1411,9 @@ main.notfound { display: grid; place-items: center; flex: 1; padding: var(--ray-
 .nf-links b { font-size: var(--ray-font-size-sm); }
 .nf-links span { font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 @media (max-width: 40em) { .nf-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* path-input */
+.demo-path { display: grid; gap: var(--ray-space-5); max-width: 34rem; }
+.demo-path-bar { padding: var(--ray-space-3) var(--ray-space-4); background: var(--ray-muted); border-radius: var(--ray-radius-md); }
+.demo-path-form { display: grid; gap: var(--ray-space-4); }
+.demo-path-form ray-path-input { min-width: 0; }

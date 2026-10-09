@@ -11,10 +11,12 @@ webview. Nothing in a component requires raylang.
 **It comes with extras for raylang apps.** It loads as plain ES modules from
 `ray://app` in a `std/ui` window with no build step, all its tooling (tokens,
 contrast checks, docs, webview tests) is written in raylang in `tools/`, and
-the examples are raylang apps. Planned: a native bridge (file dialogs with real
-paths, native menus in the command palette, native confirm dialogs, window
-chrome) and a raylang package that serves the whole design system without npm.
-See [RAYLANG.md](RAYLANG.md).
+the examples are raylang apps. A native bridge (`ray_ds/bridge` in the program,
+`core/raylang.js` in the page) gives the components what a browser cannot:
+system file dialogs with real paths (`ray-file-upload native`,
+`ray-path-input`) and native confirmations (`confirmDialog()`). Planned: native
+menus in the command palette, window chrome, and a raylang package that serves
+the whole design system without npm. See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 
@@ -27,6 +29,8 @@ src/core/form.js       FormControl / FieldControl (ElementInternals, label/descr
 src/core/floating.js   base of popover/menu/tooltip (Popover API, trigger wiring)
 src/core/position.js   anchored placement with flip and shift
 src/core/focus.js      tabbables through shadow roots and slots
+src/core/host.js       the native host registry components ask (file dialogs, confirm)
+src/core/raylang.js    the page's half of the raylang bridge: enableRaylang()
 src/core/base.css      optional document defaults (layer ray.base)
 src/core/core.d.ts     hand-written types of the core runtime
 src/integrations/      React and Vue runtime helpers (createComponent)
@@ -37,6 +41,7 @@ docs/                  generated: index.html, foundations.html, components.html 
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-ds CLI
+ray_ds/                raylang package: bridge.ray, the program's half of the bridge
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
 examples/react-app/    std/ui + Vite + React app using @ray-ds/react
@@ -49,7 +54,7 @@ examples/extending/    app components on the extension API (+ `wrap` output)
 | Category | Tags |
 |---|---|
 | Buttons | `ray-button` (incl. `raised`: a physical key that sinks when pressed), `ray-icon-button`, `ray-toggle` (two-state, aria-pressed; a raised one latches down), `ray-toggle-group` (single or multiple selection, joined or spaced), `ray-button-group` |
-| Inputs | `ray-input`, `ray-number-input` (+/− with hold-to-repeat, min/max/step, decimals, prefix/suffix, thousands), `ray-combobox` (a searchable select; `multiple` chips, `creatable` tags, clearable, groups), `ray-search`, `ray-textarea`, `ray-select`, `ray-checkbox` + `ray-checkbox-group` (one entry per value, max, required), `ray-switch`, `ray-radio-group` + `ray-radio`, `ray-segmented-control`, `ray-slider`, `ray-date-picker` + `ray-calendar`, `ray-color-picker` + `ray-color-input` (saturation area, hue and opacity sliders, swatches; a text field with the picker in a dropdown and an eyedropper; hex, rgb or hsl with or without alpha), `ray-file-upload` (drop zone: drag, click or paste; type/size/count checks; files listed as attachments; submitted with the form) |
+| Inputs | `ray-input`, `ray-number-input` (+/− with hold-to-repeat, min/max/step, decimals, prefix/suffix, thousands), `ray-combobox` (a searchable select; `multiple` chips, `creatable` tags, clearable, groups), `ray-search`, `ray-textarea`, `ray-select`, `ray-checkbox` + `ray-checkbox-group` (one entry per value, max, required), `ray-switch`, `ray-radio-group` + `ray-radio`, `ray-segmented-control`, `ray-slider`, `ray-date-picker` + `ray-calendar`, `ray-color-picker` + `ray-color-input` (saturation area, hue and opacity sliders, swatches; a text field with the picker in a dropdown and an eyedropper; hex, rgb or hsl with or without alpha), `ray-file-upload` (drop zone: drag, click or paste; type/size/count checks; files listed as attachments; submitted with the form; `native`: real paths from the system dialog in a std/ui window), `ray-path-input` (a file, folder or save path; Browse… opens the system dialog in a std/ui window) |
 | Navigation | `ray-tabs` + `ray-tab` + `ray-tab-panel`, `ray-nav-link`, `ray-sidebar` + `ray-sidebar-group` (icon rail on wide screens, drawer on narrow ones), `ray-bottom-nav` + `ray-bottom-nav-item` (a phone app's tab bar: icons, labels, badges, a raised action, hides on scroll), `ray-breadcrumbs` + `ray-breadcrumb` (collapsible with max-items), `ray-stepper` + `ray-step` (wizards: loading, error, revisit completed steps), `ray-pagination` |
 | Overlays | `ray-dialog` (+ `confirmDialog()`), `ray-drawer` (any edge, modal or modeless), `ray-popover`, `ray-tooltip`, `ray-menu` + `ray-menu-item` / `-label` / `-divider` (also as context menu), `ray-command-palette` (⌘K) |
 | Data display | `ray-timeline` + `ray-timeline-item` (reached items, icon or avatar bullets, line variants), `ray-icon`, `ray-badge`, `ray-avatar`, `ray-indicator` (a dot or label on any element), `ray-blockquote`, `ray-code` (copy, line numbers, highlighted and diff lines; a built-in highlighter or any library via `setHighlighter()`), `ray-kbd` (raised, filled or outline), `ray-accordion` + `ray-accordion-item`, `ray-table`, `ray-stat`, `ray-carousel` (scroll-snap, swipe, autoplay), `ray-attachment` + `ray-attachments` |

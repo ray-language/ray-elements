@@ -28,7 +28,9 @@ pub fn index_js(cs: [Component]) -> string {
         "export { duration, motionAllowed, play, playAll, collapseOut, POP_OUT } from \"./core/motion.js\";",
         "export { dismissable } from \"./core/dismiss.js\";",
         "export { matchesHotkey, formatHotkey } from \"./core/hotkey.js\";",
-        "export { CHART_SERIES, chartTheme, onChartThemeChange, withAlpha } from \"./core/charts.js\";"
+        "export { CHART_SERIES, chartTheme, onChartThemeChange, withAlpha } from \"./core/charts.js\";",
+        "export { setHost, getHost, hostCan, onHostChange, HostFile, typeOfName, extensionsOfType, acceptFilters } from \"./core/host.js\";",
+        "export { enableRaylang, PROTOCOL } from \"./core/raylang.js\";"
     ];
     for c in cs {
         for f in c.files {

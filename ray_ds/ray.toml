@@ -1,0 +1,6 @@
+[package]
+name = "ray_ds"
+version = "0.3.0"
+description = "ray-ds for raylang apps: the native bridge for std/ui windows"
+license = "Apache-2.0"
+raylang = "1.27.39"

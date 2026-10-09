@@ -1,5 +1,5 @@
 // Types of the ray-ds core runtime and extension API (core.js, form.js,
-// floating.js, styles.js, position.js, focus.js, icons.js). Hand-written;
+// floating.js, styles.js, position.js, focus.js, icons.js, host.js, raylang.js). Hand-written;
 // the component declarations are generated after them into ray-ds.d.ts.
 
 export declare const PREFIX: string;
@@ -271,3 +271,51 @@ export declare function withAlpha(color: string, alpha: number): string;
 export declare function scrollerOf(el: Element, target?: Element | string | null): Element | Window;
 /** Calls cb with the scroll position and direction ("down" | "up") once per frame; returns a stop function. */
 export declare function watchScroll(scroller: Element | Window, cb: (state: { y: number; direction: "up" | "down" }) => void, options?: { tolerance?: number }): () => void;
+
+// --- native host (core/host.js, core/raylang.js) -----------------------------
+
+/** A file a native host chose: a path on disk, with the File fields components read. */
+export declare class HostFile {
+  constructor(init: { path: string; name?: string; size?: number; type?: string; lastModified?: number });
+  readonly path: string;
+  readonly name: string;
+  readonly size: number;
+  readonly type: string;
+  readonly lastModified: number;
+}
+export interface FileFilter {
+  name: string;
+  extensions: string[];
+}
+/** What the program around the page can do natively; components use it when it is there. */
+export interface Host {
+  name: string;
+  can(op: "pick_files" | "pick_path" | "confirm" | (string & {})): boolean;
+  pickFiles?(options?: { title?: string; multiple?: boolean; directory?: string; filters?: FileFilter[] }): Promise<HostFile[]>;
+  pickPath?(options?: { mode?: "open" | "folder" | "save"; title?: string; directory?: string; suggested?: string; filters?: FileFilter[] }): Promise<string | null>;
+  confirm?(options?: { title?: string; message?: string; confirmLabel?: string; cancelLabel?: string; style?: "" | "info" | "warning" | "error" }): Promise<boolean>;
+}
+export declare function setHost(host: Host | null): void;
+export declare function getHost(): Host | null;
+export declare function hostCan(op: string): boolean;
+/** Calls cb whenever the host changes; returns the unsubscribe function. */
+export declare function onHostChange(cb: (host: Host | null) => void): () => void;
+/** The MIME type of a file name, from its extension ("" when unknown). */
+export declare function typeOfName(name: string): string;
+/** The file dialog filters of an accept list ([] = any file); `name` defaults to the extensions. */
+export declare function acceptFilters(accept: string | null | undefined, name?: string): FileFilter[];
+/** The extensions of a MIME type or pattern ("image/*"). */
+export declare function extensionsOfType(type: string): string[];
+
+/** The version of the ray-ds bridge protocol the page speaks. */
+export declare const PROTOCOL: number;
+export interface RaylangHost extends Host {
+  name: "raylang";
+  platform: string;
+  version: string;
+}
+/**
+ * In a std/ui window whose program calls ray_ds/bridge's handle(), installs the
+ * raylang host; null in a browser or when the program does not answer in `timeout` ms.
+ */
+export declare function enableRaylang(options?: { timeout?: number; ray?: unknown }): Promise<RaylangHost | null>;

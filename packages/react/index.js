@@ -68,8 +68,8 @@ export const RayCalendar = createComponent("ray-calendar", {
 });
 export const RayFileUpload = createComponent("ray-file-upload", {
   displayName: "RayFileUpload",
-  properties: ["name", "label", "description", "error", "required", "disabled", "accept", "multiple", "maxSize", "maxFiles", "hint", "dropLabel", "browseLabel", "activeLabel", "tapLabel", "variant", "list", "color"],
-  events: { onChange: "change", onRayReject: "ray-reject" },
+  properties: ["name", "label", "description", "error", "required", "disabled", "accept", "multiple", "maxSize", "maxFiles", "hint", "dropLabel", "browseLabel", "activeLabel", "tapLabel", "variant", "list", "native", "color"],
+  events: { onChange: "change", onRayReject: "ray-reject", onRayError: "ray-error" },
 });
 export const RayInput = createComponent("ray-input", {
   displayName: "RayInput",
@@ -85,6 +85,11 @@ export const RayPasswordInput = createComponent("ray-password-input", {
   displayName: "RayPasswordInput",
   properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
   events: { onRayVisibilityChange: "ray-visibility-change", onInput: "input", onChange: "change" },
+});
+export const RayPathInput = createComponent("ray-path-input", {
+  displayName: "RayPathInput",
+  properties: ["mode", "accept", "browseLabel", "dialogTitle", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  events: { onChange: "change", onRayError: "ray-error", onInput: "input" },
 });
 export const RayRadioGroup = createComponent("ray-radio-group", {
   displayName: "RayRadioGroup",

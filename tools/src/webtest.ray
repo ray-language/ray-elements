@@ -6,11 +6,16 @@
 // opens in a std/ui window; once loaded, tests/harness.js and the test body
 // (wrapped in an async function) are injected with eval_js, and the results
 // come back as one `ray-test:<json>` message from window.ray.send.
+//
+// Requests of the ray-ds bridge (core/raylang.js) are answered by the real
+// ray_ds/bridge with scripted dialogs (see `scripted`), so the tests drive
+// the page and the program halves together.
 
 import std/fs;
 import std/json;
 import std/time;
 import std/ui;
+import ray_ds/bridge;
 
 const READY_POLL_MS: int = 200;
 
@@ -55,9 +60,34 @@ window.ray.send("ray-test:" + JSON.stringify(results));
 })().catch((e) => window.ray.send("ray-test-error:" + ((e && e.stack) || e)));
 `;
     ui.eval_js(h, script)?;
-    let reply = wait_message(h, "ray-test", RUN_TIMEOUT_MS)?;
+    let reply = wait_message(h, "ray-test", RUN_TIMEOUT_MS, scripted(root))?;
     close(h);
     report(file, reply)
+}
+
+// The dialogs of the tests: the file dialog "chooses" the comma-separated
+// paths of its title (relative to the ray-ds root, so their sizes are real),
+// the path dialog describes what it was asked, and a confirmation says yes
+// when its title starts with "yes".
+fn scripted(root: string) -> bridge.Native {
+    var n = bridge.system();
+    n.pick_files = fn(o: ui.FileDialogOptions) -> Result<[string], string> {
+        if (o.title == "") {
+            return Result.Ok([]);
+        }
+        Result.Ok(o.title.split(",").map(fn(p: string) -> string { "${root}/${p}" }))
+    };
+    // "<mode>:<directory>|<suggested>|<number of filters>", None for an empty title.
+    n.pick_path = fn(mode: string, o: ui.FileDialogOptions) -> Result<Option<string>, string> {
+        if (o.title == "") {
+            return Result.Ok(Option.None);
+        }
+        Result.Ok(Option.Some("${mode}:${o.directory}|${o.suggested}|${o.filters.len()}"))
+    };
+    n.confirm = fn(title: string, text: string, ok: string, cancel: string, style: string) -> Result<bool, string> {
+        Result.Ok(title.starts_with("yes"))
+    };
+    n
 }
 
 fn page_of(body: string) -> Option<string> {
@@ -86,12 +116,15 @@ fn wait_loaded(h: int) -> Result<int, string> {
 // The next message of window `h` that starts with `prefix` (stale ready pings are skipped).
 // `ray-case:<name>` messages mark the case that is running, named in the
 // error if the file never answers.
-fn wait_message(h: int, prefix: string, timeout_ms: int) -> Result<string, string> {
+fn wait_message(h: int, prefix: string, timeout_ms: int, n: bridge.Native) -> Result<string, string> {
     let deadline = time.now() + timeout_ms;
     var last_case = "";
     while (time.now() < deadline) {
         match (ui.next_event_timeout(deadline - time.now())?) {
             Option.Some(e) => {
+                if (bridge.handle_with(e, n)) {
+                    continue;
+                }
                 if (e.window == h && e.kind == "message") {
                     if (e.tag.starts_with("ray-case:")) {
                         last_case = e.tag.substring(9, e.tag.len());

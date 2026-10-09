@@ -21,6 +21,45 @@ that brings the whole design system without npm.
 - **Examples.** `examples/desktop-form` (plain HTML), `examples/react-app` and
   `examples/vue-app` (made with `ray new --frontend react-ts|vue-ts`) drive the
   page in the real webview and check what reaches raylang.
+- **The native bridge** (plan 1, milestones 1 and 2): system file dialogs with
+  real paths (`ray-file-upload native`, `ray-path-input`) and native
+  confirmations (`confirmDialog()`). See below.
+
+## Using the bridge
+
+In the program, answer the bridge before the app's own events
+(`ray_ds = "path:…/ray-ds/ray_ds"` in `[dependencies]` until the package is
+published):
+
+```ray
+import std/ui;
+import ray_ds/bridge;
+
+for e in ui.events() {
+    if (bridge.handle(e)) {
+        continue;   // a ray-ds request, already answered
+    }
+    // the app's own events
+}
+```
+
+In the page, once:
+
+```js
+import { enableRaylang } from "ray-ds/core/raylang.js";   // or from "@ray-ds/elements"
+await enableRaylang();   // the host, or null in a browser
+```
+
+```html
+<ray-file-upload native multiple accept=".png,.jpg" label="Photos"></ray-file-upload>
+<ray-path-input name="out" label="Export to" mode="save" accept=".csv"></ray-path-input>
+```
+
+`ray-file-upload native` lists the chosen files as `HostFile`s (name, size,
+type and `path`), gives their paths in `paths` and submits the paths with its
+form; drop and paste still give `File`s. `ray-path-input` shows Browse… only
+with the host. `confirmDialog()` asks with the system dialog unless
+`native: false`. In a browser all three behave as before.
 
 ## Principles
 
@@ -37,11 +76,12 @@ that brings the whole design system without npm.
 
 A small protocol between the page and the program, with two halves:
 
-- **Page:** `ray-ds/raylang.js` (in `@ray-ds/elements` and in the raylang
-  package). `enableRaylang()` detects `window.ray`, asks the program for its
-  capabilities once, and tells the components that opted in.
-- **Program:** a raylang module, `ray_ds/bridge`, with one entry point for the
-  app's event loop:
+- **Page:** `core/raylang.js` (in `@ray-ds/elements`, also re-exported from
+  its index). `enableRaylang()` detects `window.ray`, asks the program for its
+  capabilities once ("hello") and installs a host in `core/host.js`, the
+  registry the components ask; they never import the bridge.
+- **Program:** a raylang module, `ray_ds/bridge` (the `ray_ds/` directory of
+  this repo), with one entry point for the app's event loop:
 
 ```ray
 import std/ui;
@@ -56,9 +96,19 @@ for e in ui.events() {
 ```
 
 Requests travel through `window.ray.request` as JSON (`{"ray-ds": 1, "op":
-"pick_files", …}`) and `bridge.handle` answers them with `ui.reply_json`.
-Anything else passes through untouched, so the bridge coexists with the app's
-own protocol.
+"pick_files", …}`) and `bridge.handle` answers them with `ui.reply_json`:
+`{"ok": true, "value": …}` or `{"ok": false, "error": "…"}`. Anything else
+passes through untouched, so the bridge coexists with the app's own protocol.
+The dialogs sit behind a `Native` struct (`bridge.system()`); `handle_with(e,
+n)` takes another one, which is how the webview tests answer with scripted
+dialogs.
+
+| Operation | Asks for | Answers |
+|---|---|---|
+| `hello` | | `{protocol, version, platform, ops}` |
+| `pick_files` | `title`, `directory`, `multiple`, `filters` | `[{path, name, size}]`, `[]` if cancelled |
+| `pick_path` | `mode` (`open`, `folder`, `save`), `title`, `directory`, `suggested`, `filters` | the path, or `null` |
+| `confirm` | `title`, `message`, `confirmLabel`, `cancelLabel`, `style` | `true` / `false` |
 
 ### What the components get
 
@@ -76,11 +126,12 @@ own protocol.
 
 ### Milestones
 
-1. **Protocol and loop.** `raylang.js` and `ray_ds/bridge` with capability
-   negotiation, `pick_files` and `confirm`. Tests: a fake
-   `window.ray` in the webview tests and a raylang test of `bridge.handle`.
-2. **Files.** `ray-file-upload` in bridge mode and the new `ray-path-input`,
-   with its React/Vue wrappers and types.
+1. ✅ **Protocol and loop.** `core/raylang.js` and `ray_ds/bridge` with
+   capability negotiation, `pick_files` and `confirm`. Tests: the raylang
+   tests of `bridge.answer`, and `tests/bridge.test.js`, where the page talks
+   to the real bridge in the webview runner (scripted dialogs).
+2. ✅ **Files.** `ray-file-upload native` and the new `ray-path-input`
+   (`pick_path`), with their React/Vue wrappers and types.
 3. **Menus.** `bridge.menu`, the palette listing native items, `ray-menu
    native`.
 4. **Window.** `full_content` support in the app header and sidebar, theme to
@@ -118,8 +169,12 @@ fn main() -> int {
 - `ray_ds.mount(prefix)`: mounts the elements, `tokens.css`, `base.css` and
   `raylang.js` in the app's `ray://app` tree.
 - `ray_ds/bridge` (plan 1).
-- The version of the package is the version in `ray-ds.toml`; `build` writes
-  the package next to the npm ones (`packages/raylang/`).
+- The package is the `ray_ds/` directory of this repo (it exists since plan
+  1 with `bridge.ray`); `build` adds the generated modules to it, the way it
+  writes `src/index.js`. Its version is the version in `ray-ds.toml`.
+- The directory is `ray_ds`, not `ray-ds`: a path dependency is imported by
+  the name of its directory, whatever its key in `[dependencies]` (finding
+  #135). What name a `git+` or index dependency gets is part of the spike.
 
 ### How the assets travel
 

@@ -62,8 +62,8 @@ export const RayCalendar = createComponent("RayCalendar", "ray-calendar", {
   model: { prop: "value", events: ["change"] },
 });
 export const RayFileUpload = createComponent("RayFileUpload", "ray-file-upload", {
-  properties: ["name", "label", "description", "error", "required", "disabled", "accept", "multiple", "maxSize", "maxFiles", "hint", "dropLabel", "browseLabel", "activeLabel", "tapLabel", "variant", "list", "color"],
-  booleans: ["required", "disabled", "multiple"],
+  properties: ["name", "label", "description", "error", "required", "disabled", "accept", "multiple", "maxSize", "maxFiles", "hint", "dropLabel", "browseLabel", "activeLabel", "tapLabel", "variant", "list", "native", "color"],
+  booleans: ["required", "disabled", "multiple", "native"],
 });
 export const RayInput = createComponent("RayInput", "ray-input", {
   properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
@@ -78,6 +78,10 @@ export const RayNumberInput = createComponent("RayNumberInput", "ray-number-inpu
 export const RayPasswordInput = createComponent("RayPasswordInput", "ray-password-input", {
   properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
   booleans: ["visible", "required", "disabled", "readonly"],
+});
+export const RayPathInput = createComponent("RayPathInput", "ray-path-input", {
+  properties: ["mode", "accept", "browseLabel", "dialogTitle", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  booleans: ["required", "disabled", "readonly"],
 });
 export const RayRadioGroup = createComponent("RayRadioGroup", "ray-radio-group", {
   properties: ["value", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "orientation", "size", "color", "variant"],
@@ -370,7 +374,7 @@ export const RayThemeToggle = createComponent("RayThemeToggle", "ray-theme-toggl
   booleans: [],
 });
 
-export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayCheckboxGroup, RayColorPicker, RayColorInput, RayCombobox, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayNumberInput, RayPasswordInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayBottomNav, RayBottomNavItem, RayBreadcrumbs, RayBreadcrumb, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayStepper, RayStep, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayTimeline, RayTimelineItem, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAppBar, RayAppShell, RayAspectRatio, RayCard, RayCenter, RayContainer, RayGrid, RayGroup, RayScrollArea, RaySeparator, RaySplit, RayStack, RayStatusbar, RayStatusbarItem, RayThemeToggle };
+export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle, RayToggleGroup, RayCheckbox, RayCheckboxGroup, RayColorPicker, RayColorInput, RayCombobox, RayDatePicker, RayCalendar, RayFileUpload, RayInput, RayNumberInput, RayPasswordInput, RayPathInput, RayRadioGroup, RayRadio, RaySearch, RaySegmentedControl, RaySelect, RaySlider, RaySwitch, RayTextarea, RayBottomNav, RayBottomNavItem, RayBreadcrumbs, RayBreadcrumb, RayNavLink, RayPagination, RaySidebar, RaySidebarGroup, RayStepper, RayStep, RayTabs, RayTab, RayTabPanel, RayCommandPalette, RayDialog, RayDrawer, RayMenu, RayMenuItem, RayMenuLabel, RayMenuDivider, RayPopover, RayTooltip, RayAccordion, RayAccordionItem, RayAttachment, RayAttachments, RayAvatar, RayBadge, RayBlockquote, RayCarousel, RayCode, RayIcon, RayIndicator, RayKbd, RayStat, RayTable, RayTimeline, RayTimelineItem, RayAlert, RayEmptyState, RayNotification, RayToaster, RayProgress, RaySkeleton, RaySpinner, RayAppBar, RayAppShell, RayAspectRatio, RayCard, RayCenter, RayContainer, RayGrid, RayGroup, RayScrollArea, RaySeparator, RaySplit, RayStack, RayStatusbar, RayStatusbarItem, RayThemeToggle };
 
 /** app.use(RayDs) registers every component globally. */
 export const RayDs = createPlugin(components);

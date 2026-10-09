@@ -1254,6 +1254,11 @@
           ]
         },
         {
+          "name": "native",
+          "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+          "valueSet": "v"
+        },
+        {
           "name": "color",
           "description": "Accent of hover, drag and the browse link (default: primary)."
         }
@@ -1534,6 +1539,221 @@
         {
           "name": "hide-label",
           "description": "Accessible name of the toggle while shown."
+        },
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-path-input",
+      "description": "Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).",
+          "values": [
+            {
+              "name": "open"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "save"
+            }
+          ]
+        },
+        {
+          "name": "accept",
+          "description": "File types the dialog offers, as in <input type=file>: \".json,.toml\", \"image/*\" (ignored for folders)."
+        },
+        {
+          "name": "browse-label",
+          "description": "Text of the button."
+        },
+        {
+          "name": "dialog-title",
+          "description": "Title of the system dialog (default: the label)."
         },
         {
           "name": "value",
@@ -3066,7 +3286,7 @@
     },
     {
       "name": "ray-dialog",
-      "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color }) -> Promise<boolean>.",
+      "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-ds/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
       "attributes": [
         {
           "name": "open",

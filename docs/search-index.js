@@ -158,6 +158,19 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Path input (File path, Folder picker)",
+    "group": "Components · Inputs",
+    "description": "A field for a path on disk: a file to open, a folder, or where to save. In a std/ui window (with ray-ds/core/raylang.js) a Browse… button opens the system dialog; in a browser it is a plain text field. Everything else is ray-input.",
+    "href": "components/path-input.html",
+    "keywords": [
+      "path-input",
+      "file path",
+      "folder picker",
+      "ray-path-input"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Radio group",
     "group": "Components · Inputs",
     "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
@@ -971,6 +984,14 @@ export default [
     "group": "raylang",
     "description": "",
     "href": "raylang.html#today",
+    "keywords": [],
+    "icon": "file"
+  },
+  {
+    "label": "Using the bridge",
+    "group": "raylang",
+    "description": "",
+    "href": "raylang.html#using-the-bridge",
     "keywords": [],
     "icon": "file"
   },

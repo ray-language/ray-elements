@@ -1,0 +1,109 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A project's paths, in a std/ui window<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path-bar&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-switch</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-simulate&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Simulate a std/ui window&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Installs a stand-in for the raylang host, so Browse… shows here.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-switch</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">form</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path-form&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-form&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;workspace&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Workspace&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Projects/ray-ds&quot;</span> <span class="tk-attr">required</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;config&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Tokens file&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.toml&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Projects/ray-ds/tokens.toml&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;The palette, spacing and radii the build reads.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;export&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Export the theme to&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;save&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.css,.json&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Desktop/theme.css&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;submit&quot;</span><span class="tk-punctuation">&gt;</span>Save settings<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-out&quot;</span><span class="tk-punctuation">&gt;</span>In a browser these are plain text fields.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">form</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Sizes and states<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Small (default)&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;/path/to/file&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Large, filled&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;Choose a folder&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Error&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/missing.toml&quot;</span> <span class="tk-attr">error</span>=<span class="tk-string">&quot;The file does not exist.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Disabled&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/etc/hosts&quot;</span> <span class="tk-attr">disabled</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-keyword">import</span> { getHost, setHost } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+
+  <span class="tk-keyword">const</span> baseName = (p) =&gt; p.split(/[\\/]/).pop();
+  <span class="tk-keyword">const</span> dirName = (p) =&gt; p.slice(<span class="tk-number">0</span>, Math.max(<span class="tk-number">0</span>, p.lastIndexOf(<span class="tk-string">&quot;/&quot;</span>)));
+
+  <span class="tk-comment">// A stand-in for core/raylang.js: in a std/ui window the program answers</span>
+  <span class="tk-comment">// with the system dialog; here a choice is made up from what was asked.</span>
+  <span class="tk-keyword">const</span> stand = {
+    name: <span class="tk-string">&quot;simulated&quot;</span>,
+    can: (op) =&gt; op === <span class="tk-string">&quot;pick_path&quot;</span>,
+    <span class="tk-keyword">async</span> pickPath({ mode, directory, suggested }) {
+      <span class="tk-keyword">const</span> dir = directory || <span class="tk-string">&quot;/Users/ada/Projects&quot;</span>;
+      <span class="tk-keyword">if</span> (mode === <span class="tk-string">&quot;folder&quot;</span>) <span class="tk-keyword">return</span> <span class="tk-string">`${dirName(dir) || dir}/ray-apps`</span>;
+      <span class="tk-keyword">if</span> (mode === <span class="tk-string">&quot;save&quot;</span>) <span class="tk-keyword">return</span> <span class="tk-string">`/Users/ada/Documents/${suggested || &quot;untitled&quot;}`</span>;
+      <span class="tk-keyword">return</span> <span class="tk-string">`${dir}/${baseName(dir) === &quot;ray-ds&quot; ? &quot;&quot; : &quot;ray-ds/&quot;}tokens.dark.toml`</span>;
+    },
+  };
+  <span class="tk-keyword">const</span> toggle = document.getElementById(<span class="tk-string">&quot;demo-path-simulate&quot;</span>);
+  toggle.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+    <span class="tk-keyword">if</span> (toggle.checked &amp;&amp; !getHost()) setHost(stand);
+    <span class="tk-keyword">else</span> <span class="tk-keyword">if</span> (!toggle.checked &amp;&amp; getHost() === stand) setHost(<span class="tk-keyword">null</span>);
+  });
+
+  <span class="tk-keyword">const</span> form = document.getElementById(<span class="tk-string">&quot;demo-path-form&quot;</span>);
+  <span class="tk-keyword">const</span> out = document.getElementById(<span class="tk-string">&quot;demo-path-out&quot;</span>);
+  form.addEventListener(<span class="tk-string">&quot;change&quot;</span>, (e) =&gt; {
+    <span class="tk-keyword">if</span> (e.target.localName === <span class="tk-string">&quot;ray-path-input&quot;</span>) out.textContent = <span class="tk-string">`${e.target.label}: ${e.target.value}`</span>;
+  });
+  form.addEventListener(<span class="tk-string">&quot;submit&quot;</span>, (e) =&gt; {
+    e.preventDefault();
+    out.textContent = <span class="tk-string">`Saved: ${[...new FormData(form).values()].map(baseName).join(&quot;, &quot;)}`</span>;
+  });
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RaySwitch, RayPathInput, RayButton } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+
+<span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
+<span class="tk-comment">// and listen with the on* handlers (onChange, onRayError…).</span>
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> PathInputExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;A project<span class="tk-string">'s paths, in a std/ui window&lt;/div&gt;
+      &lt;div className=&quot;demo-path&quot;&gt;
+        &lt;div className=&quot;demo-path-bar&quot;&gt;
+          &lt;RaySwitch id=&quot;demo-path-simulate&quot; label=&quot;Simulate a std/ui window&quot; description=&quot;Installs a stand-in for the raylang host, so Browse… shows here.&quot; /&gt;
+        &lt;/div&gt;
+        &lt;form className=&quot;demo-path-form&quot; id=&quot;demo-path-form&quot;&gt;
+          &lt;RayPathInput name=&quot;workspace&quot; label=&quot;Workspace&quot; mode=&quot;folder&quot; value=&quot;/Users/ada/Projects/ray-ds&quot; required /&gt;
+          &lt;RayPathInput name=&quot;config&quot; label=&quot;Tokens file&quot; accept=&quot;.toml&quot; value=&quot;/Users/ada/Projects/ray-ds/tokens.toml&quot; description=&quot;The palette, spacing and radii the build reads.&quot; /&gt;
+          &lt;RayPathInput name=&quot;export&quot; label=&quot;Export the theme to&quot; mode=&quot;save&quot; accept=&quot;.css,.json&quot; value=&quot;/Users/ada/Desktop/theme.css&quot; /&gt;
+          &lt;div className=&quot;demo-row&quot;&gt;&lt;RayButton type=&quot;submit&quot;&gt;Save settings&lt;/RayButton&gt;&lt;span className=&quot;demo-muted&quot; id=&quot;demo-path-out&quot;&gt;In a browser these are plain text fields.&lt;/span&gt;&lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/div&gt;
+
+      &lt;div className=&quot;demo-caption&quot;&gt;Sizes and states&lt;/div&gt;
+      &lt;div className=&quot;demo-grid&quot;&gt;
+        &lt;RayPathInput label=&quot;Small (default)&quot; placeholder=&quot;/path/to/file&quot; /&gt;
+        &lt;RayPathInput label=&quot;Large, filled&quot; size=&quot;lg&quot; variant=&quot;filled&quot; mode=&quot;folder&quot; placeholder=&quot;Choose a folder&quot; /&gt;
+        &lt;RayPathInput label=&quot;Error&quot; value=&quot;/Users/ada/missing.toml&quot; error=&quot;The file does not exist.&quot; /&gt;
+        &lt;RayPathInput label=&quot;Disabled&quot; value=&quot;/etc/hosts&quot; disabled /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</span></code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A project's paths, in a std/ui window<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path-bar&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-simulate&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Simulate a std/ui window&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Installs a stand-in for the raylang host, so Browse… shows here.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">form</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-path-form&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-form&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;workspace&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Workspace&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Projects/ray-ds&quot;</span> <span class="tk-attr">required</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;config&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Tokens file&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.toml&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Projects/ray-ds/tokens.toml&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;The palette, spacing and radii the build reads.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;export&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Export the theme to&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;save&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.css,.json&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/Desktop/theme.css&quot;</span> /<span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;submit&quot;</span><span class="tk-punctuation">&gt;</span>Save settings<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">span</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-path-out&quot;</span><span class="tk-punctuation">&gt;</span>In a browser these are plain text fields.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">span</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">form</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Sizes and states<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Small (default)&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;/path/to/file&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Large, filled&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;filled&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;folder&quot;</span> <span class="tk-attr">placeholder</span>=<span class="tk-string">&quot;Choose a folder&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Error&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/Users/ada/missing.toml&quot;</span> <span class="tk-attr">error</span>=<span class="tk-string">&quot;The file does not exist.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPathInput</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Disabled&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;/etc/hosts&quot;</span> <span class="tk-attr">disabled</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

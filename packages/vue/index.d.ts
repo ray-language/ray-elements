@@ -488,12 +488,16 @@ export interface RayFileUploadProps {
   variant?: "default" | "compact";
   /** How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change). */
   list?: "rows" | "cards" | "none";
+  /** With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files. */
+  native?: boolean;
   /** Accent of hover, drag and the browse link (default: primary). */
   color?: string;
   /** Files were added or removed (read `files`, and `lastChange` for which). */
   onChange?: (event: Event) => void;
   /** Some files were refused (type, size or count). */
   onRayReject?: (event: CustomEvent<{ rejected: Ray.FileRejection[] }>) => void;
+  /** The native dialog failed (with `native`). */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
 }
 /** <ray-file-upload> as a Vue component. */
 export declare const RayFileUpload: DefineComponent<RayFileUploadProps>;
@@ -684,6 +688,75 @@ export interface RayPasswordInputProps {
 }
 /** <ray-password-input> as a Vue component. */
 export declare const RayPasswordInput: DefineComponent<RayPasswordInputProps>;
+
+export interface RayPathInputProps {
+  /** What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested). */
+  mode?: "open" | "folder" | "save";
+  /** File types the dialog offers, as in <input type=file>: ".json,.toml", "image/*" (ignored for folders). */
+  accept?: string;
+  /** Text of the button. */
+  browseLabel?: string;
+  /** Title of the system dialog (default: the label). */
+  dialogTitle?: string;
+  /** Current value. The value attribute is the initial value (restored on form reset). */
+  value?: string;
+  /** Input type. */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** The description before the control (help first) or after it, with the error (fields in a row stay aligned). */
+  descriptionPosition?: "above" | "below";
+  /** Error text; marks the field invalid (display only — does not block submit). */
+  error?: string;
+  /** Placeholder text. */
+  placeholder?: string;
+  /** Required for form submission; shows an asterisk. */
+  required?: boolean;
+  /** Not editable nor submitted. */
+  disabled?: boolean;
+  /** Not editable, still submitted. */
+  readonly?: boolean;
+  /** Height and font size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Forwarded to the inner input. */
+  autocomplete?: string;
+  /** Virtual keyboard hint. */
+  inputmode?: string;
+  /** Validation pattern (regular expression). */
+  pattern?: string;
+  /** Minimum (number/date types). */
+  min?: string;
+  /** Maximum (number/date types). */
+  max?: string;
+  /** Step (number types). */
+  step?: string;
+  /** Minimum length. */
+  minlength?: string;
+  /** Maximum length. */
+  maxlength?: string;
+  /** Mobile auto-capitalization. */
+  autocapitalize?: string;
+  /** Label of the Enter key on virtual keyboards. */
+  enterkeyhint?: string;
+  /** Id of a <datalist> with suggestions. */
+  list?: string;
+  /** The path changed: typed and committed, or chosen in the dialog. */
+  onChange?: (event: Event) => void;
+  /** The system dialog failed. */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+  /** On every edit (value already updated). */
+  onInput?: (event: Event) => void;
+}
+/** <ray-path-input> as a Vue component. */
+export declare const RayPathInput: DefineComponent<RayPathInputProps>;
 
 export interface RayRadioGroupProps {
   /** Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute. */
@@ -2118,6 +2191,7 @@ export declare const components: {
   RayInput: typeof RayInput;
   RayNumberInput: typeof RayNumberInput;
   RayPasswordInput: typeof RayPasswordInput;
+  RayPathInput: typeof RayPathInput;
   RayRadioGroup: typeof RayRadioGroup;
   RayRadio: typeof RayRadio;
   RaySearch: typeof RaySearch;
@@ -2209,6 +2283,7 @@ declare module "vue" {
     RayInput: typeof RayInput;
     RayNumberInput: typeof RayNumberInput;
     RayPasswordInput: typeof RayPasswordInput;
+    RayPathInput: typeof RayPathInput;
     RayRadioGroup: typeof RayRadioGroup;
     RayRadio: typeof RayRadio;
     RaySearch: typeof RaySearch;

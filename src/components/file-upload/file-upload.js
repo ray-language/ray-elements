@@ -14,12 +14,18 @@
 //   upload.addEventListener("change", () => {
 //     for (const file of upload.lastChange.added) send(file, (pct) => { upload.attachmentFor(file).progress = pct; });
 //   });
+//
+// With `native` and a native host (core/host.js, as in a std/ui window with
+// core/raylang.js), browsing opens the system dialog and gives paths instead
+// of bytes: those files are HostFile objects, listed in `paths` and submitted
+// as their path, for the program to read. Drop and paste keep giving Files.
 
 import { css, define } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
 import { applyColor } from "../../core/styles.js";
 import { collapseOut } from "../../core/motion.js";
 import { formatBytes } from "../attachment/attachment.js";
+import { getHost, hostCan, acceptFilters, HostFile } from "../../core/host.js";
 
 const styles = css`
   :host {
@@ -181,6 +187,7 @@ export function matchesAccept(file, accept) {
   return list.some((a) => (a.startsWith(".") ? name.endsWith(a) : matchesType(type, a)));
 }
 
+
 const KINDS = { image: "Images", video: "Videos", audio: "Audio", text: "Text files" };
 
 /** A short human list of an `accept` value: "PNG, JPG or PDF", "Images". */
@@ -209,6 +216,7 @@ export class RayFileUpload extends FormControl {
     disabled: { type: Boolean, reflect: true },
     accept: { type: String, reflect: true },
     multiple: { type: Boolean, reflect: true },
+    native: { type: Boolean, reflect: true },
     maxSize: { type: String, attribute: "max-size" },
     maxFiles: { type: Number, attribute: "max-files" },
     hint: { type: String },
@@ -285,6 +293,11 @@ export class RayFileUpload extends FormControl {
     return [...this.#files];
   }
 
+  /** The paths of the files the native dialog chose (see `native`). */
+  get paths() {
+    return this.#files.filter((f) => f instanceof HostFile).map((f) => f.path);
+  }
+
   /**
    * What the last change event changed: { added, removed }. null before the
    * first one, and after assigning `files` (which fires nothing).
@@ -303,10 +316,27 @@ export class RayFileUpload extends FormControl {
     this.requestUpdate();
   }
 
-  /** Opens the system file picker. */
+  /** Opens the system file picker (the native dialog with `native` and a host). */
   open() {
     if (this.effectivelyDisabled) return;
+    if (this.native && hostCan("pick_files")) {
+      this.#pickNative();
+      return;
+    }
     this.input.click();
+  }
+
+  async #pickNative() {
+    try {
+      const files = await getHost().pickFiles({
+        title: this.label ?? "",
+        multiple: Boolean(this.multiple),
+        filters: acceptFilters(this.accept, describeAccept(this.accept)),
+      });
+      if (files.length) this.#take(files);
+    } catch (e) {
+      this.emit("ray-error", { error: e });
+    }
   }
 
   /**
@@ -543,7 +573,7 @@ export class RayFileUpload extends FormControl {
     // Form value: every file under `name`.
     if (this.name && this.#files.length) {
       const data = new FormData();
-      for (const f of this.#files) data.append(this.name, f);
+      for (const f of this.#files) data.append(this.name, f instanceof HostFile ? f.path : f);
       this.internals.setFormValue(data);
     } else {
       this.internals.setFormValue(null);

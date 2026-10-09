@@ -13,6 +13,7 @@
 
 import { RayElement, css, define } from "../../core/core.js";
 import { focusFirst } from "../../core/focus.js";
+import { getHost, hostCan } from "../../core/host.js";
 import { overlayStyles, applyOverlayBlur } from "../../core/styles.js";
 import { play, playAll } from "../../core/motion.js";
 import "../button/button.js";
@@ -290,7 +291,13 @@ define("ray-dialog", RayDialog);
  * @param {{ label?: string, message?: string, confirmLabel?: string, cancelLabel?: string, color?: string }} options
  * @returns {Promise<boolean>}
  */
-export function confirmDialog({ label = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", color = "" } = {}) {
+export function confirmDialog({ label = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", color = "", native = true } = {}) {
+  // With a native host (core/host.js), the system's modal asks instead; a
+  // red confirmation (a destructive action) gets the warning style.
+  if (native && hostCan("confirm")) {
+    const style = color === "red" ? "warning" : "";
+    return getHost().confirm({ title: label, message, confirmLabel, cancelLabel, style });
+  }
   return new Promise((resolve) => {
     const d = document.createElement("ray-dialog");
     d.label = label;

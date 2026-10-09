@@ -92,6 +92,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="drawer-nav">
 <div class="nav-group"><p class="nav-group-title">raylang</p>
 <ray-nav-link label="Today" href="#today"></ray-nav-link>
+<ray-nav-link label="Using the bridge" href="#using-the-bridge"></ray-nav-link>
 <ray-nav-link label="Principles" href="#principles"></ray-nav-link>
 <ray-nav-link label="Plan 1: the native bridge" href="#plan-1-the-native-bridge"></ray-nav-link>
 <ray-nav-link label="Plan 2: the raylang package" href="#plan-2-the-raylang-package"></ray-nav-link>
@@ -103,6 +104,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <aside class="sidebar" aria-label="On this page" style="view-transition-name: sidebar-raylang">
 <div class="nav-group"><p class="nav-group-title">raylang</p>
 <a class="side-link" href="#today">Today</a>
+<a class="side-link" href="#using-the-bridge">Using the bridge</a>
 <a class="side-link" href="#principles">Principles</a>
 <a class="side-link" href="#plan-1-the-native-bridge">Plan 1: the native bridge</a>
 <a class="side-link" href="#plan-2-the-raylang-package">Plan 2: the raylang package</a>
@@ -148,7 +150,36 @@ modules from <code>ray://app</code>, and form fields are form-associated, so a
 <li><strong>Examples.</strong> <code>examples/desktop-form</code> (plain HTML), <code>examples/react-app</code> and
 <code>examples/vue-app</code> (made with <code>ray new --frontend react-ts|vue-ts</code>) drive the
 page in the real webview and check what reaches raylang.</li>
+<li><strong>The native bridge</strong> (plan 1, milestones 1 and 2): system file dialogs with
+real paths (<code>ray-file-upload native</code>, <code>ray-path-input</code>) and native
+confirmations (<code>confirmDialog()</code>). See below.</li>
 </ul>
+
+<h2 id="using-the-bridge">Using the bridge</h2>
+<p>In the program, answer the bridge before the app's own events
+(<code>ray_ds = &quot;path:…/ray-ds/ray_ds&quot;</code> in <code>[dependencies]</code> until the package is
+published):</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> std/ui;
+<span class="tk-keyword">import</span> ray_ds/bridge;
+
+<span class="tk-keyword">for</span> e <span class="tk-keyword">in</span> ui.events() {
+    <span class="tk-keyword">if</span> (bridge.handle(e)) {
+        <span class="tk-keyword">continue</span>;   <span class="tk-comment">// a ray-ds request, already answered</span>
+    }
+    <span class="tk-comment">// the app's own events</span>
+}</code></pre>
+<p>In the page, once:</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> { enableRaylang } <span class="tk-keyword">from</span> <span class="tk-string">&quot;ray-ds/core/raylang.js&quot;</span>;   <span class="tk-comment">// or from &quot;@ray-ds/elements&quot;</span>
+<span class="tk-keyword">await</span> enableRaylang();   <span class="tk-comment">// the host, or null in a browser</span></code></pre>
+<pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-file-upload</span> <span class="tk-attr">native</span> <span class="tk-attr">multiple</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.png,.jpg&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Photos&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-file-upload</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-path-input</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;out&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Export to&quot;</span> <span class="tk-attr">mode</span>=<span class="tk-string">&quot;save&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;.csv&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-path-input</span><span class="tk-punctuation">&gt;</span></code></pre>
+<p><code>ray-file-upload native</code> lists the chosen files as <code>HostFile</code>s (name, size,
+type and <code>path</code>), gives their paths in <code>paths</code> and submits the paths with its
+form; drop and paste still give <code>File</code>s. <code>ray-path-input</code> shows Browse… only
+with the host. <code>confirmDialog()</code> asks with the system dialog unless
+<code>native: false</code>. In a browser all three behave as before.</p>
 
 <h2 id="principles">Principles</h2>
 <ul>
@@ -166,11 +197,12 @@ by the same <code>build</code> that writes the npm packages, from the same
 <p>A small protocol between the page and the program, with two halves:</p>
 
 <ul>
-<li><strong>Page:</strong> <code>ray-ds/raylang.js</code> (in <code>@ray-ds/elements</code> and in the raylang
-package). <code>enableRaylang()</code> detects <code>window.ray</code>, asks the program for its
-capabilities once, and tells the components that opted in.</li>
-<li><strong>Program:</strong> a raylang module, <code>ray_ds/bridge</code>, with one entry point for the
-app's event loop:</li>
+<li><strong>Page:</strong> <code>core/raylang.js</code> (in <code>@ray-ds/elements</code>, also re-exported from
+its index). <code>enableRaylang()</code> detects <code>window.ray</code>, asks the program for its
+capabilities once (&quot;hello&quot;) and installs a host in <code>core/host.js</code>, the
+registry the components ask; they never import the bridge.</li>
+<li><strong>Program:</strong> a raylang module, <code>ray_ds/bridge</code> (the <code>ray_ds/</code> directory of
+this repo), with one entry point for the app's event loop:</li>
 </ul>
 
 <pre class="code"><code><span class="tk-keyword">import</span> std/ui;
@@ -182,9 +214,43 @@ app's event loop:</li>
     }
     <span class="tk-comment">// the app's own events</span>
 }</code></pre>
-<p>Requests travel through <code>window.ray.request</code> as JSON (<code>{&quot;ray-ds&quot;: 1, &quot;op&quot;: &quot;pick_files&quot;, …}</code>) and <code>bridge.handle</code> answers them with <code>ui.reply_json</code>.
-Anything else passes through untouched, so the bridge coexists with the app's
-own protocol.</p>
+<p>Requests travel through <code>window.ray.request</code> as JSON (<code>{&quot;ray-ds&quot;: 1, &quot;op&quot;: &quot;pick_files&quot;, …}</code>) and <code>bridge.handle</code> answers them with <code>ui.reply_json</code>:
+<code>{&quot;ok&quot;: true, &quot;value&quot;: …}</code> or <code>{&quot;ok&quot;: false, &quot;error&quot;: &quot;…&quot;}</code>. Anything else
+passes through untouched, so the bridge coexists with the app's own protocol.
+The dialogs sit behind a <code>Native</code> struct (<code>bridge.system()</code>); <code>handle_with(e, n)</code> takes another one, which is how the webview tests answer with scripted
+dialogs.</p>
+
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Asks for</th>
+<th>Answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hello</code></td>
+<td></td>
+<td><code>{protocol, version, platform, ops}</code></td>
+</tr>
+<tr>
+<td><code>pick_files</code></td>
+<td><code>title</code>, <code>directory</code>, <code>multiple</code>, <code>filters</code></td>
+<td><code>[{path, name, size}]</code>, <code>[]</code> if cancelled</td>
+</tr>
+<tr>
+<td><code>pick_path</code></td>
+<td><code>mode</code> (<code>open</code>, <code>folder</code>, <code>save</code>), <code>title</code>, <code>directory</code>, <code>suggested</code>, <code>filters</code></td>
+<td>the path, or <code>null</code></td>
+</tr>
+<tr>
+<td><code>confirm</code></td>
+<td><code>title</code>, <code>message</code>, <code>confirmLabel</code>, <code>cancelLabel</code>, <code>style</code></td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+</tbody>
+</table>
 
 <h3 id="what-the-components-get">What the components get</h3>
 <table>
@@ -246,11 +312,12 @@ own protocol.</p>
 
 <h3 id="milestones">Milestones</h3>
 <ol>
-<li><strong>Protocol and loop.</strong> <code>raylang.js</code> and <code>ray_ds/bridge</code> with capability
-negotiation, <code>pick_files</code> and <code>confirm</code>. Tests: a fake
-<code>window.ray</code> in the webview tests and a raylang test of <code>bridge.handle</code>.</li>
-<li><strong>Files.</strong> <code>ray-file-upload</code> in bridge mode and the new <code>ray-path-input</code>,
-with its React/Vue wrappers and types.</li>
+<li>✅ <strong>Protocol and loop.</strong> <code>core/raylang.js</code> and <code>ray_ds/bridge</code> with
+capability negotiation, <code>pick_files</code> and <code>confirm</code>. Tests: the raylang
+tests of <code>bridge.answer</code>, and <code>tests/bridge.test.js</code>, where the page talks
+to the real bridge in the webview runner (scripted dialogs).</li>
+<li>✅ <strong>Files.</strong> <code>ray-file-upload native</code> and the new <code>ray-path-input</code>
+(<code>pick_path</code>), with their React/Vue wrappers and types.</li>
 <li><strong>Menus.</strong> <code>bridge.menu</code>, the palette listing native items, <code>ray-menu native</code>.</li>
 <li><strong>Window.</strong> <code>full_content</code> support in the app header and sidebar, theme to
 window colors, <code>edited</code> tracking.</li>
@@ -280,8 +347,12 @@ bridge.</p>
 <li><code>ray_ds.mount(prefix)</code>: mounts the elements, <code>tokens.css</code>, <code>base.css</code> and
 <code>raylang.js</code> in the app's <code>ray://app</code> tree.</li>
 <li><code>ray_ds/bridge</code> (plan 1).</li>
-<li>The version of the package is the version in <code>ray-ds.toml</code>; <code>build</code> writes
-the package next to the npm ones (<code>packages/raylang/</code>).</li>
+<li>The package is the <code>ray_ds/</code> directory of this repo (it exists since plan
+1 with <code>bridge.ray</code>); <code>build</code> adds the generated modules to it, the way it
+writes <code>src/index.js</code>. Its version is the version in <code>ray-ds.toml</code>.</li>
+<li>The directory is <code>ray_ds</code>, not <code>ray-ds</code>: a path dependency is imported by
+the name of its directory, whatever its key in <code>[dependencies]</code> (finding
+#135). What name a <code>git+</code> or index dependency gets is part of the spike.</li>
 </ul>
 
 <h3 id="how-the-assets-travel">How the assets travel</h3>

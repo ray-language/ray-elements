@@ -1,0 +1,62 @@
+[component]
+name = "Path input"
+aliases = ["File path", "Folder picker"]
+category = "Inputs"
+summary = "A field for a path on disk: a file to open, a folder, or where to save. In a std/ui window (with ray-ds/core/raylang.js) a Browse… button opens the system dialog; in a browser it is a plain text field. Everything else is ray-input."
+files = ["path-input.js"]
+requires = ["input"]
+tags = ["ray-path-input"]
+
+[ray-path-input]
+class = "RayPathInput"
+extends = "RayInput"
+summary = "Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted."
+
+[ray-path-input.properties.mode]
+type = "string"
+values = ["open", "folder", "save"]
+default = "open"
+reflect = true
+description = "What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested)."
+
+[ray-path-input.properties.accept]
+type = "string"
+reflect = true
+description = "File types the dialog offers, as in <input type=file>: \".json,.toml\", \"image/*\" (ignored for folders)."
+
+[ray-path-input.properties.browseLabel]
+attribute = "browse-label"
+type = "string"
+default = "Browse…"
+description = "Text of the button."
+
+[ray-path-input.properties.dialogTitle]
+attribute = "dialog-title"
+type = "string"
+description = "Title of the system dialog (default: the label)."
+
+[ray-path-input.members.canBrowse]
+ts = "readonly canBrowse: boolean"
+description = "Whether Browse… is available (a native host offers pick_path)."
+
+[ray-path-input.members.browse]
+ts = "browse(): Promise<string | null>"
+description = "Opens the system dialog; resolves to the chosen path (also set as value, with input and change), or null."
+
+[ray-path-input.events.change]
+description = "The path changed: typed and committed, or chosen in the dialog."
+
+[ray-path-input.events.ray-error]
+detail = "{ error: Error }"
+description = "The system dialog failed."
+
+[ray-path-input.parts.browse]
+description = "The Browse… button."
+
+[component.exports.dirName]
+ts = "function dirName(path: string): string"
+description = "The folder part of a path (\"\" when it has none), with / or \\ separators."
+
+[component.exports.baseName]
+ts = "function baseName(path: string): string"
+description = "The last part of a path."

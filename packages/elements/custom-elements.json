@@ -3738,6 +3738,14 @@
               "default": "rows"
             },
             {
+              "name": "native",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+              "fieldName": "native"
+            },
+            {
               "name": "color",
               "type": {
                 "text": "string"
@@ -3925,6 +3933,16 @@
             },
             {
               "kind": "field",
+              "name": "native",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+              "attribute": "native",
+              "reflects": true
+            },
+            {
+              "kind": "field",
               "name": "color",
               "type": {
                 "text": "string"
@@ -3934,9 +3952,14 @@
               "reflects": true
             },
             {
-              "kind": "field",
+              "kind": "method",
               "name": "files",
               "description": "The chosen files (assign to replace them, without events)."
+            },
+            {
+              "kind": "field",
+              "name": "paths",
+              "description": "The paths of the files chosen with the native dialog (`native`), in order; they are also what the form submits for them."
             },
             {
               "kind": "field",
@@ -3983,6 +4006,13 @@
                 "text": "CustomEvent<{ rejected: FileRejection[] }>"
               },
               "description": "Some files were refused (type, size or count)."
+            },
+            {
+              "name": "ray-error",
+              "type": {
+                "text": "CustomEvent<{ error: Error }>"
+              },
+              "description": "The native dialog failed (with `native`)."
             }
           ],
           "slots": [
@@ -5240,6 +5270,446 @@
           "declaration": {
             "name": "RayPasswordInput",
             "module": "components/password-input/password-input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "components/path-input/path-input.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayPathInput",
+          "tagName": "ray-path-input",
+          "customElement": true,
+          "description": "Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.",
+          "superclass": {
+            "name": "RayInput"
+          },
+          "attributes": [
+            {
+              "name": "mode",
+              "type": {
+                "text": "\"open\" | \"folder\" | \"save\""
+              },
+              "description": "What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).",
+              "fieldName": "mode",
+              "default": "open"
+            },
+            {
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "description": "File types the dialog offers, as in <input type=file>: \".json,.toml\", \"image/*\" (ignored for folders).",
+              "fieldName": "accept"
+            },
+            {
+              "name": "browse-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text of the button.",
+              "fieldName": "browseLabel",
+              "default": "Browse…"
+            },
+            {
+              "name": "dialog-title",
+              "type": {
+                "text": "string"
+              },
+              "description": "Title of the system dialog (default: the label).",
+              "fieldName": "dialogTitle"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "fieldName": "type",
+              "default": "text"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "fieldName": "error"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "type": {
+                "text": "\"open\" | \"folder\" | \"save\""
+              },
+              "description": "What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).",
+              "attribute": "mode",
+              "reflects": true,
+              "default": "open"
+            },
+            {
+              "kind": "field",
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "description": "File types the dialog offers, as in <input type=file>: \".json,.toml\", \"image/*\" (ignored for folders).",
+              "attribute": "accept",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "browseLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text of the button.",
+              "attribute": "browse-label",
+              "reflects": false,
+              "default": "Browse…"
+            },
+            {
+              "kind": "field",
+              "name": "dialogTitle",
+              "type": {
+                "text": "string"
+              },
+              "description": "Title of the system dialog (default: the label).",
+              "attribute": "dialog-title",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "attribute": "type",
+              "reflects": true,
+              "default": "text"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "attribute": "required",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "attribute": "disabled",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "attribute": "readonly",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "canBrowse",
+              "description": "Whether Browse… is available (a native host offers pick_path)."
+            },
+            {
+              "kind": "method",
+              "name": "browse",
+              "description": "Opens the system dialog; resolves to the chosen path (also set as value, with input and change), or null."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The path changed: typed and committed, or chosen in the dialog."
+            },
+            {
+              "name": "ray-error",
+              "type": {
+                "text": "CustomEvent<{ error: Error }>"
+              },
+              "description": "The system dialog failed."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "On every edit (value already updated)."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "browse",
+              "description": "The Browse… button."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "dirName",
+          "description": "The folder part of a path (\"\" when it has none), with / or \\ separators."
+        },
+        {
+          "kind": "function",
+          "name": "baseName",
+          "description": "The last part of a path."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayPathInput",
+          "declaration": {
+            "name": "RayPathInput",
+            "module": "components/path-input/path-input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-path-input",
+          "declaration": {
+            "name": "RayPathInput",
+            "module": "components/path-input/path-input.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "dirName",
+          "declaration": {
+            "name": "dirName",
+            "module": "components/path-input/path-input.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "baseName",
+          "declaration": {
+            "name": "baseName",
+            "module": "components/path-input/path-input.js"
           }
         }
       ]
@@ -10158,7 +10628,7 @@
           "name": "RayDialog",
           "tagName": "ray-dialog",
           "customElement": true,
-          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color }) -> Promise<boolean>.",
+          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-ds/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
           "superclass": {
             "name": "RayElement"
           },
@@ -10436,7 +10906,7 @@
         {
           "kind": "function",
           "name": "confirmDialog",
-          "description": "A confirmation dialog; resolves true when confirmed."
+          "description": "A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog)."
         }
       ],
       "exports": [
