@@ -15,6 +15,7 @@
 // current directory or its parent, whichever holds tokens.toml.
 
 import std/fs;
+import std/process;
 import tokens/model;
 import tokens/refs;
 import tokens/css;
@@ -50,7 +51,9 @@ const USAGE: string = `usage: ray run tools/src/main.ray <command> [--root DIR] 
   wrap --components DIR --out DIR      types, manifest and React/Vue wrappers for an app's own components
   webtest [FILTER]                     run tests/*.test.js in a std/ui webview
   site [--out DIR] [--base PATH]       the site ready to publish: every page and asset in DIR (default
-                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)`;
+                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)
+  raylang-package --out DIR            the raylang package as its own repository holds it (a checkout of
+                                       github.com/ray-language/ray_ds): ray_ds/ at the root, LICENSE, README`;
 
 struct Opts {
     root: string,
@@ -78,6 +81,7 @@ fn main() -> int {
             "wrap" => cmd_wrap(o),
             "webtest" => cmd_webtest(o),
             "site" => cmd_site(o),
+            "raylang-package" => cmd_raylang_package(o),
             other => Result.Err("unknown command '${other}'\n${USAGE}"),
         }
     });
@@ -412,6 +416,23 @@ fn cmd_site(o: Opts) -> Result<int, string> {
     let rep = publish.run(o.root, out, base)?;
     let kb = rep.size / 1024;
     print("site: ${rep.files} files, ${kb} KB in ${out}/ (base ${base})");
+    Result.Ok(0)
+}
+
+fn cmd_raylang_package(o: Opts) -> Result<int, string> {
+    only_flags(o, [])?;
+    if (o.out == "") {
+        return Result.Err("raylang-package needs --out DIR (a checkout of the package's repository)");
+    }
+    // The package comes from what build writes: build first.
+    cmd_build(Opts { root: o.root, into: "", components: "", out: "", base: "", flags: [], rest: [] })?;
+    let version = package.info(o.root)?.version;
+    let commit = match (process.cmd("git", ["rev-parse", "--short", "HEAD"]).dir(o.root).run()) {
+        Result.Ok(r) => from_utf8(r.stdout).unwrap_or("").trim(),
+        Result.Err(_) => "",
+    };
+    let written = raylang.export(o.root, o.out, version, commit)?;
+    print("raylang-package: ray_ds ${version} -> ${o.out} (${join(written, ", ")})");
     Result.Ok(0)
 }
 

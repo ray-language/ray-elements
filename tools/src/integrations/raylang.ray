@@ -139,6 +139,120 @@ fn check_bridge_version(root: string, version: string) -> Result<int, string> {
     Result.Ok(0)
 }
 
+// --- the package's own repository ----------------------------------------------
+
+// What `export` owns in a checkout of the package's repository: it replaces
+// these and leaves anything else (.git, a workflow of that repository).
+fn owned(name: string) -> bool {
+    name.ends_with(".ray") || ["ray.toml", "README.md", "LICENSE", "NOTICE"].contains(name)
+}
+
+// Writes the package as its repository holds it (github.com/ray-language/ray_ds:
+// the modules at the root, because a git dependency is the repository's root,
+// finding #140) into `out`, with the license and a README. `commit` is the
+// ray-ds commit it comes from. Returns the files written.
+pub fn export(root: string, out: string, version: string, commit: string) -> Result<[string], string> {
+    fs.mkdir(out)?;
+    for name in fs.list_dir(out)? {
+        if (owned(name) && !fs.is_dir("${out}/${name}")) {
+            fs.remove_all("${out}/${name}")?;
+        }
+    }
+    var written: [string] = [];
+    for name in sort(fs.list_dir("${root}/ray_ds")?) {
+        if (owned(name)) {
+            fs.write_file("${out}/${name}", fs.read_file("${root}/ray_ds/${name}")?)?;
+            written.push(name);
+        }
+    }
+    for name in ["LICENSE", "NOTICE"] {
+        fs.write_file("${out}/${name}", fs.read_file("${root}/${name}")?)?;
+        written.push(name);
+    }
+    fs.write_file("${out}/README.md", readme(version, commit))?;
+    written.push("README.md");
+    Result.Ok(written)
+}
+
+fn readme(version: string, commit: string) -> string {
+    let from = if (commit == "") { "" } else { " (ray-ds commit `${commit}`)" };
+    `# ray_ds
+
+[ray-ds](https://github.com/ray-language/ray-ds) for raylang apps: the design
+system's web components served from the program, with no npm and no copied
+files, and the native bridge that gives them the system's dialogs, menus and
+window in a \`std/ui\` window.
+
+Version ${version}${from}. This repository is generated from
+[ray-language/ray-ds](https://github.com/ray-language/ray-ds) (its \`ray_ds/\`
+directory): open issues and pull requests there.
+
+## Install
+
+\`\`\`toml
+[dependencies]
+ray_ds = "git+https://github.com/ray-language/ray_ds@v${version}"
+\`\`\`
+
+## Use
+
+\`\`\`ray
+import std/ui;
+import ray_ds/assets;
+import ray_ds/bridge;
+
+fn main() -> int {
+    assets.mount("ray-ds").unwrap();          // ray://app/ray-ds/index.js, tokens.css, base.css…
+    ui.mount_embed_at("", "assets").unwrap(); // the app's own page ([native] embed)
+    let h = ui.open("App", "ray://app/index.html", 960, 640).unwrap();
+    for e in ui.events() {
+        if (bridge.handle(e)) {
+            continue;                         // a ray-ds request, answered
+        }
+        if (e.kind == "closed") {
+            break;
+        }
+        // the app's own events
+    }
+    0
+}
+\`\`\`
+
+\`\`\`html
+<link rel="stylesheet" href="ray-ds/tokens.css">
+<link rel="stylesheet" href="ray-ds/base.css">
+<script type="module" src="ray-ds/index.js"></script>
+<script type="module">
+  import { enableRaylang } from "./ray-ds/index.js";
+  await enableRaylang();   // the system dialogs, menus and window for the components
+</script>
+\`\`\`
+
+- \`ray_ds/assets\`: every component, the core, \`tokens.css\` and \`base.css\`;
+  \`assets.mount(prefix)\`, \`assets.files()\`, \`assets.read(path)\`,
+  \`assets.VERSION\`.
+- \`ray_ds/bridge\`: \`bridge.handle(e)\`, or \`bridge.system()\` +
+  \`bridge.route(n, e)\` and \`bridge.menu(n, …)\` for the menu bar in the
+  command palette.
+
+The components, their pages and the bridge's protocol are documented in
+[ray-ds](https://github.com/ray-language/ray-ds): see its \`RAYLANG.md\` and the
+"In a raylang app" sections of the component pages.
+
+## License
+
+Apache License 2.0: see [LICENSE](LICENSE) and [NOTICE](NOTICE).
+`
+}
+
+@test
+fn readme_names_the_version() {
+    let r = readme("1.2.3", "abc1234");
+    assert(r.contains("Version 1.2.3 (ray-ds commit `abc1234`)"));
+    assert(r.contains("ray_ds = \"git+https://github.com/ray-language/ray_ds@v1.2.3\""));
+    assert(r.contains("```ray\nimport std/ui;"));
+}
+
 @test
 fn literals_keep_the_text() {
     assert_eq(literal("a\"b\\c\nd\t\${x}$y"), "\"a\\\"b\\\\c\\nd\\t\\\${x}$y\"");
