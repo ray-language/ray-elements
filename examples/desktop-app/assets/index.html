@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Workspace</title>
-<!-- @ray-ds/elements, served by raylang where npm would put it. -->
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
-<script type="module">import "@ray-ds/elements";</script>
+<!-- @raylang/elements, served by raylang where npm would put it. -->
+<link rel="stylesheet" href="/node_modules/@raylang/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@raylang/elements/base.css">
+<script type="module">import "@raylang/elements";</script>
 <style>
   html, body { height: 100%; margin: 0; }
   ray-app-shell:not(:defined) { visibility: hidden; }
@@ -55,7 +55,7 @@
 
     <section id="settings" data-section-panel hidden>
       <form id="settings-form">
-        <ray-input name="name" label="Project name" value="ray-ds" required></ray-input>
+        <ray-input name="name" label="Project name" value="ray-elements" required></ray-input>
         <ray-path-input name="export" label="Export the list to" mode="save" accept=".csv" value="files.csv"></ray-path-input>
         <ray-switch name="hidden" label="Show hidden files"></ray-switch>
         <div class="actions">

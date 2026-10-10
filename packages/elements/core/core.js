@@ -1,4 +1,4 @@
-// ray-ds core runtime: the base class of every component, shared styles and
+// ray-elements core runtime: the base class of every component, shared styles and
 // the theme API. No dependencies; loads as a plain ES module (also from
 // ray://app in a std/ui window).
 
@@ -84,20 +84,20 @@ export const hostStyles = css`
 const templates = new WeakMap();
 const attrMaps = new WeakMap();
 const extraStyles = new WeakMap();
-/** Connected ray-ds elements (restyled by extendStyles, repainted by setIcons). */
+/** Connected ray-elements elements (restyled by extendStyles, repainted by setIcons). */
 const live = new Set();
 /** Tag -> { property: value }, from configure({ defaults }). */
 const componentDefaults = new Map();
 
 /**
- * Base class of ray-ds components.
+ * Base class of ray-elements components.
  *
  * Subclasses declare `static properties`, `static styles` and `static template`,
  * and implement `update(changed)`, called once per microtask after any change
  * (and once on first connection).
  *
  * Extension contract: the public and protected members below are stable;
- * every other member of a ray-ds class whose name starts with `_` or `#` is
+ * every other member of a ray-elements class whose name starts with `_` or `#` is
  * internal and may change. Do not name your own members with a leading `_`.
  */
 export class RayElement extends HTMLElement {
@@ -383,9 +383,9 @@ export function uid(stem = "id") {
 // Theme
 // ---------------------------------------------------------------------------
 
-const THEME_KEY = "ray-ds:theme";
-const PRIMARY_KEY = "ray-ds:primary";
-const CUSTOM_KEY = "ray-ds:primary-color";
+const THEME_KEY = "ray-elements:theme";
+const PRIMARY_KEY = "ray-elements:primary";
+const CUSTOM_KEY = "ray-elements:primary-color";
 export const THEME_EVENT = "ray-theme-change";
 
 /** @typedef {"light" | "dark" | "system"} Theme */
@@ -506,7 +506,7 @@ export function definePrimary(color, { el = document.documentElement, persist = 
   if (persist) store(CUSTOM_KEY, color);
   setPrimary("custom", { el, persist });
   const aa = ratio >= 4.5;
-  if (!aa) console.warn(`ray-ds: definePrimary("${color}"): text on the filled shade is ${ratio.toFixed(1)}:1, below WCAG AA (4.5:1)`);
+  if (!aa) console.warn(`ray-elements: definePrimary("${color}"): text on the filled shade is ${ratio.toFixed(1)}:1, below WCAG AA (4.5:1)`);
   return { shades: scale, filled, contrast, ratio, aa };
 }
 

@@ -1,6 +1,6 @@
 # Component metadata: the tools generate docs (and, in phase 3, React/Vue
 # wrappers, type declarations and custom-elements.json) from it, and
-# `ray-ds add` uses it to resolve files and dependencies.
+# `ray-elements add` uses it to resolve files and dependencies.
 #
 # [component]          name, category, summary, files, requires (other components), tags
 # [<tag>]              class, summary

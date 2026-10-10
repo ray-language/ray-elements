@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>New project</title>
-<link rel="stylesheet" href="ray-ds/tokens.css">
-<link rel="stylesheet" href="ray-ds/base.css">
-<script type="module" src="ray-ds/index.js"></script>
+<link rel="stylesheet" href="ray-elements/tokens.css">
+<link rel="stylesheet" href="ray-elements/base.css">
+<script type="module" src="ray-elements/index.js"></script>
 <style>
   body { padding: var(--ray-space-6); }
   form { display: grid; gap: var(--ray-space-4); }
@@ -45,7 +45,7 @@
   const form = document.getElementById("project");
   form.addEventListener("submit", (e) => {
     e.preventDefault();
-    // FormData sees the ray-ds controls like native ones.
+    // FormData sees the ray-elements controls like native ones.
     const data = Object.fromEntries(new FormData(form));
     window.ray.send("create:" + JSON.stringify(data));
     document.getElementById("status").textContent = `Creating ${data.name}…`;

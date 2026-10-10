@@ -25,7 +25,7 @@ fn main() -&gt; int {
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">form</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;ts&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;app.ts&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-keyword">import</span> { notify } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+<span class="tk-keyword">import</span> { notify } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
 
 <span class="tk-keyword">type</span> Build = { id: number; ok: boolean };
 
@@ -71,28 +71,28 @@ echo &quot;done: $HOME/dist&quot;
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;tokens.js&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">max-height</span>=<span class="tk-string">&quot;12rem&quot;</span> <span class="tk-attr">wrap</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-long&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
 
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Bring your own highlighter<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
-<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Prism&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-keyword">import</span> Prism <span class="tk-keyword">from</span> <span class="tk-string">&quot;prismjs&quot;</span>;
-<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
 
 setHighlighter((code, lang) =&gt;
   Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : <span class="tk-keyword">null</span>);
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;highlight.js&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-keyword">import</span> hljs <span class="tk-keyword">from</span> <span class="tk-string">&quot;highlight.js/lib/common&quot;</span>;
-<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
 
 setHighlighter((code, lang) =&gt;
   hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : <span class="tk-keyword">null</span>);
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-code</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Shiki&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;text/plain&quot;</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-keyword">import</span> { codeToHtml, createCssVariablesTheme } <span class="tk-keyword">from</span> <span class="tk-string">&quot;shiki&quot;</span>;
-<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/elements&quot;</span>;
+<span class="tk-keyword">import</span> { setHighlighter } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
 
 <span class="tk-comment">// The css-variables theme: ray-code maps its variables to the tokens.</span>
-<span class="tk-keyword">const</span> theme = createCssVariablesTheme({ name: <span class="tk-string">&quot;ray-ds&quot;</span>, variablePrefix: <span class="tk-string">&quot;--shiki-&quot;</span> });
+<span class="tk-keyword">const</span> theme = createCssVariablesTheme({ name: <span class="tk-string">&quot;ray-elements&quot;</span>, variablePrefix: <span class="tk-string">&quot;--shiki-&quot;</span> });
 setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-code</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
@@ -102,7 +102,7 @@ setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
   document.getElementById(<span class="tk-string">&quot;demo-long&quot;</span>).code = Array.<span class="tk-keyword">from</span>({ length: <span class="tk-number">24</span> }, (_, i) =&gt;
     <span class="tk-string">`export const space${i} = &quot;${(i * 0.25).toFixed(2)}rem&quot;; // step ${i} of the spacing scale, used by gaps and paddings`</span>).join(<span class="tk-string">&quot;\n&quot;</span>);
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
-<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayCode } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayCode } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
 <span class="tk-comment">// and listen with the on* handlers (onRayCopy…).</span>
@@ -136,7 +136,7 @@ setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
       &lt;/form&gt;
       `</span>} /&gt;
         &lt;RayCode language=<span class="tk-string">&quot;ts&quot;</span> filename=<span class="tk-string">&quot;app.ts&quot;</span> code={<span class="tk-string">`
-      import { notify } from &quot;@ray-ds/elements&quot;;
+      import { notify } from &quot;@raylang/elements&quot;;
 
       type Build = { id: number; ok: boolean };
 
@@ -182,35 +182,35 @@ setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
       &lt;RayCode language=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;tokens.js&quot;</span> lineNumbers maxHeight=<span class="tk-string">&quot;12rem&quot;</span> wrap id=<span class="tk-string">&quot;demo-long&quot;</span> /&gt;
 
       &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Bring your own highlighter&lt;/div&gt;
-      &lt;p className=<span class="tk-string">&quot;demo-muted&quot;</span> style={{ margin: <span class="tk-string">&quot;0&quot;</span> }}&gt;setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-<span class="tk-keyword">in</span> one.&lt;/p&gt;
+      &lt;p className=<span class="tk-string">&quot;demo-muted&quot;</span> style={{ margin: <span class="tk-string">&quot;0&quot;</span> }}&gt;setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-<span class="tk-keyword">in</span> one.&lt;/p&gt;
       &lt;div className=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span>&gt;
         &lt;RayCode language=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;Prism&quot;</span> code={<span class="tk-string">`
       import Prism from &quot;prismjs&quot;;
-      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+      import { setHighlighter } from &quot;@raylang/elements&quot;;
 
       setHighlighter((code, lang) =&gt;
         Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
       `</span>} /&gt;
         &lt;RayCode language=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;highlight.js&quot;</span> code={<span class="tk-string">`
       import hljs from &quot;highlight.js/lib/common&quot;;
-      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+      import { setHighlighter } from &quot;@raylang/elements&quot;;
 
       setHighlighter((code, lang) =&gt;
         hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
       `</span>} /&gt;
         &lt;RayCode language=<span class="tk-string">&quot;js&quot;</span> filename=<span class="tk-string">&quot;Shiki&quot;</span> code={<span class="tk-string">`
       import { codeToHtml, createCssVariablesTheme } from &quot;shiki&quot;;
-      import { setHighlighter } from &quot;@ray-ds/elements&quot;;
+      import { setHighlighter } from &quot;@raylang/elements&quot;;
 
       // The css-variables theme: ray-code maps its variables to the tokens.
-      const theme = createCssVariablesTheme({ name: &quot;ray-ds&quot;, variablePrefix: &quot;--shiki-&quot; });
+      const theme = createCssVariablesTheme({ name: &quot;ray-elements&quot;, variablePrefix: &quot;--shiki-&quot; });
       setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
       `</span>} /&gt;
       &lt;/div&gt;
     &lt;/&gt;
   );
 }</code></pre>
-<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@raylang/vue&quot;) registers the components. --&gt;</span>
 <span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A file<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
@@ -240,7 +240,7 @@ setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
   &lt;/form&gt;
   `&quot;</span> /<span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;ts&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;app.ts&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
-  import { notify } from &amp;quot;@ray-ds/elements&amp;quot;;
+  import { notify } from &amp;quot;@raylang/elements&amp;quot;;
 
   type Build = { id: number; ok: boolean };
 
@@ -286,28 +286,28 @@ setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;tokens.js&quot;</span> <span class="tk-attr">line-numbers</span> <span class="tk-attr">max-height</span>=<span class="tk-string">&quot;12rem&quot;</span> <span class="tk-attr">wrap</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-long&quot;</span> /<span class="tk-punctuation">&gt;</span>
 
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Bring your own highlighter<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">p</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-muted&quot;</span> <span class="tk-attr">style</span>=<span class="tk-string">&quot;margin: 0&quot;</span><span class="tk-punctuation">&gt;</span>setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-in one.<span class="tk-punctuation">&lt;/</span><span class="tk-tag">p</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid demo-code-grid&quot;</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Prism&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
   import Prism from &amp;quot;prismjs&amp;quot;;
-  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+  import { setHighlighter } from &amp;quot;@raylang/elements&amp;quot;;
 
   setHighlighter((code, lang) =&gt;
     Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
   `&quot;</span> /<span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;highlight.js&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
   import hljs from &amp;quot;highlight.js/lib/common&amp;quot;;
-  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+  import { setHighlighter } from &amp;quot;@raylang/elements&amp;quot;;
 
   setHighlighter((code, lang) =&gt;
     hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
   `&quot;</span> /<span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayCode</span> <span class="tk-attr">language</span>=<span class="tk-string">&quot;js&quot;</span> <span class="tk-attr">filename</span>=<span class="tk-string">&quot;Shiki&quot;</span> <span class="tk-attr">:code</span>=<span class="tk-string">&quot;`
   import { codeToHtml, createCssVariablesTheme } from &amp;quot;shiki&amp;quot;;
-  import { setHighlighter } from &amp;quot;@ray-ds/elements&amp;quot;;
+  import { setHighlighter } from &amp;quot;@raylang/elements&amp;quot;;
 
   // The css-variables theme: ray-code maps its variables to the tokens.
-  const theme = createCssVariablesTheme({ name: &amp;quot;ray-ds&amp;quot;, variablePrefix: &amp;quot;--shiki-&amp;quot; });
+  const theme = createCssVariablesTheme({ name: &amp;quot;ray-elements&amp;quot;, variablePrefix: &amp;quot;--shiki-&amp;quot; });
   setHighlighter((code, lang) =&gt; codeToHtml(code, { lang, theme }));
   `&quot;</span> /<span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>

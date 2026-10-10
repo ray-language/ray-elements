@@ -1,6 +1,6 @@
-# Charts with ray-ds
+# Charts with ray-elements
 
-ray-ds draws no charts. It gives charts what they need to look like the rest
+ray-elements draws no charts. It gives charts what they need to look like the rest
 of the app: a categorical palette and the chart chrome as tokens, checked at
 build time, and `chartTheme()` to hand them to a chart library.
 
@@ -121,7 +121,7 @@ returns the tokens resolved to plain colors for the theme of `el` (default:
 the document; a subtree with its own `data-theme` or primary works too):
 
 ```js
-import { chartTheme, onChartThemeChange, withAlpha } from "@ray-ds/elements";
+import { chartTheme, onChartThemeChange, withAlpha } from "@raylang/elements";
 
 const t = chartTheme();
 // t.scheme              "light" | "dark"
@@ -149,7 +149,7 @@ has its own `data-theme`, so it can differ from the page:
   <div id="latency-legend" class="chart-legend"></div>
 </figure>
 <script type="module">
-  import { chartTheme, onChartThemeChange, withAlpha } from "@ray-ds/elements";
+  import { chartTheme, onChartThemeChange, withAlpha } from "@raylang/elements";
   const card = document.getElementById("latency-card");
   const canvas = document.getElementById("latency-chart");
   const regions = ["eu-west", "us-east", "ap-south"];
@@ -287,7 +287,7 @@ and a one-line summary of what it shows), the data available as a table (a
 color is not the only cue, and no motion when `prefers-reduced-motion` is set
 (disable the library's animation).
 
-## Not in ray-ds (for now)
+## Not in ray-elements (for now)
 
 Chart components of its own — SVG primitives, or an adapter for dense
 real-time series — were discussed and left out; see the roadmap in the README.

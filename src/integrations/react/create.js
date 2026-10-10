@@ -1,4 +1,4 @@
-// React wrapper factory for ray-ds custom elements (React 18 and 19).
+// React wrapper factory for ray-elements custom elements (React 18 and 19).
 //
 // Declared properties are assigned as DOM properties (not attributes, so
 // booleans, arrays and objects arrive intact) after every render; declared

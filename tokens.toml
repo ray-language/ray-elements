@@ -1,4 +1,4 @@
-# ray-ds design tokens — the single source of truth.
+# ray-elements design tokens — the single source of truth.
 #
 # Regenerate dist/tokens.css, dist/tokens.json and docs/foundations.html with:
 #   tools/run.sh tokens
@@ -434,7 +434,7 @@ dark = "{primary.4 / 30%}"
 
 # ---------------------------------------------------------------------------
 # Charts: a categorical palette for series (use them in order) and the
-# chart chrome. ray-ds draws no charts: chartTheme() hands these, resolved
+# chart chrome. ray-elements draws no charts: chartTheme() hands these, resolved
 # for the current theme, to a chart library (see CHARTS.md).
 # The build checks, in both schemes ([checks.chart]): each series color
 # against the background (non-text contrast, WCAG 1.4.11), and that the

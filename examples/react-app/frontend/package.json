@@ -1,5 +1,5 @@
 {
-  "name": "ray-ds-react-example",
+  "name": "ray-elements-react-example",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,8 +13,8 @@
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "@ray-ds/elements": "file:../../../packages/elements",
-    "@ray-ds/react": "file:../../../packages/react"
+    "@raylang/elements": "file:../../../packages/elements",
+    "@raylang/react": "file:../../../packages/react"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",

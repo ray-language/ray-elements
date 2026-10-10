@@ -7,6 +7,9 @@ examples/*/frontend/dist/
 examples/*/build/
 *.tsbuildinfo
 
+# raylang's dependency cache (ray run / ray test in a project with dependencies)
+.ray-deps/
+
 # OS / editor
 .DS_Store
 *.log

@@ -1,13 +1,17 @@
 # Changelog
 
-All notable changes to ray-ds. The format follows
+All notable changes to ray-elements. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
 [Semantic Versioning](https://semver.org/): before 1.0, a minor version may
 change the API.
 
 ## [0.3.0] - Unreleased
 
-The first public release.
+The first public release, under its final name: the project is **ray-elements**
+(formerly ray-ds), the npm packages are `@raylang/elements`, `@raylang/react` and
+`@raylang/vue`, and the raylang package is `elements` (`elements/bridge`). The
+bridge protocol key and the page event are `ray-elements` and
+`ray-elements:menu`.
 
 ### Components (68)
 
@@ -41,14 +45,14 @@ The first public release.
 
 ### Integrations
 
-- `@ray-ds/elements`, `@ray-ds/react` and `@ray-ds/vue` packages (not yet on
+- `@raylang/elements`, `@raylang/react` and `@raylang/vue` packages (not yet on
   npm): typed (`.d.ts`), `custom-elements.json`, VS Code HTML data, React
   wrappers and Vue wrappers with `v-model`. Each names its source (repository,
   directory, issues) and publishes with public access; the repository's
-  `repository` and `homepage` live in `ray-ds.toml`.
-- Only what you use: `@ray-ds/elements/<name>` (one component and what it
-  uses) and `@ray-ds/elements/core` (the API alone); `@ray-ds/react` and
-  `@ray-ds/vue` are a module per component with `sideEffects: false`, so a
+  `repository` and `homepage` live in `ray-elements.toml`.
+- Only what you use: `@raylang/elements/<name>` (one component and what it
+  uses) and `@raylang/elements/core` (the API alone); `@raylang/react` and
+  `@raylang/vue` are a module per component with `sideEffects: false`, so a
   bundle keeps the wrappers it imports and their elements (a button with an
   icon: 9.5 KB gzip instead of 94 KB). `examples/lean-app` does it in a raylang
   app: per-component modules, and a dialog loaded on first open. `tests/packages` checks it with esbuild,
@@ -62,7 +66,7 @@ The first public release.
 
 ### raylang
 
-- A native bridge between the page and a raylang program: `ray_ds/bridge`
+- A native bridge between the page and a raylang program: `elements/bridge`
   (`bridge.handle(e)` in the app's event loop) and `enableRaylang()` in the
   page (`core/raylang.js`). Components ask a host registry (`core/host.js`),
   never the bridge, and keep their web behavior without one.
@@ -78,16 +82,16 @@ The first public release.
   follow the theme, and `trackEdits(form)` shows unsaved changes.
 - An "In a raylang app" section on the pages of the components that use the
   bridge, and `examples/desktop-app`, a folder browser that uses all of it.
-- The raylang package `ray_ds` (raylang 1.27.44 or later): it carries
-  `@ray-ds/elements` as published (`ray_ds/web`, `[web] package`), and the
+- The raylang package `elements` (raylang 1.27.44 or later): it carries
+  `@raylang/elements` as published (`elements/web`, `[web] package`), and the
   app's pages import it by its npm name, as with a bundler
-  (`import "@ray-ds/elements/button"`): raylang serves it at
-  `ray://app/node_modules/@ray-ds/elements/` with an import map, under
+  (`import "@raylang/elements/button"`): raylang serves it at
+  `ray://app/node_modules/@raylang/elements/` with an import map, under
   `ray run` and in a native binary, and links it into the app's
   `node_modules/` so the editor resolves the imports with their types;
   `examples/starter` is the smallest app with it. It is published to its own
-  repository, `github.com/ray-language/ray_ds` (`git+https://…/ray_ds@v0.3.0`),
-  split out of `ray_ds/` with its history on every version tag.
+  repository, `github.com/ray-language/elements` (`git+https://…/elements@v0.3.0`),
+  split out of `elements/` with its history on every version tag.
 
 ### Docs site
 
@@ -97,4 +101,4 @@ The first public release.
 - `tools/run.sh site` writes the site ready to publish, with a
   404 page.
 
-[0.3.0]: https://github.com/ray-language/ray-ds/releases/tag/v0.3.0
+[0.3.0]: https://github.com/ray-language/ray-elements/releases/tag/v0.3.0

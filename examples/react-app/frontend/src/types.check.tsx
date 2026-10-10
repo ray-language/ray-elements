@@ -1,8 +1,8 @@
 // Compile-time checks of the generated types (`npm run typecheck`); never rendered.
 // Each @ts-expect-error must hit a real error, or tsc fails.
-import { notify, confirmDialog, type RayMenuItem as MenuItemElement } from "@ray-ds/elements";
-import { RayButton, RayMenu, RayDialog, RayInput, RayCheckbox, RayTable, RayCommandPalette, RaySplit, RaySlider } from "@ray-ds/react";
-import type { TableColumn, CommandAction } from "@ray-ds/elements";
+import { notify, confirmDialog, type RayMenuItem as MenuItemElement } from "@raylang/elements";
+import { RayButton, RayMenu, RayDialog, RayInput, RayCheckbox, RayTable, RayCommandPalette, RaySplit, RaySlider } from "@raylang/react";
+import type { TableColumn, CommandAction } from "@raylang/elements";
 
 const columns: TableColumn[] = [{ key: "name", label: "Name", sortable: true, align: "right", render: (row) => String(row.name) }];
 const actions: CommandAction[] = [{ label: "Run", group: "Raylang", shortcut: "⌘ R", onSelect: (a) => void a.label }];

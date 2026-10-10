@@ -6,8 +6,8 @@ import site/highlight;
 import site/brand;
 import site/shell;
 
-const HTML_SNIPPET: string = `<link rel="stylesheet" href="ray-ds/tokens.css">
-<script type="module" src="ray-ds/index.js"></script>
+const HTML_SNIPPET: string = `<link rel="stylesheet" href="ray-elements/tokens.css">
+<script type="module" src="ray-elements/index.js"></script>
 
 <form>
   <ray-input name="email" label="Email" type="email" required></ray-input>
@@ -15,7 +15,7 @@ const HTML_SNIPPET: string = `<link rel="stylesheet" href="ray-ds/tokens.css">
   <ray-button type="submit">Sign in</ray-button>
 </form>`;
 
-const REACT_SNIPPET: string = `import { RayButton, RayInput, RaySwitch } from "@ray-ds/react";
+const REACT_SNIPPET: string = `import { RayButton, RayInput, RaySwitch } from "@raylang/react";
 
 export function SignIn() {
   const [email, setEmail] = useState("");

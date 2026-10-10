@@ -2,13 +2,13 @@
 //
 // 1. Small uses bundled with esbuild take only what they use: the elements
 //    they should define and none other, within a size budget (minified +
-//    gzip). react and vue stay external: only ray-ds's code is measured.
+//    gzip). react and vue stay external: only ray-elements's code is measured.
 // 2. The declarations compile: tsc over types.tsx, with skipLibCheck off.
 //
 //   npm --prefix tests/packages ci && npm --prefix tests/packages run check
 //
 // The packages resolve as installed ones (through their package.json
-// "exports", "types" and "sideEffects"): node_modules/@ray-ds links to
+// "exports", "types" and "sideEffects"): node_modules/@raylang links to
 // packages/ while it runs.
 
 import * as esbuild from "esbuild";
@@ -23,19 +23,19 @@ const root = path.resolve(here, "../..");
 
 // name, source, the tags it must define, budget in KB (gzip).
 const CASES = [
-  ["elements: button + icon", `import "@ray-ds/elements/button"; import "@ray-ds/elements/icon";`, ["ray-button", "ray-icon"], 12],
-  ["elements: icon-button", `import "@ray-ds/elements/icon-button";`, ["ray-icon-button", "ray-button"], 12],
-  ["elements: core (setIcons)", `import { setIcons } from "@ray-ds/elements/core"; setIcons({});`, [], 10],
-  ["react: RayButton", `import { RayButton } from "@ray-ds/react"; console.log(RayButton);`, ["ray-button"], 13],
-  ["vue: RaySwitch", `import { RaySwitch } from "@ray-ds/vue"; console.log(RaySwitch);`, ["ray-switch", "ray-checkbox"], 13], // a switch is a checkbox
+  ["elements: button + icon", `import "@raylang/elements/button"; import "@raylang/elements/icon";`, ["ray-button", "ray-icon"], 12],
+  ["elements: icon-button", `import "@raylang/elements/icon-button";`, ["ray-icon-button", "ray-button"], 12],
+  ["elements: core (setIcons)", `import { setIcons } from "@raylang/elements/core"; setIcons({});`, [], 10],
+  ["react: RayButton", `import { RayButton } from "@raylang/react"; console.log(RayButton);`, ["ray-button"], 13],
+  ["vue: RaySwitch", `import { RaySwitch } from "@raylang/vue"; console.log(RaySwitch);`, ["ray-switch", "ray-checkbox"], 13], // a switch is a checkbox
   // The whole set, to show the difference (no budget: it is everything).
-  ["elements: everything", `import "@ray-ds/elements";`, null, Infinity],
+  ["elements: everything", `import "@raylang/elements";`, null, Infinity],
 ];
 
 const allTags = [...fs.readFileSync(path.join(root, "packages/elements/index.js"), "utf8").matchAll(/from "\.\/components\/([^/]+)\//g)].map((m) => m[1]);
 const defines = (code) => new Set([...code.matchAll(/["'](ray-[a-z-]+)["']/g)].map((m) => m[1]));
 
-const scope = path.join(here, "node_modules/@ray-ds");
+const scope = path.join(here, "node_modules/@raylang");
 const entry = path.join(here, ".entry.js");
 let failed = 0;
 try {
@@ -52,7 +52,7 @@ try {
       format: "esm",
       write: false,
       external: ["react", "vue"],
-      // As installed: @ray-ds/react finds @ray-ds/elements next to it.
+      // As installed: @raylang/react finds @raylang/elements next to it.
       preserveSymlinks: true,
       logLevel: "silent",
     });

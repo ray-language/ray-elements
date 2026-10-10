@@ -1,10 +1,10 @@
-// A folder browser in a std/ui window that uses all of the ray-ds native
+// A folder browser in a std/ui window that uses all of the ray-elements native
 // bridge: the system dialogs (folder, files, save target, confirmation), a
 // native context menu, the menu bar in the command palette, the page under a
 // transparent title bar, window colors that follow the theme and the
-// "unsaved changes" mark. The page is assets/index.html + app.js; ray-ds
-// comes from the ray_ds dependency, which brings the npm package
-// @ray-ds/elements: the page imports it by its npm name.
+// "unsaved changes" mark. The page is assets/index.html + app.js; ray-elements
+// comes from the elements dependency, which brings the npm package
+// @raylang/elements: the page imports it by its npm name.
 //
 //   ray run                    open the window; close it to quit
 //   ray run src/main.ray --check
@@ -14,7 +14,7 @@ import std/fs;
 import std/json;
 import std/time;
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 fn main() -> int {
     let check = args().contains("--check");
@@ -29,7 +29,7 @@ fn main() -> int {
 
 fn run(check: bool) -> Result<int, string> {
     // The page from [native] embed (from disk under `ray run`, baked into a
-    // native binary); raylang mounts @ray-ds/elements with it.
+    // native binary); raylang mounts @raylang/elements with it.
     ui.mount_embed_at("", "assets")?;
     // One Native for the whole loop: it records the menus for the palette.
     let n = bridge.system();
@@ -197,7 +197,7 @@ fn export_list(payload: string) -> Result<int, string> {
 // `seen` (and still done).
 fn script(n: bridge.Native, seen: [string]) -> Result<string, string> {
     let assets = fs.real_path("assets")?;
-    let tmp = fs.make_temp_dir("ray-ds-desktop-app")?;
+    let tmp = fs.make_temp_dir("ray-elements-desktop-app")?;
     fs.write_file("${tmp}/notes.md", "# Notes\n")?;
     n.pick_path = fn(mode: string, o: ui.FileDialogOptions) -> Result<Option<string>, string> {
         if (mode == "save") { Result.Ok(Option.Some("${tmp}/${o.suggested}")) } else { Result.Ok(Option.Some(assets)) }
@@ -288,7 +288,7 @@ fn self_check(h: int, n: bridge.Native, seen: [string]) -> Result<int, string> {
     check(failed, section == "section:settings", "and the program acts on it (${section})");
 
     // Unsaved changes: the window's mark, the native confirmation to discard them.
-    ui.eval_js(h, "const i = document.querySelector('ray-input[name=name]'); i.value = 'ray-ds 2'; i.dispatchEvent(new Event('input', { bubbles: true }))")?;
+    ui.eval_js(h, "const i = document.querySelector('ray-input[name=name]'); i.value = 'ray-elements 2'; i.dispatchEvent(new Event('input', { bubbles: true }))")?;
     wait_seen(h, n, seen, "edited:true", 5000)?;
     check(failed, true, "an edit marks the window as edited");
     ui.eval_js(h, "document.getElementById('discard').click()")?;
@@ -300,7 +300,7 @@ fn self_check(h: int, n: bridge.Native, seen: [string]) -> Result<int, string> {
     // Save: the form reaches the program; the save dialog picked the export target.
     ui.eval_js(h, "document.querySelector('ray-path-input[name=export]').browse().then(() => document.getElementById('settings-form').requestSubmit())")?;
     let saved = after(wait(h, n, "settings:", 5000)?, "settings:");
-    check(failed, saved.contains("\"name\":\"ray-ds\"") && saved.contains("ray-ds-desktop-app"), "the settings arrive, with the save dialog's path (${saved})");
+    check(failed, saved.contains("\"name\":\"ray-elements\"") && saved.contains("ray-elements-desktop-app"), "the settings arrive, with the save dialog's path (${saved})");
 
     // The theme: the window follows it.
     ui.eval_js(h, "app.resolved()")?;

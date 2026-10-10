@@ -36,7 +36,7 @@ description = "Choosing an item does not close the menu."
 [ray-menu.properties.native]
 type = "boolean"
 reflect = true
-description = "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select."
+description = "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select."
 
 [ray-menu.events.ray-select]
 description = "An item was chosen; detail: { value, item }."

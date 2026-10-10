@@ -1,10 +1,10 @@
 # A release, on a version tag (v0.3.0…): one check, then three jobs.
 #
-#   check    the tag is ray-ds.toml's version, the tests pass, the committed
+#   check    the tag is ray-elements.toml's version, the tests pass, the committed
 #            output matches the sources, and the site is built
-#   raylang  ray_ds/ to github.com/ray-language/ray_ds with its history
-#            (git subtree split --prefix ray_ds), main and the same tag
-#   npm      @ray-ds/elements, then @ray-ds/react and @ray-ds/vue
+#   raylang  elements/ to github.com/ray-language/elements with its history
+#            (git subtree split --prefix elements), main and the same tag
+#   npm      @raylang/elements, then @raylang/react and @raylang/vue
 #   site     the site on GitHub Pages
 #
 # Run it by hand (workflow_dispatch) for a dry run of the same jobs from any
@@ -13,9 +13,9 @@
 # from the tag.
 #
 # Secrets and settings:
-# - RAY_DS_DEPLOY_KEY: the private half of a deploy key of ray-language/ray_ds
+# - RAY_ELEMENTS_DEPLOY_KEY: the private half of a deploy key of ray-language/elements
 #   with write access (the organization must allow deploy keys).
-# - NPM_TOKEN: a granular token with read and write on @ray-ds. Without it,
+# - NPM_TOKEN: a granular token with read and write on @raylang. Without it,
 #   npm's trusted publishing: each package on npmjs.com trusts this
 #   repository and release.yml (a package must exist before it can trust a
 #   publisher, so the first release needs the token). Provenance is attached
@@ -58,11 +58,11 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      - name: The tag is the version of ray-ds.toml
+      - name: The tag is the version of ray-elements.toml
         run: |
-          version=$(sed -n 's/^version = "\(.*\)"/\1/p' ray-ds.toml)
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' ray-elements.toml)
           if [ "$GITHUB_REF_TYPE" = "tag" ] && [ "v$version" != "$GITHUB_REF_NAME" ]; then
-            echo "::error::The tag $GITHUB_REF_NAME does not match ray-ds.toml's version ($version)."
+            echo "::error::The tag $GITHUB_REF_NAME does not match ray-elements.toml's version ($version)."
             exit 1
           fi
 
@@ -76,7 +76,7 @@ jobs:
         run: ray test
 
       - name: raylang package tests
-        working-directory: ray_ds
+        working-directory: elements
         run: ray test
 
       # Served at /<repo>/ on GitHub Pages; a custom domain would be "/".
@@ -87,7 +87,7 @@ jobs:
 
       - name: Committed output matches the sources
         run: |
-          paths="docs packages dist src/index.js ray_ds"
+          paths="docs packages dist src/index.js elements"
           if ! git diff --quiet -- $paths || [ -n "$(git status --porcelain -- $paths)" ]; then
             echo "::error::The generated files differ from what the sources produce. Run 'tools/run.sh build' and commit the result."
             git status --short -- $paths
@@ -115,37 +115,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # the split carries the history of ray_ds/
+          fetch-depth: 0 # the split carries the history of elements/
 
       # The split commits keep the authors, committers and dates of the
       # originals, so every release extends the same history.
-      - name: Split ray_ds/
+      - name: Split elements/
         run: |
-          git subtree split -q --prefix ray_ds -b ray_ds-release
-          git log --oneline -5 ray_ds-release
-          git ls-tree --name-only ray_ds-release
+          git subtree split -q --prefix elements -b elements-release
+          git log --oneline -5 elements-release
+          git ls-tree --name-only elements-release
 
-      - name: Push to ray-language/ray_ds
+      - name: Push to ray-language/elements
         if: env.DRY_RUN != 'true'
         env:
-          KEY: ${{ secrets.RAY_DS_DEPLOY_KEY }}
+          KEY: ${{ secrets.RAY_ELEMENTS_DEPLOY_KEY }}
           TAG: ${{ github.ref_name }}
         run: |
           if [ -z "$KEY" ]; then
-            echo "::error::Add the secret RAY_DS_DEPLOY_KEY: the private half of a deploy key of ray-language/ray_ds with write access."
+            echo "::error::Add the secret RAY_ELEMENTS_DEPLOY_KEY: the private half of a deploy key of ray-language/elements with write access."
             exit 1
           fi
-          key="$RUNNER_TEMP/ray_ds_key"
+          key="$RUNNER_TEMP/elements_key"
           printf '%s\n' "$KEY" > "$key"
           chmod 600 "$key"
           export GIT_SSH_COMMAND="ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
-          remote=git@github.com:ray-language/ray_ds.git
+          remote=git@github.com:ray-language/elements.git
           if [ -n "$(git ls-remote --tags "$remote" "refs/tags/$TAG")" ]; then
-            echo "::error::ray_ds already has the tag $TAG."
+            echo "::error::elements already has the tag $TAG."
             exit 1
           fi
-          git push "$remote" ray_ds-release:refs/heads/main
-          git push "$remote" "ray_ds-release:refs/tags/$TAG"
+          git push "$remote" elements-release:refs/heads/main
+          git push "$remote" "elements-release:refs/tags/$TAG"
           rm -f "$key"
 
   npm:

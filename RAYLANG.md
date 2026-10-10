@@ -1,10 +1,10 @@
-# ray-ds and raylang
+# ray-elements and raylang
 
-ray-ds is framework-agnostic: the components are standard custom elements with
+ray-elements is framework-agnostic: the components are standard custom elements with
 no dependencies, and they work in any page, in React, in Vue, in a browser or
 in any webview. Nothing in a component requires raylang.
 
-raylang is where ray-ds comes from and where it gets extras. This page says
+raylang is where ray-elements comes from and where it gets extras. This page says
 what those extras are: a bridge to the native side (plan 1), and a raylang
 package that brings the whole design system without npm (plan 2).
 
@@ -20,11 +20,11 @@ package that brings the whole design system without npm (plan 2).
 - **Examples.** `examples/desktop-form` (plain HTML), `examples/react-app` and
   `examples/vue-app` (made with `ray new --frontend react-ts|vue-ts`) drive the
   page in the real webview and check what reaches raylang.
-- **The raylang package** (plan 2): the `ray_ds` dependency brings
-  `@ray-ds/elements` to the app's pages by its npm name
-  (`import "@ray-ds/elements/button"`, as with a bundler), with no npm and
+- **The raylang package** (plan 2): the `elements` dependency brings
+  `@raylang/elements` to the app's pages by its npm name
+  (`import "@raylang/elements/button"`, as with a bundler), with no npm and
   no copied files; `examples/starter` is the app to copy. It is published to
-  its own repository, `github.com/ray-language/ray_ds`.
+  its own repository, `github.com/ray-language/elements`.
 - **The native bridge** (plan 1, done): system file dialogs with
   real paths (`ray-file-upload native`, `ray-path-input`), native
   confirmations (`confirmDialog()`), native context menus (`ray-menu native`),
@@ -37,16 +37,16 @@ package that brings the whole design system without npm (plan 2).
 ## Using the bridge
 
 In the program, answer the bridge before the app's own events
-(`ray_ds = "path:…/ray-ds/ray_ds"` in `[dependencies]` until the package is
+(`elements = "path:…/ray-elements/elements"` in `[dependencies]` until the package is
 published):
 
 ```ray
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 for e in ui.events() {
     if (bridge.handle(e)) {
-        continue;   // a ray-ds request, already answered
+        continue;   // a ray-elements request, already answered
     }
     // the app's own events
 }
@@ -55,7 +55,7 @@ for e in ui.events() {
 In the page, once:
 
 ```js
-import { enableRaylang } from "@ray-ds/elements/core";   // or from "@ray-ds/elements"
+import { enableRaylang } from "@raylang/elements/core";   // or from "@raylang/elements"
 await enableRaylang();   // the host, or null in a browser
 ```
 
@@ -108,7 +108,7 @@ false` to opt out), and `trackEdits(form)` marks the window as edited while
 the form differs from what was saved:
 
 ```js
-import { enableRaylang, trackEdits } from "@ray-ds/elements";
+import { enableRaylang, trackEdits } from "@raylang/elements";
 await enableRaylang();
 const edits = trackEdits(document.querySelector("form"));   // edits.dirty, edits.clean()
 ```
@@ -128,26 +128,26 @@ const edits = trackEdits(document.querySelector("form"));   // edits.dirty, edit
 
 A small protocol between the page and the program, with two halves:
 
-- **Page:** `core/raylang.js` (in `@ray-ds/elements`, also re-exported from
+- **Page:** `core/raylang.js` (in `@raylang/elements`, also re-exported from
   its index). `enableRaylang()` detects `window.ray`, asks the program for its
   capabilities once ("hello") and installs a host in `core/host.js`, the
   registry the components ask; they never import the bridge.
-- **Program:** a raylang module, `ray_ds/bridge` (the `ray_ds/` directory of
+- **Program:** a raylang module, `elements/bridge` (the `elements/` directory of
   this repo), with one entry point for the app's event loop:
 
 ```ray
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 for e in ui.events() {
     if (bridge.handle(e)) {
-        continue;   // a ray-ds request, already answered
+        continue;   // a ray-elements request, already answered
     }
     // the app's own events
 }
 ```
 
-Requests travel through `window.ray.request` as JSON (`{"ray-ds": 1, "op":
+Requests travel through `window.ray.request` as JSON (`{"ray-elements": 1, "op":
 "pick_files", …}`) and `bridge.handle` answers them with `ui.reply_json`:
 `{"ok": true, "value": …}` or `{"ok": false, "error": "…"}`. Anything else
 passes through untouched, so the bridge coexists with the app's own protocol.
@@ -163,7 +163,7 @@ dialogs.
 | `confirm` | `title`, `message`, `confirmLabel`, `cancelLabel`, `style` | `true` / `false` |
 | `menu_items` | | `[{menu, tag, title, shortcut, enabled, checked}]` (no separators, no `role:*`) |
 | `run_menu` | `tag` | `true`; `route()` gives the app the `"menu"` event |
-| `popup_menu` | `id`, `items` (`title`, `enabled`, `checked`, `separator`) | `true` once shown; the choice comes later as the page event `ray-ds:menu` (`{id, index}`), nothing when dismissed |
+| `popup_menu` | `id`, `items` (`title`, `enabled`, `checked`, `separator`) | `true` once shown; the choice comes later as the page event `ray-elements:menu` (`{id, index}`), nothing when dismissed |
 | `window_colors` | `background`, `titlebar` (`#rrggbb`, `""` = system) | `true` |
 | `set_edited` | `edited` | `true` |
 
@@ -183,7 +183,7 @@ dialogs.
 
 ### Milestones
 
-1. ✅ **Protocol and loop.** `core/raylang.js` and `ray_ds/bridge` with
+1. ✅ **Protocol and loop.** `core/raylang.js` and `elements/bridge` with
    capability negotiation, `pick_files` and `confirm`. Tests: the raylang
    tests of `bridge.answer`, and `tests/bridge.test.js`, where the page talks
    to the real bridge in the webview runner (scripted dialogs).
@@ -208,18 +208,18 @@ bridge.
 
 ## Plan 2: the raylang package
 
-The `ray_ds/` directory of this repo is a raylang package: a raylang app gets
+The `elements/` directory of this repo is a raylang package: a raylang app gets
 the whole design system from it, with no npm, no Node and no copied files.
 
 ```toml
 [dependencies]
-ray_ds = "git+https://github.com/ray-language/ray_ds@v0.3.0"
-# or, next to a checkout of this repository: ray_ds = "path:../ray-ds/ray_ds"
+elements = "git+https://github.com/ray-language/elements@v0.3.0"
+# or, next to a checkout of this repository: elements = "path:../ray-elements/elements"
 ```
 
 ```ray
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 fn main() -> int {
     ui.mount_embed_at("", "assets").unwrap();   // the app's page ([native] embed)
@@ -235,36 +235,36 @@ fn main() -> int {
 ```
 
 ```html
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
+<link rel="stylesheet" href="/node_modules/@raylang/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@raylang/elements/base.css">
 <script type="module">
-  import { enableRaylang } from "@ray-ds/elements";   // every component, and the API
+  import { enableRaylang } from "@raylang/elements";   // every component, and the API
   await enableRaylang();
 </script>
 ```
 
-The page imports `@ray-ds/elements` by its npm name, the same as an app built
-with Vite: `import "@ray-ds/elements/button"`,
-`import { enableRaylang } from "@ray-ds/elements/core"`. The package's
+The page imports `@raylang/elements` by its npm name, the same as an app built
+with Vite: `import "@raylang/elements/button"`,
+`import { enableRaylang } from "@raylang/elements/core"`. The package's
 `ray.toml` declares it (`[web] package = "web"`), and raylang (1.27.44 or
 later) does the rest, under `ray run` and in a native binary:
 
-- it serves the package at `ray://app/node_modules/@ray-ds/elements/`, where
+- it serves the package at `ray://app/node_modules/@raylang/elements/`, where
   npm would put it (so the stylesheets are linked by that path);
 - it injects an import map built from the package's `exports` into every
   HTML page of `ray://app/` (`ui.import_map()` returns it; a page with its
   own import map is left as is);
 - `ray run` and `ray fetch` link the package into the app's
-  `node_modules/@ray-ds/elements`, so the editor resolves the same imports
-  with their types (`ray-ds.d.ts`) and goes to their definitions. Add
+  `node_modules/@raylang/elements`, so the editor resolves the same imports
+  with their types (`ray-elements.d.ts`) and goes to their definitions. Add
   `node_modules/` to the app's `.gitignore`. Three small files make every
   editor see everything, the same as in a Vite project (`examples/lean-app`
   has them): a `package.json` that declares
-  `"dependencies": { "@ray-ds/elements": "*" }` (the Deno language server
+  `"dependencies": { "@raylang/elements": "*" }` (the Deno language server
   only resolves a package the project declares), a `tsconfig.json` with
   `"allowJs": true`, `"moduleResolution": "bundler"` and the `dom` lib (read
   by TypeScript and by Deno), and `.vscode/settings.json` with
-  `"html.customData": ["./node_modules/@ray-ds/elements/vscode.html-custom-data.json"]`
+  `"html.customData": ["./node_modules/@raylang/elements/vscode.html-custom-data.json"]`
   for the `<ray-*>` tags and their attributes.
 
 `examples/starter` is that app, ready to copy (`ray new --frontend` takes
@@ -273,25 +273,25 @@ later) does the rest, under `ray run` and in a native binary:
 
 ### Contents
 
-- `ray_ds/web` (generated by `build`): a copy of `packages/elements`, the npm
-  package `@ray-ds/elements` as it is published — `index.js` (every
+- `elements/web` (generated by `build`): a copy of `packages/elements`, the npm
+  package `@raylang/elements` as it is published — `index.js` (every
   component, and the API: `enableRaylang`, `notify`, `confirmDialog`…),
   `core.js`, `core/`, `components/`, `tokens.css`, `base.css`, the types and
   the editor data. A page that uses a few components imports
-  `@ray-ds/elements/<name>` instead of `@ray-ds/elements`, and
-  `@ray-ds/elements/core` for the API alone (`enableRaylang`, `setIcons`…).
+  `@raylang/elements/<name>` instead of `@raylang/elements`, and
+  `@raylang/elements/core` for the API alone (`enableRaylang`, `setIcons`…).
   `examples/lean-app` does it, and loads its settings dialog with `import()`
   on first open; its `--check` fails if the page defines any other element.
-- `ray_ds/version` (generated): `version.VERSION`, the version of
-  `ray-ds.toml`; the bridge's `hello` answers with it. The other modules
-  import it as `ray_ds/version`, the only form that also works from an app
+- `elements/version` (generated): `version.VERSION`, the version of
+  `ray-elements.toml`; the bridge's `hello` answers with it. The other modules
+  import it as `elements/version`, the only form that also works from an app
   (finding #142).
-- `ray_ds/bridge` (plan 1, hand-written).
-- `ray_ds/README.md` (hand-written), `LICENSE` and `NOTICE` (copies of the
+- `elements/bridge` (plan 1, hand-written).
+- `elements/README.md` (hand-written), `LICENSE` and `NOTICE` (copies of the
   repository's): the package is the whole directory. `build` keeps the
   version of `ray.toml` and of the README's install line.
 - No `mod.ray`: it would make the other modules internal to the capsule, so
-  the package is `import ray_ds/bridge;` (and `ray_ds/version`).
+  the package is `import elements/bridge;` (and `elements/version`).
 
 ### How the assets travel: decided by the spike
 
@@ -303,17 +303,17 @@ where the app runs from any directory and only what was baked in exists.
    `std/embed` only has the app's own files, also when the package reads it
    (finding #139).
 2. **Generated module** (chosen until 0.3.0): `build` wrote the 86 files
-   (about 690 KB of source) as string constants of `ray_ds/assets.ray`, and
-   `assets.mount("ray-ds")` served them at `ray://app/ray-ds/…`. It worked
+   (about 690 KB of source) as string constants of `elements/assets.ray`, and
+   `assets.mount("ray-elements")` served them at `ray://app/ray-elements/…`. It worked
    under `ray run` and in a native binary, but the pages imported
-   `./ray-ds/components/button/button.js`: a path that only existed in the
+   `./ray-elements/components/button/button.js`: a path that only existed in the
    window, that the editor could not resolve, and that looked nothing like
    the npm names.
 3. **The npm package, served by raylang** (chosen): raylang 1.27.43 made a
    dependency's `[native] embed` reach the app (#139), and 1.27.44 added
    `[web] package`, which serves a dependency's npm package by its npm name,
    with an import map, and links it into the app's `node_modules/` for the
-   editor. `ray_ds/web` is now `packages/elements` as published; the
+   editor. `elements/web` is now `packages/elements` as published; the
    generated module is gone, and the pages read the same as with a bundler.
    `examples/lean-app`, `examples/starter` and `examples/desktop-app` pass
    their `--check` under `ray run`, and `examples/lean-app` also as a native
@@ -322,7 +322,7 @@ where the app runs from any directory and only what was baked in exists.
 ### Milestones
 
 1. ✅ **Spike** on the two asset routes: the generated module.
-2. ✅ **Package** in `ray_ds/`, generated by `build`, with `mount` and a raylang
+2. ✅ **Package** in `elements/`, generated by `build`, with `mount` and a raylang
    test that checks every file.
 3. ✅ **Starter** example and its `--check`.
 4. ✅ **Publish** (to its repository; the index waits for the repositories to
@@ -331,19 +331,19 @@ where the app runs from any directory and only what was baked in exists.
      `.ray-deps/<key>` and imports it by the key; there is no way to point at
      a subdirectory (finding #140), and the packages of the index are one
      repository each, with the modules at the root (`greeting`, for
-     instance). So `ray_ds/` cannot be installed from this repository as it
-     is: `git+https://github.com/ray-language/ray-ds` would give the docs
+     instance). So `elements/` cannot be installed from this repository as it
+     is: `git+https://github.com/ray-language/ray-elements` would give the docs
      site's repository, not the package.
-   - So the package has a repository of its own, `ray-language/ray_ds`:
-     `git subtree split --prefix ray_ds`, with the history of the directory.
+   - So the package has a repository of its own, `ray-language/elements`:
+     `git subtree split --prefix elements`, with the history of the directory.
      The `release` workflow pushes it on every version tag of this
      repository and gives it the same tag. An app installs it with
-     `git+https://…/ray_ds@v0.3.0` (checked with a copy of
+     `git+https://…/elements@v0.3.0` (checked with a copy of
      `examples/starter` outside this repository).
    - Left: `ray registry publish` once both repositories are public, so
-     that `ray add ray_ds` works too. A manual command until then; later a
+     that `ray add elements` works too. A manual command until then; later a
      last step of the release job, with a deploy key on `ray-index`.
-5. ✅ **By the npm name**: the package carries `@ray-ds/elements` as
+5. ✅ **By the npm name**: the package carries `@raylang/elements` as
    published (`[web] package`, raylang 1.27.44); the pages import it as with
    a bundler and the editor resolves it from `node_modules/`.
 
@@ -359,7 +359,7 @@ where the app runs from any directory and only what was baked in exists.
   program, icons, the `Info.plist` colors or a native shell use the same
   palette as the UI.
 - **UI tests for apps.** The webview harness of `tools/` as a utility: an app
-  that uses ray-ds drives its own pages in the real webview from `ray test`.
+  that uses ray-elements drives its own pages in the real webview from `ray test`.
 - **System notifications.** `ray-notification` could fall back to an OS
   notification when the window is not focused, but `std/ui` has no
   notification API today.

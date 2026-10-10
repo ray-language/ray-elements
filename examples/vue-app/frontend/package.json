@@ -1,5 +1,5 @@
 {
-  "name": "ray-ds-vue-example",
+  "name": "ray-elements-vue-example",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "vue": "^3.5.42",
-    "@ray-ds/elements": "file:../../../packages/elements",
-    "@ray-ds/vue": "file:../../../packages/vue"
+    "@raylang/elements": "file:../../../packages/elements",
+    "@raylang/vue": "file:../../../packages/vue"
   },
   "devDependencies": {
     "@types/node": "^24.13.3",

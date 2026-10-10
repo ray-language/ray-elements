@@ -1,6 +1,6 @@
-// The smallest std/ui app with ray-ds: copy this directory to start one.
-// ray-ds comes from the ray_ds dependency (no npm, no copied files): the page
-// imports @ray-ds/elements by its npm name. The page comes from assets/
+// The smallest std/ui app with ray-elements: copy this directory to start one.
+// ray-elements comes from the elements dependency (no npm, no copied files): the page
+// imports @raylang/elements by its npm name. The page comes from assets/
 // ([native] embed: from disk under `ray run`, baked into a native binary).
 // The bridge gives the page the system dialogs.
 //
@@ -10,7 +10,7 @@
 
 import std/time;
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 fn main() -> int {
     match (run(args().contains("--check"))) {

@@ -1,10 +1,10 @@
 // page: examples/extending/index.html
 //
 // The extension API from an app's point of view: components built only on
-// the public API of @ray-ds/elements (the page maps it to packages/elements).
+// the public API of @raylang/elements (the page maps it to packages/elements).
 
 const T = window.__rayTest;
-const ds = await import("@ray-ds/elements");
+const ds = await import("@raylang/elements");
 await Promise.all(["app-save-button", "app-color-field", "app-hover-card", "ray-button", "ray-badge"].map((t) => customElements.whenDefined(t)));
 
 async function mount(html) {

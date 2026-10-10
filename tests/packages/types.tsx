@@ -1,10 +1,10 @@
 // The generated declarations as an app uses them (checked by `tsc` with
 // skipLibCheck off, so packages/*/*.d.ts are compiled, not trusted).
 
-import { setIcons, type RayNumberInput, type RayAppBar } from "@ray-ds/elements";
-import "@ray-ds/elements/button";
-import { RayButton, RayMenu, RayMenuItem } from "@ray-ds/react";
-import RayDs, { RaySwitch } from "@ray-ds/vue";
+import { setIcons, type RayNumberInput, type RayAppBar } from "@raylang/elements";
+import "@raylang/elements/button";
+import { RayButton, RayMenu, RayMenuItem } from "@raylang/react";
+import RayDs, { RaySwitch } from "@raylang/vue";
 
 setIcons({});
 

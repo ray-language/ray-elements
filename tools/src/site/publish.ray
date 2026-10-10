@@ -7,7 +7,7 @@
 // (tokens) and site/site.css (for the demo page). Links that left docs/
 // ("../src/…" from docs/, "../../src/…" from docs/components/) lose one
 // "../" ("./src/…" at the root). 404.html is served at any address, so its links are made absolute
-// with the base path the site is published under ("/ray-ds/" on GitHub
+// with the base path the site is published under ("/ray-elements/" on GitHub
 // Pages for this repo, "/" on a domain of its own).
 
 import std/fs;
@@ -120,7 +120,7 @@ pub fn absolutize(html: string, base: string) -> string {
         out = prefix_after(out, attr, base);
     }
     // The import map and the modules the page imports.
-    out = out.replace("\"@ray-ds/elements\": \"./", "\"@ray-ds/elements\": \"${base}");
+    out = out.replace("\"@raylang/elements\": \"./", "\"@raylang/elements\": \"${base}");
     out = prefix_after(out, "import \"", base);
     out
 }
@@ -147,6 +147,6 @@ fn lifts_links_that_leave_docs() {
 
 @test
 fn absolutizes_relative_links() {
-    let html = "<a href=\"index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"site.js\"></script>{\"@ray-ds/elements\": \"./elements.js\"} import \"src/c.js\";";
-    assert_eq(absolutize(html, "/ray-ds/"), "<a href=\"/ray-ds/index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"/ray-ds/site.js\"></script>{\"@ray-ds/elements\": \"/ray-ds/elements.js\"} import \"/ray-ds/src/c.js\";");
+    let html = "<a href=\"index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"site.js\"></script>{\"@raylang/elements\": \"./elements.js\"} import \"src/c.js\";";
+    assert_eq(absolutize(html, "/ray-elements/"), "<a href=\"/ray-elements/index.html\">h</a><a href=\"#main\">s</a><link href=\"https://x/y.css\"><script src=\"/ray-elements/site.js\"></script>{\"@raylang/elements\": \"/ray-elements/elements.js\"} import \"/ray-elements/src/c.js\";");
 }

@@ -25,7 +25,7 @@ fn main() -> int {
 </form>
 </template></ray-code>
   <ray-code language="ts" filename="app.ts"><script type="text/plain">
-import { notify } from "@ray-ds/elements";
+import { notify } from "@raylang/elements";
 
 type Build = { id: number; ok: boolean };
 
@@ -71,28 +71,28 @@ echo "done: $HOME/dist"
 <ray-code language="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
 
 <div class="demo-caption">Bring your own highlighter</div>
-<p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-ds tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
+<p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
 <div class="demo-grid demo-code-grid">
   <ray-code language="js" filename="Prism"><script type="text/plain">
 import Prism from "prismjs";
-import { setHighlighter } from "@ray-ds/elements";
+import { setHighlighter } from "@raylang/elements";
 
 setHighlighter((code, lang) =>
   Prism.languages[lang] ? Prism.highlight(code, Prism.languages[lang], lang) : null);
 </script></ray-code>
   <ray-code language="js" filename="highlight.js"><script type="text/plain">
 import hljs from "highlight.js/lib/common";
-import { setHighlighter } from "@ray-ds/elements";
+import { setHighlighter } from "@raylang/elements";
 
 setHighlighter((code, lang) =>
   hljs.getLanguage(lang) ? hljs.highlight(code, { language: lang }).value : null);
 </script></ray-code>
   <ray-code language="js" filename="Shiki"><script type="text/plain">
 import { codeToHtml, createCssVariablesTheme } from "shiki";
-import { setHighlighter } from "@ray-ds/elements";
+import { setHighlighter } from "@raylang/elements";
 
 // The css-variables theme: ray-code maps its variables to the tokens.
-const theme = createCssVariablesTheme({ name: "ray-ds", variablePrefix: "--shiki-" });
+const theme = createCssVariablesTheme({ name: "ray-elements", variablePrefix: "--shiki-" });
 setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 </script></ray-code>
 </div>

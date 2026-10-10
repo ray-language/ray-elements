@@ -1,6 +1,6 @@
-// Types of the ray-ds core runtime and extension API (core.js, form.js,
+// Types of the ray-elements core runtime and extension API (core.js, form.js,
 // floating.js, styles.js, position.js, focus.js, icons.js, host.js, raylang.js). Hand-written;
-// the component declarations are generated after them into ray-ds.d.ts.
+// the component declarations are generated after them into ray-elements.d.ts.
 
 export declare const PREFIX: string;
 export declare const THEME_EVENT: "ray-theme-change";
@@ -69,7 +69,7 @@ export interface PropertyOptions {
 }
 
 /**
- * Base class of ray-ds components. Members whose name starts with `_` or `#`
+ * Base class of ray-elements components. Members whose name starts with `_` or `#`
  * are internal: do not use them, and do not name your own members with `_`.
  */
 export declare class RayElement extends HTMLElement {
@@ -98,7 +98,7 @@ export declare class RayElement extends HTMLElement {
   $<E extends Element = HTMLElement>(selector: string): E | null;
 }
 
-/** A form-associated ray-ds element (ElementInternals). */
+/** A form-associated ray-elements element (ElementInternals). */
 export declare class FormControl extends RayElement {
   static formAssociated: true;
   readonly internals: ElementInternals;
@@ -337,7 +337,7 @@ export declare function acceptFilters(accept: string | null | undefined, name?: 
 /** The extensions of a MIME type or pattern ("image/*"). */
 export declare function extensionsOfType(type: string): string[];
 
-/** The version of the ray-ds bridge protocol the page speaks. */
+/** The version of the ray-elements bridge protocol the page speaks. */
 export declare const PROTOCOL: number;
 export interface RaylangHost extends Host {
   name: "raylang";
@@ -345,7 +345,7 @@ export interface RaylangHost extends Host {
   version: string;
 }
 /**
- * In a std/ui window whose program calls ray_ds/bridge's handle(), installs the
+ * In a std/ui window whose program calls elements/bridge's handle(), installs the
  * raylang host; null in a browser or when the program does not answer in `timeout` ms.
  */
 export declare function enableRaylang(options?: { timeout?: number; ray?: unknown; windowColors?: boolean }): Promise<RaylangHost | null>;

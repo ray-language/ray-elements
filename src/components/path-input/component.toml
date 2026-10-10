@@ -2,7 +2,7 @@
 name = "Path input"
 aliases = ["File path", "Folder picker"]
 category = "Inputs"
-summary = "A field for a path on disk: a file to open, a folder, or where to save. In a std/ui window (with ray-ds/core/raylang.js) a Browse… button opens the system dialog; in a browser it is a plain text field. Everything else is ray-input."
+summary = "A field for a path on disk: a file to open, a folder, or where to save. In a std/ui window (with ray-elements/core/raylang.js) a Browse… button opens the system dialog; in a browser it is a plain text field. Everything else is ray-input."
 files = ["path-input.js"]
 requires = ["input"]
 tags = ["ray-path-input"]

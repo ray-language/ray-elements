@@ -33,9 +33,9 @@ T.test("toggle cycles light -> dark -> system", async (T) => {
 
 T.test("theme is persisted", (T) => {
   core.setTheme("dark");
-  T.eq(localStorage.getItem("ray-ds:theme"), "dark");
+  T.eq(localStorage.getItem("ray-elements:theme"), "dark");
   core.setTheme("system");
-  T.eq(localStorage.getItem("ray-ds:theme"), null);
+  T.eq(localStorage.getItem("ray-elements:theme"), null);
 });
 
 T.test("subtree theme overrides the document", (T) => {

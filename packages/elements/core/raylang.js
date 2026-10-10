@@ -1,13 +1,13 @@
-// The page's half of the ray-ds native bridge for std/ui windows (raylang);
-// the program's half is the raylang module ray_ds/bridge.
+// The page's half of the ray-elements native bridge for std/ui windows (raylang);
+// the program's half is the raylang module elements/bridge.
 //
-//   import { enableRaylang } from "ray-ds/core/raylang.js";
+//   import { enableRaylang } from "ray-elements/core/raylang.js";
 //   await enableRaylang();   // the host, or null in a browser
 //
 // It detects window.ray, asks the program what it offers ("hello") and
 // installs a host (core/host.js), so the components that use one get the
 // system dialogs. Requests travel through window.ray.request as JSON objects
-// tagged "ray-ds", which bridge.handle answers and the app's own protocol
+// tagged "ray-elements", which bridge.handle answers and the app's own protocol
 // never sees. In a browser, or when the program does not answer (its loop
 // does not call bridge.handle), it resolves to null and nothing changes.
 
@@ -49,12 +49,12 @@ async function connect(ray, timeout, windowColors) {
     return null;
   }
   const ops = new Set(hello?.ops ?? []);
-  // Context menus: the choice comes back as a "ray-ds:menu" event pushed by
+  // Context menus: the choice comes back as a "ray-elements:menu" event pushed by
   // the program ({ id, index }); a dismissed menu sends nothing, so opening
   // the next one settles the previous with null.
   let popups = 0;
   let pending = null;
-  document.addEventListener("ray-ds:menu", (e) => {
+  document.addEventListener("ray-elements:menu", (e) => {
     if (pending && e.detail?.id === pending.id) {
       pending.resolve(e.detail.index);
       pending = null;
@@ -151,17 +151,17 @@ function hex(color) {
 }
 
 async function request(ray, op, args) {
-  const answer = await ray.request({ "ray-ds": PROTOCOL, op, ...args });
+  const answer = await ray.request({ "ray-elements": PROTOCOL, op, ...args });
   if (!answer || typeof answer !== "object" || !("ok" in answer)) {
-    throw new Error(`ray-ds bridge: unexpected answer to '${op}'`);
+    throw new Error(`ray-elements bridge: unexpected answer to '${op}'`);
   }
-  if (!answer.ok) throw new Error(`ray-ds bridge: ${answer.error}`);
+  if (!answer.ok) throw new Error(`ray-elements bridge: ${answer.error}`);
   return answer.value;
 }
 
 function within(promise, ms) {
   return new Promise((resolve, reject) => {
-    const t = setTimeout(() => reject(new Error("ray-ds bridge: no answer")), ms);
+    const t = setTimeout(() => reject(new Error("ray-elements bridge: no answer")), ms);
     promise.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
   });
 }

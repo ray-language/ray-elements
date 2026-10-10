@@ -1,10 +1,10 @@
 // The page of examples/desktop-app: a folder browser that uses every part of
-// the ray-ds native bridge. The program (src/main.ray) answers the bridge
-// with ray_ds/bridge and the page's own requests ({ app: "list", dir }).
+// the ray-elements native bridge. The program (src/main.ray) answers the bridge
+// with elements/bridge and the page's own requests ({ app: "list", dir }).
 
-import { enableRaylang, titlebar, trackEdits, setTheme, resolvedTheme } from "@ray-ds/elements/core";
-import { confirmDialog } from "@ray-ds/elements/dialog";
-import { notify } from "@ray-ds/elements/notification";
+import { enableRaylang, titlebar, trackEdits, setTheme, resolvedTheme } from "@raylang/elements/core";
+import { confirmDialog } from "@raylang/elements/dialog";
+import { notify } from "@raylang/elements/notification";
 
 const $ = (s) => document.querySelector(s);
 const send = (m) => window.ray?.send(m);

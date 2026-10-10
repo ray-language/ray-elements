@@ -1,7 +1,7 @@
 // page: tests/pages/bridge.html
 //
 // The native bridge: core/host.js, core/raylang.js against the real
-// ray_ds/bridge (the runner answers with scripted dialogs: the file dialog
+// elements/bridge (the runner answers with scripted dialogs: the file dialog
 // returns the paths of its title, a confirmation says yes when its title
 // starts with "yes"), confirmDialog() and ray-file-upload in native mode.
 
@@ -67,7 +67,7 @@ T.test("raylang: no bridge, no host", async (T) => {
   T.eq(getHost(), null);
 });
 
-T.test("raylang: hello from ray_ds/bridge", async (T) => {
+T.test("raylang: hello from elements/bridge", async (T) => {
   const host = await enableRaylang();
   T.ok(host, "the runner answers");
   T.eq(host.name, "raylang");

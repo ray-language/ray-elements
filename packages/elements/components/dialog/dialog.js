@@ -1,4 +1,4 @@
-// <ray-dialog>: ray-ds's modal (Mantine's Modal, shadcn's Dialog) on the
+// <ray-dialog>: ray-elements's modal (Mantine's Modal, shadcn's Dialog) on the
 // native <dialog>: top layer, the rest of the page inert, focus trapped and
 // restored, Escape to close. Stacks: a dialog opened from another one goes
 // on top of it.

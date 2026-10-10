@@ -91,7 +91,7 @@ if (palette) {
 // --- components page: the language of the examples' code (HTML / React /
 // Vue). One choice for every example, remembered for the next visit. The
 // code itself (docs/code/<component>.html) is fetched when "Code" opens.
-const SOURCE_KEY = "ray-ds:code-language";
+const SOURCE_KEY = "ray-elements:code-language";
 const switches = $$("[data-source-switch]");
 let sourceLang = "html";
 function showSource(lang) {

@@ -1,5 +1,5 @@
-/* ray-ds base: document defaults on top of tokens.css. Optional — load it
-   for pages built with ray-ds, skip it when embedding components in an app
+/* ray-elements base: document defaults on top of tokens.css. Optional — load it
+   for pages built with ray-elements, skip it when embedding components in an app
    that has its own base styles. Layered, so any unlayered app CSS wins. */
 
 @layer ray.tokens, ray.base;

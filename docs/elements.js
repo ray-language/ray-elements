@@ -1,4 +1,4 @@
-// "@ray-ds/elements" for the scripts of the docs pages (the layout's import
+// "@raylang/elements" for the scripts of the docs pages (the layout's import
 // map points here), so live examples import what an app imports. Only the
 // runtime API: the pages already load the elements from ../src/index.js.
 

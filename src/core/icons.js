@@ -1,7 +1,7 @@
-// Icon registry: every icon a ray-ds component draws comes from here, so an
+// Icon registry: every icon a ray-elements component draws comes from here, so an
 // app can switch the whole set (Lucide, Tabler, its own…) in one call:
 //
-//   import { setIcons } from "@ray-ds/elements";
+//   import { setIcons } from "@raylang/elements";
 //   setIcons({ close: '<svg viewBox="0 0 24 24">…</svg>', "chevron-down": … });
 //
 // setIcons() also adds new names, for <ray-icon name="…">. Icons are SVG
@@ -87,7 +87,7 @@ export function getIcon(name) {
   if (markup !== undefined) return markup;
   if (!warned.has(name)) {
     warned.add(name);
-    console.warn(`ray-ds: no icon named "${name}" (setIcons to add it)`);
+    console.warn(`ray-elements: no icon named "${name}" (setIcons to add it)`);
   }
   return "";
 }
