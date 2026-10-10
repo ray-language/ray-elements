@@ -257,10 +257,13 @@ later) does the rest, under `ray run` and in a native binary:
 - `ray run` and `ray fetch` link the package into the app's
   `node_modules/@ray-ds/elements`, so the editor resolves the same imports
   with their types (`ray-ds.d.ts`) and goes to their definitions. Add
-  `node_modules/` to the app's `.gitignore`. Two files make the editor see
-  everything, the same as in a Vite project (`examples/lean-app` has both):
-  a `jsconfig.json` with `"moduleResolution": "bundler"`, and
-  `.vscode/settings.json` with
+  `node_modules/` to the app's `.gitignore`. Three small files make every
+  editor see everything, the same as in a Vite project (`examples/lean-app`
+  has them): a `package.json` that declares
+  `"dependencies": { "@ray-ds/elements": "*" }` (the Deno language server
+  only resolves a package the project declares), a `tsconfig.json` with
+  `"allowJs": true`, `"moduleResolution": "bundler"` and the `dom` lib (read
+  by TypeScript and by Deno), and `.vscode/settings.json` with
   `"html.customData": ["./node_modules/@ray-ds/elements/vscode.html-custom-data.json"]`
   for the `<ray-*>` tags and their attributes.
 
