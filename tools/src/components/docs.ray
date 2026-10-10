@@ -80,7 +80,7 @@ pub fn index(cs: [Component]) -> Page {
     });
     let body: [string] = [
         `<header class="catalog-hero">
-<p class="catalog-eyebrow">ray·ds · components</p>
+<p class="catalog-eyebrow">ray·elements · components</p>
 <h1 class="page-title">Components</h1>
 <p class="page-intro">${cs.len()} web components for any app: a live example, its code in HTML, React and Vue, and its API generated from its <code>component.toml</code>.</p>
 <ul class="catalog-facts"><li><b>${cs.len()}</b> components</li><li><b>${cats.len()}</b> categories</li><li><b>3</b> ways to write them: HTML, React, Vue</li><li><a href="components/all.html">All on one page</a></li></ul>
@@ -104,7 +104,7 @@ pub fn index(cs: [Component]) -> Page {
         "components.html",
         "components",
         "Components",
-        "Every ray·ds component: a live example, its code and its API.",
+        "Every ray·elements component: a live example, its code and its API.",
         sidebar(ordered(cs), "components/", ".html"),
         join(body, "\n"),
         "components-index"
@@ -151,7 +151,7 @@ pub fn all(cs: [Component]) -> Page {
         "components/all.html",
         "components",
         "All components",
-        "Every ray·ds component on one page.",
+        "Every ray·elements component on one page.",
         sidebar(ordered(cs), "#", ""),
         join(body, "\n"),
         "components-page"

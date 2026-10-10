@@ -1,4 +1,4 @@
-// The ray·ds documentation site: theme controls, the mobile menu and the
+// The ray·elements documentation site: theme controls, the mobile menu and the
 // sidebar's current-section highlight. Copied to docs/ by the docs build.
 
 import { setPrimary, getPrimary, definePrimary, getCustomPrimary, setIcons } from "../src/core/core.js";

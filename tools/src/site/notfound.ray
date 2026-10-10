@@ -70,5 +70,5 @@ pub fn render() -> Page {
     }
   }
 </script>`;
-    page("404.html", "404", "Page not found", "This address is not part of the ray·ds site.", [], body, "notfound")
+    page("404.html", "404", "Page not found", "This address is not part of the ray·elements site.", [], body, "notfound")
 }

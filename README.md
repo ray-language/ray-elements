@@ -150,7 +150,7 @@ The mark ("Kit") is three tiles of the raylang ocean palette plus the raylang
 emblem as one more piece. `docs` generates it from `tools/src/site/brand.ray`
 into `brand/`: `logo.svg` (light grounds), `logo-dark.svg`, `logo-16.svg`
 (without Manta's horns, per the raylang brand manual), `icon.svg` (app icon) and
-`favicon.svg`. The wordmark is "ray" in ray blue, the dot in aqua, "ds" in ink.
+`favicon.svg`. The wordmark is "ray" in ray blue, the dot in aqua, "elements" in ink.
 
 ### Viewing the docs
 

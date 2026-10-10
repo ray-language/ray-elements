@@ -31,9 +31,9 @@ const NAV: [(string, string, string)] = [
 pub fn render(p: Page, colors: [string]) -> string {
     let home = p.key == "home";
     let title = if (home) {
-        "ray·ds — web components for any app, with raylang extras"
+        "ray·elements — web components for any app, with raylang extras"
     } else {
-        "${p.title} · ray·ds"
+        "${p.title} · ray·elements"
     };
     // A page in a subdirectory (components/button.html) reaches the rest
     // of the site through `base`.
