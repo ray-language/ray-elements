@@ -2,7 +2,7 @@
 // label, description, error, required, ARIA, form value, validity, reset and
 // <fieldset disabled> from the base; it only wires its native control.
 
-import { FieldControl, fieldTemplate, fieldStyles, boxStyles, sizeStyles, radiusStyles, css, define } from "@ray-ds/elements";
+import { FieldControl, fieldTemplate, fieldStyles, boxStyles, sizeStyles, radiusStyles, css, define } from "@raylang/elements";
 
 const styles = css`
   .box { gap: var(--ray-space-2); padding-left: calc(var(--_px) * 0.5); }

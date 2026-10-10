@@ -1,4 +1,4 @@
-// `ray-ds add`: copies components into an app, shadcn-style — the code
+// `ray-elements add`: copies components into an app, shadcn-style — the code
 // becomes the app's own. Layout of the target directory:
 //
 //   <into>/tokens.css            dist/tokens.css

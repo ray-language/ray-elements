@@ -1,5 +1,5 @@
 # Every push to main and every pull request: the tests, and a check that the
-# committed output (docs/, packages/, dist/tokens.*, src/index.js, ray_ds/)
+# committed output (docs/, packages/, dist/tokens.*, src/index.js, elements/)
 # matches what the sources generate. Releases (the raylang package, npm,
 # the site) are release.yml.
 
@@ -37,7 +37,7 @@ jobs:
         run: ray test
 
       - name: raylang package tests
-        working-directory: ray_ds
+        working-directory: elements
         run: ray test
 
       - name: Build the site
@@ -56,7 +56,7 @@ jobs:
 
       - name: Committed output matches the sources
         run: |
-          paths="docs packages dist src/index.js ray_ds"
+          paths="docs packages dist src/index.js elements"
           if ! git diff --quiet -- $paths || [ -n "$(git status --porcelain -- $paths)" ]; then
             echo "::error::The generated files differ from what the sources produce. Run 'tools/run.sh build' and commit the result."
             git status --short -- $paths

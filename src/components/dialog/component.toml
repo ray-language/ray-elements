@@ -2,14 +2,14 @@
 name = "Dialog"
 aliases = ["Modal"]
 category = "Overlays"
-summary = "ray-ds's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog()."
+summary = "ray-elements's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog()."
 files = ["dialog.js"]
 requires = ["button"]
 tags = ["ray-dialog"]
 
 [ray-dialog]
 class = "RayDialog"
-summary = "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-ds/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false."
+summary = "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false."
 extends = "RayElement"
 
 [ray-dialog.properties.open]

@@ -1,9 +1,9 @@
-// Using only the components a page needs. The ray_ds dependency brings the
-// npm package @ray-ds/elements: raylang serves it at
-// ray://app/node_modules/@ray-ds/elements/ and gives the page an import map,
+// Using only the components a page needs. The elements dependency brings the
+// npm package @raylang/elements: raylang serves it at
+// ray://app/node_modules/@raylang/elements/ and gives the page an import map,
 // so app.js imports it by its npm name, as with a bundler
-// (import "@ray-ds/elements/button"). The page does not load the whole
-// package: it imports the API from @ray-ds/elements/core and each component
+// (import "@raylang/elements/button"). The page does not load the whole
+// package: it imports the API from @raylang/elements/core and each component
 // it uses, and loads the settings dialog the first time it opens. `ray run`
 // also links the package into node_modules/, where the editor finds its
 // types.
@@ -16,7 +16,7 @@
 import std/embed;
 import std/time;
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 // The elements defined once the page is ready: what app.js imports and what
 // those bring (ray-icon-button is a ray-button).
@@ -70,10 +70,10 @@ fn run(check: bool) -> Result<int, string> {
     }
 }
 
-// Every component of ray-ds, by its module:
-// node_modules/@ray-ds/elements/components/<name>/<name>.js.
+// Every component of ray-elements, by its module:
+// node_modules/@raylang/elements/components/<name>/<name>.js.
 fn tags() -> Result<[string], string> {
-    let base = "node_modules/@ray-ds/elements/";
+    let base = "node_modules/@raylang/elements/";
     var out: [string] = [];
     for key in embed.list()? {
         if (!key.starts_with(base)) {

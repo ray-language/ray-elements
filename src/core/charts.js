@@ -1,4 +1,4 @@
-// Chart theming: ray-ds draws no charts; this hands the chart tokens
+// Chart theming: ray-elements draws no charts; this hands the chart tokens
 // (--ray-chart-*, tokens.toml) to a chart library.
 //
 // SVG/HTML charts can use the CSS variables directly (fill: var(--ray-chart-1))

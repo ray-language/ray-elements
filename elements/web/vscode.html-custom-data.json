@@ -1,0 +1,5499 @@
+{
+  "version": 1.1,
+  "tags": [
+    {
+      "name": "ray-button",
+      "description": "A button, or a link styled as one with href. Submits or resets its form with type.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "Visual style. raised: a physical key on a darker edge that sinks when pressed (mouse, touch or keyboard).",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "light"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "subtle"
+            },
+            {
+              "name": "default"
+            },
+            {
+              "name": "transparent"
+            },
+            {
+              "name": "gradient"
+            },
+            {
+              "name": "raised"
+            }
+          ]
+        },
+        {
+          "name": "gradient",
+          "description": "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+        },
+        {
+          "name": "color",
+          "description": "A palette color (blue, red…) or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Height, padding and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: --ray-radius-default.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "description": "submit/reset act on the enclosing form.",
+          "values": [
+            {
+              "name": "button"
+            },
+            {
+              "name": "submit"
+            },
+            {
+              "name": "reset"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive (also when inside a disabled fieldset).",
+          "valueSet": "v"
+        },
+        {
+          "name": "loading",
+          "description": "Shows a spinner over the content and blocks clicks.",
+          "valueSet": "v"
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the whole width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "href",
+          "description": "Renders a link instead of a button."
+        },
+        {
+          "name": "target",
+          "description": "Link target, with href."
+        },
+        {
+          "name": "name",
+          "description": "With type=submit: submitted as name=value."
+        },
+        {
+          "name": "value",
+          "description": "With type=submit: the submitted value."
+        }
+      ]
+    },
+    {
+      "name": "ray-button-group",
+      "description": "role=group; give it a label. The corners come from the --ray-group-radius-* custom properties, which your own components can read too.",
+      "attributes": [
+        {
+          "name": "orientation",
+          "description": "Direction of the group.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Fills its container; the children share the width.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name (aria-label)."
+        }
+      ]
+    },
+    {
+      "name": "ray-icon-button",
+      "description": "Same properties as ray-button; variant defaults to subtle.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Accessible name and tooltip (required: the button has no text)."
+        },
+        {
+          "name": "variant",
+          "description": "Visual style.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "light"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "subtle"
+            },
+            {
+              "name": "default"
+            },
+            {
+              "name": "transparent"
+            },
+            {
+              "name": "gradient"
+            },
+            {
+              "name": "raised"
+            }
+          ]
+        },
+        {
+          "name": "gradient",
+          "description": "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color."
+        },
+        {
+          "name": "size",
+          "description": "Width and height.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "loading",
+          "description": "Shows a spinner instead of the icon.",
+          "valueSet": "v"
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: --ray-radius-default.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "description": "submit/reset act on the enclosing form.",
+          "values": [
+            {
+              "name": "button"
+            },
+            {
+              "name": "submit"
+            },
+            {
+              "name": "reset"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the whole width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "href",
+          "description": "Renders a link instead of a button."
+        },
+        {
+          "name": "target",
+          "description": "Link target, with href."
+        },
+        {
+          "name": "name",
+          "description": "With type=submit: submitted as name=value."
+        },
+        {
+          "name": "value",
+          "description": "With type=submit: the submitted value."
+        }
+      ]
+    },
+    {
+      "name": "ray-toggle",
+      "description": "Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default \"on\") under name while pressed; reset restores the initial pressed attribute.",
+      "attributes": [
+        {
+          "name": "pressed",
+          "description": "On.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Look of \"on\": subtle (tint), outline (colored border + tint), light (muted → tint), filled (surface → solid color), raised (a key that latches down, lit). ray-button's default, transparent and gradient are left out: no distinct on state, or only a color change.",
+          "values": [
+            {
+              "name": "subtle"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "raised"
+            }
+          ]
+        },
+        {
+          "name": "square",
+          "description": "Square, for an icon alone (give it a label).",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name and tooltip, for icon-only toggles."
+        },
+        {
+          "name": "gradient",
+          "description": "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+        },
+        {
+          "name": "color",
+          "description": "A palette color (blue, red…) or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Height, padding and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: --ray-radius-default.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "description": "submit/reset act on the enclosing form.",
+          "values": [
+            {
+              "name": "button"
+            },
+            {
+              "name": "submit"
+            },
+            {
+              "name": "reset"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive (also when inside a disabled fieldset).",
+          "valueSet": "v"
+        },
+        {
+          "name": "loading",
+          "description": "Shows a spinner over the content and blocks clicks.",
+          "valueSet": "v"
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the whole width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "href",
+          "description": "Renders a link instead of a button."
+        },
+        {
+          "name": "target",
+          "description": "Link target, with href."
+        },
+        {
+          "name": "name",
+          "description": "With type=submit: submitted as name=value."
+        },
+        {
+          "name": "value",
+          "description": "With type=submit: the submitted value."
+        }
+      ]
+    },
+    {
+      "name": "ray-toggle-group",
+      "description": "Each toggle's value (else its text) is its key. variant, color, size, radius and square reach the toggles that do not set their own. One tab stop (the selected toggle); arrows, Home and End move; Space/Enter flips.",
+      "attributes": [
+        {
+          "name": "type",
+          "description": "single: choosing one turns the others off; multiple: each toggle is independent.",
+          "values": [
+            {
+              "name": "single"
+            },
+            {
+              "name": "multiple"
+            }
+          ]
+        },
+        {
+          "name": "value",
+          "description": "The selected key (single) or keys (multiple: an array, or a comma-separated attribute)."
+        },
+        {
+          "name": "name",
+          "description": "Form field name: the value (multiple: one entry per key)."
+        },
+        {
+          "name": "required",
+          "description": "Needs a value; with single the selected toggle cannot be turned off.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Disables every toggle.",
+          "valueSet": "v"
+        },
+        {
+          "name": "spaced",
+          "description": "Toggles apart, each with its own corners (default: joined).",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Variant of the toggles.",
+          "values": [
+            {
+              "name": "subtle"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "raised"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Color of the toggles' on state."
+        },
+        {
+          "name": "size",
+          "description": "Size of the toggles.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius of the toggles."
+        },
+        {
+          "name": "square",
+          "description": "Square toggles, for icons.",
+          "valueSet": "v"
+        },
+        {
+          "name": "orientation",
+          "description": "Direction of the group.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Fills its container; the children share the width.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name (aria-label)."
+        }
+      ]
+    },
+    {
+      "name": "ray-checkbox",
+      "description": "A checkbox with label, description and error. Submits value when checked.",
+      "attributes": [
+        {
+          "name": "indeterminate",
+          "description": "Mixed state; cleared on the next user change.",
+          "valueSet": "v"
+        },
+        {
+          "name": "value",
+          "description": "Submitted value when checked."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Label text (or put the label in the content)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "Must be checked to submit.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Checked look: filled box, or colored border and mark.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for the checked state."
+        },
+        {
+          "name": "size",
+          "description": "Box and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "label-position",
+          "description": "Side of the label.",
+          "values": [
+            {
+              "name": "right"
+            },
+            {
+              "name": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-checkbox-group",
+      "description": "The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role=\"group\" named by its label.",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Group label (also its accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "At least one must be checked.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Disables every checkbox.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max",
+          "description": "At most this many: the others are disabled once reached; the label shows the count."
+        },
+        {
+          "name": "orientation",
+          "description": "Layout of the checkboxes.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Size of the checkboxes that set none.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Color of the checkboxes that set none."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the checkboxes or after them.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-color-picker",
+      "description": "Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "format",
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider."
+        },
+        {
+          "name": "swatches",
+          "description": "Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept)."
+        },
+        {
+          "name": "swatches-per-row",
+          "description": "Swatches in each row."
+        },
+        {
+          "name": "swatches-only",
+          "description": "Only the swatches: no area nor sliders.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Width of the picker and size of its thumbs.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the whole picker."
+        }
+      ]
+    },
+    {
+      "name": "ray-color-input",
+      "description": "Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The color, written in format. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "format",
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla."
+        },
+        {
+          "name": "swatches",
+          "description": "Preset colors in the dropdown (an array, or a comma-separated list)."
+        },
+        {
+          "name": "swatches-per-row",
+          "description": "Swatches in each row."
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "hide-eyedropper",
+          "description": "Hides the eyedropper button.",
+          "valueSet": "v"
+        },
+        {
+          "name": "open",
+          "description": "The dropdown is shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Label above the field."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error message; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Must have a color.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Field height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl or a CSS length."
+        },
+        {
+          "name": "variant",
+          "description": "Visual style of the field.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Where the description goes.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-combobox",
+      "description": "The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.",
+      "attributes": [
+        {
+          "name": "multiple",
+          "description": "Several values, shown as chips.",
+          "valueSet": "v"
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "creatable",
+          "description": "What was typed can be added when no option matches it (\"+ Create …\"); fires ray-create.",
+          "valueSet": "v"
+        },
+        {
+          "name": "clearable",
+          "description": "A button that clears the value.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max-values",
+          "description": "With multiple: at most this many."
+        },
+        {
+          "name": "limit",
+          "description": "At most this many options shown (large lists: keep typing)."
+        },
+        {
+          "name": "nothing-found",
+          "description": "Shown when nothing matches."
+        },
+        {
+          "name": "open",
+          "description": "The dropdown is shown.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-date-picker",
+      "description": "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The chosen date, ISO \"YYYY-MM-DD\" (\"\" for none). The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "min",
+          "description": "Earliest selectable date (ISO). Earlier days are disabled; an earlier value is invalid (rangeUnderflow)."
+        },
+        {
+          "name": "max",
+          "description": "Latest selectable date (ISO)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while no date is chosen."
+        },
+        {
+          "name": "format",
+          "description": "How the date is displayed (Intl dateStyle).",
+          "values": [
+            {
+              "name": "short"
+            },
+            {
+              "name": "medium"
+            },
+            {
+              "name": "long"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "locale",
+          "description": "Locale for names and formats. Default: the nearest lang attribute, else the browser's."
+        },
+        {
+          "name": "first-day",
+          "description": "First day of the week, 0 (Sunday) to 6. Default: the locale's."
+        },
+        {
+          "name": "clearable",
+          "description": "Shows a button that clears the date.",
+          "valueSet": "v"
+        },
+        {
+          "name": "open",
+          "description": "The calendar dropdown is shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-calendar",
+      "description": "WAI-ARIA grid: arrows move by day and week, Home/End to the week's ends, PageUp/PageDown by month (with Shift, by year), Enter/Space select.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The selected date, ISO \"YYYY-MM-DD\"."
+        },
+        {
+          "name": "min",
+          "description": "Earliest selectable date (ISO)."
+        },
+        {
+          "name": "max",
+          "description": "Latest selectable date (ISO)."
+        },
+        {
+          "name": "locale",
+          "description": "Locale for month and weekday names. Default: the nearest lang attribute, else the browser's."
+        },
+        {
+          "name": "first-day",
+          "description": "First day of the week, 0 (Sunday) to 6. Default: the locale's."
+        },
+        {
+          "name": "size",
+          "description": "Day cell size and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-file-upload",
+      "description": "A drag that can only be refused turns the zone red before the drop; refused files fire ray-reject and are explained under the zone. Without multiple a new file replaces the current one. Uploading is the app's: attachmentFor(file) gives the row whose progress/status/error to set.",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Form field name: every file is submitted under it."
+        },
+        {
+          "name": "label",
+          "description": "Label above the zone."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "error",
+          "description": "Error text (replaces the explanation of refused files)."
+        },
+        {
+          "name": "required",
+          "description": "The form needs at least one file.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "No picking, dropping or removing.",
+          "valueSet": "v"
+        },
+        {
+          "name": "accept",
+          "description": "Accepted types, as in <input type=file>: \".pdf,.png\", \"image/*\", \"application/json\"."
+        },
+        {
+          "name": "multiple",
+          "description": "Several files (else one, replaced by the next).",
+          "valueSet": "v"
+        },
+        {
+          "name": "max-size",
+          "description": "Largest file: bytes or a size like \"10 MB\", \"512 KB\"."
+        },
+        {
+          "name": "max-files",
+          "description": "With multiple: the most files kept."
+        },
+        {
+          "name": "hint",
+          "description": "Small text in the zone. Default: from accept, max-size and max-files (\"PNG or PDF · up to 10 MB each · max. 5 files\")."
+        },
+        {
+          "name": "drop-label",
+          "description": "Title of the zone, before \"or browse\"."
+        },
+        {
+          "name": "browse-label",
+          "description": "The link-styled word (the button text in compact)."
+        },
+        {
+          "name": "active-label",
+          "description": "Title while files are dragged over it."
+        },
+        {
+          "name": "tap-label",
+          "description": "Title on touch screens (no hover), where dragging files is rare."
+        },
+        {
+          "name": "variant",
+          "description": "default: a tall centered zone; compact: one row with a Browse button.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "compact"
+            }
+          ]
+        },
+        {
+          "name": "list",
+          "description": "How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).",
+          "values": [
+            {
+              "name": "rows"
+            },
+            {
+              "name": "cards"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "native",
+          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Accent of hover, drag and the browse link (default: primary)."
+        }
+      ]
+    },
+    {
+      "name": "ray-input",
+      "description": "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-number-input",
+      "description": "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow).",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The number (undefined when empty)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum."
+        },
+        {
+          "name": "max",
+          "description": "Maximum."
+        },
+        {
+          "name": "step",
+          "description": "What + and − add."
+        },
+        {
+          "name": "decimals",
+          "description": "Fixed decimals (2: 3 shows as 3.00)."
+        },
+        {
+          "name": "prefix",
+          "description": "Shown before the number (\"$\")."
+        },
+        {
+          "name": "suffix",
+          "description": "Shown after the number (\" kg\", \"%\")."
+        },
+        {
+          "name": "thousands-separator",
+          "description": "Groups thousands in the shown text (\",\", \".\", \" \")."
+        },
+        {
+          "name": "decimal-separator",
+          "description": "The decimal mark shown and typed (\",\" in many locales)."
+        },
+        {
+          "name": "clamp",
+          "description": "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).",
+          "values": [
+            {
+              "name": "blur"
+            },
+            {
+              "name": "strict"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "hide-controls",
+          "description": "No + and − buttons (the keys still step).",
+          "valueSet": "v"
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while empty."
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-password-input",
+      "description": "autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field.",
+      "attributes": [
+        {
+          "name": "visible",
+          "description": "The password is shown as text.",
+          "valueSet": "v"
+        },
+        {
+          "name": "show-label",
+          "description": "Accessible name of the toggle while hidden."
+        },
+        {
+          "name": "hide-label",
+          "description": "Accessible name of the toggle while shown."
+        },
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-path-input",
+      "description": "Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).",
+          "values": [
+            {
+              "name": "open"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "save"
+            }
+          ]
+        },
+        {
+          "name": "accept",
+          "description": "File types the dialog offers, as in <input type=file>: \".json,.toml\", \"image/*\" (ignored for folders)."
+        },
+        {
+          "name": "browse-label",
+          "description": "Text of the button."
+        },
+        {
+          "name": "dialog-title",
+          "description": "Title of the system dialog (default: the label)."
+        },
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
+      "name": "ray-radio-group",
+      "description": "Arrow keys move the selection, Tab enters and leaves the group.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Group label (also its accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "A choice is needed to submit.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Disables every radio.",
+          "valueSet": "v"
+        },
+        {
+          "name": "orientation",
+          "description": "Layout of the radios.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Size of every radio.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Checked color of every radio."
+        },
+        {
+          "name": "variant",
+          "description": "Checked look of every radio: filled circle, or colored ring and dot.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-radio",
+      "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Value given to the group when chosen."
+        },
+        {
+          "name": "label",
+          "description": "Label text (or the content)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be chosen.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Overrides the group color."
+        },
+        {
+          "name": "size",
+          "description": "Overrides the group size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Overrides the group variant.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-search",
+      "description": "Escape clears it (when it has text); Enter fires ray-search at once. JS: clear(), focus().",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current text."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "shortcut",
+          "description": "Keyboard shortcut that focuses it (\"mod+k\", \"/\"; mod = ⌘ on macOS, Ctrl elsewhere). Shown as a hint while empty."
+        },
+        {
+          "name": "debounce",
+          "description": "Milliseconds of quiet typing before ray-search fires (0: on every keystroke)."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name). Without it, use aria-label."
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-segmented-control",
+      "description": "One choice among a few, as a segmented row with a sliding indicator. Options from child <option> elements or data. Form-associated.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Selected value (default: the first enabled option)."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "color",
+          "description": "Indicator color (default: a raised neutral segment)."
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "full-width",
+          "description": "Takes the whole width.",
+          "valueSet": "v"
+        },
+        {
+          "name": "orientation",
+          "description": "Direction.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-select",
+      "description": "A select with its own dropdown (keyboard, typeahead, groups); options from child <option> elements or the data property. Form-associated.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Selected value."
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while nothing is selected (with required, blocks submit)."
+        },
+        {
+          "name": "open",
+          "description": "The dropdown is shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-slider",
+      "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial one (restored on reset)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum."
+        },
+        {
+          "name": "max",
+          "description": "Maximum."
+        },
+        {
+          "name": "step",
+          "description": "Step."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Track and thumb color."
+        },
+        {
+          "name": "size",
+          "description": "Track and thumb size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "show-value",
+          "description": "Shows the value next to the label.",
+          "valueSet": "v"
+        },
+        {
+          "name": "unit",
+          "description": "Appended to the shown value and its spoken text (%, px, ms…)."
+        }
+      ]
+    },
+    {
+      "name": "ray-switch",
+      "description": "Same properties and events as ray-checkbox (indeterminate does not apply).",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Submitted value when on."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Label text (or the content)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "label-position",
+          "description": "Side of the label.",
+          "values": [
+            {
+              "name": "right"
+            },
+            {
+              "name": "left"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Track color when on."
+        },
+        {
+          "name": "size",
+          "description": "Track size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "indeterminate",
+          "description": "Mixed state; cleared on the next user change.",
+          "valueSet": "v"
+        },
+        {
+          "name": "required",
+          "description": "Must be checked to submit.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Checked look: filled box, or colored border and mark.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-textarea",
+      "description": "Also forwards placeholder, autocomplete, minlength, maxlength, spellcheck and wrap. Initial value: the value attribute or the element's text.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current value."
+        },
+        {
+          "name": "rows",
+          "description": "Visible rows (minimum when autosize)."
+        },
+        {
+          "name": "autosize",
+          "description": "Grows with the content.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max-rows",
+          "description": "With autosize: stop growing and scroll after this many rows."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner textarea."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "wrap",
+          "description": "soft or hard."
+        }
+      ]
+    },
+    {
+      "name": "ray-bottom-nav",
+      "description": "With href items it marks the link to this page (aria-current=\"page\"); without, it is a control (value, change). Clear of the home indicator (safe-area inset). In a ray-app-shell, put it in the bottom slot.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The current destination (an item's value, else its href, else its label)."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the navigation."
+        },
+        {
+          "name": "labels",
+          "description": "Which labels show (the others stay for assistive technology).",
+          "values": [
+            {
+              "name": "always"
+            },
+            {
+              "name": "active"
+            },
+            {
+              "name": "never"
+            }
+          ]
+        },
+        {
+          "name": "indicator",
+          "description": "How the current destination is marked besides its color.",
+          "values": [
+            {
+              "name": "pill"
+            },
+            {
+              "name": "line"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for the current item and the action (default: primary)."
+        },
+        {
+          "name": "variant",
+          "description": "default: a bar across the bottom; floating: a rounded bar off the edges.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "floating"
+            }
+          ]
+        },
+        {
+          "name": "hide-on-scroll",
+          "description": "Slides away while the content scrolls down, back on the way up.",
+          "valueSet": "v"
+        },
+        {
+          "name": "fixed",
+          "description": "Pinned to the bottom of the window (outside a shell).",
+          "valueSet": "v"
+        },
+        {
+          "name": "scroll-target",
+          "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window)."
+        }
+      ]
+    },
+    {
+      "name": "ray-bottom-nav-item",
+      "description": "A link with href, else a button. The badge is read with the label (\"Messages, 3\").",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Its value (default: its href, else its label)."
+        },
+        {
+          "name": "label",
+          "description": "The label."
+        },
+        {
+          "name": "icon",
+          "description": "An icon of the registry (or put one in the icon slot)."
+        },
+        {
+          "name": "href",
+          "description": "Makes it a link."
+        },
+        {
+          "name": "badge",
+          "description": "A count or a short text on the icon."
+        },
+        {
+          "name": "dot",
+          "description": "A dot on the icon (something new).",
+          "valueSet": "v"
+        },
+        {
+          "name": "active",
+          "description": "Set by the bar: the current destination.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "action",
+          "description": "A raised round button (\"New\"): it fires ray-select on the bar, it is not a destination.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-breadcrumbs",
+      "description": "A <nav aria-label=\"Breadcrumb\"> around a list. The last crumb is the current page (aria-current=\"page\") unless one says current.",
+      "attributes": [
+        {
+          "name": "separator",
+          "description": "Text between crumbs (\"/\", \"›\", \"·\") or \"chevron\" (an icon)."
+        },
+        {
+          "name": "max-items",
+          "description": "Longer paths show the first crumb, \"…\" (a button that expands them) and the last max-items − 1."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the nav."
+        },
+        {
+          "name": "size",
+          "description": "Font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-breadcrumb",
+      "description": "A link with href (text without, or when current).",
+      "attributes": [
+        {
+          "name": "href",
+          "description": "Where it leads."
+        },
+        {
+          "name": "current",
+          "description": "This crumb is the current page (default: the last).",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-nav-link",
+      "description": "A link with href (aria-current=page when active), or a button that toggles its nested links.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Text."
+        },
+        {
+          "name": "description",
+          "description": "Second line."
+        },
+        {
+          "name": "href",
+          "description": "Makes it a link (ignored when it has nested links)."
+        },
+        {
+          "name": "active",
+          "description": "The current page or section.",
+          "valueSet": "v"
+        },
+        {
+          "name": "opened",
+          "description": "Nested links are shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Style of the active state.",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "subtle"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Active color."
+        },
+        {
+          "name": "icon-only",
+          "description": "Only the icon (left section), centered; the label becomes its accessible name and tooltip. A collapsed ray-sidebar sets it.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-pagination",
+      "description": "JS: setPage(n), next(), previous(), first(), last(); page (clamped value).",
+      "attributes": [
+        {
+          "name": "total",
+          "description": "Number of pages."
+        },
+        {
+          "name": "value",
+          "description": "Current page (1-based)."
+        },
+        {
+          "name": "siblings",
+          "description": "Pages shown on each side of the current one."
+        },
+        {
+          "name": "boundaries",
+          "description": "Pages always shown at the start and the end."
+        },
+        {
+          "name": "with-edges",
+          "description": "Adds first/last page buttons.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-controls",
+          "description": "Hides the previous/next (and first/last) buttons.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Color of the current page: a palette color or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Item size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius of the items.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the navigation landmark."
+        }
+      ]
+    },
+    {
+      "name": "ray-sidebar",
+      "description": "Put ray-sidebar-group + ray-nav-link (with an icon in slot=left) inside. Collapsed, nav links show only their icon (the label becomes the tooltip) and the host has the collapsed attribute, so your own header/footer content can hide with CSS (ray-sidebar[collapsed] .brand-name { display: none }).",
+      "attributes": [
+        {
+          "name": "collapsed",
+          "description": "Wide screens: an icon rail instead of the full panel.",
+          "valueSet": "v"
+        },
+        {
+          "name": "open",
+          "description": "Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it).",
+          "valueSet": "v"
+        },
+        {
+          "name": "side",
+          "description": "The edge it sits on.",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "right"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "A panel against the edge, or a floating card with a margin.",
+          "values": [
+            {
+              "name": "sidebar"
+            },
+            {
+              "name": "floating"
+            }
+          ]
+        },
+        {
+          "name": "width",
+          "description": "Width when expanded (CSS length). Default 16rem."
+        },
+        {
+          "name": "collapsed-width",
+          "description": "Width of the icon rail. Default 3.5rem."
+        },
+        {
+          "name": "breakpoint",
+          "description": "At this viewport width and below, it becomes a drawer."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of its navigation."
+        }
+      ]
+    },
+    {
+      "name": "ray-sidebar-group",
+      "description": "A titled section of nav links; the title fades out (keeping its height) when the sidebar collapses.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Section title."
+        }
+      ]
+    },
+    {
+      "name": "ray-stepper",
+      "description": "The steps are a labelled list; the active one has aria-current=\"step\" and each reads \"Step 2 of 4: Shipping, completed\". Only the active step's content shows; past the last step, the completed slot.",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "Index of the active step (steps.length: completed)."
+        },
+        {
+          "name": "orientation",
+          "description": "Steps in a row above the content, or in a column beside it.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "icon-position",
+          "description": "Label beside the number, or under it (narrow screens, many steps).",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "top"
+            }
+          ]
+        },
+        {
+          "name": "allow-step-select",
+          "description": "Completed steps are buttons that go back to them.",
+          "valueSet": "v"
+        },
+        {
+          "name": "linear",
+          "description": "With allow-step-select off, false lets the user jump to any step.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Size of the numbers.",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for active and completed steps (default: primary)."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the list of steps."
+        }
+      ]
+    },
+    {
+      "name": "ray-step",
+      "description": "A step: its header is drawn by the stepper, its content shows while it is active.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The label."
+        },
+        {
+          "name": "description",
+          "description": "A line under the label."
+        },
+        {
+          "name": "icon",
+          "description": "An icon instead of the number."
+        },
+        {
+          "name": "completed-icon",
+          "description": "The icon once done (default: check)."
+        },
+        {
+          "name": "loading",
+          "description": "A spinner instead of the number.",
+          "valueSet": "v"
+        },
+        {
+          "name": "error",
+          "description": "An error message: red step, the message as its description."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be selected.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-tabs",
+      "description": "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Value of the active tab (default: the first enabled one)."
+        },
+        {
+          "name": "variant",
+          "description": "Tab style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "pills"
+            }
+          ]
+        },
+        {
+          "name": "orientation",
+          "description": "Tab list direction (and arrow keys).",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Active indicator color."
+        },
+        {
+          "name": "activation",
+          "description": "manual: arrows move focus, Enter/Space activates.",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "manual"
+            }
+          ]
+        },
+        {
+          "name": "grow",
+          "description": "Tabs share the full width.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-tab",
+      "description": "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Matches a ray-tab-panel's value."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be activated.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-tab-panel",
+      "description": "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Matches a ray-tab's value."
+        }
+      ]
+    },
+    {
+      "name": "ray-command-palette",
+      "description": "Running an action fires ray-select and calls its onSelect. The best matches come first, grouped.",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "query",
+          "description": "The search text."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder of the search field."
+        },
+        {
+          "name": "hotkey",
+          "description": "Toggle shortcut (mod = ⌘ on macOS, Ctrl elsewhere); empty to disable."
+        },
+        {
+          "name": "limit",
+          "description": "Maximum results."
+        },
+        {
+          "name": "empty-label",
+          "description": "Text without results."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name."
+        },
+        {
+          "name": "hide-hint",
+          "description": "No keyboard hint at the bottom.",
+          "valueSet": "v"
+        },
+        {
+          "name": "native-menus",
+          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+          "valueSet": "v"
+        },
+        {
+          "name": "overlay-blur",
+          "description": "Blur of the page behind: px (\"8\"), a CSS length or \"none\". Default: --ray-overlay-blur ([overlay] blur in tokens.toml)."
+        }
+      ]
+    },
+    {
+      "name": "ray-dialog",
+      "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Shown as a modal.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Heading (also the dialog's accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "A line under the title (the dialog's accessible description)."
+        },
+        {
+          "name": "size",
+          "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window."
+        },
+        {
+          "name": "height",
+          "description": "Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window."
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: lg."
+        },
+        {
+          "name": "position",
+          "description": "Vertical placement.",
+          "values": [
+            {
+              "name": "center"
+            },
+            {
+              "name": "top"
+            }
+          ]
+        },
+        {
+          "name": "persistent",
+          "description": "Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-close",
+          "description": "No close button in the header.",
+          "valueSet": "v"
+        },
+        {
+          "name": "overlay-blur",
+          "description": "Blur of the page behind: px (\"8\"), a CSS length or \"none\". Default: --ray-overlay-blur ([overlay] blur in tokens.toml)."
+        }
+      ]
+    },
+    {
+      "name": "ray-drawer",
+      "description": "Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue).",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Heading (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "A line under the title (the drawer's accessible description)."
+        },
+        {
+          "name": "position",
+          "description": "The edge it slides from.",
+          "values": [
+            {
+              "name": "right"
+            },
+            {
+              "name": "left"
+            },
+            {
+              "name": "top"
+            },
+            {
+              "name": "bottom"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length."
+        },
+        {
+          "name": "modeless",
+          "description": "No backdrop nor scroll lock: the page stays interactive (a side panel).",
+          "valueSet": "v"
+        },
+        {
+          "name": "floating",
+          "description": "Detached from the edge, with rounded corners.",
+          "valueSet": "v"
+        },
+        {
+          "name": "persistent",
+          "description": "Escape and backdrop clicks do not close it.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-close",
+          "description": "No close button in the header.",
+          "valueSet": "v"
+        },
+        {
+          "name": "overlay-blur",
+          "description": "Blur of the page behind: px (\"8\"), a CSS length or \"none\". Default: --ray-overlay-blur ([overlay] blur in tokens.toml)."
+        }
+      ]
+    },
+    {
+      "name": "ray-menu",
+      "description": "A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "placement",
+          "description": "Preferred side and alignment.",
+          "values": [
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom"
+            },
+            {
+              "name": "bottom-end"
+            },
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "right-start"
+            },
+            {
+              "name": "left-start"
+            }
+          ]
+        },
+        {
+          "name": "context",
+          "description": "Opens on right click (contextmenu) over the trigger area, at the pointer.",
+          "valueSet": "v"
+        },
+        {
+          "name": "keep-open",
+          "description": "Choosing an item does not close the menu.",
+          "valueSet": "v"
+        },
+        {
+          "name": "native",
+          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-menu-item",
+      "description": "A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Reported in ray-select (default: the text)."
+        },
+        {
+          "name": "disabled",
+          "description": "Skipped by the keyboard, cannot be chosen.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Text and hover color (e.g. red for destructive actions)."
+        }
+      ]
+    },
+    {
+      "name": "ray-menu-label",
+      "description": "A section caption inside the menu.",
+      "attributes": []
+    },
+    {
+      "name": "ray-menu-divider",
+      "description": "A separator between groups of items.",
+      "attributes": []
+    },
+    {
+      "name": "ray-popover",
+      "description": "Positioned in JS (flip + shift to stay in the viewport). JS: show(), hide(), toggle().",
+      "attributes": [
+        {
+          "name": "open",
+          "description": "Shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "placement",
+          "description": "Preferred side and alignment.",
+          "values": [
+            {
+              "name": "bottom"
+            },
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom-end"
+            },
+            {
+              "name": "top"
+            },
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "left"
+            },
+            {
+              "name": "left-start"
+            },
+            {
+              "name": "left-end"
+            },
+            {
+              "name": "right"
+            },
+            {
+              "name": "right-start"
+            },
+            {
+              "name": "right-end"
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "description": "Gap to the trigger in px."
+        },
+        {
+          "name": "width",
+          "description": "Panel width (px number or CSS length). Default: its content."
+        },
+        {
+          "name": "match-width",
+          "description": "At least as wide as the trigger.",
+          "valueSet": "v"
+        },
+        {
+          "name": "padding",
+          "description": "Panel padding.",
+          "values": [
+            {
+              "name": "0"
+            },
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "trap-focus",
+          "description": "Moves focus into the panel when opened and keeps Tab inside it.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-tooltip",
+      "description": "A short hint on hover and focus of its child; the label also becomes the child's accessible description.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Tooltip text."
+        },
+        {
+          "name": "placement",
+          "description": "Preferred side.",
+          "values": [
+            {
+              "name": "top"
+            },
+            {
+              "name": "bottom"
+            },
+            {
+              "name": "left"
+            },
+            {
+              "name": "right"
+            },
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom-end"
+            }
+          ]
+        },
+        {
+          "name": "open-delay",
+          "description": "ms before showing."
+        },
+        {
+          "name": "close-delay",
+          "description": "ms before hiding."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: inverted foreground/background."
+        },
+        {
+          "name": "disabled",
+          "description": "Never shows.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-accordion",
+      "description": "Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Open item's value; with multiple, an array (attribute: comma-separated)."
+        },
+        {
+          "name": "multiple",
+          "description": "Several items may be open.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "Visual style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "contained"
+            },
+            {
+              "name": "separated"
+            },
+            {
+              "name": "filled"
+            }
+          ]
+        },
+        {
+          "name": "chevron-position",
+          "description": "Side of the chevron.",
+          "values": [
+            {
+              "name": "right"
+            },
+            {
+              "name": "left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-accordion-item",
+      "description": "Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Identifies the item in the accordion's value."
+        },
+        {
+          "name": "label",
+          "description": "Header text (or slot=label)."
+        },
+        {
+          "name": "description",
+          "description": "A secondary line under the label, in the header."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be toggled.",
+          "valueSet": "v"
+        },
+        {
+          "name": "heading-level",
+          "description": "aria-level of the header."
+        }
+      ]
+    },
+    {
+      "name": "ray-attachment",
+      "description": "Assign a File to `file` to fill name, size, type and an image thumbnail. Removing it (× button) fires a cancelable ray-remove and then removes the element.",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "File name (ellipsized; full name in the tooltip)."
+        },
+        {
+          "name": "size",
+          "description": "Size in bytes, shown as \"12 KB\", \"3.4 MB\"."
+        },
+        {
+          "name": "type",
+          "description": "MIME type: picks the icon (image or file) and, with the name, the extension badge."
+        },
+        {
+          "name": "src",
+          "description": "Thumbnail URL for images (falls back to the icon if it fails to load)."
+        },
+        {
+          "name": "href",
+          "description": "Makes the name a download link."
+        },
+        {
+          "name": "progress",
+          "description": "Upload progress 0–100: a thin bar and \"Uploading… 45%\". Unset: done."
+        },
+        {
+          "name": "status",
+          "description": "Explicit state. Default: \"uploading\" while progress is set, else \"done\".",
+          "values": [
+            {
+              "name": "uploading"
+            },
+            {
+              "name": "done"
+            },
+            {
+              "name": "error"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text shown with status=\"error\" (default \"Upload failed\")."
+        },
+        {
+          "name": "removable",
+          "description": "Shows a remove (×) button.",
+          "valueSet": "v"
+        },
+        {
+          "name": "remove-label",
+          "description": "Accessible label of the remove button; {name} is replaced by the file name."
+        },
+        {
+          "name": "variant",
+          "description": "row: a compact chip; card: the thumbnail on top.",
+          "values": [
+            {
+              "name": "row"
+            },
+            {
+              "name": "card"
+            }
+          ]
+        },
+        {
+          "name": "disabled",
+          "description": "Dimmed, not removable, the name is not a link.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-attachments",
+      "description": "A wrapping row of ray-attachment elements.",
+      "attributes": []
+    },
+    {
+      "name": "ray-avatar",
+      "description": "An image, the initials of a name, or a placeholder icon.",
+      "attributes": [
+        {
+          "name": "src",
+          "description": "Image URL; falls back to initials if it fails to load."
+        },
+        {
+          "name": "alt",
+          "description": "Accessible name (default: name)."
+        },
+        {
+          "name": "name",
+          "description": "Person or entity name; its initials are shown without an image."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color."
+        },
+        {
+          "name": "variant",
+          "description": "Style of the initials/placeholder.",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "default"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Diameter.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: full.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-badge",
+      "description": "A short status label.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "Visual style.",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "dot"
+            },
+            {
+              "name": "default"
+            },
+            {
+              "name": "gradient"
+            }
+          ]
+        },
+        {
+          "name": "gradient",
+          "description": "With variant=gradient: \"from to [deg]\", palette colors or CSS colors (\"teal blue 90\"). Default: the --ray-gradient-* tokens."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color."
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: full.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "normal-case",
+          "description": "Keeps the text as written instead of uppercase.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-blockquote",
+      "description": "Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot=\"cite\": an avatar, a name, a role).",
+      "attributes": [
+        {
+          "name": "cite",
+          "description": "Who said it, shown below the quote (\"— Grace Hopper\")."
+        },
+        {
+          "name": "href",
+          "description": "URL of the source: the inner blockquote's cite attribute."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary."
+        },
+        {
+          "name": "variant",
+          "description": "light: tinted background; outline: border and edge only; filled: solid color (a pull quote).",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "filled"
+            }
+          ]
+        },
+        {
+          "name": "icon",
+          "description": "Registry icon of the mark, or none. The icon slot replaces it."
+        },
+        {
+          "name": "size",
+          "description": "Text size (lg for a pull quote).",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "padding",
+          "description": "Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md."
+        },
+        {
+          "name": "hide-edge",
+          "description": "No colored edge on the start side (the tint, border and mark stay).",
+          "valueSet": "v"
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: md."
+        }
+      ]
+    },
+    {
+      "name": "ray-carousel",
+      "description": "Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it.",
+      "attributes": [
+        {
+          "name": "index",
+          "description": "Current position (0-based). Setting it scrolls there."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the carousel region."
+        },
+        {
+          "name": "slide-size",
+          "description": "Size of each slide along the scroll axis (\"100%\" by default; \"50%\", \"18rem\"…)."
+        },
+        {
+          "name": "slide-gap",
+          "description": "Space between slides (default var(--ray-space-4))."
+        },
+        {
+          "name": "align",
+          "description": "Where a slide snaps in the viewport.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            }
+          ]
+        },
+        {
+          "name": "orientation",
+          "description": "Scroll axis (vertical needs a height; 20rem by default).",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "loop",
+          "description": "next() on the last position goes to the first, prev() on the first to the last.",
+          "valueSet": "v"
+        },
+        {
+          "name": "autoplay",
+          "description": "Milliseconds between automatic moves (0: off). Pauses on hover, focus and when the page is hidden; starts paused with reduced motion. Shows a pause/play button."
+        },
+        {
+          "name": "hide-controls",
+          "description": "No previous/next buttons.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-indicators",
+          "description": "No indicator dots.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-code",
+      "description": "The code comes from the code property, a <script type=\"text/plain\"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.",
+      "attributes": [
+        {
+          "name": "language",
+          "description": "The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text."
+        },
+        {
+          "name": "filename",
+          "description": "A file name or title in the header; also the scroll region's accessible name."
+        },
+        {
+          "name": "line-numbers",
+          "description": "Numbers each line (not copied, not selectable).",
+          "valueSet": "v"
+        },
+        {
+          "name": "highlight",
+          "description": "Lines to highlight: \"3, 5-7\"."
+        },
+        {
+          "name": "wrap",
+          "description": "Wraps long lines instead of scrolling sideways.",
+          "valueSet": "v"
+        },
+        {
+          "name": "max-height",
+          "description": "Height before it scrolls: px as a number, or a CSS length. A taller block gets a \"Show all N lines\" button."
+        },
+        {
+          "name": "expanded",
+          "description": "Shown whole, past max-height.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-copy",
+          "description": "No copy button.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-header",
+          "description": "No header bar (the copy button floats in the corner).",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: md."
+        },
+        {
+          "name": "copy-label",
+          "description": "Accessible name of the copy button."
+        },
+        {
+          "name": "copied-label",
+          "description": "Shown and announced after copying."
+        }
+      ]
+    },
+    {
+      "name": "ray-icon",
+      "description": "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Registered icon name (iconNames())."
+        },
+        {
+          "name": "size",
+          "description": "xs…xl or any CSS length. Default: 1em."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name; without it the icon is decorative (hidden from screen readers)."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the text color."
+        },
+        {
+          "name": "stroke",
+          "description": "Stroke width for stroke icons (default: --ray-icon-stroke, 2)."
+        }
+      ]
+    },
+    {
+      "name": "ray-indicator",
+      "description": "Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label=\"Grace, online\").",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Text in the indicator (a word or a count). Empty: a dot."
+        },
+        {
+          "name": "position",
+          "description": "Which point of the content's box it sits on.",
+          "values": [
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top-center"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "middle-start"
+            },
+            {
+              "name": "middle-center"
+            },
+            {
+              "name": "middle-end"
+            },
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom-center"
+            },
+            {
+              "name": "bottom-end"
+            }
+          ]
+        },
+        {
+          "name": "offset",
+          "description": "Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the primary."
+        },
+        {
+          "name": "size",
+          "description": "Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px."
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, none, or a CSS length. Default: round."
+        },
+        {
+          "name": "max",
+          "description": "A numeric label above it shows as max+ (99+)."
+        },
+        {
+          "name": "inline",
+          "description": "inline-block, to sit within a line of text.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-border",
+          "description": "A ring in the background color, to separate it from the content.",
+          "valueSet": "v"
+        },
+        {
+          "name": "processing",
+          "description": "A pulse around it (live, recording, syncing).",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Hides the indicator (the content stays).",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-kbd",
+      "description": "A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons.",
+      "attributes": [
+        {
+          "name": "size",
+          "description": "Font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "default: raised keycap; filled: flat muted chip; outline: flat with a border.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-stat",
+      "description": "A metric tile: label, value, change against a previous period, note.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "What is measured."
+        },
+        {
+          "name": "value",
+          "description": "The figure, already formatted."
+        },
+        {
+          "name": "diff",
+          "description": "Change (positive is shown as good, in green; see inverse)."
+        },
+        {
+          "name": "diff-unit",
+          "description": "Unit of diff."
+        },
+        {
+          "name": "note",
+          "description": "A line under the value (compared to…)."
+        },
+        {
+          "name": "inverse",
+          "description": "Lower is better (errors, latency): negative diffs are green.",
+          "valueSet": "v"
+        },
+        {
+          "name": "plain",
+          "description": "Without the card around.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-table",
+      "description": "Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height.",
+      "attributes": [
+        {
+          "name": "row-key",
+          "description": "Field that identifies a row (selection)."
+        },
+        {
+          "name": "selectable",
+          "description": "A checkbox per row and a select-all checkbox.",
+          "valueSet": "v"
+        },
+        {
+          "name": "manual-sort",
+          "description": "Do not sort here: listen to ray-sort and pass sorted data.",
+          "valueSet": "v"
+        },
+        {
+          "name": "clickable-rows",
+          "description": "Rows are focusable and fire ray-row-click (Enter too; arrows move between rows).",
+          "valueSet": "v"
+        },
+        {
+          "name": "striped",
+          "description": "Alternate row background.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-border",
+          "description": "Border around the table.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-column-borders",
+          "description": "Borders between columns.",
+          "valueSet": "v"
+        },
+        {
+          "name": "sticky-header",
+          "description": "The header stays visible while scrolling (with --ray-table-max-height).",
+          "valueSet": "v"
+        },
+        {
+          "name": "no-hover",
+          "description": "No row highlight on hover.",
+          "valueSet": "v"
+        },
+        {
+          "name": "density",
+          "description": "Cell padding.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Caption (also the table's accessible name)."
+        },
+        {
+          "name": "empty-label",
+          "description": "Text without rows (or put a ray-empty-state in slot=empty)."
+        }
+      ]
+    },
+    {
+      "name": "ray-timeline",
+      "description": "A list (role=\"list\") of ray-timeline-item.",
+      "attributes": [
+        {
+          "name": "active",
+          "description": "Index of the last reached item (-1: none)."
+        },
+        {
+          "name": "align",
+          "description": "Side of the line.",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "right"
+            }
+          ]
+        },
+        {
+          "name": "bullet-size",
+          "description": "Bullet size: px as a number or a CSS length (default 20px)."
+        },
+        {
+          "name": "line-width",
+          "description": "Line width in px (default 2)."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for what is reached (default: primary)."
+        },
+        {
+          "name": "reverse-active",
+          "description": "Counts active from the end (the latest event at the top).",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-timeline-item",
+      "description": "Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The title of the event."
+        },
+        {
+          "name": "time",
+          "description": "When (\"2 h ago\", a date)."
+        },
+        {
+          "name": "icon",
+          "description": "An icon of the registry in the bullet."
+        },
+        {
+          "name": "color",
+          "description": "Its own color (a failed step in red)."
+        },
+        {
+          "name": "line-variant",
+          "description": "The line to the next item (dashed: not happened yet).",
+          "values": [
+            {
+              "name": "solid"
+            },
+            {
+              "name": "dashed"
+            },
+            {
+              "name": "dotted"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-alert",
+      "description": "Announced as an alert. The icon follows the color (info, circle-check, alert-triangle, circle-x) unless icon or slot=icon.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Title."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color."
+        },
+        {
+          "name": "variant",
+          "description": "Visual style.",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "default"
+            },
+            {
+              "name": "transparent"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "icon",
+          "description": "A registered icon name, or none."
+        },
+        {
+          "name": "closable",
+          "description": "A close button; closing hides the alert (cancel ray-close to keep it).",
+          "valueSet": "v"
+        },
+        {
+          "name": "close-label",
+          "description": "Accessible name of the close button."
+        }
+      ]
+    },
+    {
+      "name": "ray-empty-state",
+      "description": "What a list, table or pane shows when it is empty: icon, title, text and the action that fills it.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Title."
+        },
+        {
+          "name": "compact",
+          "description": "Less padding.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-border",
+          "description": "Dashed border.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-notification",
+      "description": "notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info. The status icon and the loader are 1.5rem with a 1.5 stroke; set --ray-notification-icon-size and --ray-notification-icon-stroke to change them.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "Title."
+        },
+        {
+          "name": "color",
+          "description": "Status color: tints the status icon (and a slotted icon's circle)."
+        },
+        {
+          "name": "icon",
+          "description": "Status icon from the registry (default: from the color); \"none\" for no icon."
+        },
+        {
+          "name": "loading",
+          "description": "Shows a spinner (notify() does not auto-close it).",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-close",
+          "description": "No close button.",
+          "valueSet": "v"
+        },
+        {
+          "name": "with-border",
+          "description": "Draws a border.",
+          "valueSet": "v"
+        },
+        {
+          "name": "action-label",
+          "description": "Text of an action button (e.g. \"Undo\"); pressing it fires ray-action."
+        }
+      ]
+    },
+    {
+      "name": "ray-toaster",
+      "description": "Created by notify() when missing; add one yourself to choose its position. A stack (newest in front, older ones peeking behind) that spreads into a list on hover or keyboard focus; on touch screens a tap expands it, a tap outside collapses it, and a sideways swipe dismisses a toast. Auto-close pauses while expanded. Full width on phones.",
+      "attributes": [
+        {
+          "name": "position",
+          "description": "Corner of the stack.",
+          "values": [
+            {
+              "name": "bottom-right"
+            },
+            {
+              "name": "bottom-left"
+            },
+            {
+              "name": "bottom-center"
+            },
+            {
+              "name": "top-right"
+            },
+            {
+              "name": "top-left"
+            },
+            {
+              "name": "top-center"
+            }
+          ]
+        },
+        {
+          "name": "limit",
+          "description": "Maximum kept; the oldest go first."
+        },
+        {
+          "name": "visible",
+          "description": "Toasts shown in the collapsed stack (the rest wait, hidden)."
+        },
+        {
+          "name": "expand",
+          "description": "Always expanded: a list instead of a stack.",
+          "valueSet": "v"
+        },
+        {
+          "name": "gap",
+          "description": "Pixels between toasts when expanded."
+        }
+      ]
+    },
+    {
+      "name": "ray-progress",
+      "description": "A determinate or (without value) indeterminate progress bar, announced as a progressbar.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Progress, from 0 to max. Unset: indeterminate."
+        },
+        {
+          "name": "max",
+          "description": "The value of a full bar."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color."
+        },
+        {
+          "name": "size",
+          "description": "Bar height.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: full.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "striped",
+          "description": "Diagonal stripes.",
+          "valueSet": "v"
+        },
+        {
+          "name": "animated",
+          "description": "Moving stripes (with striped).",
+          "valueSet": "v"
+        },
+        {
+          "name": "show-value",
+          "description": "Shows the percentage: inside the bar on lg and xl, beside it on smaller sizes.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name (default: Progress)."
+        }
+      ]
+    },
+    {
+      "name": "ray-skeleton",
+      "description": "aria-busy=\"true\" on the host while loading; the placeholder is aria-hidden.",
+      "attributes": [
+        {
+          "name": "width",
+          "description": "Width (CSS length, a number is px). Default: 100% (a circle: 2.5rem)."
+        },
+        {
+          "name": "height",
+          "description": "Height of a block or of each line (CSS length, a number is px). Default: 1rem."
+        },
+        {
+          "name": "circle",
+          "description": "A circle (avatar placeholder): its diameter is width, else height.",
+          "valueSet": "v"
+        },
+        {
+          "name": "lines",
+          "description": "Number of text lines (the last one is shorter)."
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, full or a CSS length. Default: sm."
+        },
+        {
+          "name": "animation",
+          "description": "The loading effect (always none with reduced motion).",
+          "values": [
+            {
+              "name": "shimmer"
+            },
+            {
+              "name": "pulse"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "loaded",
+          "description": "Shows the slotted content instead of the placeholder.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-spinner",
+      "description": "An indeterminate loading indicator, announced as a status.",
+      "attributes": [
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Diameter.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Text read by screen readers."
+        }
+      ]
+    },
+    {
+      "name": "ray-app-bar",
+      "description": "It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one.",
+      "attributes": [
+        {
+          "name": "label",
+          "description": "The title."
+        },
+        {
+          "name": "description",
+          "description": "A line under the title."
+        },
+        {
+          "name": "center",
+          "description": "The title centered (iOS).",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "default: the page background; filled: the primary color; transparent: until it elevates.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "transparent"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Height: 48, 56 or 64 px.",
+          "values": [
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "scroll-behavior",
+          "description": "While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.",
+          "values": [
+            {
+              "name": "elevate"
+            },
+            {
+              "name": "hide"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "sticky",
+          "description": "Sticks to the top of the window (outside a shell).",
+          "valueSet": "v"
+        },
+        {
+          "name": "scroll-target",
+          "description": "A selector of the element whose scrolling it follows (default: its shell's, else the window)."
+        }
+      ]
+    },
+    {
+      "name": "ray-app-shell",
+      "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-elements/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout=\"alt\" or no header, the navbar and main start below it.",
+      "attributes": [
+        {
+          "name": "layout",
+          "description": "default: the header across the top; alt: the navbar full height, the header beside it.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "alt"
+            }
+          ]
+        },
+        {
+          "name": "breakpoint",
+          "description": "Width (px, em or rem) below which it takes the phone layout."
+        },
+        {
+          "name": "padding",
+          "description": "Padding of the main area: xs…xl, a number (px) or a CSS length."
+        }
+      ]
+    },
+    {
+      "name": "ray-aspect-ratio",
+      "description": "A box with a fixed width/height ratio; its image, video or iframe fills it.",
+      "attributes": [
+        {
+          "name": "ratio",
+          "description": "Width/height: \"16/9\", \"4:3\", \"1\" or a number."
+        },
+        {
+          "name": "fit",
+          "description": "How the media fills the box (object-fit).",
+          "values": [
+            {
+              "name": "cover"
+            },
+            {
+              "name": "contain"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius: xs…xl, full or a CSS length."
+        }
+      ]
+    },
+    {
+      "name": "ray-card",
+      "description": "A surface for grouped content, with optional media, header and footer.",
+      "attributes": [
+        {
+          "name": "padding",
+          "description": "Inner spacing (named space scale).",
+          "values": [
+            {
+              "name": "0"
+            },
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius. Default: --ray-radius-default.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "shadow",
+          "description": "Elevation.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "with-border",
+          "description": "Draws a border.",
+          "valueSet": "v"
+        },
+        {
+          "name": "variant",
+          "description": "default: card surface; filled: muted surface; outline: border without fill.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-center",
+      "description": "It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically.",
+      "attributes": [
+        {
+          "name": "inline",
+          "description": "As wide as its content (inline-flex): an icon beside text.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-container",
+      "description": "Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.",
+      "attributes": [
+        {
+          "name": "size",
+          "description": "Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length."
+        },
+        {
+          "name": "padding",
+          "description": "Side padding: xs…xl, a number (px) or a CSS length."
+        },
+        {
+          "name": "fluid",
+          "description": "No maximum width: the whole width, still padded.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-grid",
+      "description": "The widths are the grid's own (container queries: xs 36em, sm 48em, md 62em, lg 75em, xl 88em), so a grid in a narrow column or a phone frame drops to fewer columns. It needs a width from its parent: in a flex row give it one or let it grow. A child spans with data-span=\"2\"…\"12\" or \"full\".",
+      "attributes": [
+        {
+          "name": "cols",
+          "description": "Columns: a count, then counts from a width up (\"1 sm:2 lg:4\")."
+        },
+        {
+          "name": "min-col-width",
+          "description": "Instead of cols: as many columns of at least this width as fit (\"14rem\", 220)."
+        },
+        {
+          "name": "gap",
+          "description": "Space between cells: xs…xl, a number (px) or a CSS length."
+        },
+        {
+          "name": "row-gap",
+          "description": "Space between rows when it differs from gap."
+        },
+        {
+          "name": "align",
+          "description": "Vertical alignment of the cells in a row.",
+          "values": [
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-group",
+      "description": "A flex row on the host: the children are laid out directly, no wrapper.",
+      "attributes": [
+        {
+          "name": "gap",
+          "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+        },
+        {
+          "name": "align",
+          "description": "Cross-axis alignment.",
+          "values": [
+            {
+              "name": "center"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "baseline"
+            }
+          ]
+        },
+        {
+          "name": "justify",
+          "description": "Main-axis distribution: space-between for a title on one side and actions on the other.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "space-between"
+            },
+            {
+              "name": "space-around"
+            },
+            {
+              "name": "space-evenly"
+            }
+          ]
+        },
+        {
+          "name": "nowrap",
+          "description": "Keeps the children on one line.",
+          "valueSet": "v"
+        },
+        {
+          "name": "grow",
+          "description": "The children share the width equally.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
+      "name": "ray-scroll-area",
+      "description": "Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own.",
+      "attributes": [
+        {
+          "name": "height",
+          "description": "Height (CSS length)."
+        },
+        {
+          "name": "max-height",
+          "description": "Maximum height: it grows with its content up to this, then scrolls."
+        },
+        {
+          "name": "orientation",
+          "description": "Which ways it scrolls.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "both"
+            }
+          ]
+        },
+        {
+          "name": "type",
+          "description": "The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "hover"
+            },
+            {
+              "name": "never"
+            }
+          ]
+        },
+        {
+          "name": "no-shadows",
+          "description": "No edge shadows.",
+          "valueSet": "v"
+        },
+        {
+          "name": "threshold",
+          "description": "Distance from the end (px) at which ray-reach-end fires."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name: makes the scrolling box a named region."
+        }
+      ]
+    },
+    {
+      "name": "ray-separator",
+      "description": "A horizontal or vertical rule, optionally labeled (Mantine's Divider).",
+      "attributes": [
+        {
+          "name": "orientation",
+          "description": "Direction of the rule.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Text in the middle of a horizontal rule."
+        },
+        {
+          "name": "label-position",
+          "description": "Where the label sits.",
+          "values": [
+            {
+              "name": "left"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "right"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "Thickness (1–5px).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Line style.",
+          "values": [
+            {
+              "name": "solid"
+            },
+            {
+              "name": "dashed"
+            },
+            {
+              "name": "dotted"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-split",
+      "description": "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane.",
+      "attributes": [
+        {
+          "name": "orientation",
+          "description": "horizontal: side by side; vertical: stacked.",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "position",
+          "description": "Initial size of the start pane: px (280) or any CSS length (30%, 20rem)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum size of the start pane in px."
+        },
+        {
+          "name": "max",
+          "description": "Maximum size of the start pane in px."
+        },
+        {
+          "name": "collapsed",
+          "description": "The start pane is hidden.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "The divider cannot be moved.",
+          "valueSet": "v"
+        },
+        {
+          "name": "autosave",
+          "description": "A key: the size is saved in localStorage and restored."
+        }
+      ]
+    },
+    {
+      "name": "ray-stack",
+      "description": "A flex column on the host: the children are laid out directly, no wrapper.",
+      "attributes": [
+        {
+          "name": "gap",
+          "description": "Space between children: xs…xl (the space scale), a number (px) or any CSS length."
+        },
+        {
+          "name": "align",
+          "description": "Cross-axis alignment: stretch fills the width.",
+          "values": [
+            {
+              "name": "stretch"
+            },
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "baseline"
+            }
+          ]
+        },
+        {
+          "name": "justify",
+          "description": "Main-axis distribution (with a height to distribute).",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "space-between"
+            },
+            {
+              "name": "space-around"
+            },
+            {
+              "name": "space-evenly"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-statusbar",
+      "description": "The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "accent: the primary color (e.g. while debugging).",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "accent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-statusbar-item",
+      "description": "The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.",
+      "attributes": [
+        {
+          "name": "action",
+          "description": "A button (listen to click).",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Text color (red for errors…)."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name and tooltip (for icon-only or terse items)."
+        }
+      ]
+    },
+    {
+      "name": "ray-theme-toggle",
+      "description": "Icon button that cycles the document theme: system, light, dark.",
+      "attributes": [
+        {
+          "name": "size",
+          "description": "Control height.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

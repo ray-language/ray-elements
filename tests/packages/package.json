@@ -1,5 +1,5 @@
 {
-  "name": "ray-ds-package-checks",
+  "name": "ray-elements-package-checks",
   "private": true,
   "type": "module",
   "description": "Checks packages/* as an app would use them: small bundles take only what they use, and the types compile",

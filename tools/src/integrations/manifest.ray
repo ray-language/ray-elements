@@ -7,7 +7,7 @@ from components/meta import Component, Element, Prop, Named, all_elements, all_p
 from integrations/ts import prop_type, event_type, is_dom_prop;
 
 // `prefix`: the path of the components' directory from the manifest
-// ("components/" in @ray-ds/elements).
+// ("components/" in @raylang/elements).
 pub fn custom_elements(cs: [Component], prefix: string) -> Result<string, string> {
     let els = all_elements(cs);
     var modules = json.arr();

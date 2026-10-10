@@ -1,4 +1,4 @@
-// Vue 3 wrapper factory for ray-ds custom elements.
+// Vue 3 wrapper factory for ray-elements custom elements.
 //
 // Declared properties are assigned as DOM properties after mount and every
 // update. With a `model` ({ prop, events }), the wrapper supports v-model:

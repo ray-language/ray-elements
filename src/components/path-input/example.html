@@ -4,8 +4,8 @@
     <ray-switch id="demo-path-simulate" label="Simulate a std/ui window" description="Installs a stand-in for the raylang host, so Browse… shows here."></ray-switch>
   </div>
   <form class="demo-path-form" id="demo-path-form">
-    <ray-path-input name="workspace" label="Workspace" mode="folder" value="/Users/ada/Projects/ray-ds" required></ray-path-input>
-    <ray-path-input name="config" label="Tokens file" accept=".toml" value="/Users/ada/Projects/ray-ds/tokens.toml" description="The palette, spacing and radii the build reads."></ray-path-input>
+    <ray-path-input name="workspace" label="Workspace" mode="folder" value="/Users/ada/Projects/ray-elements" required></ray-path-input>
+    <ray-path-input name="config" label="Tokens file" accept=".toml" value="/Users/ada/Projects/ray-elements/tokens.toml" description="The palette, spacing and radii the build reads."></ray-path-input>
     <ray-path-input name="export" label="Export the theme to" mode="save" accept=".css,.json" value="/Users/ada/Desktop/theme.css"></ray-path-input>
     <div class="demo-row"><ray-button type="submit">Save settings</ray-button><span class="demo-muted" id="demo-path-out">In a browser these are plain text fields.</span></div>
   </form>
@@ -20,7 +20,7 @@
 </div>
 
 <script type="module">
-  import { getHost, setHost } from "@ray-ds/elements";
+  import { getHost, setHost } from "@raylang/elements";
 
   const baseName = (p) => p.split(/[\\/]/).pop();
   const dirName = (p) => p.slice(0, Math.max(0, p.lastIndexOf("/")));
@@ -34,7 +34,7 @@
       const dir = directory || "/Users/ada/Projects";
       if (mode === "folder") return `${dirName(dir) || dir}/ray-apps`;
       if (mode === "save") return `/Users/ada/Documents/${suggested || "untitled"}`;
-      return `${dir}/${baseName(dir) === "ray-ds" ? "" : "ray-ds/"}tokens.dark.toml`;
+      return `${dir}/${baseName(dir) === "ray-elements" ? "" : "ray-elements/"}tokens.dark.toml`;
     },
   };
   const toggle = document.getElementById("demo-path-simulate");

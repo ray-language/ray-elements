@@ -1,5 +1,5 @@
-// ray-ds tools. Run them with tools/run.sh from anywhere (or `ray run
-// src/main.ray …` inside tools/, whose ray.toml brings the ray_ds package):
+// ray-elements tools. Run them with tools/run.sh from anywhere (or `ray run
+// src/main.ray …` inside tools/, whose ray.toml brings the elements package):
 //
 //   tools/run.sh build                 tokens + docs + package
 //   tools/run.sh tokens [--check]      tokens.toml -> dist/tokens.css, dist/tokens.json, docs/foundations.html
@@ -12,10 +12,10 @@
 //   tools/run.sh site [--out DIR] [--base PATH]
 //                                                    the site ready to publish (default dist/site/, base /)
 //
-// Every command takes --root DIR (the ray-ds directory); by default the
+// Every command takes --root DIR (the ray-elements directory); by default the
 // current directory or its parent, whichever holds tokens.toml. Relative
 // paths in --root, --into, --components and wrap's --out are the caller's:
-// tools/run.sh passes its directory in RAY_DS_CWD.
+// tools/run.sh passes its directory in RAY_ELEMENTS_CWD.
 
 import std/fs;
 import tokens/model;
@@ -53,7 +53,7 @@ const USAGE: string = `usage: tools/run.sh <command> [--root DIR] …
   wrap --components DIR --out DIR      types, manifest and React/Vue wrappers for an app's own components
   webtest [FILTER]                     run tests/*.test.js in a std/ui webview
   site [--out DIR] [--base PATH]       the site ready to publish: every page and asset in DIR (default
-                                       dist/site); PATH is where it is served ("/ray-ds/" on GitHub Pages)`;
+                                       dist/site); PATH is where it is served ("/ray-elements/" on GitHub Pages)`;
 
 struct Opts {
     root: string,
@@ -87,7 +87,7 @@ fn main() -> int {
     match (result) {
         Result.Ok(code) => code,
         Result.Err(e) => {
-            eprint("ray-ds: ${e}");
+            eprint("ray-elements: ${e}");
             1
         },
     }
@@ -125,10 +125,10 @@ fn parse_opts(a: [string]) -> Result<Opts, string> {
     Result.Ok(o)
 }
 
-// A path the caller wrote, relative to where they are (RAY_DS_CWD, set by
+// A path the caller wrote, relative to where they are (RAY_ELEMENTS_CWD, set by
 // tools/run.sh, which runs the tools from tools/).
 fn from_caller(p: string) -> string {
-    match (env("RAY_DS_CWD")) {
+    match (env("RAY_ELEMENTS_CWD")) {
         Option.Some(cwd) if (cwd != "" && !p.starts_with("/")) => "${cwd}/${p}",
         _ => p,
     }
@@ -156,7 +156,7 @@ fn cmd_package(o: Opts) -> Result<int, string> {
     let written = package.run(o.root, cs)?;
     print("package: ${written.len()} files in packages/ (elements, react, vue)");
     let carried = raylang.run(o.root, package.info(o.root)?.version)?;
-    print("package: ray_ds/web carries ${carried} files (@ray-ds/elements in the raylang package)");
+    print("package: elements/web carries ${carried} files (@raylang/elements in the raylang package)");
     Result.Ok(0)
 }
 
@@ -207,7 +207,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
             "getting-started.html",
             "start",
             "Get started",
-            "Install ray-ds, load it in any app or a raylang app, and theme it."
+            "Install ray-elements, load it in any app or a raylang app, and theme it."
         )?,
         guide(
             root,
@@ -223,7 +223,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
             "charts.html",
             "charts",
             "Charts",
-            "Theme Chart.js, uPlot or ECharts with the ray-ds chart tokens."
+            "Theme Chart.js, uPlot or ECharts with the ray-elements chart tokens."
         )?,
         guide(
             root,
@@ -231,7 +231,7 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
             "raylang.html",
             "raylang",
             "raylang",
-            "What ray-ds adds in a raylang app, and the plan for the native bridge and the package."
+            "What ray-elements adds in a raylang app, and the plan for the native bridge and the package."
         )?
     ];
     for p in pages {
@@ -316,7 +316,7 @@ fn cmd_wrap(o: Opts) -> Result<int, string> {
     if (o.components == "" || o.out == "") {
         return Result.Err("wrap: --components DIR and --out DIR are required\n${USAGE}");
     }
-    // wrap's --out is the caller's path (site's is inside the ray-ds directory).
+    // wrap's --out is the caller's path (site's is inside the ray-elements directory).
     o.out = from_caller(o.out);
     let cs = meta.load_dir(o.components)?;
     if (cs.len() == 0) {
@@ -395,7 +395,7 @@ fn cmd_site(o: Opts) -> Result<int, string> {
         out = out.substring(0, out.len() - 1);
     }
     if (out.starts_with("/") || out.contains("..") || out == "docs" || out == "src" || out == "dist") {
-        return Result.Err("--out must be a new directory inside the ray-ds directory (got '${out}')");
+        return Result.Err("--out must be a new directory inside the ray-elements directory (got '${out}')");
     }
     var base = if (o.base == "") { "/" } else { o.base };
     if (!base.starts_with("/")) {

@@ -1,6 +1,6 @@
-# Extending ray-ds
+# Extending ray-elements
 
-Every ray-ds component is a class built on a few public base classes, and an
+Every ray-elements component is a class built on a few public base classes, and an
 app can use the same ones. Three levels, from least to most code:
 
 | Level | What | Gets |
@@ -16,7 +16,7 @@ in [`examples/extending`](examples/extending), tested in the real webview by
 ## The contract
 
 Stable (public or protected): everything documented here and in
-`ray-ds.d.ts`. Internal: any member of a ray-ds class whose name starts with
+`ray-elements.d.ts`. Internal: any member of a ray-elements class whose name starts with
 `_` or `#`. The core keeps its own state in `#private` fields, so a subclass
 cannot break it by accident — but **do not name your own members with a
 leading `_`**: component internals (`_el`, `_default`…) still use it.
@@ -122,7 +122,7 @@ panels included. **Shortcuts** (`core/hotkey.js`): `matchesHotkey(e, "mod+k")`,
 ## Level 0: styling without a new component
 
 ```js
-import { RayButton, css } from "@ray-ds/elements";
+import { RayButton, css } from "@raylang/elements";
 
 // A custom variant: <ray-button variant="brand">
 RayButton.extendStyles(css`
@@ -137,14 +137,14 @@ From a plain stylesheet, `::part()` works too:
 App-wide defaults for properties left unset:
 
 ```js
-import { configure } from "@ray-ds/elements";
+import { configure } from "@raylang/elements";
 configure({ defaults: { "ray-button": { variant: "light", size: "md" } } });
 ```
 
 ## Level 1: extend a component
 
 ```js
-import { RayButton, css, define } from "@ray-ds/elements";
+import { RayButton, css, define } from "@raylang/elements";
 
 export class AppSaveButton extends RayButton {
   static properties = { ...RayButton.properties, dirty: { type: Boolean, reflect: true } };
@@ -159,22 +159,22 @@ define("app-save-button", AppSaveButton);
 
 ## Types, manifest and React/Vue wrappers for your components
 
-Describe each component in a `component.toml` (same format as ray-ds's, any
+Describe each component in a `component.toml` (same format as ray-elements's, any
 `category`, `extends` naming its parent class) next to its JS, then:
 
 ```sh
 tools/run.sh wrap --components ../my-app/src/components --out ../my-app/src/ray-wrappers
 ```
 
-It writes `index.js` (registers your components, re-exports ray-ds),
-`index.d.ts` (classes extending ray-ds's, `HTMLElementTagNameMap`),
+It writes `index.js` (registers your components, re-exports ray-elements),
+`index.d.ts` (classes extending ray-elements's, `HTMLElementTagNameMap`),
 `react.js`/`react.d.ts` and `vue.js`/`vue.d.ts` (made with `createComponent`
-from `@ray-ds/react` / `@ray-ds/vue`, inheriting the parent's props: an
+from `@raylang/react` / `@raylang/vue`, inheriting the parent's props: an
 `extends = "FieldControl"` component gets `label`, `required`… typed) and
 `custom-elements.json`. To wrap a component by hand instead:
 
 ```js
-import { createComponent } from "@ray-ds/react";
+import { createComponent } from "@raylang/react";
 export const AppSaveButton = createComponent("app-save-button", {
   properties: ["dirty", "variant"], events: { onRaySelect: "ray-select" },
 });

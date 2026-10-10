@@ -104,7 +104,7 @@ description = "How chosen files show: full-width rows, thumbnail cards, or not a
 [ray-file-upload.properties.native]
 type = "boolean"
 reflect = true
-description = "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files."
+description = "With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files."
 
 [ray-file-upload.properties.color]
 type = "string"

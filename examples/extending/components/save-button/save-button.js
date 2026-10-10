@@ -1,7 +1,7 @@
 // Level 1 — extend a component: <app-save-button> is a ray-button (variants,
 // sizes, loading, form submit, ARIA…) with a `dirty` state of its own.
 
-import { RayButton, css, define } from "@ray-ds/elements";
+import { RayButton, css, define } from "@raylang/elements";
 
 const styles = css`
   .dot {

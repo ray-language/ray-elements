@@ -1,16 +1,16 @@
 {
-  "name": "@ray-ds/react",
+  "name": "@raylang/react",
   "version": "0.3.0",
-  "description": "React wrappers of the ray-ds web components",
+  "description": "React wrappers of the ray-elements web components",
   "license": "Apache-2.0",
   "keywords": ["web-components", "design-system", "ui", "raylang", "react"],
-  "homepage": "https://github.com/ray-language/ray-ds#readme",
+  "homepage": "https://github.com/ray-language/ray-elements#readme",
   "bugs": {
-    "url": "https://github.com/ray-language/ray-ds/issues"
+    "url": "https://github.com/ray-language/ray-elements/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ray-language/ray-ds.git",
+    "url": "git+https://github.com/ray-language/ray-elements.git",
     "directory": "packages/react"
   },
   "publishConfig": {
@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@ray-ds/elements": "^0.3.0",
+    "@raylang/elements": "^0.3.0",
     "react": ">=18"
   }
 }

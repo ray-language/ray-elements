@@ -3,7 +3,7 @@
 // gives it the top-layer panel, anchored placement with flip/shift, Escape,
 // focus return and the open/close events.
 
-import { Floating, floatingStyles, css, define } from "@ray-ds/elements";
+import { Floating, floatingStyles, css, define } from "@raylang/elements";
 
 const styles = css`
   .panel { padding: var(--ray-space-md); width: max-content; max-width: 20rem; }

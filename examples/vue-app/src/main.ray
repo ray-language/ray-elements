@@ -1,5 +1,5 @@
-// ray-ds Vue example: a std/ui window whose page (frontend/, Vite + Vue)
-// is built with the @ray-ds/vue wrappers (v-model). The form sends the new project as
+// ray-elements Vue example: a std/ui window whose page (frontend/, Vite + Vue)
+// is built with the @raylang/vue wrappers (v-model). The form sends the new project as
 // JSON with window.ray.request; this program answers with ui.reply.
 //
 //   ray dev                     Vite dev server with hot reload, in a native window
@@ -12,7 +12,7 @@ import std/json;
 import std/time;
 import std/ui;
 
-const TITLE: string = "ray-ds · Vue";
+const TITLE: string = "ray-elements · Vue";
 
 fn main() -> int {
     // Under `ray dev` the build may not exist yet (the dev server serves the page): only warn.

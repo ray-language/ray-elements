@@ -9,7 +9,7 @@ export default defineConfig({
       template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('ray-') } },
     }),
   ],
-  // @ray-ds/* are file: links to ray-ds/packages: resolve their imports (vue)
+  // @raylang/* are file: links to ray-elements/packages: resolve their imports (vue)
   // from this app, and see regenerated packages without reinstalling.
   resolve: { preserveSymlinks: true },
   // Relative URLs: the build is served from ray://app/ by the raylang program.

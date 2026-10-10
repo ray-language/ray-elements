@@ -1,5 +1,5 @@
-// A std/ui window whose form is built with ray-ds components, copied into
-// assets/ray-ds with `ray run ../../tools/src/main.ray add … --into assets/ray-ds`.
+// A std/ui window whose form is built with ray-elements components, copied into
+// assets/ray-elements with `ray run ../../tools/src/main.ray add … --into assets/ray-elements`.
 // The page sends the submitted form as `create:<json>`.
 //
 //   ray run                 open the window; Ctrl-C or close it to quit

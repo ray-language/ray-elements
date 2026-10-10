@@ -1,9 +1,9 @@
 // `package`: writes the npm packages under packages/ (generated, replaced
 // wholesale on every run):
 //
-//   packages/elements  @ray-ds/elements  the web components + tokens + types + manifests
-//   packages/react     @ray-ds/react     React wrappers (React 18/19)
-//   packages/vue       @ray-ds/vue       Vue 3 wrappers with v-model + plugin
+//   packages/elements  @raylang/elements  the web components + tokens + types + manifests
+//   packages/react     @raylang/react     React wrappers (React 18/19)
+//   packages/vue       @raylang/vue       Vue 3 wrappers with v-model + plugin
 //
 // Consume them from a Vite app with file: dependencies (see examples/).
 
@@ -25,12 +25,12 @@ pub struct Info {
 }
 
 pub fn info(root: string) -> Result<Info, string> {
-    let entries = toml.parse_toml(fs.read_file("${root}/ray-ds.toml")?)?;
-    let i = Info { scope: "@ray-ds", version: "0.0.0", description: "", license: "Apache-2.0", repository: "", homepage: "" };
+    let entries = toml.parse_toml(fs.read_file("${root}/ray-elements.toml")?)?;
+    let i = Info { scope: "@raylang", version: "0.0.0", description: "", license: "Apache-2.0", repository: "", homepage: "" };
     for e in entries {
         let v = match (e.value) {
             TomlValue.TStr(s) => s,
-            _ => return Result.Err("ray-ds.toml: ${e.key} must be a string"),
+            _ => return Result.Err("ray-elements.toml: ${e.key} must be a string"),
         };
         if (e.key == "package.scope") {
             i.scope = v;
@@ -45,11 +45,11 @@ pub fn info(root: string) -> Result<Info, string> {
         } else if (e.key == "package.homepage") {
             i.homepage = v;
         } else {
-            return Result.Err("ray-ds.toml: unknown key '${e.key}'");
+            return Result.Err("ray-elements.toml: unknown key '${e.key}'");
         }
     }
     if (!i.repository.starts_with("https://")) {
-        return Result.Err("ray-ds.toml: package.repository must be an https:// URL");
+        return Result.Err("ray-elements.toml: package.repository must be an https:// URL");
     }
     if (i.homepage == "") {
         i.homepage = i.repository;
@@ -82,7 +82,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${el}/core.js", elements.core_js())?;
     put(
         written,
-        "${el}/ray-ds.d.ts",
+        "${el}/ray-elements.d.ts",
         elements.dts(fs.read_file("${root}/src/core/core.d.ts")?, cs)
     )?;
     put(written, "${el}/custom-elements.json", manifest.custom_elements(cs, "components/")?)?;
@@ -92,7 +92,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${el}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
 
-    // --- react (and vue): the package target; no components beyond ray-ds's own
+    // --- react (and vue): the package target; no components beyond ray-elements's own
     let t = wrappers.package_target();
     let none: [Component] = [];
     let r = "${base}/react";
@@ -108,7 +108,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
         wrapper_package(
             i,
             "react",
-            "React wrappers of the ray-ds web components",
+            "React wrappers of the ray-elements web components",
             "\"react\": \">=18\""
         )
     )?;
@@ -130,7 +130,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
         wrapper_package(
             i,
             "vue",
-            "Vue 3 wrappers (with v-model) of the ray-ds web components",
+            "Vue 3 wrappers (with v-model) of the ray-elements web components",
             "\"vue\": \">=3.3\""
         )
     )?;
@@ -171,7 +171,7 @@ fn elements_package(i: Info, cs: [Component]) -> string {
     var entries: [string] = [];
     for c in cs {
         entries.push(`    "./${c.dir}": {
-      "types": "./ray-ds.d.ts",
+      "types": "./ray-elements.d.ts",
       "default": "./components/${c.dir}/${c.files[0]}"
     },`);
     }
@@ -184,14 +184,14 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
   "type": "module",
   "main": "./index.js",
   "module": "./index.js",
-  "types": "./ray-ds.d.ts",
+  "types": "./ray-elements.d.ts",
   "exports": {
     ".": {
-      "types": "./ray-ds.d.ts",
+      "types": "./ray-elements.d.ts",
       "default": "./index.js"
     },
     "./core": {
-      "types": "./ray-ds.d.ts",
+      "types": "./ray-elements.d.ts",
       "default": "./core.js"
     },
 ${join(entries, "\n")}
@@ -277,7 +277,7 @@ import "${i.scope}/elements";   // registers every <ray-*> element
 
 ${i.description}.
 
-Generated from [ray-ds](${i.repository}) (its \`packages/${kind}\`
+Generated from [ray-elements](${i.repository}) (its \`packages/${kind}\`
 directory): the components, their docs and the issues are there.
 
 \`\`\`
@@ -289,7 +289,7 @@ ${usage}
 @test
 fn packages_name_their_source() {
     let i = Info {
-        scope: "@ray-ds",
+        scope: "@raylang",
         version: "1.2.3",
         description: "d",
         license: "Apache-2.0",
@@ -303,5 +303,5 @@ fn packages_name_their_source() {
     assert(p.contains("\"access\": \"public\""));
     let none: [Component] = [];
     assert(elements_package(i, none).contains("\"directory\": \"packages/elements\""));
-    assert(readme(i, "react").contains("[ray-ds](https://github.com/o/r) (its `packages/react`"));
+    assert(readme(i, "react").contains("[ray-elements](https://github.com/o/r) (its `packages/react`"));
 }

@@ -1,0 +1,610 @@
+// The program's half of the ray-elements native bridge (the page's half is
+// core/raylang.js). The page asks with window.ray.request and a JSON object
+// tagged "ray-elements"; handle() answers those requests and leaves any other event
+// to the app, so the bridge sits in front of the app's own protocol:
+//
+//   for e in ui.events() {
+//       if (bridge.handle(e)) {
+//           continue;
+//       }
+//       // the app's own events
+//   }
+//
+// Every answer is {"ok": true, "value": …} or {"ok": false, "error": "…"}.
+// The system dialogs are behind `Native`, so tests answer with fakes.
+//
+// Menus: declare them through the bridge, on one Native kept for the whole
+// loop, so the page's command palette can list and run them; route() turns
+// an item run from the page into the same "menu" event the menu bar sends:
+//
+//   let n = bridge.system();
+//   bridge.menu(n, "File", [ui.item("new", "New", "cmd+n"), ui.item("open", "Open…", "cmd+o")])?;
+//   for raw in ui.events() {
+//       let e = match (bridge.route(n, raw)) {
+//           Option.Some(e) => e,      // the app's (a palette run arrives as kind "menu")
+//           Option.None => continue,  // answered by the bridge
+//       };
+//       // the app's own events
+//   }
+
+import std/fs;
+import std/json;
+import std/ui;
+import elements/version;
+
+// The version of the protocol: a page asking with a newer one gets an error.
+pub const PROTOCOL: int = 1;
+
+// What the requests reach: the system (system()) or fakes in tests.
+pub struct Native {
+    pick_files: fn(ui.FileDialogOptions) -> Result<[string], string>,
+    // mode ("open", "folder" or "save") and the options; None = cancelled.
+    pick_path: fn(string, ui.FileDialogOptions) -> Result<Option<string>, string>,
+    confirm: fn(string, string, string, string, string) -> Result<bool, string>,
+    file_size: fn(string) -> Result<int, string>,
+    // A context menu over a window (ui.popup_menu): the choice comes back
+    // later as a "menu" event, which route() hands to the page.
+    popup: fn(int, [ui.MenuItem]) -> Result<int, string>,
+    // The window's background and, if given, title bar colors ("#rrggbb";
+    // "" = the system's).
+    window_colors: fn(int, string, Option<string>) -> Result<int, string>,
+    // The "unsaved changes" mark of a window.
+    set_edited: fn(int, bool) -> Result<int, string>,
+    // The menus declared with menu(), menu_at() and replace_menu().
+    menus: [Menu],
+}
+
+// A menu of the menu bar, as declared (items keep the state set_menu_item gave them).
+pub struct Menu {
+    title: string,
+    items: [ui.MenuItem],
+}
+
+// The real dialogs. `confirm` takes title, message, confirm label, cancel
+// label and style ("" for the plain question, or "info", "warning", "error").
+pub fn system() -> Native {
+    Native {
+        pick_files: fn(o: ui.FileDialogOptions) -> Result<[string], string> { ui.pick_files(o) },
+        pick_path: fn(mode: string, o: ui.FileDialogOptions) -> Result<Option<string>, string> {
+            match (mode) {
+                "folder" => ui.pick_folder_with(o),
+                "save" => ui.save_file_with(o),
+                _ => ui.pick_file_with(o),
+            }
+        },
+        confirm: fn(title: string, text: string, ok: string, cancel: string, style: string) -> Result<bool, string> {
+            if (style == "") {
+                ui.confirm(title, text, ok, cancel)
+            } else {
+                ui.message_styled(title, text, style, [ok, cancel]).map(fn(i: int) -> bool { i == 0 })
+            }
+        },
+        file_size: fn(path: string) -> Result<int, string> { fs.file_size(path) },
+        popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> { ui.popup_menu(h, items) },
+        window_colors: fn(h: int, background: string, titlebar: Option<string>) -> Result<int, string> {
+            ui.set_background(h, background)?;
+            match (titlebar) {
+                Option.Some(t) => ui.set_titlebar_color(h, t),
+                Option.None => Result.Ok(0),
+            }
+        },
+        set_edited: fn(h: int, edited: bool) -> Result<int, string> { ui.set_edited(h, edited) },
+        menus: [],
+    }
+}
+
+// --- menus -------------------------------------------------------------------
+
+// ui.menu, recorded for the page.
+pub fn menu(n: Native, title: string, items: [ui.MenuItem]) -> Result<int, string> {
+    let r = ui.menu(title, items)?;
+    n.menus.push(Menu { title: title, items: items });
+    Result.Ok(r)
+}
+
+// ui.menu_at, recorded for the page.
+pub fn menu_at(n: Native, position: int, title: string, items: [ui.MenuItem]) -> Result<int, string> {
+    let r = ui.menu_at(position, title, items)?;
+    n.menus.push(Menu { title: title, items: items });
+    Result.Ok(r)
+}
+
+// ui.replace_menu, recorded for the page.
+pub fn replace_menu(n: Native, title: string, items: [ui.MenuItem]) -> Result<int, string> {
+    let r = ui.replace_menu(title, items)?;
+    record(n, title, items);
+    Result.Ok(r)
+}
+
+// ui.set_menu_item, recorded for the page.
+pub fn set_menu_item(n: Native, tag: string, enabled: bool, checked: bool) -> Result<int, string> {
+    let r = ui.set_menu_item(tag, enabled, checked)?;
+    for m in n.menus {
+        for i in 0..m.items.len() {
+            if (m.items[i].tag == tag) {
+                m.items[i].enabled = enabled;
+                m.items[i].checked = checked;
+            }
+        }
+    }
+    Result.Ok(r)
+}
+
+// Records `items` as the menu `title` (replacing it), without touching the
+// menu bar: for tests, and for menus declared some other way.
+pub fn record(n: Native, title: string, items: [ui.MenuItem]) {
+    for i in 0..n.menus.len() {
+        if (n.menus[i].title == title) {
+            n.menus[i] = Menu { title: title, items: items };
+            return;
+        }
+    }
+    n.menus.push(Menu { title: title, items: items });
+}
+
+// The tags of a context menu opened for the page: "ray-elements:popup:<id>:<index>".
+const POPUP: string = "ray-elements:popup:";
+
+// The script that hands the choice of a page's context menu (its tag) back
+// to the page; None for any other tag.
+pub fn popup_choice_js(tag: string) -> Option<string> {
+    let rest = tag.strip_prefix(POPUP)?;
+    let cut = rest.index_of(":")?;
+    let id = parse_int(rest.substring(0, cut))?;
+    let index = parse_int(rest.substring(cut + 1, rest.len()))?;
+    Option.Some(
+        "document.dispatchEvent(new CustomEvent(\"ray-elements:menu\", { detail: { id: ${id}, index: ${index} } }))"
+    )
+}
+
+// --- the loop ----------------------------------------------------------------
+
+// Answers `e` if it is a ray-elements request; false for anything else.
+pub fn handle(e: ui.UiEvent) -> bool {
+    handle_with(e, system())
+}
+
+// handle() with `n`: its dialogs and its menus. A menu item the page runs
+// is answered but not passed on: use route() for that.
+pub fn handle_with(e: ui.UiEvent, n: Native) -> bool {
+    route(n, e).is_none()
+}
+
+// None when the bridge took `e` (a ray-elements request, answered, or the choice of
+// a context menu the page opened); else the event for the app: `e` itself,
+// or, for a menu item the page ran (the palette), a "menu" event with its tag,
+// as if chosen from the menu bar.
+pub fn route(n: Native, e: ui.UiEvent) -> Option<ui.UiEvent> {
+    if (e.kind == "menu") {
+        return match (popup_choice_js(e.tag)) {
+            Option.Some(js) => {
+                let _shown = ui.eval_js(e.window, js);
+                Option.None
+            },
+            Option.None => Option.Some(e),
+        };
+    }
+    if (e.kind != "message") {
+        return Option.Some(e);
+    }
+    let (id, body) = match (ui.as_request(e)) {
+        Option.Some(r) => r,
+        Option.None => return Option.Some(e),
+    };
+    match (respond(n, e.window, body)) {
+        Option.Some((reply, run)) => {
+            // A window that closed meanwhile cannot be answered: nothing to do.
+            let _sent = ui.reply_json(e.window, id, reply);
+            match (run) {
+                Option.Some(tag) => Option.Some(ui.UiEvent { kind: "menu", window: e.window, tag: tag }),
+                Option.None => Option.None,
+            }
+        },
+        Option.None => Option.Some(e),
+    }
+}
+
+// The JSON answer to a request body; None when it is not a ray-elements request.
+pub fn answer(n: Native, body: string) -> Option<string> {
+    respond(n, 0, body).map(fn(r: (string, Option<string>)) -> string { r.0 })
+}
+
+// The answer to a request from `window`, and the tag of the menu item it
+// runs, if any.
+fn respond(n: Native, window: int, body: string) -> Option<(string, Option<string>)> {
+    let j = match (json.parse(body)) {
+        Result.Ok(j) => j,
+        Result.Err(_) => return Option.None,
+    };
+    let protocol = match (json.get_int(j, "ray-elements")) {
+        Option.Some(p) => p,
+        Option.None => return Option.None,
+    };
+    let op = json.get_string(j, "op").unwrap_or("");
+    let result = if (protocol > PROTOCOL) {
+        Result.Err("ray-elements protocol ${protocol} is newer than the program's (${PROTOCOL}): update elements")
+    } else {
+        run(n, window, op, j)
+    };
+    let none: Option<string> = Option.None;
+    Option.Some(match (result) {
+        Result.Ok(value) => {
+            let ran = if (op == "run_menu") { json.get_string(j, "tag") } else { none };
+            ("{\"ok\":true,\"value\":${value}}", ran)
+        },
+        Result.Err(e) => (json.obj().field("ok", false).field("error", e).render(), none),
+    })
+}
+
+// The operations; each returns its value as JSON text.
+fn run(n: Native, window: int, op: string, j: json.Json) -> Result<string, string> {
+    match (op) {
+        "hello" => Result.Ok(hello()),
+        "pick_files" => pick_files(n, j),
+        "pick_path" => pick_path(n, j),
+        "confirm" => confirm(n, j),
+        "menu_items" => Result.Ok(menu_items(n)),
+        "run_menu" => run_menu(n, j),
+        "popup_menu" => popup_menu(n, window, j),
+        "window_colors" => window_colors(n, window, j),
+        "set_edited" => {
+            n.set_edited(window, json.get_bool(j, "edited").unwrap_or(false))?;
+            Result.Ok("true")
+        },
+        _ => Result.Err("unknown ray-elements operation '${op}'"),
+    }
+}
+
+const OPS: [string] = ["hello", "pick_files", "pick_path", "confirm", "menu_items", "run_menu", "popup_menu", "window_colors", "set_edited"];
+
+fn hello() -> string {
+    json.obj().field("protocol", PROTOCOL).field("version", version.VERSION).field("platform", platform()).field(
+        "ops",
+        json.list(OPS)
+    ).render()
+}
+
+// -> [{menu, tag, title, shortcut, enabled, checked}]: the items the app
+// handles (no separators, no "role:*" items, which act natively).
+fn menu_items(n: Native) -> string {
+    var out = json.arr();
+    for m in n.menus {
+        for it in m.items {
+            if (it.tag != "" && it.title != "" && !it.tag.starts_with("role:")) {
+                out = out.item(
+                    json.obj()
+                        .field("menu", m.title)
+                        .field("tag", it.tag)
+                        .field("title", it.title)
+                        .field("shortcut", chord(it.shortcut))
+                        .field("enabled", it.enabled)
+                        .field("checked", it.checked)
+                );
+            }
+        }
+    }
+    json.render_arr(out)
+}
+
+// {tag} -> true; route() then gives the app the "menu" event.
+fn run_menu(n: Native, j: json.Json) -> Result<string, string> {
+    let tag = json.get_string(j, "tag").unwrap_or("");
+    for m in n.menus {
+        for it in m.items {
+            if (it.tag == tag && !tag.starts_with("role:")) {
+                if (!it.enabled) {
+                    return Result.Err("run_menu: '${tag}' is disabled");
+                }
+                return Result.Ok("true");
+            }
+        }
+    }
+    Result.Err("run_menu: no menu item '${tag}'")
+}
+
+// {id, items: [{title, shortcut, enabled, checked, separator}]} -> true once
+// the menu is on screen; the choice reaches the page later as the
+// "ray-elements:menu" event ({id, index}), and nothing when it is dismissed.
+fn popup_menu(n: Native, window: int, j: json.Json) -> Result<string, string> {
+    let id = json.get_int(j, "id").unwrap_or(0);
+    var items: [ui.MenuItem] = [];
+    var index = 0;
+    for x in json.get_array(j, "items").unwrap_or([]) {
+        if (json.get_bool(x, "separator").unwrap_or(false)) {
+            items.push(ui.separator());
+        } else {
+            var it = ui.item("${POPUP}${id}:${index}", json.get_string(x, "title").unwrap_or(""), "");
+            it.enabled = json.get_bool(x, "enabled").unwrap_or(true);
+            it.checked = json.get_bool(x, "checked").unwrap_or(false);
+            items.push(it);
+        }
+        index = index + 1;
+    }
+    n.popup(window, items)?;
+    Result.Ok("true")
+}
+
+// {background, titlebar?}: "#rrggbb" each ("" = the system's) -> true. The
+// title bar is left as it is when `titlebar` is missing: on macOS any title
+// bar color also sets the window's appearance (and the page's
+// prefers-color-scheme), and in a full_content window it brings back the
+// opaque bar (finding #141).
+fn window_colors(n: Native, window: int, j: json.Json) -> Result<string, string> {
+    let background = json.get_string(j, "background").unwrap_or("");
+    let titlebar = json.get_string(j, "titlebar");
+    for c in [background, titlebar.unwrap_or("")] {
+        if (!is_color(c)) {
+            return Result.Err("window_colors: '${c}' is not a #rrggbb color");
+        }
+    }
+    n.window_colors(window, background, titlebar)?;
+    Result.Ok("true")
+}
+
+// "" or "#rrggbb".
+fn is_color(c: string) -> bool {
+    if (c == "") {
+        return true;
+    }
+    if (c.len() != 7 || c[0] != '#') {
+        return false;
+    }
+    for ch in c.substring(1, 7).to_lower().chars() {
+        if (!"0123456789abcdef".contains(to_string(ch))) {
+            return false;
+        }
+    }
+    true
+}
+
+// A shortcut as a chord: the one-character form ("s" = cmd+s, "S" =
+// cmd+shift+s) spelled out; others as they are.
+pub fn chord(shortcut: string) -> string {
+    if (shortcut.len() != 1) {
+        return shortcut;
+    }
+    let lower = shortcut.to_lower();
+    if (lower != shortcut) { "cmd+shift+${lower}" } else { "cmd+${shortcut}" }
+}
+
+// {title, directory, multiple, filters: [{name, extensions}]} -> [{path, name, size}]
+// (size -1 when it cannot be read); [] when the user cancels.
+fn pick_files(n: Native, j: json.Json) -> Result<string, string> {
+    var o = ui.file_options();
+    o.title = json.get_string(j, "title").unwrap_or("");
+    o.directory = json.get_string(j, "directory").unwrap_or("");
+    o.multiple = json.get_bool(j, "multiple").unwrap_or(false);
+    o.filters = filters(j);
+    let paths = (n.pick_files)(o)?;
+    var out = json.arr();
+    for p in paths {
+        let size = (n.file_size)(p).unwrap_or(-1);
+        out = out.item(json.obj().field("path", p).field("name", base_name(p)).field("size", size));
+    }
+    Result.Ok(json.render_arr(out))
+}
+
+// {mode, title, directory, suggested, filters} -> the path, or null when cancelled.
+fn pick_path(n: Native, j: json.Json) -> Result<string, string> {
+    let mode = json.get_string(j, "mode").unwrap_or("open");
+    if (mode != "open" && mode != "folder" && mode != "save") {
+        return Result.Err("pick_path: unknown mode '${mode}' (open, folder or save)");
+    }
+    var o = ui.file_options();
+    o.title = json.get_string(j, "title").unwrap_or("");
+    o.directory = json.get_string(j, "directory").unwrap_or("");
+    o.suggested = json.get_string(j, "suggested").unwrap_or("");
+    o.filters = filters(j);
+    match (n.pick_path(mode, o)?) {
+        Option.Some(p) => Result.Ok(p.to_json()),
+        Option.None => Result.Ok("null"),
+    }
+}
+
+fn filters(j: json.Json) -> [ui.FileFilter] {
+    var out: [ui.FileFilter] = [];
+    for f in json.get_array(j, "filters").unwrap_or([]) {
+        var exts: [string] = [];
+        for x in json.get_array(f, "extensions").unwrap_or([]) {
+            match (json.as_string(x)) {
+                Option.Some(s) => exts.push(s.strip_prefix(".").unwrap_or(s)),
+                Option.None => { },
+            }
+        }
+        if (exts.len() > 0) {
+            out.push(ui.filter(json.get_string(f, "name").unwrap_or(""), exts));
+        }
+    }
+    out
+}
+
+// {title, message, confirmLabel, cancelLabel, style} -> bool
+fn confirm(n: Native, j: json.Json) -> Result<string, string> {
+    let style = json.get_string(j, "style").unwrap_or("");
+    if (style != "" && style != "info" && style != "warning" && style != "error") {
+        return Result.Err("confirm: unknown style '${style}' (info, warning or error)");
+    }
+    let yes = (n.confirm)(
+        json.get_string(j, "title").unwrap_or("Are you sure?"),
+        json.get_string(j, "message").unwrap_or(""),
+        json.get_string(j, "confirmLabel").unwrap_or("Confirm"),
+        json.get_string(j, "cancelLabel").unwrap_or("Cancel"),
+        style
+    )?;
+    Result.Ok(if (yes) { "true" } else { "false" })
+}
+
+// The last part of a path, with / or \ separators.
+pub fn base_name(path: string) -> string {
+    let cut = match (path.replace("\\", "/").last_index_of("/")) {
+        Option.Some(i) => i + 1,
+        Option.None => 0,
+    };
+    path.substring(cut, path.len())
+}
+
+// --- tests -------------------------------------------------------------------
+
+// Picks the comma-separated paths of the dialog's title; confirms when the
+// title starts with "yes"; a file's size is ten times its name's length.
+fn fake() -> Native {
+    Native {
+        pick_files: fn(o: ui.FileDialogOptions) -> Result<[string], string> {
+            if (o.title == "fail") {
+                return Result.Err("no dialog");
+            }
+            if (o.title == "") { Result.Ok([]) } else { Result.Ok(o.title.split(",")) }
+        },
+        pick_path: fn(mode: string, o: ui.FileDialogOptions) -> Result<Option<string>, string> {
+            if (o.title == "") {
+                return Result.Ok(Option.None);
+            }
+            Result.Ok(Option.Some("${mode}:${o.directory}|${o.suggested}|${o.filters.len()}"))
+        },
+        confirm: fn(title: string, text: string, ok: string, cancel: string, style: string) -> Result<bool, string> {
+            Result.Ok(title.starts_with("yes"))
+        },
+        popup: fn(h: int, items: [ui.MenuItem]) -> Result<int, string> {
+            if (items.len() == 0) { Result.Err("empty menu") } else { Result.Ok(0) }
+        },
+        window_colors: fn(h: int, background: string, titlebar: Option<string>) -> Result<int, string> {
+            if (h == 0) { Result.Err("no window") } else { Result.Ok(0) }
+        },
+        set_edited: fn(h: int, edited: bool) -> Result<int, string> { Result.Ok(0) },
+        menus: [],
+        file_size: fn(path: string) -> Result<int, string> {
+            if (path.ends_with(".missing")) { Result.Err("gone") } else { Result.Ok(base_name(path).len() * 10) }
+        },
+    }
+}
+
+@test
+fn ignores_what_is_not_a_bridge_request() {
+    assert(answer(fake(), "hello").is_none());
+    assert(answer(fake(), "{\"op\":\"hello\"}").is_none());
+    assert(answer(fake(), "[1,2]").is_none());
+}
+
+@test
+fn says_hello() {
+    let a = answer(fake(), "{\"ray-elements\":1,\"op\":\"hello\"}").unwrap();
+    assert(a.starts_with("{\"ok\":true,\"value\":{\"protocol\":1,\"version\":\"0.3.0\",\"platform\":\""));
+    assert(a.ends_with("\"ops\":[\"hello\",\"pick_files\",\"pick_path\",\"confirm\",\"menu_items\",\"run_menu\",\"popup_menu\",\"window_colors\",\"set_edited\"]}}"));
+}
+
+@test
+fn picks_files_with_their_sizes() {
+    let a = answer(fake(), "{\"ray-elements\":1,\"op\":\"pick_files\",\"title\":\"/a/b.png,C:\\\\x\\\\y.txt,z.missing\"}");
+    assert_eq(
+        a.unwrap(),
+        "{\"ok\":true,\"value\":[{\"path\":\"/a/b.png\",\"name\":\"b.png\",\"size\":50},{\"path\":\"C:\\\\x\\\\y.txt\",\"name\":\"y.txt\",\"size\":50},{\"path\":\"z.missing\",\"name\":\"z.missing\",\"size\":-1}]}"
+    );
+    assert_eq(answer(fake(), "{\"ray-elements\":1,\"op\":\"pick_files\"}").unwrap(), "{\"ok\":true,\"value\":[]}");
+}
+
+@test
+fn picks_a_path() {
+    assert_eq(
+        answer(
+            fake(),
+            "{\"ray-elements\":1,\"op\":\"pick_path\",\"mode\":\"save\",\"title\":\"t\",\"directory\":\"/a\",\"suggested\":\"x \\\"1\\\".txt\"}"
+        ).unwrap(),
+        "{\"ok\":true,\"value\":\"save:/a|x \\\"1\\\".txt|0\"}"
+    );
+    assert_eq(
+        answer(fake(), "{\"ray-elements\":1,\"op\":\"pick_path\",\"mode\":\"folder\"}").unwrap(),
+        "{\"ok\":true,\"value\":null}"
+    );
+    assert(answer(fake(), "{\"ray-elements\":1,\"op\":\"pick_path\",\"mode\":\"x\"}").unwrap().contains("unknown mode 'x'"));
+}
+
+@test
+fn reads_the_filters() {
+    let j = json.parse("{\"filters\":[{\"name\":\"Images\",\"extensions\":[\".png\",\"jpg\"]},{\"name\":\"none\",\"extensions\":[]}]}").unwrap();
+    let got = filters(j);
+    assert_eq(got.len(), 1);
+    assert_eq(got[0].name, "Images");
+    assert_eq(got[0].extensions, ["png", "jpg"]);
+}
+
+@test
+fn confirms() {
+    assert_eq(answer(fake(), "{\"ray-elements\":1,\"op\":\"confirm\",\"title\":\"yes?\"}").unwrap(), "{\"ok\":true,\"value\":true}");
+    assert_eq(answer(fake(), "{\"ray-elements\":1,\"op\":\"confirm\",\"title\":\"no?\",\"style\":\"warning\"}").unwrap(), "{\"ok\":true,\"value\":false}");
+    assert_eq(
+        answer(fake(), "{\"ray-elements\":1,\"op\":\"confirm\",\"style\":\"loud\"}").unwrap(),
+        "{\"ok\":false,\"error\":\"confirm: unknown style 'loud' (info, warning or error)\"}"
+    );
+}
+
+@test
+fn reports_errors() {
+    assert_eq(answer(fake(), "{\"ray-elements\":1,\"op\":\"pick_files\",\"title\":\"fail\"}").unwrap(), "{\"ok\":false,\"error\":\"no dialog\"}");
+    assert_eq(answer(fake(), "{\"ray-elements\":1,\"op\":\"fly\"}").unwrap(), "{\"ok\":false,\"error\":\"unknown ray-elements operation 'fly'\"}");
+    assert(answer(fake(), "{\"ray-elements\":2,\"op\":\"hello\"}").unwrap().contains("newer than the program's"));
+}
+
+fn with_menus() -> Native {
+    let n = fake();
+    var off = ui.item("close", "Close", "W");
+    off.enabled = false;
+    record(n, "File", [ui.item("new", "New", "cmd+n"), ui.separator(), off, ui.item("role:copy", "", "")]);
+    record(n, "View", [ui.item("zoom", "Zoom", "")]);
+    n
+}
+
+@test
+fn lists_the_menus() {
+    assert_eq(
+        answer(with_menus(), "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap(),
+        "{\"ok\":true,\"value\":[{\"menu\":\"File\",\"tag\":\"new\",\"title\":\"New\",\"shortcut\":\"cmd+n\",\"enabled\":true,\"checked\":false},{\"menu\":\"File\",\"tag\":\"close\",\"title\":\"Close\",\"shortcut\":\"cmd+shift+w\",\"enabled\":false,\"checked\":false},{\"menu\":\"View\",\"tag\":\"zoom\",\"title\":\"Zoom\",\"shortcut\":\"\",\"enabled\":true,\"checked\":false}]}"
+    );
+    let n = with_menus();
+    record(n, "View", [ui.item("full", "Full screen", "f")]);
+    let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
+    assert(a.contains("\"tag\":\"full\",\"title\":\"Full screen\",\"shortcut\":\"cmd+f\"") && !a.contains("zoom"));
+}
+
+@test
+fn runs_a_menu_item() {
+    let n = with_menus();
+    assert_eq(respond(n, 3, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"new\"}").unwrap().1.unwrap_or("-"), "new");
+    let off = respond(n, 3, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"close\"}").unwrap();
+    assert(off.0.contains("'close' is disabled") && off.1.is_none());
+    assert(answer(n, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"role:copy\"}").unwrap().contains("no menu item"));
+    assert(answer(n, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"x\"}").unwrap().contains("no menu item 'x'"));
+}
+
+@test
+fn opens_a_context_menu() {
+    assert_eq(
+        answer(fake(), "{\"ray-elements\":1,\"op\":\"popup_menu\",\"id\":7,\"items\":[{\"title\":\"Rename\"},{\"separator\":true},{\"title\":\"Delete\",\"enabled\":false}]}").unwrap(),
+        "{\"ok\":true,\"value\":true}"
+    );
+    assert(answer(fake(), "{\"ray-elements\":1,\"op\":\"popup_menu\",\"id\":1,\"items\":[]}").unwrap().contains("empty menu"));
+    assert_eq(
+        popup_choice_js("ray-elements:popup:7:2").unwrap(),
+        "document.dispatchEvent(new CustomEvent(\"ray-elements:menu\", { detail: { id: 7, index: 2 } }))"
+    );
+    assert(popup_choice_js("new").is_none());
+    assert(popup_choice_js("ray-elements:popup:x:1").is_none());
+}
+
+@test
+fn spells_out_shortcuts() {
+    assert_eq(chord("s"), "cmd+s");
+    assert_eq(chord("S"), "cmd+shift+s");
+    assert_eq(chord("cmd+alt+p"), "cmd+alt+p");
+    assert_eq(chord(""), "");
+}
+
+@test
+fn sets_the_window_colors() {
+    let ok = "{\"ok\":true,\"value\":true}";
+    assert_eq(respond(fake(), 2, "{\"ray-elements\":1,\"op\":\"window_colors\",\"background\":\"#19191A\"}").unwrap().0, ok);
+    assert_eq(respond(fake(), 2, "{\"ray-elements\":1,\"op\":\"window_colors\",\"background\":\"\",\"titlebar\":\"\"}").unwrap().0, ok);
+    assert(answer(fake(), "{\"ray-elements\":1,\"op\":\"window_colors\",\"background\":\"#fff\"}").unwrap().contains("'#fff' is not a #rrggbb color"));
+    assert(answer(fake(), "{\"ray-elements\":1,\"op\":\"window_colors\",\"background\":\"#gg0000\"}").unwrap().contains("not a #rrggbb"));
+    assert(answer(fake(), "{\"ray-elements\":1,\"op\":\"window_colors\",\"background\":\"#000000\"}").unwrap().contains("no window"));
+    assert_eq(respond(fake(), 2, "{\"ray-elements\":1,\"op\":\"set_edited\",\"edited\":true}").unwrap().0, ok);
+}

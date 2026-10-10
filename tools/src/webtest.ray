@@ -1,21 +1,21 @@
 // Component tests in the real webview (WKWebView on macOS, WebKitGTK,
 // WebView2) — the engine ray apps ship with.
 //
-// The ray-ds root is mounted at ray://app/ (no TCP server). For every
+// The ray-elements root is mounted at ray://app/ (no TCP server). For every
 // tests/*.test.js, the page named on its first line (`// page: docs/x.html`)
 // opens in a std/ui window; once loaded, tests/harness.js and the test body
 // (wrapped in an async function) are injected with eval_js, and the results
 // come back as one `ray-test:<json>` message from window.ray.send.
 //
-// Requests of the ray-ds bridge (core/raylang.js) are answered by the real
-// ray_ds/bridge with scripted dialogs (see `scripted`), so the tests drive
+// Requests of the ray-elements bridge (core/raylang.js) are answered by the real
+// elements/bridge with scripted dialogs (see `scripted`), so the tests drive
 // the page and the program halves together.
 
 import std/fs;
 import std/json;
 import std/time;
 import std/ui;
-import ray_ds/bridge;
+import elements/bridge;
 
 const READY_POLL_MS: int = 200;
 
@@ -52,7 +52,7 @@ fn run_file(root: string, file: string, harness: string) -> Result<Outcome, stri
     let body = fs.read_file("${root}/tests/${file}")?;
     let page = page_of(body).ok_or("tests/${file}: first line must be '// page: <path>'")?;
     print("${file} (${page})");
-    let h = ui.open_with("ray-ds webtest: ${file}", "ray://app/${page}", ui.options(1024, 768))?;
+    let h = ui.open_with("ray-elements webtest: ${file}", "ray://app/${page}", ui.options(1024, 768))?;
     wait_loaded(h)?;
     let script = harness + "\n;(async () => {\n" + body + `
 const results = await window.__rayTest.run();
@@ -66,7 +66,7 @@ window.ray.send("ray-test:" + JSON.stringify(results));
 }
 
 // The dialogs of the tests: the file dialog "chooses" the comma-separated
-// paths of its title (relative to the ray-ds root, so their sizes are real),
+// paths of its title (relative to the ray-elements root, so their sizes are real),
 // the path dialog describes what it was asked, a confirmation says yes
 // when its title starts with "yes", and a context menu "chooses" its first
 // enabled item at once. The menus File (New, Close: disabled) and View (Zoom)

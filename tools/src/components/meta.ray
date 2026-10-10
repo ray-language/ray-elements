@@ -5,7 +5,7 @@
 //                                files, requires, tags
 //   [component.exports.<name>]   ts (a TypeScript declaration), description
 //   [component.types.<Name>]     ts (the type), description
-//   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-ds class)
+//   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-elements class)
 //   [<tag>.properties.<prop>]    attribute (string, or false = property only),
 //                                type, values, default, reflect, ts (TypeScript type), description
 //   [<tag>.events.<name>]        description, detail (TypeScript type of event.detail)
@@ -448,9 +448,9 @@ pub fn all_elements(cs: [Component]) -> [Element] {
     out
 }
 
-// The properties of `el` including the ones it inherits from another ray-ds
+// The properties of `el` including the ones it inherits from another ray-elements
 // element (extends = "RayCheckbox"), the element's own first.
-// The plain attributes of an element and of the ray-ds classes it extends
+// The plain attributes of an element and of the ray-elements classes it extends
 // (ray-password-input forwards autocomplete like ray-input).
 pub fn all_attrs(els: [Element], el: Element) -> [Named] {
     let out: [Named] = [];

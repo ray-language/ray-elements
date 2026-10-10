@@ -4,7 +4,7 @@
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;actions&quot;</span><span class="tk-punctuation">&gt;</span>New project<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;actions&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span><span class="tk-punctuation">&gt;</span>Import<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-empty-state</span><span class="tk-punctuation">&gt;</span></code></pre>
-<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayEmptyState, RayButton } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayEmptyState, RayButton } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
 
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> EmptyStateExample() {
   <span class="tk-keyword">return</span> (
@@ -18,7 +18,7 @@
     &lt;/&gt;
   );
 }</code></pre>
-<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@raylang/vue&quot;) registers the components. --&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayEmptyState</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;No projects yet&quot;</span> <span class="tk-attr">with-border</span><span class="tk-punctuation">&gt;</span>
     <span class="tk-punctuation">&lt;</span><span class="tk-tag">svg</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;icon&quot;</span> <span class="tk-attr">viewBox</span>=<span class="tk-string">&quot;0 0 24 24&quot;</span> <span class="tk-attr">fill</span>=<span class="tk-string">&quot;none&quot;</span> <span class="tk-attr">stroke</span>=<span class="tk-string">&quot;currentColor&quot;</span> <span class="tk-attr">stroke-width</span>=<span class="tk-string">&quot;2&quot;</span> <span class="tk-attr">stroke-linecap</span>=<span class="tk-string">&quot;round&quot;</span> <span class="tk-attr">stroke-linejoin</span>=<span class="tk-string">&quot;round&quot;</span> <span class="tk-attr">aria-hidden</span>=<span class="tk-string">&quot;true&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;</span><span class="tk-tag">path</span> <span class="tk-attr">d</span>=<span class="tk-string">&quot;M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z&quot;</span> /<span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">svg</span><span class="tk-punctuation">&gt;</span>

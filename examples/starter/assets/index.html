@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Starter</title>
-<!-- @ray-ds/elements, served by raylang where npm would put it. -->
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/tokens.css">
-<link rel="stylesheet" href="/node_modules/@ray-ds/elements/base.css">
+<!-- @raylang/elements, served by raylang where npm would put it. -->
+<link rel="stylesheet" href="/node_modules/@raylang/elements/tokens.css">
+<link rel="stylesheet" href="/node_modules/@raylang/elements/base.css">
 <style>
   body { display: grid; min-height: 100vh; place-items: center; margin: 0; padding: var(--ray-space-6); box-sizing: border-box; }
   ray-card { width: min(100%, 26rem); }
@@ -16,7 +16,7 @@
 </head>
 <body>
 <ray-card with-border padding="lg">
-  <div class="row" slot="header"><h1>Hello, ray-ds</h1><ray-theme-toggle></ray-theme-toggle></div>
+  <div class="row" slot="header"><h1>Hello, ray-elements</h1><ray-theme-toggle></ray-theme-toggle></div>
   <ray-stack gap="md">
     <ray-path-input id="folder" label="A folder" mode="folder" placeholder="/path/to/folder"></ray-path-input>
     <div class="row"><span id="out" class="ray-muted">Browse… opens the system dialog.</span><ray-button id="hello">Say hello</ray-button></div>
@@ -24,7 +24,7 @@
 </ray-card>
 <script type="module">
   // Every component (the whole package) and the API, by the npm name.
-  import { enableRaylang, notify } from "@ray-ds/elements";
+  import { enableRaylang, notify } from "@raylang/elements";
 
   const host = await enableRaylang();
   document.getElementById("folder").addEventListener("change", (e) => {

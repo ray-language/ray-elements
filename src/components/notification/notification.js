@@ -235,10 +235,10 @@ const toasterStyles = css`
 `;
 
 // A modal <dialog> makes everything outside it inert, toasts included. While
-// modal ray-ds overlays are open, the toaster lives in the topmost one (its
+// modal ray-elements overlays are open, the toaster lives in the topmost one (its
 // "overlay" slot renders inside the <dialog>), and goes back to <body> after.
 const openDialogs = [];
-// Any modal ray-ds overlay with an "overlay" slot (dialog, drawer, palette).
+// Any modal ray-elements overlay with an "overlay" slot (dialog, drawer, palette).
 const hostsToasts = (el) => Boolean(el.shadowRoot?.querySelector('slot[name="overlay"]') && el.dialog?.matches?.(":modal"));
 document.addEventListener("ray-open", (e) => {
   if (hostsToasts(e.target) && !openDialogs.includes(e.target)) {

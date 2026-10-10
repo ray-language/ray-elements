@@ -3742,7 +3742,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
               "fieldName": "native"
             },
             {
@@ -3937,7 +3937,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.",
               "attribute": "native",
               "reflects": true
             },
@@ -10418,7 +10418,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
               "fieldName": "nativeMenus"
             },
             {
@@ -10530,7 +10530,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window, menus declared with ray_ds/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
               "attribute": "native-menus",
               "reflects": true
             },
@@ -10646,7 +10646,7 @@
           "name": "RayDialog",
           "tagName": "ray-dialog",
           "customElement": true,
-          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-ds/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
+          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
           "superclass": {
             "name": "RayElement"
           },
@@ -11290,7 +11290,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
               "fieldName": "native"
             }
           ],
@@ -11342,7 +11342,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-ds/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
               "attribute": "native",
               "reflects": true
             },
@@ -16667,7 +16667,7 @@
           "name": "RayAppShell",
           "tagName": "ray-app-shell",
           "customElement": true,
-          "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-ds/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout=\"alt\" or no header, the navbar and main start below it.",
+          "description": "The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-elements/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout=\"alt\" or no header, the navbar and main start below it.",
           "superclass": {
             "name": "RayElement"
           },

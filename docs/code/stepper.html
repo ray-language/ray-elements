@@ -69,7 +69,7 @@
   document.getElementById(<span class="tk-string">&quot;demo-st-again&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; { st.active = <span class="tk-number">0</span>; sync(); });
   customElements.whenDefined(<span class="tk-string">&quot;ray-stepper&quot;</span>).then(sync);
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
-<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayCard, RayStepper, RayStep, RayGrid, RayInput, RayStack, RayRadioGroup, RayRadio, RaySegmentedControl, RayCenter, RayIcon, RayButton, RayGroup, RaySwitch, RayProgress } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@ray-ds/react&quot;</span>;
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayCard, RayStepper, RayStep, RayGrid, RayInput, RayStack, RayRadioGroup, RayRadio, RaySegmentedControl, RayCenter, RayIcon, RayButton, RayGroup, RaySwitch, RayProgress } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
 <span class="tk-comment">// and listen with the on* handlers (onChange, onInput…).</span>
@@ -126,7 +126,7 @@
     &lt;/&gt;
   );
 }</code></pre>
-<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@ray-ds/vue&quot;) registers the components. --&gt;</span>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayDs) (from &quot;@raylang/vue&quot;) registers the components. --&gt;</span>
 <span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A checkout<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>

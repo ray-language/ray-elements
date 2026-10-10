@@ -17,7 +17,7 @@
 // builds text nodes only. setHighlighter(fn) hands every block to a library
 // instead (Prism, highlight.js, Shiki…): its HTML is inserted as is, and its
 // classes are painted with the --ray-code-* tokens, so the palette stays
-// ray-ds's.
+// ray-elements's.
 
 import { RayElement, css, define } from "../../core/core.js";
 
@@ -265,7 +265,7 @@ const styles = css`
     display: block;
     --_lh: 1.65;
     --_fs: var(--ray-font-size-sm);
-    /* Shiki's css-variables theme, painted with the ray-ds palette. */
+    /* Shiki's css-variables theme, painted with the ray-elements palette. */
     --shiki-foreground: var(--ray-code-text);
     --shiki-background: transparent;
     --shiki-token-keyword: var(--ray-code-keyword);

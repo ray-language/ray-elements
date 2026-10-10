@@ -1,31 +1,31 @@
-# ray-ds
+# ray-elements
 
 Web components (Shadow DOM, no dependencies) inspired by shadcn/ui (semantic
 tokens, copy-the-code distribution) and Mantine (10-shade color scales, sizes
 `xs`–`xl`, `color` + `variant` on every component).
 
-**ray-ds is framework-agnostic.** The components are standard custom elements:
+**ray-elements is framework-agnostic.** The components are standard custom elements:
 use them in any web app — plain HTML, React or Vue, in a browser or any
 webview. Nothing in a component requires raylang.
 
 **It comes with extras for raylang apps.** It loads as plain ES modules from
 `ray://app` in a `std/ui` window with no build step, all its tooling (tokens,
 contrast checks, docs, webview tests) is written in raylang in `tools/`, and
-the examples are raylang apps. A native bridge (`ray_ds/bridge` in the program,
+the examples are raylang apps. A native bridge (`elements/bridge` in the program,
 `core/raylang.js` in the page) gives the components what a browser cannot:
 system file dialogs with real paths (`ray-file-upload native`,
 `ray-path-input`), native confirmations (`confirmDialog()`), native context
 menus (`ray-menu native`), the app's menu bar in the command palette
 (`native-menus`) and the window (`ray-app-shell` under a transparent title
 bar, window colors that follow the theme, `trackEdits()` for the unsaved
-mark). A raylang package (`ray_ds`) brings `@ray-ds/elements` to the pages
+mark). A raylang package (`elements`) brings `@raylang/elements` to the pages
 of a raylang app by its npm name, without npm. See [RAYLANG.md](RAYLANG.md).
 
 ## Layout
 
 ```
 tokens.toml            design tokens: the single source of truth
-ray-ds.toml            npm package metadata (scope, version)
+ray-elements.toml            npm package metadata (scope, version)
 src/core/core.js       RayElement base class, css``, define(), theme API
 src/core/styles.js     shared sizes, radius, color variants, loader
 src/core/form.js       FormControl / FieldControl (ElementInternals, label/description/error)
@@ -43,15 +43,15 @@ dist/                  generated: tokens.css, tokens.json
 docs/                  generated: index.html, foundations.html, components.html (the catalog), components/<component>.html (a page each, and all.html with every one), code/<component>.html (each example's code, loaded on demand)
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
-tools/                 raylang project: the ray-ds CLI
-ray_ds/                raylang package: assets.ray (generated: ray-ds served from the program), bridge.ray
+tools/                 raylang project: the ray-elements CLI
+elements/                raylang package: assets.ray (generated: ray-elements served from the program), bridge.ray
 packages/               generated npm packages: elements, react, vue
 examples/desktop-form/ std/ui app using components copied with `add`
 examples/desktop-app/  std/ui app using the raylang package and the native bridge
 examples/starter/      the smallest std/ui app with the raylang package, to copy
 examples/lean-app/     loads only the components it uses, and the settings dialog on first open
-examples/react-app/    std/ui + Vite + React app using @ray-ds/react
-examples/vue-app/      std/ui + Vite + Vue app using @ray-ds/vue
+examples/react-app/    std/ui + Vite + React app using @raylang/react
+examples/vue-app/      std/ui + Vite + Vue app using @raylang/vue
 examples/extending/    app components on the extension API (+ `wrap` output)
 ```
 
@@ -118,7 +118,7 @@ Every icon a component draws (close, chevrons, check, search, sort…) comes
 from one registry. Switch the whole set, or add names for `<ray-icon>`:
 
 ```js
-import { setIcons, iconNames } from "@ray-ds/elements";
+import { setIcons, iconNames } from "@raylang/elements";
 setIcons({ close: '<svg viewBox="0 0 24 24">…</svg>', "chevron-down": svgElement, logo: "…" });
 ```
 
@@ -136,9 +136,9 @@ From anywhere (`tools/run.sh` runs them from `tools/`; paths stay yours):
 tools/run.sh build                 # tokens + docs + package
 tools/run.sh tokens [--check]      # tokens.toml -> dist/tokens.*, docs/foundations.html
 tools/run.sh docs                  # component.toml + *.md -> docs/ (site), src/index.js
-tools/run.sh add button input --into ../my-app/assets/ray-ds
+tools/run.sh add button input --into ../my-app/assets/ray-elements
 tools/run.sh package               # packages/{elements,react,vue}
-tools/run.sh site --base /ray-ds/  # build, then the site ready to publish in dist/site/
+tools/run.sh site --base /ray-elements/  # build, then the site ready to publish in dist/site/
 tools/run.sh wrap --components DIR --out DIR   # types + wrappers for an app's components
 tools/run.sh webtest [FILTER]      # tests/*.test.js in a std/ui webview
 (cd tools && ray test)             # unit tests of the tools
@@ -154,10 +154,10 @@ into `brand/`: `logo.svg` (light grounds), `logo-dark.svg`, `logo-16.svg`
 
 ### Viewing the docs
 
-Serve the **ray-ds directory itself** (not `docs/`) and open the URL it prints:
+Serve the **ray-elements directory itself** (not `docs/`) and open the URL it prints:
 
 ```sh
-cd ray-ds
+cd ray-elements
 ray serve . --port 0      # prints: serving . at http://127.0.0.1:<port>/
 ```
 
@@ -175,12 +175,12 @@ warns for every palette color whose filled/light/outline variant text is.
 
 ### In a raylang app, from the package
 
-`ray_ds/` is a raylang package, published to its own repository:
-`ray_ds = "git+https://github.com/ray-language/ray_ds@v0.3.0"` in
-`[dependencies]` (or `path:` to `ray_ds/` of a checkout), and the app's pages
-import `@ray-ds/elements` by its npm name, as with a bundler
-(`import "@ray-ds/elements/button"`): raylang serves the package at
-`ray://app/node_modules/@ray-ds/elements/` with an import map, the same under
+`elements/` is a raylang package, published to its own repository:
+`elements = "git+https://github.com/ray-language/elements@v0.3.0"` in
+`[dependencies]` (or `path:` to `elements/` of a checkout), and the app's pages
+import `@raylang/elements` by its npm name, as with a bundler
+(`import "@raylang/elements/button"`): raylang serves the package at
+`ray://app/node_modules/@raylang/elements/` with an import map, the same under
 `ray run` and in a native binary, and links it into the app's
 `node_modules/` for the editor.
 `examples/starter` is the smallest such app; `examples/lean-app` loads only
@@ -201,8 +201,8 @@ adds everything. In a std/ui app, serve the directory with
 `ui.mount_dir("", "assets")` (or `ui.mount_embed` in a bundle) and load:
 
 ```html
-<link rel="stylesheet" href="ray-ds/tokens.css">
-<script type="module" src="ray-ds/index.js"></script>
+<link rel="stylesheet" href="ray-elements/tokens.css">
+<script type="module" src="ray-elements/index.js"></script>
 ```
 
 See `examples/desktop-form` (`ray run src/main.ray --check` fills and submits
@@ -218,14 +218,14 @@ menu bar in the command palette (`cd examples/desktop-app && ray run`, or
 
 | Package | Contents |
 |---|---|
-| `@ray-ds/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@ray-ds/elements/<name>` (one component), `@ray-ds/elements/core` (the API alone), `ray-ds.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
-| `@ray-ds/react` | a component per element (`RayButton`…), each registering only its element: declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
-| `@ray-ds/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayDs)` and `GlobalComponents` types |
+| `@raylang/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@raylang/elements/<name>` (one component), `@raylang/elements/core` (the API alone), `ray-elements.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
+| `@raylang/react` | a component per element (`RayButton`…), each registering only its element: declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
+| `@raylang/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayDs)` and `GlobalComponents` types |
 
 ```tsx
 // React
-import "@ray-ds/elements/tokens.css";
-import { RayInput, RayMenu, RayMenuItem, RayButton } from "@ray-ds/react";
+import "@raylang/elements/tokens.css";
+import { RayInput, RayMenu, RayMenuItem, RayButton } from "@raylang/react";
 
 <RayInput label="Name" value={name} onInput={(e) => setName(e.currentTarget.value)} />
 <RayMenu onRaySelect={(e) => run(e.detail.value)}>
@@ -241,7 +241,7 @@ import { RayInput, RayMenu, RayMenuItem, RayButton } from "@ray-ds/react";
 <RayDialog v-model="open" label="Confirm" @ray-close="onClose">…</RayDialog>
 ```
 
-Use them from an app with `file:` dependencies on `ray-ds/packages/*` and
+Use them from an app with `file:` dependencies on `ray-elements/packages/*` and
 `resolve.preserveSymlinks: true` (Vite) / `"preserveSymlinks": true` (tsconfig),
 so `react`/`vue` resolve from the app and a re-run of `package` is picked up
 without reinstalling. The examples are raylang apps made with
@@ -264,9 +264,9 @@ ports (45173, 45174).
 ## Using it in a page
 
 ```html
-<link rel="stylesheet" href="ray-ds/dist/tokens.css">
-<link rel="stylesheet" href="ray-ds/src/core/base.css"> <!-- optional -->
-<script type="module" src="ray-ds/src/index.js"></script>
+<link rel="stylesheet" href="ray-elements/dist/tokens.css">
+<link rel="stylesheet" href="ray-elements/src/core/base.css"> <!-- optional -->
+<script type="module" src="ray-elements/src/index.js"></script>
 
 <ray-input label="Email" name="email" type="email" required></ray-input>
 <ray-button type="submit">Save</ray-button>
@@ -277,28 +277,28 @@ ports (45173, 45174).
 
 ```html
 <script type="module">
-  import "./ray-ds/src/components/button/button.js";
-  import "./ray-ds/src/components/icon/icon.js";
+  import "./ray-elements/src/components/button/button.js";
+  import "./ray-elements/src/components/icon/icon.js";
 </script>
 ```
 
 ### Only what you use
 
-With a bundler, `@ray-ds/elements` has an entry per component and one for the
-API alone; `@ray-ds/react` and `@ray-ds/vue` leave out the wrappers you do not
+With a bundler, `@raylang/elements` has an entry per component and one for the
+API alone; `@raylang/react` and `@raylang/vue` leave out the wrappers you do not
 import, and their elements. Measured with esbuild (minified, gzip):
 
 | Import | gzip |
 |---|---|
-| `import "@ray-ds/elements"` (everything) | 94 KB |
-| `import "@ray-ds/elements/button"` + `"@ray-ds/elements/icon"` | 9.5 KB |
-| `import { setIcons } from "@ray-ds/elements/core"` | 4.3 KB |
-| `import { RayButton } from "@ray-ds/react"` | 9.5 KB |
+| `import "@raylang/elements"` (everything) | 94 KB |
+| `import "@raylang/elements/button"` + `"@raylang/elements/icon"` | 9.5 KB |
+| `import { setIcons } from "@raylang/elements/core"` | 4.3 KB |
+| `import { RayButton } from "@raylang/react"` | 9.5 KB |
 
-`import { RayButton } from "@ray-ds/elements"` still takes everything: that
+`import { RayButton } from "@raylang/elements"` still takes everything: that
 entry registers every element. A wrapper registers only its own element, so a
 plain `<ray-*>` tag in JSX or a Vue template needs its import
-(`import "@ray-ds/elements/badge"`) or `import "@ray-ds/elements"`; Vue's
+(`import "@raylang/elements/badge"`) or `import "@raylang/elements"`; Vue's
 `app.use(RayDs)` takes them all. The icons are one registry by name
 (`setIcons`, `<ray-icon name>`), about 2 KB gzip, always included: a bundler
 cannot know which names your markup uses.
@@ -355,9 +355,9 @@ ECharts in [CHARTS.md](CHARTS.md).
   ```html
   <script>
     try {
-      const t = localStorage.getItem("ray-ds:theme");
+      const t = localStorage.getItem("ray-elements:theme");
       if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
-      const p = localStorage.getItem("ray-ds:primary");
+      const p = localStorage.getItem("ray-elements:primary");
       if (p && p !== "custom") document.documentElement.dataset.primary = p;
     } catch {}
   </script>
@@ -438,7 +438,7 @@ define("ray-thing", RayThing);
 4. App composites — table, command palette, split panes, nav links, status bar, progress, slider, stat, empty state ✅
 5. Adoption — pilot in ray-remote, then rayauth
 
-Charts: ray-ds draws none (decision: option A). It provides the chart
+Charts: ray-elements draws none (decision: option A). It provides the chart
 palette (`--ray-chart-1…8` + chrome tokens, checked at build time for
 contrast, separation and color blindness) and `chartTheme()` /
 `onChartThemeChange()` for chart libraries — see [CHARTS.md](CHARTS.md).
@@ -447,8 +447,8 @@ stay open for later, when an app needs them.
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/ray-language/ray-ds/blob/main/CONTRIBUTING.md) and the [changelog](https://github.com/ray-language/ray-ds/blob/main/CHANGELOG.md).
+See [CONTRIBUTING.md](https://github.com/ray-language/ray-elements/blob/main/CONTRIBUTING.md) and the [changelog](https://github.com/ray-language/ray-elements/blob/main/CHANGELOG.md).
 
 ## License
 
-Apache License 2.0: see [LICENSE](https://github.com/ray-language/ray-ds/blob/main/LICENSE) and [NOTICE](https://github.com/ray-language/ray-ds/blob/main/NOTICE).
+Apache License 2.0: see [LICENSE](https://github.com/ray-language/ray-elements/blob/main/LICENSE) and [NOTICE](https://github.com/ray-language/ray-elements/blob/main/NOTICE).
