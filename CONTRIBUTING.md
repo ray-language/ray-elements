@@ -114,9 +114,6 @@ there (use `T.settle()`; see `tests/harness.js`).
 2. Commit, then tag `vX.Y.Z` and push the tag.
 3. The `release` workflow checks that the tag is `ray-elements.toml`'s version, runs
    the tests and checks the generated output, then:
-   - **raylang**: pushes `git subtree split --prefix elements` to `main` of
-     `github.com/ray-language/elements` and gives it the same tag. It needs the
-     secret `RAY_ELEMENTS_DEPLOY_KEY` (a deploy key of `elements` with write access).
    - **npm**: publishes `@raylang/elements`, then `@raylang/react` and
      `@raylang/vue`. A version already on npm is skipped, so a failed run can
      be run again; a prerelease (`0.4.0-rc.1`) goes to the `next` dist-tag.
@@ -130,7 +127,20 @@ there (use `T.settle()`; see `tests/harness.js`).
 
    Run it by hand for a dry run: the same jobs, with nothing pushed,
    published or deployed.
-4. The raylang index (`ray registry publish`) is a manual step for now.
+4. The raylang package is published from your machine, like the packages of
+   the raylang monorepo (`db`, `web`, `net`): no deploy key, no CI secret.
+   From the tag, with push access to `ray-language/elements` and
+   `ray-language/ray-index` over ssh:
+
+   ```sh
+   cd elements
+   ray registry mirror git@github.com:ray-language/elements.git --index git@github.com:ray-language/ray-index.git
+   ```
+
+   It snapshots `elements/` into the mirror repository (package at the root,
+   README with the read-only notice), tags it `vX.Y.Z` and adds the version to
+   the index, so `ray add elements` resolves it. Versions are immutable: a tag
+   the mirror already has is refused; bump the version instead.
 
 ## License
 
