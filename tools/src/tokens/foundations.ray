@@ -75,7 +75,7 @@ pub fn render(m: Model) -> Result<Page, string> {
             "foundations.html",
             "foundations",
             "Foundations",
-            "The ray·ds design tokens: palette, variants, semantic tokens, chart palette, type, spacing, radius, shadows, motion.",
+            "The ray·elements design tokens: palette, variants, semantic tokens, chart palette, type, spacing, radius, shadows, motion.",
             [Group { title: "Foundations", links: links }],
             join(body, "\n"),
             "foundations"

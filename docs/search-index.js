@@ -772,7 +772,7 @@ export default [
   {
     "label": "Page not found",
     "group": "Pages",
-    "description": "This address is not part of the ray·ds site.",
+    "description": "This address is not part of the ray·elements site.",
     "href": "404.html",
     "keywords": [
       "404"
@@ -1030,7 +1030,7 @@ export default [
   {
     "label": "Foundations",
     "group": "Pages",
-    "description": "The ray·ds design tokens: palette, variants, semantic tokens, chart palette, type, spacing, radius, shadows, motion.",
+    "description": "The ray·elements design tokens: palette, variants, semantic tokens, chart palette, type, spacing, radius, shadows, motion.",
     "href": "foundations.html",
     "keywords": [
       "foundations"
