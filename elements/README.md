@@ -7,8 +7,8 @@ that gives them the system's dialogs, menus and window in a `std/ui` window.
 Needs raylang 1.27.44 or later.
 
 This repository is the `elements/` directory of
-[ray-language/ray-elements](https://github.com/ray-language/ray-elements), split out with
-its history on every release: open issues and pull requests there.
+[ray-language/ray-elements](https://github.com/ray-language/ray-elements), published from
+it on every release (`ray registry mirror`): open issues and pull requests there.
 
 ## Install
 
