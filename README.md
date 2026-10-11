@@ -223,7 +223,7 @@ menu bar in the command palette (`cd examples/desktop-app && ray run`, or
 |---|---|
 | `@raylang/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@raylang/elements/<name>` (one component), `@raylang/elements/core` (the API alone), `ray-elements.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
 | `@raylang/react` | a component per element (`RayButton`…), each registering only its element: declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
-| `@raylang/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayDs)` and `GlobalComponents` types |
+| `@raylang/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayElements)` and `GlobalComponents` types |
 
 ```tsx
 // React
@@ -238,7 +238,7 @@ import { RayInput, RayMenu, RayMenuItem, RayButton } from "@raylang/react";
 ```
 
 ```vue
-<!-- Vue (app.use(RayDs) in main.ts) -->
+<!-- Vue (app.use(RayElements) in main.ts) -->
 <RayInput v-model="name" label="Name" required />
 <RaySwitch v-model="enabled" label="Enabled" />
 <RayDialog v-model="open" label="Confirm" @ray-close="onClose">…</RayDialog>
@@ -302,7 +302,7 @@ import, and their elements. Measured with esbuild (minified, gzip):
 entry registers every element. A wrapper registers only its own element, so a
 plain `<ray-*>` tag in JSX or a Vue template needs its import
 (`import "@raylang/elements/badge"`) or `import "@raylang/elements"`; Vue's
-`app.use(RayDs)` takes them all. The icons are one registry by name
+`app.use(RayElements)` takes them all. The icons are one registry by name
 (`setIcons`, `<ray-icon name>`), about 2 KB gzip, always included: a bundler
 cannot know which names your markup uses.
 

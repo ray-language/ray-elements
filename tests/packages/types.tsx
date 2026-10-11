@@ -4,7 +4,7 @@
 import { setIcons, type RayNumberInput, type RayAppBar } from "@raylang/elements";
 import "@raylang/elements/button";
 import { RayButton, RayMenu, RayMenuItem } from "@raylang/react";
-import RayDs, { RaySwitch } from "@raylang/vue";
+import RayElements, { RaySwitch } from "@raylang/vue";
 
 setIcons({});
 
@@ -22,4 +22,4 @@ export const view = (
   </RayMenu>
 );
 
-export const vue = [RayDs, RaySwitch, prefix];
+export const vue = [RayElements, RaySwitch, prefix];

@@ -59,8 +59,8 @@ export declare const AppHoverCard: DefineComponent<AppHoverCardProps>;
 export interface AppSaveButtonProps {
   /** There are unsaved changes (a dot, and an accessible description). */
   dirty?: boolean;
-  /** Visual style. */
-  variant?: "filled" | "light" | "outline" | "subtle" | "default" | "transparent" | "gradient";
+  /** Visual style. raised: a physical key on a darker edge that sinks when pressed (mouse, touch or keyboard). */
+  variant?: "filled" | "light" | "outline" | "subtle" | "default" | "transparent" | "gradient" | "raised";
   /** With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens. */
   gradient?: string;
   /** A palette color (blue, red…) or any CSS color. Default: the primary color. */

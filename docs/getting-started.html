@@ -422,7 +422,7 @@ menu bar in the command palette (<code>cd examples/desktop-app &amp;&amp; ray ru
 </tr>
 <tr>
 <td><code>@raylang/vue</code></td>
-<td>a component per element with <code>v-model</code> where it makes sense (<code>value</code>, <code>checked</code>, <code>open</code>), <code>app.use(RayDs)</code> and <code>GlobalComponents</code> types</td>
+<td>a component per element with <code>v-model</code> where it makes sense (<code>value</code>, <code>checked</code>, <code>open</code>), <code>app.use(RayElements)</code> and <code>GlobalComponents</code> types</td>
 </tr>
 </tbody>
 </table>
@@ -436,7 +436,7 @@ menu bar in the command palette (<code>cd examples/desktop-app &amp;&amp; ray ru
   &lt;RayButton slot=<span class="tk-string">&quot;trigger&quot;</span>&gt;Actions&lt;/RayButton&gt;
   &lt;RayMenuItem value=<span class="tk-string">&quot;rename&quot;</span>&gt;Rename&lt;/RayMenuItem&gt;
 &lt;/RayMenu&gt;</code></pre>
-<pre class="code"><code><span class="tk-comment">&lt;!-- Vue (app.use(RayDs) in main.ts) --&gt;</span>
+<pre class="code"><code><span class="tk-comment">&lt;!-- Vue (app.use(RayElements) in main.ts) --&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">v-model</span>=<span class="tk-string">&quot;name&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Name&quot;</span> <span class="tk-attr">required</span> /<span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">RaySwitch</span> <span class="tk-attr">v-model</span>=<span class="tk-string">&quot;enabled&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Enabled&quot;</span> /<span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayDialog</span> <span class="tk-attr">v-model</span>=<span class="tk-string">&quot;open&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Confirm&quot;</span> <span class="tk-attr">@ray-close</span>=<span class="tk-string">&quot;onClose&quot;</span><span class="tk-punctuation">&gt;</span>…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayDialog</span><span class="tk-punctuation">&gt;</span></code></pre>
@@ -507,7 +507,7 @@ import, and their elements. Measured with esbuild (minified, gzip):</p>
 entry registers every element. A wrapper registers only its own element, so a
 plain <code>&lt;ray-*&gt;</code> tag in JSX or a Vue template needs its import
 (<code>import &quot;@raylang/elements/badge&quot;</code>) or <code>import &quot;@raylang/elements&quot;</code>; Vue's
-<code>app.use(RayDs)</code> takes them all. The icons are one registry by name
+<code>app.use(RayElements)</code> takes them all. The icons are one registry by name
 (<code>setIcons</code>, <code>&lt;ray-icon name&gt;</code>), about 2 KB gzip, always included: a bundler
 cannot know which names your markup uses.</p>
 

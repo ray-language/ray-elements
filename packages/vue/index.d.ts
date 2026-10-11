@@ -2265,9 +2265,12 @@ export declare const components: {
   RayStatusbarItem: typeof RayStatusbarItem;
   RayThemeToggle: typeof RayThemeToggle;
 };
-/** app.use(RayDs) registers every component globally. */
+/** app.use(RayElements) registers every component globally. */
+export declare const RayElements: Plugin;
+export default RayElements;
+
+/** @deprecated Since 0.4.0: use `RayElements`. Removed in 0.5.0. */
 export declare const RayDs: Plugin;
-export default RayDs;
 
 declare module "vue" {
   export interface GlobalComponents {

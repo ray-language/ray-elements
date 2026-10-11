@@ -57,7 +57,7 @@ export function createComponent(name, tagName, { properties = [], booleans = [],
   });
 }
 
-/** A plugin registering every component globally: app.use(RayDs). */
+/** A plugin registering every component globally: app.use(RayElements). */
 export function createPlugin(components) {
   return {
     install(app) {

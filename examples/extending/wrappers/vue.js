@@ -3,16 +3,16 @@
 import "./index.js";
 import { createComponent, createPlugin } from "@raylang/vue";
 
-export const AppColorField = createComponent("AppColorField", "app-color-field", {
+export const AppColorField = /*#__PURE__*/ createComponent("AppColorField", "app-color-field", {
   properties: ["value", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
   booleans: ["required", "disabled"],
   model: { prop: "value", events: ["input"] },
 });
-export const AppHoverCard = createComponent("AppHoverCard", "app-hover-card", {
+export const AppHoverCard = /*#__PURE__*/ createComponent("AppHoverCard", "app-hover-card", {
   properties: ["openDelay", "closeDelay", "open", "placement", "offset"],
   booleans: ["open"],
 });
-export const AppSaveButton = createComponent("AppSaveButton", "app-save-button", {
+export const AppSaveButton = /*#__PURE__*/ createComponent("AppSaveButton", "app-save-button", {
   properties: ["dirty", "variant", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "href", "target", "name", "value"],
   booleans: ["dirty", "disabled", "loading", "fullWidth"],
 });
@@ -20,5 +20,5 @@ export const AppSaveButton = createComponent("AppSaveButton", "app-save-button",
 export const components = { AppColorField, AppHoverCard, AppSaveButton };
 
 /** app.use(AppComponents) registers every component globally. */
-export const AppComponents = createPlugin(components);
+export const AppComponents = /*#__PURE__*/ createPlugin(components);
 export default AppComponents;
