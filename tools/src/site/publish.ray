@@ -4,7 +4,8 @@
 // The pages of docs/ move to the root of the site (components/button.html,
 // not docs/components/button.html), next to the files they load from the
 // repo: src/ (the components' modules, the app-shell demo page), dist/
-// (tokens) and site/site.css (for the demo page). Links that left docs/
+// (tokens), site/site.css (for the demo page) and brand/ (logos, the brand
+// manual). Links that left docs/
 // ("../src/…" from docs/, "../../src/…" from docs/components/) lose one
 // "../" ("./src/…" at the root). 404.html is served at any address, so its links are made absolute
 // with the base path the site is published under ("/ray-elements/" on GitHub
@@ -12,8 +13,9 @@
 
 import std/fs;
 
-// What a page in docs/ may load from the repo, besides docs/ itself.
-const FROM_REPO: [string] = ["src", "dist", "site"];
+// What a page in docs/ may load from the repo, besides docs/ itself (brand/:
+// the logos and the brand manual, linked from the guide).
+const FROM_REPO: [string] = ["src", "dist", "site", "brand"];
 
 pub struct Report {
     files: int,
@@ -33,6 +35,10 @@ pub fn run(root: string, out: string, base: string) -> Result<Report, string> {
     copy_src(root, "src", dest)?;
     for f in ["dist/tokens.css", "dist/tokens.json", "site/site.css"] {
         put(dest, f, fs.read_file("${root}/${f}")?)?;
+    }
+    // brand/: the logos and the brand manual (brand/manual.html).
+    for name in fs.list_dir("${root}/brand")? {
+        put(dest, "brand/${name}", fs.read_file("${root}/brand/${name}")?)?;
     }
     // 404.html: absolute links (it is served at any address).
     let nf = "${dest}/404.html";
