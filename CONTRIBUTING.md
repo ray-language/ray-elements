@@ -121,12 +121,14 @@ there (use `T.settle()`; see `tests/harness.js`).
      otherwise with npm's trusted publishing (each package trusts
      `ray-language/ray-elements` and `release.yml` on npmjs.com, which needs the
      package to exist: the first release uses the token).
-   - **site**: deploys the site to GitHub Pages when the variable
-     `PAGES_DEPLOY` is `true` (the `github-pages` environment must allow `v*`
-     tags).
 
-   Run it by hand for a dry run: the same jobs, with nothing pushed,
-   published or deployed.
+   Run it by hand for a dry run: the same jobs, with nothing published.
+
+   The site is not part of a release: `site.yml` builds and deploys it to
+   GitHub Pages (elements.raylang.dev) on every push to `main`, so the docs
+   follow `main` and a docs change needs no version. Set the version in
+   `ray-elements.toml` in the release commit, not before, and the site shows
+   the released version.
 4. The raylang package is published from your machine, like the packages of
    the raylang monorepo (`db`, `web`, `net`): no deploy key, no CI secret.
    From the tag, with push access to `ray-language/elements` and

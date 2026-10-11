@@ -1,0 +1,52 @@
+# The site, on every push to main (and by hand): built with tools/run.sh site
+# and deployed to GitHub Pages. The site documents main; releases (release.yml,
+# on version tags) publish npm, and the raylang package is mirrored from a
+# maintainer's machine (CONTRIBUTING.md). Pages uses "GitHub Actions" as its
+# source and the github-pages environment allows main. PAGES_BASE is the path
+# the site is served under ("/" on elements.raylang.dev).
+
+name: site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install raylang
+        run: |
+          curl -sSfL https://raylang.dev/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Build the site
+        run: tools/run.sh site --base "${PAGES_BASE:-/}"
+        env:
+          PAGES_BASE: ${{ vars.PAGES_BASE }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
