@@ -1,16 +1,18 @@
-# A release, on a version tag (v0.3.0…): one check, then two jobs.
+# A release, on a version tag (v0.3.0…): one check, then npm.
 #
 #   check    the tag is ray-elements.toml's version, the tests pass, the committed
-#            output matches the sources, and the site is built
+#            output matches the sources, and the site builds
 #   npm      @raylang/elements, then @raylang/react and @raylang/vue
-#   site     the site on GitHub Pages
+#
+# The site is not deployed from here: site.yml publishes it on every push to
+# main, so the docs follow main and a docs change needs no release.
 #
 # The raylang package (elements/) is not published from here: `ray registry
 # mirror`, run from elements/ on a maintainer's machine, pushes it to
 # github.com/ray-language/elements and to the index (CONTRIBUTING.md).
 #
 # Run it by hand (workflow_dispatch) for a dry run of the same jobs from any
-# branch: npm publishes with --dry-run and the site is built but not deployed. A real release by hand must be run
+# branch: npm publishes with --dry-run. A real release by hand must be run
 # from the tag.
 #
 # Secrets and settings:
@@ -19,9 +21,6 @@
 #   repository and release.yml (a package must exist before it can trust a
 #   publisher, so the first release needs the token). Provenance is attached
 #   when this repository is public; npm refuses it from a private one.
-# - The site deploys when the variable PAGES_DEPLOY is "true", Pages uses
-#   "GitHub Actions" as its source and the github-pages environment allows
-#   v* tags (by default it only allows the default branch).
 
 name: release
 
@@ -104,10 +103,6 @@ jobs:
           npm --prefix tests/packages ci
           npm --prefix tests/packages run check
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/site
-
   npm:
     needs: check
     runs-on: ubuntu-latest
@@ -155,17 +150,3 @@ jobs:
             echo "Publishing $name@$version to $tag$([ "$DRY_RUN" = "true" ] && echo " (dry run)")"
             (cd "packages/$dir" && npm publish --tag "$tag" "${flags[@]}")
           done
-
-  site:
-    needs: check
-    if: vars.PAGES_DEPLOY == 'true' && !(github.event_name == 'workflow_dispatch' && inputs.dry_run)
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
