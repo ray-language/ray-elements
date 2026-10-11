@@ -488,7 +488,7 @@ fn ignores_what_is_not_a_bridge_request() {
 @test
 fn says_hello() {
     let a = answer(fake(), "{\"ray-elements\":1,\"op\":\"hello\"}").unwrap();
-    assert(a.starts_with("{\"ok\":true,\"value\":{\"protocol\":1,\"version\":\"0.3.0\",\"platform\":\""));
+    assert(a.starts_with("{\"ok\":true,\"value\":{\"protocol\":1,\"version\":\"" + version.VERSION + "\",\"platform\":\""));
     assert(a.ends_with("\"ops\":[\"hello\",\"pick_files\",\"pick_path\",\"confirm\",\"menu_items\",\"run_menu\",\"popup_menu\",\"window_colors\",\"set_edited\"]}}"));
 }
 
