@@ -151,6 +151,9 @@ emblem as one more piece. `docs` generates it from `tools/src/site/brand.ray`
 into `brand/`: `logo.svg` (light grounds), `logo-dark.svg`, `logo-16.svg`
 (without Manta's horns, per the raylang brand manual), `icon.svg` (app icon) and
 `favicon.svg`. The wordmark is "ray" in ray blue, the dot in aqua, "elements" in ink.
+The brand manual, [brand/manual.html](brand/manual.html) (anatomy, lockup and
+clear space, variants, palette, type, misuse, files), is the reference; it
+inherits the raylang brand system (ocean palette, icon tile, Manta).
 
 ### Viewing the docs
 
