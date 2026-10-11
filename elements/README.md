@@ -12,6 +12,12 @@ its history on every release: open issues and pull requests there.
 
 ## Install
 
+```sh
+ray add elements
+```
+
+or, pinning the tag without the index:
+
 ```toml
 [dependencies]
 elements = "git+https://github.com/ray-language/elements@v0.3.0"

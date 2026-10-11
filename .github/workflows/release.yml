@@ -1,20 +1,19 @@
-# A release, on a version tag (v0.3.0…): one check, then three jobs.
+# A release, on a version tag (v0.3.0…): one check, then two jobs.
 #
 #   check    the tag is ray-elements.toml's version, the tests pass, the committed
 #            output matches the sources, and the site is built
-#   raylang  elements/ to github.com/ray-language/elements with its history
-#            (git subtree split --prefix elements), main and the same tag
 #   npm      @raylang/elements, then @raylang/react and @raylang/vue
 #   site     the site on GitHub Pages
 #
+# The raylang package (elements/) is not published from here: `ray registry
+# mirror`, run from elements/ on a maintainer's machine, pushes it to
+# github.com/ray-language/elements and to the index (CONTRIBUTING.md).
+#
 # Run it by hand (workflow_dispatch) for a dry run of the same jobs from any
-# branch: the split is made but not pushed, npm publishes with --dry-run and
-# the site is built but not deployed. A real release by hand must be run
+# branch: npm publishes with --dry-run and the site is built but not deployed. A real release by hand must be run
 # from the tag.
 #
 # Secrets and settings:
-# - RAY_ELEMENTS_DEPLOY_KEY: the private half of a deploy key of ray-language/elements
-#   with write access (the organization must allow deploy keys).
 # - NPM_TOKEN: a granular token with read and write on @raylang. Without it,
 #   npm's trusted publishing: each package on npmjs.com trusts this
 #   repository and release.yml (a package must exist before it can trust a
@@ -108,45 +107,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/site
-
-  raylang:
-    needs: check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # the split carries the history of elements/
-
-      # The split commits keep the authors, committers and dates of the
-      # originals, so every release extends the same history.
-      - name: Split elements/
-        run: |
-          git subtree split -q --prefix elements -b elements-release
-          git log --oneline -5 elements-release
-          git ls-tree --name-only elements-release
-
-      - name: Push to ray-language/elements
-        if: env.DRY_RUN != 'true'
-        env:
-          KEY: ${{ secrets.RAY_ELEMENTS_DEPLOY_KEY }}
-          TAG: ${{ github.ref_name }}
-        run: |
-          if [ -z "$KEY" ]; then
-            echo "::error::Add the secret RAY_ELEMENTS_DEPLOY_KEY: the private half of a deploy key of ray-language/elements with write access."
-            exit 1
-          fi
-          key="$RUNNER_TEMP/elements_key"
-          printf '%s\n' "$KEY" > "$key"
-          chmod 600 "$key"
-          export GIT_SSH_COMMAND="ssh -i $key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
-          remote=git@github.com:ray-language/elements.git
-          if [ -n "$(git ls-remote --tags "$remote" "refs/tags/$TAG")" ]; then
-            echo "::error::elements already has the tag $TAG."
-            exit 1
-          fi
-          git push "$remote" elements-release:refs/heads/main
-          git push "$remote" "elements-release:refs/tags/$TAG"
-          rm -f "$key"
 
   npm:
     needs: check
