@@ -263,8 +263,8 @@ import { RayButton, RayInput } from "${i.scope}/react";
 <RayInput label="Name" value={name} onInput={(e) => setName(e.currentTarget.value)} />
 <RayButton onClick={save}>Save</RayButton>`,
         "vue" => `import "${i.scope}/elements/tokens.css";
-import RayDs from "${i.scope}/vue";
-app.use(RayDs);
+import RayElements from "${i.scope}/vue";
+app.use(RayElements);
 
 <RayInput v-model="name" label="Name" />
 <RayButton @click="save">Save</RayButton>`,

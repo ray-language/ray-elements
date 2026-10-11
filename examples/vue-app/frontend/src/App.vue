@@ -2,7 +2,7 @@
 import { reactive, ref } from "vue";
 import { notify } from "@raylang/elements";
 
-// Every Ray* component is registered globally by app.use(RayDs) (typed via GlobalComponents).
+// Every Ray* component is registered globally by app.use(RayElements) (typed via GlobalComponents).
 const project = reactive({ name: "", template: "", license: "mit", git: true });
 const reply = ref("");
 const confirmOpen = ref(false);

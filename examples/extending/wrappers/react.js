@@ -3,17 +3,17 @@
 import "./index.js";
 import { createComponent } from "@raylang/react";
 
-export const AppColorField = createComponent("app-color-field", {
+export const AppColorField = /*#__PURE__*/ createComponent("app-color-field", {
   displayName: "AppColorField",
   properties: ["value", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
   events: { onInput: "input", onChange: "change" },
 });
-export const AppHoverCard = createComponent("app-hover-card", {
+export const AppHoverCard = /*#__PURE__*/ createComponent("app-hover-card", {
   displayName: "AppHoverCard",
   properties: ["openDelay", "closeDelay", "open", "placement", "offset"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
-export const AppSaveButton = createComponent("app-save-button", {
+export const AppSaveButton = /*#__PURE__*/ createComponent("app-save-button", {
   displayName: "AppSaveButton",
   properties: ["dirty", "variant", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "href", "target", "name", "value"],
   events: {  },

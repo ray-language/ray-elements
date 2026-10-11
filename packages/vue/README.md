@@ -7,8 +7,8 @@ directory): the components, their docs and the issues are there.
 
 ```
 import "@raylang/elements/tokens.css";
-import RayDs from "@raylang/vue";
-app.use(RayDs);
+import RayElements from "@raylang/vue";
+app.use(RayElements);
 
 <RayInput v-model="name" label="Name" />
 <RayButton @click="save">Save</RayButton>

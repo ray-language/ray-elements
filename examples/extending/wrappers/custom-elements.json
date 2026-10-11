@@ -1,246 +1,246 @@
 {
+  "schemaVersion": "2.1.0",
+  "readme": "README.md",
   "modules": [
     {
+      "kind": "javascript-module",
+      "path": "../components/color-field/color-field.js",
       "declarations": [
         {
-          "attributes": [
-            {
-              "default": "#228be6",
-              "description": "The color as #rrggbb.",
-              "fieldName": "value",
-              "name": "value",
-              "type": {
-                "text": "string"
-              }
-            }
-          ],
-          "cssParts": [],
+          "kind": "class",
+          "name": "AppColorField",
+          "tagName": "app-color-field",
           "customElement": true,
           "description": "A color picker field with label, description and error (level 2: a FieldControl).",
-          "events": [
-            {
-              "description": "While picking.",
-              "name": "input",
-              "type": {
-                "text": "Event"
-              }
-            },
-            {
-              "description": "When a color is chosen.",
-              "name": "change",
-              "type": {
-                "text": "Event"
-              }
-            }
-          ],
-          "kind": "class",
-          "members": [
-            {
-              "attribute": "value",
-              "default": "#228be6",
-              "description": "The color as #rrggbb.",
-              "kind": "field",
-              "name": "value",
-              "reflects": false,
-              "type": {
-                "text": "string"
-              }
-            }
-          ],
-          "name": "AppColorField",
-          "slots": [],
           "superclass": {
             "name": "FieldControl"
           },
-          "tagName": "app-color-field"
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color as #rrggbb.",
+              "fieldName": "value",
+              "default": "#228be6"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The color as #rrggbb.",
+              "attribute": "value",
+              "reflects": false,
+              "default": "#228be6"
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "While picking."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "When a color is chosen."
+            }
+          ],
+          "slots": [],
+          "cssParts": []
         }
       ],
       "exports": [
         {
-          "declaration": {
-            "module": "../components/color-field/color-field.js",
-            "name": "AppColorField"
-          },
           "kind": "js",
-          "name": "AppColorField"
+          "name": "AppColorField",
+          "declaration": {
+            "name": "AppColorField",
+            "module": "../components/color-field/color-field.js"
+          }
         },
         {
-          "declaration": {
-            "module": "../components/color-field/color-field.js",
-            "name": "AppColorField"
-          },
           "kind": "custom-element-definition",
-          "name": "app-color-field"
+          "name": "app-color-field",
+          "declaration": {
+            "name": "AppColorField",
+            "module": "../components/color-field/color-field.js"
+          }
         }
-      ],
-      "kind": "javascript-module",
-      "path": "../components/color-field/color-field.js"
+      ]
     },
     {
+      "kind": "javascript-module",
+      "path": "../components/hover-card/hover-card.js",
       "declarations": [
         {
-          "attributes": [
-            {
-              "default": "200",
-              "description": "ms before opening.",
-              "fieldName": "openDelay",
-              "name": "open-delay",
-              "type": {
-                "text": "number"
-              }
-            },
-            {
-              "default": "150",
-              "description": "ms before closing.",
-              "fieldName": "closeDelay",
-              "name": "close-delay",
-              "type": {
-                "text": "number"
-              }
-            }
-          ],
-          "cssParts": [],
+          "kind": "class",
+          "name": "AppHoverCard",
+          "tagName": "app-hover-card",
           "customElement": true,
           "description": "Rich content while the trigger is hovered or focused (level 3: a Floating).",
-          "events": [
-            {
-              "description": "After it opened.",
-              "name": "ray-open",
-              "type": {
-                "text": "CustomEvent<unknown>"
-              }
-            },
-            {
-              "description": "After it closed.",
-              "name": "ray-close",
-              "type": {
-                "text": "CustomEvent<unknown>"
-              }
-            }
-          ],
-          "kind": "class",
-          "members": [
-            {
-              "attribute": "open-delay",
-              "default": "200",
-              "description": "ms before opening.",
-              "kind": "field",
-              "name": "openDelay",
-              "reflects": false,
-              "type": {
-                "text": "number"
-              }
-            },
-            {
-              "attribute": "close-delay",
-              "default": "150",
-              "description": "ms before closing.",
-              "kind": "field",
-              "name": "closeDelay",
-              "reflects": false,
-              "type": {
-                "text": "number"
-              }
-            }
-          ],
-          "name": "AppHoverCard",
-          "slots": [
-            {
-              "description": "The element that shows it.",
-              "name": "trigger"
-            },
-            {
-              "description": "The card.",
-              "name": ""
-            }
-          ],
           "superclass": {
             "name": "Floating"
           },
-          "tagName": "app-hover-card"
+          "attributes": [
+            {
+              "name": "open-delay",
+              "type": {
+                "text": "number"
+              },
+              "description": "ms before opening.",
+              "fieldName": "openDelay",
+              "default": "200"
+            },
+            {
+              "name": "close-delay",
+              "type": {
+                "text": "number"
+              },
+              "description": "ms before closing.",
+              "fieldName": "closeDelay",
+              "default": "150"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "openDelay",
+              "type": {
+                "text": "number"
+              },
+              "description": "ms before opening.",
+              "attribute": "open-delay",
+              "reflects": false,
+              "default": "200"
+            },
+            {
+              "kind": "field",
+              "name": "closeDelay",
+              "type": {
+                "text": "number"
+              },
+              "description": "ms before closing.",
+              "attribute": "close-delay",
+              "reflects": false,
+              "default": "150"
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-open",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "After it opened."
+            },
+            {
+              "name": "ray-close",
+              "type": {
+                "text": "CustomEvent<unknown>"
+              },
+              "description": "After it closed."
+            }
+          ],
+          "slots": [
+            {
+              "name": "trigger",
+              "description": "The element that shows it."
+            },
+            {
+              "name": "",
+              "description": "The card."
+            }
+          ],
+          "cssParts": []
         }
       ],
       "exports": [
         {
-          "declaration": {
-            "module": "../components/hover-card/hover-card.js",
-            "name": "AppHoverCard"
-          },
           "kind": "js",
-          "name": "AppHoverCard"
+          "name": "AppHoverCard",
+          "declaration": {
+            "name": "AppHoverCard",
+            "module": "../components/hover-card/hover-card.js"
+          }
         },
         {
-          "declaration": {
-            "module": "../components/hover-card/hover-card.js",
-            "name": "AppHoverCard"
-          },
           "kind": "custom-element-definition",
-          "name": "app-hover-card"
+          "name": "app-hover-card",
+          "declaration": {
+            "name": "AppHoverCard",
+            "module": "../components/hover-card/hover-card.js"
+          }
         }
-      ],
-      "kind": "javascript-module",
-      "path": "../components/hover-card/hover-card.js"
+      ]
     },
     {
+      "kind": "javascript-module",
+      "path": "../components/save-button/save-button.js",
       "declarations": [
         {
-          "attributes": [
-            {
-              "description": "There are unsaved changes (a dot, and an accessible description).",
-              "fieldName": "dirty",
-              "name": "dirty",
-              "type": {
-                "text": "boolean"
-              }
-            }
-          ],
-          "cssParts": [],
+          "kind": "class",
+          "name": "AppSaveButton",
+          "tagName": "app-save-button",
           "customElement": true,
           "description": "A ray-button with a dirty state (level 1: extend a component).",
-          "events": [],
-          "kind": "class",
-          "members": [
-            {
-              "attribute": "dirty",
-              "description": "There are unsaved changes (a dot, and an accessible description).",
-              "kind": "field",
-              "name": "dirty",
-              "reflects": true,
-              "type": {
-                "text": "boolean"
-              }
-            }
-          ],
-          "name": "AppSaveButton",
-          "slots": [],
           "superclass": {
             "name": "RayButton"
           },
-          "tagName": "app-save-button"
+          "attributes": [
+            {
+              "name": "dirty",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "There are unsaved changes (a dot, and an accessible description).",
+              "fieldName": "dirty"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "dirty",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "There are unsaved changes (a dot, and an accessible description).",
+              "attribute": "dirty",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": []
         }
       ],
       "exports": [
         {
-          "declaration": {
-            "module": "../components/save-button/save-button.js",
-            "name": "AppSaveButton"
-          },
           "kind": "js",
-          "name": "AppSaveButton"
+          "name": "AppSaveButton",
+          "declaration": {
+            "name": "AppSaveButton",
+            "module": "../components/save-button/save-button.js"
+          }
         },
         {
-          "declaration": {
-            "module": "../components/save-button/save-button.js",
-            "name": "AppSaveButton"
-          },
           "kind": "custom-element-definition",
-          "name": "app-save-button"
+          "name": "app-save-button",
+          "declaration": {
+            "name": "AppSaveButton",
+            "module": "../components/save-button/save-button.js"
+          }
         }
-      ],
-      "kind": "javascript-module",
-      "path": "../components/save-button/save-button.js"
+      ]
     }
-  ],
-  "readme": "README.md",
-  "schemaVersion": "2.1.0"
+  ]
 }

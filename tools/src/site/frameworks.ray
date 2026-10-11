@@ -488,7 +488,7 @@ pub fn vue(html: string, els: [Element]) -> string {
         }
     }
     let lines: [string] = [];
-    lines.push("<!-- app.use(RayDs) (from \"@raylang/vue\") registers the components. -->");
+    lines.push("<!-- app.use(RayElements) (from \"@raylang/vue\") registers the components. -->");
     if (parsed.dropped) {
         lines.push("<!-- The live example's <script>/<style> is left out: bind data with :prop and listen with @event. -->");
     }

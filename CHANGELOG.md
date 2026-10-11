@@ -5,6 +5,14 @@ All notable changes to ray-elements. The format follows
 [Semantic Versioning](https://semver.org/): before 1.0, a minor version may
 change the API.
 
+## [Unreleased]
+
+### Changed
+
+- `@raylang/vue`: the plugin is `RayElements` (`import RayElements from
+  "@raylang/vue"; app.use(RayElements)`). `RayDs`, the 0.3.0 name, stays as a
+  deprecated alias until 0.5.0.
+
 ## [0.3.0] - 2026-10-11
 
 The first public release, under its final name: the project is **ray-elements**
