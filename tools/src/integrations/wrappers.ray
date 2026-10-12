@@ -255,16 +255,7 @@ fn vue_plugin(names: [string], plugin: string) -> [string] {
         "export const ${plugin} = /*#__PURE__*/ createPlugin(components);",
         "export default ${plugin};",
         ""
-    ] + deprecated_plugin_alias(plugin, "export const RayDs = ${plugin};")
-}
-
-// 0.3.0 exported the plugin as `RayDs` (the project's former name): the alias
-// stays, deprecated, until 0.5.0.
-fn deprecated_plugin_alias(plugin: string, line: string) -> [string] {
-    if (plugin != "RayElements") {
-        return [];
-    }
-    ["/** @deprecated Since 0.4.0: use `RayElements`. Removed in 0.5.0. */", line, ""]
+    ]
 }
 
 // @raylang/vue as modules, like react_modules.
@@ -384,9 +375,6 @@ pub fn vue_dts(cs: [Component], extra: [Component], t: Target) -> string {
     out.push("export declare const ${t.plugin}: Plugin;");
     out.push("export default ${t.plugin};");
     out.push("");
-    for l in deprecated_plugin_alias(t.plugin, "export declare const RayDs: Plugin;") {
-        out.push(l);
-    }
     out.push("declare module \"vue\" {");
     out.push("  export interface GlobalComponents {");
     out.push(join(names.map(fn(n: string) -> string { "    ${n}: typeof ${n};" }), "\n"));

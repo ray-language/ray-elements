@@ -7,6 +7,11 @@ change the API.
 
 ## [Unreleased]
 
+### Removed
+
+- `@raylang/vue`: the `RayDs` alias of the plugin (deprecated in 0.4.0); use
+  `RayElements`.
+
 ### Changed
 
 - The `elements` raylang package, the tools and `examples/starter`,

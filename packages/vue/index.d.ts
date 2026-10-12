@@ -2269,9 +2269,6 @@ export declare const components: {
 export declare const RayElements: Plugin;
 export default RayElements;
 
-/** @deprecated Since 0.4.0: use `RayElements`. Removed in 0.5.0. */
-export declare const RayDs: Plugin;
-
 declare module "vue" {
   export interface GlobalComponents {
     RayButton: typeof RayButton;

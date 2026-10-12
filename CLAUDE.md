@@ -16,7 +16,7 @@ extras for raylang apps. Names:
 | npm packages | `@raylang/elements`, `@raylang/react`, `@raylang/vue` |
 | raylang package | `elements` (`import elements/bridge`, `elements/version`); mirror `ray-language/elements`; `ray add elements` |
 | Bridge protocol key / page event | `"ray-elements": 1` / `ray-elements:menu` |
-| Vue plugin | `RayElements` (`RayDs` is a deprecated alias until 0.5.0) |
+| Vue plugin | `RayElements` (`RayDs`, its 0.3.0 name, was removed in 0.5.0) |
 | Site | https://elements.raylang.dev (documents `main`) |
 
 ## Layout
@@ -89,5 +89,4 @@ then `ray registry mirror`. Verify with `ray add elements` in a fresh project.
 - Bump the version outside the release commit.
 - Hand-edit generated files (`docs/`, `packages/`, `dist/`, `elements/version.ray`,
   `elements/web/`); edit the sources and run `build`.
-- Use the old names (`ray-ds`, `ray_ds`, `@ray-ds`, `RayDs` beyond the
-  deprecated alias).
+- Use the old names (`ray-ds`, `ray_ds`, `@ray-ds`, `RayDs`).
