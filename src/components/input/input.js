@@ -14,6 +14,8 @@ const styles = css`
 const PASSTHROUGH = ["placeholder", "autocomplete", "inputmode", "pattern", "min", "max", "step", "minlength", "maxlength", "spellcheck", "autocapitalize", "enterkeyhint", "list"];
 
 export class RayInput extends FieldControl {
+  /** Enter submits the form (core/form.js). */
+  static implicitSubmission = true;
   static properties = {
     ...FieldControl.fieldProperties,
     type: { type: String, reflect: true, default: "text" },
@@ -50,6 +52,7 @@ export class RayInput extends FieldControl {
       this._commit();
     });
     this.control.addEventListener("change", (e) => this.forward(e));
+    this.submitOnEnter(this.control);
     if (this.autofocus) queueMicrotask(() => this.control.focus());
   }
 

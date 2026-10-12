@@ -9,7 +9,7 @@ tags = ["ray-number-input"]
 [ray-number-input]
 class = "RayNumberInput"
 extends = "FieldControl"
-summary = "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow)."
+summary = "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). Enter submits its form, as in ray-input."
 
 [ray-number-input.properties.value]
 type = "number"

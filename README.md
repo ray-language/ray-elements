@@ -68,7 +68,8 @@ examples/extending/    app components on the extension API (+ `wrap` output)
 | Layout | `ray-app-shell` (header, navbar, main, aside, footer; a phone layout with a bottom bar below its breakpoint, measured on itself), `ray-app-bar` (a phone screen's top bar: back, title, actions; elevates or hides on scroll), `ray-stack`, `ray-group`, `ray-grid` (columns per width of the grid itself, spans, auto-fill), `ray-container`, `ray-center`, `ray-scroll-area` (themed scrollbar, edge shadows, `ray-reach-end`), `ray-card`, `ray-separator`, `ray-split` (resizable panes), `ray-statusbar` + `ray-statusbar-item`, `ray-aspect-ratio` |
 
 Server-rendered pages without JS get `<table class="ray-table">` (plus
-`ray-table-striped`, `ray-table-bordered`) from `base.css`.
+`ray-table-striped`, `ray-table-bordered`) from `base.css`, and secondary
+text gets `class="ray-muted"`.
 | Theme | `ray-theme-toggle` |
 
 Shared conventions (Mantine-style): `size` = `xs`…`xl` (default `sm`), `radius`,
