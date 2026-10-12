@@ -804,7 +804,7 @@ export interface RayFileUploadEventMap extends HTMLElementEventMap {
 }
 
 // --- Input (input)
-/** <ray-input> Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. */
+/** <ray-input> Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. Enter submits its form as a native field does: through the first submit button (ray-button type="submit" included; nothing when it is disabled), or, without one, only when the form has a single text field. */
 export declare class RayInput extends FieldControl {
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value: string | undefined;
@@ -843,7 +843,7 @@ export declare class RayInput extends FieldControl {
 export declare function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number;
 /** A number as text with fixed decimals and separators. */
 export declare function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string;
-/** <ray-number-input> Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). */
+/** <ray-number-input> Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). Enter submits its form, as in ray-input. */
 export declare class RayNumberInput extends FieldControl {
   /** The number (undefined when empty). */
   value: number | undefined;

@@ -61,6 +61,8 @@ export function formatNumber(n, { decimals, thousands = "", decimal = "." } = {}
 }
 
 export class RayNumberInput extends FieldControl {
+  /** Enter submits the form (core/form.js). */
+  static implicitSubmission = true;
   static properties = {
     ...FieldControl.fieldProperties,
     value: { type: Number },
@@ -104,6 +106,7 @@ export class RayNumberInput extends FieldControl {
     });
     c.addEventListener("change", (e) => this.forward(e));
     c.addEventListener("keydown", (e) => this._key(e));
+    this.submitOnEnter(c);
     // + and −: a press steps once; held, it repeats faster and faster.
     for (const [sel, dir] of [[".up", 1], [".down", -1]]) {
       const b = this.$(sel);

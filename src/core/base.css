@@ -108,4 +108,9 @@
   :where(.ray-table-bordered) :where(tbody tr:last-child td) {
     border-bottom: 0;
   }
+
+  /* Secondary text (hints, metadata): <span class="ray-muted">. */
+  :where(.ray-muted) {
+    color: var(--ray-muted-foreground);
+  }
 }

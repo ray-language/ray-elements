@@ -44,6 +44,52 @@ export class FormControl extends RayElement {
   forward(event) {
     this.dispatchEvent(new Event(event.type, { bubbles: true, cancelable: event.cancelable }));
   }
+
+  /**
+   * Enter in `control` submits the form, as in a native text field. The
+   * native control in a shadow root has no form owner, so the browser's own
+   * implicit submission never reaches the <form>: this does it the way HTML
+   * does (see implicitSubmit).
+   */
+  submitOnEnter(control) {
+    control.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" || e.isComposing || e.defaultPrevented) return;
+      const form = this.form;
+      if (!form) return;
+      e.preventDefault();
+      implicitSubmit(form);
+    });
+  }
+}
+
+// Native controls whose Enter submits (HTML's "fields that block implicit
+// submission").
+const TEXT_TYPES = ["text", "search", "url", "tel", "email", "password", "date", "month", "week", "time", "datetime-local", "number"];
+
+// A native submit button, or a form-associated custom element with
+// type="submit" (ray-button, or an app's own).
+const isSubmitButton = (el) =>
+  (el.localName === "button" && (el.getAttribute("type") ?? "submit") === "submit") ||
+  (el.localName === "input" && ["submit", "image"].includes(el.type)) ||
+  (el.constructor.formAssociated === true && el.type === "submit");
+
+const blocksImplicitSubmission = (el) =>
+  el.constructor.implicitSubmission === true || (el.localName === "input" && TEXT_TYPES.includes(el.type));
+
+/**
+ * HTML's implicit submission of `form`: a click on its first submit button
+ * (nothing when that button is disabled), or, without one, a submit when the
+ * form has a single text field.
+ * @param {HTMLFormElement} form
+ */
+export function implicitSubmit(form) {
+  const elements = [...form.elements];
+  const button = elements.find(isSubmitButton);
+  if (button) {
+    if (!button.matches(":disabled")) button.click();
+    return;
+  }
+  if (elements.filter(blocksImplicitSubmission).length <= 1) form.requestSubmit();
 }
 
 /** The field wrapper around a control: label, description, box, error. */

@@ -8,7 +8,7 @@ tags = ["ray-input"]
 
 [ray-input]
 class = "RayInput"
-summary = "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input."
+summary = "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. Enter submits its form as a native field does: through the first submit button (ray-button type=\"submit\" included; nothing when it is disabled), or, without one, only when the form has a single text field."
 extends = "FieldControl"
 
 [ray-input.properties.value]

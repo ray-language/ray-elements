@@ -4,7 +4,7 @@
 // (FormData, validity, reset, fieldset), events, keyboard and ARIA.
 
 const T = window.__rayTest;
-const tags = ["ray-button", "ray-icon-button", "ray-input", "ray-search", "ray-textarea", "ray-select", "ray-checkbox", "ray-switch", "ray-radio-group", "ray-radio", "ray-badge", "ray-avatar", "ray-card", "ray-kbd", "ray-separator", "ray-spinner"];
+const tags = ["ray-button", "ray-icon-button", "ray-input", "ray-number-input", "ray-search", "ray-textarea", "ray-select", "ray-checkbox", "ray-switch", "ray-radio-group", "ray-radio", "ray-badge", "ray-avatar", "ray-card", "ray-kbd", "ray-separator", "ray-spinner"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
 const { COLORS, VARIANT_TOKENS } = await import("../../src/core/styles.js");
 const { initials } = await import("../../src/components/avatar/avatar.js");
@@ -45,6 +45,55 @@ T.test("button: submit sends the form with name=value", async (T) => {
   box.querySelector("ray-button").click();
   T.ok(data, "host.click() submits too");
   box.remove();
+});
+
+const enter = (el, opts = {}) => {
+  const e = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, composed: true, cancelable: true, ...opts });
+  el.control.dispatchEvent(e);
+  return e;
+};
+
+T.test("input: Enter submits the form through its submit button, as a native field", async (T) => {
+  const box = await mount(`<form><ray-input name="q" value="hi"></ray-input><ray-input name="r"></ray-input><ray-number-input name="n" value="3"></ray-number-input><ray-button type="submit" name="action" value="add">Add</ray-button></form>`);
+  const form = box.querySelector("form");
+  const [q] = form.querySelectorAll("ray-input");
+  let data = null;
+  form.addEventListener("submit", (e) => { e.preventDefault(); data = new FormData(form); });
+  const e = enter(q);
+  T.ok(data, "Enter in a ray-input submits");
+  T.eq(data.get("q"), "hi");
+  T.eq(data.get("action"), "add", "through the submit button: its name=value travels");
+  T.eq(e.defaultPrevented, true, "the key is consumed");
+  data = null;
+  enter(form.querySelector("ray-number-input"));
+  T.ok(data, "Enter in a ray-number-input submits too");
+  data = null;
+  enter(q, { isComposing: true });
+  T.eq(data, null, "not while an IME is composing");
+  const btn = form.querySelector("ray-button");
+  btn.disabled = true;
+  await T.settle();
+  enter(q);
+  T.eq(data, null, "a disabled submit button blocks it, as in HTML");
+  box.remove();
+});
+
+T.test("input: without a submit button, Enter submits only a single-field form", async (T) => {
+  const one = await mount(`<form><ray-input name="q"></ray-input></form>`);
+  let n = 0;
+  one.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); n++; });
+  enter(one.querySelector("ray-input"));
+  T.eq(n, 1, "one field: submits");
+  one.remove();
+  const two = await mount(`<form><ray-input name="a"></ray-input><ray-input name="b"></ray-input></form>`);
+  two.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); n++; });
+  enter(two.querySelector("ray-input"));
+  T.eq(n, 1, "two fields and no button: nothing, as in HTML");
+  two.remove();
+  const loose = await mount(`<ray-input name="q"></ray-input>`);
+  const e = enter(loose.firstElementChild);
+  T.eq(e.defaultPrevented, false, "outside a form Enter is left alone");
+  loose.remove();
 });
 
 T.test("button: disabled, loading and fieldset block submit", async (T) => {
@@ -284,8 +333,12 @@ T.test("search: clear, Escape, debounced ray-search, Enter, shortcut", async (T)
   T.eq(new FormData(box.querySelector("form")).get("q"), "ray");
   T.eq(clear.hidden, false, "clear button with text");
   T.eq(hint.hidden, true, "no hint with text");
+  // Enter fires ray-search at once and, like a native search field, submits its form.
+  let submitted = 0;
+  box.querySelector("form").addEventListener("submit", (e) => { e.preventDefault(); submitted++; });
   input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
   T.eq(seen.join("|"), "ray|ray", "Enter fires at once");
+  T.eq(submitted, 1, "Enter submits the form");
   input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true }));
   T.eq(el.value, "", "Escape clears");
   T.eq(seen.at(-1), "", "clearing fires ray-search");

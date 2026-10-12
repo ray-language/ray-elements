@@ -5,6 +5,22 @@ All notable changes to ray-elements. The format follows
 [Semantic Versioning](https://semver.org/): before 1.0, a minor version may
 change the API.
 
+## [Unreleased]
+
+### Fixed
+
+- `ray-input` (and `ray-password-input`, `ray-search`) and `ray-number-input`:
+  Enter submits the form, as in a native field. Their `<input>` lives in a
+  shadow root, so the browser's implicit submission never reached the form.
+  The HTML rule: a click on the first submit button (`ray-button
+  type="submit"` included; nothing when it is disabled), or, without one, a
+  submit when the form has a single text field.
+- `base.css` defines `.ray-muted` (secondary text), which the starter already
+  used.
+- `examples/starter`, `desktop-app` and `lean-app` ask for raylang 1.27.44,
+  the first with `[web] package`; `lean-app`'s Add button shows its icon
+  (`slot="left"`, not `start`).
+
 ## [0.4.0] - 2026-10-11
 
 ### Changed
