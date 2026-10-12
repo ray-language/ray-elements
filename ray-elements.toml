@@ -4,7 +4,7 @@
 
 [package]
 scope = "@raylang"
-version = "0.4.1"
+version = "0.5.0"
 description = "Web components for any app, with raylang extras (shadcn/ui + Mantine inspired)"
 license = "Apache-2.0"
 # The source repository (each package names its directory in it) and the

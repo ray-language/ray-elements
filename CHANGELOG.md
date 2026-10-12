@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-12
+
 ### Removed
 
 - `@raylang/vue`: the `RayDs` alias of the plugin (deprecated in 0.4.0); use
