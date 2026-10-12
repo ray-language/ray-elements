@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-12
+
 ### Fixed
 
 - `ray-input` (and `ray-password-input`, `ray-search`) and `ray-number-input`:
