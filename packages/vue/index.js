@@ -82,6 +82,3 @@ export const components = { RayButton, RayButtonGroup, RayIconButton, RayToggle,
 /** app.use(RayElements) registers every component globally. */
 export const RayElements = /*#__PURE__*/ createPlugin(components);
 export default RayElements;
-
-/** @deprecated Since 0.4.0: use `RayElements`. Removed in 0.5.0. */
-export const RayDs = RayElements;
