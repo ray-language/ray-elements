@@ -1,7 +1,7 @@
 [package]
 name = "desktop-app"
 version = "0.1.0"
-raylang = "1.27.44"
+raylang = "1.27.48"
 
 [dependencies]
 elements = "path:../../elements"

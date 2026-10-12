@@ -62,10 +62,7 @@ fn imports_of(src: string) -> [string] {
 // Every module reachable from `entries` (paths from the root), entries first.
 fn graph(root: string, entries: [string]) -> Result<[string], string> {
     let seen: [string] = [];
-    let queue: [string] = [];
-    for e in entries {
-        queue.push(e);
-    }
+    let queue: [string] = [] + entries;
     var next = 0;
     while (next < queue.len()) {
         let path = queue[next];

@@ -453,10 +453,7 @@ pub fn all_elements(cs: [Component]) -> [Element] {
 // The plain attributes of an element and of the ray-elements classes it extends
 // (ray-password-input forwards autocomplete like ray-input).
 pub fn all_attrs(els: [Element], el: Element) -> [Named] {
-    let out: [Named] = [];
-    for a in el.attrs {
-        out.push(a);
-    }
+    let out: [Named] = [] + el.attrs;
     var parent = el.extends_name;
     var depth = 0;
     while (depth < 8) {
@@ -481,10 +478,7 @@ pub fn all_attrs(els: [Element], el: Element) -> [Named] {
 }
 
 pub fn all_props(els: [Element], el: Element) -> [Prop] {
-    let out: [Prop] = [];
-    for p in el.props {
-        out.push(p);
-    }
+    let out: [Prop] = [] + el.props;
     var parent = el.extends_name;
     var depth = 0;
     while (depth < 8) {

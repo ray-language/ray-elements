@@ -7,6 +7,14 @@ change the API.
 
 ## [Unreleased]
 
+### Changed
+
+- The `elements` raylang package, the tools and `examples/starter`,
+  `desktop-app` and `lean-app` need raylang 1.27.48.
+- `enableRaylang()` tints the title bar for a chosen theme (light or dark) in
+  a `full_content` window too, so the window's appearance follows the theme.
+  Before 1.27.48 a title bar color made that bar opaque.
+
 ## [0.4.1] - 2026-10-12
 
 ### Fixed

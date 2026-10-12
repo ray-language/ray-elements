@@ -64,10 +64,11 @@ const INTERACTIVE = "button, a[href], input, select, textarea, label, summary, [
 /**
  * Makes `el` drag the window when the page runs under a host's title bar
  * (titlebar() is not null): it gets data-ray-drag, the attribute the std/ui
- * shell reads. The shell looks at the event's target, which a shadow root
- * retargets to its host, so for a pointer down on anything interactive
- * inside `el` (a button in its shadow root too) the attribute steps aside
- * until the pointer is up. Returns the function that undoes it.
+ * shell reads. The shell walks the event's composed path, but only spares
+ * buttons, links and form fields; for a pointer down on anything else
+ * interactive inside `el` (a tab, a summary, a [role=button] in a shadow
+ * root) the attribute steps aside until the pointer is up. Returns the
+ * function that undoes it.
  */
 export function dragRegion(el) {
   const guard = (e) => {
