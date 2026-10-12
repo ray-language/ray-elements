@@ -1,7 +1,7 @@
 [package]
 name = "ray-elements-tools"
 version = "0.1.0"
-raylang = "1.27.37"
+raylang = "1.27.48"
 
 # The tools answer the native bridge in the webview tests (webtest).
 [dependencies]

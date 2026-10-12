@@ -29,9 +29,8 @@ const MAC_BUTTONS = 78;
  * long to wait for that answer; `ray` replaces window.ray (tests).
  * `windowColors` (default true) keeps the window's background in the
  * theme's background color, so a resize or a reopen never shows the other
- * theme. The title bar is tinted too only when the window has its own bar
- * (not full_content) and the theme is light or dark: with "system" it stays
- * the system's, so the page keeps following the system.
+ * theme. The title bar is tinted too when the theme is light or dark: with
+ * "system" it stays the system's, so the page keeps following the system.
  */
 export function enableRaylang({ timeout = 2000, ray = globalThis.ray, windowColors = true } = {}) {
   if (ray !== globalThis.ray) return connect(ray, timeout, windowColors);
@@ -114,22 +113,20 @@ async function connect(ray, timeout, windowColors) {
   if (windowColors && ops.has("window_colors")) {
     // A title bar color also sets the window's appearance (macOS picks light
     // or dark by its luminance), which the page's prefers-color-scheme
-    // follows, and in a full_content window it brings back the opaque bar.
-    // So the bar is tinted only in a window with its own bar and a chosen
-    // theme (light or dark), and given back to the system once after that.
+    // follows. So the bar is tinted only for a chosen theme (light or dark),
+    // and given back to the system once after that. In a full_content window
+    // the bar stays transparent either way.
     let tinted = false;
     const paint = (theme) => {
       const background = hex(theme.background);
       if (!background) return;
       const colors = { background };
-      if (!host.titlebar) {
-        if (getTheme() !== "system") {
-          colors.titlebar = background;
-          tinted = true;
-        } else if (tinted) {
-          colors.titlebar = "";
-          tinted = false;
-        }
+      if (getTheme() !== "system") {
+        colors.titlebar = background;
+        tinted = true;
+      } else if (tinted) {
+        colors.titlebar = "";
+        tinted = false;
       }
       host.setWindowColors(colors).catch(() => {});
     };

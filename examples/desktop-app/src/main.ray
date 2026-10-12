@@ -309,16 +309,22 @@ fn self_check(h: int, n: bridge.Native, seen: [string]) -> Result<int, string> {
     ui.eval_js(h, "app.toggleTheme(false)")?;
     wait_count(h, n, seen, "colors:", before + 1, 5000)?;
     let colors = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") });
-    check(
-        failed,
-        colors.filter(fn(x: string) -> bool { !x.ends_with("|-") }).len() == 0,
-        "a full_content window never gets a title bar color"
-    );
-    check(failed, colors[colors.len() - 1] != colors[0], "the window follows the theme (${colors[0]} -> ${colors[colors.len() - 1]})");
-    // Back to the system theme: the page follows the system again (a tinted
-    // title bar would have left the window's appearance, and the page, dark).
+    let chosen = colors[colors.len() - 1];
+    check(failed, chosen != colors[0], "the window follows the theme (${colors[0]} -> ${chosen})");
+    let tint = after(chosen, "colors:").split("|");
+    check(failed, tint[0] == tint[1], "a chosen theme tints the title bar too (${chosen})");
+    // Back to the system theme: the bar is given back, so the page follows the
+    // system again (the tint set the window's appearance, and with it the
+    // page's prefers-color-scheme), and the bar is still transparent. The page
+    // paints the window once more when its scheme changes back; that is not
+    // checked here, because a window launched from outside the graphical
+    // session can report the change late.
+    let tinted = colors.len();
     ui.eval_js(h, "app.systemTheme(); setTimeout(() => app.resolved(), 300)")?;
     let back = wait(h, n, "resolved:", 5000)?;
+    let all = seen.filter(fn(x: string) -> bool { x.starts_with("colors:") });
+    let given = all.slice(tinted, all.len());
+    check(failed, given.filter(fn(x: string) -> bool { x.ends_with("|") }).len() == 1, "the system theme gives the title bar back (${join(given, ", ")})");
     check(failed, back == start, "back to the system theme, the page follows the system and keeps the transparent title bar (${start} -> ${back})");
 
     if (failed.len() > 0) {

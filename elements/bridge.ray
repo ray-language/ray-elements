@@ -226,13 +226,12 @@ fn respond(n: Native, window: int, body: string) -> Option<(string, Option<strin
     } else {
         run(n, window, op, j)
     };
-    let none: Option<string> = Option.None;
     Option.Some(match (result) {
         Result.Ok(value) => {
-            let ran = if (op == "run_menu") { json.get_string(j, "tag") } else { none };
+            let ran = if (op == "run_menu") { json.get_string(j, "tag") } else { Option.None };
             ("{\"ok\":true,\"value\":${value}}", ran)
         },
-        Result.Err(e) => (json.obj().field("ok", false).field("error", e).render(), none),
+        Result.Err(e) => (json.obj().field("ok", false).field("error", e).render(), Option.None),
     })
 }
 
@@ -325,10 +324,9 @@ fn popup_menu(n: Native, window: int, j: json.Json) -> Result<string, string> {
 }
 
 // {background, titlebar?}: "#rrggbb" each ("" = the system's) -> true. The
-// title bar is left as it is when `titlebar` is missing: on macOS any title
-// bar color also sets the window's appearance (and the page's
-// prefers-color-scheme), and in a full_content window it brings back the
-// opaque bar (finding #141).
+// title bar is left as it is when `titlebar` is missing: on macOS a title bar
+// color also sets the window's appearance, which the page follows as its
+// prefers-color-scheme.
 fn window_colors(n: Native, window: int, j: json.Json) -> Result<string, string> {
     let background = json.get_string(j, "background").unwrap_or("");
     let titlebar = json.get_string(j, "titlebar");

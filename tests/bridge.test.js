@@ -373,9 +373,12 @@ T.test("raylang: under a title bar (full_content)", async (T) => {
     T.ok(again.length >= 2 && again.at(-1).background !== painted[0].background, "and follows the theme");
     setTheme("system", { persist: false });
     await T.settle();
-    // Under a transparent title bar any bar color brings back the opaque bar
-    // and sets the window's appearance: never sent.
-    T.ok(calls.filter((c) => c.op === "window_colors").every((c) => !("titlebar" in c)), "the title bar is never touched");
+    // Under a transparent title bar too, a chosen theme tints the bar (the
+    // window's appearance follows it) and the system theme gives it back.
+    const sent = calls.filter((c) => c.op === "window_colors");
+    T.ok(!("titlebar" in sent[0]), "system theme: the bar is the system's");
+    T.ok(sent.some((c) => c.titlebar === c.background), "a chosen theme tints it");
+    T.eq(sent.at(-1).titlebar, "", "back to the system theme: given back");
 
     // ray-app-shell: the header is the title bar and drags the window.
     const box = await mount(`

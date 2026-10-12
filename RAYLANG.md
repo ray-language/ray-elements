@@ -195,8 +195,9 @@ dialogs.
    (`native-menus`), `ray-menu native`.
 4. ✅ **Window.** `full_content` support in `ray-app-shell` (header as the
    title bar, `dragRegion`), theme to window colors, `trackEdits`. The drag
-   handle works around finding #138 (the shell's `data-ray-drag` does not see
-   shadow DOM).
+   handle worked around finding #138 (the shell's `data-ray-drag` did not see
+   shadow DOM; fixed in raylang 1.27.48); it still spares the interactive
+   elements the shell does not know, such as tabs and `summary`.
 5. ✅ **Docs and example.** An "In a raylang app" section on the pages of
    file upload, path input, dialog, menu, command palette and app shell (from
    each component's `raylang.md`), and `examples/desktop-app`, which uses all
@@ -247,8 +248,8 @@ fn main() -> int {
 The page imports `@raylang/elements` by its npm name, the same as an app built
 with Vite: `import "@raylang/elements/button"`,
 `import { enableRaylang } from "@raylang/elements/core"`. The package's
-`ray.toml` declares it (`[web] package = "web"`), and raylang (1.27.44 or
-later) does the rest, under `ray run` and in a native binary:
+`ray.toml` declares it (`[web] package = "web"`), and raylang (the package
+needs 1.27.48 or later) does the rest, under `ray run` and in a native binary:
 
 - it serves the package at `ray://app/node_modules/@raylang/elements/`, where
   npm would put it (so the stylesheets are linked by that path);

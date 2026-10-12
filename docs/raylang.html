@@ -391,8 +391,9 @@ to the real bridge in the webview runner (scripted dialogs).</li>
 (<code>native-menus</code>), <code>ray-menu native</code>.</li>
 <li>✅ <strong>Window.</strong> <code>full_content</code> support in <code>ray-app-shell</code> (header as the
 title bar, <code>dragRegion</code>), theme to window colors, <code>trackEdits</code>. The drag
-handle works around finding #138 (the shell's <code>data-ray-drag</code> does not see
-shadow DOM).</li>
+handle worked around finding #138 (the shell's <code>data-ray-drag</code> did not see
+shadow DOM; fixed in raylang 1.27.48); it still spares the interactive
+elements the shell does not know, such as tabs and <code>summary</code>.</li>
 <li>✅ <strong>Docs and example.</strong> An &quot;In a raylang app&quot; section on the pages of
 file upload, path input, dialog, menu, command palette and app shell (from
 each component's <code>raylang.md</code>), and <code>examples/desktop-app</code>, which uses all
@@ -434,8 +435,8 @@ elements = &quot;git+https://github.com/ray-language/elements@v0.3.0&quot;
 <p>The page imports <code>@raylang/elements</code> by its npm name, the same as an app built
 with Vite: <code>import &quot;@raylang/elements/button&quot;</code>,
 <code>import { enableRaylang } from &quot;@raylang/elements/core&quot;</code>. The package's
-<code>ray.toml</code> declares it (<code>[web] package = &quot;web&quot;</code>), and raylang (1.27.44 or
-later) does the rest, under <code>ray run</code> and in a native binary:</p>
+<code>ray.toml</code> declares it (<code>[web] package = &quot;web&quot;</code>), and raylang (the package
+needs 1.27.48 or later) does the rest, under <code>ray run</code> and in a native binary:</p>
 
 <ul>
 <li>it serves the package at <code>ray://app/node_modules/@raylang/elements/</code>, where
