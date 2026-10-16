@@ -8,7 +8,7 @@ Import: `import "@raylang/elements/checkbox";` · Category: Inputs
 
 Properties:
 
-- `checked` (property only): boolean. Current state. The checked attribute is the initial state (restored on reset).
+- `checked` (attribute `checked`: the initial value only): boolean. Current state. The checked attribute is the initial state (restored on reset).
 - `indeterminate`: boolean, reflects. Mixed state; cleared on the next user change.
 - `value`: string, default `on`, reflects. Submitted value when checked.
 - `name`: string. Form field name.

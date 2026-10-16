@@ -506,9 +506,9 @@ fn react_and_vue_from_html() {
         extends_name: "",
         summary: "",
         props: [
-            Prop { name: "variant", attribute: "variant", kind: "string", values: [], default_value: "", reflect: true, ts: "", description: "" },
-            Prop { name: "fullWidth", attribute: "full-width", kind: "boolean", values: [], default_value: "", reflect: true, ts: "", description: "" },
-            Prop { name: "max", attribute: "max", kind: "number", values: [], default_value: "", reflect: false, ts: "", description: "" }
+            Prop { name: "variant", attribute: "variant", kind: "string", values: [], default_value: "", reflect: true, initial: "", ts: "", description: "" },
+            Prop { name: "fullWidth", attribute: "full-width", kind: "boolean", values: [], default_value: "", reflect: true, initial: "", ts: "", description: "" },
+            Prop { name: "max", attribute: "max", kind: "number", values: [], default_value: "", reflect: false, initial: "", ts: "", description: "" }
         ],
         attrs: [],
         events: [],

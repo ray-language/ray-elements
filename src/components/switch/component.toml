@@ -13,6 +13,7 @@ extends = "RayCheckbox"
 
 [ray-switch.properties.checked]
 attribute = false
+initial = true
 type = "boolean"
 description = "Current state. The checked attribute is the initial state."
 

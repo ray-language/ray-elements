@@ -7,6 +7,17 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `custom-elements.json` and `vscode.html-custom-data.json` list the
+  attributes a component inherits from `FieldControl` and `Floating`
+  (`ray-number-input` lacked `label`, `name`, `required`…), as the types
+  already did.
+- They also list the attributes that only set the initial value: `checked`
+  on `ray-checkbox` and `ray-switch`, `value` on `ray-checkbox-group` and
+  `ray-combobox` (marked `initial = true` in `component.toml`); the API pages
+  and `llms-full.txt` say so instead of "property only".
+
 ## [0.5.1] - 2026-10-16
 
 ### Added

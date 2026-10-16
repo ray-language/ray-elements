@@ -10,7 +10,7 @@ The group is the form control: one entry per checked value under name (like chec
 
 Properties:
 
-- `value` (property only): `string[]`. The checked values. The value attribute: "a,b".
+- `value` (attribute `value`: the initial value only): `string[]`. The checked values. The value attribute: "a,b".
 - `name`: string, reflects. Form field name.
 - `label`: string. Group label (also its accessible name).
 - `description`: string. Help text.

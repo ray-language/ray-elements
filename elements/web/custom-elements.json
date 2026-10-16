@@ -1404,6 +1404,13 @@
           },
           "attributes": [
             {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The initial value of checked. Current state. The checked attribute is the initial state (restored on reset)."
+            },
+            {
               "name": "indeterminate",
               "type": {
                 "text": "boolean"
@@ -1502,6 +1509,23 @@
               "description": "Side of the label.",
               "fieldName": "labelPosition",
               "default": "right"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
             }
           ],
           "members": [
@@ -1636,6 +1660,27 @@
               "attribute": "label-position",
               "reflects": true,
               "default": "right"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
             }
           ],
           "events": [
@@ -1702,6 +1747,13 @@
             "name": "FormControl"
           },
           "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The initial value of value. The checked values. The value attribute: \"a,b\"."
+            },
             {
               "name": "name",
               "type": {
@@ -2678,6 +2730,13 @@
           },
           "attributes": [
             {
+              "name": "value",
+              "type": {
+                "text": "string | string[]"
+              },
+              "description": "The initial value of value. The chosen value; an array with multiple. The value attribute: \"a,b\" with multiple."
+            },
+            {
               "name": "multiple",
               "type": {
                 "text": "boolean"
@@ -2741,6 +2800,89 @@
               },
               "description": "The dropdown is shown.",
               "fieldName": "open"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
             }
           ],
           "members": [
@@ -2840,6 +2982,109 @@
               "description": "The dropdown is shown.",
               "attribute": "open",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
             },
             {
               "kind": "field",
@@ -4655,6 +4900,89 @@
               },
               "description": "Not editable, still submitted.",
               "fieldName": "readonly"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
             }
           ],
           "members": [
@@ -4790,6 +5118,109 @@
               "description": "Not editable, still submitted.",
               "attribute": "readonly",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
             },
             {
               "kind": "method",
@@ -6279,6 +6710,39 @@
               "description": "Box style.",
               "fieldName": "variant",
               "default": "filled"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
             }
           ],
           "members": [
@@ -6385,6 +6849,47 @@
               "attribute": "variant",
               "reflects": true,
               "default": "filled"
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
             },
             {
               "kind": "method",
@@ -6799,6 +7304,14 @@
               "description": "Box style.",
               "fieldName": "variant",
               "default": "default"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
             }
           ],
           "members": [
@@ -6932,6 +7445,16 @@
               "attribute": "variant",
               "reflects": true,
               "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -7153,6 +7676,31 @@
               },
               "description": "Appended to the shown value and its spoken text (%, px, ms…).",
               "fieldName": "unit"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
             }
           ],
           "members": [
@@ -7308,6 +7856,37 @@
                 "text": "Array<number | { value: number; label?: string }>"
               },
               "description": "Labeled ticks under the track."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
             }
           ],
           "events": [
@@ -7368,6 +7947,13 @@
             "name": "RayCheckbox"
           },
           "attributes": [
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The initial value of checked. Current state. The checked attribute is the initial state."
+            },
             {
               "name": "value",
               "type": {
@@ -7467,6 +8053,23 @@
               "description": "Checked look: filled box, or colored border and mark.",
               "fieldName": "variant",
               "default": "filled"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
             }
           ],
           "members": [
@@ -7601,6 +8204,27 @@
               "attribute": "variant",
               "reflects": true,
               "default": "filled"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
             }
           ],
           "events": [
@@ -7778,6 +8402,14 @@
               "description": "Box style.",
               "fieldName": "variant",
               "default": "default"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
             },
             {
               "name": "placeholder",
@@ -7959,6 +8591,16 @@
               "attribute": "variant",
               "reflects": true,
               "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
             }
           ],
           "events": [
@@ -11292,6 +11934,15 @@
               },
               "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
               "fieldName": "native"
+            },
+            {
+              "name": "offset",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gap to the anchor in px.",
+              "fieldName": "offset",
+              "default": "8"
             }
           ],
           "members": [
@@ -11345,6 +11996,17 @@
               "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
               "attribute": "native",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "offset",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gap to the anchor in px.",
+              "attribute": "offset",
+              "reflects": false,
+              "default": "8"
             },
             {
               "kind": "method",
@@ -11885,6 +12547,23 @@
               },
               "description": "Never shows.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shown.",
+              "fieldName": "open"
+            },
+            {
+              "name": "offset",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gap to the anchor in px.",
+              "fieldName": "offset",
+              "default": "8"
             }
           ],
           "members": [
@@ -11950,6 +12629,27 @@
               "description": "Never shows.",
               "attribute": "disabled",
               "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "open",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shown.",
+              "attribute": "open",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "offset",
+              "type": {
+                "text": "number"
+              },
+              "description": "Gap to the anchor in px.",
+              "attribute": "offset",
+              "reflects": false,
+              "default": "8"
             },
             {
               "kind": "method",

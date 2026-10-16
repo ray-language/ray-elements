@@ -14,6 +14,7 @@ summary = "The WAI-ARIA combobox pattern (a text field with a listbox popup; the
 
 [ray-combobox.properties.value]
 attribute = false
+initial = true
 type = "string"
 ts = "string | string[]"
 description = "The chosen value; an array with multiple. The value attribute: \"a,b\" with multiple."

@@ -10,7 +10,7 @@ The WAI-ARIA combobox pattern (a text field with a listbox popup; the active opt
 
 Properties:
 
-- `value` (property only): `string | string[]`. The chosen value; an array with multiple. The value attribute: "a,b" with multiple.
+- `value` (attribute `value`: the initial value only): `string | string[]`. The chosen value; an array with multiple. The value attribute: "a,b" with multiple.
 - `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>`. Options instead of child <option>/<optgroup> elements.
 - `multiple`: boolean, reflects. Several values, shown as chips.
 - `placeholder`: string. Shown while empty.

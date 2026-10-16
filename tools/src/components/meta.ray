@@ -7,6 +7,8 @@
 //   [component.types.<Name>]     ts (the type), description
 //   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-elements class)
 //   [<tag>.properties.<prop>]    attribute (string, or false = property only),
+//                                initial (with attribute = false: the kebab-case attribute sets
+//                                only the initial value, like `checked` on <input>),
 //                                type, values, default, reflect, ts (TypeScript type), description
 //   [<tag>.events.<name>]        description, detail (TypeScript type of event.detail)
 //   [<tag>.attributes.<name>]    description (attribute-only, forwarded to an inner element; typed string)
@@ -37,6 +39,9 @@ pub struct Prop {
     values: [string],
     default_value: string,
     reflect: bool,
+    // An attribute that only sets the initial value (`attribute` is ""):
+    // valid in HTML, not observed afterwards.
+    initial: string,
     ts: string,
     description: string,
 }
@@ -221,6 +226,7 @@ fn base_prop(
         values: values,
         default_value: default_value,
         reflect: reflect,
+        initial: "",
         ts: "",
         description: description
     }
@@ -347,6 +353,8 @@ fn apply(el: Element, parts: [string], e: TomlEntry) -> Result<int, string> {
             p.default_value = str_of(e)?;
         } else if (field == "reflect") {
             p.reflect = bool_of(e)?;
+        } else if (field == "initial") {
+            p.initial = if (bool_of(e)?) { kebab(name) } else { "" };
         } else if (field == "ts") {
             p.ts = str_of(e)?;
         } else if (field == "description") {
@@ -397,6 +405,7 @@ fn prop(el: Element, name: string) -> Prop {
         values: [],
         default_value: "",
         reflect: false,
+        initial: "",
         ts: "",
         description: ""
     };
@@ -627,6 +636,11 @@ reflect = true
 attribute = false
 type = "array"
 
+[ray-thing.properties.checked]
+attribute = false
+initial = true
+type = "boolean"
+
 [ray-thing.slots.default]
 description = "Body."
 
@@ -648,6 +662,8 @@ ts = "function helper(): void"
     assert_eq(el.props[0].attribute, "full-width");
     assert_eq(el.props[0].reflect, true);
     assert_eq(el.props[1].attribute, "");
+    assert_eq(el.props[1].initial, "");
+    assert_eq(el.props[2].initial, "checked");
     assert_eq(el.slots[0].name, "default");
     assert_eq(el.events.len(), 1);
     assert_eq(el.events[0].detail, "{ value: string }");
