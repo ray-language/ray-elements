@@ -1,0 +1,392 @@
+// The docs for AI agents, as plain Markdown (https://llmstxt.org):
+//
+//   docs/llms.txt              the rules (site/llms.md) and the component index, linked
+//   docs/llms-full.txt         the rules and the whole reference in one file: every
+//                              component's API, the tokens, the icons, the core's types
+//   docs/components/<dir>.md   one component: its API, its raylang notes, its example
+//
+// The site serves them at its root (elements.raylang.dev/llms.txt), and the
+// npm package (and so elements/web) carries llms.txt and llms-full.txt for
+// the version it is.
+
+import std/fs;
+from components/meta import Component, Element, Prop, Named, Decl, CATEGORIES, base_elements, all_elements;
+from tokens/model import Model, depends_on_scheme;
+import tokens/refs;
+
+// Where the site lives: the links of llms.txt are absolute, so the copies in
+// the npm package and in the raylang package lead there too.
+pub const SITE: string = "https://elements.raylang.dev";
+
+// (path under docs/, content).
+pub fn files(root: string, cs: [Component], m: Model, version: string) -> Result<[(string, string)], string> {
+    let guide = fs.read_file("${root}/site/llms.md")?.trim();
+    let els = base_elements() + all_elements(cs);
+    let icons = icon_names(fs.read_file("${root}/src/core/icons.js")?);
+    let core = fs.read_file("${root}/src/core/core.d.ts")?.trim();
+    let out: [(string, string)] = [
+        ("llms.txt", index(cs, guide, version, icons)),
+        ("llms-full.txt", full(cs, els, guide, version, m, icons, core)?)
+    ];
+    for c in cs {
+        out.push(("components/${c.dir}.md", page(c, cs, els, version)));
+    }
+    Result.Ok(out)
+}
+
+fn header(version: string) -> string {
+    "# ray-elements\n\n> Web components (custom elements, Shadow DOM, no dependencies) for any web app: plain HTML, React, Vue or a raylang app. npm: `@raylang/elements`, `@raylang/react`, `@raylang/vue`; raylang: the `elements` package. This file describes version ${version}."
+}
+
+// llms.txt: the rules, then a link per component.
+fn index(cs: [Component], guide: string, version: string, icons: [string]) -> string {
+    let out: [string] = [header(version), "", guide, "", "## Components", ""];
+    for cat in CATEGORIES {
+        for c in cs {
+            if (c.category == cat) {
+                let tags = join(c.elements.map(fn(e: Element) -> string { "`<${e.tag}>`" }), ", ");
+                out.push("- [${c.name}](${SITE}/components/${c.dir}.md): ${tags} (${cat}). ${first_sentence(c.summary)}");
+            }
+        }
+    }
+    out.push("");
+    out.push("## Icons");
+    out.push("");
+    out.push(join(icons.map(fn(n: string) -> string { "`${n}`" }), ", "));
+    out.push("");
+    out.push("## Reference");
+    out.push("");
+    out.push("- [llms-full.txt](${SITE}/llms-full.txt): these rules and the whole reference in one file: every component's API, the tokens, the icon names and the core's TypeScript declarations");
+    out.push("- [Foundations](${SITE}/foundations.html): the tokens, with their values in both themes");
+    out.push("- [Getting started](${SITE}/getting-started.html): install, load, theme");
+    out.push("");
+    out.push("## Optional");
+    out.push("");
+    out.push("- [raylang](${SITE}/raylang.html): the native bridge and the `elements` package in detail");
+    out.push("- [Extending](${SITE}/extending.html): the component contract and the base classes");
+    out.push("- [Charts](${SITE}/charts.html): theming Chart.js, uPlot or ECharts with the chart tokens");
+    out.push("");
+    join(out, "\n")
+}
+
+// llms-full.txt: the rules and every reference, in one file.
+fn full(
+    cs: [Component],
+    els: [Element],
+    guide: string,
+    version: string,
+    m: Model,
+    icons: [string],
+    core: string
+) -> Result<string, string> {
+    let out: [string] = [header(version), "", guide, "", "## Components", ""];
+    out.push(base_classes(els));
+    for cat in CATEGORIES {
+        for c in cs {
+            if (c.category == cat) {
+                out.push(component(c, els, "###"));
+            }
+        }
+    }
+    out.push("## Tokens\n");
+    out.push(tokens(m)?);
+    out.push("## Icons\n");
+    out.push("The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):\n");
+    out.push(join(icons.map(fn(n: string) -> string { "`${n}`" }), ", ") + "\n");
+    out.push("## Core API\n");
+    out.push("What `@raylang/elements/core` (and `@raylang/elements`) exports besides the components: theme, icons, the native host, the base classes for your own components.\n");
+    out.push("```ts\n${core}\n```\n");
+    Result.Ok(join(out, "\n"))
+}
+
+// docs/components/<dir>.md
+fn page(c: Component, cs: [Component], els: [Element], version: string) -> string {
+    let out: [string] = [
+        component(c, els, "#"),
+        "Shared rules (loading, slots, forms, events, theme, React and Vue): ${SITE}/llms.txt. This page describes ray-elements ${version}.\n"
+    ];
+    if (c.example != "") {
+        out.push("## Example\n");
+        out.push("The markup of the site's live example (the `demo-*` classes are the site's, not ray-elements's).\n");
+        out.push("```html\n${package_imports(c.example.trim(), cs)}\n```\n");
+    }
+    join(out, "\n")
+}
+
+// One component under a heading of level `h` ("#" on its own page).
+fn component(c: Component, els: [Element], h: string) -> string {
+    let out: [string] = [];
+    let aka = if (c.aliases.len() > 0) { " (also ${join(c.aliases, ", ")})" } else { "" };
+    out.push("${h} ${c.name}${aka}\n");
+    out.push("${c.summary}\n");
+    out.push("Import: `import \"@raylang/elements/${c.dir}\";` · Category: ${c.category}\n");
+    let sub = h + "#";
+    for el in c.elements {
+        out.push(element(el, els, sub));
+    }
+    if (c.exports.len() > 0) {
+        out.push("Exports (from `@raylang/elements/${c.dir}` and `@raylang/elements`):\n");
+        out.push(decls(c.exports));
+    }
+    if (c.types.len() > 0) {
+        out.push("Types:\n");
+        out.push(decls(c.types));
+    }
+    if (c.raylang != "") {
+        out.push("${sub} In a raylang app\n");
+        out.push(absolute_links(c.raylang.trim()) + "\n");
+    }
+    join(out, "\n")
+}
+
+fn element(el: Element, els: [Element], h: string) -> string {
+    let out: [string] = ["${h} `<${el.tag}>` (${el.class_name}, extends ${el.extends_name})\n"];
+    if (el.summary != "") {
+        out.push("${el.summary}\n");
+    }
+    if (el.props.len() > 0) {
+        out.push("Properties:\n");
+        out.push(join(el.props.map(prop_line), "\n") + "\n");
+    }
+    let inherited = inherited_props(els, el);
+    if (inherited != "") {
+        out.push(inherited);
+    }
+    out.push(named("Attributes (forwarded to the inner element)", el.attrs, false));
+    out.push(named("Events", el.events, true));
+    out.push(named("Slots", el.slots, false));
+    out.push(named("Parts (`::part()`)", el.parts, false));
+    if (el.members.len() > 0) {
+        out.push("Methods and properties:\n");
+        out.push(decls(el.members));
+    }
+    if (el.model_property != "") {
+        out.push("Vue `v-model`: `${el.model_property}` (updated on ${join(el.model_events, ", ")}).\n");
+    }
+    join(out.filter(fn(s: string) -> bool { s != "" }), "\n")
+}
+
+// - `fullWidth` (attribute `full-width`): boolean, default `false`. Takes…
+fn prop_line(p: Prop) -> string {
+    let attr = if (p.attribute == "") {
+        " (property only)"
+    } else if (p.attribute != p.name) {
+        " (attribute `${p.attribute}`)"
+    } else {
+        ""
+    };
+    let kind = if (p.values.len() > 0) {
+        join(p.values.map(fn(v: string) -> string { "`${v}`" }), " | ")
+    } else if (p.ts != "") {
+        "`${p.ts}`"
+    } else {
+        p.kind
+    };
+    let def = if (p.default_value == "") { "" } else { ", default `${p.default_value}`" };
+    let reflect = if (p.reflect) { ", reflects" } else { "" };
+    let desc = if (p.description == "") { "" } else { ". ${p.description}" };
+    "- `${p.name}`${attr}: ${kind}${def}${reflect}${desc}"
+}
+
+// The properties an element takes from the classes it extends, by class:
+// the base classes are described once (base_classes), the components by name.
+fn inherited_props(els: [Element], el: Element) -> string {
+    let own = el.props.map(fn(p: Prop) -> string { p.name });
+    let out: [string] = [];
+    var parent = el.extends_name;
+    var depth = 0;
+    while (depth < 8) {
+        let found = els.filter(fn(x: Element) -> bool { x.class_name == parent });
+        if (found.len() == 0) {
+            break;
+        }
+        let other = found[0];
+        let names: [string] = [];
+        for p in other.props {
+            if (!own.contains(p.name)) {
+                names.push("`${p.name}`");
+                own.push(p.name);
+            }
+        }
+        if (names.len() > 0) {
+            let what = if (other.tag == "") { other.class_name } else { "${other.class_name} (`<${other.tag}>`)" };
+            out.push("Also the properties of ${what}: ${join(names, ", ")}.");
+        }
+        parent = other.extends_name;
+        depth = depth + 1;
+    }
+    if (out.len() == 0) { "" } else { join(out, "\n") + "\n" }
+}
+
+// The base classes' properties, which many components inherit.
+fn base_classes(els: [Element]) -> string {
+    let out: [string] = ["### Base classes\n", "Properties the components inherit from the base classes (each component lists which it extends):\n"];
+    for el in els {
+        if (el.tag == "" && el.props.len() > 0) {
+            out.push("${el.class_name} (extends ${el.extends_name}):\n");
+            out.push(join(el.props.map(prop_line), "\n") + "\n");
+        }
+    }
+    join(out, "\n")
+}
+
+fn named(title: string, items: [Named], details: bool) -> string {
+    if (items.len() == 0) {
+        return "";
+    }
+    let lines = items.map(fn(n: Named) -> string {
+        let name = if (n.name == "default" && title == "Slots") { "(default)" } else { "`${n.name}`" };
+        let detail = if (details && n.detail != "") { " (detail `${n.detail}`)" } else { "" };
+        "- ${name}${detail}: ${n.description}"
+    });
+    "${title}:\n\n${join(lines, "\n")}\n"
+}
+
+fn decls(ds: [Decl]) -> string {
+    let lines = ds.map(fn(d: Decl) -> string {
+        let ts = if (d.ts == "") { d.name } else { d.ts };
+        let desc = if (d.description == "") { "" } else { ": ${d.description}" };
+        "- `${ts}`${desc}"
+    });
+    join(lines, "\n") + "\n"
+}
+
+// The tokens: the palette and the per-color variants as patterns, every
+// other token with its value (light / dark when the theme changes it).
+fn tokens(m: Model) -> Result<string, string> {
+    let p = m.prefix;
+    let colors = m.colors.filter(fn(c: string) -> bool { !m.runtime.contains(c) });
+    let out: [string] = [
+        "Use them as `var(--${p}-…)` in your own CSS. Values are resolved; the semantic ones change with the theme (light / dark).\n",
+        "- Palette: `--${p}-<color>-0` (lightest) … `--${p}-<color>-9` (darkest), colors ${join(colors.map(fn(c: string) -> string { "`${c}`" }), ", ")}. The same in both themes.",
+        "- Per color and for `primary`: `--${p}-<color>-<variant>`, variants ${join(m.variants.map(fn(v: string) -> string { "`${v}`" }), ", ")}; theme-aware.",
+        "- Primary: `--${p}-primary-0` … `-9` and its variants, aliases of the primary color (`${m.primary}`; `data-primary` or `setPrimary()` changes it)."
+    ];
+    var group = "";
+    for t in m.tokens {
+        if (t.group == "palette" || t.group == "variant" || t.group == "primary") {
+            continue;
+        }
+        if (t.group != group) {
+            group = t.group;
+            out.push("");
+            out.push("${group}:");
+            out.push("");
+        }
+        let name = if (t.css) { "`--${p}-${t.name}`" } else { "`${t.name}` (tokens.json only)" };
+        let value = if (depends_on_scheme(t)) {
+            "${refs.resolve(m, t, "light")?} / ${refs.resolve(m, t, "dark")?}"
+        } else {
+            refs.resolve(m, t, "light")?
+        };
+        out.push("- ${name}: ${value}");
+    }
+    out.push("");
+    Result.Ok(join(out, "\n"))
+}
+
+// The names of the default icons: the keys of DEFAULTS in core/icons.js
+// (`  close: svg(…)`, `  "chevron-down": svg(…)`).
+pub fn icon_names(js: string) -> [string] {
+    let out: [string] = [];
+    for line in js.split("\n") {
+        if (!line.starts_with("  ") || !line.contains(": svg(")) {
+            continue;
+        }
+        let key = line.trim();
+        let name = key.substring(0, key.index_of(":").unwrap_or(0)).replace("\"", "");
+        if (name != "") {
+            out.push(name);
+        }
+    }
+    out
+}
+
+// The example's imports of the repository's modules ("../src/components/dialog/dialog.js",
+// from docs/) as an app writes them ("@raylang/elements/dialog").
+fn package_imports(html: string, cs: [Component]) -> string {
+    var out = html.replace("\"../src/core/core.js\"", "\"@raylang/elements/core\"");
+    for c in cs {
+        for f in c.files {
+            out = out.replace("\"../src/components/${c.dir}/${f}\"", "\"@raylang/elements/${c.dir}\"");
+        }
+    }
+    out
+}
+
+// Links between the guides (RAYLANG.md#using-the-bridge) as the site's pages.
+fn absolute_links(md: string) -> string {
+    var out = md;
+    for (from_md, to) in [
+        ("README.md", "getting-started.html"),
+        ("RAYLANG.md", "raylang.html"),
+        ("EXTENDING.md", "extending.html"),
+        ("CHARTS.md", "charts.html")
+    ] {
+        out = out.replace("](${from_md}", "](${SITE}/${to}");
+    }
+    out
+}
+
+fn first_sentence(s: string) -> string {
+    match (s.index_of(". ")) {
+        Option.Some(i) => s.substring(0, i + 1),
+        Option.None => s,
+    }
+}
+
+@test
+fn reads_the_icon_names() {
+    let js = "const DEFAULTS = {\n  close: svg(`<path/>`),\n  \"chevron-down\": svg(`<path/>`),\n};\n  other: 1,";
+    assert_eq(join(icon_names(js), ","), "close,chevron-down");
+}
+
+@test
+fn describes_a_property() {
+    let p = Prop {
+        name: "fullWidth",
+        attribute: "full-width",
+        kind: "boolean",
+        values: [],
+        default_value: "",
+        reflect: true,
+        ts: "",
+        description: "Takes the whole width."
+    };
+    assert_eq(prop_line(p), "- `fullWidth` (attribute `full-width`): boolean, reflects. Takes the whole width.");
+    p.attribute = "";
+    p.values = ["a", "b"];
+    p.default_value = "a";
+    p.reflect = false;
+    assert_eq(prop_line(p), "- `fullWidth` (property only): `a` | `b`, default `a`. Takes the whole width.");
+}
+
+@test
+fn imports_by_the_package_name() {
+    let c = Component {
+        dir: "dialog",
+        name: "Dialog",
+        aliases: [],
+        category: "Overlays",
+        summary: "",
+        files: ["dialog.js"],
+        requires: [],
+        elements: [],
+        exports: [],
+        types: [],
+        example: "",
+        raylang: ""
+    };
+    assert_eq(
+        package_imports("import { confirmDialog } from \"../src/components/dialog/dialog.js\"; import { setIcons } from \"../src/core/core.js\";", [c]),
+        "import { confirmDialog } from \"@raylang/elements/dialog\"; import { setIcons } from \"@raylang/elements/core\";"
+    );
+}
+
+@test
+fn links_the_guides_to_the_site() {
+    assert_eq(
+        absolute_links("[the bridge](RAYLANG.md#using-the-bridge)"),
+        "[the bridge](https://elements.raylang.dev/raylang.html#using-the-bridge)"
+    );
+}

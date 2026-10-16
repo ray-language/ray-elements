@@ -1,0 +1,83 @@
+# Badge
+
+A short status label.
+
+Import: `import "@raylang/elements/badge";` · Category: Data display
+
+## `<ray-badge>` (RayBadge, extends RayElement)
+
+Properties:
+
+- `variant`: `light` | `filled` | `outline` | `dot` | `default` | `gradient`, default `light`, reflects. Visual style.
+- `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
+- `color`: string. A palette color or any CSS color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: full.
+- `normalCase` (attribute `normal-case`): boolean. Keeps the text as written instead of uppercase.
+
+Slots:
+
+- (default): The text.
+
+Parts (`::part()`):
+
+- `badge`: The badge box.
+
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+
+## Example
+
+The markup of the site's live example (the `demo-*` classes are the site's, not ray-elements's).
+
+```html
+<div class="demo-caption">Variants × colors</div>
+<div class="demo-scroll">
+  <div class="demo-matrix" style="--demo-cols: 6">
+    <span></span><span class="demo-matrix-head">primary</span><span class="demo-matrix-head">gray</span><span class="demo-matrix-head">red</span><span class="demo-matrix-head">green</span><span class="demo-matrix-head">yellow</span><span class="demo-matrix-head">violet</span>
+    <span class="demo-matrix-label">light (default)</span><ray-badge>Info</ray-badge><ray-badge color="gray">Draft</ray-badge><ray-badge color="red">Failed</ray-badge><ray-badge color="green">Passed</ray-badge><ray-badge color="yellow">Pending</ray-badge><ray-badge color="violet">Beta</ray-badge>
+    <span class="demo-matrix-label">filled</span><ray-badge variant="filled">Info</ray-badge><ray-badge variant="filled" color="gray">Draft</ray-badge><ray-badge variant="filled" color="red">Failed</ray-badge><ray-badge variant="filled" color="green">Passed</ray-badge><ray-badge variant="filled" color="yellow">Pending</ray-badge><ray-badge variant="filled" color="violet">Beta</ray-badge>
+    <span class="demo-matrix-label">outline</span><ray-badge variant="outline">Info</ray-badge><ray-badge variant="outline" color="gray">Draft</ray-badge><ray-badge variant="outline" color="red">Failed</ray-badge><ray-badge variant="outline" color="green">Passed</ray-badge><ray-badge variant="outline" color="yellow">Pending</ray-badge><ray-badge variant="outline" color="violet">Beta</ray-badge>
+    <span class="demo-matrix-label">dot</span><ray-badge variant="dot">Info</ray-badge><ray-badge variant="dot" color="gray">Draft</ray-badge><ray-badge variant="dot" color="red">Failed</ray-badge><ray-badge variant="dot" color="green">Passed</ray-badge><ray-badge variant="dot" color="yellow">Pending</ray-badge><ray-badge variant="dot" color="violet">Beta</ray-badge>
+    <span class="demo-matrix-label">default</span><ray-badge variant="default">Neutral</ray-badge><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span>
+    <span class="demo-matrix-label">gradient</span><ray-badge variant="gradient">New</ray-badge><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span><span class="demo-muted">—</span>
+  </div>
+</div>
+<p class="demo-muted" style="margin: 0">default is the neutral surface and ignores color; gradient takes <code>gradient="from to [deg]"</code>.</p>
+
+<div class="demo-caption">Gradient</div>
+<div class="demo-row">
+  <ray-badge variant="gradient">Theme</ray-badge>
+  <ray-badge variant="gradient" gradient="pink orange 90">pink → orange</ray-badge>
+  <ray-badge variant="gradient" gradient="teal blue 135">teal → blue</ray-badge>
+</div>
+
+<div class="demo-caption">Sizes</div>
+<div class="demo-row">
+  <ray-badge size="xs">Extra small</ray-badge>
+  <ray-badge size="sm">Small</ray-badge>
+  <ray-badge size="md">Medium</ray-badge>
+  <ray-badge size="lg">Large</ray-badge>
+  <ray-badge size="xl">Extra large</ray-badge>
+</div>
+
+<div class="demo-caption">Radius and case</div>
+<div class="demo-row">
+  <ray-badge variant="filled" color="gray" radius="xs">xs</ray-badge>
+  <ray-badge variant="filled" color="gray" radius="sm">sm</ray-badge>
+  <ray-badge variant="filled" color="gray" radius="md">md</ray-badge>
+  <ray-badge variant="filled" color="gray" radius="lg">lg</ray-badge>
+  <ray-badge variant="filled" color="gray">full (default)</ray-badge>
+  <ray-badge variant="outline" color="gray" normal-case>v1.27.37 · normal-case</ray-badge>
+</div>
+
+<div class="demo-caption">In context</div>
+<ul class="demo-list" style="max-width: 32rem">
+  <li><span class="grow">ray-remote · build #412</span><ray-badge variant="dot" color="green">Online</ray-badge></li>
+  <li><span class="grow">rayauth · build #108</span><ray-badge variant="filled" color="red">Failed</ray-badge></li>
+  <li><span class="grow">ray-elements · release 0.5.0</span><ray-badge color="yellow">Pending</ray-badge></li>
+</ul>
+<div class="demo-row">
+  <ray-button variant="default">Inbox<ray-badge slot="right" size="xs" variant="filled" color="red">3</ray-badge></ray-button>
+  <ray-button variant="light">Releases<ray-badge slot="right" size="xs" color="gray" normal-case>v0.5</ray-badge></ray-button>
+</div>
+```

@@ -95,6 +95,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Components" href="#components"></ray-nav-link>
 <ray-nav-link label="Commands" href="#commands"></ray-nav-link>
 <ray-nav-link label="React and Vue" href="#react-and-vue"></ray-nav-link>
+<ray-nav-link label="For AI agents" href="#for-ai-agents"></ray-nav-link>
 <ray-nav-link label="Using it in a page" href="#using-it-in-a-page"></ray-nav-link>
 <ray-nav-link label="Tokens" href="#tokens"></ray-nav-link>
 <ray-nav-link label="Extending" href="#extending"></ray-nav-link>
@@ -112,6 +113,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#components">Components</a>
 <a class="side-link" href="#commands">Commands</a>
 <a class="side-link" href="#react-and-vue">React and Vue</a>
+<a class="side-link" href="#for-ai-agents">For AI agents</a>
 <a class="side-link" href="#using-it-in-a-page">Using it in a page</a>
 <a class="side-link" href="#tokens">Tokens</a>
 <a class="side-link" href="#extending">Extending</a>
@@ -178,7 +180,7 @@ src/integrations/      React and Vue runtime helpers (createComponent)
 src/components/&lt;name&gt;/ &lt;name&gt;.js + component.toml (metadata) + example.html
 src/index.js           generated: imports every component
 dist/                  generated: tokens.css, tokens.json
-docs/                  generated: index.html, foundations.html, components.html (the catalog), components/&lt;component&gt;.html (a page each, and all.html with every one), code/&lt;component&gt;.html (each example's code, loaded on demand)
+docs/                  generated: index.html, foundations.html, components.html (the catalog), components/&lt;component&gt;.html (a page each, and all.html with every one), code/&lt;component&gt;.html (each example's code, loaded on demand); llms.txt, llms-full.txt and components/&lt;component&gt;.md (for AI agents)
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-elements CLI
@@ -457,6 +459,19 @@ choosing, submitting, the menu opening a controlled dialog) and checks both
 directions: what reaches raylang through <code>window.ray.request</code>, and the
 framework state rendered back into the components. The dev servers use high
 ports (45173, 45174).</p>
+
+<h2 id="for-ai-agents">For AI agents</h2>
+<p>The site has an <a href="https://elements.raylang.dev/llms.txt">llms.txt</a>: the rules an
+agent needs to use the components correctly (loading, slots, forms, events,
+tokens, theme, React and Vue, the raylang bridge) and a link to each
+component's API as Markdown (<code>components/&lt;component&gt;.md</code>).
+<a href="https://elements.raylang.dev/llms-full.txt">llms-full.txt</a> is all of it in one
+file: every component, the tokens with their values, the icon names and the
+core's types. Both describe <code>main</code>; the copies in the npm package
+(<code>node_modules/@raylang/elements/llms.txt</code>, <code>llms-full.txt</code>), also in a raylang
+app's <code>node_modules/</code> with the <code>elements</code> package, describe the installed
+version. <code>docs</code> generates them from <code>site/llms.md</code> (the rules, hand-written),
+the <code>component.toml</code> files, <code>tokens.toml</code>, <code>core/icons.js</code> and <code>core/core.d.ts</code>.</p>
 
 <h2 id="using-it-in-a-page">Using it in a page</h2>
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-elements/dist/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>

@@ -32,7 +32,9 @@ extras for raylang apps. Names:
   served to the app's pages by its npm name). Its tests: `cd elements && ray test`.
 - `examples/` — desktop-app, desktop-form, lean-app, starter (the app to
   copy), react-app, vue-app, extending.
-- `site/` — the site's CSS/JS; `brand/` — the logos (generated) and
+- `site/` — the site's CSS/JS and `llms.md` (the hand-written rules of the
+  generated `docs/llms.txt` and `llms-full.txt`, also in the npm package);
+  `brand/` — the logos (generated) and
   `brand/manual.html` (the brand manual, hand-written); the guides are the
   `.md` files at the root.
 

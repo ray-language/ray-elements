@@ -1,0 +1,332 @@
+# ray-elements
+
+> Web components (custom elements, Shadow DOM, no dependencies) for any web app: plain HTML, React, Vue or a raylang app. npm: `@raylang/elements`, `@raylang/react`, `@raylang/vue`; raylang: the `elements` package. This file describes version 0.5.0.
+
+ray-elements is a design system of standard web components (custom elements
+with Shadow DOM, no dependencies): `<ray-button>`, `<ray-input>`,
+`<ray-dialog>`… They work in plain HTML, React, Vue, a browser or any webview,
+and get extras in a raylang app (a native bridge to the program). The rules
+below are what this library does differently from what you may assume; the
+reference of every component follows them.
+
+## Load it
+
+```html
+<link rel="stylesheet" href="node_modules/@raylang/elements/tokens.css">  <!-- required: the components read the tokens -->
+<link rel="stylesheet" href="node_modules/@raylang/elements/base.css">    <!-- optional: font, colors and margins of the document -->
+<script type="module">
+  import "@raylang/elements";          // registers EVERY <ray-*> element and exports the whole API
+</script>
+```
+
+- The bare name (`"@raylang/elements"`) resolves with a bundler (Vite,
+  esbuild…) and in a raylang app (raylang serves the package with an import
+  map). A plain page without either imports the files:
+  `import { notify } from "./node_modules/@raylang/elements/index.js";`
+  (everything), `./node_modules/@raylang/elements/components/<name>/<name>.js`
+  (one component), `./node_modules/@raylang/elements/core.js` (the API), or
+  declares an import map:
+  `<script type="importmap">{ "imports": { "@raylang/elements": "./node_modules/@raylang/elements/index.js" } }</script>`.
+
+- `npm install @raylang/elements` (React: also `@raylang/react`; Vue: also
+  `@raylang/vue`). With a bundler: `import "@raylang/elements/tokens.css";`.
+- Only some components: `import "@raylang/elements/button";` — one entry per
+  component directory (the "Import" line of each component below). Each brings
+  what it uses. `import { notify } from "@raylang/elements/notification";` gets
+  a component's exports with it.
+- The API without registering any element: `import { setTheme } from
+  "@raylang/elements/core";`. Note that `import { RayButton } from
+  "@raylang/elements"` loads everything (that entry registers every element).
+- Avoid a flash of unstyled tags: `<style>:not(:defined) { visibility: hidden; }</style>`.
+
+## Rules
+
+- **Attributes are kebab-case, properties camelCase**: `full-width` /
+  `fullWidth`. Boolean attributes are present or absent (`disabled`, never
+  `disabled="false"`). Properties marked "property only" have no attribute:
+  set them from JS (arrays, objects, functions). The exception is `checked`
+  and `value` on form controls: their attribute is the initial state (see
+  Forms).
+- **Shared vocabulary**: `size` = `xs` | `sm` | `md` | `lg` | `xl` (default
+  `sm`); `radius` = `xs`…`xl` | `full`; `color` = a palette color (`blue`,
+  `red`, `teal`, `gray`…) or any CSS color, default the primary; `variant` per
+  component (button: `filled`, `light`, `outline`, `subtle`, `default`,
+  `transparent`, `gradient`, `raised`). Use only the values the reference lists.
+- **Slots have exact names**: an icon in a button goes in `slot="left"` or
+  `slot="right"` (not `start`/`end`, not `prefix`): `<ray-button><ray-icon
+  slot="left" name="plus"></ray-icon>Add</ray-button>`. Content without a
+  `slot` goes to the default slot. Check the slot list of the component.
+- **Never hard-code colors, spacing, radii or shadows** in your own CSS: use
+  the tokens (`var(--ray-background)`, `var(--ray-foreground)`,
+  `var(--ray-border)`, `var(--ray-space-md)`, `var(--ray-radius-default)`,
+  `var(--ray-shadow-sm)`). They follow light and dark themes; literal colors do
+  not. Prefer the semantic tokens over the palette (`--ray-blue-6`).
+- **Style components from outside** with `color`/`variant`/`size`/`radius`,
+  the tokens (custom properties pierce the shadow root) and `::part()` (the
+  parts each lists). Do not reach into their
+  `shadowRoot` or depend on its markup.
+- **Layout components exist**: `ray-stack` (vertical), `ray-group`
+  (horizontal), `ray-grid`, `ray-container`, `ray-center`, `ray-card`
+  (a heading of your own in its `header` slot), `ray-app-shell`. Their
+  `gap`/`padding` take `xs`…`xl`.
+- **Icons**: `<ray-icon name="settings"></ray-icon>`, from the registry (a
+  small set, listed in the reference: there is no `save` or `trash`); decorative unless it has `label`. An icon-only button is
+  `<ray-icon-button label="Settings"><ray-icon name="settings"></ray-icon></ray-icon-button>`
+  (`label` is required: it is the accessible name). Add or replace icons with
+  `setIcons({ inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">…</svg>' })`
+  (the style of the built-in set: 24×24, a 2px `currentColor` stroke) from
+  your own code, never from user input.
+- **Overlays are in the top layer**: `ray-dialog` is a native modal
+  `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
+  elements. Never fight them with `z-index` or `overflow`.
+
+## An app's frame
+
+```html
+<ray-app-shell>
+  <ray-app-bar slot="header" label="Files" description="No folder chosen">
+    <ray-button slot="end" variant="default" size="xs">Commands</ray-button>
+    <ray-theme-toggle slot="end"></ray-theme-toggle>
+  </ray-app-bar>
+  <ray-sidebar slot="navbar" label="Workspace">
+    <ray-nav-link label="Files" href="#files" active><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Settings" href="#settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </ray-sidebar>
+  <main>…</main>
+</ray-app-shell>
+```
+
+`ray-app-bar` is the header on the desktop too (its `label` is the title;
+several elements may share the `end` slot). On narrow screens the sidebar
+becomes a drawer and the shell switches to a phone layout by itself.
+
+## Forms
+
+- Inputs are **form-associated**: inside a `<form>` they submit under `name`,
+  validate (`required`, `pattern`, `min`…), reset with it and follow a
+  disabled `<fieldset>`. Read values with `new FormData(form)` or the
+  element's `.value` / `.checked`.
+- The `value` / `checked` **attributes are the initial value**; the
+  properties hold the current one. Set `el.value = …` to change it.
+- Fields take `label`, `description` and `error` (the error text also marks it
+  invalid): do not wrap them in your own `<label>`.
+- Enter in a `ray-input` submits its form, as in a native field; a submit
+  button is `<ray-button type="submit">`.
+- As with native controls: an invalid field (`required` and empty, a wrong
+  `type="email"`…) blocks the submit and the browser shows its message; an
+  unchecked `ray-checkbox`/`ray-switch` and a `ray-select` with nothing chosen
+  are left out of `FormData` (a select's `placeholder` shows meanwhile).
+
+## Events
+
+- A value change is a plain `input` (while typing) and `change` event: read
+  `event.target.value`.
+- Everything else is a `ray-*` custom event (bubbles, composed) with its data
+  in `event.detail`: `ray-select` on a menu (`detail.value`), `ray-close` on a
+  dialog (`detail.returnValue`), `ray-request-close` (cancelable). The
+  reference lists each component's events and their `detail`.
+
+## Dialogs and notifications
+
+```html
+<ray-dialog id="d" label="Rename">
+  <ray-input label="Name" name="name"></ray-input>
+  <ray-button slot="footer" variant="default" data-dialog-close>Cancel</ray-button>
+  <ray-button slot="footer" data-dialog-close="ok">Save</ray-button>
+</ray-dialog>
+```
+
+`d.show()` or the `open` attribute opens it; any slotted element with
+`data-dialog-close` closes it (its value becomes `returnValue`); the close
+button, Escape and the backdrop close it with `returnValue` `""` (after a
+cancelable `ray-request-close`).
+`await confirmDialog({ label, message, confirmLabel, cancelLabel, color: "red" })`
+asks a yes/no question (every option is optional: "Are you sure?",
+"Confirm", "Cancel"); `notify({ title, message, color })` shows a
+notification (`message` is plain text; a `color` adds a status icon:
+green a check, red an error, yellow a warning, others info).
+
+## Theme
+
+- The theme follows the system. Force it on the page or any subtree with
+  `data-theme="light"` | `"dark"`; change the primary color with
+  `data-primary="violet"` (a palette color).
+- From JS: `setTheme("light" | "dark" | "system")`, `setPrimary("violet")`,
+  `definePrimary("#7c3aed")` (any brand color: builds the ten shades and
+  checks contrast), `onThemeChange(cb)`. `<ray-theme-toggle>` is the switch.
+- App-wide defaults for a component: `configure({ defaults: { "ray-button":
+  { variant: "light" } } })`.
+
+## React and Vue
+
+```tsx
+import "@raylang/elements/tokens.css";
+import { RayInput, RayMenu, RayMenuItem, RayButton } from "@raylang/react";
+
+<RayInput label="Name" value={name} onInput={(e) => setName(e.currentTarget.value)} />
+<RayMenu onRaySelect={(e) => run(e.detail.value)}>
+  <RayButton slot="trigger">Actions</RayButton>
+  <RayMenuItem value="rename">Rename</RayMenuItem>
+</RayMenu>
+```
+
+```vue
+<!-- main.ts: import RayElements from "@raylang/vue"; app.use(RayElements) -->
+<RayInput v-model="name" label="Name" required />
+<RayDialog v-model="open" label="Confirm" @ray-close="onClose">…</RayDialog>
+```
+
+- The wrapper of `<ray-tag-name>` is `RayTagName`. React events are `on` +
+  PascalCase of the event (`onRaySelect`, `onChange`); props are set as DOM
+  properties. Vue has `v-model` where the reference lists a model (`value`,
+  `checked` or `open`).
+- A wrapper registers only its own element: a plain `<ray-*>` tag in JSX
+  needs its import (`import "@raylang/elements/badge"`).
+
+## In a raylang app
+
+`ray add elements` brings the raylang package `elements`: it serves
+`@raylang/elements` to the app's pages by its npm name, with no npm and no
+build step. The page:
+
+```html
+<link rel="stylesheet" href="/node_modules/@raylang/elements/tokens.css">
+<script type="module">
+  import { enableRaylang } from "@raylang/elements";
+  const host = await enableRaylang();   // the native host, or null in a browser
+</script>
+```
+
+The program serves the page and answers the bridge before its own events:
+
+```ray
+import std/ui;
+import elements/bridge;
+
+fn main() -> int {
+    match (run()) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint(e);
+            1
+        },
+    }
+}
+
+fn run() -> Result<int, string> {
+    ui.mount_embed_at("", "assets")?;   // the page: assets/index.html, ray.toml [native] embed = ["assets"]
+    ui.open_with("App", "ray://app/index.html", ui.options(800, 600))?;
+    while (true) {
+        let e = ui.next_event()?;
+        if (bridge.handle(e)) {
+            continue;   // a ray-elements request, already answered
+        }
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        // the app's own events: e.kind == "message" (window.ray.send), e.tag…
+    }
+}
+```
+
+With the bridge: `<ray-file-upload native>` and `<ray-path-input>` use the
+system file dialogs and give real paths, `confirmDialog()` asks with the
+system dialog, `<ray-menu native>` opens a native context menu,
+`<ray-command-palette native-menus>` runs the app's menu bar
+(`bridge.menu`, `bridge.route`), `ray-app-shell` becomes the title bar of a
+`full_content` window, and `trackEdits(form)` shows the unsaved mark. The
+components that use it have an "In a raylang app" section. Without the
+bridge every component keeps its web behavior.
+
+## Your own components
+
+Extend `RayElement`, `FormControl`, `FieldControl` or `Floating` (or any
+component class) from `@raylang/elements/core`; see the Extending guide.
+Members whose name starts with `_` are internal.
+
+## Components
+
+- [Button](https://elements.raylang.dev/components/button.md): `<ray-button>` (Buttons). A button, or a link styled as one with href.
+- [Button group](https://elements.raylang.dev/components/button-group.md): `<ray-button-group>` (Buttons). Buttons joined into one control: inner corners squared, borders overlapped.
+- [Icon button](https://elements.raylang.dev/components/icon-button.md): `<ray-icon-button>` (Buttons). A square button for an icon (Mantine's ActionIcon).
+- [Toggle](https://elements.raylang.dev/components/toggle.md): `<ray-toggle>` (Buttons). A two-state button (aria-pressed): bold in a toolbar, mute, favorite.
+- [Toggle group](https://elements.raylang.dev/components/toggle-group.md): `<ray-toggle-group>` (Buttons). ray-toggle elements with one shared value: type="single" (at most one on: alignment, view mode) or "multiple" (bold / italic / underline).
+- [Checkbox](https://elements.raylang.dev/components/checkbox.md): `<ray-checkbox>` (Inputs). A checkbox with label, description and error.
+- [Checkbox group](https://elements.raylang.dev/components/checkbox-group.md): `<ray-checkbox-group>` (Inputs). Several choices among options (Mantine's Checkbox.Group): a label, description and error around ray-checkbox elements; the value is the array of the checked ones.
+- [Color picker](https://elements.raylang.dev/components/color-picker.md): `<ray-color-picker>`, `<ray-color-input>` (Inputs). Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper.
+- [Combobox](https://elements.raylang.dev/components/combobox.md): `<ray-combobox>` (Inputs). A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.
+- [Date picker](https://elements.raylang.dev/components/date-picker.md): `<ray-date-picker>`, `<ray-calendar>` (Inputs). A date field with a calendar dropdown, and the calendar on its own.
+- [File upload](https://elements.raylang.dev/components/file-upload.md): `<ray-file-upload>` (Inputs). A drop zone to pick files: drag, click, keyboard or paste.
+- [Input](https://elements.raylang.dev/components/input.md): `<ray-input>` (Inputs). A text field with label, description and error (Mantine's TextInput).
+- [Number input](https://elements.raylang.dev/components/number-input.md): `<ray-number-input>` (Inputs). A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator.
+- [Password input](https://elements.raylang.dev/components/password-input.md): `<ray-password-input>` (Inputs). A password field with a button that shows or hides what was typed (Mantine's PasswordInput).
+- [Path input](https://elements.raylang.dev/components/path-input.md): `<ray-path-input>` (Inputs). A field for a path on disk: a file to open, a folder, or where to save.
+- [Radio group](https://elements.raylang.dev/components/radio.md): `<ray-radio-group>`, `<ray-radio>` (Inputs). One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.
+- [Search](https://elements.raylang.dev/components/search.md): `<ray-search>` (Inputs). A search box: icon, clear button, an optional shortcut that focuses it, and a debounced ray-search event.
+- [Segmented control](https://elements.raylang.dev/components/segmented-control.md): `<ray-segmented-control>` (Inputs). One choice among a few, as a segmented row with a sliding indicator.
+- [Select](https://elements.raylang.dev/components/select.md): `<ray-select>` (Inputs). A select with its own dropdown (keyboard, typeahead, groups); options from child <option> elements or the data property.
+- [Slider](https://elements.raylang.dev/components/slider.md): `<ray-slider>` (Inputs). A native range input (keyboard, touch and screen readers as usual) with label, value display and marks.
+- [Switch](https://elements.raylang.dev/components/switch.md): `<ray-switch>` (Inputs). An on/off toggle with the same API as Checkbox, announced as a switch.
+- [Textarea](https://elements.raylang.dev/components/textarea.md): `<ray-textarea>` (Inputs). A multi-line text field that can grow with its content.
+- [Bottom nav](https://elements.raylang.dev/components/bottom-nav.md): `<ray-bottom-nav>`, `<ray-bottom-nav-item>` (Navigation). The bottom navigation of a phone app (Material's navigation bar, the iOS tab bar): three to five destinations with an icon, a label and a badge, the current one marked by a pill.
+- [Breadcrumbs](https://elements.raylang.dev/components/breadcrumbs.md): `<ray-breadcrumbs>`, `<ray-breadcrumb>` (Navigation). Where a page sits (Mantine's Breadcrumbs, the WAI-ARIA breadcrumb pattern): links in a labelled nav, the last one the current page.
+- [Nav link](https://elements.raylang.dev/components/nav-link.md): `<ray-nav-link>` (Navigation). A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.
+- [Pagination](https://elements.raylang.dev/components/pagination.md): `<ray-pagination>` (Navigation). Page navigation: previous/next, optional first/last, page numbers with ellipses; the number of items stays constant so it does not jump.
+- [Sidebar](https://elements.raylang.dev/components/sidebar.md): `<ray-sidebar>`, `<ray-sidebar-group>` (Navigation). The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer.
+- [Stepper](https://elements.raylang.dev/components/stepper.md): `<ray-stepper>`, `<ray-step>` (Navigation). A task in steps (Mantine's Stepper): a wizard, a checkout, an onboarding.
+- [Tabs](https://elements.raylang.dev/components/tabs.md): `<ray-tabs>`, `<ray-tab>`, `<ray-tab-panel>` (Navigation). Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.
+- [Command palette](https://elements.raylang.dev/components/command-palette.md): `<ray-command-palette>` (Overlays). Search and run actions from the keyboard (Mantine's Spotlight): fuzzy search, groups, shortcuts, ⌘K / Ctrl+K; combobox + listbox pattern in a modal dialog.
+- [Dialog](https://elements.raylang.dev/components/dialog.md): `<ray-dialog>` (Overlays). ray-elements's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable.
+- [Drawer](https://elements.raylang.dev/components/drawer.md): `<ray-drawer>` (Overlays). A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive.
+- [Menu](https://elements.raylang.dev/components/menu.md): `<ray-menu>`, `<ray-menu-item>`, `<ray-menu-label>`, `<ray-menu-divider>` (Overlays). A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.
+- [Popover](https://elements.raylang.dev/components/popover.md): `<ray-popover>` (Overlays). A floating panel anchored to a trigger, in the top layer; closes on Escape and outside clicks.
+- [Tooltip](https://elements.raylang.dev/components/tooltip.md): `<ray-tooltip>` (Overlays). A short hint on hover and focus of its child; the label also becomes the child's accessible description.
+- [Accordion](https://elements.raylang.dev/components/accordion.md): `<ray-accordion>`, `<ray-accordion-item>` (Data display). Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple.
+- [Attachment](https://elements.raylang.dev/components/attachment.md): `<ray-attachment>`, `<ray-attachments>` (Data display). A file in a composer, upload list or chat: thumbnail or type icon, name, size, upload progress, error, remove and download.
+- [Avatar](https://elements.raylang.dev/components/avatar.md): `<ray-avatar>` (Data display). An image, the initials of a name, or a placeholder icon.
+- [Badge](https://elements.raylang.dev/components/badge.md): `<ray-badge>` (Data display). A short status label.
+- [Blockquote](https://elements.raylang.dev/components/blockquote.md): `<ray-blockquote>` (Data display). A quotation set apart from the text (Mantine's Blockquote): a colored edge, a quote mark on it and the attribution below.
+- [Carousel](https://elements.raylang.dev/components/carousel.md): `<ray-carousel>` (Data display). Slides in a scroll-snap viewport: native swipe and scrolling, previous/next controls, indicators, keyboard, loop and autoplay with a pause button.
+- [Code](https://elements.raylang.dev/components/code.md): `<ray-code>` (Data display). A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a "show more" height.
+- [Icon](https://elements.raylang.dev/components/icon.md): `<ray-icon>` (Data display). An icon of the registry: the whole set (the components' too) changes with setIcons().
+- [Indicator](https://elements.raylang.dev/components/indicator.md): `<ray-indicator>` (Data display). A dot or a small label on the edge of any element (Mantine's Indicator): "New" on an avatar, an unread count on a bell, an online dot.
+- [Kbd](https://elements.raylang.dev/components/kbd.md): `<ray-kbd>` (Data display). A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons.
+- [Stat](https://elements.raylang.dev/components/stat.md): `<ray-stat>` (Data display). A metric tile: label, value, change against a previous period, note.
+- [Table](https://elements.raylang.dev/components/table.md): `<ray-table>` (Data display). A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state.
+- [Timeline](https://elements.raylang.dev/components/timeline.md): `<ray-timeline>`, `<ray-timeline-item>` (Data display). Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages.
+- [Alert](https://elements.raylang.dev/components/alert.md): `<ray-alert>` (Feedback). An inline message: title, text, an icon of the registry, the color variants and an optional close button.
+- [Empty state](https://elements.raylang.dev/components/empty-state.md): `<ray-empty-state>` (Feedback). What a list, table or pane shows when it is empty: icon, title, text and the action that fills it.
+- [Notification](https://elements.raylang.dev/components/notification.md): `<ray-notification>`, `<ray-toaster>` (Feedback). Toasts: notify(), updateNotification(), hideNotification(), clearNotifications(); shown in a ray-toaster (a polite live region in the top layer).
+- [Progress](https://elements.raylang.dev/components/progress.md): `<ray-progress>` (Feedback). A determinate or (without value) indeterminate progress bar, announced as a progressbar.
+- [Skeleton](https://elements.raylang.dev/components/skeleton.md): `<ray-skeleton>` (Feedback). A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.
+- [Spinner](https://elements.raylang.dev/components/spinner.md): `<ray-spinner>` (Feedback). An indeterminate loading indicator, announced as a status.
+- [App bar](https://elements.raylang.dev/components/app-bar.md): `<ray-app-bar>` (Layout). The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it.
+- [App shell](https://elements.raylang.dev/components/app-shell.md): `<ray-app-shell>` (Layout). The frame of an app (Mantine's AppShell): header, navbar, main, aside and footer on wide screens; on phones one column with a bottom bar.
+- [Aspect ratio](https://elements.raylang.dev/components/aspect-ratio.md): `<ray-aspect-ratio>` (Layout). A box with a fixed width/height ratio; its image, video or iframe fills it.
+- [Card](https://elements.raylang.dev/components/card.md): `<ray-card>` (Layout). A surface for grouped content, with optional media, header and footer.
+- [Center](https://elements.raylang.dev/components/center.md): `<ray-center>` (Layout). Its content centered on both axes (Mantine's Center): empty states, loaders, a sign-in card.
+- [Container](https://elements.raylang.dev/components/container.md): `<ray-container>` (Layout). Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.
+- [Grid](https://elements.raylang.dev/components/grid.md): `<ray-grid>` (Layout). A responsive grid: a column count per width (cols="1 sm:2 lg:4") measured on the grid itself, or as many columns of a minimum width as fit.
+- [Group](https://elements.raylang.dev/components/group.md): `<ray-group>` (Layout). Its children in a row (Mantine's Group): spaced by the space scale, centered, wrapping when they do not fit.
+- [Scroll area](https://elements.raylang.dev/components/scroll-area.md): `<ray-scroll-area>` (Layout). A box that scrolls its content with the native scrolling and a thin themed scrollbar (Mantine's ScrollArea).
+- [Separator](https://elements.raylang.dev/components/separator.md): `<ray-separator>` (Layout). A horizontal or vertical rule, optionally labeled (Mantine's Divider).
+- [Split](https://elements.raylang.dev/components/split.md): `<ray-split>` (Layout). Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.
+- [Stack](https://elements.raylang.dev/components/stack.md): `<ray-stack>` (Layout). Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked.
+- [Status bar](https://elements.raylang.dev/components/statusbar.md): `<ray-statusbar>`, `<ray-statusbar-item>` (Layout). The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.
+- [Theme toggle](https://elements.raylang.dev/components/theme-toggle.md): `<ray-theme-toggle>` (Theme). Icon button that cycles the document theme: system, light, dark.
+
+## Icons
+
+`close`, `check`, `minus`, `plus`, `chevron-down`, `chevron-up`, `chevron-right`, `chevron-left`, `chevrons-left`, `chevrons-right`, `search`, `arrow-up-right`, `arrow-down-right`, `sun`, `moon`, `monitor`, `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `menu`, `more-horizontal`, `file`, `folder`, `pause`, `play`, `terminal`, `calendar`, `image`, `download`, `eye`, `eye-off`, `bell`, `copy`, `pipette`, `star`, `upload`, `paperclip`, `panel-left`, `settings`, `home`, `arrow-left`, `message-circle`
+
+## Reference
+
+- [llms-full.txt](https://elements.raylang.dev/llms-full.txt): these rules and the whole reference in one file: every component's API, the tokens, the icon names and the core's TypeScript declarations
+- [Foundations](https://elements.raylang.dev/foundations.html): the tokens, with their values in both themes
+- [Getting started](https://elements.raylang.dev/getting-started.html): install, load, theme
+
+## Optional
+
+- [raylang](https://elements.raylang.dev/raylang.html): the native bridge and the `elements` package in detail
+- [Extending](https://elements.raylang.dev/extending.html): the component contract and the base classes
+- [Charts](https://elements.raylang.dev/charts.html): theming Chart.js, uPlot or ECharts with the chart tokens

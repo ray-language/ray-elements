@@ -822,6 +822,14 @@ export default [
     "icon": "file"
   },
   {
+    "label": "For AI agents",
+    "group": "Get started",
+    "description": "",
+    "href": "getting-started.html#for-ai-agents",
+    "keywords": [],
+    "icon": "file"
+  },
+  {
     "label": "Using it in a page",
     "group": "Get started",
     "description": "",

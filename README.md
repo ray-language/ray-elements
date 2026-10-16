@@ -40,7 +40,7 @@ src/integrations/      React and Vue runtime helpers (createComponent)
 src/components/<name>/ <name>.js + component.toml (metadata) + example.html
 src/index.js           generated: imports every component
 dist/                  generated: tokens.css, tokens.json
-docs/                  generated: index.html, foundations.html, components.html (the catalog), components/<component>.html (a page each, and all.html with every one), code/<component>.html (each example's code, loaded on demand)
+docs/                  generated: index.html, foundations.html, components.html (the catalog), components/<component>.html (a page each, and all.html with every one), code/<component>.html (each example's code, loaded on demand); llms.txt, llms-full.txt and components/<component>.md (for AI agents)
 index.html             generated: redirects the server root to docs/
 tests/                 *.test.js run in the real webview + harness.js
 tools/                 raylang project: the ray-elements CLI
@@ -264,6 +264,20 @@ choosing, submitting, the menu opening a controlled dialog) and checks both
 directions: what reaches raylang through `window.ray.request`, and the
 framework state rendered back into the components. The dev servers use high
 ports (45173, 45174).
+
+## For AI agents
+
+The site has an [llms.txt](https://elements.raylang.dev/llms.txt): the rules an
+agent needs to use the components correctly (loading, slots, forms, events,
+tokens, theme, React and Vue, the raylang bridge) and a link to each
+component's API as Markdown (`components/<component>.md`).
+[llms-full.txt](https://elements.raylang.dev/llms-full.txt) is all of it in one
+file: every component, the tokens with their values, the icon names and the
+core's types. Both describe `main`; the copies in the npm package
+(`node_modules/@raylang/elements/llms.txt`, `llms-full.txt`), also in a raylang
+app's `node_modules/` with the `elements` package, describe the installed
+version. `docs` generates them from `site/llms.md` (the rules, hand-written),
+the `component.toml` files, `tokens.toml`, `core/icons.js` and `core/core.d.ts`.
 
 ## Using it in a page
 

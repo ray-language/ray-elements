@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- Docs for AI agents: `llms.txt` (the rules for using the components, and a
+  link to each one's API as Markdown, `components/<name>.md`) and
+  `llms-full.txt` (the whole reference in one file: components, tokens, icon
+  names, the core's types), on the site and in `@raylang/elements` (so also in
+  a raylang app's `node_modules/`). Generated from `site/llms.md` and the
+  components' metadata.
+
 ## [0.5.0] - 2026-10-12
 
 ### Removed
