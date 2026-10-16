@@ -306,6 +306,8 @@
     "./base.css": "./base.css",
     "./custom-elements.json": "./custom-elements.json",
     "./vscode.html-custom-data.json": "./vscode.html-custom-data.json",
+    "./llms.txt": "./llms.txt",
+    "./llms-full.txt": "./llms-full.txt",
     "./core/*": "./core/*",
     "./components/*": "./components/*"
   },

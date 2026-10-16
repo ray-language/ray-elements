@@ -1,7 +1,7 @@
 // `package`: writes the npm packages under packages/ (generated, replaced
 // wholesale on every run):
 //
-//   packages/elements  @raylang/elements  the web components + tokens + types + manifests
+//   packages/elements  @raylang/elements  the web components + tokens + types + manifests + llms.txt
 //   packages/react     @raylang/react     React wrappers (React 18/19)
 //   packages/vue       @raylang/vue       Vue 3 wrappers with v-model + plugin
 //
@@ -87,6 +87,10 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     )?;
     put(written, "${el}/custom-elements.json", manifest.custom_elements(cs, "components/")?)?;
     put(written, "${el}/vscode.html-custom-data.json", manifest.vscode_data(cs)?)?;
+    // The docs for AI agents, for this version (docs writes them first).
+    for name in ["llms.txt", "llms-full.txt"] {
+        put(written, "${el}/${name}", fs.read_file("${root}/docs/${name}")?)?;
+    }
     put(written, "${el}/package.json", elements_package(i, cs))?;
     put(written, "${el}/README.md", readme(i, "elements"))?;
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
@@ -200,6 +204,8 @@ ${join(entries, "\n")}
     "./base.css": "./base.css",
     "./custom-elements.json": "./custom-elements.json",
     "./vscode.html-custom-data.json": "./vscode.html-custom-data.json",
+    "./llms.txt": "./llms.txt",
+    "./llms-full.txt": "./llms-full.txt",
     "./core/*": "./core/*",
     "./components/*": "./components/*"
   },

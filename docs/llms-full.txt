@@ -1,0 +1,3801 @@
+# ray-elements
+
+> Web components (custom elements, Shadow DOM, no dependencies) for any web app: plain HTML, React, Vue or a raylang app. npm: `@raylang/elements`, `@raylang/react`, `@raylang/vue`; raylang: the `elements` package. This file describes version 0.5.0.
+
+ray-elements is a design system of standard web components (custom elements
+with Shadow DOM, no dependencies): `<ray-button>`, `<ray-input>`,
+`<ray-dialog>`… They work in plain HTML, React, Vue, a browser or any webview,
+and get extras in a raylang app (a native bridge to the program). The rules
+below are what this library does differently from what you may assume; the
+reference of every component follows them.
+
+## Load it
+
+```html
+<link rel="stylesheet" href="node_modules/@raylang/elements/tokens.css">  <!-- required: the components read the tokens -->
+<link rel="stylesheet" href="node_modules/@raylang/elements/base.css">    <!-- optional: font, colors and margins of the document -->
+<script type="module">
+  import "@raylang/elements";          // registers EVERY <ray-*> element and exports the whole API
+</script>
+```
+
+- The bare name (`"@raylang/elements"`) resolves with a bundler (Vite,
+  esbuild…) and in a raylang app (raylang serves the package with an import
+  map). A plain page without either imports the files:
+  `import { notify } from "./node_modules/@raylang/elements/index.js";`
+  (everything), `./node_modules/@raylang/elements/components/<name>/<name>.js`
+  (one component), `./node_modules/@raylang/elements/core.js` (the API), or
+  declares an import map:
+  `<script type="importmap">{ "imports": { "@raylang/elements": "./node_modules/@raylang/elements/index.js" } }</script>`.
+
+- `npm install @raylang/elements` (React: also `@raylang/react`; Vue: also
+  `@raylang/vue`). With a bundler: `import "@raylang/elements/tokens.css";`.
+- Only some components: `import "@raylang/elements/button";` — one entry per
+  component directory (the "Import" line of each component below). Each brings
+  what it uses. `import { notify } from "@raylang/elements/notification";` gets
+  a component's exports with it.
+- The API without registering any element: `import { setTheme } from
+  "@raylang/elements/core";`. Note that `import { RayButton } from
+  "@raylang/elements"` loads everything (that entry registers every element).
+- Avoid a flash of unstyled tags: `<style>:not(:defined) { visibility: hidden; }</style>`.
+
+## Rules
+
+- **Attributes are kebab-case, properties camelCase**: `full-width` /
+  `fullWidth`. Boolean attributes are present or absent (`disabled`, never
+  `disabled="false"`). Properties marked "property only" have no attribute:
+  set them from JS (arrays, objects, functions). The exception is `checked`
+  and `value` on form controls: their attribute is the initial state (see
+  Forms).
+- **Shared vocabulary**: `size` = `xs` | `sm` | `md` | `lg` | `xl` (default
+  `sm`); `radius` = `xs`…`xl` | `full`; `color` = a palette color (`blue`,
+  `red`, `teal`, `gray`…) or any CSS color, default the primary; `variant` per
+  component (button: `filled`, `light`, `outline`, `subtle`, `default`,
+  `transparent`, `gradient`, `raised`). Use only the values the reference lists.
+- **Slots have exact names**: an icon in a button goes in `slot="left"` or
+  `slot="right"` (not `start`/`end`, not `prefix`): `<ray-button><ray-icon
+  slot="left" name="plus"></ray-icon>Add</ray-button>`. Content without a
+  `slot` goes to the default slot. Check the slot list of the component.
+- **Never hard-code colors, spacing, radii or shadows** in your own CSS: use
+  the tokens (`var(--ray-background)`, `var(--ray-foreground)`,
+  `var(--ray-border)`, `var(--ray-space-md)`, `var(--ray-radius-default)`,
+  `var(--ray-shadow-sm)`). They follow light and dark themes; literal colors do
+  not. Prefer the semantic tokens over the palette (`--ray-blue-6`).
+- **Style components from outside** with `color`/`variant`/`size`/`radius`,
+  the tokens (custom properties pierce the shadow root) and `::part()` (the
+  parts each lists). Do not reach into their
+  `shadowRoot` or depend on its markup.
+- **Layout components exist**: `ray-stack` (vertical), `ray-group`
+  (horizontal), `ray-grid`, `ray-container`, `ray-center`, `ray-card`
+  (a heading of your own in its `header` slot), `ray-app-shell`. Their
+  `gap`/`padding` take `xs`…`xl`.
+- **Icons**: `<ray-icon name="settings"></ray-icon>`, from the registry (a
+  small set, listed in the reference: there is no `save` or `trash`); decorative unless it has `label`. An icon-only button is
+  `<ray-icon-button label="Settings"><ray-icon name="settings"></ray-icon></ray-icon-button>`
+  (`label` is required: it is the accessible name). Add or replace icons with
+  `setIcons({ inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">…</svg>' })`
+  (the style of the built-in set: 24×24, a 2px `currentColor` stroke) from
+  your own code, never from user input.
+- **Overlays are in the top layer**: `ray-dialog` is a native modal
+  `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
+  elements. Never fight them with `z-index` or `overflow`.
+
+## An app's frame
+
+```html
+<ray-app-shell>
+  <ray-app-bar slot="header" label="Files" description="No folder chosen">
+    <ray-button slot="end" variant="default" size="xs">Commands</ray-button>
+    <ray-theme-toggle slot="end"></ray-theme-toggle>
+  </ray-app-bar>
+  <ray-sidebar slot="navbar" label="Workspace">
+    <ray-nav-link label="Files" href="#files" active><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Settings" href="#settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </ray-sidebar>
+  <main>…</main>
+</ray-app-shell>
+```
+
+`ray-app-bar` is the header on the desktop too (its `label` is the title;
+several elements may share the `end` slot). On narrow screens the sidebar
+becomes a drawer and the shell switches to a phone layout by itself.
+
+## Forms
+
+- Inputs are **form-associated**: inside a `<form>` they submit under `name`,
+  validate (`required`, `pattern`, `min`…), reset with it and follow a
+  disabled `<fieldset>`. Read values with `new FormData(form)` or the
+  element's `.value` / `.checked`.
+- The `value` / `checked` **attributes are the initial value**; the
+  properties hold the current one. Set `el.value = …` to change it.
+- Fields take `label`, `description` and `error` (the error text also marks it
+  invalid): do not wrap them in your own `<label>`.
+- Enter in a `ray-input` submits its form, as in a native field; a submit
+  button is `<ray-button type="submit">`.
+- As with native controls: an invalid field (`required` and empty, a wrong
+  `type="email"`…) blocks the submit and the browser shows its message; an
+  unchecked `ray-checkbox`/`ray-switch` and a `ray-select` with nothing chosen
+  are left out of `FormData` (a select's `placeholder` shows meanwhile).
+
+## Events
+
+- A value change is a plain `input` (while typing) and `change` event: read
+  `event.target.value`.
+- Everything else is a `ray-*` custom event (bubbles, composed) with its data
+  in `event.detail`: `ray-select` on a menu (`detail.value`), `ray-close` on a
+  dialog (`detail.returnValue`), `ray-request-close` (cancelable). The
+  reference lists each component's events and their `detail`.
+
+## Dialogs and notifications
+
+```html
+<ray-dialog id="d" label="Rename">
+  <ray-input label="Name" name="name"></ray-input>
+  <ray-button slot="footer" variant="default" data-dialog-close>Cancel</ray-button>
+  <ray-button slot="footer" data-dialog-close="ok">Save</ray-button>
+</ray-dialog>
+```
+
+`d.show()` or the `open` attribute opens it; any slotted element with
+`data-dialog-close` closes it (its value becomes `returnValue`); the close
+button, Escape and the backdrop close it with `returnValue` `""` (after a
+cancelable `ray-request-close`).
+`await confirmDialog({ label, message, confirmLabel, cancelLabel, color: "red" })`
+asks a yes/no question (every option is optional: "Are you sure?",
+"Confirm", "Cancel"); `notify({ title, message, color })` shows a
+notification (`message` is plain text; a `color` adds a status icon:
+green a check, red an error, yellow a warning, others info).
+
+## Theme
+
+- The theme follows the system. Force it on the page or any subtree with
+  `data-theme="light"` | `"dark"`; change the primary color with
+  `data-primary="violet"` (a palette color).
+- From JS: `setTheme("light" | "dark" | "system")`, `setPrimary("violet")`,
+  `definePrimary("#7c3aed")` (any brand color: builds the ten shades and
+  checks contrast), `onThemeChange(cb)`. `<ray-theme-toggle>` is the switch.
+- App-wide defaults for a component: `configure({ defaults: { "ray-button":
+  { variant: "light" } } })`.
+
+## React and Vue
+
+```tsx
+import "@raylang/elements/tokens.css";
+import { RayInput, RayMenu, RayMenuItem, RayButton } from "@raylang/react";
+
+<RayInput label="Name" value={name} onInput={(e) => setName(e.currentTarget.value)} />
+<RayMenu onRaySelect={(e) => run(e.detail.value)}>
+  <RayButton slot="trigger">Actions</RayButton>
+  <RayMenuItem value="rename">Rename</RayMenuItem>
+</RayMenu>
+```
+
+```vue
+<!-- main.ts: import RayElements from "@raylang/vue"; app.use(RayElements) -->
+<RayInput v-model="name" label="Name" required />
+<RayDialog v-model="open" label="Confirm" @ray-close="onClose">…</RayDialog>
+```
+
+- The wrapper of `<ray-tag-name>` is `RayTagName`. React events are `on` +
+  PascalCase of the event (`onRaySelect`, `onChange`); props are set as DOM
+  properties. Vue has `v-model` where the reference lists a model (`value`,
+  `checked` or `open`).
+- A wrapper registers only its own element: a plain `<ray-*>` tag in JSX
+  needs its import (`import "@raylang/elements/badge"`).
+
+## In a raylang app
+
+`ray add elements` brings the raylang package `elements`: it serves
+`@raylang/elements` to the app's pages by its npm name, with no npm and no
+build step. The page:
+
+```html
+<link rel="stylesheet" href="/node_modules/@raylang/elements/tokens.css">
+<script type="module">
+  import { enableRaylang } from "@raylang/elements";
+  const host = await enableRaylang();   // the native host, or null in a browser
+</script>
+```
+
+The program serves the page and answers the bridge before its own events:
+
+```ray
+import std/ui;
+import elements/bridge;
+
+fn main() -> int {
+    match (run()) {
+        Result.Ok(code) => code,
+        Result.Err(e) => {
+            eprint(e);
+            1
+        },
+    }
+}
+
+fn run() -> Result<int, string> {
+    ui.mount_embed_at("", "assets")?;   // the page: assets/index.html, ray.toml [native] embed = ["assets"]
+    ui.open_with("App", "ray://app/index.html", ui.options(800, 600))?;
+    while (true) {
+        let e = ui.next_event()?;
+        if (bridge.handle(e)) {
+            continue;   // a ray-elements request, already answered
+        }
+        if (e.kind == "closed") {
+            return Result.Ok(0);
+        }
+        // the app's own events: e.kind == "message" (window.ray.send), e.tag…
+    }
+}
+```
+
+With the bridge: `<ray-file-upload native>` and `<ray-path-input>` use the
+system file dialogs and give real paths, `confirmDialog()` asks with the
+system dialog, `<ray-menu native>` opens a native context menu,
+`<ray-command-palette native-menus>` runs the app's menu bar
+(`bridge.menu`, `bridge.route`), `ray-app-shell` becomes the title bar of a
+`full_content` window, and `trackEdits(form)` shows the unsaved mark. The
+components that use it have an "In a raylang app" section. Without the
+bridge every component keeps its web behavior.
+
+## Your own components
+
+Extend `RayElement`, `FormControl`, `FieldControl` or `Floating` (or any
+component class) from `@raylang/elements/core`; see the Extending guide.
+Members whose name starts with `_` are internal.
+
+## Components
+
+### Base classes
+
+Properties the components inherit from the base classes (each component lists which it extends):
+
+FieldControl (extends FormControl):
+
+- `name`: string. Form field name.
+- `label`: string. Visible label (also the accessible name).
+- `description`: string. Help text.
+- `error`: string. Error text; marks the field invalid.
+- `required`: boolean, reflects. Required for form submission.
+- `disabled`: boolean, reflects. Not interactive nor submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`, reflects. Corner radius.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. Description before or after the control.
+
+Floating (extends RayElement):
+
+- `open`: boolean, reflects. Shown.
+- `placement`: string, default `bottom`, reflects. Preferred side and alignment.
+- `offset`: number, default `8`. Gap to the anchor in px.
+
+### Button
+
+A button, or a link styled as one with href. Submits or resets its form with type.
+
+Import: `import "@raylang/elements/button";` · Category: Buttons
+
+#### `<ray-button>` (RayButton, extends RayElement)
+
+Properties:
+
+- `variant`: `filled` | `light` | `outline` | `subtle` | `default` | `transparent` | `gradient` | `raised`, default `filled`, reflects. Visual style. raised: a physical key on a darker edge that sinks when pressed (mouse, touch or keyboard).
+- `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
+- `color`: string. A palette color (blue, red…) or any CSS color. Default: the primary color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height, padding and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: --ray-radius-default.
+- `type`: `button` | `submit` | `reset`, default `button`. submit/reset act on the enclosing form.
+- `disabled`: boolean. Not interactive (also when inside a disabled fieldset).
+- `loading`: boolean. Shows a spinner over the content and blocks clicks.
+- `fullWidth` (attribute `full-width`): boolean. Takes the whole width of its container.
+- `href`: string. Renders a link instead of a button.
+- `target`: string. Link target, with href.
+- `name`: string. With type=submit: submitted as name=value.
+- `value`: string. With type=submit: the submitted value.
+
+Slots:
+
+- (default): The label.
+- `left`: Icon or content before the label.
+- `right`: Icon or content after the label.
+
+Parts (`::part()`):
+
+- `button`: The inner <button> or <a>.
+- `label`: The label wrapper.
+
+Methods and properties:
+
+- `readonly form: HTMLFormElement | null`: The form a submit/reset button acts on.
+
+### Button group
+
+Buttons joined into one control: inner corners squared, borders overlapped. Works with ray-button, ray-icon-button, menus with a button trigger and fields (ray-input, ray-select, ray-search).
+
+Import: `import "@raylang/elements/button-group";` · Category: Buttons
+
+#### `<ray-button-group>` (RayButtonGroup, extends RayElement)
+
+role=group; give it a label. The corners come from the --ray-group-radius-* custom properties, which your own components can read too.
+
+Properties:
+
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction of the group.
+- `fullWidth` (attribute `full-width`): boolean, reflects. Fills its container; the children share the width.
+- `label`: string. Accessible name (aria-label).
+
+Slots:
+
+- (default): The buttons, fields or menus to join.
+
+### Icon button
+
+A square button for an icon (Mantine's ActionIcon). Always give it a label.
+
+Import: `import "@raylang/elements/icon-button";` · Category: Buttons
+
+#### `<ray-icon-button>` (RayIconButton, extends RayButton)
+
+Same properties as ray-button; variant defaults to subtle.
+
+Properties:
+
+- `label`: string, reflects. Accessible name and tooltip (required: the button has no text).
+- `variant`: `filled` | `light` | `outline` | `subtle` | `default` | `transparent` | `gradient` | `raised`, default `subtle`, reflects. Visual style.
+- `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
+- `color`: string. A palette color or any CSS color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Width and height.
+- `disabled`: boolean. Not interactive.
+- `loading`: boolean. Shows a spinner instead of the icon.
+
+Also the properties of RayButton (`<ray-button>`): `radius`, `type`, `fullWidth`, `href`, `target`, `name`, `value`.
+
+Slots:
+
+- (default): The icon (an inline <svg> is sized to the button).
+
+Parts (`::part()`):
+
+- `button`: The inner button.
+
+### Toggle
+
+A two-state button (aria-pressed): bold in a toolbar, mute, favorite. The variant is how "on" looks; "off" is always neutral, so the states differ by more than color. Has everything ray-button has and joins a ray-button-group.
+
+Import: `import "@raylang/elements/toggle";` · Category: Buttons
+
+#### `<ray-toggle>` (RayToggle, extends RayButton)
+
+Click, Enter or Space flips pressed and fires change. In a form it is submitted like a checkbox: value (default "on") under name while pressed; reset restores the initial pressed attribute.
+
+Properties:
+
+- `pressed`: boolean, reflects. On.
+- `variant`: `subtle` | `outline` | `light` | `filled` | `raised`, default `subtle`, reflects. Look of "on": subtle (tint), outline (colored border + tint), light (muted → tint), filled (surface → solid color), raised (a key that latches down, lit). ray-button's default, transparent and gradient are left out: no distinct on state, or only a color change.
+- `square`: boolean, reflects. Square, for an icon alone (give it a label).
+- `label`: string, reflects. Accessible name and tooltip, for icon-only toggles.
+
+Also the properties of RayButton (`<ray-button>`): `gradient`, `color`, `size`, `radius`, `type`, `disabled`, `loading`, `fullWidth`, `href`, `target`, `name`, `value`.
+
+Events:
+
+- `change`: The user flipped it (read `pressed`).
+
+Slots:
+
+- (default): Text or an icon.
+
+### Toggle group
+
+ray-toggle elements with one shared value: type="single" (at most one on: alignment, view mode) or "multiple" (bold / italic / underline). Joined like a button group, or spaced; arrow keys move between toggles; submitted with its form.
+
+Import: `import "@raylang/elements/toggle-group";` · Category: Buttons
+
+#### `<ray-toggle-group>` (RayToggleGroup, extends RayButtonGroup)
+
+Each toggle's value (else its text) is its key. variant, color, size, radius and square reach the toggles that do not set their own. One tab stop (the selected toggle); arrows, Home and End move; Space/Enter flips.
+
+Properties:
+
+- `type`: `single` | `multiple`, default `single`, reflects. single: choosing one turns the others off; multiple: each toggle is independent.
+- `value`: `string | string[] | undefined`. The selected key (single) or keys (multiple: an array, or a comma-separated attribute).
+- `name`: string, reflects. Form field name: the value (multiple: one entry per key).
+- `required`: boolean, reflects. Needs a value; with single the selected toggle cannot be turned off.
+- `disabled`: boolean, reflects. Disables every toggle.
+- `spaced`: boolean, reflects. Toggles apart, each with its own corners (default: joined).
+- `variant`: `subtle` | `outline` | `light` | `filled` | `raised`, reflects. Variant of the toggles.
+- `color`: string, reflects. Color of the toggles' on state.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, reflects. Size of the toggles.
+- `radius`: string, reflects. Corner radius of the toggles.
+- `square`: boolean, reflects. Square toggles, for icons.
+
+Also the properties of RayButtonGroup (`<ray-button-group>`): `orientation`, `fullWidth`, `label`.
+
+Events:
+
+- `change`: The user changed the selection (read `value` or `values`; the toggles' own change events stop at the group).
+
+Slots:
+
+- (default): ray-toggle elements.
+
+Methods and properties:
+
+- `values: string[]`: The selected keys as a list, in any mode.
+- `readonly toggles: RayToggle[]`: The toggles of this group.
+
+### Checkbox
+
+A checkbox with label, description and error. Submits value when checked.
+
+Import: `import "@raylang/elements/checkbox";` · Category: Inputs
+
+#### `<ray-checkbox>` (RayCheckbox, extends FieldControl)
+
+Properties:
+
+- `checked` (property only): boolean. Current state. The checked attribute is the initial state (restored on reset).
+- `indeterminate`: boolean, reflects. Mixed state; cleared on the next user change.
+- `value`: string, default `on`, reflects. Submitted value when checked.
+- `name`: string. Form field name.
+- `label`: string. Label text (or put the label in the content).
+- `description`: string. Help text.
+- `error`: string. Error text.
+- `required`: boolean. Must be checked to submit.
+- `disabled`: boolean. Not interactive nor submitted.
+- `variant`: `filled` | `outline`, default `filled`, reflects. Checked look: filled box, or colored border and mark.
+- `color`: string. A palette color or any CSS color for the checked state.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Box and font size.
+- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+
+Also the properties of FieldControl: `radius`, `descriptionPosition`.
+
+Events:
+
+- `change`: When the user toggles it.
+
+Slots:
+
+- (default): Label content.
+
+Parts (`::part()`):
+
+- `input`: The native checkbox (transparent, on top of the indicator).
+- `indicator`: The drawn box.
+- `label`: The label.
+
+Vue `v-model`: `checked` (updated on change).
+
+### Checkbox group
+
+Several choices among options (Mantine's Checkbox.Group): a label, description and error around ray-checkbox elements; the value is the array of the checked ones. max caps how many; required asks for one.
+
+Import: `import "@raylang/elements/checkbox-group";` · Category: Inputs
+
+#### `<ray-checkbox-group>` (RayCheckboxGroup, extends FormControl)
+
+The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role="group" named by its label.
+
+Properties:
+
+- `value` (property only): `string[]`. The checked values. The value attribute: "a,b".
+- `name`: string, reflects. Form field name.
+- `label`: string. Group label (also its accessible name).
+- `description`: string. Help text.
+- `error`: string. Error text.
+- `required`: boolean, reflects. At least one must be checked.
+- `disabled`: boolean, reflects. Disables every checkbox.
+- `max`: number. At most this many: the others are disabled once reached; the label shows the count.
+- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. Layout of the checkboxes.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, reflects. Size of the checkboxes that set none.
+- `color`: string, reflects. Color of the checkboxes that set none.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the checkboxes or after them.
+
+Events:
+
+- `change`: The user checked or unchecked one (read value).
+- `input`: Same moment as change.
+
+Slots:
+
+- (default): ray-checkbox elements (also nested in other markup).
+
+Methods and properties:
+
+- `readonly checkboxes: HTMLElement[]`: The checkboxes of this group.
+
+Vue `v-model`: `value` (updated on change).
+
+### Color picker
+
+Pick a color: an inline picker (saturation area, hue, opacity, swatches) and a text field with the picker in a dropdown and an eyedropper. Pointer and keyboard; form-associated; hex, rgb or hsl, with or without alpha.
+
+Import: `import "@raylang/elements/color-picker";` · Category: Inputs
+
+#### `<ray-color-picker>` (RayColorPicker, extends FormControl)
+
+Keyboard: arrows move the area's thumb (saturation, brightness) or a slider's; Shift for 10× steps; Home/End on the sliders. The alpha slider shows when format has alpha.
+
+Properties:
+
+- `value`: string. The color, written in format. Any color is accepted and rewritten in format. The value attribute is the initial value (restored on form reset).
+- `format`: `ColorFormat`, default `hex`, reflects. How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider.
+- `swatches`: `string | string[]`. Preset colors below the picker: an array, or a comma-separated list in the attribute (commas inside rgb()/hsl() are kept).
+- `swatchesPerRow` (attribute `swatches-per-row`): number, default `7`. Swatches in each row.
+- `swatchesOnly` (attribute `swatches-only`): boolean, reflects. Only the swatches: no area nor sliders.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Width of the picker and size of its thumbs.
+- `fullWidth` (attribute `full-width`): boolean, reflects. Takes the width of its container.
+- `name`: string, reflects. Form field name.
+- `disabled`: boolean, reflects. Not interactive.
+- `label`: string. Accessible name of the whole picker.
+
+Events:
+
+- `input`: The color moved (every step of a drag).
+- `change`: The color settled: pointer released, a key pressed or a swatch chosen (read value).
+
+Parts (`::part()`):
+
+- `saturation`: The saturation/brightness area.
+- `hue`: The hue slider.
+- `alpha`: The opacity slider.
+- `preview`: The current color.
+- `swatches`: The swatches' grid.
+
+Methods and properties:
+
+- `readonly rgba: Rgba`: The current color as channels and alpha (0…1).
+
+Vue `v-model`: `value` (updated on input).
+
+#### `<ray-color-input>` (RayColorInput, extends FieldControl)
+
+Type any CSS color (it becomes the value as soon as it is valid; invalid text goes back to the value on blur), or open the picker with a click or ArrowDown. The eyedropper shows only where the browser has the EyeDropper API.
+
+Properties:
+
+- `value`: string. The color, written in format. The value attribute is the initial value (restored on form reset).
+- `format`: `ColorFormat`, default `hex`, reflects. How value is written: hex, hexa, rgb, rgba, hsl or hsla.
+- `swatches`: `string | string[]`. Preset colors in the dropdown (an array, or a comma-separated list).
+- `swatchesPerRow` (attribute `swatches-per-row`): number, default `7`. Swatches in each row.
+- `placeholder`: string. Shown while empty.
+- `hideEyedropper` (attribute `hide-eyedropper`): boolean, reflects. Hides the eyedropper button.
+- `open`: boolean, reflects. The dropdown is shown.
+- `name`: string, reflects. Form field name.
+- `label`: string. Label above the field.
+- `description`: string. Help text.
+- `error`: string. Error message; marks the field invalid.
+- `required`: boolean, reflects. Must have a color.
+- `disabled`: boolean, reflects. Not interactive.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Field height and font size.
+- `radius`: string, reflects. Corner radius: xs…xl or a CSS length.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Visual style of the field.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. Where the description goes.
+
+Events:
+
+- `input`: The color changed (typing a valid color, or moving the picker).
+- `change`: The color settled (picker released, a swatch, the eyedropper, or the field left with a new color).
+- `ray-open`: The dropdown opened.
+- `ray-close`: The dropdown closed.
+
+Parts (`::part()`):
+
+- `input`: The text field.
+- `preview`: The swatch of the current color.
+- `eyedropper`: The eyedropper button.
+- `dropdown`: The dropdown with the picker.
+
+Methods and properties:
+
+- `readonly picker: RayColorPicker`: The ray-color-picker in the dropdown.
+- `toggle(force?: boolean): void`: Opens or closes the dropdown.
+
+Vue `v-model`: `value` (updated on input).
+
+Exports (from `@raylang/elements/color-picker` and `@raylang/elements`):
+
+- `function parseColorValue(input: string | null | undefined): Rgba | null`: A color string (hex with 3/4/6/8 digits, rgb(a), hsl(a), or any CSS color) as channels and alpha, or null.
+- `function formatColor(color: Rgba, format?: ColorFormat): string`: Channels and alpha as a string in a format (default hex).
+
+Types:
+
+- `"hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla"`: How a color value is written.
+- `{ r: number; g: number; b: number; a: number }`: sRGB channels and alpha, all 0…1.
+
+### Combobox (also Multi select)
+
+A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.
+
+Import: `import "@raylang/elements/combobox";` · Category: Inputs
+
+#### `<ray-combobox>` (RayCombobox, extends FieldControl)
+
+The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.
+
+Properties:
+
+- `value` (property only): `string | string[]`. The chosen value; an array with multiple. The value attribute: "a,b" with multiple.
+- `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>`. Options instead of child <option>/<optgroup> elements.
+- `multiple`: boolean, reflects. Several values, shown as chips.
+- `placeholder`: string. Shown while empty.
+- `creatable`: boolean. What was typed can be added when no option matches it ("+ Create …"); fires ray-create.
+- `clearable`: boolean. A button that clears the value.
+- `maxValues` (attribute `max-values`): number. With multiple: at most this many.
+- `limit`: number. At most this many options shown (large lists: keep typing).
+- `nothingFound` (attribute `nothing-found`): string, default `No matches`. Shown when nothing matches.
+- `open`: boolean, reflects. The dropdown is shown.
+
+Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
+
+Events:
+
+- `change`: The value changed (read value).
+- `input`: Same moment as change.
+- `ray-create` (detail `{ value: string }`): A new value was created from the typed text.
+- `ray-open`: The dropdown opened.
+- `ray-close`: The dropdown closed.
+
+Slots:
+
+- (default): <option> and <optgroup> elements.
+
+Parts (`::part()`):
+
+- `input`: The text field.
+- `chips`: The chips container.
+- `chip`: A chip.
+- `clear`: The clear button.
+- `dropdown`: The listbox.
+- `option`: An option.
+
+Methods and properties:
+
+- `readonly values: string[]`: The value as an array (with or without multiple).
+- `toggle(force?: boolean): void`: Opens or closes the dropdown.
+
+Vue `v-model`: `value` (updated on change).
+
+### Date picker
+
+A date field with a calendar dropdown, and the calendar on its own. Keyboard grid navigation, min/max, locale-aware. Form-associated.
+
+Import: `import "@raylang/elements/date-picker";` · Category: Inputs
+
+#### `<ray-date-picker>` (RayDatePicker, extends FieldControl)
+
+Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it.
+
+Properties:
+
+- `value`: string. The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset).
+- `min`: string. Earliest selectable date (ISO). Earlier days are disabled; an earlier value is invalid (rangeUnderflow).
+- `max`: string. Latest selectable date (ISO).
+- `placeholder`: string, default `Pick a date`. Shown while no date is chosen.
+- `format`: `short` | `medium` | `long` | `full`, default `medium`. How the date is displayed (Intl dateStyle).
+- `locale`: string. Locale for names and formats. Default: the nearest lang attribute, else the browser's.
+- `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
+- `clearable`: boolean, reflects. Shows a button that clears the date.
+- `open`: boolean, reflects. The calendar dropdown is shown.
+- `name`: string, reflects. Form field name.
+- `label`: string. Visible label (also the accessible name).
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `required`: boolean. Required for form submission.
+- `disabled`: boolean. Not interactive nor submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+
+Events:
+
+- `input`: When the date changes (picked or cleared).
+- `change`: When the date changes (picked or cleared).
+- `ray-open`: The calendar opened.
+- `ray-close`: The calendar closed.
+
+Parts (`::part()`):
+
+- `trigger`: The button showing the date.
+- `clear`: The clear button.
+- `dropdown`: The calendar panel (a popover in the top layer).
+- `calendar`: The <ray-calendar> in the dropdown (its day, caption, nav and grid parts are exported).
+- `input`: The hidden native <input type=date> that holds the value (the model).
+- `wrapper`: The box.
+
+Methods and properties:
+
+- `toggle(force?: boolean): void`: Opens or closes the calendar.
+- `readonly displayValue: string`: The chosen date as displayed ("" when none).
+
+Vue `v-model`: `value` (updated on change).
+
+#### `<ray-calendar>` (RayCalendar, extends RayElement)
+
+WAI-ARIA grid: arrows move by day and week, Home/End to the week's ends, PageUp/PageDown by month (with Shift, by year), Enter/Space select.
+
+Properties:
+
+- `value`: string. The selected date, ISO "YYYY-MM-DD".
+- `min`: string. Earliest selectable date (ISO).
+- `max`: string. Latest selectable date (ISO).
+- `locale`: string. Locale for month and weekday names. Default: the nearest lang attribute, else the browser's.
+- `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Day cell size and font size.
+
+Events:
+
+- `change`: A day was selected (read `value`).
+
+Parts (`::part()`):
+
+- `header`: The row with the month and the navigation buttons.
+- `caption`: The month and year.
+- `nav`: The previous/next month buttons.
+- `grid`: The day grid (role=grid).
+- `day`: Each day button ([aria-selected], [aria-current=date], [aria-disabled], [data-outside]).
+
+Methods and properties:
+
+- `focusDay(): void`: Focuses the day the keyboard is on (the selected day, else today).
+- `readonly focusedDate: string`: The day the keyboard is on (ISO).
+
+Vue `v-model`: `value` (updated on change).
+
+### File upload
+
+A drop zone to pick files: drag, click, keyboard or paste. Checks type, size and count as files arrive, lists them as ray-attachment rows (thumbnails, remove) and submits them with its form.
+
+Import: `import "@raylang/elements/file-upload";` · Category: Inputs
+
+#### `<ray-file-upload>` (RayFileUpload, extends FormControl)
+
+A drag that can only be refused turns the zone red before the drop; refused files fire ray-reject and are explained under the zone. Without multiple a new file replaces the current one. Uploading is the app's: attachmentFor(file) gives the row whose progress/status/error to set.
+
+Properties:
+
+- `name`: string, reflects. Form field name: every file is submitted under it.
+- `label`: string. Label above the zone.
+- `description`: string. Help text under the label.
+- `error`: string. Error text (replaces the explanation of refused files).
+- `required`: boolean, reflects. The form needs at least one file.
+- `disabled`: boolean, reflects. No picking, dropping or removing.
+- `accept`: string, reflects. Accepted types, as in <input type=file>: ".pdf,.png", "image/*", "application/json".
+- `multiple`: boolean, reflects. Several files (else one, replaced by the next).
+- `maxSize` (attribute `max-size`): `string | number`. Largest file: bytes or a size like "10 MB", "512 KB".
+- `maxFiles` (attribute `max-files`): number. With multiple: the most files kept.
+- `hint`: string. Small text in the zone. Default: from accept, max-size and max-files ("PNG or PDF · up to 10 MB each · max. 5 files").
+- `dropLabel` (attribute `drop-label`): string, default `Drag files here`. Title of the zone, before "or browse".
+- `browseLabel` (attribute `browse-label`): string, default `browse`. The link-styled word (the button text in compact).
+- `activeLabel` (attribute `active-label`): string, default `Drop to add files`. Title while files are dragged over it.
+- `tapLabel` (attribute `tap-label`): string, default `Choose files`. Title on touch screens (no hover), where dragging files is rare.
+- `variant`: `default` | `compact`, default `default`, reflects. default: a tall centered zone; compact: one row with a Browse button.
+- `list`: `rows` | `cards` | `none`, default `rows`, reflects. How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).
+- `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.
+- `color`: string, reflects. Accent of hover, drag and the browse link (default: primary).
+
+Events:
+
+- `change`: Files were added or removed (read `files`, and `lastChange` for which).
+- `ray-reject` (detail `{ rejected: FileRejection[] }`): Some files were refused (type, size or count).
+- `ray-error` (detail `{ error: Error }`): The native dialog failed (with `native`).
+
+Slots:
+
+- `icon`: Replaces the upload icon.
+
+Parts (`::part()`):
+
+- `dropzone`: The zone (a button).
+- `icon`: The icon tile.
+- `hint`: The small text in the zone.
+- `files`: The list of chosen files.
+- `label`: The label.
+- `error`: The error text.
+
+Methods and properties:
+
+- `files: (File | HostFile)[]`: The chosen files (assign to replace them, without events).
+- `readonly paths: string[]`: The paths of the files chosen with the native dialog (`native`), in order; they are also what the form submits for them.
+- `readonly lastChange: FileUploadChange | null`: What the last change event changed: the files added and removed. null before the first one, and after assigning files.
+- `open(): void`: Opens the system file picker.
+- `addFiles(files: Iterable<File>): { accepted: File[]; rejected: FileRejection[] }`: Adds files as if dropped (checks them, fires the events).
+- `removeFile(file: File): boolean`: Removes a file (fires change).
+- `clear(): void`: Removes every file (fires change).
+- `attachmentFor(file: File): RayAttachment | null`: The row of a file, to show its upload progress, status or error.
+
+Exports (from `@raylang/elements/file-upload` and `@raylang/elements`):
+
+- `function parseSize(value: string | number | null | undefined): number`: Bytes from a number or a size like "10 MB" (NaN if neither).
+- `function matchesAccept(file: { name: string; type: string }, accept: string | null | undefined): boolean`: Whether a file passes an accept list.
+- `function describeAccept(accept: string | null | undefined): string`: A short human list of an accept value ("PNG, JPG or PDF").
+
+Types:
+
+- `{ added: (File | HostFile)[]; removed: (File | HostFile)[] }`: The files a change added and removed.
+- `{ file: File; reason: "type" | "size" | "count"; message: string }`: A refused file and why.
+
+#### In a raylang app
+
+In a `std/ui` window with [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), `native` makes browsing open the system's file dialog, with the `accept` types as its filter. The files it gives are paths on the user's disk, not bytes: they list like any other file (name, size, type) and the program reads them.
+
+```html
+<form id="import">
+  <ray-file-upload name="photos" native multiple accept="image/*" label="Photos"></ray-file-upload>
+</form>
+```
+
+```js
+upload.addEventListener("change", () => {
+  window.ray.send("import:" + JSON.stringify(upload.paths));   // ["/Users/ada/Pictures/a.jpg", …]
+});
+```
+
+The form submits those paths under `name`. Dropped and pasted files are still `File` objects (`upload.files` holds both; a chosen one is a `HostFile` with a `path`). Without the bridge, or in a browser, `native` changes nothing.
+
+### Input
+
+A text field with label, description and error (Mantine's TextInput). Form-associated.
+
+Import: `import "@raylang/elements/input";` · Category: Inputs
+
+#### `<ray-input>` (RayInput, extends FieldControl)
+
+Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. Enter submits its form as a native field does: through the first submit button (ray-button type="submit" included; nothing when it is disabled), or, without one, only when the form has a single text field.
+
+Properties:
+
+- `value`: string. Current value. The value attribute is the initial value (restored on form reset).
+- `type`: `text` | `email` | `password` | `search` | `number` | `url` | `tel`, default `text`, reflects. Input type.
+- `name`: string, reflects. Form field name.
+- `label`: string. Visible label (also the accessible name).
+- `description`: string. Help text under the label.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text; marks the field invalid (display only — does not block submit).
+- `placeholder`: string. Placeholder text.
+- `required`: boolean. Required for form submission; shows an asterisk.
+- `disabled`: boolean. Not editable nor submitted.
+- `readonly`: boolean. Not editable, still submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+
+Attributes (forwarded to the inner element):
+
+- `autocomplete`: Forwarded to the inner input.
+- `inputmode`: Virtual keyboard hint.
+- `pattern`: Validation pattern (regular expression).
+- `min`: Minimum (number/date types).
+- `max`: Maximum (number/date types).
+- `step`: Step (number types).
+- `minlength`: Minimum length.
+- `maxlength`: Maximum length.
+- `autocapitalize`: Mobile auto-capitalization.
+- `enterkeyhint`: Label of the Enter key on virtual keyboards.
+- `list`: Id of a <datalist> with suggestions.
+
+Events:
+
+- `input`: On every edit (value already updated).
+- `change`: When an edit is committed (blur, Enter).
+
+Slots:
+
+- `left`: Section before the text (icon).
+- `right`: Section after the text (icon, button).
+
+Parts (`::part()`):
+
+- `input`: The inner <input>.
+- `wrapper`: The box around the input and sections.
+- `label`: The label.
+- `description`: The description.
+- `error`: The error message.
+
+Methods and properties:
+
+- `select(): void`: Selects the text.
+
+Vue `v-model`: `value` (updated on input).
+
+### Number input
+
+A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton.
+
+Import: `import "@raylang/elements/number-input";` · Category: Inputs
+
+#### `<ray-number-input>` (RayNumberInput, extends FieldControl)
+
+Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). Enter submits its form, as in ray-input.
+
+Properties:
+
+- `value`: number. The number (undefined when empty).
+- `min`: number. Minimum.
+- `max`: number. Maximum.
+- `step`: number, default `1`. What + and − add.
+- `decimals`: number. Fixed decimals (2: 3 shows as 3.00).
+- `prefix`: `string | null`. Shown before the number ("$").
+- `suffix`: string. Shown after the number (" kg", "%").
+- `thousandsSeparator` (attribute `thousands-separator`): string. Groups thousands in the shown text (",", ".", " ").
+- `decimalSeparator` (attribute `decimal-separator`): string, default `.`. The decimal mark shown and typed ("," in many locales).
+- `clamp`: `blur` | `strict` | `none`, default `blur`. When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).
+- `hideControls` (attribute `hide-controls`): boolean, reflects. No + and − buttons (the keys still step).
+- `placeholder`: string. Shown while empty.
+- `readonly`: boolean, reflects. Not editable, still submitted.
+
+Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
+
+Events:
+
+- `input`: On every change of the value (typing, keys, buttons).
+- `change`: When the value is committed (blur, a step).
+
+Slots:
+
+- `left`: Left section (an icon).
+- `right`: Right section.
+
+Parts (`::part()`):
+
+- `input`: The text field.
+- `controls`: The + and − column.
+- `increment`: The + button.
+- `decrement`: The − button.
+
+Methods and properties:
+
+- `stepBy(steps: number): void`: Adds steps (negative: subtracts), clamped; fires input and change.
+
+Vue `v-model`: `value` (updated on input).
+
+Exports (from `@raylang/elements/number-input` and `@raylang/elements`):
+
+- `function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number`: The number in a text with separators, prefix or suffix (NaN if none).
+- `function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string`: A number as text with fixed decimals and separators.
+
+### Password input
+
+A password field with a button that shows or hides what was typed (Mantine's PasswordInput). Everything else is ray-input: label, description, error, sizes, validation, forms.
+
+Import: `import "@raylang/elements/password-input";` · Category: Inputs
+
+#### `<ray-password-input>` (RayPasswordInput, extends RayInput)
+
+autocomplete defaults to current-password: use new-password on sign-up and change forms. The toggle keeps the focus and the caret in the field.
+
+Properties:
+
+- `visible`: boolean, reflects. The password is shown as text.
+- `showLabel` (attribute `show-label`): string, default `Show password`. Accessible name of the toggle while hidden.
+- `hideLabel` (attribute `hide-label`): string, default `Hide password`. Accessible name of the toggle while shown.
+
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`.
+
+Events:
+
+- `ray-visibility-change` (detail `{ visible: boolean }`): The user showed or hid the password.
+
+Parts (`::part()`):
+
+- `toggle`: The show/hide button.
+
+### Path input (also File path, Folder picker)
+
+A field for a path on disk: a file to open, a folder, or where to save. In a std/ui window (with ray-elements/core/raylang.js) a Browse… button opens the system dialog; in a browser it is a plain text field. Everything else is ray-input.
+
+Import: `import "@raylang/elements/path-input";` · Category: Inputs
+
+#### `<ray-path-input>` (RayPathInput, extends RayInput)
+
+Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.
+
+Properties:
+
+- `mode`: `open` | `folder` | `save`, default `open`, reflects. What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).
+- `accept`: string, reflects. File types the dialog offers, as in <input type=file>: ".json,.toml", "image/*" (ignored for folders).
+- `browseLabel` (attribute `browse-label`): string, default `Browse…`. Text of the button.
+- `dialogTitle` (attribute `dialog-title`): string. Title of the system dialog (default: the label).
+
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`.
+
+Events:
+
+- `change`: The path changed: typed and committed, or chosen in the dialog.
+- `ray-error` (detail `{ error: Error }`): The system dialog failed.
+
+Parts (`::part()`):
+
+- `browse`: The Browse… button.
+
+Methods and properties:
+
+- `readonly canBrowse: boolean`: Whether Browse… is available (a native host offers pick_path).
+- `browse(): Promise<string | null>`: Opens the system dialog; resolves to the chosen path (also set as value, with input and change), or null.
+
+Exports (from `@raylang/elements/path-input` and `@raylang/elements`):
+
+- `function dirName(path: string): string`: The folder part of a path ("" when it has none), with / or \ separators.
+- `function baseName(path: string): string`: The last part of a path.
+
+#### In a raylang app
+
+Browse… shows only in a `std/ui` window with [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge). It opens the system's dialog for the `mode`, starting in the folder of the current path (`save` also suggests the current file name). The chosen path fills the field and fires `input` and `change`; the program gets it with the form like any other field.
+
+```html
+<ray-path-input name="workspace" label="Workspace" mode="folder"></ray-path-input>
+<ray-path-input name="export" label="Export to" mode="save" accept=".csv"></ray-path-input>
+```
+
+```ray
+// The program's side: ui.events() through bridge.handle, then the form arrives as usual.
+for e in ui.events() {
+    if (bridge.handle(e)) {
+        continue;
+    }
+    if (e.kind == "message" && e.tag.starts_with("settings:")) {
+        save_settings(e.tag.substring(9, e.tag.len()))?;
+    }
+}
+```
+
+### Radio group
+
+One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.
+
+Import: `import "@raylang/elements/radio";` · Category: Inputs
+
+#### `<ray-radio-group>` (RayRadioGroup, extends FormControl)
+
+Arrow keys move the selection, Tab enters and leaves the group.
+
+Properties:
+
+- `value`: string. Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute.
+- `name`: string. Form field name.
+- `label`: string. Group label (also its accessible name).
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `required`: boolean. A choice is needed to submit.
+- `disabled`: boolean. Disables every radio.
+- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. Layout of the radios.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size of every radio.
+- `color`: string. Checked color of every radio.
+- `variant`: `filled` | `outline`, default `filled`, reflects. Checked look of every radio: filled circle, or colored ring and dot.
+
+Events:
+
+- `input`: When the user picks a radio.
+- `change`: When the user picks a radio.
+
+Slots:
+
+- (default): ray-radio elements (may be wrapped in layout elements).
+
+Methods and properties:
+
+- `readonly radios: RayRadio[]`: The radios of the group.
+
+Vue `v-model`: `value` (updated on change).
+
+#### `<ray-radio>` (RayRadio, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Value given to the group when chosen.
+- `label`: string. Label text (or the content).
+- `description`: string. Help text under the label.
+- `disabled`: boolean. Cannot be chosen.
+- `color`: string. Overrides the group color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`. Overrides the group size.
+- `variant`: `filled` | `outline`, reflects. Overrides the group variant.
+
+Slots:
+
+- (default): Label content.
+
+Parts (`::part()`):
+
+- `indicator`: The circle.
+- `label`: The label.
+
+Methods and properties:
+
+- `readonly checked: boolean`: Whether this radio is the group's value.
+
+### Search
+
+A search box: icon, clear button, an optional shortcut that focuses it, and a debounced ray-search event. A RayInput, so it has a label and takes part in forms.
+
+Import: `import "@raylang/elements/search";` · Category: Inputs
+
+#### `<ray-search>` (RaySearch, extends FieldControl)
+
+Escape clears it (when it has text); Enter fires ray-search at once. JS: clear(), focus().
+
+Properties:
+
+- `value`: string. Current text.
+- `placeholder`: string, default `Search…`. Placeholder text.
+- `shortcut`: string. Keyboard shortcut that focuses it ("mod+k", "/"; mod = ⌘ on macOS, Ctrl elsewhere). Shown as a hint while empty.
+- `debounce`: number, default `200`. Milliseconds of quiet typing before ray-search fires (0: on every keystroke).
+- `name`: string, reflects. Form field name.
+- `label`: string. Visible label (also the accessible name). Without it, use aria-label.
+- `disabled`: boolean. Not editable nor submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
+- `variant`: `default` | `filled` | `unstyled`, default `filled`, reflects. Box style.
+
+Also the properties of FieldControl: `description`, `error`, `required`, `descriptionPosition`.
+
+Events:
+
+- `input`: On every edit (value already updated).
+- `ray-search` (detail `{ value: string }`): After `debounce` ms without typing, on Enter, and when cleared.
+
+Parts (`::part()`):
+
+- `input`: The inner <input type=search>.
+- `icon`: The search icon.
+- `clear`: The clear button.
+- `shortcut`: The shortcut hint.
+- `wrapper`: The box.
+
+Methods and properties:
+
+- `clear(): void`: Empties the box (fires input and ray-search).
+
+Vue `v-model`: `value` (updated on input).
+
+### Segmented control
+
+One choice among a few, as a segmented row with a sliding indicator. Options from child <option> elements or data. Form-associated.
+
+Import: `import "@raylang/elements/segmented-control";` · Category: Inputs
+
+#### `<ray-segmented-control>` (RaySegmentedControl, extends FormControl)
+
+Properties:
+
+- `value`: string. Selected value (default: the first enabled option).
+- `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean }>`. Options as strings or { value, label, disabled }.
+- `name`: string. Form field name.
+- `color`: string, reflects. Indicator color (default: a raised neutral segment).
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
+- `fullWidth` (attribute `full-width`): boolean. Takes the whole width.
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction.
+- `disabled`: boolean. Not interactive nor submitted.
+
+Events:
+
+- `input`: The user picked another option.
+- `change`: The user picked another option.
+
+Slots:
+
+- (default): <option> elements.
+
+Parts (`::part()`):
+
+- `root`: The row.
+- `indicator`: The sliding highlight.
+- `control`: Each option button.
+
+Methods and properties:
+
+- `readonly items: Array<{ value: string; label: string; disabled: boolean }>`: The options, from data or the child options.
+
+Vue `v-model`: `value` (updated on change).
+
+### Select
+
+A select with its own dropdown (keyboard, typeahead, groups); options from child <option> elements or the data property. Form-associated.
+
+Import: `import "@raylang/elements/select";` · Category: Inputs
+
+#### `<ray-select>` (RaySelect, extends FieldControl)
+
+Properties:
+
+- `value`: string. Selected value.
+- `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean }>`. Options as strings or { value, label, disabled } (instead of child options).
+- `placeholder`: string. Shown while nothing is selected (with required, blocks submit).
+- `open`: boolean, reflects. The dropdown is shown.
+- `name`: string. Form field name.
+- `label`: string. Visible label.
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `required`: boolean. Required for form submission.
+- `disabled`: boolean. Not interactive nor submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+
+Also the properties of FieldControl: `radius`.
+
+Events:
+
+- `input`: When the selection changes.
+- `change`: When the selection changes.
+- `ray-open`: The dropdown opened.
+- `ray-close`: The dropdown closed.
+
+Slots:
+
+- (default): <option> and <optgroup> elements.
+
+Parts (`::part()`):
+
+- `trigger`: The combobox button showing the selected option.
+- `dropdown`: The listbox panel (a popover in the top layer).
+- `option`: Each option in the dropdown ([aria-selected], [data-active], [aria-disabled]).
+- `select`: The hidden native <select> that holds the value (the model).
+- `wrapper`: The box.
+
+Methods and properties:
+
+- `readonly options: HTMLOptionsCollection`: The options of the model select.
+- `toggle(force?: boolean): void`: Opens or closes the dropdown.
+
+Vue `v-model`: `value` (updated on change).
+
+### Slider
+
+A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.
+
+Import: `import "@raylang/elements/slider";` · Category: Inputs
+
+#### `<ray-slider>` (RaySlider, extends FieldControl)
+
+Properties:
+
+- `value`: number. Current value. The value attribute is the initial one (restored on reset).
+- `min`: number, default `0`. Minimum.
+- `max`: number, default `100`. Maximum.
+- `step`: number, default `1`. Step.
+- `name`: string. Form field name.
+- `label`: string. Visible label.
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `disabled`: boolean. Not interactive nor submitted.
+- `color`: string, reflects. Track and thumb color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Track and thumb size.
+- `showValue` (attribute `show-value`): boolean, reflects. Shows the value next to the label.
+- `unit`: string. Appended to the shown value and its spoken text (%, px, ms…).
+- `marks` (property only): `Array<number | { value: number; label?: string }>`. Labeled ticks under the track.
+
+Also the properties of FieldControl: `required`, `radius`, `variant`.
+
+Events:
+
+- `input`: While dragging.
+- `change`: When released.
+
+Parts (`::part()`):
+
+- `input`: The native range input.
+
+Vue `v-model`: `value` (updated on input).
+
+### Switch
+
+An on/off toggle with the same API as Checkbox, announced as a switch.
+
+Import: `import "@raylang/elements/switch";` · Category: Inputs
+
+#### `<ray-switch>` (RaySwitch, extends RayCheckbox)
+
+Same properties and events as ray-checkbox (indeterminate does not apply).
+
+Properties:
+
+- `checked` (property only): boolean. Current state. The checked attribute is the initial state.
+- `value`: string, default `on`. Submitted value when on.
+- `name`: string. Form field name.
+- `label`: string. Label text (or the content).
+- `description`: string. Help text.
+- `error`: string. Error text.
+- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+- `color`: string. Track color when on.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Track size.
+- `disabled`: boolean. Not interactive nor submitted.
+
+Also the properties of RayCheckbox (`<ray-checkbox>`): `indeterminate`, `required`, `variant`.
+Also the properties of FieldControl: `radius`, `descriptionPosition`.
+
+Events:
+
+- `change`: When the user toggles it.
+
+Slots:
+
+- (default): Label content.
+
+Parts (`::part()`):
+
+- `track`: The track.
+- `thumb`: The thumb.
+
+Vue `v-model`: `checked` (updated on change).
+
+### Textarea
+
+A multi-line text field that can grow with its content. Form-associated.
+
+Import: `import "@raylang/elements/textarea";` · Category: Inputs
+
+#### `<ray-textarea>` (RayTextarea, extends FieldControl)
+
+Also forwards placeholder, autocomplete, minlength, maxlength, spellcheck and wrap. Initial value: the value attribute or the element's text.
+
+Properties:
+
+- `value`: string. Current value.
+- `rows`: number, default `3`. Visible rows (minimum when autosize).
+- `autosize`: boolean. Grows with the content.
+- `maxRows` (attribute `max-rows`): number. With autosize: stop growing and scroll after this many rows.
+- `name`: string. Form field name.
+- `label`: string. Visible label.
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `required`: boolean. Required for form submission.
+- `disabled`: boolean. Not editable nor submitted.
+- `readonly`: boolean. Not editable, still submitted.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Font size.
+- `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+
+Also the properties of FieldControl: `radius`.
+
+Attributes (forwarded to the inner element):
+
+- `placeholder`: Placeholder text.
+- `autocomplete`: Forwarded to the inner textarea.
+- `minlength`: Minimum length.
+- `maxlength`: Maximum length.
+- `wrap`: soft or hard.
+
+Events:
+
+- `input`: On every edit.
+- `change`: When an edit is committed.
+
+Parts (`::part()`):
+
+- `textarea`: The inner <textarea>.
+- `wrapper`: The box.
+
+Vue `v-model`: `value` (updated on input).
+
+### Bottom nav
+
+The bottom navigation of a phone app (Material's navigation bar, the iOS tab bar): three to five destinations with an icon, a label and a badge, the current one marked by a pill. Links or a value; an action button in the middle; hides on scroll.
+
+Import: `import "@raylang/elements/bottom-nav";` · Category: Navigation
+
+#### `<ray-bottom-nav>` (RayBottomNav, extends RayElement)
+
+With href items it marks the link to this page (aria-current="page"); without, it is a control (value, change). Clear of the home indicator (safe-area inset). In a ray-app-shell, put it in the bottom slot.
+
+Properties:
+
+- `value`: string, reflects. The current destination (an item's value, else its href, else its label).
+- `label`: string, default `Main`. Accessible name of the navigation.
+- `labels`: `always` | `active` | `never`, default `always`, reflects. Which labels show (the others stay for assistive technology).
+- `indicator`: `pill` | `line` | `none`, default `pill`, reflects. How the current destination is marked besides its color.
+- `color`: string, reflects. A palette color or any CSS color for the current item and the action (default: primary).
+- `variant`: `default` | `floating`, default `default`, reflects. default: a bar across the bottom; floating: a rounded bar off the edges.
+- `hideOnScroll` (attribute `hide-on-scroll`): boolean, reflects. Slides away while the content scrolls down, back on the way up.
+- `fixed`: boolean, reflects. Pinned to the bottom of the window (outside a shell).
+- `scrollTarget` (attribute `scroll-target`): string. A selector of the element whose scrolling it follows (default: its shell's, else the window).
+
+Events:
+
+- `change`: The user picked another destination (read value).
+- `ray-select` (detail `{ value: string }`): An action item was pressed.
+
+Slots:
+
+- (default): ray-bottom-nav-item elements (3 to 5).
+
+Parts (`::part()`):
+
+- `nav`: The <nav>.
+
+Methods and properties:
+
+- `readonly items: RayBottomNavItem[]`: The items, in order.
+
+Vue `v-model`: `value` (updated on change).
+
+#### `<ray-bottom-nav-item>` (RayBottomNavItem, extends RayElement)
+
+A link with href, else a button. The badge is read with the label ("Messages, 3").
+
+Properties:
+
+- `value`: string, reflects. Its value (default: its href, else its label).
+- `label`: string. The label.
+- `icon`: string. An icon of the registry (or put one in the icon slot).
+- `href`: string, reflects. Makes it a link.
+- `badge`: string. A count or a short text on the icon.
+- `dot`: boolean, reflects. A dot on the icon (something new).
+- `active`: boolean, reflects. Set by the bar: the current destination.
+- `disabled`: boolean, reflects. Not interactive.
+- `action`: boolean, reflects. A raised round button ("New"): it fires ray-select on the bar, it is not a destination.
+
+Slots:
+
+- `icon`: A custom icon (a ray-icon, an svg, an avatar).
+
+Parts (`::part()`):
+
+- `item`: The link or button.
+- `indicator`: The pill behind the icon.
+- `badge`: The badge.
+- `label`: The label.
+
+### Breadcrumbs
+
+Where a page sits (Mantine's Breadcrumbs, the WAI-ARIA breadcrumb pattern): links in a labelled nav, the last one the current page. Any separator or a chevron; a long path collapses into an expandable "…".
+
+Import: `import "@raylang/elements/breadcrumbs";` · Category: Navigation
+
+#### `<ray-breadcrumbs>` (RayBreadcrumbs, extends RayElement)
+
+A <nav aria-label="Breadcrumb"> around a list. The last crumb is the current page (aria-current="page") unless one says current.
+
+Properties:
+
+- `separator`: string, default `/`. Text between crumbs ("/", "›", "·") or "chevron" (an icon).
+- `maxItems` (attribute `max-items`): number. Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1.
+- `label`: string, default `Breadcrumb`. Accessible name of the nav.
+- `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Font size.
+
+Slots:
+
+- (default): ray-breadcrumb elements.
+
+Parts (`::part()`):
+
+- `nav`: The <nav>.
+- `list`: The <ol>.
+
+Methods and properties:
+
+- `readonly items: RayBreadcrumb[]`: The crumbs, in order.
+- `expand(): void`: Shows every crumb of a collapsed path.
+
+#### `<ray-breadcrumb>` (RayBreadcrumb, extends RayElement)
+
+A link with href (text without, or when current).
+
+Properties:
+
+- `href`: string, reflects. Where it leads.
+- `current`: boolean, reflects. This crumb is the current page (default: the last).
+
+Slots:
+
+- (default): The text.
+- `icon`: An icon before the text.
+
+Parts (`::part()`):
+
+- `link`: The link (or the text of the current page).
+- `separator`: The separator before it.
+- `more`: The "…" button of a collapsed path.
+
+### Nav link
+
+A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.
+
+Import: `import "@raylang/elements/nav-link";` · Category: Navigation
+
+#### `<ray-nav-link>` (RayNavLink, extends RayElement)
+
+A link with href (aria-current=page when active), or a button that toggles its nested links.
+
+Properties:
+
+- `label`: string. Text.
+- `description`: string. Second line.
+- `href`: string, reflects. Makes it a link (ignored when it has nested links).
+- `active`: boolean, reflects. The current page or section.
+- `opened`: boolean, reflects. Nested links are shown.
+- `disabled`: boolean, reflects. Not interactive.
+- `variant`: `light` | `filled` | `subtle`, default `light`, reflects. Style of the active state.
+- `color`: string, reflects. Active color.
+- `iconOnly` (attribute `icon-only`): boolean, reflects. Only the icon (left section), centered; the label becomes its accessible name and tooltip. A collapsed ray-sidebar sets it.
+
+Events:
+
+- `ray-toggle` (detail `{ opened: boolean }`): Nested links were shown or hidden.
+
+Slots:
+
+- (default): Nested ray-nav-link elements.
+- `left`: Icon.
+- `right`: Badge or count.
+
+Parts (`::part()`):
+
+- `link`: The inner <a> or <button>.
+- `children`: The nested links.
+
+Methods and properties:
+
+- `readonly links: RayNavLink[]`: The nested nav links.
+
+Vue `v-model`: `opened` (updated on ray-toggle).
+
+### Pagination
+
+Page navigation: previous/next, optional first/last, page numbers with ellipses; the number of items stays constant so it does not jump.
+
+Import: `import "@raylang/elements/pagination";` · Category: Navigation
+
+#### `<ray-pagination>` (RayPagination, extends RayElement)
+
+JS: setPage(n), next(), previous(), first(), last(); page (clamped value).
+
+Properties:
+
+- `total`: number, default `1`. Number of pages.
+- `value`: number, default `1`. Current page (1-based).
+- `siblings`: number, default `1`. Pages shown on each side of the current one.
+- `boundaries`: number, default `1`. Pages always shown at the start and the end.
+- `withEdges` (attribute `with-edges`): boolean, reflects. Adds first/last page buttons.
+- `hideControls` (attribute `hide-controls`): boolean, reflects. Hides the previous/next (and first/last) buttons.
+- `color`: string, reflects. Color of the current page: a palette color or any CSS color. Default: the primary color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Item size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius of the items.
+- `disabled`: boolean, reflects. Not interactive.
+- `label`: string, default `Pagination`. Accessible name of the navigation landmark.
+
+Events:
+
+- `change`: The user went to another page (read `value`).
+
+Parts (`::part()`):
+
+- `root`: The <nav> landmark.
+- `list`: The list of items.
+- `item`: Every button (pages and controls).
+- `active`: The current page button.
+- `control`: Previous/next/first/last buttons.
+- `dots`: An ellipsis.
+
+Methods and properties:
+
+- `readonly page: number`: The current page clamped to 1…total.
+- `setPage(page: number): void`: Goes to a page (fires change).
+- `next(): void`: Next page.
+- `previous(): void`: Previous page.
+- `first(): void`: First page.
+- `last(): void`: Last page.
+
+Vue `v-model`: `value` (updated on change).
+
+Exports (from `@raylang/elements/pagination` and `@raylang/elements`):
+
+- `function paginationRange(total: number, value: number, siblings?: number, boundaries?: number): Array<number | "dots">`: The items a pagination shows for a page (numbers and "dots").
+
+### Sidebar
+
+The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen.
+
+Import: `import "@raylang/elements/sidebar";` · Category: Navigation
+
+#### `<ray-sidebar>` (RaySidebar, extends RayElement)
+
+Put ray-sidebar-group + ray-nav-link (with an icon in slot=left) inside. Collapsed, nav links show only their icon (the label becomes the tooltip) and the host has the collapsed attribute, so your own header/footer content can hide with CSS (ray-sidebar[collapsed] .brand-name { display: none }).
+
+Properties:
+
+- `collapsed`: boolean, reflects. Wide screens: an icon rail instead of the full panel.
+- `open`: boolean, reflects. Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it).
+- `side`: `left` | `right`, default `left`, reflects. The edge it sits on.
+- `variant`: `sidebar` | `floating`, default `sidebar`, reflects. A panel against the edge, or a floating card with a margin.
+- `width`: string. Width when expanded (CSS length). Default 16rem.
+- `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.
+- `breakpoint`: string, default `48em`. At this viewport width and below, it becomes a drawer.
+- `label`: string, default `Sidebar`. Accessible name of its navigation.
+
+Events:
+
+- `ray-toggle` (detail `{ collapsed: boolean; open: boolean; mobile: boolean }`): After toggle().
+- `ray-open`: The drawer opened (narrow screens).
+- `ray-close`: The drawer closed (narrow screens).
+
+Slots:
+
+- (default): The navigation: ray-sidebar-group and ray-nav-link elements.
+- `header`: Top area (brand, workspace switcher).
+- `footer`: Bottom area (user, settings).
+
+Parts (`::part()`):
+
+- `panel`: The panel (in the drawer on narrow screens).
+- `header`: The header area.
+- `content`: The scrolling <nav>.
+- `footer`: The footer area.
+- `drawer`: The <dialog> used on narrow screens.
+
+Methods and properties:
+
+- `toggle(): void`: Collapses/expands on wide screens; opens/closes the drawer on narrow ones.
+- `readonly mobile: boolean`: Whether it is in drawer mode (at or below the breakpoint).
+
+#### `<ray-sidebar-group>` (RaySidebarGroup, extends RayElement)
+
+A titled section of nav links; the title fades out (keeping its height) when the sidebar collapses.
+
+Properties:
+
+- `label`: string. Section title.
+
+Slots:
+
+- (default): ray-nav-link elements.
+
+Parts (`::part()`):
+
+- `label`: The title.
+- `items`: The links container.
+
+### Stepper
+
+A task in steps (Mantine's Stepper): a wizard, a checkout, an onboarding. Numbers or icons, labels, connectors, the content of the active step; loading and error states; completed steps can be revisited.
+
+Import: `import "@raylang/elements/stepper";` · Category: Navigation
+
+#### `<ray-stepper>` (RayStepper, extends RayElement)
+
+The steps are a labelled list; the active one has aria-current="step" and each reads "Step 2 of 4: Shipping, completed". Only the active step's content shows; past the last step, the completed slot.
+
+Properties:
+
+- `active`: number, default `0`, reflects. Index of the active step (steps.length: completed).
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Steps in a row above the content, or in a column beside it.
+- `iconPosition` (attribute `icon-position`): `left` | `top`, default `left`, reflects. Label beside the number, or under it (narrow screens, many steps).
+- `allowStepSelect` (attribute `allow-step-select`): boolean, reflects. Completed steps are buttons that go back to them.
+- `linear`: boolean, default `true`. With allow-step-select off, false lets the user jump to any step.
+- `size`: `sm` | `md` | `lg`, default `md`, reflects. Size of the numbers.
+- `color`: string, reflects. A palette color or any CSS color for active and completed steps (default: primary).
+- `label`: string, default `Progress`. Accessible name of the list of steps.
+
+Events:
+
+- `change`: active changed by the user (a step clicked, next(), prev()).
+
+Slots:
+
+- (default): ray-step elements.
+- `completed`: Shown once every step is done.
+
+Parts (`::part()`):
+
+- `steps`: The list of steps.
+- `step`: A step (also step-done, step-active, step-todo).
+- `indicator`: A step's number or icon.
+- `label`: A step's label.
+- `description`: A step's description.
+- `connector`: The line between steps.
+- `content`: The content area.
+
+Methods and properties:
+
+- `readonly steps: RayStep[]`: The steps, in order.
+- `next(): void`: To the next step (past the last: completed).
+- `prev(): void`: To the previous step.
+
+Vue `v-model`: `active` (updated on change).
+
+#### `<ray-step>` (RayStep, extends RayElement)
+
+A step: its header is drawn by the stepper, its content shows while it is active.
+
+Properties:
+
+- `label`: string. The label.
+- `description`: string. A line under the label.
+- `icon`: string. An icon instead of the number.
+- `completedIcon` (attribute `completed-icon`): string. The icon once done (default: check).
+- `loading`: boolean, reflects. A spinner instead of the number.
+- `error`: string. An error message: red step, the message as its description.
+- `disabled`: boolean, reflects. Cannot be selected.
+
+Slots:
+
+- (default): The content shown while it is active.
+
+### Tabs
+
+Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.
+
+Import: `import "@raylang/elements/tabs";` · Category: Navigation
+
+#### `<ray-tabs>` (RayTabs, extends RayElement)
+
+Properties:
+
+- `value`: string. Value of the active tab (default: the first enabled one).
+- `variant`: `default` | `outline` | `pills`, default `default`, reflects. Tab style.
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Tab list direction (and arrow keys).
+- `color`: string, reflects. Active indicator color.
+- `activation`: `auto` | `manual`, default `auto`. manual: arrows move focus, Enter/Space activates.
+- `grow`: boolean, reflects. Tabs share the full width.
+
+Events:
+
+- `change`: The user activated another tab.
+
+Slots:
+
+- (default): ray-tab and ray-tab-panel elements (tabs move to the tab list on their own).
+
+Parts (`::part()`):
+
+- `list`: The tab list.
+- `panels`: The panel area.
+
+Methods and properties:
+
+- `readonly tabs: RayTab[]`: The tabs.
+- `readonly panels: RayTabPanel[]`: The panels.
+
+Vue `v-model`: `value` (updated on change).
+
+#### `<ray-tab>` (RayTab, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Matches a ray-tab-panel's value.
+- `disabled`: boolean, reflects. Cannot be activated.
+
+Slots:
+
+- `left`: Icon.
+- `right`: Badge or count.
+
+#### `<ray-tab-panel>` (RayTabPanel, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Matches a ray-tab's value.
+
+### Command palette
+
+Search and run actions from the keyboard (Mantine's Spotlight): fuzzy search, groups, shortcuts, ⌘K / Ctrl+K; combobox + listbox pattern in a modal dialog.
+
+Import: `import "@raylang/elements/command-palette";` · Category: Overlays
+
+#### `<ray-command-palette>` (RayCommandPalette, extends RayElement)
+
+Running an action fires ray-select and calls its onSelect. The best matches come first, grouped.
+
+Properties:
+
+- `open`: boolean, reflects. Shown.
+- `actions` (property only): `CommandAction[]`. The actions.
+- `query`: string. The search text.
+- `placeholder`: string, default `Search commands…`. Placeholder of the search field.
+- `hotkey`: string, default `mod+k`. Toggle shortcut (mod = ⌘ on macOS, Ctrl elsewhere); empty to disable.
+- `limit`: number, default `50`. Maximum results.
+- `emptyLabel` (attribute `empty-label`): string, default `Nothing found`. Text without results.
+- `label`: string, default `Command palette`. Accessible name.
+- `hideHint` (attribute `hide-hint`): boolean, reflects. No keyboard hint at the bottom.
+- `nativeMenus` (attribute `native-menus`): boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.
+- `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
+
+Events:
+
+- `ray-select` (detail `{ action: CommandAction }`): An action was run.
+- `ray-open`: After it opened.
+- `ray-close`: After it closed.
+
+Parts (`::part()`):
+
+- `dialog`: The dialog.
+- `input`: The search field.
+- `option`: Each result.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `hide(): void`: Closes it.
+- `toggle(): void`: Opens or closes it.
+- `readonly results: CommandAction[]`: The actions matching the query, in display order.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+Exports (from `@raylang/elements/command-palette` and `@raylang/elements`):
+
+- `function score(action: CommandAction, query: string): number`: How well an action matches a query (0 = not at all).
+
+Types:
+
+- `{ id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void }`: An action of ray-command-palette.
+
+#### In a raylang app
+
+With `native-menus` and [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), the palette also lists the app's menu bar: every item, grouped by its menu, with its shortcut, the disabled ones greyed out. Running one gives the program the same `"menu"` event as choosing it in the menu bar, so the program handles it in one place.
+
+```ray
+let n = bridge.system();
+bridge.menu(n, "File", [ui.item("new", "New window", "cmd+n"), ui.item("open", "Open…", "cmd+o")])?;
+for raw in ui.events() {
+    let e = match (bridge.route(n, raw)) {
+        Option.Some(e) => e,
+        Option.None => continue,
+    };
+    if (e.kind == "menu" && e.tag == "new") {
+        new_window()?;
+    }
+}
+```
+
+```html
+<ray-command-palette native-menus></ray-command-palette>
+```
+
+Declare the menus with `bridge.menu` (and change them with `bridge.replace_menu` and `bridge.set_menu_item`) so the palette knows them.
+
+### Dialog (also Modal)
+
+ray-elements's modal, on the native <dialog>: top layer, the rest of the page inert, focus trapped and restored, stackable. Title, description, header, body and footer; preset or free sizes. Also exports confirmDialog().
+
+Import: `import "@raylang/elements/dialog";` · Category: Overlays
+
+#### `<ray-dialog>` (RayDialog, extends RayElement)
+
+Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.
+
+Properties:
+
+- `open`: boolean, reflects. Shown as a modal.
+- `label`: string. Heading (also the dialog's accessible name).
+- `description`: string. A line under the title (the dialog's accessible description).
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window.
+- `height`: string, reflects. Fixed height (the body scrolls): any CSS length; a percentage is of the window (70% = 70dvh, at least 30rem). Never taller than the window. Default: as tall as the content, up to the window.
+- `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: lg.
+- `position`: `center` | `top`, default `center`, reflects. Vertical placement.
+- `persistent`: boolean, reflects. Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.
+- `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
+
+Events:
+
+- `ray-open`: After it opened.
+- `ray-close` (detail `{ returnValue: string }`): After it closed; detail: { returnValue }.
+- `ray-request-close` (detail `{ source: "escape" | "backdrop" | "button" }`): Escape, backdrop or close button; cancelable (preventDefault keeps it open). detail: { source }.
+
+Slots:
+
+- (default): Body.
+- `header`: Extra header content, next to the title.
+- `footer`: Actions, aligned to the end.
+
+Parts (`::part()`):
+
+- `dialog`: The native <dialog>.
+- `title`: The heading.
+- `description`: The line under the heading.
+- `header`: The header: title, description, the header slot and the close button.
+- `body`: The scrollable body.
+- `footer`: The footer.
+- `close`: The close button.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `close(returnValue?: string): void`: Closes it with an optional return value.
+- `returnValue: string`: The value it was closed with.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+Exports (from `@raylang/elements/dialog` and `@raylang/elements`):
+
+- `function confirmDialog(options?: ConfirmOptions): Promise<boolean>`: A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog).
+
+Types:
+
+- `{ label?: string; message?: string; confirmLabel?: string; cancelLabel?: string; color?: string; native?: boolean }`: Options of confirmDialog().
+
+#### In a raylang app
+
+With [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), `confirmDialog()` asks with the system's modal dialog instead of a `ray-dialog`, with the same answer. A red confirmation (a destructive action) gets the warning style. `native: false` keeps the page's dialog, for a question that needs more than a sentence.
+
+```js
+if (await confirmDialog({ label: "Delete 3 builds?", message: "This cannot be undone.", confirmLabel: "Delete", color: "red" })) {
+  window.ray.send("delete:" + ids.join(","));
+}
+```
+
+`ray-dialog` itself is always the page's: a form, a settings panel or a wizard stay in the page.
+
+### Drawer
+
+A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive.
+
+Import: `import "@raylang/elements/drawer";` · Category: Overlays
+
+#### `<ray-drawer>` (RayDrawer, extends RayElement)
+
+Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue).
+
+Properties:
+
+- `open`: boolean, reflects. Shown.
+- `label`: string. Heading (also the accessible name).
+- `description`: string. A line under the title (the drawer's accessible description).
+- `position`: `right` | `left` | `top` | `bottom`, default `right`, reflects. The edge it slides from.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.
+- `modeless`: boolean, reflects. No backdrop nor scroll lock: the page stays interactive (a side panel).
+- `floating`: boolean, reflects. Detached from the edge, with rounded corners.
+- `persistent`: boolean, reflects. Escape and backdrop clicks do not close it.
+- `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
+
+Events:
+
+- `ray-open`: After it opened.
+- `ray-close` (detail `{ returnValue: string }`): After it closed; detail: { returnValue }.
+- `ray-request-close` (detail `{ source: "escape" | "backdrop" | "button" }`): Escape, backdrop or close button; cancelable.
+
+Slots:
+
+- (default): Body (scrolls).
+- `header`: Extra header content.
+- `footer`: Actions, at the bottom.
+
+Parts (`::part()`):
+
+- `drawer`: The native <dialog>.
+- `body`: The body.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `close(returnValue?: string): void`: Closes it with an optional return value.
+- `returnValue: string`: The value it was closed with.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+### Menu
+
+A dropdown menu (menu button pattern: arrows, Home/End, typeahead, Enter, Escape) or, with context, a context menu at the pointer.
+
+Import: `import "@raylang/elements/menu";` · Category: Overlays
+
+#### `<ray-menu>` (RayMenu, extends Floating)
+
+Properties:
+
+- `open`: boolean, reflects. Shown.
+- `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment.
+- `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
+- `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
+- `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.
+
+Also the properties of Floating: `offset`.
+
+Events:
+
+- `ray-select` (detail `{ value: string; item: RayMenuItem }`): An item was chosen; detail: { value, item }.
+- `ray-open`: After it opened.
+- `ray-close`: After it closed.
+
+Slots:
+
+- `trigger`: The button that opens it, or the area for a context menu.
+- (default): ray-menu-item, ray-menu-label and ray-menu-divider elements.
+
+Parts (`::part()`):
+
+- `dropdown`: The panel.
+
+Methods and properties:
+
+- `popupNative(): Promise<RayMenuItem | null>`: Opens the items as the system's context menu (needs a native host); resolves to the chosen item, or null.
+- `show(): void`: Opens it.
+- `hide(): void`: Closes it.
+- `toggle(): void`: Opens or closes it.
+- `readonly trigger: Element | null`: The trigger element.
+- `readonly items: RayMenuItem[]`: The items of this menu.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+#### `<ray-menu-item>` (RayMenuItem, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Reported in ray-select (default: the text).
+- `disabled`: boolean, reflects. Skipped by the keyboard, cannot be chosen.
+- `color`: string, reflects. Text and hover color (e.g. red for destructive actions).
+
+Slots:
+
+- (default): Label.
+- `left`: Icon.
+- `right`: Shortcut or badge.
+
+#### `<ray-menu-label>` (RayMenuLabel, extends RayElement)
+
+A section caption inside the menu.
+
+#### `<ray-menu-divider>` (RayMenuDivider, extends RayElement)
+
+A separator between groups of items.
+
+#### In a raylang app
+
+With `native` and [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), the menu opens as the system's context menu at the pointer: its items and dividers, disabled ones greyed out. The choice fires the same `ray-select`, so the same code handles both.
+
+```html
+<ray-menu native context>
+  <div slot="trigger" class="file-row">report.csv</div>
+  <ray-menu-item value="open">Open</ray-menu-item>
+  <ray-menu-item value="reveal">Show in Finder</ray-menu-item>
+  <ray-menu-divider></ray-menu-divider>
+  <ray-menu-item value="delete" color="red">Delete</ray-menu-item>
+</ray-menu>
+```
+
+Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+
+### Popover
+
+A floating panel anchored to a trigger, in the top layer; closes on Escape and outside clicks.
+
+Import: `import "@raylang/elements/popover";` · Category: Overlays
+
+#### `<ray-popover>` (RayPopover, extends Floating)
+
+Positioned in JS (flip + shift to stay in the viewport). JS: show(), hide(), toggle().
+
+Properties:
+
+- `open`: boolean, reflects. Shown.
+- `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment.
+- `offset`: number, default `8`. Gap to the trigger in px.
+- `width`: string. Panel width (px number or CSS length). Default: its content.
+- `matchWidth` (attribute `match-width`): boolean. At least as wide as the trigger.
+- `padding`: `0` | `xs` | `sm` | `md` | `lg`, default `md`, reflects. Panel padding.
+- `trapFocus` (attribute `trap-focus`): boolean. Moves focus into the panel when opened and keeps Tab inside it.
+
+Events:
+
+- `ray-open`: After it opened.
+- `ray-close`: After it closed (also by Escape or an outside click).
+
+Slots:
+
+- `trigger`: The element that toggles it (gets aria-haspopup and aria-expanded).
+- (default): Panel content.
+
+Parts (`::part()`):
+
+- `dropdown`: The panel.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `hide(): void`: Closes it.
+- `toggle(): void`: Opens or closes it.
+- `readonly trigger: Element | null`: The trigger element.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+### Tooltip
+
+A short hint on hover and focus of its child; the label also becomes the child's accessible description.
+
+Import: `import "@raylang/elements/tooltip";` · Category: Overlays
+
+#### `<ray-tooltip>` (RayTooltip, extends Floating)
+
+Properties:
+
+- `label`: string. Tooltip text.
+- `placement`: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end`, default `top`, reflects. Preferred side.
+- `openDelay` (attribute `open-delay`): number, default `300`. ms before showing.
+- `closeDelay` (attribute `close-delay`): number, default `0`. ms before hiding.
+- `color`: string. A palette color or any CSS color. Default: inverted foreground/background.
+- `disabled`: boolean. Never shows.
+
+Also the properties of Floating: `open`, `offset`.
+
+Slots:
+
+- (default): The element the tooltip describes (one element).
+
+Parts (`::part()`):
+
+- `tooltip`: The tooltip box.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `hide(): void`: Closes it.
+- `toggle(): void`: Opens or closes it.
+- `readonly trigger: Element | null`: The trigger element.
+
+### Accordion
+
+Collapsible sections (WAI-ARIA accordion pattern); one open at a time, or several with multiple.
+
+Import: `import "@raylang/elements/accordion";` · Category: Data display
+
+#### `<ray-accordion>` (RayAccordion, extends RayElement)
+
+Properties:
+
+- `value`: `string | string[] | undefined`. Open item's value; with multiple, an array (attribute: comma-separated).
+- `multiple`: boolean, reflects. Several items may be open.
+- `variant`: `default` | `contained` | `separated` | `filled`, default `default`, reflects. Visual style.
+- `chevronPosition` (attribute `chevron-position`): `right` | `left`, default `right`, reflects. Side of the chevron.
+
+Events:
+
+- `change`: The user opened or closed an item.
+
+Slots:
+
+- (default): ray-accordion-item elements.
+
+Methods and properties:
+
+- `readonly items: RayAccordionItem[]`: The items.
+- `readonly openValues: string[]`: The open values as an array, whatever the mode.
+
+Vue `v-model`: `value` (updated on change).
+
+#### `<ray-accordion-item>` (RayAccordionItem, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Identifies the item in the accordion's value.
+- `label`: string. Header text (or slot=label).
+- `description`: string. A secondary line under the label, in the header.
+- `disabled`: boolean, reflects. Cannot be toggled.
+- `headingLevel` (attribute `heading-level`): number, default `3`. aria-level of the header.
+
+Slots:
+
+- (default): Panel content.
+- `label`: Rich header content.
+- `left`: Icon before the label.
+
+Parts (`::part()`):
+
+- `control`: The header button.
+- `description`: The secondary line under the label.
+- `panel`: The collapsible region.
+
+Methods and properties:
+
+- `readonly open: boolean`: Whether this item is expanded.
+
+### Attachment
+
+A file in a composer, upload list or chat: thumbnail or type icon, name, size, upload progress, error, remove and download.
+
+Import: `import "@raylang/elements/attachment";` · Category: Data display
+
+#### `<ray-attachment>` (RayAttachment, extends RayElement)
+
+Assign a File to `file` to fill name, size, type and an image thumbnail. Removing it (× button) fires a cancelable ray-remove and then removes the element.
+
+Properties:
+
+- `name`: string, reflects. File name (ellipsized; full name in the tooltip).
+- `size`: number. Size in bytes, shown as "12 KB", "3.4 MB".
+- `type`: string, reflects. MIME type: picks the icon (image or file) and, with the name, the extension badge.
+- `src`: string. Thumbnail URL for images (falls back to the icon if it fails to load).
+- `href`: string, reflects. Makes the name a download link.
+- `progress`: number. Upload progress 0–100: a thin bar and "Uploading… 45%". Unset: done.
+- `status`: `uploading` | `done` | `error`, reflects. Explicit state. Default: "uploading" while progress is set, else "done".
+- `error`: string. Error text shown with status="error" (default "Upload failed").
+- `removable`: boolean, reflects. Shows a remove (×) button.
+- `removeLabel` (attribute `remove-label`): string, default `Remove {name}`. Accessible label of the remove button; {name} is replaced by the file name.
+- `variant`: `row` | `card`, default `row`, reflects. row: a compact chip; card: the thumbnail on top.
+- `disabled`: boolean, reflects. Dimmed, not removable, the name is not a link.
+
+Events:
+
+- `ray-remove` (detail `{ name: string; file: File | null }`): The remove button was pressed; cancelable (preventDefault keeps the element).
+
+Parts (`::part()`):
+
+- `item`: The box.
+- `thumbnail`: The thumbnail or icon box.
+- `badge`: The extension badge (PDF, PNG…).
+- `name`: The file name (a link with href).
+- `meta`: Size, upload state or error.
+- `progress`: The upload progress bar.
+- `remove`: The remove button.
+
+Methods and properties:
+
+- `file: File | null`: The File shown (fills name, size, type and a thumbnail for images).
+- `readonly state: "uploading" | "done" | "error"`: The effective status.
+
+#### `<ray-attachments>` (RayAttachments, extends RayElement)
+
+A wrapping row of ray-attachment elements.
+
+Slots:
+
+- (default): ray-attachment elements.
+
+### Avatar
+
+An image, the initials of a name, or a placeholder icon.
+
+Import: `import "@raylang/elements/avatar";` · Category: Data display
+
+#### `<ray-avatar>` (RayAvatar, extends RayElement)
+
+Properties:
+
+- `src`: string, reflects. Image URL; falls back to initials if it fails to load.
+- `alt`: string, reflects. Accessible name (default: name).
+- `name`: string, reflects. Person or entity name; its initials are shown without an image.
+- `color`: string. A palette color or any CSS color.
+- `variant`: `light` | `filled` | `outline` | `default`, default `light`, reflects. Style of the initials/placeholder.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Diameter.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: full.
+
+Slots:
+
+- (default): Custom content (e.g. an icon) instead of initials.
+
+Parts (`::part()`):
+
+- `avatar`: The box.
+- `image`: The <img>.
+
+Exports (from `@raylang/elements/avatar` and `@raylang/elements`):
+
+- `function initials(name: string): string`: Up to two initials of a name: "Ada Lovelace" -> "AL".
+
+### Badge
+
+A short status label.
+
+Import: `import "@raylang/elements/badge";` · Category: Data display
+
+#### `<ray-badge>` (RayBadge, extends RayElement)
+
+Properties:
+
+- `variant`: `light` | `filled` | `outline` | `dot` | `default` | `gradient`, default `light`, reflects. Visual style.
+- `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
+- `color`: string. A palette color or any CSS color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: full.
+- `normalCase` (attribute `normal-case`): boolean. Keeps the text as written instead of uppercase.
+
+Slots:
+
+- (default): The text.
+
+Parts (`::part()`):
+
+- `badge`: The badge box.
+
+### Blockquote
+
+A quotation set apart from the text (Mantine's Blockquote): a colored edge, a quote mark on it and the attribution below. A real <blockquote> inside, with the source's URL as its cite.
+
+Import: `import "@raylang/elements/blockquote";` · Category: Data display
+
+#### `<ray-blockquote>` (RayBlockquote, extends RayElement)
+
+Paragraphs in it are spaced and the last one has no bottom margin. The attribution is text (cite) or rich content (slot="cite": an avatar, a name, a role).
+
+Properties:
+
+- `cite`: string. Who said it, shown below the quote ("— Grace Hopper").
+- `href`: string. URL of the source: the inner blockquote's cite attribute.
+- `color`: string, reflects. A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary.
+- `variant`: `light` | `outline` | `filled`, default `light`, reflects. light: tinted background; outline: border and edge only; filled: solid color (a pull quote).
+- `icon`: string, default `quote`. Registry icon of the mark, or none. The icon slot replaces it.
+- `size`: `sm` | `md` | `lg`, default `md`, reflects. Text size (lg for a pull quote).
+- `padding`: string, reflects. Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md.
+- `hideEdge` (attribute `hide-edge`): boolean, reflects. No colored edge on the start side (the tint, border and mark stay).
+- `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: md.
+
+Slots:
+
+- (default): The quotation (text or paragraphs).
+- `cite`: Rich attribution, instead of cite.
+- `icon`: A custom mark, instead of icon.
+
+Parts (`::part()`):
+
+- `quote`: The <blockquote>.
+- `icon`: The disc with the mark.
+- `cite`: The attribution (a <figcaption>).
+
+### Carousel
+
+Slides in a scroll-snap viewport: native swipe and scrolling, previous/next controls, indicators, keyboard, loop and autoplay with a pause button.
+
+Import: `import "@raylang/elements/carousel";` · Category: Data display
+
+#### `<ray-carousel>` (RayCarousel, extends RayElement)
+
+Any child is a slide. With several slides in view, positions are the snap points the viewport can reach. ArrowLeft/Right (Up/Down when vertical), Home and End move it.
+
+Properties:
+
+- `index`: number, default `0`. Current position (0-based). Setting it scrolls there.
+- `label`: string, default `Carousel`. Accessible name of the carousel region.
+- `slideSize` (attribute `slide-size`): string. Size of each slide along the scroll axis ("100%" by default; "50%", "18rem"…).
+- `slideGap` (attribute `slide-gap`): string. Space between slides (default var(--ray-space-4)).
+- `align`: `start` | `center`, default `start`, reflects. Where a slide snaps in the viewport.
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Scroll axis (vertical needs a height; 20rem by default).
+- `loop`: boolean, reflects. next() on the last position goes to the first, prev() on the first to the last.
+- `autoplay`: number, default `0`. Milliseconds between automatic moves (0: off). Pauses on hover, focus and when the page is hidden; starts paused with reduced motion. Shows a pause/play button.
+- `hideControls` (attribute `hide-controls`): boolean, reflects. No previous/next buttons.
+- `hideIndicators` (attribute `hide-indicators`): boolean, reflects. No indicator dots.
+
+Events:
+
+- `change`: The current position changed (read `index`) by the user or a method (controls, indicators, keyboard, swipe, scroll, next/prev/goTo, autoplay) — not when `index` is set by code.
+
+Slots:
+
+- (default): The slides.
+
+Parts (`::part()`):
+
+- `viewport`: The scrolling viewport.
+- `previous`: The previous button.
+- `next`: The next button.
+- `indicators`: The row of indicator dots.
+- `indicator`: Each indicator dot ([aria-current] on the active one).
+- `play`: The pause/play button (with autoplay).
+
+Methods and properties:
+
+- `next(): void`: Goes to the next position.
+- `prev(): void`: Goes to the previous position.
+- `goTo(index: number, options?: { instant?: boolean }): void`: Scrolls to a position (smoothly unless instant or reduced motion).
+- `readonly count: number`: Number of positions.
+- `readonly slides: Element[]`: The slide elements.
+
+### Code
+
+A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a "show more" height. A small built-in highlighter, or any library through setHighlighter(), painted with the --ray-code-* tokens.
+
+Import: `import "@raylang/elements/code";` · Category: Data display
+
+#### `<ray-code>` (RayCode, extends RayElement)
+
+The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.
+
+Properties:
+
+- `code` (property only): string. The code, from script (the most convenient in React and Vue). Wins over the content.
+- `language`: string, reflects. The language: js, ts, jsx, tsx, json, html, xml, svg, vue, css, sh, ray, diff… (also shown in the header). Not lang: that is the human language of the text.
+- `filename`: string. A file name or title in the header; also the scroll region's accessible name.
+- `lineNumbers` (attribute `line-numbers`): boolean, reflects. Numbers each line (not copied, not selectable).
+- `highlight`: string. Lines to highlight: "3, 5-7".
+- `wrap`: boolean, reflects. Wraps long lines instead of scrolling sideways.
+- `maxHeight` (attribute `max-height`): string. Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button.
+- `expanded`: boolean, reflects. Shown whole, past max-height.
+- `hideCopy` (attribute `hide-copy`): boolean, reflects. No copy button.
+- `hideHeader` (attribute `hide-header`): boolean, reflects. No header bar (the copy button floats in the corner).
+- `size`: `xs` | `sm` | `md`, default `sm`, reflects. Font size.
+- `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: md.
+- `copyLabel` (attribute `copy-label`): string, default `Copy code`. Accessible name of the copy button.
+- `copiedLabel` (attribute `copied-label`): string, default `Copied`. Shown and announced after copying.
+
+Events:
+
+- `ray-copy` (detail `{ code: string }`): The code was copied.
+
+Slots:
+
+- (default): The code: text, a <template> or a <script type="text/plain">.
+
+Parts (`::part()`):
+
+- `frame`: The box.
+- `header`: The bar with the file name, the language and the copy button.
+- `copy`: The copy button.
+- `scroller`: The scroll box (focusable, to scroll with the keyboard).
+- `code`: The <code> with one .line per line.
+
+Methods and properties:
+
+- `readonly source: string`: The code shown (dedented), whatever its source.
+- `copy(): Promise<boolean>`: Copies the code; resolves to true when it worked.
+
+Exports (from `@raylang/elements/code` and `@raylang/elements`):
+
+- `function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void`: Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one.
+- `function tokenize(code: string, lang?: string): [type: string, text: string][]`: The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text.
+
+### Icon
+
+An icon of the registry: the whole set (the components' too) changes with setIcons().
+
+Import: `import "@raylang/elements/icon";` · Category: Data display
+
+#### `<ray-icon>` (RayIcon, extends RayElement)
+
+setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
+
+Properties:
+
+- `name`: string, reflects. Registered icon name (iconNames()).
+- `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
+- `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
+- `color`: string, reflects. A palette color or any CSS color. Default: the text color.
+- `stroke`: number. Stroke width for stroke icons (default: --ray-icon-stroke, 2).
+
+Parts (`::part()`):
+
+- `icon`: The icon box.
+
+### Indicator
+
+A dot or a small label on the edge of any element (Mantine's Indicator): "New" on an avatar, an unread count on a bell, an online dot. Nine positions, an inward offset, palette or CSS colors, a border and a live pulse.
+
+Import: `import "@raylang/elements/indicator";` · Category: Data display
+
+#### `<ray-indicator>` (RayIndicator, extends RayElement)
+
+Wraps its content as tight as it is (fit-content). The label is part of the element's text for assistive technology; a dot has none: describe it on the content (aria-label="Grace, online").
+
+Properties:
+
+- `label`: string. Text in the indicator (a word or a count). Empty: a dot.
+- `position`: `top-start` | `top-center` | `top-end` | `middle-start` | `middle-center` | `middle-end` | `bottom-start` | `bottom-center` | `bottom-end`, default `top-end`, reflects. Which point of the content's box it sits on.
+- `offset`: `string | number`. Moves it inward from that point: px as a number, or a CSS length. Use it on round content (an avatar), so it sits on the curve.
+- `color`: string, reflects. A palette color or any CSS color. Default: the primary.
+- `size`: `string | number`. Diameter of the dot (and minimum height of a label): px as a number, or a CSS length. Default: 10px.
+- `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: round.
+- `max`: number. A numeric label above it shows as max+ (99+).
+- `inline`: boolean, reflects. inline-block, to sit within a line of text.
+- `withBorder` (attribute `with-border`): boolean, reflects. A ring in the background color, to separate it from the content.
+- `processing`: boolean, reflects. A pulse around it (live, recording, syncing).
+- `disabled`: boolean, reflects. Hides the indicator (the content stays).
+
+Slots:
+
+- (default): The element the indicator sits on.
+
+Parts (`::part()`):
+
+- `indicator`: The dot or label.
+
+### Kbd
+
+A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons.
+
+Import: `import "@raylang/elements/kbd";` · Category: Data display
+
+#### `<ray-kbd>` (RayKbd, extends RayElement)
+
+Properties:
+
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Font size.
+- `variant`: `default` | `filled` | `outline`, default `default`, reflects. default: raised keycap; filled: flat muted chip; outline: flat with a border.
+
+Slots:
+
+- (default): The key name.
+
+Parts (`::part()`):
+
+- `kbd`: The inner <kbd>.
+
+### Stat
+
+A metric tile: label, value, change against a previous period, note.
+
+Import: `import "@raylang/elements/stat";` · Category: Data display
+
+#### `<ray-stat>` (RayStat, extends RayElement)
+
+Properties:
+
+- `label`: string. What is measured.
+- `value`: string. The figure, already formatted.
+- `diff`: number. Change (positive is shown as good, in green; see inverse).
+- `diffUnit` (attribute `diff-unit`): string, default `%`. Unit of diff.
+- `note`: string. A line under the value (compared to…).
+- `inverse`: boolean, reflects. Lower is better (errors, latency): negative diffs are green.
+- `plain`: boolean, reflects. Without the card around.
+
+Slots:
+
+- `icon`: Icon next to the label.
+- (default): Extra content (e.g. a ray-progress).
+
+### Table
+
+A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state. Plain HTML tables: the .ray-table class of base.css.
+
+Import: `import "@raylang/elements/table";` · Category: Data display
+
+#### `<ray-table>` (RayTable, extends RayElement)
+
+Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height.
+
+Properties:
+
+- `columns` (property only): `TableColumn[]`. Columns: key, label, width, align, sortable, render(row, index), sort(a, b).
+- `data` (property only): `any[]`. Rows (objects).
+- `rowKey` (attribute `row-key`): string, default `id`. Field that identifies a row (selection).
+- `selectable`: boolean, reflects. A checkbox per row and a select-all checkbox.
+- `selection` (property only): `unknown[]`. Keys of the selected rows.
+- `sort` (property only): `TableSort | null`. Current sort; set it, or let header clicks change it.
+- `manualSort` (attribute `manual-sort`): boolean. Do not sort here: listen to ray-sort and pass sorted data.
+- `clickableRows` (attribute `clickable-rows`): boolean, reflects. Rows are focusable and fire ray-row-click (Enter too; arrows move between rows).
+- `striped`: boolean, reflects. Alternate row background.
+- `withBorder` (attribute `with-border`): boolean, reflects. Border around the table.
+- `withColumnBorders` (attribute `with-column-borders`): boolean, reflects. Borders between columns.
+- `stickyHeader` (attribute `sticky-header`): boolean, reflects. The header stays visible while scrolling (with --ray-table-max-height).
+- `noHover` (attribute `no-hover`): boolean, reflects. No row highlight on hover.
+- `density`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Cell padding.
+- `label`: string. Caption (also the table's accessible name).
+- `emptyLabel` (attribute `empty-label`): string, default `No data`. Text without rows (or put a ray-empty-state in slot=empty).
+
+Events:
+
+- `ray-sort` (detail `{ key: string; direction: "asc" | "desc" | null }`): A header changed the sort.
+- `ray-selection-change` (detail `{ selection: unknown[] }`): The selection changed.
+- `ray-row-click` (detail `{ row: any; index: number }`): A row was clicked or activated with Enter (clickable-rows).
+
+Slots:
+
+- `empty`: Shown instead of the empty text when there are no rows.
+
+Parts (`::part()`):
+
+- `table`: The <table>.
+- `scroll`: The scroll container.
+
+Methods and properties:
+
+- `readonly rows: any[]`: The rows in display order.
+
+Types:
+
+- `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
+- `{ key: string; direction: "asc" | "desc" }`: The sort state of ray-table.
+
+### Timeline
+
+Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages. Items up to active are reached (filled bullet, colored line); a bullet is a dot, an icon or an avatar.
+
+Import: `import "@raylang/elements/timeline";` · Category: Data display
+
+#### `<ray-timeline>` (RayTimeline, extends RayElement)
+
+A list (role="list") of ray-timeline-item.
+
+Properties:
+
+- `active`: number, default `-1`, reflects. Index of the last reached item (-1: none).
+- `align`: `left` | `right`, default `left`, reflects. Side of the line.
+- `bulletSize` (attribute `bullet-size`): string. Bullet size: px as a number or a CSS length (default 20px).
+- `lineWidth` (attribute `line-width`): number. Line width in px (default 2).
+- `color`: string, reflects. A palette color or any CSS color for what is reached (default: primary).
+- `reverseActive` (attribute `reverse-active`): boolean, reflects. Counts active from the end (the latest event at the top).
+
+Slots:
+
+- (default): ray-timeline-item elements.
+
+Methods and properties:
+
+- `readonly items: RayTimelineItem[]`: The items, in order.
+
+#### `<ray-timeline-item>` (RayTimelineItem, extends RayElement)
+
+Properties:
+
+- `label`: string. The title of the event.
+- `time`: string. When ("2 h ago", a date).
+- `icon`: string. An icon of the registry in the bullet.
+- `color`: string, reflects. Its own color (a failed step in red).
+- `lineVariant` (attribute `line-variant`): `solid` | `dashed` | `dotted`, default `solid`, reflects. The line to the next item (dashed: not happened yet).
+
+Slots:
+
+- (default): Details under the title.
+- `bullet`: A custom bullet (an avatar, an image).
+
+Parts (`::part()`):
+
+- `bullet`: The bullet.
+- `line`: The line to the next item.
+- `body`: Title, details and time.
+- `title`: The title.
+- `time`: The time.
+
+### Alert
+
+An inline message: title, text, an icon of the registry, the color variants and an optional close button.
+
+Import: `import "@raylang/elements/alert";` · Category: Feedback
+
+#### `<ray-alert>` (RayAlert, extends RayElement)
+
+Announced as an alert. The icon follows the color (info, circle-check, alert-triangle, circle-x) unless icon or slot=icon.
+
+Properties:
+
+- `label`: string. Title.
+- `color`: string, reflects. A palette color or any CSS color.
+- `variant`: `light` | `filled` | `outline` | `default` | `transparent`, default `light`, reflects. Visual style.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius.
+- `icon`: string, reflects. A registered icon name, or none.
+- `closable`: boolean, reflects. A close button; closing hides the alert (cancel ray-close to keep it).
+- `closeLabel` (attribute `close-label`): string, default `Dismiss`. Accessible name of the close button.
+
+Events:
+
+- `ray-close`: The close button was pressed; cancelable.
+
+Slots:
+
+- (default): Text.
+- `icon`: A custom icon.
+
+Parts (`::part()`):
+
+- `alert`: The box.
+- `close`: The close button.
+
+### Empty state
+
+What a list, table or pane shows when it is empty: icon, title, text and the action that fills it.
+
+Import: `import "@raylang/elements/empty-state";` · Category: Feedback
+
+#### `<ray-empty-state>` (RayEmptyState, extends RayElement)
+
+Properties:
+
+- `label`: string. Title.
+- `compact`: boolean, reflects. Less padding.
+- `withBorder` (attribute `with-border`): boolean, reflects. Dashed border.
+
+Slots:
+
+- (default): Text.
+- `icon`: Icon, shown in a circle.
+- `actions`: Buttons.
+
+### Notification
+
+Toasts: notify(), updateNotification(), hideNotification(), clearNotifications(); shown in a ray-toaster (a polite live region in the top layer). ray-notification is usable on its own.
+
+Import: `import "@raylang/elements/notification";` · Category: Feedback
+
+#### `<ray-notification>` (RayNotification, extends RayElement)
+
+notify({ id, title, message, color, icon, loading, autoClose (ms, default 4000; false = stays), closable, withBorder, onClose }) returns its id. A color adds a status icon in that color: green/teal a check, red/pink an error, yellow/orange a warning, others info. The status icon and the loader are 1.5rem with a 1.5 stroke; set --ray-notification-icon-size and --ray-notification-icon-stroke to change them.
+
+Properties:
+
+- `label`: string. Title.
+- `color`: string, reflects. Status color: tints the status icon (and a slotted icon's circle).
+- `icon`: string. Status icon from the registry (default: from the color); "none" for no icon.
+- `loading`: boolean, reflects. Shows a spinner (notify() does not auto-close it).
+- `hideClose` (attribute `hide-close`): boolean, reflects. No close button.
+- `withBorder` (attribute `with-border`): boolean, reflects. Draws a border.
+- `actionLabel` (attribute `action-label`): string. Text of an action button (e.g. "Undo"); pressing it fires ray-action.
+
+Events:
+
+- `ray-close`: The close button was pressed.
+- `ray-action`: The action button was pressed (notify() runs action.onClick and closes it).
+
+Slots:
+
+- (default): Message.
+- `icon`: Your own icon, in a colored circle (replaces the status icon).
+
+Parts (`::part()`):
+
+- `status-icon`: The status icon.
+
+#### `<ray-toaster>` (RayToaster, extends RayElement)
+
+Created by notify() when missing; add one yourself to choose its position. A stack (newest in front, older ones peeking behind) that spreads into a list on hover or keyboard focus; on touch screens a tap expands it, a tap outside collapses it, and a sideways swipe dismisses a toast. Auto-close pauses while expanded. Full width on phones.
+
+Properties:
+
+- `position`: `bottom-right` | `bottom-left` | `bottom-center` | `top-right` | `top-left` | `top-center`, default `bottom-right`, reflects. Corner of the stack.
+- `limit`: number, default `5`. Maximum kept; the oldest go first.
+- `visible`: number, default `3`. Toasts shown in the collapsed stack (the rest wait, hidden).
+- `expand`: boolean, reflects. Always expanded: a list instead of a stack.
+- `gap`: number, default `12`. Pixels between toasts when expanded.
+
+Methods and properties:
+
+- `expanded: boolean`: Whether the stack is spread out (set it to expand or collapse it).
+- `layout(): void`: Places the toasts again (done automatically on changes).
+- `raise(): void`: Brings the stack above everything else in the top layer.
+
+Exports (from `@raylang/elements/notification` and `@raylang/elements`):
+
+- `function notify(options?: NotifyOptions): string`: Shows a notification; returns its id.
+- `function updateNotification(id: string, options?: NotifyOptions): boolean`: Changes a shown notification and restarts its auto-close.
+- `function hideNotification(id: string): boolean`: Removes a notification.
+- `function clearNotifications(): void`: Removes every notification.
+- `function statusIcon(color: string): string`: The status icon a color gets: circle-check, circle-x, alert-triangle or info.
+
+Types:
+
+- `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void }`: Options of notify() and updateNotification().
+
+### Progress
+
+A determinate or (without value) indeterminate progress bar, announced as a progressbar.
+
+Import: `import "@raylang/elements/progress";` · Category: Feedback
+
+#### `<ray-progress>` (RayProgress, extends RayElement)
+
+Properties:
+
+- `value`: number. Progress, from 0 to max. Unset: indeterminate.
+- `max`: number, default `100`. The value of a full bar.
+- `color`: string, reflects. A palette color or any CSS color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Bar height.
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: full.
+- `striped`: boolean, reflects. Diagonal stripes.
+- `animated`: boolean, reflects. Moving stripes (with striped).
+- `showValue` (attribute `show-value`): boolean, reflects. Shows the percentage: inside the bar on lg and xl, beside it on smaller sizes.
+- `label`: string. Accessible name (default: Progress).
+
+Parts (`::part()`):
+
+- `track`: The background track.
+- `bar`: The filled bar.
+- `value`: The percentage beside the bar (show-value on xs, sm, md).
+
+### Skeleton
+
+A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.
+
+Import: `import "@raylang/elements/skeleton";` · Category: Feedback
+
+#### `<ray-skeleton>` (RaySkeleton, extends RayElement)
+
+aria-busy="true" on the host while loading; the placeholder is aria-hidden.
+
+Properties:
+
+- `width`: string. Width (CSS length, a number is px). Default: 100% (a circle: 2.5rem).
+- `height`: string. Height of a block or of each line (CSS length, a number is px). Default: 1rem.
+- `circle`: boolean, reflects. A circle (avatar placeholder): its diameter is width, else height.
+- `lines`: number, reflects. Number of text lines (the last one is shorter).
+- `radius`: string, reflects. Corner radius: xs…xl, full or a CSS length. Default: sm.
+- `animation`: `shimmer` | `pulse` | `none`, default `shimmer`, reflects. The loading effect (always none with reduced motion).
+- `loaded`: boolean, reflects. Shows the slotted content instead of the placeholder.
+
+Slots:
+
+- (default): The real content, shown with loaded.
+
+Parts (`::part()`):
+
+- `skeleton`: The placeholder container.
+- `bone`: Each block or line.
+
+### Spinner
+
+An indeterminate loading indicator, announced as a status.
+
+Import: `import "@raylang/elements/spinner";` · Category: Feedback
+
+#### `<ray-spinner>` (RaySpinner, extends RayElement)
+
+Properties:
+
+- `color`: string. A palette color or any CSS color. Default: the primary color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Diameter.
+- `label`: string, default `Loading`. Text read by screen readers.
+
+Parts (`::part()`):
+
+- `spinner`: The ring.
+
+### App bar
+
+The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it. It elevates once the content scrolls, or hides while scrolling down.
+
+Import: `import "@raylang/elements/app-bar";` · Category: Layout
+
+#### `<ray-app-bar>` (RayAppBar, extends RayElement)
+
+It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one.
+
+Properties:
+
+- `label`: string. The title.
+- `description`: string. A line under the title.
+- `center`: boolean, reflects. The title centered (iOS).
+- `variant`: `default` | `filled` | `transparent`, default `default`, reflects. default: the page background; filled: the primary color; transparent: until it elevates.
+- `size`: `sm` | `md` | `lg`, default `md`, reflects. Height: 48, 56 or 64 px.
+- `scrollBehavior` (attribute `scroll-behavior`): `elevate` | `hide` | `none`, default `elevate`, reflects. While the content scrolls: elevate (border and shadow), hide (also slides away going down, back going up), none.
+- `sticky`: boolean, reflects. Sticks to the top of the window (outside a shell).
+- `scrollTarget` (attribute `scroll-target`): string. A selector of the element whose scrolling it follows (default: its shell's, else the window).
+
+Slots:
+
+- (default): Title content after the label (a heading, a select).
+- `start`: Before the title: back or menu button.
+- `end`: Actions.
+- `bottom`: A row under the bar: tabs, a search field.
+
+Parts (`::part()`):
+
+- `bar`: The bar.
+- `start`: The start area.
+- `title`: The title area.
+- `end`: The actions area.
+- `bottom`: The row under the bar.
+
+Methods and properties:
+
+- `readonly concealed: boolean`: Whether scroll-behavior="hide" has slid it away.
+
+### App shell
+
+The frame of an app (Mantine's AppShell): header, navbar, main, aside and footer on wide screens; on phones one column with a bottom bar. The main content scrolls, the bars stay.
+
+Import: `import "@raylang/elements/app-shell";` · Category: Layout
+
+#### `<ray-app-shell>` (RayAppShell, extends RayElement)
+
+The layout follows the shell's own width (a phone-sized frame shows the phone layout). Below breakpoint the navbar and the aside take no room (a ray-sidebar there still opens as its drawer) and the bottom slot shows. It fills the window's height (100dvh) unless sized. In a std/ui full_content window (ray-elements/core/raylang.js) the header becomes the title bar: room for the window buttons, and it drags the window; with layout="alt" or no header, the navbar and main start below it.
+
+Properties:
+
+- `layout`: `default` | `alt`, default `default`, reflects. default: the header across the top; alt: the navbar full height, the header beside it.
+- `breakpoint`: string, default `48em`. Width (px, em or rem) below which it takes the phone layout.
+- `padding`: string, reflects. Padding of the main area: xs…xl, a number (px) or a CSS length.
+
+Events:
+
+- `ray-breakpoint` (detail `{ mobile: boolean }`): It switched between the wide and the phone layout.
+
+Slots:
+
+- (default): The main content (it scrolls).
+- `header`: Top bar: a ray-app-bar or a header of your own.
+- `navbar`: Side navigation (a ray-sidebar). Wide screens only.
+- `aside`: A panel on the other side (details, an inspector). Wide screens only.
+- `footer`: Under the main content.
+- `bottom`: Phones only: a ray-bottom-nav.
+
+Parts (`::part()`):
+
+- `shell`: The grid.
+- `header`: The header area.
+- `navbar`: The navbar area.
+- `main`: The scrolling main area.
+- `aside`: The aside area.
+- `footer`: The footer area.
+- `bottom`: The bottom bar area.
+
+Methods and properties:
+
+- `readonly scroller: HTMLElement`: The element that scrolls the main content.
+- `readonly mobile: boolean`: Whether it is in the phone layout.
+
+#### In a raylang app
+
+In a `std/ui` window opened as `full_content` (the page under a transparent title bar, macOS), with [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), the header becomes the title bar: at least as tall, with room for the window buttons, and dragging it moves the window (buttons in it stay buttons). With `layout="alt"` or without a header, the navbar and the main content start below the title bar.
+
+```ray
+var o = ui.options(1100, 720);
+o.kind = "full_content";
+let h = ui.open_with("Builds", "ray://app/index.html", o)?;
+```
+
+The bridge also keeps the window's background and title bar in the theme's background, so switching to dark, resizing or reopening never flashes the other theme.
+
+### Aspect ratio
+
+A box with a fixed width/height ratio; its image, video or iframe fills it.
+
+Import: `import "@raylang/elements/aspect-ratio";` · Category: Layout
+
+#### `<ray-aspect-ratio>` (RayAspectRatio, extends RayElement)
+
+Properties:
+
+- `ratio`: string, default `16/9`, reflects. Width/height: "16/9", "4:3", "1" or a number.
+- `fit`: `cover` | `contain`, default `cover`, reflects. How the media fills the box (object-fit).
+- `radius`: string, reflects. Corner radius: xs…xl, full or a CSS length.
+
+Slots:
+
+- (default): The media (img, video, iframe or any element); it fills the box.
+
+Exports (from `@raylang/elements/aspect-ratio` and `@raylang/elements`):
+
+- `function parseRatio(value: string | number): string | null`: A ratio ("16/9", "4:3", 1.5) as a CSS aspect-ratio value, or null.
+
+### Card
+
+A surface for grouped content, with optional media, header and footer.
+
+Import: `import "@raylang/elements/card";` · Category: Layout
+
+#### `<ray-card>` (RayCard, extends RayElement)
+
+Properties:
+
+- `padding`: `0` | `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Inner spacing (named space scale).
+- `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius. Default: --ray-radius-default.
+- `shadow`: `xs` | `sm` | `md` | `lg` | `xl`. Elevation.
+- `withBorder` (attribute `with-border`): boolean. Draws a border.
+- `variant`: `default` | `filled` | `outline`, default `default`, reflects. default: card surface; filled: muted surface; outline: border without fill.
+
+Slots:
+
+- (default): The body.
+- `media`: Full-bleed image or media at the top.
+- `header`: Header content.
+- `footer`: Footer content (actions).
+
+Parts (`::part()`):
+
+- `card`: The surface.
+- `header`: The header area.
+- `body`: The body area.
+- `footer`: The footer area.
+
+### Center
+
+Its content centered on both axes (Mantine's Center): empty states, loaders, a sign-in card.
+
+Import: `import "@raylang/elements/center";` · Category: Layout
+
+#### `<ray-center>` (RayCenter, extends RayElement)
+
+It fills its parent's width; give it a height (or a flex or grid parent that stretches it) to center vertically.
+
+Properties:
+
+- `inline`: boolean, reflects. As wide as its content (inline-flex): an icon beside text.
+
+Slots:
+
+- (default): The content.
+
+### Container
+
+Its content centered, up to a maximum width, with side padding (Mantine's Container): the column of a page.
+
+Import: `import "@raylang/elements/container";` · Category: Layout
+
+#### `<ray-container>` (RayContainer, extends RayElement)
+
+Properties:
+
+- `size`: string, default `md`, reflects. Maximum width: xs 540px, sm 720px, md 960px, lg 1140px, xl 1320px, or any CSS length.
+- `padding`: string, default `md`, reflects. Side padding: xs…xl, a number (px) or a CSS length.
+- `fluid`: boolean, reflects. No maximum width: the whole width, still padded.
+
+Slots:
+
+- (default): The content.
+
+Exports (from `@raylang/elements/container` and `@raylang/elements`):
+
+- `const CONTAINER_SIZES: { xs: string; sm: string; md: string; lg: string; xl: string }`: The maximum widths of size.
+
+### Grid
+
+A responsive grid: a column count per width (cols="1 sm:2 lg:4") measured on the grid itself, or as many columns of a minimum width as fit. Children span columns with data-span.
+
+Import: `import "@raylang/elements/grid";` · Category: Layout
+
+#### `<ray-grid>` (RayGrid, extends RayElement)
+
+The widths are the grid's own (container queries: xs 36em, sm 48em, md 62em, lg 75em, xl 88em), so a grid in a narrow column or a phone frame drops to fewer columns. It needs a width from its parent: in a flex row give it one or let it grow. A child spans with data-span="2"…"12" or "full".
+
+Properties:
+
+- `cols`: string, default `1`, reflects. Columns: a count, then counts from a width up ("1 sm:2 lg:4").
+- `minColWidth` (attribute `min-col-width`): string. Instead of cols: as many columns of at least this width as fit ("14rem", 220).
+- `gap`: string, default `md`, reflects. Space between cells: xs…xl, a number (px) or a CSS length.
+- `rowGap` (attribute `row-gap`): string. Space between rows when it differs from gap.
+- `align`: `stretch` | `start` | `center` | `end`, default `stretch`, reflects. Vertical alignment of the cells in a row.
+
+Slots:
+
+- (default): The cells (data-span="2" or "full" to span).
+
+Parts (`::part()`):
+
+- `grid`: The grid element.
+
+Exports (from `@raylang/elements/grid` and `@raylang/elements`):
+
+- `function parseCols(value: string | number | undefined): { base?: number; xs?: number; sm?: number; md?: number; lg?: number; xl?: number }`: "1 sm:2 lg:4" as counts per width.
+- `const BREAKPOINTS: { xs: string; sm: string; md: string; lg: string; xl: string }`: The widths of cols (36em, 48em, 62em, 75em, 88em).
+
+### Group
+
+Its children in a row (Mantine's Group): spaced by the space scale, centered, wrapping when they do not fit. Toolbars, form actions, chips.
+
+Import: `import "@raylang/elements/group";` · Category: Layout
+
+#### `<ray-group>` (RayGroup, extends RayElement)
+
+A flex row on the host: the children are laid out directly, no wrapper.
+
+Properties:
+
+- `gap`: string, default `md`, reflects. Space between children: xs…xl (the space scale), a number (px) or any CSS length.
+- `align`: `center` | `start` | `end` | `stretch` | `baseline`, default `center`, reflects. Cross-axis alignment.
+- `justify`: `start` | `center` | `end` | `space-between` | `space-around` | `space-evenly`, default `start`, reflects. Main-axis distribution: space-between for a title on one side and actions on the other.
+- `nowrap`: boolean, reflects. Keeps the children on one line.
+- `grow`: boolean, reflects. The children share the width equally.
+
+Slots:
+
+- (default): The children.
+
+### Scroll area
+
+A box that scrolls its content with the native scrolling and a thin themed scrollbar (Mantine's ScrollArea). Edge shadows tell there is more; ray-reach-end fires at the end (load the next page).
+
+Import: `import "@raylang/elements/scroll-area";` · Category: Layout
+
+#### `<ray-scroll-area>` (RayScrollArea, extends RayElement)
+
+Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own.
+
+Properties:
+
+- `height`: string. Height (CSS length).
+- `maxHeight` (attribute `max-height`): string. Maximum height: it grows with its content up to this, then scrolls.
+- `orientation`: `vertical` | `horizontal` | `both`, default `vertical`, reflects. Which ways it scrolls.
+- `type`: `auto` | `hover` | `never`, default `auto`, reflects. The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).
+- `noShadows` (attribute `no-shadows`): boolean, reflects. No edge shadows.
+- `threshold`: number, default `48`. Distance from the end (px) at which ray-reach-end fires.
+- `label`: string. Accessible name: makes the scrolling box a named region.
+
+Events:
+
+- `ray-reach-end` (detail `{ edge: "bottom" | "right" }`): The end came within threshold (once per arrival).
+
+Slots:
+
+- (default): The content.
+
+Parts (`::part()`):
+
+- `viewport`: The scrolling box.
+- `shadow`: The edge shadows.
+
+Methods and properties:
+
+- `readonly viewport: HTMLElement`: The scrolling element (scrollTop, scrollTo…).
+- `scrollToStart(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the top (left).
+- `scrollToEnd(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the bottom (right when horizontal).
+
+### Separator
+
+A horizontal or vertical rule, optionally labeled (Mantine's Divider).
+
+Import: `import "@raylang/elements/separator";` · Category: Layout
+
+#### `<ray-separator>` (RaySeparator, extends RayElement)
+
+Properties:
+
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction of the rule.
+- `label`: string, reflects. Text in the middle of a horizontal rule.
+- `labelPosition` (attribute `label-position`): `left` | `center` | `right`, default `center`, reflects. Where the label sits.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `xs`, reflects. Thickness (1–5px).
+- `variant`: `solid` | `dashed` | `dotted`, default `solid`, reflects. Line style.
+
+Parts (`::part()`):
+
+- `line`: The rule without label.
+- `label`: The labeled rule.
+
+### Split
+
+Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.
+
+Import: `import "@raylang/elements/split";` · Category: Layout
+
+#### `<ray-split>` (RaySplit, extends RayElement)
+
+Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane.
+
+Properties:
+
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. horizontal: side by side; vertical: stacked.
+- `position`: string, default `50%`. Initial size of the start pane: px (280) or any CSS length (30%, 20rem).
+- `min`: number, default `0`. Minimum size of the start pane in px.
+- `max`: number. Maximum size of the start pane in px.
+- `collapsed`: boolean, reflects. The start pane is hidden.
+- `disabled`: boolean, reflects. The divider cannot be moved.
+- `autosave`: string. A key: the size is saved in localStorage and restored.
+
+Events:
+
+- `ray-resize` (detail `{ size: number; collapsed: boolean }`): After a drag, a key or a collapse.
+
+Slots:
+
+- `start`: The sized pane (sidebar).
+- `end`: The pane that takes the rest.
+
+Parts (`::part()`):
+
+- `divider`: The separator.
+- `start`: The start pane.
+- `end`: The end pane.
+
+Methods and properties:
+
+- `readonly size: number`: The start pane's size in px.
+- `toggle(): void`: Collapses or restores the start pane.
+
+### Stack
+
+Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked.
+
+Import: `import "@raylang/elements/stack";` · Category: Layout
+
+#### `<ray-stack>` (RayStack, extends RayElement)
+
+A flex column on the host: the children are laid out directly, no wrapper.
+
+Properties:
+
+- `gap`: string, default `md`, reflects. Space between children: xs…xl (the space scale), a number (px) or any CSS length.
+- `align`: `stretch` | `start` | `center` | `end` | `baseline`, default `stretch`, reflects. Cross-axis alignment: stretch fills the width.
+- `justify`: `start` | `center` | `end` | `space-between` | `space-around` | `space-evenly`, default `start`, reflects. Main-axis distribution (with a height to distribute).
+
+Slots:
+
+- (default): The children.
+
+Exports (from `@raylang/elements/stack` and `@raylang/elements`):
+
+- `function applyFlex(el: HTMLElement, options: { gap?: string; align?: string; justify?: string }, alignDefault: string): void`: Gap, align and justify of a stack or group onto an element's custom properties (for a layout component of your own).
+
+### Status bar
+
+The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.
+
+Import: `import "@raylang/elements/statusbar";` · Category: Layout
+
+#### `<ray-statusbar>` (RayStatusbar, extends RayElement)
+
+Properties:
+
+- `variant`: `default` | `accent`, default `default`, reflects. accent: the primary color (e.g. while debugging).
+
+Slots:
+
+- (default): Items on the left.
+- `right`: Items on the right.
+
+#### `<ray-statusbar-item>` (RayStatusbarItem, extends RayElement)
+
+Properties:
+
+- `action`: boolean, reflects. A button (listen to click).
+- `color`: string, reflects. Text color (red for errors…).
+- `label`: string. Accessible name and tooltip (for icon-only or terse items).
+
+Slots:
+
+- (default): Text.
+- `icon`: Icon.
+
+### Theme toggle
+
+Icon button that cycles the document theme: system, light, dark.
+
+Import: `import "@raylang/elements/theme-toggle";` · Category: Theme
+
+#### `<ray-theme-toggle>` (RayThemeToggle, extends RayElement)
+
+Properties:
+
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Control height.
+
+Events:
+
+- `ray-theme-change` (detail `{ theme: "light" | "dark" | "system"; resolved: "light" | "dark"; primary: string | null }`): Fired on the document root by setTheme(); detail: { theme, resolved, primary }.
+
+Parts (`::part()`):
+
+- `button`: The inner button.
+
+## Tokens
+
+Use them as `var(--ray-…)` in your own CSS. Values are resolved; the semantic ones change with the theme (light / dark).
+
+- Palette: `--ray-<color>-0` (lightest) … `--ray-<color>-9` (darkest), colors `dark`, `gray`, `red`, `pink`, `violet`, `indigo`, `blue`, `cyan`, `teal`, `green`, `yellow`, `orange`. The same in both themes.
+- Per color and for `primary`: `--ray-<color>-<variant>`, variants `filled`, `filled-hover`, `light`, `light-hover`, `light-color`, `outline`, `outline-hover`, `contrast`; theme-aware.
+- Primary: `--ray-primary-0` … `-9` and its variants, aliases of the primary color (`blue`; `data-primary` or `setPrimary()` changes it).
+
+base:
+
+- `--ray-white`: #ffffff
+- `--ray-black`: #000000
+
+semantic:
+
+- `--ray-background`: #ffffff / #141414
+- `--ray-foreground`: #212529 / #f1f3f5
+- `--ray-card`: #ffffff / #1f1f1f
+- `--ray-card-foreground`: #212529 / #f1f3f5
+- `--ray-popover`: #ffffff / #1f1f1f
+- `--ray-popover-foreground`: #212529 / #f1f3f5
+- `--ray-primary`: #1971c2
+- `--ray-primary-hover`: #1864ab
+- `--ray-primary-foreground`: #ffffff
+- `--ray-secondary`: #f1f3f5 / #2e2e2e
+- `--ray-secondary-hover`: #e9ecef / #3b3b3b
+- `--ray-secondary-foreground`: #212529 / #f1f3f5
+- `--ray-default`: #ffffff / color-mix(in srgb, #ffffff 3%, transparent)
+- `--ray-default-hover`: #f1f3f5 / color-mix(in srgb, #ffffff 7%, transparent)
+- `--ray-raised`: #ffffff / #424242
+- `--ray-muted`: #f8f9fa / #2e2e2e
+- `--ray-muted-foreground`: color-mix(in srgb, #495057 50%, #868e96) / color-mix(in srgb, #b8b8b8 75%, #828282)
+- `--ray-accent`: #f1f3f5 / #2e2e2e
+- `--ray-accent-foreground`: #212529 / #f1f3f5
+- `--ray-destructive`: #c92a2a
+- `--ray-destructive-hover`: color-mix(in srgb, #c92a2a 85%, #000000)
+- `--ray-destructive-foreground`: #ffffff
+- `--ray-success`: color-mix(in srgb, #2b8a3e 80%, #000000) / #51cf66
+- `--ray-warning`: color-mix(in srgb, #e67700 62%, #000000) / #fcc419
+- `--ray-info`: color-mix(in srgb, #0b7285 90%, #000000) / #3bc9db
+- `--ray-border`: #dee2e6 / #2e2e2e
+- `--ray-input`: #ced4da / #3b3b3b
+- `--ray-ring`: color-mix(in srgb, #228be6 55%, transparent) / color-mix(in srgb, #4dabf7 60%, transparent)
+- `--ray-overlay`: color-mix(in srgb, #000000 10%, transparent) / color-mix(in srgb, #000000 50%, transparent)
+- `--ray-overlay-border`: color-mix(in srgb, #000000 16%, transparent) / color-mix(in srgb, #ffffff 14%, transparent)
+- `--ray-selection`: color-mix(in srgb, #228be6 22%, transparent) / color-mix(in srgb, #4dabf7 30%, transparent)
+
+chart:
+
+- `--ray-chart-1`: #228be6 / #339af0
+- `--ray-chart-2`: #e8590c / #fd7e14
+- `--ray-chart-3`: #099268 / #20c997
+- `--ray-chart-4`: #7950f2 / #845ef7
+- `--ray-chart-5`: #e64980 / #f06595
+- `--ray-chart-6`: color-mix(in srgb, #e67700 70%, #2b8a3e) / #fcc419
+- `--ray-chart-7`: #0b7285 / #22b8cf
+- `--ray-chart-8`: #868e96
+- `--ray-chart-grid`: #e9ecef / #2e2e2e
+- `--ray-chart-axis`: color-mix(in srgb, #495057 50%, #868e96)
+- `--ray-chart-text`: #212529
+- `--ray-chart-tooltip`: #ffffff
+- `--ray-chart-tooltip-text`: #212529
+- `--ray-chart-tooltip-border`: #dee2e6
+
+code:
+
+- `--ray-code-background`: #f8f9fa / #19191a
+- `--ray-code-text`: #212529
+- `--ray-code-tag`: color-mix(in srgb, #2b8a3e 80%, #000000)
+- `--ray-code-attr`: #5f3dc4
+- `--ray-code-string`: #1864ab
+- `--ray-code-keyword`: #a61e4d
+- `--ray-code-number`: color-mix(in srgb, #d9480f 78%, #000000)
+- `--ray-code-comment`: color-mix(in srgb, #495057 50%, #868e96)
+- `--ray-code-punctuation`: color-mix(in srgb, #495057 50%, #868e96)
+- `--ray-code-function`: #364fc7
+- `--ray-code-type`: color-mix(in srgb, #087f5b 90%, #000000)
+- `--ray-code-added`: color-mix(in srgb, #2b8a3e 80%, #000000)
+- `--ray-code-removed`: color-mix(in srgb, #c92a2a 90%, #000000)
+
+font:
+
+- `--ray-font-sans`: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+- `--ray-font-mono`: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace
+
+font-size:
+
+- `--ray-font-size-xs`: 0.75rem
+- `--ray-font-size-sm`: 0.875rem
+- `--ray-font-size-md`: 1rem
+- `--ray-font-size-lg`: 1.125rem
+- `--ray-font-size-xl`: 1.25rem
+- `--ray-font-size-2xl`: 1.5rem
+- `--ray-font-size-3xl`: 1.875rem
+- `--ray-font-size-4xl`: 2.25rem
+
+line-height:
+
+- `--ray-line-height-tight`: 1.25
+- `--ray-line-height-heading`: 1.3
+- `--ray-line-height-xs`: 1.4
+- `--ray-line-height-sm`: 1.45
+- `--ray-line-height-md`: 1.55
+- `--ray-line-height-lg`: 1.6
+- `--ray-line-height-xl`: 1.65
+
+font-weight:
+
+- `--ray-font-weight-regular`: 400
+- `--ray-font-weight-medium`: 500
+- `--ray-font-weight-semibold`: 600
+- `--ray-font-weight-bold`: 700
+
+space:
+
+- `--ray-space-0`: 0
+- `--ray-space-1`: 0.25rem
+- `--ray-space-2`: 0.5rem
+- `--ray-space-3`: 0.75rem
+- `--ray-space-4`: 1rem
+- `--ray-space-5`: 1.25rem
+- `--ray-space-6`: 1.5rem
+- `--ray-space-8`: 2rem
+- `--ray-space-10`: 2.5rem
+- `--ray-space-12`: 3rem
+- `--ray-space-16`: 4rem
+- `--ray-space-xs`: 0.625rem
+- `--ray-space-sm`: 0.75rem
+- `--ray-space-md`: 1rem
+- `--ray-space-lg`: 1.25rem
+- `--ray-space-xl`: 2rem
+
+radius:
+
+- `--ray-radius-xs`: 0.125rem
+- `--ray-radius-sm`: 0.25rem
+- `--ray-radius-md`: 0.5rem
+- `--ray-radius-lg`: 1rem
+- `--ray-radius-xl`: 2rem
+- `--ray-radius-full`: 9999px
+- `--ray-radius-default`: 0.5rem
+
+control-height:
+
+- `--ray-control-height-xs`: 1.875rem
+- `--ray-control-height-sm`: 2.25rem
+- `--ray-control-height-md`: 2.625rem
+- `--ray-control-height-lg`: 3.125rem
+- `--ray-control-height-xl`: 3.75rem
+
+shadow:
+
+- `--ray-shadow-xs`: 0 1px 3px color-mix(in srgb, #000000 5%, transparent), 0 1px 2px color-mix(in srgb, #000000 10%, transparent)
+- `--ray-shadow-sm`: 0 1px 3px color-mix(in srgb, #000000 5%, transparent), 0 10px 15px -5px color-mix(in srgb, #000000 5%, transparent), 0 7px 7px -5px color-mix(in srgb, #000000 4%, transparent)
+- `--ray-shadow-md`: 0 1px 3px color-mix(in srgb, #000000 5%, transparent), 0 20px 25px -5px color-mix(in srgb, #000000 5%, transparent), 0 10px 10px -5px color-mix(in srgb, #000000 4%, transparent)
+- `--ray-shadow-lg`: 0 1px 3px color-mix(in srgb, #000000 5%, transparent), 0 28px 23px -7px color-mix(in srgb, #000000 5%, transparent), 0 12px 12px -7px color-mix(in srgb, #000000 4%, transparent)
+- `--ray-shadow-xl`: 0 1px 3px color-mix(in srgb, #000000 5%, transparent), 0 36px 28px -7px color-mix(in srgb, #000000 5%, transparent), 0 17px 17px -7px color-mix(in srgb, #000000 4%, transparent)
+
+gradient:
+
+- `--ray-gradient-from`: #3b5bdb
+- `--ray-gradient-to`: #6741d9
+- `--ray-gradient-deg`: 45deg
+
+overlay:
+
+- `--ray-overlay-blur`: 4px
+
+focus:
+
+- `--ray-focus-ring-width`: 2px
+- `--ray-focus-ring-offset`: 2px
+
+duration:
+
+- `--ray-duration-fast`: 120ms
+- `--ray-duration-base`: 200ms
+- `--ray-duration-slow`: 300ms
+
+easing:
+
+- `--ray-easing-standard`: cubic-bezier(0.2, 0, 0, 1)
+- `--ray-easing-in`: cubic-bezier(0.3, 0, 1, 1)
+- `--ray-easing-out`: cubic-bezier(0, 0, 0, 1)
+
+z:
+
+- `--ray-z-base`: 0
+- `--ray-z-sticky`: 200
+- `--ray-z-dropdown`: 300
+- `--ray-z-overlay`: 400
+- `--ray-z-modal`: 500
+- `--ray-z-popover`: 600
+- `--ray-z-toast`: 700
+- `--ray-z-tooltip`: 800
+
+breakpoint:
+
+- `breakpoint-xs` (tokens.json only): 36em
+- `breakpoint-sm` (tokens.json only): 48em
+- `breakpoint-md` (tokens.json only): 62em
+- `breakpoint-lg` (tokens.json only): 75em
+- `breakpoint-xl` (tokens.json only): 88em
+
+## Icons
+
+The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):
+
+`close`, `check`, `minus`, `plus`, `chevron-down`, `chevron-up`, `chevron-right`, `chevron-left`, `chevrons-left`, `chevrons-right`, `search`, `arrow-up-right`, `arrow-down-right`, `sun`, `moon`, `monitor`, `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `menu`, `more-horizontal`, `file`, `folder`, `pause`, `play`, `terminal`, `calendar`, `image`, `download`, `eye`, `eye-off`, `bell`, `copy`, `pipette`, `star`, `upload`, `paperclip`, `panel-left`, `settings`, `home`, `arrow-left`, `message-circle`
+
+## Core API
+
+What `@raylang/elements/core` (and `@raylang/elements`) exports besides the components: theme, icons, the native host, the base classes for your own components.
+
+```ts
+// Types of the ray-elements core runtime and extension API (core.js, form.js,
+// floating.js, styles.js, position.js, focus.js, icons.js, host.js, raylang.js). Hand-written;
+// the component declarations are generated after them into ray-elements.d.ts.
+
+export declare const PREFIX: string;
+export declare const THEME_EVENT: "ray-theme-change";
+
+export type Theme = "light" | "dark" | "system";
+export interface ThemeDetail {
+  theme: Theme;
+  resolved: "light" | "dark";
+  primary: string | null;
+}
+
+// --- styles and registration -------------------------------------------------
+
+/** A constructable stylesheet from CSS text, shared by every user of the same text. */
+export declare function css(strings: TemplateStringsArray | string, ...values: unknown[]): CSSStyleSheet;
+/** The base sheet every component adopts first. */
+export declare const hostStyles: CSSStyleSheet;
+/** Registers a custom element unless the tag is already taken. */
+export declare function define(tag: string, cls: CustomElementConstructor): void;
+/** A document-unique id with the given stem. */
+export declare function uid(stem?: string): string;
+
+/**
+ * App-wide settings. `defaults` apply, per tag, to elements connected afterwards,
+ * for the properties their markup and code leave unset.
+ */
+export declare function configure(options?: { defaults?: Record<string, Record<string, unknown>> }): void;
+/** The defaults configure() set for a tag. */
+export declare function getDefaults(tag: string): Record<string, unknown>;
+
+// --- theme -------------------------------------------------------------------
+
+export declare function getTheme(el?: Element): Theme;
+export declare function resolvedTheme(el?: Element): "light" | "dark";
+export declare function setTheme(theme: Theme, options?: { el?: Element; persist?: boolean }): void;
+export declare function getPrimary(el?: Element): string | null;
+export declare function setPrimary(color: string | null, options?: { el?: Element; persist?: boolean }): void;
+export declare function onThemeChange(cb: (detail: ThemeDetail) => void): () => void;
+/**
+ * Makes any CSS color the primary (data-primary="custom"): ten OKLCH shades,
+ * white or black text by contrast; warns below WCAG AA.
+ */
+export declare function definePrimary(
+  color: string,
+  options?: { el?: Element; persist?: boolean },
+): { shades: string[]; filled: string; contrast: "white" | "black"; ratio: number; aa: boolean };
+/** The color last given to definePrimary() for an element, as "#rrggbb" (null if none). */
+export declare function getCustomPrimary(el?: Element): string | null;
+
+// --- icons -------------------------------------------------------------------
+
+/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. */
+export declare function setIcons(icons: Record<string, string | SVGElement>): void;
+/** The SVG markup of a registered icon ("" if unknown). */
+export declare function getIcon(name: string): string;
+/** The registered icon names. */
+export declare function iconNames(): string[];
+
+// --- base classes ------------------------------------------------------------
+
+export interface PropertyOptions {
+  type?: StringConstructor | NumberConstructor | BooleanConstructor;
+  reflect?: boolean;
+  attribute?: string | false;
+  default?: unknown;
+}
+
+/**
+ * Base class of ray-elements components. Members whose name starts with `_` or `#`
+ * are internal: do not use them, and do not name your own members with `_`.
+ */
+export declare class RayElement extends HTMLElement {
+  static properties: Record<string, PropertyOptions>;
+  static styles: CSSStyleSheet[];
+  static template: string;
+  static delegatesFocus: boolean;
+  /** Adds stylesheets to this component and its subclasses, live instances included. */
+  static extendStyles(...sheets: CSSStyleSheet[]): void;
+  connectedCallback(): void;
+  disconnectedCallback(): void;
+  attributeChangedCallback(attr: string, old: string | null, value: string | null): void;
+  /** Schedules update() for the next microtask. */
+  requestUpdate(): void;
+  /** Protected: called after property changes with their previous values. */
+  protected update(changed: Map<string, unknown>): void;
+  /** Protected: sets a declared property without reflecting it (state changed by the user). */
+  commitProperty(name: string, value: unknown): boolean;
+  /** Protected: whether a declared property has its own value (not the default). */
+  hasValue(name: string): boolean;
+  /** Protected: fills [data-ray-icon] placeholders from the icon registry. */
+  paintIcons(root?: ParentNode): void;
+  /** Dispatches a bubbling, composed CustomEvent; false if a listener canceled it. */
+  emit<T = unknown>(type: string, detail?: T, options?: { cancelable?: boolean }): boolean;
+  /** querySelector inside the shadow root. */
+  $<E extends Element = HTMLElement>(selector: string): E | null;
+}
+
+/** A form-associated ray-elements element (ElementInternals). */
+export declare class FormControl extends RayElement {
+  static formAssociated: true;
+  readonly internals: ElementInternals;
+  readonly form: HTMLFormElement | null;
+  readonly validity: ValidityState;
+  readonly validationMessage: string;
+  readonly willValidate: boolean;
+  /** Disabled by its own attribute or by a disabled <fieldset>. */
+  readonly effectivelyDisabled: boolean;
+  checkValidity(): boolean;
+  reportValidity(): boolean;
+  /** Protected: re-dispatches a non-composed event (e.g. change) from the host. */
+  forward(event: Event): void;
+  formDisabledCallback(disabled: boolean): void;
+}
+
+/**
+ * A FormControl around one native control (#control in the shadow root),
+ * with label, description, error, required and their ARIA.
+ */
+export declare class FieldControl extends FormControl {
+  /** Spread into `static properties`: name, label, description, error, required, disabled, size, radius, variant. */
+  static fieldProperties: Record<string, PropertyOptions>;
+  /** The native control in the shadow root. */
+  readonly control: HTMLInputElement & HTMLTextAreaElement & HTMLSelectElement;
+  name: string | undefined;
+  label: string | undefined;
+  description: string | undefined;
+  error: string | undefined;
+  required: boolean | undefined;
+  disabled: boolean | undefined;
+  size: string;
+  radius: string | undefined;
+  variant: string;
+  descriptionPosition: string;
+  /** Protected hook: attach listeners once, on first connection. */
+  wire?(): void;
+  /** Protected: label, description, error, ARIA and validity (call from update). */
+  syncField(): void;
+  /** Protected: mirrors the native control's validity into the form. */
+  syncValidity(): void;
+}
+/** The field wrapper markup around `control` (an element with id="control" class="control"). */
+export declare function fieldTemplate(control: string, options?: { sections?: boolean }): string;
+export declare const fieldStyles: CSSStyleSheet;
+export declare const boxStyles: CSSStyleSheet;
+
+/** Base of trigger + floating panel components (Popover API, anchored placement). */
+export declare class Floating extends RayElement {
+  /** popover attribute of the panel: "manual" (default; light dismiss and exit animation done by Floating) or "auto" (the browser's, no exit animation). */
+  static popoverMode: "auto" | "manual";
+  /** Close on Escape and outside presses (default true; tooltips: false). */
+  static lightDismiss: boolean;
+  /** aria-haspopup of the trigger (null: none). */
+  static haspopup: string | null;
+  /** Selector of the slot holding the trigger. */
+  static triggerSlot: string;
+  open: boolean | undefined;
+  placement: string;
+  offset: number;
+  /** The [popover] panel in the shadow root (set on connection). */
+  panel: HTMLElement;
+  readonly trigger: Element | null;
+  /** Whether focus was inside the panel when it started closing. */
+  focusWasInside: boolean | undefined;
+  show(): void;
+  hide(): void;
+  toggle(): void;
+  /** Places the panel again (scroll and resize already do it). */
+  reposition(): void;
+  /** Protected hooks. */
+  wireTrigger(trigger: Element): void;
+  anchorRect(): { left: number; top: number; right: number; bottom: number; width: number; height: number };
+  placeOptions(): PlaceOptions;
+  popupKind(): string | null;
+  toggled(open: boolean): void;
+  /** Keyframes the panel leaves with (default: fade + scale 0.97). */
+  exitKeyframes(): Keyframe[];
+  /** Whether the same pointer gesture just light-dismissed the panel. */
+  justClosed(): boolean;
+}
+export declare const floatingStyles: CSSStyleSheet;
+
+// --- shared styles -----------------------------------------------------------
+
+export declare const COLORS: string[];
+export declare const VARIANT_TOKENS: string[];
+/** Points an element's --_<variant> properties at a palette color, any CSS color, or the primary. */
+export declare function applyColor(el: HTMLElement, color: string | undefined): void;
+/** A spacing value as CSS: xs…xl as its --ray-space token, a bare number as px, else a CSS length; null when empty. */
+export declare function spaceValue(value: string | number | undefined): string | null;
+/** :host size scale: --_h, --_fs, --_px, --_gap by [size]. */
+export declare const sizeStyles: CSSStyleSheet;
+/** :host radius: --_r by [radius]. */
+export declare const radiusStyles: CSSStyleSheet;
+/** [data-variant] backgrounds/colors from the --_<variant> properties. */
+export declare const variantStyles: CSSStyleSheet;
+/** The backdrop of modal overlays: --ray-overlay and --ray-overlay-blur on dialog::backdrop. */
+export declare const overlayStyles: CSSStyleSheet;
+// --- motion and light dismiss ------------------------------------------------
+
+/** A duration token in ms ("fast" | "base" | "slow"). */
+export declare function duration(el: Element, name?: "fast" | "base" | "slow"): number;
+/** False with reduced motion, a zero duration token or a hidden page. */
+export declare function motionAllowed(el: Element, name?: "fast" | "base" | "slow"): boolean;
+/** Plays keyframes (fill: forwards); resolves at once when motion is not allowed. Call cancel() after hiding. */
+export declare function play(el: Element, keyframes: Keyframe[], options?: { speed?: "fast" | "base" | "slow"; ease?: "standard" | "in" | "out"; pseudoElement?: string }): { finished: Promise<void>; cancel(): void };
+/** Waits for several play() results. */
+export declare function playAll(list: Array<{ finished: Promise<void>; cancel(): void }>): { finished: Promise<void>; cancel(): void };
+/** Fades and folds an element to zero height. */
+export declare function collapseOut(el: Element, options?: { speed?: "fast" | "base" | "slow" }): { finished: Promise<void>; cancel(): void };
+/** The default exit of floating panels. */
+export declare const POP_OUT: Keyframe[];
+/** Registers an open manual panel for Escape / outside-press dismissal; returns the unregister function. */
+export declare function dismissable(entry: { panel: Element; owner: Element; trigger?: Element | null; close: (reason: "outside" | "escape" | "replaced") => void }): () => void;
+
+/** Sets --ray-overlay-blur on an element: a number (px), a CSS length or "none"; empty removes it. */
+export declare function applyOverlayBlur(el: HTMLElement, value: string | number | null | undefined): void;
+/** A ring spinner: <span class="loader">. */
+export declare const loaderStyles: CSSStyleSheet;
+/** .sr-only: hidden but announced. */
+export declare const srOnlyStyles: CSSStyleSheet;
+
+// --- positioning and focus ---------------------------------------------------
+
+export interface PlaceOptions {
+  placement?: string;
+  offset?: number;
+  padding?: number;
+  flip?: boolean;
+  matchWidth?: boolean;
+}
+export declare function place(
+  anchor: { left: number; top: number; right: number; bottom: number; width: number; height: number },
+  floating: HTMLElement,
+  options?: PlaceOptions,
+): string;
+export declare function pointRect(x: number, y: number): DOMRectReadOnly;
+export declare function autoUpdate(anchor: Element | object, floating: HTMLElement, update: () => void): () => void;
+/** Tabbable elements under root, through shadow roots and slots. */
+export declare function tabbables(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): HTMLElement[];
+/** Focuses the first [autofocus] or tabbable element; whether something got focus. */
+export declare function focusFirst(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): boolean;
+
+// --- charts (core/charts.js) -----------------------------------------------------
+
+/** Number of series colors (--ray-chart-1 … --ray-chart-8). */
+export declare const CHART_SERIES: number;
+/** The chart tokens resolved to concrete colors for the theme of an element. */
+export interface ChartTheme {
+  scheme: "light" | "dark";
+  /** Series colors, in order (#rrggbb). */
+  series: string[];
+  background: string;
+  grid: string;
+  axis: string;
+  text: string;
+  tooltip: { background: string; text: string; border: string };
+  font: { family: string; size: number };
+}
+export declare function chartTheme(el?: Element): ChartTheme;
+/** Calls cb with the new chart theme whenever the theme changes; returns a stop function. */
+export declare function onChartThemeChange(cb: (theme: ChartTheme) => void, el?: Element): () => void;
+/** A color with an alpha, as rgba(): withAlpha("#1c7ed6", 0.2). */
+export declare function withAlpha(color: string, alpha: number): string;
+
+// --- scrolling ---------------------------------------------------------------
+
+/** The scroller of an element: `target`, else the content of its ray-app-shell or ray-scroll-area, else the window. */
+export declare function scrollerOf(el: Element, target?: Element | string | null): Element | Window;
+/** Calls cb with the scroll position and direction ("down" | "up") once per frame; returns a stop function. */
+export declare function watchScroll(scroller: Element | Window, cb: (state: { y: number; direction: "up" | "down" }) => void, options?: { tolerance?: number }): () => void;
+
+// --- native host (core/host.js, core/raylang.js) -----------------------------
+
+/** A file a native host chose: a path on disk, with the File fields components read. */
+export declare class HostFile {
+  constructor(init: { path: string; name?: string; size?: number; type?: string; lastModified?: number });
+  readonly path: string;
+  readonly name: string;
+  readonly size: number;
+  readonly type: string;
+  readonly lastModified: number;
+}
+export interface FileFilter {
+  name: string;
+  extensions: string[];
+}
+/** What the program around the page can do natively; components use it when it is there. */
+export interface Host {
+  name: string;
+  can(op: "pick_files" | "pick_path" | "confirm" | "menu_items" | "run_menu" | "popup_menu" | "window_colors" | "set_edited" | (string & {})): boolean;
+  pickFiles?(options?: { title?: string; multiple?: boolean; directory?: string; filters?: FileFilter[] }): Promise<HostFile[]>;
+  pickPath?(options?: { mode?: "open" | "folder" | "save"; title?: string; directory?: string; suggested?: string; filters?: FileFilter[] }): Promise<string | null>;
+  menuItems?(): Promise<HostMenuItem[]>;
+  runMenu?(tag: string): Promise<true>;
+  popupMenu?(items: { title?: string; enabled?: boolean; checked?: boolean; separator?: boolean }[]): Promise<number | null>;
+  setEdited?(edited: boolean): Promise<true>;
+  setWindowColors?(colors: { background?: string; titlebar?: string }): Promise<true>;
+  /** Set when the page runs under a transparent title bar (px). */
+  titlebar?: { height: number; inset: number } | null;
+  confirm?(options?: { title?: string; message?: string; confirmLabel?: string; cancelLabel?: string; style?: "" | "info" | "warning" | "error" }): Promise<boolean>;
+}
+/** An item of the app's native menu bar, as a host lists it. */
+export interface HostMenuItem {
+  menu: string;
+  tag: string;
+  title: string;
+  /** A chord such as "cmd+shift+s" (cmd: ⌘ on macOS, Ctrl elsewhere); "" for none. */
+  shortcut: string;
+  enabled: boolean;
+  checked: boolean;
+}
+export declare function setHost(host: Host | null): void;
+export declare function getHost(): Host | null;
+export declare function hostCan(op: string): boolean;
+/** Calls cb whenever the host changes; returns the unsubscribe function. */
+export declare function onHostChange(cb: (host: Host | null) => void): () => void;
+/** The title bar the page runs under ({ height, inset } px), or null. */
+export declare function titlebar(): { height: number; inset: number } | null;
+/** Makes el drag the window under a host's title bar (data-ray-drag); returns the undo function. */
+export declare function dragRegion(el: Element): () => void;
+export interface EditTracker {
+  readonly dirty: boolean;
+  /** Takes the current values as saved. */
+  clean(): void;
+  check(): void;
+  stop(): void;
+}
+/** Follows whether a form has unsaved changes; with a host, the window shows it. */
+export declare function trackEdits(form: HTMLFormElement, options?: { onChange?: (dirty: boolean) => void }): EditTracker;
+/** The MIME type of a file name, from its extension ("" when unknown). */
+export declare function typeOfName(name: string): string;
+/** The file dialog filters of an accept list ([] = any file); `name` defaults to the extensions. */
+export declare function acceptFilters(accept: string | null | undefined, name?: string): FileFilter[];
+/** The extensions of a MIME type or pattern ("image/*"). */
+export declare function extensionsOfType(type: string): string[];
+
+/** The version of the ray-elements bridge protocol the page speaks. */
+export declare const PROTOCOL: number;
+export interface RaylangHost extends Host {
+  name: "raylang";
+  platform: string;
+  version: string;
+}
+/**
+ * In a std/ui window whose program calls elements/bridge's handle(), installs the
+ * raylang host; null in a browser or when the program does not answer in `timeout` ms.
+ */
+export declare function enableRaylang(options?: { timeout?: number; ray?: unknown; windowColors?: boolean }): Promise<RaylangHost | null>;
+```

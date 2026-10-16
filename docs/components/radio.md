@@ -1,0 +1,156 @@
+# Radio group
+
+One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.
+
+Import: `import "@raylang/elements/radio";` · Category: Inputs
+
+## `<ray-radio-group>` (RayRadioGroup, extends FormControl)
+
+Arrow keys move the selection, Tab enters and leaves the group.
+
+Properties:
+
+- `value`: string. Value of the checked radio. Initial: the value attribute, or a radio with the checked attribute.
+- `name`: string. Form field name.
+- `label`: string. Group label (also its accessible name).
+- `description`: string. Help text.
+- `descriptionPosition` (attribute `description-position`): `above` | `below`, default `above`, reflects. The description before the control (help first) or after it, with the error (fields in a row stay aligned).
+- `error`: string. Error text.
+- `required`: boolean. A choice is needed to submit.
+- `disabled`: boolean. Disables every radio.
+- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. Layout of the radios.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size of every radio.
+- `color`: string. Checked color of every radio.
+- `variant`: `filled` | `outline`, default `filled`, reflects. Checked look of every radio: filled circle, or colored ring and dot.
+
+Events:
+
+- `input`: When the user picks a radio.
+- `change`: When the user picks a radio.
+
+Slots:
+
+- (default): ray-radio elements (may be wrapped in layout elements).
+
+Methods and properties:
+
+- `readonly radios: RayRadio[]`: The radios of the group.
+
+Vue `v-model`: `value` (updated on change).
+
+## `<ray-radio>` (RayRadio, extends RayElement)
+
+Properties:
+
+- `value`: string, reflects. Value given to the group when chosen.
+- `label`: string. Label text (or the content).
+- `description`: string. Help text under the label.
+- `disabled`: boolean. Cannot be chosen.
+- `color`: string. Overrides the group color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`. Overrides the group size.
+- `variant`: `filled` | `outline`, reflects. Overrides the group variant.
+
+Slots:
+
+- (default): Label content.
+
+Parts (`::part()`):
+
+- `indicator`: The circle.
+- `label`: The label.
+
+Methods and properties:
+
+- `readonly checked: boolean`: Whether this radio is the group's value.
+
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+
+## Example
+
+The markup of the site's live example (the `demo-*` classes are the site's, not ray-elements's).
+
+```html
+<div class="demo-caption">Delivery, with a live total</div>
+<div class="demo-split">
+  <ray-radio-group id="demo-shipping" label="Delivery" name="shipping" value="standard" description="Prices include taxes.">
+    <ray-radio value="standard" label="Standard · free" description="4–6 business days"></ray-radio>
+    <ray-radio value="express" label="Express · $9.00" description="1–2 business days"></ray-radio>
+    <ray-radio value="pickup" label="Pick up in store · free" description="Ready tomorrow from 10:00"></ray-radio>
+    <ray-radio value="drone" label="Drone · $24.00" description="Not available at your address" disabled></ray-radio>
+  </ray-radio-group>
+  <dl class="demo-summary">
+    <div><dt>Subtotal</dt><dd>$48.00</dd></div>
+    <div><dt>Delivery</dt><dd id="demo-shipping-cost">$0.00</dd></div>
+    <div class="total"><dt>Total</dt><dd id="demo-shipping-total">$48.00</dd></div>
+    <p class="demo-muted" id="demo-shipping-eta">Arrives in 4–6 business days.</p>
+  </dl>
+</div>
+
+<div class="demo-caption">Horizontal, colors and the outline variant</div>
+<div class="demo-grid">
+  <ray-radio-group label="Theme" orientation="horizontal" color="violet" value="dark">
+    <ray-radio value="light">Light</ray-radio>
+    <ray-radio value="dark">Dark</ray-radio>
+    <ray-radio value="system">System</ray-radio>
+  </ray-radio-group>
+  <ray-radio-group label="Backups" orientation="horizontal" variant="outline" color="teal" value="daily">
+    <ray-radio value="hourly">Hourly</ray-radio>
+    <ray-radio value="daily">Daily</ray-radio>
+    <ray-radio value="weekly">Weekly</ray-radio>
+  </ray-radio-group>
+  <ray-radio-group label="Size" orientation="horizontal" color="orange" size="md" value="m">
+    <ray-radio value="s">S</ray-radio>
+    <ray-radio value="m">M</ray-radio>
+    <ray-radio value="l">L</ray-radio>
+    <ray-radio value="xl" disabled>XL</ray-radio>
+  </ray-radio-group>
+</div>
+
+<div class="demo-caption">Sizes</div>
+<div class="demo-row">
+  <ray-radio-group aria-label="Extra small" size="xs" value="a"><ray-radio value="a">xs</ray-radio></ray-radio-group>
+  <ray-radio-group aria-label="Small" size="sm" value="a"><ray-radio value="a">sm</ray-radio></ray-radio-group>
+  <ray-radio-group aria-label="Medium" size="md" value="a"><ray-radio value="a">md</ray-radio></ray-radio-group>
+  <ray-radio-group aria-label="Large" size="lg" value="a"><ray-radio value="a">lg</ray-radio></ray-radio-group>
+  <ray-radio-group aria-label="Extra large" size="xl" value="a"><ray-radio value="a">xl</ray-radio></ray-radio-group>
+</div>
+
+<div class="demo-caption">Required, in a form</div>
+<form class="demo-auth" id="demo-survey" novalidate>
+  <ray-radio-group id="demo-source" name="source" label="How did you hear about ray·elements?" description-position="below" description="One answer." required>
+    <ray-radio value="friend">A friend or a colleague</ray-radio>
+    <ray-radio value="search">A search engine</ray-radio>
+    <ray-radio value="talk">A talk or a meetup</ray-radio>
+    <ray-radio value="other">Somewhere else</ray-radio>
+  </ray-radio-group>
+  <div class="demo-actions"><ray-button type="submit">Send</ray-button><span class="demo-muted" id="demo-survey-out"></span></div>
+</form>
+
+<script type="module">
+  // Delivery: the total follows the choice.
+  const prices = { standard: 0, express: 9, pickup: 0, drone: 24 };
+  const eta = { standard: "Arrives in 4–6 business days.", express: "Arrives in 1–2 business days.", pickup: "Ready tomorrow from 10:00.", drone: "" };
+  const shipping = document.getElementById("demo-shipping");
+  const money = (n) => `$${n.toFixed(2)}`;
+  shipping.addEventListener("change", () => {
+    const cost = prices[shipping.value] ?? 0;
+    document.getElementById("demo-shipping-cost").textContent = money(cost);
+    document.getElementById("demo-shipping-total").textContent = money(48 + cost);
+    document.getElementById("demo-shipping-eta").textContent = eta[shipping.value] ?? "";
+  });
+
+  // Required: the error shows on submit and goes away with an answer.
+  const form = document.getElementById("demo-survey");
+  const source = document.getElementById("demo-source");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (!source.value) {
+      source.error = "Pick one to continue.";
+      document.getElementById("demo-survey-out").textContent = "";
+      return;
+    }
+    document.getElementById("demo-survey-out").textContent = `Thanks! source=${new FormData(form).get("source")}`;
+  });
+  source.addEventListener("change", () => { source.error = ""; });
+</script>
+```

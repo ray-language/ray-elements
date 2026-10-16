@@ -3,7 +3,7 @@
 //
 //   tools/run.sh build                 tokens + docs + package
 //   tools/run.sh tokens [--check]      tokens.toml -> dist/tokens.css, dist/tokens.json, docs/foundations.html
-//   tools/run.sh docs                  component.toml + *.md -> docs/ (site), src/index.js
+//   tools/run.sh docs                  component.toml + *.md -> docs/ (site, llms.txt), src/index.js
 //   tools/run.sh add NAME... --into DIR [--all] [--overwrite]
 //   tools/run.sh package               packages/{elements,react,vue} (npm)
 //   tools/run.sh wrap --components DIR --out DIR
@@ -36,6 +36,7 @@ import site/search;
 import site/modules;
 import site/notfound;
 import site/publish;
+import site/llms;
 from site/model import Page;
 import integrations/package;
 import integrations/raylang;
@@ -243,6 +244,17 @@ fn cmd_docs(o: Opts) -> Result<int, string> {
         fs.write_file("${root}/docs/${p.file}", modules.inject(root, shell.render(p, colors), p.body, cs, p.file)?)?;
     }
     print("  wrote docs/components/*.html (${component_pages.len()} components)");
+    // The docs for AI agents: llms.txt, llms-full.txt and a .md per component.
+    var notes = 0;
+    for (rel, content) in llms.files(root, cs, tokens, version)? {
+        if (rel.starts_with("components/")) {
+            fs.write_file("${root}/docs/${rel}", content)?;
+            notes = notes + 1;
+        } else {
+            write(root, "docs/${rel}", content)?;
+        }
+    }
+    print("  wrote docs/components/*.md (${notes} components)");
     // The palette also lists foundations.html (written by `tokens`).
     let searchable = pages + [foundations.render(tokens)?];
     write(root, "docs/search-index.js", search.index_js(cs, searchable))?;

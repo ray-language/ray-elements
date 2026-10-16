@@ -1,0 +1,249 @@
+# Drawer
+
+A panel sliding in from an edge: a RayDialog (focus, Escape, persistent, data-dialog-close, returnValue) with another look; modeless for side panels that keep the page interactive.
+
+Import: `import "@raylang/elements/drawer";` · Category: Overlays
+
+## `<ray-drawer>` (RayDrawer, extends RayElement)
+
+Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue).
+
+Properties:
+
+- `open`: boolean, reflects. Shown.
+- `label`: string. Heading (also the accessible name).
+- `description`: string. A line under the title (the drawer's accessible description).
+- `position`: `right` | `left` | `top` | `bottom`, default `right`, reflects. The edge it slides from.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.
+- `modeless`: boolean, reflects. No backdrop nor scroll lock: the page stays interactive (a side panel).
+- `floating`: boolean, reflects. Detached from the edge, with rounded corners.
+- `persistent`: boolean, reflects. Escape and backdrop clicks do not close it.
+- `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
+
+Events:
+
+- `ray-open`: After it opened.
+- `ray-close` (detail `{ returnValue: string }`): After it closed; detail: { returnValue }.
+- `ray-request-close` (detail `{ source: "escape" | "backdrop" | "button" }`): Escape, backdrop or close button; cancelable.
+
+Slots:
+
+- (default): Body (scrolls).
+- `header`: Extra header content.
+- `footer`: Actions, at the bottom.
+
+Parts (`::part()`):
+
+- `drawer`: The native <dialog>.
+- `body`: The body.
+
+Methods and properties:
+
+- `show(): void`: Opens it.
+- `close(returnValue?: string): void`: Closes it with an optional return value.
+- `returnValue: string`: The value it was closed with.
+
+Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+
+## Example
+
+The markup of the site's live example (the `demo-*` classes are the site's, not ray-elements's).
+
+```html
+<div class="demo-caption">Patterns</div>
+<div class="demo-launchers">
+  <article class="demo-launcher" style="--c: var(--ray-blue-light-color); --bg: var(--ray-blue-light)">
+    <span class="demo-launcher-icon"><ray-icon name="download"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Cart</strong><span>From the right: items you can change, a running total, the checkout pinned to the footer.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-cart">Open</ray-button><span data-drawer-out="drw-cart"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-violet-light-color); --bg: var(--ray-violet-light)">
+    <span class="demo-launcher-icon"><ray-icon name="settings"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Filters</strong><span>From the left with a blurred backdrop; Apply reports what was picked.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-filters">Open</ray-button><span data-drawer-out="drw-filters"></span></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-teal-light-color); --bg: var(--ray-teal-light)">
+    <span class="demo-launcher-icon"><ray-icon name="menu"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Mobile navigation</strong><span>A floating panel (<code>floating</code>, <code>size="xs"</code>) with links and the account at the bottom.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-nav">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-gray-light-color); --bg: var(--ray-gray-light)">
+    <span class="demo-launcher-icon"><ray-icon name="terminal"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Build log</strong><span>From the bottom (<code>size="18rem"</code>), with the status in the header.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-log">Open</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-orange-light-color); --bg: var(--ray-orange-light)">
+    <span class="demo-launcher-icon"><ray-icon name="panel-left"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Inspector</strong><span><code>modeless</code>: no backdrop, the page stays usable; the button toggles it.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" id="drw-inspect-toggle">Toggle</ray-button></div>
+  </article>
+  <article class="demo-launcher" style="--c: var(--ray-red-light-color); --bg: var(--ray-red-light)">
+    <span class="demo-launcher-icon"><ray-icon name="alert-triangle"></ray-icon></span>
+    <div class="demo-launcher-text"><strong>Unsaved changes</strong><span>Escape and the backdrop are refused (<code>ray-request-close</code>) while the note is edited.</span></div>
+    <div class="demo-launcher-foot"><ray-button size="sm" variant="default" data-drawer="drw-note">Open</ray-button><span data-drawer-out="drw-note"></span></div>
+  </article>
+</div>
+
+<div class="demo-caption">Positions and sizes</div>
+<div class="demo-row">
+  <ray-button size="xs" variant="light" data-drawer-at="left">left</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="right">right</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="top">top</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="bottom">bottom</ray-button>
+  <span class="demo-indicator-sep"></span>
+  <ray-button size="xs" variant="default" data-drawer-size="xs">xs</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="md">md</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="xl">xl</ray-button>
+  <ray-button size="xs" variant="default" data-drawer-size="40%">40%</ray-button>
+</div>
+
+<ray-drawer id="drw-cart" label="Your cart" size="sm">
+  <ray-badge slot="header" variant="light" normal-case id="drw-cart-count">3 items</ray-badge>
+  <ul class="demo-cart" id="drw-cart-items">
+    <li data-price="29"><span class="thumb" style="--c: var(--ray-violet-light)"></span><span class="what"><b>ray-elements sticker pack</b><small>$29.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="1"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+    <li data-price="48"><span class="thumb" style="--c: var(--ray-teal-light)"></span><span class="what"><b>Mechanical keycap set</b><small>$48.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="1"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+    <li data-price="12"><span class="thumb" style="--c: var(--ray-orange-light)"></span><span class="what"><b>raylang mug</b><small>$12.00</small></span><ray-segmented-control size="xs" aria-label="Quantity" value="2"><option>1</option><option>2</option><option>3</option></ray-segmented-control></li>
+  </ul>
+  <dl class="demo-summary">
+    <div><dt>Subtotal</dt><dd id="drw-cart-sub">$101.00</dd></div>
+    <div><dt>Shipping</dt><dd>Free</dd></div>
+    <div class="total"><dt>Total</dt><dd id="drw-cart-total">$101.00</dd></div>
+  </dl>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="default" data-dialog-close="keep">Keep shopping</ray-button>
+    <ray-button data-dialog-close="checkout">Check out</ray-button>
+  </div>
+</ray-drawer>
+
+<ray-drawer id="drw-filters" label="Filters" description="12 results" position="left" size="sm" overlay-blur="2px">
+  <div class="demo-stack">
+    <div class="demo-filter-checks" id="drw-filter-checks" role="group" aria-labelledby="drw-filter-cat-label">
+      <span class="demo-field-title" id="drw-filter-cat-label">Category</span>
+      <ray-checkbox label="Components" value="components" checked></ray-checkbox>
+      <ray-checkbox label="Templates" value="templates" checked></ray-checkbox>
+      <ray-checkbox label="Icons" value="icons"></ray-checkbox>
+      <ray-checkbox label="Charts" value="charts"></ray-checkbox>
+    </div>
+    <ray-slider id="drw-filter-price" label="Max price" min="0" max="200" step="10" value="120" show-value unit=" $"></ray-slider>
+    <div class="demo-field">Sort by
+      <ray-segmented-control id="drw-filter-sort" full-width size="xs" aria-label="Sort by" value="popular"><option value="popular">Popular</option><option value="new">Newest</option><option value="price">Price</option></ray-segmented-control>
+    </div>
+    <ray-switch id="drw-filter-free" label="Free only"></ray-switch>
+  </div>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="subtle" id="drw-filter-reset">Reset</ray-button>
+    <ray-button data-dialog-close="apply">Apply</ray-button>
+  </div>
+</ray-drawer>
+
+<ray-drawer id="drw-nav" label="ray·elements" position="left" size="xs" floating>
+  <nav class="demo-drawer-nav" aria-label="App">
+    <ray-nav-link label="Dashboard" active><ray-icon slot="left" name="monitor"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Builds" description="2 running"><ray-icon slot="left" name="terminal"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Releases"><ray-icon slot="left" name="download"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Files"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
+    <ray-nav-link label="Settings"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
+  </nav>
+  <div slot="footer" class="demo-drawer-account"><ray-avatar name="Ada Lovelace" color="pink" size="sm"></ray-avatar><span><b>Ada Lovelace</b><small>ada@ray.dev</small></span></div>
+</ray-drawer>
+
+<ray-drawer id="drw-log" label="Build #482" description="ray-remote · main · 4.1 s" position="bottom" size="18rem">
+  <ray-badge slot="header" variant="dot" color="green" normal-case>Passed</ray-badge>
+  <pre class="demo-drawer-log"><span class="t">12:00:01</span> build started on <b>runner-3</b>
+<span class="t">12:00:02</span> resolving 14 dependencies
+<span class="t">12:00:04</span> compiled 42 modules
+<span class="t">12:00:04</span> <span class="w">warn</span> unused import std/fs in src/sync.ray:3
+<span class="t">12:00:05</span> tests: 128 passed, 0 failed
+<span class="t">12:00:05</span> <span class="ok">done</span> in 4.1 s</pre>
+</ray-drawer>
+
+<ray-drawer id="drw-inspect" label="Inspector" description="ray-card · 3 children" modeless size="sm">
+  <dl class="demo-inspect">
+    <div><dt>tag</dt><dd>ray-card</dd></div>
+    <div><dt>padding</dt><dd>lg</dd></div>
+    <div><dt>radius</dt><dd>lg</dd></div>
+    <div><dt>with-border</dt><dd>true</dd></div>
+    <div><dt>size</dt><dd>320 × 184</dd></div>
+  </dl>
+  <p class="demo-muted">No backdrop and no scroll lock: keep scrolling the page while it is open. Escape or × closes it.</p>
+</ray-drawer>
+
+<ray-drawer id="drw-note" label="Edit note" size="md">
+  <div class="demo-stack">
+    <ray-input id="drw-note-title" label="Title" value="Release checklist"></ray-input>
+    <ray-textarea id="drw-note-body" label="Note" rows="6" value="Bump the version, tag, build the bundles, publish update.json."></ray-textarea>
+    <span class="demo-muted" id="drw-note-state">No changes yet: Escape closes it.</span>
+  </div>
+  <div slot="footer" class="demo-drawer-foot">
+    <ray-button variant="default" data-dialog-close="discard">Discard</ray-button>
+    <ray-button data-dialog-close="save">Save</ray-button>
+  </div>
+</ray-drawer>
+
+<ray-drawer id="drw-demo" label="A drawer" size="sm">
+  <p class="demo-muted" id="drw-demo-text">position="right" · size="sm"</p>
+</ray-drawer>
+
+<script type="module">
+  const out = (id, text) => { document.querySelector(`[data-drawer-out="${id}"]`).textContent = text; };
+  for (const button of document.querySelectorAll("[data-drawer]")) {
+    button.addEventListener("click", () => document.getElementById(button.dataset.drawer).show());
+  }
+
+  // Cart: quantities change the total.
+  const money = (n) => `$${n.toFixed(2)}`;
+  const items = [...document.querySelectorAll("#drw-cart-items li")];
+  const total = () => {
+    let sum = 0, count = 0;
+    for (const li of items) { const q = Number(li.querySelector("ray-segmented-control").value || 1); sum += q * Number(li.dataset.price); count += q; }
+    document.getElementById("drw-cart-sub").textContent = money(sum);
+    document.getElementById("drw-cart-total").textContent = money(sum);
+    document.getElementById("drw-cart-count").textContent = `${count} items`;
+    return sum;
+  };
+  for (const li of items) li.querySelector("ray-segmented-control").addEventListener("change", total);
+  document.getElementById("drw-cart").addEventListener("ray-close", (e) => out("drw-cart", e.detail.returnValue === "checkout" ? `checkout: ${money(total())}` : `returnValue: "${e.detail.returnValue}"`));
+
+  // Filters: Apply reports the choice; Reset restores it.
+  const checks = [...document.querySelectorAll("#drw-filter-checks ray-checkbox")];
+  const price = document.getElementById("drw-filter-price");
+  const sort = document.getElementById("drw-filter-sort");
+  const free = document.getElementById("drw-filter-free");
+  document.getElementById("drw-filter-reset").addEventListener("click", () => {
+    checks.forEach((c, i) => { c.checked = i < 2; });
+    price.value = 120; sort.value = "popular"; free.checked = false;
+  });
+  document.getElementById("drw-filters").addEventListener("ray-close", (e) => {
+    if (e.detail.returnValue !== "apply") return;
+    const picked = checks.filter((c) => c.checked).map((c) => c.value);
+    out("drw-filters", `${picked.join("+") || "all"} · ≤ $${free.checked ? 0 : price.value} · ${sort.value}`);
+  });
+
+  // Inspector: modeless, toggled.
+  const inspect = document.getElementById("drw-inspect");
+  document.getElementById("drw-inspect-toggle").addEventListener("click", () => { inspect.open = !inspect.open; });
+
+  // Unsaved: refuse Escape, the backdrop and × once something changed.
+  const note = document.getElementById("drw-note");
+  const state = document.getElementById("drw-note-state");
+  let dirty = false;
+  for (const id of ["drw-note-title", "drw-note-body"]) {
+    document.getElementById(id).addEventListener("input", () => { dirty = true; state.textContent = "Edited: Escape and the backdrop are refused; Save or Discard."; });
+  }
+  note.addEventListener("ray-request-close", (e) => {
+    if (!dirty) return;
+    e.preventDefault();
+    state.textContent = `Refused (${e.detail.source}): Save or Discard first.`;
+  });
+  note.addEventListener("ray-close", (e) => { out("drw-note", `returnValue: "${e.detail.returnValue}"`); dirty = false; state.textContent = "No changes yet: Escape closes it."; });
+
+  // Positions and sizes: one drawer, reconfigured.
+  const demo = document.getElementById("drw-demo");
+  const describe = () => { document.getElementById("drw-demo-text").textContent = `position="${demo.position}" · size="${demo.size}"`; };
+  for (const b of document.querySelectorAll("[data-drawer-at]")) b.addEventListener("click", () => { demo.position = b.dataset.drawerAt; demo.size = "sm"; describe(); demo.show(); });
+  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "right"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
+</script>
+```
