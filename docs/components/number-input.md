@@ -54,7 +54,7 @@ Exports (from `@raylang/elements/number-input` and `@raylang/elements`):
 - `function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number`: The number in a text with separators, prefix or suffix (NaN if none).
 - `function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string`: A number as text with fixed decimals and separators.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
 
 ## Example
 

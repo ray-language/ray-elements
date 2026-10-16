@@ -75,7 +75,7 @@ for raw in ui.events() {
 
 Declare the menus with `bridge.menu` (and change them with `bridge.replace_menu` and `bridge.set_menu_item`) so the palette knows them.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
 
 ## Example
 

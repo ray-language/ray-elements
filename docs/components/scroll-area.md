@@ -37,7 +37,7 @@ Methods and properties:
 - `scrollToStart(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the top (left).
 - `scrollToEnd(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the bottom (right when horizontal).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
 
 ## Example
 

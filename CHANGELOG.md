@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-10-16
+
 ### Added
 
 - Docs for AI agents: `llms.txt` (the rules for using the components, and a

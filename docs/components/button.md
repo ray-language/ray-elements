@@ -37,7 +37,7 @@ Methods and properties:
 
 - `readonly form: HTMLFormElement | null`: The form a submit/reset button acts on.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
 
 ## Example
 

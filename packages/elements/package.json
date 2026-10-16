@@ -1,6 +1,6 @@
 {
   "name": "@raylang/elements",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Web components for any app, with raylang extras (shadcn/ui + Mantine inspired)",
   "license": "Apache-2.0",
   "keywords": ["web-components", "custom-elements", "design-system", "ui", "raylang"],
