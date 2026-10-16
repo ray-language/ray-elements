@@ -10,7 +10,7 @@ setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGEleme
 
 Properties:
 
-- `name`: string, reflects. Registered icon name (iconNames()).
+- `name`: string, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
 - `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.

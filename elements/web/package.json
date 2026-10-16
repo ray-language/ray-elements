@@ -20,6 +20,9 @@
   "main": "./index.js",
   "module": "./index.js",
   "types": "./ray-elements.d.ts",
+  "bin": {
+    "ray-elements": "./check/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./ray-elements.d.ts",
@@ -28,6 +31,10 @@
     "./core": {
       "types": "./ray-elements.d.ts",
       "default": "./core.js"
+    },
+    "./check": {
+      "types": "./check/check.d.ts",
+      "default": "./check/check.js"
     },
     "./button": {
       "types": "./ray-elements.d.ts",

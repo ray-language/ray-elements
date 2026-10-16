@@ -23,7 +23,8 @@ extras for raylang apps. Names:
 
 - `ray-elements.toml` — the project's single version and npm metadata.
 - `tokens.toml` — design tokens; `src/` — components (`component.toml` +
-  js/css + `example.html`) and `src/integrations/` (the web side of the bridge).
+  js/css + `example.html`) and `src/integrations/` (the React and Vue
+  runtimes, and `check/`: the markup checker, `ray-elements check`).
 - `tools/` — the tooling, in raylang. Run it as `tools/run.sh <cmd>` from
   anywhere: `build`, `tokens`, `docs`, `add`, `package`, `wrap`, `webtest`,
   `site`. Its tests: `cd tools && ray test`.

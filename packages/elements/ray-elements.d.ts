@@ -1923,7 +1923,7 @@ export interface RayCodeEventMap extends HTMLElementEventMap {
 // --- Icon (icon)
 /** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
-  /** Registered icon name (iconNames()). */
+  /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name: string | undefined;
   /** xs…xl or any CSS length. Default: 1em. */
   size: string | undefined;

@@ -125,7 +125,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <figure class="demo-phone-fig">
     <div class="demo-phone">
       <ray-app-shell style="height: 100%">
-        <ray-app-bar slot="header" label="Library" scroll="hide"></ray-app-bar>
+        <ray-app-bar slot="header" label="Library" scroll-behavior="hide"></ray-app-bar>
         <ul class="demo-feed" id="demo-bn-feed"></ul>
         <ray-bottom-nav slot="bottom" value="library" hide-on-scroll labels="active">
           <ray-bottom-nav-item value="library" label="Library" icon="folder"></ray-bottom-nav-item>
