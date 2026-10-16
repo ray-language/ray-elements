@@ -6434,6 +6434,13 @@
               "fieldName": "value"
             },
             {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The initial value of checked. Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute)."
+            },
+            {
               "name": "label",
               "type": {
                 "text": "string"
@@ -6495,6 +6502,14 @@
             },
             {
               "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute)."
+            },
+            {
+              "kind": "field",
               "name": "label",
               "type": {
                 "text": "string"
@@ -6552,11 +6567,6 @@
               "description": "Overrides the group variant.",
               "attribute": "variant",
               "reflects": true
-            },
-            {
-              "kind": "field",
-              "name": "checked",
-              "description": "Whether this radio is the group's value."
             }
           ],
           "events": [],

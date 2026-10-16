@@ -957,6 +957,8 @@ export declare class RayRadioGroup extends FormControl {
 export declare class RayRadio extends RayElement {
   /** Value given to the group when chosen. */
   value: string | undefined;
+  /** Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute). */
+  checked: boolean | undefined;
   /** Label text (or the content). */
   label: string | undefined;
   /** Help text under the label. */
@@ -969,8 +971,6 @@ export declare class RayRadio extends RayElement {
   size: "xs" | "sm" | "md" | "lg" | "xl" | undefined;
   /** Overrides the group variant. */
   variant: "filled" | "outline" | undefined;
-  /** Whether this radio is the group's value. */
-  readonly checked: boolean;
 }
 
 // --- Search (search)

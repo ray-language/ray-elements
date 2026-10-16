@@ -217,9 +217,26 @@ export class RayRadio extends RayElement {
     this._groupDisabled = false;
   }
 
-  /** Whether this radio is the group's choice (read-only: set the group's value). */
+  /** Whether this radio is the group's choice. Setting it sets the group's
+   * value, like `checked` on a native radio (no events). */
   get checked() {
     return this._checked;
+  }
+
+  set checked(on) {
+    on = Boolean(on);
+    const group = this.closest("ray-radio-group");
+    if (!group) {
+      this._setChecked(on);
+      return;
+    }
+    if (on) {
+      group.value = this.value;
+      for (const r of group.radios) r._setChecked(r === this);
+    } else if (this._checked) {
+      group.value = undefined;
+      this._setChecked(false);
+    }
   }
 
   _setChecked(on) {

@@ -10,6 +10,6 @@ export const RayRadioGroup = /*#__PURE__*/ createComponent("ray-radio-group", {
 });
 export const RayRadio = /*#__PURE__*/ createComponent("ray-radio", {
   displayName: "RayRadio",
-  properties: ["value", "label", "description", "disabled", "color", "size", "variant"],
+  properties: ["value", "checked", "label", "description", "disabled", "color", "size", "variant"],
   events: {  },
 });
