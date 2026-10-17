@@ -11,6 +11,7 @@
 // the document title, the palette colors of the primary picker.
 
 from site/model import Page, NavItem, Group, Link;
+from integrations/package import Info;
 import site/layout;
 import site/brand;
 
@@ -27,8 +28,18 @@ const NAV: [(string, string, string)] = [
     ("raylang", "raylang.html", "raylang")
 ];
 
+// Where the site links out: the repository and the npm package.
+pub struct Links {
+    repo: string,
+    npm: string,
+}
+
+pub fn links(i: Info) -> Links {
+    Links { repo: i.repository, npm: "https://www.npmjs.com/package/${i.scope}/elements" }
+}
+
 // The whole HTML document of a page. `colors`: palette colors for the primary picker.
-pub fn render(p: Page, colors: [string]) -> string {
+pub fn render(p: Page, colors: [string], links: Links) -> string {
     let home = p.key == "home";
     let title = if (home) {
         "ray·elements — web components for any app, with raylang extras"
@@ -68,7 +79,9 @@ pub fn render(p: Page, colors: [string]) -> string {
         brand.mark(INK, 16, true),
         base,
         p.key,
-        p.markdown
+        p.markdown,
+        links.repo,
+        links.npm
     )
 }
 

@@ -471,6 +471,7 @@ pre.code code, .prose pre code { font-size: inherit; }
 .agents > div { padding: var(--ray-space-4); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-lg); }
 .agents h3 { margin: 0; font-size: var(--ray-font-size-md); }
 .agents p { margin: var(--ray-space-2) 0 0; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm); }
+.page-source { margin: 0 0 var(--ray-space-6); font-size: var(--ray-font-size-sm); }
 .api-markdown { margin: 0 0 var(--ray-space-4); color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm); }
 
 /* --- responsive -------------------------------------------------------------- */
