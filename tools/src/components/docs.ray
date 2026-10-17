@@ -259,7 +259,13 @@ fn prop_row(p: Prop) -> string {
     } else {
         p.kind
     };
-    let attr = if (p.attribute == "") { "&mdash;" } else { "<code>${p.attribute}</code>" };
+    let attr = if (p.attribute != "") {
+        "<code>${p.attribute}</code>"
+    } else if (p.initial != "") {
+        "<code>${p.initial}</code> (initial)"
+    } else {
+        "&mdash;"
+    };
     let def = if (p.default_value == "") { "" } else { "<code>${escape(p.default_value)}</code>" };
     let reflect = if (p.reflect) { " <span class=\"reflects\">reflects</span>" } else { "" };
     "<tr><td><code>${p.name}</code></td><td>${attr}${reflect}</td><td>${kind}</td><td>${def}</td><td>${escape(p.description)}</td></tr>"

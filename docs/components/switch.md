@@ -10,7 +10,7 @@ Same properties and events as ray-checkbox (indeterminate does not apply).
 
 Properties:
 
-- `checked` (property only): boolean. Current state. The checked attribute is the initial state.
+- `checked` (attribute `checked`: the initial value only): boolean. Current state. The checked attribute is the initial state.
 - `value`: string, default `on`. Submitted value when on.
 - `name`: string. Form field name.
 - `label`: string. Label text (or the content).

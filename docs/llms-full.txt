@@ -434,7 +434,7 @@ Import: `import "@raylang/elements/checkbox";` · Category: Inputs
 
 Properties:
 
-- `checked` (property only): boolean. Current state. The checked attribute is the initial state (restored on reset).
+- `checked` (attribute `checked`: the initial value only): boolean. Current state. The checked attribute is the initial state (restored on reset).
 - `indeterminate`: boolean, reflects. Mixed state; cleared on the next user change.
 - `value`: string, default `on`, reflects. Submitted value when checked.
 - `name`: string. Form field name.
@@ -478,7 +478,7 @@ The group is the form control: one entry per checked value under name (like chec
 
 Properties:
 
-- `value` (property only): `string[]`. The checked values. The value attribute: "a,b".
+- `value` (attribute `value`: the initial value only): `string[]`. The checked values. The value attribute: "a,b".
 - `name`: string, reflects. Form field name.
 - `label`: string. Group label (also its accessible name).
 - `description`: string. Help text.
@@ -615,7 +615,7 @@ The WAI-ARIA combobox pattern (a text field with a listbox popup; the active opt
 
 Properties:
 
-- `value` (property only): `string | string[]`. The chosen value; an array with multiple. The value attribute: "a,b" with multiple.
+- `value` (attribute `value`: the initial value only): `string | string[]`. The chosen value; an array with multiple. The value attribute: "a,b" with multiple.
 - `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean; group?: string }>`. Options instead of child <option>/<optgroup> elements.
 - `multiple`: boolean, reflects. Several values, shown as chips.
 - `placeholder`: string. Shown while empty.
@@ -1293,7 +1293,7 @@ Same properties and events as ray-checkbox (indeterminate does not apply).
 
 Properties:
 
-- `checked` (property only): boolean. Current state. The checked attribute is the initial state.
+- `checked` (attribute `checked`: the initial value only): boolean. Current state. The checked attribute is the initial state.
 - `value`: string, default `on`. Submitted value when on.
 - `name`: string. Form field name.
 - `label`: string. Label text (or the content).

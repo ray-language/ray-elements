@@ -564,6 +564,11 @@
       "description": "A checkbox with label, description and error. Submits value when checked.",
       "attributes": [
         {
+          "name": "checked",
+          "description": "Current state. The checked attribute is the initial state (restored on reset).",
+          "valueSet": "v"
+        },
+        {
           "name": "indeterminate",
           "description": "Mixed state; cleared on the next user change.",
           "valueSet": "v"
@@ -646,6 +651,42 @@
               "name": "left"
             }
           ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
         }
       ]
     },
@@ -653,6 +694,10 @@
       "name": "ray-checkbox-group",
       "description": "The group is the form control: one entry per checked value under name (like checkboxes sharing a name); the checkboxes inside lose their own name. It stops their change events and fires its own. role=\"group\" named by its label.",
       "attributes": [
+        {
+          "name": "value",
+          "description": "The checked values. The value attribute: \"a,b\"."
+        },
         {
           "name": "name",
           "description": "Form field name."
@@ -919,6 +964,10 @@
       "description": "The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.",
       "attributes": [
         {
+          "name": "value",
+          "description": "The chosen value; an array with multiple. The value attribute: \"a,b\" with multiple."
+        },
+        {
           "name": "multiple",
           "description": "Several values, shown as chips.",
           "valueSet": "v"
@@ -953,6 +1002,104 @@
           "name": "open",
           "description": "The dropdown is shown.",
           "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
         }
       ]
     },
@@ -1520,6 +1667,104 @@
           "name": "readonly",
           "description": "Not editable, still submitted.",
           "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
         }
       ]
     },
@@ -2188,6 +2433,31 @@
               "name": "unstyled"
             }
           ]
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
         }
       ]
     },
@@ -2366,6 +2636,30 @@
               "name": "unstyled"
             }
           ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
         }
       ]
     },
@@ -2455,6 +2749,50 @@
         {
           "name": "unit",
           "description": "Appended to the shown value and its spoken text (%, px, ms…)."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
         }
       ]
     },
@@ -2462,6 +2800,11 @@
       "name": "ray-switch",
       "description": "Same properties and events as ray-checkbox (indeterminate does not apply).",
       "attributes": [
+        {
+          "name": "checked",
+          "description": "Current state. The checked attribute is the initial state.",
+          "valueSet": "v"
+        },
         {
           "name": "value",
           "description": "Submitted value when on."
@@ -2543,6 +2886,42 @@
             },
             {
               "name": "outline"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
             }
           ]
         }
@@ -2645,6 +3024,30 @@
             },
             {
               "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
             }
           ]
         },
@@ -3464,6 +3867,10 @@
           "name": "native",
           "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
           "valueSet": "v"
+        },
+        {
+          "name": "offset",
+          "description": "Gap to the anchor in px."
         }
       ]
     },
@@ -3642,6 +4049,15 @@
           "name": "disabled",
           "description": "Never shows.",
           "valueSet": "v"
+        },
+        {
+          "name": "open",
+          "description": "Shown.",
+          "valueSet": "v"
+        },
+        {
+          "name": "offset",
+          "description": "Gap to the anchor in px."
         }
       ]
     },

@@ -168,7 +168,9 @@ fn element(el: Element, els: [Element], h: string) -> string {
 
 // - `fullWidth` (attribute `full-width`): boolean, default `false`. Takes…
 fn prop_line(p: Prop) -> string {
-    let attr = if (p.attribute == "") {
+    let attr = if (p.initial != "") {
+        " (attribute `${p.initial}`: the initial value only)"
+    } else if (p.attribute == "") {
         " (property only)"
     } else if (p.attribute != p.name) {
         " (attribute `${p.attribute}`)"
@@ -350,6 +352,7 @@ fn describes_a_property() {
         values: [],
         default_value: "",
         reflect: true,
+        initial: "",
         ts: "",
         description: "Takes the whole width."
     };
@@ -359,6 +362,8 @@ fn describes_a_property() {
     p.default_value = "a";
     p.reflect = false;
     assert_eq(prop_line(p), "- `fullWidth` (property only): `a` | `b`, default `a`. Takes the whole width.");
+    p.initial = "full-width";
+    assert_eq(prop_line(p), "- `fullWidth` (attribute `full-width`: the initial value only): `a` | `b`, default `a`. Takes the whole width.");
 }
 
 @test

@@ -12,6 +12,7 @@ extends = "FieldControl"
 
 [ray-checkbox.properties.checked]
 attribute = false
+initial = true
 type = "boolean"
 description = "Current state. The checked attribute is the initial state (restored on reset)."
 

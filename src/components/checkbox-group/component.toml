@@ -13,6 +13,7 @@ summary = "The group is the form control: one entry per checked value under name
 
 [ray-checkbox-group.properties.value]
 attribute = false
+initial = true
 type = "array"
 ts = "string[]"
 description = "The checked values. The value attribute: \"a,b\"."

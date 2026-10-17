@@ -3,13 +3,13 @@
 
 import std/json;
 from std/json import Obj, Arr;
-from components/meta import Component, Element, Prop, Named, all_elements, all_props, all_attrs, all_events;
+from components/meta import Component, Element, Prop, Named, parse, base_elements, all_elements, all_props, all_attrs, all_events;
 from integrations/ts import prop_type, event_type, is_dom_prop;
 
 // `prefix`: the path of the components' directory from the manifest
 // ("components/" in @raylang/elements).
 pub fn custom_elements(cs: [Component], prefix: string) -> Result<string, string> {
-    let els = all_elements(cs);
+    let els = base_elements() + all_elements(cs);
     var modules = json.arr();
     for c in cs {
         for f in c.files {
@@ -71,6 +71,11 @@ fn declaration(els: [Element], el: Element, c: Component) -> Obj {
                 a = a.field("default", p.default_value);
             }
             attributes = attributes.item(a);
+        } else if (p.initial != "") {
+            attributes = attributes.item(json.obj()
+                .field("name", p.initial)
+                .field("type", t)
+                .field("description", "The initial value of ${p.name}. ${p.description}"));
         }
         if (!is_dom_prop(p.name)) {
             var m = json.obj()
@@ -132,16 +137,17 @@ fn declaration(els: [Element], el: Element, c: Component) -> Obj {
 }
 
 pub fn vscode_data(cs: [Component]) -> Result<string, string> {
-    let els = all_elements(cs);
+    let els = base_elements() + all_elements(cs);
     var tags = json.arr();
     for c in cs {
         for el in c.elements {
             var attrs = json.arr();
             for p in all_props(els, el) {
-                if (p.attribute == "") {
+                let name = if (p.attribute != "") { p.attribute } else { p.initial };
+                if (name == "") {
                     continue;
                 }
-                var a = json.obj().field("name", p.attribute).field("description", p.description);
+                var a = json.obj().field("name", name).field("description", p.description);
                 if (p.values.len() > 0) {
                     var vs = json.arr();
                     for v in p.values {
@@ -171,4 +177,38 @@ pub fn vscode_data(cs: [Component]) -> Result<string, string> {
 // Indented, keeping the authored key order.
 fn pretty(o: Obj) -> Result<string, string> {
     Result.Ok(json.render_pretty(o, 2) + "\n")
+}
+
+@test
+fn lists_inherited_and_initial_attributes() {
+    let src = `[component]
+name = "Thing"
+category = "Inputs"
+summary = "A thing."
+files = ["thing.js"]
+requires = []
+tags = ["ray-thing"]
+
+[ray-thing]
+class = "RayThing"
+extends = "FieldControl"
+
+[ray-thing.properties.checked]
+attribute = false
+initial = true
+type = "boolean"
+
+[ray-thing.properties.data]
+attribute = false
+type = "array"
+`;
+    let cs = [parse("thing", src).unwrap()];
+    let cem = custom_elements(cs, "components/").unwrap();
+    assert(cem.contains("\"name\": \"label\""));
+    assert(cem.contains("\"name\": \"description-position\""));
+    assert(cem.contains("\"name\": \"checked\""));
+    let vs = vscode_data(cs).unwrap();
+    assert(vs.contains("\"name\": \"label\""));
+    assert(vs.contains("\"name\": \"checked\""));
+    assert(!vs.contains("\"name\": \"data\""));
 }
