@@ -29,7 +29,7 @@ Exports (from `@raylang/elements/grid` and `@raylang/elements`):
 - `function parseCols(value: string | number | undefined): { base?: number; xs?: number; sm?: number; md?: number; lg?: number; xl?: number }`: "1 sm:2 lg:4" as counts per width.
 - `const BREAKPOINTS: { xs: string; sm: string; md: string; lg: string; xl: string }`: The widths of cols (36em, 48em, 62em, 75em, 88em).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.2.
 
 ## Example
 

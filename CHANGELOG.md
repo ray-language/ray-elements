@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-10-17
+
 ### Added
 
 - `ray-elements check`, a checker of the markup that uses ray-elements, in

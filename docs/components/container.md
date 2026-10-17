@@ -20,7 +20,7 @@ Exports (from `@raylang/elements/container` and `@raylang/elements`):
 
 - `const CONTAINER_SIZES: { xs: string; sm: string; md: string; lg: string; xl: string }`: The maximum widths of size.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.2.
 
 ## Example
 
