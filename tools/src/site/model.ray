@@ -26,6 +26,8 @@ pub struct Page {
     body: string,
     // Class of <main> (landing, prose, foundations…).
     main_class: string,
+    // The page's Markdown for AI agents, relative to it ("button.md"); "": none.
+    markdown: string,
 }
 
 // An entry of the site navigation, as the layout template shows it.
@@ -67,7 +69,8 @@ pub fn page(
         description: description,
         groups: groups,
         body: body,
-        main_class: main_class
+        main_class: main_class,
+        markdown: ""
     }
 }
 

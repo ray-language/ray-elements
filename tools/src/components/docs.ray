@@ -83,7 +83,7 @@ pub fn index(cs: [Component]) -> Page {
 <p class="catalog-eyebrow">ray·elements · components</p>
 <h1 class="page-title">Components</h1>
 <p class="page-intro">${cs.len()} web components for any app: a live example, its code in HTML, React and Vue, and its API generated from its <code>component.toml</code>.</p>
-<ul class="catalog-facts"><li><b>${cs.len()}</b> components</li><li><b>${cats.len()}</b> categories</li><li><b>3</b> ways to write them: HTML, React, Vue</li><li><a href="components/all.html">All on one page</a></li></ul>
+<ul class="catalog-facts"><li><b>${cs.len()}</b> components</li><li><b>${cats.len()}</b> categories</li><li><b>3</b> ways to write them: HTML, React, Vue</li><li><a href="components/all.html">All on one page</a></li><li><a href="llms.txt">llms.txt</a> for AI agents</li></ul>
 <nav class="catalog-jump" aria-label="Categories">${join(jumps, "")}</nav>
 </header>`
     ];
@@ -123,7 +123,7 @@ pub fn pages(cs: [Component]) -> [Page] {
         let body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="../components.html">Components</a><span aria-hidden="true">/</span><a href="../components.html#${slug_of(c.category)}">${escape(c.category)}</a></nav>
 ${relocate(component(c, els, true), cs, true)}
 <nav class="pager" aria-label="Components">${prev}${next}</nav>`;
-        out.push(page(
+        let p = page(
             "components/${c.dir}.html",
             "components",
             c.name,
@@ -131,7 +131,9 @@ ${relocate(component(c, els, true), cs, true)}
             sidebar(list, "", ".html"),
             body,
             "components-page"
-        ));
+        );
+        p.markdown = "${c.dir}.md";
+        out.push(p);
     }
     out
 }
@@ -213,7 +215,11 @@ fn component(c: Component, els: [Element], own_page: bool) -> string {
 <p class="summary">${escape(c.summary)}</p>`
     };
     // On its own page the API gets its own heading (h1 → h2 → h3).
-    let api_head = if (own_page) { "<h2 class=\"api-title\">API</h2>\n" } else { "" };
+    let api_head = if (own_page) {
+        "<h2 class=\"api-title\">API</h2>\n<p class=\"api-markdown\">For AI agents: <a href=\"${c.dir}.md\">this API as Markdown</a>, or every component in <a href=\"../llms-full.txt\">llms-full.txt</a>.</p>\n"
+    } else {
+        ""
+    };
     let raylang = if (c.raylang == "") {
         ""
     } else {
