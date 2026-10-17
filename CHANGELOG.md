@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `size` of `ray-button`, `ray-icon-button` and `ray-toggle` takes any CSS
+  length besides xs…xl; the font, the padding and the icon follow.
+  `<ray-icon-button size="5.5rem" radius="full" variant="gradient">` is the big
+  main action of a phone screen (start, pause, record).
+
 ## [0.5.2] - 2026-10-17
 
 ### Added

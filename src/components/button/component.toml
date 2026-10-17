@@ -28,10 +28,10 @@ description = "A palette color (blue, red…) or any CSS color. Default: the pri
 
 [ray-button.properties.size]
 type = "string"
-values = ["xs", "sm", "md", "lg", "xl"]
 default = "sm"
 reflect = true
-description = "Height, padding and font size."
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | (string & {})'
+description = "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow)."
 
 [ray-button.properties.radius]
 type = "string"

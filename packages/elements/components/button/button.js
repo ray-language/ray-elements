@@ -1,7 +1,12 @@
 // <ray-button>: a button (or a link, with href) in Mantine's variants.
+// `size` is xs…xl or any CSS length: the height, with the font, the padding
+// and the gap in the proportions of the scale (a big round main action:
+// <ray-icon-button size="5.5rem" radius="full">).
 
 import { RayElement, css, define } from "../../core/core.js";
 import { applyColor, applyGradient, sizeStyles, radiusStyles, variantStyles, loaderStyles } from "../../core/styles.js";
+
+const SIZES = ["xs", "sm", "md", "lg", "xl"];
 
 const styles = css`
   :host {
@@ -190,6 +195,7 @@ export class RayButton extends RayElement {
       }
     }
     el.toggleAttribute("aria-busy", Boolean(this.loading));
+    this._applySize();
     // ARIA put on the host (by the app, a popover, a menu…) belongs to the inner button.
     for (const attr of MIRRORED_ARIA) {
       const v = this.getAttribute(attr);
@@ -201,6 +207,17 @@ export class RayButton extends RayElement {
     const ids = (this.getAttribute("aria-describedby") ?? "").split(/\s+/).filter(Boolean);
     if ("ariaDescribedByElements" in el) {
       el.ariaDescribedByElements = ids.length ? ids.map((id) => this.getRootNode().getElementById?.(id) ?? document.getElementById(id)).filter(Boolean) : null;
+    }
+  }
+
+  // A length sets sizeStyles' variables inline (over its :host rules).
+  _applySize() {
+    const length = this.size && !SIZES.includes(this.size) ? this.size : "";
+    if (length === (this._length ?? "")) return;
+    this._length = length;
+    for (const [prop, ratio] of [["--_h", 1], ["--_fs", 0.4], ["--_px", 0.5], ["--_gap", 0.22]]) {
+      if (length) this.style.setProperty(prop, ratio === 1 ? length : `calc(${length} * ${ratio})`);
+      else this.style.removeProperty(prop);
     }
   }
 

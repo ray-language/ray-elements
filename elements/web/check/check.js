@@ -74,13 +74,19 @@ function indexManifest(manifests) {
   return index;
 }
 
+// The literals of a union are its values. `(string & {})` beside them (keeps
+// the literals in autocompletion) is the system's "or any CSS length" (size
+// of buttons, dialogs, drawers).
 function attribute(a) {
   const text = a.type?.text ?? "string";
   const parts = text.split("|").map((s) => s.trim());
   const literals = parts.filter((s) => /^"[^"]*"$/.test(s)).map((s) => s.slice(1, -1));
   const others = parts.filter((s) => !/^"[^"]*"$/.test(s) && s !== "undefined" && s !== "null");
-  return { name: a.name, boolean: text === "boolean", values: literals.length > 0 && others.length === 0 ? literals : null };
+  const length = others.length === 1 && others[0] === "(string & {})";
+  return { name: a.name, boolean: text === "boolean", values: literals.length > 0 && (others.length === 0 || length) ? literals : null, length };
 }
+
+const LENGTH = /^(?:-?(?:\d+\.?\d*|\.\d+)(?:px|r?em|ex|ch|lh|vw|vh|vmin|vmax|dvh|svh|lvh|cm|mm|in|pt|pc|q|%)|0|(?:calc|min|max|clamp|var)\(.*\))$/i;
 
 /** The language of a file by its extension: "html" (also Vue, Svelte, Astro) or "jsx". */
 export function languageOf(file) {
@@ -220,8 +226,9 @@ function attributeChecks(a, tok, el, parent, language, icons, allow, report) {
   if (a.value === null || a.dynamic || n.bound) return;
   if (attr.boolean && a.value === "false") {
     report(a.pos, "error", "boolean-value", `${name}="false" still means true on <${tok.name}>: a boolean attribute is present or absent`);
-  } else if (attr.values && !attr.values.includes(a.value) && !allow[name]?.includes(a.value)) {
-    report(a.pos, "error", "invalid-value", `${name}="${a.value}" is not valid on <${tok.name}>: one of ${attr.values.map((v) => `"${v}"`).join(", ")}`);
+  } else if (attr.values && !attr.values.includes(a.value) && !allow[name]?.includes(a.value) && !(attr.length && LENGTH.test(a.value.trim()))) {
+    const or = attr.length ? " or a CSS length" : "";
+    report(a.pos, "error", "invalid-value", `${name}="${a.value}" is not valid on <${tok.name}>: one of ${attr.values.map((v) => `"${v}"`).join(", ")}${or}`);
   }
   // "none" (or nothing) draws no icon: a blank that keeps the alignment.
   if (el.tag === "ray-icon" && name === "name" && icons && a.value !== "" && a.value !== "none" && !icons.has(a.value)) {

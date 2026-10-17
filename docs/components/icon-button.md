@@ -14,7 +14,7 @@ Properties:
 - `variant`: `filled` | `light` | `outline` | `subtle` | `default` | `transparent` | `gradient` | `raised`, default `subtle`, reflects. Visual style.
 - `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
 - `color`: string. A palette color or any CSS color.
-- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Width and height.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | (string & {})`, default `sm`, reflects. Width and height: xs…xl or any CSS length ("5.5rem": a big main action, round with radius=full); the icon scales with it.
 - `disabled`: boolean. Not interactive.
 - `loading`: boolean. Shows a spinner instead of the icon.
 
@@ -59,6 +59,13 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-icon-button variant="light" size="lg" label="Add"><ray-icon name="plus"></ray-icon></ray-icon-button>
   <ray-icon-button variant="light" size="xl" label="Add"><ray-icon name="plus"></ray-icon></ray-icon-button>
 </div>
+
+<div class="demo-caption">A main action: any CSS length</div>
+<div class="demo-row">
+  <ray-icon-button variant="gradient" size="5.5rem" radius="full" label="Start"><ray-icon name="play"></ray-icon></ray-icon-button>
+  <ray-icon-button variant="raised" color="red" size="4rem" radius="full" label="Pause"><ray-icon name="pause"></ray-icon></ray-icon-button>
+</div>
+<p class="demo-muted" style="margin: 0"><code>size</code> takes a length for the big button of a phone screen (start, pause, record); the icon scales with it.</p>
 
 <div class="demo-caption">Radius</div>
 <div class="demo-row">

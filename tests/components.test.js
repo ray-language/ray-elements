@@ -136,6 +136,34 @@ T.test("icon-button: label names the button", async (T) => {
   box.remove();
 });
 
+T.test("icon-button: size takes a CSS length; the icon scales with it", async (T) => {
+  const box = await mount(`<ray-icon-button label="Start" radius="full"><svg></svg></ray-icon-button><ray-icon-button label="Add" size="xl"><svg></svg></ray-icon-button>`);
+  const [big, xl] = box.children;
+  const width = (el) => inner(el, "button").getBoundingClientRect().width;
+  const icon = (el) => el.querySelector("svg").getBoundingClientRect().width;
+  const small = width(big);
+  big.size = "88px";
+  await T.settle();
+  T.eq(Math.round(width(big)), 88, "88px wide");
+  T.eq(Math.round(inner(big, "button").getBoundingClientRect().height), 88, "and high");
+  T.ok(icon(big) > 35, `the icon follows (${icon(big)}px)`);
+  T.ok(width(big) > width(xl), "bigger than xl");
+  big.size = "md";
+  await T.settle();
+  T.eq(big.style.getPropertyValue("--_h"), "", "a scale size clears the inline length");
+  T.ok(width(big) > small && width(big) < 88, "md again");
+  box.remove();
+});
+
+T.test("button: size takes a CSS length; the font follows", async (T) => {
+  const box = await mount(`<ray-button size="4rem">Start</ray-button><ray-button size="xl">Start</ray-button>`);
+  const [big, xl] = box.children;
+  const b = inner(big, "button");
+  T.eq(Math.round(b.getBoundingClientRect().height), 64, "4rem high");
+  T.ok(parseFloat(getComputedStyle(b).fontSize) > parseFloat(getComputedStyle(inner(xl, "button")).fontSize), "a bigger font than xl");
+  box.remove();
+});
+
 T.test("input: label, description, error wiring", async (T) => {
   const box = await mount(`<ray-input label="Email" description="Help" error="Bad"></ray-input>`);
   const el = box.firstElementChild;

@@ -45,24 +45,7 @@
         },
         {
           "name": "size",
-          "description": "Height, padding and font size.",
-          "values": [
-            {
-              "name": "xs"
-            },
-            {
-              "name": "sm"
-            },
-            {
-              "name": "md"
-            },
-            {
-              "name": "lg"
-            },
-            {
-              "name": "xl"
-            }
-          ]
+          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow)."
         },
         {
           "name": "radius",
@@ -211,24 +194,7 @@
         },
         {
           "name": "size",
-          "description": "Width and height.",
-          "values": [
-            {
-              "name": "xs"
-            },
-            {
-              "name": "sm"
-            },
-            {
-              "name": "md"
-            },
-            {
-              "name": "lg"
-            },
-            {
-              "name": "xl"
-            }
-          ]
+          "description": "Width and height: xs…xl or any CSS length (\"5.5rem\": a big main action, round with radius=full); the icon scales with it."
         },
         {
           "name": "disabled",
@@ -351,24 +317,7 @@
         },
         {
           "name": "size",
-          "description": "Height, padding and font size.",
-          "values": [
-            {
-              "name": "xs"
-            },
-            {
-              "name": "sm"
-            },
-            {
-              "name": "md"
-            },
-            {
-              "name": "lg"
-            },
-            {
-              "name": "xl"
-            }
-          ]
+          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow)."
         },
         {
           "name": "radius",

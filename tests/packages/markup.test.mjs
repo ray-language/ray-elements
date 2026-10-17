@@ -49,6 +49,7 @@ test("unknown elements, attributes, values and slots", () => {
     `<ray-icon-button><ray-icon name="settings"></ray-icon></ray-icon-button>`,
     `<ray-table columns="a,b"></ray-table>`,
     `<div style="color: #333"></div>`,
+    `<ray-icon-button label="Go" size="5.5rem"></ray-icon-button><ray-dialog size="calc(100% - 2rem)"></ray-dialog><ray-icon-button label="Go" size="huge"></ray-icon-button>`,
   ].join("\n");
   assert.deepEqual(rules(src), [
     "1:unknown-element",
@@ -61,6 +62,7 @@ test("unknown elements, attributes, values and slots", () => {
     "7:missing-label",
     "8:property-only",
     "9:literal-color",
+    "10:invalid-value",
   ]);
   const [typo] = checkMarkup(`<ray-buton></ray-buton>`, { manifest });
   assert.match(typo.message, /did you mean "ray-button"/);
