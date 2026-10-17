@@ -17,6 +17,10 @@ change the API.
   on `ray-checkbox` and `ray-switch`, `value` on `ray-checkbox-group` and
   `ray-combobox` (marked `initial = true` in `component.toml`); the API pages
   and `llms-full.txt` say so instead of "property only".
+- `ray-radio`: `checked` can be set, as on a native radio (`radio.checked =
+  true` makes it the group's value, without events); it was read-only, so
+  `<RayRadio checked>` in React 19 threw. Its `checked` attribute, which marks
+  the group's initial value, is in the manifests too.
 
 ## [0.5.1] - 2026-10-16
 

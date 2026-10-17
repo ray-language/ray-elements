@@ -9,6 +9,6 @@ export const RayRadioGroup = /*#__PURE__*/ createComponent("RayRadioGroup", "ray
   model: { prop: "value", events: ["change"] },
 });
 export const RayRadio = /*#__PURE__*/ createComponent("RayRadio", "ray-radio", {
-  properties: ["value", "label", "description", "disabled", "color", "size", "variant"],
-  booleans: ["disabled"],
+  properties: ["value", "checked", "label", "description", "disabled", "color", "size", "variant"],
+  booleans: ["checked", "disabled"],
 });

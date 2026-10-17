@@ -43,6 +43,7 @@ Vue `v-model`: `value` (updated on change).
 Properties:
 
 - `value`: string, reflects. Value given to the group when chosen.
+- `checked` (attribute `checked`: the initial value only): boolean. Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute).
 - `label`: string. Label text (or the content).
 - `description`: string. Help text under the label.
 - `disabled`: boolean. Cannot be chosen.
@@ -58,10 +59,6 @@ Parts (`::part()`):
 
 - `indicator`: The circle.
 - `label`: The label.
-
-Methods and properties:
-
-- `readonly checked: boolean`: Whether this radio is the group's value.
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.1.
 

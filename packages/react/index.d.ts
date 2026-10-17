@@ -782,6 +782,8 @@ export declare const RayRadioGroup: React.ForwardRefExoticComponent<RayRadioGrou
 export interface RayRadioOwnProps {
   /** Value given to the group when chosen. */
   value?: string;
+  /** Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute). */
+  checked?: boolean;
   /** Label text (or the content). */
   label?: string;
   /** Help text under the label. */
