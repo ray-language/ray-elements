@@ -94,7 +94,7 @@ fn team() -> [Member] {
     ]
 }
 
-pub fn render(components: int, version: string, colors: [string]) -> Page {
+pub fn render(components: int, version: string, colors: [string], repo: string) -> Page {
     // The swatches are palette colors; "custom" (definePrimary) has no fixed shade to show.
     let palette: [string] = [];
     for c in colors {
@@ -111,7 +111,8 @@ pub fn render(components: int, version: string, colors: [string]) -> Page {
         palette,
         highlight.code(HTML_SNIPPET, "html"),
         highlight.code(REACT_SNIPPET, "tsx"),
-        highlight.code(VUE_SNIPPET, "vue")
+        highlight.code(VUE_SNIPPET, "vue"),
+        repo
     );
     page(
         "index.html",

@@ -1,4 +1,4 @@
-{% params mark: string, bars: [model.Bar], team: [model.Member], components: int, version: string, colors: [string], html: string, react: string, vue: string %}
+{% params mark: string, bars: [model.Bar], team: [model.Member], components: int, version: string, colors: [string], html: string, react: string, vue: string, repo: string %}
 {% import site/model %}
 <section class="hero">
 <div class="wrap">
@@ -8,6 +8,7 @@
 <div class="ctas">
 <ray-button size="lg" href="getting-started.html">Get started</ray-button>
 <ray-button size="lg" variant="default" href="components.html">Browse components</ray-button>
+<ray-button size="lg" variant="default" href="{{ repo }}"><ray-icon slot="left" name="github"></ray-icon>GitHub</ray-button>
 </div>
 <div class="facts">
 <ray-badge color="gray" normal-case>v{{ version }}</ray-badge>

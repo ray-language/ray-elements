@@ -112,7 +112,8 @@ pub fn index(cs: [Component]) -> Page {
 }
 
 // docs/components/<dir>.html: one component.
-pub fn pages(cs: [Component]) -> [Page] {
+// `repo`: the repository, for each component's source link.
+pub fn pages(cs: [Component], repo: string) -> [Page] {
     let els = base_elements() + all_elements(cs);
     let list = ordered(cs);
     let out: [Page] = [];
@@ -121,7 +122,7 @@ pub fn pages(cs: [Component]) -> [Page] {
         let prev = if (i > 0) { "<a class=\"pager-prev\" href=\"${list[i - 1].dir}.html\"><small>Previous</small>${escape(list[i - 1].name)}</a>" } else { "<span></span>" };
         let next = if (i + 1 < list.len()) { "<a class=\"pager-next\" href=\"${list[i + 1].dir}.html\"><small>Next</small>${escape(list[i + 1].name)}</a>" } else { "<span></span>" };
         let body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="../components.html">Components</a><span aria-hidden="true">/</span><a href="../components.html#${slug_of(c.category)}">${escape(c.category)}</a></nav>
-${relocate(component(c, els, true), cs, true)}
+${relocate(component(c, els, "${repo}/tree/main/src/components/${c.dir}"), cs, true)}
 <nav class="pager" aria-label="Components">${prev}${next}</nav>`;
         let p = page(
             "components/${c.dir}.html",
@@ -147,7 +148,7 @@ pub fn all(cs: [Component]) -> Page {
         "<p class=\"page-intro\">Every component on one page. Each also has <a href=\"../components.html\">its own page</a>.</p>"
     ];
     for c in ordered(cs) {
-        body.push(relocate(component(c, els, false), cs, false));
+        body.push(relocate(component(c, els, ""), cs, false));
     }
     page(
         "components/all.html",
@@ -190,7 +191,9 @@ fn first_sentence(s: string) -> string {
     }
 }
 
-fn component(c: Component, els: [Element], own_page: bool) -> string {
+// `source`: on the component's own page, the URL of its source; "" elsewhere.
+fn component(c: Component, els: [Element], source: string) -> string {
+    let own_page = source != "";
     let api: [string] = [];
     for el in c.elements {
         api.push(element(el, c.elements.len() > 1));
@@ -209,7 +212,8 @@ fn component(c: Component, els: [Element], own_page: bool) -> string {
     // On its own page the name is the page's heading.
     let head = if (own_page) {
         `<h1 class="page-title">${escape(c.name)}${aka(c)}</h1>
-<p class="page-intro">${escape(c.summary)}</p>`
+<p class="page-intro">${escape(c.summary)}</p>
+<p class="page-source"><a href="${source}">Source on GitHub</a></p>`
     } else {
         `<h2>${escape(c.name)}${aka(c)}</h2>
 <p class="summary">${escape(c.summary)}</p>`
