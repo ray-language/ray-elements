@@ -67,7 +67,8 @@ pub fn render(p: Page, colors: [string]) -> string {
         brand.mark(INK, 28, false),
         brand.mark(INK, 16, true),
         base,
-        p.key
+        p.key,
+        p.markdown
     )
 }
 
