@@ -36,7 +36,7 @@ src/core/host.js       the native host registry components ask (file dialogs, co
 src/core/raylang.js    the page's half of the raylang bridge: enableRaylang()
 src/core/base.css      optional document defaults (layer ray.base)
 src/core/core.d.ts     hand-written types of the core runtime
-src/integrations/      React and Vue runtime helpers (createComponent)
+src/integrations/      React and Vue runtime helpers (createComponent); check/, the markup checker
 src/components/<name>/ <name>.js + component.toml (metadata) + example.html
 src/index.js           generated: imports every component
 dist/                  generated: tokens.css, tokens.json
@@ -222,7 +222,7 @@ menu bar in the command palette (`cd examples/desktop-app && ray run`, or
 
 | Package | Contents |
 |---|---|
-| `@raylang/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@raylang/elements/<name>` (one component), `@raylang/elements/core` (the API alone), `ray-elements.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json` |
+| `@raylang/elements` | the components, `tokens.css`, `base.css`, `index.js` (registers every element, re-exports the API), `@raylang/elements/<name>` (one component), `@raylang/elements/core` (the API alone), `ray-elements.d.ts` (a class per element, `HTMLElementTagNameMap`, typed `detail` of events), `custom-elements.json`, `vscode.html-custom-data.json`, the `ray-elements check` command (`@raylang/elements/check`) |
 | `@raylang/react` | a component per element (`RayButton`…), each registering only its element: declared props are set as DOM properties, events are `on` + PascalCase (`onRaySelect`, `onChange`); React 18 and 19 |
 | `@raylang/vue` | a component per element with `v-model` where it makes sense (`value`, `checked`, `open`), `app.use(RayElements)` and `GlobalComponents` types |
 
@@ -278,6 +278,33 @@ core's types. Both describe `main`; the copies in the npm package
 app's `node_modules/` with the `elements` package, describe the installed
 version. `docs` generates them from `site/llms.md` (the rules, hand-written),
 the `component.toml` files, `tokens.toml`, `core/icons.js` and `core/core.d.ts`.
+
+### Checking the markup
+
+`@raylang/elements` brings a checker of the markup that uses it, for people,
+CI and agents alike. It reads the installed version's `custom-elements.json`
+and icon set:
+
+```sh
+npx ray-elements check src/              # in an app with @raylang/elements installed
+node node_modules/@raylang/elements/check/cli.js check assets/   # a raylang app (no npm)
+```
+
+It reads HTML, Vue, Svelte, Astro, JSX and TSX (`<ray-button>` and the
+wrappers, `<RayButton>`) and reports, with the line and a suggestion:
+unknown elements, attributes and `ray-*` events; values outside an
+attribute's list (`variant="primary"`); `disabled="false"`; slot names a
+parent does not have (`slot="start"`), and `<template #name>` under a Vue
+wrapper; an attribute for a property that has none; unregistered icons; an
+icon button without `label`; and, as warnings, literal colors in CSS. Icons
+added with `setIcons({ … })` and variants an app styles itself
+(`[variant="brand"]`, `[data-variant="brand"]` in its CSS or `extendStyles`)
+count as known; `--icons` and `--allow variant=brand` add others,
+`--manifest` adds the custom-elements.json of your own components,
+`--format json` prints the diagnostics as JSON and `--rules` lists the rules.
+It exits with 1 when there is an error. It scans rather than parses each
+language, so dynamic values (`:size="s"`, `size={s}`) are not checked. The
+same check from code: `import { checkMarkup } from "@raylang/elements/check"`.
 
 ## Using it in a page
 

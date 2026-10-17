@@ -14624,7 +14624,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Registered icon name (iconNames()).",
+              "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "fieldName": "name"
             },
             {
@@ -14667,7 +14667,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Registered icon name (iconNames()).",
+              "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "attribute": "name",
               "reflects": true
             },

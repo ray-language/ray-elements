@@ -4601,7 +4601,7 @@
       "attributes": [
         {
           "name": "name",
-          "description": "Registered icon name (iconNames())."
+          "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check)."
         },
         {
           "name": "size",

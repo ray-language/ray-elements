@@ -5,8 +5,13 @@ import { setIcons, type RayNumberInput, type RayAppBar } from "@raylang/elements
 import "@raylang/elements/button";
 import { RayButton, RayMenu, RayMenuItem } from "@raylang/react";
 import RayElements, { RaySwitch } from "@raylang/vue";
+import { checkMarkup, RULES, type Diagnostic } from "@raylang/elements/check";
 
 setIcons({});
+
+// The markup checker.
+const found: Diagnostic[] = checkMarkup("<ray-button></ray-button>", { manifest: {}, file: "a.html", allow: { variant: ["brand"] } });
+const rule: keyof typeof RULES | undefined = found[0]?.rule;
 
 // The tag map: every element is an Element (HTMLElementTagNameMap).
 const input: RayNumberInput | null = document.querySelector("ray-number-input");

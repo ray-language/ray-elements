@@ -238,6 +238,16 @@ system dialog, `<ray-menu native>` opens a native context menu,
 components that use it have an "In a raylang app" section. Without the
 bridge every component keeps its web behavior.
 
+## Check your markup
+
+The package checks markup against this version:
+`npx ray-elements check src/` (with npm), or
+`node node_modules/@raylang/elements/check/cli.js check assets/` (a raylang
+app). It reports unknown elements, attributes, slots and `ray-*` events,
+invalid values, unregistered icons and literal colors, with the line and a
+suggestion, and exits with 1 on an error. Run it after writing a page and fix
+what it reports; `--format json` gives the diagnostics as JSON.
+
 ## Your own components
 
 Extend `RayElement`, `FormControl`, `FieldControl` or `Floating` (or any

@@ -14,7 +14,7 @@ summary = "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or 
 [ray-icon.properties.name]
 type = "string"
 reflect = true
-description = "Registered icon name (iconNames())."
+description = "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check)."
 
 [ray-icon.properties.size]
 type = "string"

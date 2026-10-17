@@ -91,6 +91,10 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     for name in ["llms.txt", "llms-full.txt"] {
         put(written, "${el}/${name}", fs.read_file("${root}/docs/${name}")?)?;
     }
+    // The markup checker: `ray-elements check` and @raylang/elements/check.
+    for name in ["check.js", "check.d.ts", "cli.js"] {
+        put(written, "${el}/check/${name}", fs.read_file("${root}/src/integrations/check/${name}")?)?;
+    }
     put(written, "${el}/package.json", elements_package(i, cs))?;
     put(written, "${el}/README.md", readme(i, "elements"))?;
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
@@ -189,6 +193,9 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
   "main": "./index.js",
   "module": "./index.js",
   "types": "./ray-elements.d.ts",
+  "bin": {
+    "ray-elements": "./check/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./ray-elements.d.ts",
@@ -197,6 +204,10 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
     "./core": {
       "types": "./ray-elements.d.ts",
       "default": "./core.js"
+    },
+    "./check": {
+      "types": "./check/check.d.ts",
+      "default": "./check/check.js"
     },
 ${join(entries, "\n")}
     "./tokens.css": "./tokens.css",

@@ -176,7 +176,7 @@ src/core/host.js       the native host registry components ask (file dialogs, co
 src/core/raylang.js    the page's half of the raylang bridge: enableRaylang()
 src/core/base.css      optional document defaults (layer ray.base)
 src/core/core.d.ts     hand-written types of the core runtime
-src/integrations/      React and Vue runtime helpers (createComponent)
+src/integrations/      React and Vue runtime helpers (createComponent); check/, the markup checker
 src/components/&lt;name&gt;/ &lt;name&gt;.js + component.toml (metadata) + example.html
 src/index.js           generated: imports every component
 dist/                  generated: tokens.css, tokens.json
@@ -417,7 +417,7 @@ menu bar in the command palette (<code>cd examples/desktop-app &amp;&amp; ray ru
 <tbody>
 <tr>
 <td><code>@raylang/elements</code></td>
-<td>the components, <code>tokens.css</code>, <code>base.css</code>, <code>index.js</code> (registers every element, re-exports the API), <code>@raylang/elements/&lt;name&gt;</code> (one component), <code>@raylang/elements/core</code> (the API alone), <code>ray-elements.d.ts</code> (a class per element, <code>HTMLElementTagNameMap</code>, typed <code>detail</code> of events), <code>custom-elements.json</code>, <code>vscode.html-custom-data.json</code></td>
+<td>the components, <code>tokens.css</code>, <code>base.css</code>, <code>index.js</code> (registers every element, re-exports the API), <code>@raylang/elements/&lt;name&gt;</code> (one component), <code>@raylang/elements/core</code> (the API alone), <code>ray-elements.d.ts</code> (a class per element, <code>HTMLElementTagNameMap</code>, typed <code>detail</code> of events), <code>custom-elements.json</code>, <code>vscode.html-custom-data.json</code>, the <code>ray-elements check</code> command (<code>@raylang/elements/check</code>)</td>
 </tr>
 <tr>
 <td><code>@raylang/react</code></td>
@@ -472,6 +472,29 @@ core's types. Both describe <code>main</code>; the copies in the npm package
 app's <code>node_modules/</code> with the <code>elements</code> package, describe the installed
 version. <code>docs</code> generates them from <code>site/llms.md</code> (the rules, hand-written),
 the <code>component.toml</code> files, <code>tokens.toml</code>, <code>core/icons.js</code> and <code>core/core.d.ts</code>.</p>
+
+<h3 id="checking-the-markup">Checking the markup</h3>
+<p><code>@raylang/elements</code> brings a checker of the markup that uses it, for people,
+CI and agents alike. It reads the installed version's <code>custom-elements.json</code>
+and icon set:</p>
+
+<pre class="code"><code><span class="tk-keyword">npx</span> ray-elements check src/              <span class="tk-comment"># in an app with @raylang/elements installed</span>
+<span class="tk-keyword">node</span> node_modules/@raylang/elements/check/cli.js check assets/   <span class="tk-comment"># a raylang app (no npm)</span></code></pre>
+<p>It reads HTML, Vue, Svelte, Astro, JSX and TSX (<code>&lt;ray-button&gt;</code> and the
+wrappers, <code>&lt;RayButton&gt;</code>) and reports, with the line and a suggestion:
+unknown elements, attributes and <code>ray-*</code> events; values outside an
+attribute's list (<code>variant=&quot;primary&quot;</code>); <code>disabled=&quot;false&quot;</code>; slot names a
+parent does not have (<code>slot=&quot;start&quot;</code>), and <code>&lt;template #name&gt;</code> under a Vue
+wrapper; an attribute for a property that has none; unregistered icons; an
+icon button without <code>label</code>; and, as warnings, literal colors in CSS. Icons
+added with <code>setIcons({ … })</code> and variants an app styles itself
+(<code>[variant=&quot;brand&quot;]</code>, <code>[data-variant=&quot;brand&quot;]</code> in its CSS or <code>extendStyles</code>)
+count as known; <code>--icons</code> and <code>--allow variant=brand</code> add others,
+<code>--manifest</code> adds the custom-elements.json of your own components,
+<code>--format json</code> prints the diagnostics as JSON and <code>--rules</code> lists the rules.
+It exits with 1 when there is an error. It scans rather than parses each
+language, so dynamic values (<code>:size=&quot;s&quot;</code>, <code>size={s}</code>) are not checked. The
+same check from code: <code>import { checkMarkup } from &quot;@raylang/elements/check&quot;</code>.</p>
 
 <h2 id="using-it-in-a-page">Using it in a page</h2>
 <pre class="code"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">link</span> <span class="tk-attr">rel</span>=<span class="tk-string">&quot;stylesheet&quot;</span> <span class="tk-attr">href</span>=<span class="tk-string">&quot;ray-elements/dist/tokens.css&quot;</span><span class="tk-punctuation">&gt;</span>

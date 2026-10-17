@@ -1710,7 +1710,7 @@ export interface RayCodeProps {
 export declare const RayCode: DefineComponent<RayCodeProps>;
 
 export interface RayIconProps {
-  /** Registered icon name (iconNames()). */
+  /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name?: string;
   /** xs…xl or any CSS length. Default: 1em. */
   size?: string;

@@ -1682,7 +1682,7 @@ export type RayCodeProps = RayCodeOwnProps & Omit<React.HTMLAttributes<Ray.RayCo
 export declare const RayCode: React.ForwardRefExoticComponent<RayCodeProps & React.RefAttributes<Ray.RayCode>>;
 
 export interface RayIconOwnProps {
-  /** Registered icon name (iconNames()). */
+  /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name?: string;
   /** xs…xl or any CSS length. Default: 1em. */
   size?: string;

@@ -2,9 +2,9 @@
   "name": "ray-elements-package-checks",
   "private": true,
   "type": "module",
-  "description": "Checks packages/* as an app would use them: small bundles take only what they use, and the types compile",
+  "description": "Checks packages/* as an app would use them: small bundles take only what they use, the types compile, and the markup checker works",
   "scripts": {
-    "check": "node check.mjs"
+    "check": "node check.mjs && node --test markup.test.mjs"
   },
   "devDependencies": {
     "@types/react": "19.1.12",

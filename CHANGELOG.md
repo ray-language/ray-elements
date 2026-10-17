@@ -7,6 +7,18 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-elements check`, a checker of the markup that uses ray-elements, in
+  `@raylang/elements` (`npx ray-elements check src/`; in a raylang app, `node
+  node_modules/@raylang/elements/check/cli.js check assets/`) and as
+  `@raylang/elements/check` (`checkMarkup()`). It reads HTML, Vue, Svelte,
+  Astro, JSX and TSX against the installed version's `custom-elements.json`
+  and icons, and reports unknown elements, attributes, slots and events,
+  invalid values, `disabled="false"`, unregistered icons, icon buttons
+  without a label and literal colors, with a suggestion; JSON output for
+  tools and agents. `llms.txt` tells agents to run it.
+
 ### Fixed
 
 - `custom-elements.json` and `vscode.html-custom-data.json` list the
@@ -21,6 +33,9 @@ change the API.
   true` makes it the group's value, without events); it was read-only, so
   `<RayRadio checked>` in React 19 threw. Its `checked` attribute, which marks
   the group's initial value, is in the manifests too.
+- The bottom navigation's example: its app bar hid on scroll with
+  `scroll-behavior="hide"`, not `scroll="hide"` (found by `ray-elements
+  check`). The `ray-icon` reference says that `name="none"` draws a blank.
 
 ## [0.5.1] - 2026-10-16
 
