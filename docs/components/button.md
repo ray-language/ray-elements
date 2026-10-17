@@ -11,7 +11,7 @@ Properties:
 - `variant`: `filled` | `light` | `outline` | `subtle` | `default` | `transparent` | `gradient` | `raised`, default `filled`, reflects. Visual style. raised: a physical key on a darker edge that sinks when pressed (mouse, touch or keyboard).
 - `gradient`: string, reflects. With variant=gradient: "from to [deg]", palette colors or CSS colors ("teal blue 90"). Default: the --ray-gradient-* tokens.
 - `color`: string. A palette color (blue, red…) or any CSS color. Default: the primary color.
-- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height, padding and font size.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | (string & {})`, default `sm`, reflects. Height, padding and font size: xs…xl or any CSS length (the padding and the font follow).
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius. Default: --ray-radius-default.
 - `type`: `button` | `submit` | `reset`, default `button`. submit/reset act on the enclosing form.
 - `disabled`: boolean. Not interactive (also when inside a disabled fieldset).

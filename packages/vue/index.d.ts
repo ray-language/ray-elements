@@ -19,8 +19,8 @@ export interface RayButtonProps {
   gradient?: string;
   /** A palette color (blue, red…) or any CSS color. Default: the primary color. */
   color?: string;
-  /** Height, padding and font size. */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Height, padding and font size: xs…xl or any CSS length (the padding and the font follow). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
   /** Corner radius. Default: --ray-radius-default. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** submit/reset act on the enclosing form. */
@@ -63,8 +63,8 @@ export interface RayIconButtonProps {
   gradient?: string;
   /** A palette color or any CSS color. */
   color?: string;
-  /** Width and height. */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Width and height: xs…xl or any CSS length ("5.5rem": a big main action, round with radius=full); the icon scales with it. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
   /** Not interactive. */
   disabled?: boolean;
   /** Shows a spinner instead of the icon. */
@@ -100,8 +100,8 @@ export interface RayToggleProps {
   gradient?: string;
   /** A palette color (blue, red…) or any CSS color. Default: the primary color. */
   color?: string;
-  /** Height, padding and font size. */
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Height, padding and font size: xs…xl or any CSS length (the padding and the font follow). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
   /** Corner radius. Default: --ray-radius-default. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** submit/reset act on the enclosing form. */

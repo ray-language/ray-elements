@@ -34,10 +34,10 @@ description = "A palette color or any CSS color."
 
 [ray-icon-button.properties.size]
 type = "string"
-values = ["xs", "sm", "md", "lg", "xl"]
 default = "sm"
 reflect = true
-description = "Width and height."
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | (string & {})'
+description = "Width and height: xs…xl or any CSS length (\"5.5rem\": a big main action, round with radius=full); the icon scales with it."
 
 [ray-icon-button.properties.disabled]
 type = "boolean"
