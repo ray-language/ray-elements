@@ -6,6 +6,9 @@ files = ["icon.js"]
 requires = []
 tags = ["ray-icon"]
 
+[component.types.IconName]
+description = "An icon name: one of the default set, or any name an app registers with setIcons()."
+
 [ray-icon]
 class = "RayIcon"
 extends = "RayElement"
@@ -14,6 +17,7 @@ summary = "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or 
 [ray-icon.properties.name]
 type = "string"
 reflect = true
+ts = "IconName"
 description = "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check)."
 
 [ray-icon.properties.size]

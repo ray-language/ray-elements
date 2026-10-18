@@ -4,7 +4,8 @@
 //   [component]                  name, aliases (other names it is known by), category, summary,
 //                                files, requires, tags
 //   [component.exports.<name>]   ts (a TypeScript declaration), description
-//   [component.types.<Name>]     ts (the type), description
+//   [component.types.<Name>]     ts (the type), description; IconName's ts is
+//                                generated: the names of src/core/icons.js
 //   [<tag>]                      class, summary, extends (RayElement | FormControl | a ray-elements class)
 //   [<tag>.properties.<prop>]    attribute (string, or false = property only),
 //                                initial (with attribute = false: the kebab-case attribute sets
@@ -94,6 +95,16 @@ pub struct Component {
 // Every component under <root>/src/components, by category then name.
 pub fn load_all(root: string) -> Result<[Component], string> {
     let out = load_dir("${root}/src/components")?;
+    // The type of icon names lists the default set; any other name is valid
+    // too (setIcons adds names), and editors still complete the defaults.
+    let names = icon_names(fs.read_file("${root}/src/core/icons.js")?);
+    for c in out {
+        for t in c.types {
+            if (t.name == "IconName") {
+                t.ts = join(names.map(fn(n: string) -> string { "\"${n}\"" }), " | ") + " | \"none\" | (string & {})";
+            }
+        }
+    }
     let ordered: [Component] = [];
     for cat in CATEGORIES {
         for c in out {
@@ -424,6 +435,26 @@ fn named(list: [Named], name: string) -> Named {
     n
 }
 
+// The keys of the DEFAULTS object of src/core/icons.js, in order.
+pub fn icon_names(src: string) -> [string] {
+    let out: [string] = [];
+    var inside = false;
+    for line in src.split("\n") {
+        if (line.starts_with("const DEFAULTS = {")) {
+            inside = true;
+        } else if (inside && line.starts_with("};")) {
+            inside = false;
+        } else if (inside && line.starts_with("  ") && !line.starts_with("   ")) {
+            let key = line.trim();
+            let colon = key.index_of(":").unwrap_or(-1);
+            if (colon > 0) {
+                out.push(key.substring(0, colon).replace("\"", ""));
+            }
+        }
+    }
+    out
+}
+
 fn decl(list: [Decl], name: string) -> Decl {
     for d in list {
         if (d.name == name) {
@@ -669,4 +700,10 @@ ts = "function helper(): void"
     assert_eq(el.events[0].detail, "{ value: string }");
     assert_eq(el.model_property, "value");
     assert_eq(c.exports[0].ts, "function helper(): void");
+}
+
+@test
+fn reads_the_icon_names() {
+    let src = "const svg = 1;\nconst DEFAULTS = {\n  \"close\": svg(`<path/>`),\n  eye: svg(\"a:b\"),\n  \"chevron-down\":\n    svg(`x`),\n};\nconst other = { a: 1 };\n";
+    assert_eq(join(icon_names(src), ","), "close,eye,chevron-down");
 }

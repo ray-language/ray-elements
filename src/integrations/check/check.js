@@ -83,7 +83,9 @@ function attribute(a) {
   const literals = parts.filter((s) => /^"[^"]*"$/.test(s)).map((s) => s.slice(1, -1));
   const others = parts.filter((s) => !/^"[^"]*"$/.test(s) && s !== "undefined" && s !== "null");
   const length = others.length === 1 && others[0] === "(string & {})";
-  return { name: a.name, boolean: text === "boolean", values: literals.length > 0 && (others.length === 0 || length) ? literals : null, length };
+  // IconName (ray-icon's name, the icon of an alert, a nav item…): checked against the icons.
+  const icon = others.includes("IconName");
+  return { name: a.name, boolean: text === "boolean", values: literals.length > 0 && (others.length === 0 || length) ? literals : null, length, icon };
 }
 
 const LENGTH = /^(?:-?(?:\d+\.?\d*|\.\d+)(?:px|r?em|ex|ch|lh|vw|vh|vmin|vmax|dvh|svh|lvh|cm|mm|in|pt|pc|q|%)|0|(?:calc|min|max|clamp|var)\(.*\))$/i;
@@ -231,7 +233,7 @@ function attributeChecks(a, tok, el, parent, language, icons, allow, report) {
     report(a.pos, "error", "invalid-value", `${name}="${a.value}" is not valid on <${tok.name}>: one of ${attr.values.map((v) => `"${v}"`).join(", ")}${or}`);
   }
   // "none" (or nothing) draws no icon: a blank that keeps the alignment.
-  if (el.tag === "ray-icon" && name === "name" && icons && a.value !== "" && a.value !== "none" && !icons.has(a.value)) {
+  if (attr.icon && icons && a.value !== "" && a.value !== "none" && !icons.has(a.value)) {
     report(a.pos, "warning", "unknown-icon", `no icon named "${a.value}"${hint(a.value, [...icons], "icons")} (register it with setIcons)`);
   }
 }

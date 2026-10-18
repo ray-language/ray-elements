@@ -136,6 +136,26 @@ fn declaration(els: [Element], el: Element, c: Component) -> Obj {
         .field("cssParts", parts)
 }
 
+// The string literals of a TypeScript type (a declared type by its name).
+fn literals(ts: string, cs: [Component]) -> [string] {
+    var text = ts;
+    for c in cs {
+        for t in c.types {
+            if (t.name == ts) {
+                text = t.ts;
+            }
+        }
+    }
+    let out: [string] = [];
+    for part in text.split("|") {
+        let v = part.trim();
+        if (v.len() >= 2 && v.starts_with("\"") && v.ends_with("\"")) {
+            out.push(v.substring(1, v.len() - 1));
+        }
+    }
+    out
+}
+
 pub fn vscode_data(cs: [Component]) -> Result<string, string> {
     let els = base_elements() + all_elements(cs);
     var tags = json.arr();
@@ -148,9 +168,12 @@ pub fn vscode_data(cs: [Component]) -> Result<string, string> {
                     continue;
                 }
                 var a = json.obj().field("name", name).field("description", p.description);
-                if (p.values.len() > 0) {
+                // values, or the literals of an open union (size: "xs" | … | (string & {}),
+                // IconName): editors suggest them and still accept anything.
+                let values = if (p.values.len() > 0) { p.values } else { literals(p.ts, cs) };
+                if (values.len() > 0) {
                     var vs = json.arr();
-                    for v in p.values {
+                    for v in values {
                         vs = vs.item(json.obj().field("name", v));
                     }
                     a = a.field("values", vs);
@@ -211,4 +234,35 @@ type = "array"
     assert(vs.contains("\"name\": \"label\""));
     assert(vs.contains("\"name\": \"checked\""));
     assert(!vs.contains("\"name\": \"data\""));
+}
+
+@test
+fn suggests_the_literals_of_open_unions() {
+    let src = `[component]
+name = "Thing"
+category = "Inputs"
+summary = "A thing."
+files = ["thing.js"]
+requires = []
+tags = ["ray-thing"]
+
+[component.types.Glyph]
+ts = '"star" | "bell" | (string & {})'
+
+[ray-thing]
+class = "RayThing"
+extends = "RayElement"
+
+[ray-thing.properties.icon]
+type = "string"
+ts = "Glyph"
+
+[ray-thing.properties.size]
+type = "string"
+ts = '"sm" | "lg" | (string & {})'
+`;
+    let vs = vscode_data([parse("thing", src).unwrap()]).unwrap();
+    assert(vs.contains("\"name\": \"star\""));
+    assert(vs.contains("\"name\": \"bell\""));
+    assert(vs.contains("\"name\": \"lg\""));
 }

@@ -1,13 +1,16 @@
 // The generated declarations as an app uses them (checked by `tsc` with
 // skipLibCheck off, so packages/*/*.d.ts are compiled, not trusted).
 
-import { setIcons, type RayNumberInput, type RayAppBar } from "@raylang/elements";
+import { setIcons, type RayNumberInput, type RayAppBar, type IconName } from "@raylang/elements";
 import "@raylang/elements/button";
 import { RayButton, RayMenu, RayMenuItem } from "@raylang/react";
 import RayElements, { RaySwitch } from "@raylang/vue";
 import { checkMarkup, RULES, type Diagnostic } from "@raylang/elements/check";
 
 setIcons({});
+
+// Icon names: the default set completes, an app's own names still type-check.
+const icons: IconName[] = ["star", "chevron-down", "none", "my-own-icon"];
 
 // The markup checker.
 const found: Diagnostic[] = checkMarkup("<ray-button></ray-button>", { manifest: {}, file: "a.html", allow: { variant: ["brand"] } });

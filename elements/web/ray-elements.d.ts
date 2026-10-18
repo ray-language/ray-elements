@@ -1217,7 +1217,7 @@ export declare class RayBottomNavItem extends RayElement {
   /** The label. */
   label: string | undefined;
   /** An icon of the registry (or put one in the icon slot). */
-  icon: string | undefined;
+  icon: IconName | undefined;
   /** Makes it a link. */
   href: string | undefined;
   /** A count or a short text on the icon. */
@@ -1832,7 +1832,7 @@ export declare class RayBlockquote extends RayElement {
   /** light: tinted background; outline: border and edge only; filled: solid color (a pull quote). */
   variant: "light" | "outline" | "filled";
   /** Registry icon of the mark, or none. The icon slot replaces it. */
-  icon: string;
+  icon: IconName;
   /** Text size (lg for a pull quote). */
   size: "sm" | "md" | "lg";
   /** Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md. */
@@ -1928,10 +1928,12 @@ export interface RayCodeEventMap extends HTMLElementEventMap {
 }
 
 // --- Icon (icon)
+/** An icon name: one of the default set, or any name an app registers with setIcons(). */
+export type IconName = "close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {});
 /** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
-  name: string | undefined;
+  name: IconName | undefined;
   /** xs…xl or any CSS length. Default: 1em. */
   size: string | undefined;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */
@@ -2077,7 +2079,7 @@ export declare class RayTimelineItem extends RayElement {
   /** When ("2 h ago", a date). */
   time: string | undefined;
   /** An icon of the registry in the bullet. */
-  icon: string | undefined;
+  icon: IconName | undefined;
   /** Its own color (a failed step in red). */
   color: string | undefined;
   /** The line to the next item (dashed: not happened yet). */
@@ -2096,7 +2098,7 @@ export declare class RayAlert extends RayElement {
   /** Corner radius. */
   radius: "xs" | "sm" | "md" | "lg" | "xl" | undefined;
   /** A registered icon name, or none. */
-  icon: string | undefined;
+  icon: IconName | undefined;
   /** A close button; closing hides the alert (cancel ray-close to keep it). */
   closable: boolean | undefined;
   /** Accessible name of the close button. */
@@ -2142,7 +2144,7 @@ export declare class RayNotification extends RayElement {
   /** Status color: tints the status icon (and a slotted icon's circle). */
   color: string | undefined;
   /** Status icon from the registry (default: from the color); "none" for no icon. */
-  icon: string | undefined;
+  icon: IconName | undefined;
   /** Shows a spinner (notify() does not auto-close it). */
   loading: boolean | undefined;
   /** No close button. */

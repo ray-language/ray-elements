@@ -1130,7 +1130,7 @@ export interface RayBottomNavItemProps {
   /** The label. */
   label?: string;
   /** An icon of the registry (or put one in the icon slot). */
-  icon?: string;
+  icon?: Ray.IconName;
   /** Makes it a link. */
   href?: string;
   /** A count or a short text on the icon. */
@@ -1659,7 +1659,7 @@ export interface RayBlockquoteProps {
   /** light: tinted background; outline: border and edge only; filled: solid color (a pull quote). */
   variant?: "light" | "outline" | "filled";
   /** Registry icon of the mark, or none. The icon slot replaces it. */
-  icon?: string;
+  icon?: Ray.IconName;
   /** Text size (lg for a pull quote). */
   size?: "sm" | "md" | "lg";
   /** Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md. */
@@ -1736,7 +1736,7 @@ export declare const RayCode: DefineComponent<RayCodeProps>;
 
 export interface RayIconProps {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
-  name?: string;
+  name?: Ray.IconName;
   /** xs…xl or any CSS length. Default: 1em. */
   size?: string;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */
@@ -1870,7 +1870,7 @@ export interface RayTimelineItemProps {
   /** When ("2 h ago", a date). */
   time?: string;
   /** An icon of the registry in the bullet. */
-  icon?: string;
+  icon?: Ray.IconName;
   /** Its own color (a failed step in red). */
   color?: string;
   /** The line to the next item (dashed: not happened yet). */
@@ -1889,7 +1889,7 @@ export interface RayAlertProps {
   /** Corner radius. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl";
   /** A registered icon name, or none. */
-  icon?: string;
+  icon?: Ray.IconName;
   /** A close button; closing hides the alert (cancel ray-close to keep it). */
   closable?: boolean;
   /** Accessible name of the close button. */
@@ -1917,7 +1917,7 @@ export interface RayNotificationProps {
   /** Status color: tints the status icon (and a slotted icon's circle). */
   color?: string;
   /** Status icon from the registry (default: from the color); "none" for no icon. */
-  icon?: string;
+  icon?: Ray.IconName;
   /** Shows a spinner (notify() does not auto-close it). */
   loading?: boolean;
   /** No close button. */

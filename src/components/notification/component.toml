@@ -22,6 +22,7 @@ description = "Status color: tints the status icon (and a slotted icon's circle)
 
 [ray-notification.properties.icon]
 type = "string"
+ts = "IconName"
 description = "Status icon from the registry (default: from the color); \"none\" for no icon."
 
 [ray-notification.properties.loading]

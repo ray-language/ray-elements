@@ -7,6 +7,20 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `IconName`, the type of icon names: the default set (and `"none"`) for
+  completion, any other name still valid. `ray-icon`'s `name` and the `icon`
+  of `ray-alert`, `ray-blockquote`, `ray-bottom-nav-item`, `ray-notification`
+  and `ray-timeline-item` take it, in TypeScript and in the React and Vue
+  wrappers; the VS Code data suggests the names (and the scale of an open
+  `size`). The list is generated from the registry, so it cannot drift.
+
+### Changed
+
+- `ray-elements check` reports an unregistered icon (`unknown-icon`) in every
+  attribute that takes an icon name, not only in `ray-icon`'s `name`.
+
 ## [0.6.0] - 2026-10-17
 
 ### Added

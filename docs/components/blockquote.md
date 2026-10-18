@@ -14,7 +14,7 @@ Properties:
 - `href`: string. URL of the source: the inner blockquote's cite attribute.
 - `color`: string, reflects. A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary.
 - `variant`: `light` | `outline` | `filled`, default `light`, reflects. light: tinted background; outline: border and edge only; filled: solid color (a pull quote).
-- `icon`: string, default `quote`. Registry icon of the mark, or none. The icon slot replaces it.
+- `icon`: `IconName`, default `quote`. Registry icon of the mark, or none. The icon slot replaces it.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Text size (lg for a pull quote).
 - `padding`: string, reflects. Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md.
 - `hideEdge` (attribute `hide-edge`): boolean, reflects. No colored edge on the start side (the tint, border and mark stay).
