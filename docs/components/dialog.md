@@ -71,7 +71,7 @@ if (await confirmDialog({ label: "Delete 3 builds?", message: "This cannot be un
 
 `ray-dialog` itself is always the page's: a form, a settings panel or a wizard stay in the page.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.6.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.7.0.
 
 ## Example
 

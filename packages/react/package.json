@@ -1,6 +1,6 @@
 {
   "name": "@raylang/react",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "React wrappers of the ray-elements web components",
   "license": "Apache-2.0",
   "keywords": ["web-components", "design-system", "ui", "raylang", "react"],
@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@raylang/elements": "^0.6.0",
+    "@raylang/elements": "^0.7.0",
     "react": ">=18"
   }
 }

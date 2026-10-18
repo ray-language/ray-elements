@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-18
+
 ### Added
 
 - `IconName`, the type of icon names: the default set (and `"none"`) for
