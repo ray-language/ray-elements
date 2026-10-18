@@ -124,7 +124,7 @@ const styles = css`
   }
 `;
 
-const SEARCH_ICON = `<span data-ray-icon="search" aria-hidden="true"></span>`;
+const SEARCH_ICON = `<span data-ray-icon="ui.search" aria-hidden="true"></span>`;
 
 /**
  * How well `action` matches `query` (0 = not at all). Every word of the query

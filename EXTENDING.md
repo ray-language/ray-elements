@@ -53,7 +53,7 @@ One rule for every component, so nobody has to guess what to listen to:
 | `requestUpdate()` | schedule `update` |
 | `emit(type, detail, { cancelable })` | bubbling, composed CustomEvent |
 | `$(selector)` | `shadowRoot.querySelector` |
-| `paintIcons(root)` | **protected**: fill `[data-ray-icon="name"]` placeholders from the icon registry (`data-ray-icon-filled` for the filled version) |
+| `paintIcons(root)` | **protected**: fill `[data-ray-icon="name"]` placeholders from the icon registry (`data-ray-icon-filled` for the filled version); for your chrome, use a role (`ui.close`, `ui.expand`… — `iconAliases()`) so it follows the app's icons |
 
 Call `super.connectedCallback()` / `super.disconnectedCallback()` when you
 override them.

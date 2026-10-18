@@ -32,7 +32,7 @@ const styles = css`
   [hidden] { display: none !important; }
 `;
 
-const PLACEHOLDER = `<span data-ray-icon="user" aria-hidden="true"></span>`;
+const PLACEHOLDER = `<span data-ray-icon="ui.avatar" aria-hidden="true"></span>`;
 
 /** Up to two initials: "Ada Lovelace" -> "AL", "ray" -> "R". */
 export function initials(name) {

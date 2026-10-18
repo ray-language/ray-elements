@@ -6,7 +6,7 @@ Import: `import "@raylang/elements/icon";` · Category: Data display
 
 ## `<ray-icon>` (RayIcon, extends RayElement)
 
-setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
+setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). The components draw roles ("ui.close", "ui.remove", "ui.expand"…; iconAliases()), each its glyph until the app registers the role: setIcons({ "ui.remove": … }) changes only the chips' ×. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
 
 Properties:
 

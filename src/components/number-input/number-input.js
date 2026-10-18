@@ -115,7 +115,7 @@ export class RayNumberInput extends FieldControl {
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
   static template = fieldTemplate(
     `<input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false">` +
-      `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1" aria-label="Increment"><span data-ray-icon="chevron-up"></span></button><button type="button" class="step down" part="decrement" tabindex="-1" aria-label="Decrement"><span data-ray-icon="chevron-down"></span></button></span>`,
+      `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1" aria-label="Increment"><span data-ray-icon="ui.increment"></span></button><button type="button" class="step down" part="decrement" tabindex="-1" aria-label="Decrement"><span data-ray-icon="ui.decrement"></span></button></span>`,
   );
 
   #typing = false;

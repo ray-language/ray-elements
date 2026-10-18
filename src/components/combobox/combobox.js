@@ -120,7 +120,7 @@ export class RayCombobox extends FieldControl {
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
   static template = fieldTemplate(
     `<span class="chips" part="chips"></span><input id="control" class="control" part="input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="listbox" autocomplete="off" spellcheck="false">` +
-      `<span class="tail"><button type="button" class="clear" part="clear" aria-label="Clear" hidden tabindex="-1"><span data-ray-icon="close"></span></button><span class="chevron" aria-hidden="true" data-ray-icon="chevron-down"></span></span>`,
+      `<span class="tail"><button type="button" class="clear" part="clear" aria-label="Clear" hidden tabindex="-1"><span data-ray-icon="ui.clear"></span></button><span class="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span></span>`,
     { sections: false },
   ) + `<div class="listbox" id="listbox" part="dropdown" role="listbox" popover="manual" tabindex="-1"></div><div class="options"><slot></slot></div>`;
 
@@ -299,7 +299,7 @@ export class RayCombobox extends FieldControl {
       b.tabIndex = -1;
       b.dataset.value = v;
       b.setAttribute("aria-label", `Remove ${this._labelOf(v)}`);
-      b.innerHTML = `<span data-ray-icon="close"></span>`;
+      b.innerHTML = `<span data-ray-icon="ui.remove"></span>`;
       chip.append(t, b);
       box.append(chip);
     }
@@ -364,7 +364,7 @@ export class RayCombobox extends FieldControl {
       }
       const check = document.createElement("span");
       check.className = "mark";
-      check.setAttribute("data-ray-icon", "check");
+      check.setAttribute("data-ray-icon", "ui.checked");
       el.append(text, check);
       (groupEl ?? lb).append(el);
       this.#items.push({ el, value: o.value, disabled, create: false });

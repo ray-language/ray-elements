@@ -144,9 +144,9 @@ export class RayCalendar extends RayElement {
   static styles = [sizeStyles, calendarStyles];
   static template = `
     <div class="header" part="header">
-      <button class="nav prev focus-ring" part="nav" type="button" data-ray-icon="chevron-left"></button>
+      <button class="nav prev focus-ring" part="nav" type="button" data-ray-icon="ui.previous"></button>
       <div class="caption" part="caption" id="caption" aria-live="polite"></div>
-      <button class="nav next focus-ring" part="nav" type="button" data-ray-icon="chevron-right"></button>
+      <button class="nav next focus-ring" part="nav" type="button" data-ray-icon="ui.next"></button>
     </div>
     <table role="grid" aria-labelledby="caption" part="grid"><thead><tr></tr></thead><tbody></tbody></table>`;
 
@@ -382,8 +382,8 @@ export class RayDatePicker extends FieldControl {
   static template = fieldTemplate(
     `<input id="control" class="native" part="input" type="date" tabindex="-1" aria-hidden="true">` +
       `<button type="button" id="trigger" class="control trigger" part="trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
-      `<span class="icon" aria-hidden="true" data-ray-icon="calendar"></span><span class="value" id="value"></span></button>` +
-      `<button type="button" class="clear focus-ring" part="clear" aria-label="Clear date" hidden><span data-ray-icon="close" aria-hidden="true"></span></button>`,
+      `<span class="icon" aria-hidden="true" data-ray-icon="ui.calendar"></span><span class="value" id="value"></span></button>` +
+      `<button type="button" class="clear focus-ring" part="clear" aria-label="Clear date" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>`,
     { sections: false },
   ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a date"><ray-calendar part="calendar" exportparts="day, caption, nav, grid"></ray-calendar></div>`;
 

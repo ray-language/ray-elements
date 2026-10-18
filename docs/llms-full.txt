@@ -80,7 +80,9 @@ reference of every component follows them.
   `"name:filled"` in `setIcons` adds one. An icon the set lacks (`trash`,
   `save`): register it from Lucide, the same grid and stroke —
   `import { Trash2 } from "lucide-static"; setIcons({ trash: Trash2 })` (or
-  its SVG pasted in, without a bundler); never draw your own paths.
+  its SVG pasted in, without a bundler); never draw your own paths. To change
+  one control's icon (only the chips' ×), register its role
+  (`setIcons({ "ui.remove": … })`, roles listed in the reference).
 - **Overlays are in the top layer**: `ray-dialog` is a native modal
   `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
   elements. Never fight them with `z-index` or `overflow`.
@@ -2466,7 +2468,7 @@ Import: `import "@raylang/elements/icon";` · Category: Data display
 
 #### `<ray-icon>` (RayIcon, extends RayElement)
 
-setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
+setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). The components draw roles ("ui.close", "ui.remove", "ui.expand"…; iconAliases()), each its glyph until the app registers the role: setIcons({ "ui.remove": … }) changes only the chips' ×. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
 
 Properties:
 
@@ -3539,6 +3541,8 @@ The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):
 
 With a filled version (`<ray-icon name="star" filled>`; the others draw their outline): `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `folder`, `bell`, `star`, `settings`, `home`, `message-circle`
 
+The roles the components draw, each with its default glyph; `setIcons({ "ui.remove": … })` changes one role only, `setIcons({ close: … })` every role that uses the glyph: `ui.close` (close), `ui.clear` (close), `ui.remove` (close), `ui.expand` (chevron-down), `ui.disclosure` (chevron-right), `ui.previous` (chevron-left), `ui.next` (chevron-right), `ui.first` (chevrons-left), `ui.last` (chevrons-right), `ui.separator` (chevron-right), `ui.increment` (chevron-up), `ui.decrement` (chevron-down), `ui.sort` (chevron-up), `ui.checked` (check), `ui.indeterminate` (minus), `ui.copy` (copy), `ui.copied` (check), `ui.show-password` (eye), `ui.hide-password` (eye-off), `ui.play` (play), `ui.pause` (pause), `ui.search` (search), `ui.calendar` (calendar), `ui.eyedropper` (pipette), `ui.upload` (upload), `ui.avatar` (user), `ui.theme-light` (sun), `ui.theme-dark` (moon), `ui.theme-system` (monitor), `ui.trend-up` (arrow-up-right), `ui.trend-down` (arrow-down-right), `ui.trend-flat` (minus)
+
 ## Core API
 
 What `@raylang/elements/core` (and `@raylang/elements`) exports besides the components: theme, icons, the native host, the base classes for your own components.
@@ -3604,6 +3608,8 @@ export declare function setIcons(icons: Record<string, string | SVGElement>): vo
 export declare function getIcon(name: string, options?: { filled?: boolean }): string;
 /** The registered icon names; with filled, those that have a filled version. */
 export declare function iconNames(options?: { filled?: boolean }): string[];
+/** The roles the components draw ("ui.close", "ui.remove", "ui.expand"…) and the glyph each one uses unless the app registers the role. */
+export declare function iconAliases(): Record<string, string>;
 
 // --- base classes ------------------------------------------------------------
 

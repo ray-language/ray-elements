@@ -150,7 +150,7 @@ export class RayNotification extends RayElement {
         <div class="message" part="message"><slot></slot></div>
       </div>
       <button class="action focus-ring" part="action" type="button" hidden></button>
-      <button class="close focus-ring" part="close" type="button" aria-label="Close notification"><span data-ray-icon="close" aria-hidden="true"></span></button>
+      <button class="close focus-ring" part="close" type="button" aria-label="Close notification"><span data-ray-icon="ui.close" aria-hidden="true"></span></button>
     </div>`;
 
   constructor() {

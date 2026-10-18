@@ -60,6 +60,8 @@ export declare function setIcons(icons: Record<string, string | SVGElement>): vo
 export declare function getIcon(name: string, options?: { filled?: boolean }): string;
 /** The registered icon names; with filled, those that have a filled version. */
 export declare function iconNames(options?: { filled?: boolean }): string[];
+/** The roles the components draw ("ui.close", "ui.remove", "ui.expand"…) and the glyph each one uses unless the app registers the role. */
+export declare function iconAliases(): Record<string, string>;
 
 // --- base classes ------------------------------------------------------------
 
@@ -1930,7 +1932,7 @@ export interface RayCodeEventMap extends HTMLElementEventMap {
 // --- Icon (icon)
 /** An icon name: one of the default set, or any name an app registers with setIcons(). */
 export type IconName = "close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {});
-/** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
+/** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). The components draw roles ("ui.close", "ui.remove", "ui.expand"…; iconAliases()), each its glyph until the app registers the role: setIcons({ "ui.remove": … }) changes only the chips' ×. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name: IconName | undefined;

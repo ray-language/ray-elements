@@ -5,7 +5,7 @@
 
 const T = window.__rayTest;
 const core = await import("../../src/core/core.js");
-await Promise.all(["ray-icon", "ray-dialog", "ray-select", "ray-checkbox", "ray-button"].map((t) => customElements.whenDefined(t)));
+await Promise.all(["ray-icon", "ray-dialog", "ray-select", "ray-checkbox", "ray-button", "ray-search", "ray-attachment"].map((t) => customElements.whenDefined(t)));
 
 async function mount(html) {
   const box = document.createElement("div");
@@ -73,6 +73,31 @@ T.test("icons: filled versions, ray-icon filled, the outline as fallback", async
   star.filled = false;
   await T.settle();
   T.eq(fill(star), "none", "back to the outline");
+  box.remove();
+});
+
+T.test("icons: roles draw their glyph; a registered role wins, only for it", async (T) => {
+  await Promise.all(["ray-search", "ray-attachment"].map((t) => customElements.whenDefined(t)));
+  const aliases = core.iconAliases();
+  T.eq(aliases["ui.close"], "close");
+  T.eq(aliases["ui.remove"], "close");
+  T.eq(core.getIcon("ui.close"), core.getIcon("close"), "a role draws its glyph");
+  T.ok(!core.iconNames().includes("ui.close"), "roles are not glyph names");
+  const box = await mount(`<ray-dialog label="X"></ray-dialog><ray-search value="q"></ray-search><ray-attachment name="a.txt" removable></ray-attachment>`);
+  const [dialog, search, attachment] = box.children;
+  const drawn = (el, sel) => inner(el, `${sel} svg`)?.getAttribute("data-test") ?? "default";
+  const saved = core.getIcon("close");
+  const mark = (id) => `<svg data-test="${id}" viewBox="0 0 24 24"><rect width="24" height="24"/></svg>`;
+  core.setIcons({ "ui.remove": mark("remove") });
+  T.eq(drawn(attachment, ".remove"), "remove", "the role registered: the attachment's ×");
+  T.eq(drawn(dialog, ".close"), "default", "the dialog's × keeps the glyph");
+  T.eq(drawn(search, ".clear"), "default", "and the field's");
+  core.setIcons({ close: mark("glyph") });
+  T.eq(drawn(dialog, ".close"), "glyph", "a glyph registered: every role that uses it");
+  T.eq(drawn(search, ".clear"), "glyph");
+  T.eq(drawn(attachment, ".remove"), "remove", "except a role registered itself");
+  core.setIcons({ close: saved, "ui.remove": saved });
+  T.ok(core.getIcon("ui.close", { filled: true }).startsWith("<svg"), "filled on a role: its glyph's version or outline");
   box.remove();
 });
 

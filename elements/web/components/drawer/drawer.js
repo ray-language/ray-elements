@@ -111,7 +111,7 @@ export class RayDrawer extends RayDialog {
     <dialog part="drawer" aria-labelledby="title">
       <header class="header" part="header">
         <div class="heading"><h2 class="title" id="title" part="title"></h2><p class="description" id="description" part="description" hidden></p></div>
-        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="close" aria-hidden="true"></span></button></div>
+        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="ui.close" aria-hidden="true"></span></button></div>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <footer class="footer" part="footer"><slot name="footer"></slot></footer>

@@ -65,7 +65,7 @@ const INNER = `
   <span class="section" part="left-section"><slot name="left"></slot></span>
   <span class="body"><span class="label" part="label"></span><span class="description" part="description"></span></span>
   <span class="section right" part="right-section"><slot name="right"></slot></span>
-  <span class="chevron" aria-hidden="true" data-ray-icon="chevron-right"></span>`;
+  <span class="chevron" aria-hidden="true" data-ray-icon="ui.disclosure"></span>`;
 
 export class RayNavLink extends RayElement {
   static delegatesFocus = true;

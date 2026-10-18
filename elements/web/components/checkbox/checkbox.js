@@ -103,7 +103,7 @@ export class RayCheckbox extends FieldControl {
     labelPosition: { type: String, reflect: true, default: "right" },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, checkStyles, styles];
-  static template = checkTemplate(`<span class="indicator" part="indicator" aria-hidden="true"><span class="check" data-ray-icon="check"></span><span class="dash" data-ray-icon="minus"></span></span>`);
+  static template = checkTemplate(`<span class="indicator" part="indicator" aria-hidden="true"><span class="check" data-ray-icon="ui.checked"></span><span class="dash" data-ray-icon="ui.indeterminate"></span></span>`);
 
   wire() {
     // The `checked` attribute is the default state, like on <input>.

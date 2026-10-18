@@ -233,7 +233,7 @@ export class RayFileUpload extends FormControl {
     <span class="label" part="label" id="label" hidden><span class="label-text"></span><span class="required" aria-hidden="true" hidden> *</span></span>
     <div class="description" part="description" id="description" hidden></div>
     <button type="button" class="zone" part="dropzone" aria-labelledby="label title hint pill" aria-describedby="description error">
-      <span class="glyph" part="icon"><slot name="icon"><span data-ray-icon="upload"></span></slot></span>
+      <span class="glyph" part="icon"><slot name="icon"><span data-ray-icon="ui.upload"></span></slot></span>
       <span class="copy">
         <span class="title" id="title"></span>
         <span class="hint" id="hint" part="hint"></span>

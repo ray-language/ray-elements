@@ -67,7 +67,7 @@ const styles = css`
   .empty:hover td { background: inherit; }
 `;
 
-const SORT_ICON = `<span data-ray-icon="chevron-up" aria-hidden="true"></span>`;
+const SORT_ICON = `<span data-ray-icon="ui.sort" aria-hidden="true"></span>`;
 
 export class RayTable extends RayElement {
   static properties = {

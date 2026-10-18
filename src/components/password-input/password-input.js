@@ -43,7 +43,7 @@ export class RayPasswordInput extends RayInput {
   static styles = [...RayInput.styles, styles];
   static template = fieldTemplate(
     `<input id="control" class="control" part="input" type="password" autocomplete="current-password" spellcheck="false" autocapitalize="off">` +
-      `<button type="button" class="toggle focus-ring" part="toggle" aria-pressed="false"><span data-ray-icon="eye" aria-hidden="true"></span></button>`,
+      `<button type="button" class="toggle focus-ring" part="toggle" aria-pressed="false"><span data-ray-icon="ui.show-password" aria-hidden="true"></span></button>`,
   );
 
   wire() {
@@ -69,7 +69,7 @@ export class RayPasswordInput extends RayInput {
     toggle.title = toggle.getAttribute("aria-label");
     toggle.disabled = this.effectivelyDisabled;
     const icon = toggle.firstElementChild;
-    const name = this.visible ? "eye-off" : "eye";
+    const name = this.visible ? "ui.hide-password" : "ui.show-password";
     if (icon.dataset.rayIcon !== name) {
       icon.dataset.rayIcon = name;
       this.paintIcons(toggle);

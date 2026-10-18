@@ -445,9 +445,24 @@ pub fn filled_icon_names(src: string) -> [string] {
     object_keys(src, "FILLED")
 }
 
+// The roles the components draw and their default glyphs: ALIASES
+// ("ui.close": "close").
+pub fn icon_aliases(src: string) -> [(string, string)] {
+    let out: [(string, string)] = [];
+    for (key, value) in object_entries(src, "ALIASES") {
+        out.push((key, value.replace("\"", "").replace(",", "").trim()));
+    }
+    out
+}
+
 // The keys (2-space indented) of `const <name> = { … };` in a JS module.
 fn object_keys(src: string, name: string) -> [string] {
-    let out: [string] = [];
+    object_entries(src, name).map(fn(e: (string, string)) -> string { e.0 })
+}
+
+// The keys and the raw text after the colon, of `const <name> = { … };`.
+fn object_entries(src: string, name: string) -> [(string, string)] {
+    let out: [(string, string)] = [];
     var inside = false;
     for line in src.split("\n") {
         if (line.starts_with("const ${name} = {")) {
@@ -458,7 +473,7 @@ fn object_keys(src: string, name: string) -> [string] {
             let key = line.trim();
             let colon = key.index_of(":").unwrap_or(-1);
             if (colon > 0) {
-                out.push(key.substring(0, colon).replace("\"", ""));
+                out.push((key.substring(0, colon).replace("\"", ""), key.substring(colon + 1, key.len())));
             }
         }
     }
@@ -717,4 +732,8 @@ fn reads_the_icon_names() {
     let src = "const svg = 1;\nconst DEFAULTS = {\n  \"close\": svg(`<path/>`),\n  eye: svg(\"a:b\"),\n  \"chevron-down\":\n    svg(`x`),\n};\nconst FILLED = {\n  eye: solid(`x`),\n};\nconst other = { a: 1 };\n";
     assert_eq(join(icon_names(src), ","), "close,eye,chevron-down");
     assert_eq(join(filled_icon_names(src), ","), "eye");
+    let aliases = icon_aliases("const ALIASES = {\n  \"ui.close\": \"close\",\n  \"ui.next\": \"chevron-right\",\n};\n");
+    assert_eq(aliases.len(), 2);
+    assert_eq(aliases[1].0, "ui.next");
+    assert_eq(aliases[1].1, "chevron-right");
 }
