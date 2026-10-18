@@ -23,6 +23,9 @@ change the API.
   `iconNames({ filled: true })`, and `data-ray-icon-filled` for
   `paintIcons()` in your own components. The current item of a
   `ray-bottom-nav` draws its icon filled.
+- The icon gallery finds icons by what they are for ("favorite" finds `star`,
+  "warning" `alert-triangle`), and `llms.txt` lists the icons with a filled
+  version (and now `quote`, which it missed).
 - `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
   without a filled version; it reads `"name:filled"` keys in `setIcons()`.
 

@@ -10,7 +10,7 @@
 // the version it is.
 
 import std/fs;
-from components/meta import Component, Element, Prop, Named, Decl, CATEGORIES, base_elements, all_elements;
+from components/meta import Component, Element, Prop, Named, Decl, CATEGORIES, base_elements, all_elements, icon_names, filled_icon_names;
 from tokens/model import Model, depends_on_scheme;
 import tokens/refs;
 
@@ -22,7 +22,7 @@ pub const SITE: string = "https://elements.raylang.dev";
 pub fn files(root: string, cs: [Component], m: Model, version: string) -> Result<[(string, string)], string> {
     let guide = fs.read_file("${root}/site/llms.md")?.trim();
     let els = base_elements() + all_elements(cs);
-    let icons = icon_names(fs.read_file("${root}/src/core/icons.js")?);
+    let icons = icon_list(fs.read_file("${root}/src/core/icons.js")?);
     let core = fs.read_file("${root}/src/core/core.d.ts")?.trim();
     let out: [(string, string)] = [
         ("llms.txt", index(cs, guide, version, icons)),
@@ -39,7 +39,7 @@ fn header(version: string) -> string {
 }
 
 // llms.txt: the rules, then a link per component.
-fn index(cs: [Component], guide: string, version: string, icons: [string]) -> string {
+fn index(cs: [Component], guide: string, version: string, icons: string) -> string {
     let out: [string] = [header(version), "", guide, "", "## Components", ""];
     for cat in CATEGORIES {
         for c in cs {
@@ -52,7 +52,7 @@ fn index(cs: [Component], guide: string, version: string, icons: [string]) -> st
     out.push("");
     out.push("## Icons");
     out.push("");
-    out.push(join(icons.map(fn(n: string) -> string { "`${n}`" }), ", "));
+    out.push(icons);
     out.push("");
     out.push("## Reference");
     out.push("");
@@ -76,7 +76,7 @@ fn full(
     guide: string,
     version: string,
     m: Model,
-    icons: [string],
+    icons: string,
     core: string
 ) -> Result<string, string> {
     let out: [string] = [header(version), "", guide, "", "## Components", ""];
@@ -92,7 +92,7 @@ fn full(
     out.push(tokens(m)?);
     out.push("## Icons\n");
     out.push("The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):\n");
-    out.push(join(icons.map(fn(n: string) -> string { "`${n}`" }), ", ") + "\n");
+    out.push(icons + "\n");
     out.push("## Core API\n");
     out.push("What `@raylang/elements/core` (and `@raylang/elements`) exports besides the components: theme, icons, the native host, the base classes for your own components.\n");
     out.push("```ts\n${core}\n```\n");
@@ -287,21 +287,12 @@ fn tokens(m: Model) -> Result<string, string> {
     Result.Ok(join(out, "\n"))
 }
 
-// The names of the default icons: the keys of DEFAULTS in core/icons.js
-// (`  close: svg(…)`, `  "chevron-down": svg(…)`).
-pub fn icon_names(js: string) -> [string] {
-    let out: [string] = [];
-    for line in js.split("\n") {
-        if (!line.starts_with("  ") || !line.contains(": svg(")) {
-            continue;
-        }
-        let key = line.trim();
-        let name = key.substring(0, key.index_of(":").unwrap_or(0)).replace("\"", "");
-        if (name != "") {
-            out.push(name);
-        }
-    }
-    out
+// The default icon names, and those with a filled version.
+fn icon_list(js: string) -> string {
+    let code = fn(n: string) -> string { "`${n}`" };
+    let names = join(icon_names(js).map(code), ", ");
+    let filled = join(filled_icon_names(js).map(code), ", ");
+    "${names}\n\nWith a filled version (`<ray-icon name=\"star\" filled>`; the others draw their outline): ${filled}"
 }
 
 // The example's imports of the repository's modules ("../src/components/dialog/dialog.js",
@@ -337,11 +328,6 @@ fn first_sentence(s: string) -> string {
     }
 }
 
-@test
-fn reads_the_icon_names() {
-    let js = "const DEFAULTS = {\n  close: svg(`<path/>`),\n  \"chevron-down\": svg(`<path/>`),\n};\n  other: 1,";
-    assert_eq(join(icon_names(js), ","), "close,chevron-down");
-}
 
 @test
 fn describes_a_property() {

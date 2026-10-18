@@ -3530,7 +3530,9 @@ breakpoint:
 
 The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):
 
-`close`, `check`, `minus`, `plus`, `chevron-down`, `chevron-up`, `chevron-right`, `chevron-left`, `chevrons-left`, `chevrons-right`, `search`, `arrow-up-right`, `arrow-down-right`, `sun`, `moon`, `monitor`, `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `menu`, `more-horizontal`, `file`, `folder`, `pause`, `play`, `terminal`, `calendar`, `image`, `download`, `eye`, `eye-off`, `bell`, `copy`, `pipette`, `star`, `upload`, `paperclip`, `panel-left`, `settings`, `home`, `arrow-left`, `message-circle`
+`close`, `check`, `minus`, `plus`, `chevron-down`, `chevron-up`, `chevron-right`, `chevron-left`, `chevrons-left`, `chevrons-right`, `search`, `arrow-up-right`, `arrow-down-right`, `sun`, `moon`, `monitor`, `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `menu`, `more-horizontal`, `file`, `folder`, `pause`, `play`, `terminal`, `calendar`, `image`, `download`, `eye`, `eye-off`, `bell`, `copy`, `quote`, `pipette`, `star`, `upload`, `paperclip`, `panel-left`, `settings`, `home`, `arrow-left`, `message-circle`
+
+With a filled version (`<ray-icon name="star" filled>`; the others draw their outline): `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `folder`, `bell`, `star`, `settings`, `home`, `message-circle`
 
 ## Core API
 
