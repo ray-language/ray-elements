@@ -8,6 +8,10 @@
   <span class="demo-muted" id="demo-dots-text"></span>
 </ray-stack>
 
+<div class="demo-caption">Another language: value-text</div>
+<ray-step-dots lang="es" count="8" value="2" label="Asalto" value-text="Asalto {step} de {count}" done-text="{count} asaltos hechos" color="red"></ray-step-dots>
+<p class="demo-muted" style="margin: 0">Announced «Asalto 3 de 8»: <code>{step}</code> and <code>{count}</code> are replaced, the numbers follow the page's language.</p>
+
 <div class="demo-caption">Sizes, colors and alignment</div>
 <ray-stack gap="md">
   <ray-step-dots count="5" value="1" size="xs" align="start"></ray-step-dots>

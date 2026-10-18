@@ -42,7 +42,17 @@ description = "Where the row sits in its width."
 
 [ray-step-dots.properties.label]
 type = "string"
-description = "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps)."
+description = "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps). In another language, use value-text."
+
+[ray-step-dots.properties.valueText]
+attribute = "value-text"
+type = "string"
+description = "The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text=\"Asalto {step} de {count}\". Default: \"<label> {step} of {count}\"."
+
+[ray-step-dots.properties.doneText]
+attribute = "done-text"
+type = "string"
+description = "The announced text once every step is done (value = count), with {count}. Default: value-text, else \"{count} of {count}, done\"."
 
 [ray-step-dots.parts.dots]
 description = "The row."

@@ -15,7 +15,9 @@ Properties:
 - `color`: string, reflects. A palette color or any CSS color for done and current dots. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size of a dot.
 - `align`: `start` | `center` | `end`, default `center`, reflects. Where the row sits in its width.
-- `label`: string. What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps).
+- `label`: string. What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). In another language, use value-text.
+- `valueText` (attribute `value-text`): string. The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text="Asalto {step} de {count}". Default: "<label> {step} of {count}".
+- `doneText` (attribute `done-text`): string. The announced text once every step is done (value = count), with {count}. Default: value-text, else "{count} of {count}, done".
 
 Parts (`::part()`):
 
@@ -38,6 +40,10 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   </ray-group>
   <span class="demo-muted" id="demo-dots-text"></span>
 </ray-stack>
+
+<div class="demo-caption">Another language: value-text</div>
+<ray-step-dots lang="es" count="8" value="2" label="Asalto" value-text="Asalto {step} de {count}" done-text="{count} asaltos hechos" color="red"></ray-step-dots>
+<p class="demo-muted" style="margin: 0">Announced «Asalto 3 de 8»: <code>{step}</code> and <code>{count}</code> are replaced, the numbers follow the page's language.</p>
 
 <div class="demo-caption">Sizes, colors and alignment</div>
 <ray-stack gap="md">

@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayStepDots = /*#__PURE__*/ createComponent("ray-step-dots", {
   displayName: "RayStepDots",
-  properties: ["count", "value", "color", "size", "align", "label"],
+  properties: ["count", "value", "color", "size", "align", "label", "valueText", "doneText"],
   events: {  },
 });

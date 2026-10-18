@@ -2036,8 +2036,12 @@ export interface RayStepDotsProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Where the row sits in its width. */
   align?: "start" | "center" | "end";
-  /** What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). */
+  /** What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). In another language, use value-text. */
   label?: string;
+  /** The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text="Asalto {step} de {count}". Default: "<label> {step} of {count}". */
+  valueText?: string;
+  /** The announced text once every step is done (value = count), with {count}. Default: value-text, else "{count} of {count}, done". */
+  doneText?: string;
 }
 /** <ray-step-dots> as a Vue component. */
 export declare const RayStepDots: DefineComponent<RayStepDotsProps>;

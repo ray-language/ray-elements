@@ -4,6 +4,6 @@ import "@raylang/elements/step-dots";
 import { createComponent } from "../create.js";
 
 export const RayStepDots = /*#__PURE__*/ createComponent("RayStepDots", "ray-step-dots", {
-  properties: ["count", "value", "color", "size", "align", "label"],
+  properties: ["count", "value", "color", "size", "align", "label", "valueText", "doneText"],
   booleans: [],
 });

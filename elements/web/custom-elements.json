@@ -17652,8 +17652,24 @@
               "type": {
                 "text": "string"
               },
-              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps).",
+              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps). In another language, use value-text.",
               "fieldName": "label"
+            },
+            {
+              "name": "value-text",
+              "type": {
+                "text": "string"
+              },
+              "description": "The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text=\"Asalto {step} de {count}\". Default: \"<label> {step} of {count}\".",
+              "fieldName": "valueText"
+            },
+            {
+              "name": "done-text",
+              "type": {
+                "text": "string"
+              },
+              "description": "The announced text once every step is done (value = count), with {count}. Default: value-text, else \"{count} of {count}, done\".",
+              "fieldName": "doneText"
             }
           ],
           "members": [
@@ -17717,8 +17733,28 @@
               "type": {
                 "text": "string"
               },
-              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps).",
+              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps). In another language, use value-text.",
               "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "valueText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text=\"Asalto {step} de {count}\". Default: \"<label> {step} of {count}\".",
+              "attribute": "value-text",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "doneText",
+              "type": {
+                "text": "string"
+              },
+              "description": "The announced text once every step is done (value = count), with {count}. Default: value-text, else \"{count} of {count}, done\".",
+              "attribute": "done-text",
               "reflects": false
             }
           ],

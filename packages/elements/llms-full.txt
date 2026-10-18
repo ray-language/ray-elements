@@ -2900,7 +2900,9 @@ Properties:
 - `color`: string, reflects. A palette color or any CSS color for done and current dots. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size of a dot.
 - `align`: `start` | `center` | `end`, default `center`, reflects. Where the row sits in its width.
-- `label`: string. What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps).
+- `label`: string. What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). In another language, use value-text.
+- `valueText` (attribute `value-text`): string. The announced text, {step} (the current one, from 1) and {count} replaced, numbers in the page's language: value-text="Asalto {step} de {count}". Default: "<label> {step} of {count}".
+- `doneText` (attribute `done-text`): string. The announced text once every step is done (value = count), with {count}. Default: value-text, else "{count} of {count}, done".
 
 Parts (`::part()`):
 
