@@ -27,6 +27,10 @@ change the API.
   `required` and `disabled` come from the group, and cards and radios can be
   mixed. Put the cards in a `ray-grid` for columns; `hide-indicator` leaves
   the border and the background alone to show the choice.
+- `ray-step-dots`: a row of dots, one per step (done, current, to do), for
+  rounds, onboarding pages or a quiz. `count` and `value` (the current step,
+  0-based), `color`, `size`, `align`; announced as a progressbar with
+  `label` as the step's name ("Round 4 of 12").
 
 ## [0.5.2] - 2026-10-17
 

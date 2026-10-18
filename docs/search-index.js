@@ -627,6 +627,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Step dots",
+    "group": "Components · Feedback",
+    "description": "A row of dots, one per step: done, current, to do. A compact progress for rounds, onboarding pages or a quiz; announced as a progressbar (\"Round 4 of 12\").",
+    "href": "components/step-dots.html",
+    "keywords": [
+      "step-dots",
+      "ray-step-dots"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "App bar",
     "group": "Components · Layout",
     "description": "The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it. It elevates once the content scrolls, or hides while scrolling down.",

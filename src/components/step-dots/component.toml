@@ -1,0 +1,51 @@
+[component]
+name = "Step dots"
+category = "Feedback"
+summary = "A row of dots, one per step: done, current, to do. A compact progress for rounds, onboarding pages or a quiz; announced as a progressbar (\"Round 4 of 12\")."
+files = ["step-dots.js"]
+requires = []
+tags = ["ray-step-dots"]
+
+[ray-step-dots]
+class = "RayStepDots"
+extends = "RayElement"
+summary = "Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines."
+
+[ray-step-dots.properties.count]
+type = "number"
+default = "0"
+description = "Number of steps (dots)."
+
+[ray-step-dots.properties.value]
+type = "number"
+default = "0"
+description = "The current step, 0-based; count means every step is done."
+
+[ray-step-dots.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color for done and current dots. Default: the primary color."
+
+[ray-step-dots.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Size of a dot."
+
+[ray-step-dots.properties.align]
+type = "string"
+values = ["start", "center", "end"]
+default = "center"
+reflect = true
+description = "Where the row sits in its width."
+
+[ray-step-dots.properties.label]
+type = "string"
+description = "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps)."
+
+[ray-step-dots.parts.dots]
+description = "The row."
+
+[ray-step-dots.parts.dot]
+description = "Each dot ([data-state] done, current or todo)."

@@ -256,6 +256,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/spinner/spinner.js"
     },
+    "./step-dots": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/step-dots/step-dots.js"
+    },
     "./app-bar": {
       "types": "./ray-elements.d.ts",
       "default": "./components/app-bar/app-bar.js"

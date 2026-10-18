@@ -2256,6 +2256,23 @@ export declare class RaySpinner extends RayElement {
   label: string;
 }
 
+// --- Step dots (step-dots)
+/** <ray-step-dots> Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines. */
+export declare class RayStepDots extends RayElement {
+  /** Number of steps (dots). */
+  count: number;
+  /** The current step, 0-based; count means every step is done. */
+  value: number;
+  /** A palette color or any CSS color for done and current dots. Default: the primary color. */
+  color: string | undefined;
+  /** Size of a dot. */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Where the row sits in its width. */
+  align: "start" | "center" | "end";
+  /** What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). */
+  label: string | undefined;
+}
+
 // --- App bar (app-bar)
 /** <ray-app-bar> It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one. */
 export declare class RayAppBar extends RayElement {
@@ -2581,6 +2598,7 @@ declare global {
     "ray-ring-progress": RayRingProgress;
     "ray-skeleton": RaySkeleton;
     "ray-spinner": RaySpinner;
+    "ray-step-dots": RayStepDots;
     "ray-app-bar": RayAppBar;
     "ray-app-shell": RayAppShell;
     "ray-aspect-ratio": RayAspectRatio;

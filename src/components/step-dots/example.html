@@ -1,0 +1,27 @@
+<div class="demo-caption">Rounds of a timer</div>
+<ray-stack gap="sm" align="center">
+  <ray-step-dots id="demo-dots-rounds" count="12" value="3" label="Round"></ray-step-dots>
+  <ray-group gap="xs">
+    <ray-button size="xs" variant="default" id="demo-dots-prev">Previous</ray-button>
+    <ray-button size="xs" variant="default" id="demo-dots-next">Next</ray-button>
+  </ray-group>
+  <span class="demo-muted" id="demo-dots-text"></span>
+</ray-stack>
+
+<div class="demo-caption">Sizes, colors and alignment</div>
+<ray-stack gap="md">
+  <ray-step-dots count="5" value="1" size="xs" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="2" size="md" color="teal" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="3" size="lg" color="orange" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="5" size="xl" color="green" align="start" label="Page"></ray-step-dots>
+</ray-stack>
+<p class="demo-muted" style="margin: 0">value is the current step from 0; value = count: all done.</p>
+
+<script type="module">
+  const dots = document.getElementById("demo-dots-rounds");
+  const text = document.getElementById("demo-dots-text");
+  const paint = () => (text.textContent = dots.value >= dots.count ? "Done" : `Round ${dots.value + 1} of ${dots.count}`);
+  document.getElementById("demo-dots-prev").addEventListener("click", () => { dots.value = Math.max(0, dots.value - 1); paint(); });
+  document.getElementById("demo-dots-next").addEventListener("click", () => { dots.value = Math.min(dots.count, dots.value + 1); paint(); });
+  paint();
+</script>

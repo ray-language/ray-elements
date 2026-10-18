@@ -100,6 +100,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/ring-progress/ring-progress.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/skeleton/skeleton.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/spinner/spinner.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/step-dots/step-dots.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/app-bar/app-bar.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/app-shell/app-shell.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/aspect-ratio/aspect-ratio.js" fetchpriority="low">
@@ -127,7 +128,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/focus.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/floating.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/input/input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/ring-progress/ring-progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/input/input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/ring-progress/ring-progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/step-dots/step-dots.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -226,6 +227,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Ring progress" href="#ring-progress"></ray-nav-link>
 <ray-nav-link label="Skeleton" href="#skeleton"></ray-nav-link>
 <ray-nav-link label="Spinner" href="#spinner"></ray-nav-link>
+<ray-nav-link label="Step dots" href="#step-dots"></ray-nav-link>
 </div>
 <div class="nav-group"><p class="nav-group-title">Layout</p>
 <ray-nav-link label="App bar" href="#app-bar"></ray-nav-link>
@@ -315,6 +317,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#ring-progress">Ring progress</a>
 <a class="side-link" href="#skeleton">Skeleton</a>
 <a class="side-link" href="#spinner">Spinner</a>
+<a class="side-link" href="#step-dots">Step dots</a>
 </div>
 <div class="nav-group"><p class="nav-group-title">Layout</p>
 <a class="side-link" href="#app-bar">App bar</a>
@@ -4480,6 +4483,48 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>spinner</code></td><td>The ring.</td></tr></tbody></table></div>
+</section>
+<section id="step-dots" class="component">
+<h2>Step dots</h2>
+<p class="summary">A row of dots, one per step: done, current, to do. A compact progress for rounds, onboarding pages or a quiz; announced as a progressbar (&quot;Round 4 of 12&quot;).</p>
+<div class="example"><div class="demo-caption">Rounds of a timer</div>
+<ray-stack gap="sm" align="center">
+  <ray-step-dots id="demo-dots-rounds" count="12" value="3" label="Round"></ray-step-dots>
+  <ray-group gap="xs">
+    <ray-button size="xs" variant="default" id="demo-dots-prev">Previous</ray-button>
+    <ray-button size="xs" variant="default" id="demo-dots-next">Next</ray-button>
+  </ray-group>
+  <span class="demo-muted" id="demo-dots-text"></span>
+</ray-stack>
+
+<div class="demo-caption">Sizes, colors and alignment</div>
+<ray-stack gap="md">
+  <ray-step-dots count="5" value="1" size="xs" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="2" size="md" color="teal" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="3" size="lg" color="orange" align="start"></ray-step-dots>
+  <ray-step-dots count="5" value="5" size="xl" color="green" align="start" label="Page"></ray-step-dots>
+</ray-stack>
+<p class="demo-muted" style="margin: 0">value is the current step from 0; value = count: all done.</p>
+
+<script type="module">
+  const dots = document.getElementById("demo-dots-rounds");
+  const text = document.getElementById("demo-dots-text");
+  const paint = () => (text.textContent = dots.value >= dots.count ? "Done" : `Round ${dots.value + 1} of ${dots.count}`);
+  document.getElementById("demo-dots-prev").addEventListener("click", () => { dots.value = Math.max(0, dots.value - 1); paint(); });
+  document.getElementById("demo-dots-next").addEventListener("click", () => { dots.value = Math.min(dots.count, dots.value + 1); paint(); });
+  paint();
+</script>
+</div>
+<details class="source" data-code-src="code/step-dots.html"><summary>Code</summary>
+<div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
+<div class="source-body"><p class="source-status"><a href="../code/step-dots.html">Open the code</a></p></div></details>
+<p class="tag"><code>&lt;ray-step-dots&gt;</code> &middot; <code>RayStepDots</code></p>
+<p class="note">Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines.</p>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>count</code></td><td><code>count</code></td><td>number</td><td><code>0</code></td><td>Number of steps (dots).</td></tr><tr><td><code>value</code></td><td><code>value</code></td><td>number</td><td><code>0</code></td><td>The current step, 0-based; count means every step is done.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>A palette color or any CSS color for done and current dots. Default: the primary color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Size of a dot.</td></tr><tr><td><code>align</code></td><td><code>align</code> <span class="reflects">reflects</span></td><td><code>start</code> | <code>center</code> | <code>end</code></td><td><code>center</code></td><td>Where the row sits in its width.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>What a step is called: &quot;Round&quot; is announced &quot;Round 4 of 12&quot; and names the element. Default: Step (named Steps).</td></tr></tbody></table></div>
+
+
+
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dots</code></td><td>The row.</td></tr><tr><td><code>dot</code></td><td>Each dot ([data-state] done, current or todo).</td></tr></tbody></table></div>
 </section>
 <section id="app-bar" class="component">
 <h2>App bar</h2>

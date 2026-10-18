@@ -2876,6 +2876,30 @@ Parts (`::part()`):
 
 - `spinner`: The ring.
 
+### Step dots
+
+A row of dots, one per step: done, current, to do. A compact progress for rounds, onboarding pages or a quiz; announced as a progressbar ("Round 4 of 12").
+
+Import: `import "@raylang/elements/step-dots";` · Category: Feedback
+
+#### `<ray-step-dots>` (RayStepDots, extends RayElement)
+
+Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines.
+
+Properties:
+
+- `count`: number, default `0`. Number of steps (dots).
+- `value`: number, default `0`. The current step, 0-based; count means every step is done.
+- `color`: string, reflects. A palette color or any CSS color for done and current dots. Default: the primary color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Size of a dot.
+- `align`: `start` | `center` | `end`, default `center`, reflects. Where the row sits in its width.
+- `label`: string. What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps).
+
+Parts (`::part()`):
+
+- `dots`: The row.
+- `dot`: Each dot ([data-state] done, current or todo).
+
 ### App bar
 
 The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it. It elevates once the content scrolls, or hides while scrolling down.

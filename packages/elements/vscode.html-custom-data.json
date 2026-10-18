@@ -5343,6 +5343,64 @@
       ]
     },
     {
+      "name": "ray-step-dots",
+      "description": "Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines.",
+      "attributes": [
+        {
+          "name": "count",
+          "description": "Number of steps (dots)."
+        },
+        {
+          "name": "value",
+          "description": "The current step, 0-based; count means every step is done."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color for done and current dots. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Size of a dot.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "align",
+          "description": "Where the row sits in its width.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "center"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps)."
+        }
+      ]
+    },
+    {
       "name": "ray-app-bar",
       "description": "It follows the scroller of its ray-app-shell, else scroll-target, else the window; clear of the notch (safe-area inset). The title is plain text: put a heading in the default slot when the page needs one.",
       "attributes": [

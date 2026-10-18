@@ -1,9 +1,9 @@
 // page: tests/pages/progress.html
 //
-// The progress indicators beyond the bar: ray-ring-progress.
+// The progress indicators beyond the bar: ray-ring-progress, ray-step-dots.
 
 const T = window.__rayTest;
-await Promise.all(["ray-ring-progress"].map((t) => customElements.whenDefined(t)));
+await Promise.all(["ray-ring-progress", "ray-step-dots"].map((t) => customElements.whenDefined(t)));
 
 async function mount(html) {
   const box = document.createElement("div");
@@ -62,5 +62,32 @@ T.test("ring-progress: size, thickness and the middle", async (T) => {
   own.querySelector("b").remove();
   await T.settle();
   T.eq(inner(own, ".value").textContent, "40%", "emptied slot: the percentage again");
+  box.remove();
+});
+
+T.test("step-dots: done, current and to do; ARIA; count changes", async (T) => {
+  const box = await mount(`<ray-step-dots count="12" value="3" label="Round"></ray-step-dots>`);
+  const dots = box.firstElementChild;
+  const states = () => [...dots.shadowRoot.querySelectorAll(".dot")].map((d) => d.dataset.state[0]).join("");
+  T.eq(states(), "dddc" + "t".repeat(8), "3 done, the 4th current");
+  T.eq(dots.internals.role, "progressbar");
+  T.eq(dots.internals.ariaValueText, "Round 4 of 12");
+  T.eq(dots.internals.ariaLabel, "Round");
+  T.eq(dots.internals.ariaValueNow, "3");
+  const [done, current, todo] = [...dots.shadowRoot.querySelectorAll(".dot")].slice(2, 5);
+  T.ok(current.getBoundingClientRect().width > done.getBoundingClientRect().width, "the current one is a pill");
+  T.ok(getComputedStyle(done).backgroundColor !== getComputedStyle(todo).backgroundColor, "done is filled, to do is not");
+  dots.value = 12;
+  await T.settle();
+  T.eq(states(), "dddddddddddd", "value = count: all done");
+  T.eq(dots.internals.ariaValueText, "12 of 12, done");
+  dots.value = 99;
+  dots.count = 4;
+  await T.settle();
+  T.eq(states(), "dddd", "fewer dots; value clamped");
+  dots.count = 0;
+  await T.settle();
+  T.eq(states(), "", "no steps");
+  T.eq(dots.internals.ariaValueText, null);
   box.remove();
 });
