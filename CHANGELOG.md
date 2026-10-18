@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-17
+
 ### Added
 
 - `size` of `ray-button`, `ray-icon-button` and `ray-toggle` takes any CSS

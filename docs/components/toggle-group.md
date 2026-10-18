@@ -37,7 +37,7 @@ Methods and properties:
 - `values: string[]`: The selected keys as a list, in any mode.
 - `readonly toggles: RayToggle[]`: The toggles of this group.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.2.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.6.0.
 
 ## Example
 

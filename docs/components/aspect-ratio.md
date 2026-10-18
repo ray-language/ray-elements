@@ -20,7 +20,7 @@ Exports (from `@raylang/elements/aspect-ratio` and `@raylang/elements`):
 
 - `function parseRatio(value: string | number): string | null`: A ratio ("16/9", "4:3", 1.5) as a CSS aspect-ratio value, or null.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.2.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.6.0.
 
 ## Example
 
