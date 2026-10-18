@@ -13,3 +13,8 @@ export const RayRadio = /*#__PURE__*/ createComponent("ray-radio", {
   properties: ["value", "checked", "label", "description", "disabled", "color", "size", "variant"],
   events: {  },
 });
+export const RayRadioCard = /*#__PURE__*/ createComponent("ray-radio-card", {
+  displayName: "RayRadioCard",
+  properties: ["hideIndicator", "value", "checked", "label", "description", "disabled", "color", "size", "variant"],
+  events: {  },
+});

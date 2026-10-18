@@ -3,11 +3,16 @@
 // Native radios cannot group across shadow roots, so the group owns the
 // state: it is the form control (value submitted under `name`), keeps one
 // radio checked, and moves focus and selection with the arrow keys (roving
-// tabindex), like native radios.
+// tabindex), like native radios. <ray-radio-card> is a radio drawn as a
+// card (a title, a detail, an icon), for choices that need more than a line:
+// plans, presets, shipping methods. Both can share a group.
 
 import { RayElement, css, define } from "../../core/core.js";
 import { applyColor, sizeStyles } from "../../core/styles.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
+
+/** The elements a group owns: radios and radio cards. */
+const RADIOS = "ray-radio, ray-radio-card";
 
 const groupStyles = css`
   :host { --_rs: 1.25rem; }
@@ -53,7 +58,7 @@ export class RayRadioGroup extends FormControl {
     this.internals.role = "radiogroup";
     this.addEventListener("keydown", (e) => this._keydown(e));
     this.addEventListener("click", (e) => {
-      const radio = e.target.closest?.("ray-radio");
+      const radio = e.target.closest?.(RADIOS);
       if (radio && this.radios.includes(radio)) this._choose(radio, true);
     });
   }
@@ -67,9 +72,9 @@ export class RayRadioGroup extends FormControl {
     }
   }
 
-  /** The radios of this group (direct or nested, not in a nested group). */
+  /** The radios (and radio cards) of this group (direct or nested, not in a nested group). */
   get radios() {
-    return [...this.querySelectorAll("ray-radio")].filter((r) => r.closest("ray-radio-group") === this);
+    return [...this.querySelectorAll(RADIOS)].filter((r) => r.closest("ray-radio-group") === this);
   }
 
   update() {
@@ -129,7 +134,7 @@ export class RayRadioGroup extends FormControl {
 
   _keydown(e) {
     const radios = this.radios.filter((r) => !r.disabled);
-    const i = radios.indexOf(e.target.closest?.("ray-radio"));
+    const i = radios.indexOf(e.target.closest?.(RADIOS));
     if (i < 0) return;
     let next = null;
     if (e.key === "ArrowDown" || e.key === "ArrowRight") next = radios[(i + 1) % radios.length];
@@ -266,5 +271,63 @@ export class RayRadio extends RayElement {
   }
 }
 
+const cardStyles = css`
+  :host { --_s: var(--_rs, 1.125rem); }
+  .root {
+    align-items: flex-start;
+    gap: var(--ray-space-3);
+    height: 100%;
+    box-sizing: border-box;
+    padding: var(--ray-space-3) var(--ray-space-4);
+    background: var(--ray-background);
+    border: 1px solid var(--ray-border);
+    border-radius: var(--ray-radius-default);
+    transition: background-color var(--ray-duration-fast) var(--ray-easing-standard), border-color var(--ray-duration-fast) var(--ray-easing-standard);
+  }
+  :host(:not([data-disabled])) .root:hover { background: var(--ray-default-hover); }
+  :host([data-checked]) .root, :host([data-checked]) .root:hover {
+    background: var(--_light, var(--ray-primary-light));
+    border-color: var(--_filled, var(--ray-primary-filled));
+  }
+  :host(:focus-visible) .root { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: var(--ray-focus-ring-offset); }
+  :host(:focus-visible) .indicator { outline: none; }
+  :host([data-disabled]) .root { background: var(--ray-muted); opacity: 0.6; }
+  .body { flex: 1; min-width: 0; min-height: 0; }
+  .label { font-weight: var(--ray-font-weight-semibold); }
+  .icon { display: inline-flex; flex: none; color: var(--_filled, var(--ray-primary-filled)); font-size: 1.25rem; line-height: 1; }
+  .extra { margin-top: var(--ray-space-2); font-size: var(--ray-font-size-sm); }
+  :host([hide-indicator]) .indicator { display: none; }
+`;
+
+export class RayRadioCard extends RayRadio {
+  static properties = {
+    ...RayRadio.properties,
+    hideIndicator: { type: Boolean, reflect: true, attribute: "hide-indicator" },
+  };
+  static styles = [radioStyles, cardStyles];
+  static template = `
+    <div class="root" part="root">
+      <span class="icon" part="icon" hidden><slot name="icon"></slot></span>
+      <span class="body">
+        <span class="label" part="label"><span class="label-text"></span></span>
+        <span class="description" part="description" hidden></span>
+        <span class="extra" hidden><slot></slot></span>
+      </span>
+      <span class="indicator" part="indicator"><span class="dot"></span></span>
+    </div>`;
+
+  constructor() {
+    super();
+    // The icon and the extra content take room only when given.
+    for (const slot of this.shadowRoot.querySelectorAll("slot")) {
+      slot.addEventListener("slotchange", () => {
+        const given = slot.assignedNodes().some((n) => n.nodeType === Node.ELEMENT_NODE || n.textContent.trim());
+        slot.parentElement.hidden = !given;
+      });
+    }
+  }
+}
+
 define("ray-radio-group", RayRadioGroup);
 define("ray-radio", RayRadio);
+define("ray-radio-card", RayRadioCard);

@@ -6408,7 +6408,7 @@
             {
               "kind": "field",
               "name": "radios",
-              "description": "The radios of the group."
+              "description": "The radios (and radio cards) of the group."
             }
           ],
           "events": [
@@ -6430,7 +6430,7 @@
           "slots": [
             {
               "name": "",
-              "description": "ray-radio elements (may be wrapped in layout elements)."
+              "description": "ray-radio or ray-radio-card elements (may be wrapped in layout elements: a ray-grid of cards)."
             }
           ],
           "cssParts": []
@@ -6440,7 +6440,7 @@
           "name": "RayRadio",
           "tagName": "ray-radio",
           "customElement": true,
-          "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
+          "description": "One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control.",
           "superclass": {
             "name": "RayElement"
           },
@@ -6606,6 +6606,200 @@
               "description": "The label."
             }
           ]
+        },
+        {
+          "kind": "class",
+          "name": "RayRadioCard",
+          "tagName": "ray-radio-card",
+          "customElement": true,
+          "description": "A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns.",
+          "superclass": {
+            "name": "RayRadio"
+          },
+          "attributes": [
+            {
+              "name": "hide-indicator",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No radio circle: the card's border and background alone show the choice.",
+              "fieldName": "hideIndicator"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Value given to the group when chosen.",
+              "fieldName": "value"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The initial value of checked. Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute)."
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label text (or the content).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be chosen.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Overrides the group color.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Overrides the group size.",
+              "fieldName": "size"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"filled\" | \"outline\""
+              },
+              "description": "Overrides the group variant.",
+              "fieldName": "variant"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "hideIndicator",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No radio circle: the card's border and background alone show the choice.",
+              "attribute": "hide-indicator",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Value given to the group when chosen.",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label text (or the content).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be chosen.",
+              "attribute": "disabled",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Overrides the group color.",
+              "attribute": "color",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Overrides the group size.",
+              "attribute": "size",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"filled\" | \"outline\""
+              },
+              "description": "Overrides the group variant.",
+              "attribute": "variant",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "More content under the description."
+            },
+            {
+              "name": "icon",
+              "description": "An icon before the title."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "root",
+              "description": "The card."
+            },
+            {
+              "name": "icon",
+              "description": "Around the icon slot."
+            }
+          ]
         }
       ],
       "exports": [
@@ -6638,6 +6832,22 @@
           "name": "ray-radio",
           "declaration": {
             "name": "RayRadio",
+            "module": "components/radio/radio.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayRadioCard",
+          "declaration": {
+            "name": "RayRadioCard",
+            "module": "components/radio/radio.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-radio-card",
+          "declaration": {
+            "name": "RayRadioCard",
             "module": "components/radio/radio.js"
           }
         }

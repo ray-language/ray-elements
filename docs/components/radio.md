@@ -1,6 +1,6 @@
 # Radio group
 
-One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.
+One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control.
 
 Import: `import "@raylang/elements/radio";` · Category: Inputs
 
@@ -30,11 +30,11 @@ Events:
 
 Slots:
 
-- (default): ray-radio elements (may be wrapped in layout elements).
+- (default): ray-radio or ray-radio-card elements (may be wrapped in layout elements: a ray-grid of cards).
 
 Methods and properties:
 
-- `readonly radios: RayRadio[]`: The radios of the group.
+- `readonly radios: RayRadio[]`: The radios (and radio cards) of the group.
 
 Vue `v-model`: `value` (updated on change).
 
@@ -60,6 +60,26 @@ Parts (`::part()`):
 - `indicator`: The circle.
 - `label`: The label.
 
+## `<ray-radio-card>` (RayRadioCard, extends RayRadio)
+
+A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns.
+
+Properties:
+
+- `hideIndicator` (attribute `hide-indicator`): boolean, reflects. No radio circle: the card's border and background alone show the choice.
+
+Also the properties of RayRadio (`<ray-radio>`): `value`, `checked`, `label`, `description`, `disabled`, `color`, `size`, `variant`.
+
+Slots:
+
+- (default): More content under the description.
+- `icon`: An icon before the title.
+
+Parts (`::part()`):
+
+- `root`: The card.
+- `icon`: Around the icon slot.
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.5.2.
 
 ## Example
@@ -81,6 +101,29 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     <div class="total"><dt>Total</dt><dd id="demo-shipping-total">$48.00</dd></div>
     <p class="demo-muted" id="demo-shipping-eta">Arrives in 4–6 business days.</p>
   </dl>
+</div>
+
+<div class="demo-caption">Cards: ray-radio-card in a ray-grid</div>
+<ray-radio-group id="demo-preset" label="Preset" name="preset" value="pro">
+  <ray-grid cols="2" gap="sm">
+    <ray-radio-card value="pro" label="Pro boxing" description="12 × 3:00 / 1:00"></ray-radio-card>
+    <ray-radio-card value="amateur" label="Amateur" description="3 × 3:00 / 1:00"></ray-radio-card>
+    <ray-radio-card value="mma" label="MMA" description="5 × 5:00 / 1:00"></ray-radio-card>
+    <ray-radio-card value="hiit" label="HIIT" description="8 × 0:20 / 0:10"></ray-radio-card>
+  </ray-grid>
+</ray-radio-group>
+
+<div class="demo-grid">
+  <ray-radio-group label="Plan" name="plan" value="team" color="teal">
+    <ray-radio-card value="solo" label="Solo" description="One seat, every component."><ray-icon slot="icon" name="user"></ray-icon></ray-radio-card>
+    <ray-radio-card value="team" label="Team · $12/month" description="Up to 10 seats and shared themes."><ray-icon slot="icon" name="home"></ray-icon><ray-badge size="xs" variant="light" color="teal">Popular</ray-badge></ray-radio-card>
+    <ray-radio-card value="enterprise" label="Enterprise" description="Contact us." disabled><ray-icon slot="icon" name="settings"></ray-icon></ray-radio-card>
+  </ray-radio-group>
+  <ray-radio-group label="Without the circle" value="dark" orientation="horizontal">
+    <ray-radio-card value="light" label="Light" hide-indicator><ray-icon slot="icon" name="sun"></ray-icon></ray-radio-card>
+    <ray-radio-card value="dark" label="Dark" hide-indicator><ray-icon slot="icon" name="moon"></ray-icon></ray-radio-card>
+    <ray-radio-card value="system" label="System" hide-indicator><ray-icon slot="icon" name="monitor"></ray-icon></ray-radio-card>
+  </ray-radio-group>
 </div>
 
 <div class="demo-caption">Horizontal, colors and the outline variant</div>

@@ -952,10 +952,10 @@ export declare class RayRadioGroup extends FormControl {
   color: string | undefined;
   /** Checked look of every radio: filled circle, or colored ring and dot. */
   variant: "filled" | "outline";
-  /** The radios of the group. */
+  /** The radios (and radio cards) of the group. */
   readonly radios: RayRadio[];
 }
-/** <ray-radio> One choice among options: ray-radio elements inside a ray-radio-group, which is the form control. */
+/** <ray-radio> One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control. */
 export declare class RayRadio extends RayElement {
   /** Value given to the group when chosen. */
   value: string | undefined;
@@ -973,6 +973,11 @@ export declare class RayRadio extends RayElement {
   size: "xs" | "sm" | "md" | "lg" | "xl" | undefined;
   /** Overrides the group variant. */
   variant: "filled" | "outline" | undefined;
+}
+/** <ray-radio-card> A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns. */
+export declare class RayRadioCard extends RayRadio {
+  /** No radio circle: the card's border and background alone show the choice. */
+  hideIndicator: boolean | undefined;
 }
 
 // --- Search (search)
@@ -2523,6 +2528,7 @@ declare global {
     "ray-path-input": RayPathInput;
     "ray-radio-group": RayRadioGroup;
     "ray-radio": RayRadio;
+    "ray-radio-card": RayRadioCard;
     "ray-search": RaySearch;
     "ray-segmented-control": RaySegmentedControl;
     "ray-select": RaySelect;

@@ -1,10 +1,10 @@
 [component]
 name = "Radio group"
 category = "Inputs"
-summary = "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control."
+summary = "One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control."
 files = ["radio.js"]
 requires = []
-tags = ["ray-radio-group", "ray-radio"]
+tags = ["ray-radio-group", "ray-radio", "ray-radio-card"]
 
 [ray-radio-group]
 class = "RayRadioGroup"
@@ -79,7 +79,7 @@ description = "When the user picks a radio."
 description = "When the user picks a radio."
 
 [ray-radio-group.slots.default]
-description = "ray-radio elements (may be wrapped in layout elements)."
+description = "ray-radio or ray-radio-card elements (may be wrapped in layout elements: a ray-grid of cards)."
 
 [ray-radio]
 class = "RayRadio"
@@ -132,10 +132,33 @@ description = "The circle."
 [ray-radio.parts.label]
 description = "The label."
 
+[ray-radio-card]
+class = "RayRadioCard"
+extends = "RayRadio"
+summary = "A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns."
+
+[ray-radio-card.properties.hideIndicator]
+attribute = "hide-indicator"
+type = "boolean"
+reflect = true
+description = "No radio circle: the card's border and background alone show the choice."
+
+[ray-radio-card.slots.default]
+description = "More content under the description."
+
+[ray-radio-card.slots.icon]
+description = "An icon before the title."
+
+[ray-radio-card.parts.root]
+description = "The card."
+
+[ray-radio-card.parts.icon]
+description = "Around the icon slot."
+
 [ray-radio-group.model]
 property = "value"
 events = ["change"]
 
 [ray-radio-group.members.radios]
 ts = "readonly radios: RayRadio[]"
-description = "The radios of the group."
+description = "The radios (and radio cards) of the group."

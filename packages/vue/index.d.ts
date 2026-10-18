@@ -817,6 +817,29 @@ export interface RayRadioProps {
 /** <ray-radio> as a Vue component. */
 export declare const RayRadio: DefineComponent<RayRadioProps>;
 
+export interface RayRadioCardProps {
+  /** No radio circle: the card's border and background alone show the choice. */
+  hideIndicator?: boolean;
+  /** Value given to the group when chosen. */
+  value?: string;
+  /** Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute). */
+  checked?: boolean;
+  /** Label text (or the content). */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** Cannot be chosen. */
+  disabled?: boolean;
+  /** Overrides the group color. */
+  color?: string;
+  /** Overrides the group size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Overrides the group variant. */
+  variant?: "filled" | "outline";
+}
+/** <ray-radio-card> as a Vue component. */
+export declare const RayRadioCard: DefineComponent<RayRadioCardProps>;
+
 export interface RaySearchProps {
   /** Current text. */
   value?: string;
@@ -2223,6 +2246,7 @@ export declare const components: {
   RayPathInput: typeof RayPathInput;
   RayRadioGroup: typeof RayRadioGroup;
   RayRadio: typeof RayRadio;
+  RayRadioCard: typeof RayRadioCard;
   RaySearch: typeof RaySearch;
   RaySegmentedControl: typeof RaySegmentedControl;
   RaySelect: typeof RaySelect;
@@ -2316,6 +2340,7 @@ declare module "vue" {
     RayPathInput: typeof RayPathInput;
     RayRadioGroup: typeof RayRadioGroup;
     RayRadio: typeof RayRadio;
+    RayRadioCard: typeof RayRadioCard;
     RaySearch: typeof RaySearch;
     RaySegmentedControl: typeof RaySegmentedControl;
     RaySelect: typeof RaySelect;
