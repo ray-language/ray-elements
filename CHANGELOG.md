@@ -23,6 +23,9 @@ change the API.
   `iconNames({ filled: true })`, and `data-ray-icon-filled` for
   `paintIcons()` in your own components. The current item of a
   `ray-bottom-nav` draws its icon filled.
+- `ray-step-dots` `value-text` and `done-text`: the announced text in the
+  page's language (`value-text="Asalto {step} de {count}"`), numbers formatted
+  with Intl; it was always English ("Round 4 of 12").
 - `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
   without a filled version; it reads `"name:filled"` keys in `setIcons()`.
 

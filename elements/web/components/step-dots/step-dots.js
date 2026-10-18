@@ -45,6 +45,8 @@ export class RayStepDots extends RayElement {
     size: { type: String, reflect: true, default: "sm" },
     align: { type: String, reflect: true, default: "center" },
     label: { type: String },
+    valueText: { type: String, attribute: "value-text" },
+    doneText: { type: String, attribute: "done-text" },
   };
   static styles = [styles];
   static template = `<div class="dots" part="dots" aria-hidden="true"></div>`;
@@ -72,14 +74,21 @@ export class RayStepDots extends RayElement {
       dot.dataset.state = i < value ? "done" : i === value ? "current" : "todo";
     });
 
-    const noun = this.label || "Step";
+    // The announced text: value-text / done-text ({step}: the current one,
+    // 1-based; {count}), numbers in the element's language; English otherwise.
+    const lang = this.closest("[lang]")?.lang || undefined;
+    const n = (x) => new Intl.NumberFormat(lang).format(x);
+    const fill = (tpl) => tpl.replaceAll("{step}", n(Math.min(value + 1, count))).replaceAll("{count}", n(count));
     const done = count > 0 && value >= count;
+    const text = done
+      ? fill(this.doneText ?? this.valueText ?? "{count} of {count}, done")
+      : fill(this.valueText ?? `${this.label || "Step"} {step} of {count}`);
     const i = this.internals;
     i.ariaLabel = this.label || this.getAttribute("aria-label") || "Steps";
     i.ariaValueMin = "0";
     i.ariaValueMax = String(count);
     i.ariaValueNow = String(value);
-    i.ariaValueText = count === 0 ? null : done ? `${count} of ${count}, done` : `${noun} ${value + 1} of ${count}`;
+    i.ariaValueText = count === 0 ? null : text;
   }
 }
 

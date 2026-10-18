@@ -85,6 +85,14 @@ T.test("step-dots: done, current and to do; ARIA; count changes", async (T) => {
   dots.count = 4;
   await T.settle();
   T.eq(states(), "dddd", "fewer dots; value clamped");
+  dots.value = 1;
+  dots.setAttribute("value-text", "Asalto {step} de {count}");
+  dots.setAttribute("done-text", "{count} asaltos hechos");
+  await T.settle();
+  T.eq(dots.internals.ariaValueText, "Asalto 2 de 4", "value-text");
+  dots.value = 4;
+  await T.settle();
+  T.eq(dots.internals.ariaValueText, "4 asaltos hechos", "done-text");
   dots.count = 0;
   await T.settle();
   T.eq(states(), "", "no steps");
