@@ -30,8 +30,8 @@ const styles = css`
     align-items: center;
     width: 100%;
     min-width: 0;
-    padding-right: calc(var(--_h) * 0.8);
-    text-align: left;
+    padding-inline-end: calc(var(--_h) * 0.8);
+    text-align: start;
     color: inherit;
     background: transparent;
     border: 0;
@@ -43,7 +43,7 @@ const styles = css`
   .trigger[data-placeholder] .value { color: var(--ray-muted-foreground); }
   .chevron {
     position: absolute;
-    right: 0;
+    inset-inline-end: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;

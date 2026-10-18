@@ -66,7 +66,7 @@ const styles = css`
     justify-content: center;
     width: var(--ray-control-height-xs);
     height: var(--ray-control-height-xs);
-    margin-left: auto;
+    margin-inline-start: auto;
     padding: 0;
     color: var(--ray-muted-foreground);
     background: transparent;

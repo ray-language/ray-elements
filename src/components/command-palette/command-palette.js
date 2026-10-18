@@ -110,7 +110,7 @@ const styles = css`
   .hint b {
     display: inline-block;
     min-width: 1.25rem;
-    margin-right: var(--ray-space-1);
+    margin-inline-end: var(--ray-space-1);
     padding: 0 0.3rem;
     font-family: var(--ray-font-mono);
     font-size: 0.6875rem;

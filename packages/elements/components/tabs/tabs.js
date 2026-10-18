@@ -24,9 +24,9 @@ const tabsStyles = css`
   }
   .list::-webkit-scrollbar { display: none; }
   .list ::slotted(ray-tab) { flex: none; }
-  :host([orientation="vertical"]) .list { flex-direction: column; overflow-x: visible; box-shadow: none; border-right: 2px solid var(--ray-border); }
+  :host([orientation="vertical"]) .list { flex-direction: column; overflow-x: visible; box-shadow: none; border-inline-end: 2px solid var(--ray-border); }
   :host([variant="outline"]) .list { --_line: 1px; }
-  :host([variant="outline"][orientation="vertical"]) .list { border-right-width: 1px; }
+  :host([variant="outline"][orientation="vertical"]) .list { border-inline-end-width: 1px; }
   :host([variant="pills"]) .list { gap: var(--ray-space-1); border: 0; box-shadow: none; }
   :host([grow]) .list ::slotted(ray-tab) { flex: 1 0 auto; }
   .panels { flex: 1; min-width: 0; padding-top: var(--ray-space-3); }
@@ -157,14 +157,14 @@ const tabStyles = css`
   :host([data-variant="default"]) { border-bottom: 2px solid transparent; }
   :host([data-variant="default"]:hover:not([data-active])) { border-bottom-color: var(--ray-border); background: var(--ray-muted); }
   :host([data-variant="default"][data-active]) { border-bottom-color: var(--_filled, var(--ray-primary)); }
-  :host([data-variant="default"][data-vertical]) { margin: 0 -2px 0 0; justify-content: flex-start; border-bottom: 0; border-right: 2px solid transparent; }
-  :host([data-variant="default"][data-vertical][data-active]) { border-right-color: var(--_filled, var(--ray-primary)); }
+  :host([data-variant="default"][data-vertical]) { margin: 0; margin-inline-end: -2px; justify-content: flex-start; border-bottom: 0; border-inline-end: 2px solid transparent; }
+  :host([data-variant="default"][data-vertical][data-active]) { border-inline-end-color: var(--_filled, var(--ray-primary)); }
 
   /* outline */
   :host([data-variant="outline"]) { border: 1px solid transparent; border-radius: var(--ray-radius-default) var(--ray-radius-default) 0 0; }
   :host([data-variant="outline"][data-active]) { border-color: var(--ray-border); border-bottom-color: var(--ray-background); background: var(--ray-background); }
-  :host([data-variant="outline"][data-vertical]) { margin: 0 -1px 0 0; justify-content: flex-start; border-radius: var(--ray-radius-default) 0 0 var(--ray-radius-default); }
-  :host([data-variant="outline"][data-vertical][data-active]) { border-bottom-color: var(--ray-border); border-right-color: var(--ray-background); }
+  :host([data-variant="outline"][data-vertical]) { margin: 0; margin-inline-end: -1px; justify-content: flex-start; border-radius: 0; border-start-start-radius: var(--ray-radius-default); border-end-start-radius: var(--ray-radius-default); }
+  :host([data-variant="outline"][data-vertical][data-active]) { border-bottom-color: var(--ray-border); border-inline-end-color: var(--ray-background); }
 
   /* pills */
   :host([data-variant="pills"]) { border-radius: var(--ray-radius-default); }

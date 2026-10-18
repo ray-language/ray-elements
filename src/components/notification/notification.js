@@ -17,7 +17,8 @@ const notificationStyles = css`
     display: flex;
     align-items: flex-start;
     gap: var(--ray-space-3);
-    padding: var(--ray-space-3) var(--ray-space-3) var(--ray-space-3) var(--ray-space-4);
+    padding: var(--ray-space-3);
+    padding-inline-start: var(--ray-space-4);
     overflow: hidden;
     color: var(--ray-popover-foreground);
     background: var(--ray-popover);
@@ -29,7 +30,7 @@ const notificationStyles = css`
   /* Behind the front toast of a collapsed stack: only its edge shows. */
   .card > * { transition: opacity var(--ray-duration-base) var(--ray-easing-standard); }
   :host([data-behind]) .card > * { opacity: 0; }
-  .card[data-icon], .card[data-loading], .card[data-glyph] { padding-left: var(--ray-space-3); }
+  .card[data-icon], .card[data-loading], .card[data-glyph] { padding-inline-start: var(--ray-space-3); }
   .icon {
     display: none;
     flex: none;
@@ -201,14 +202,13 @@ const toasterStyles = css`
   :host(:not(:popover-open)) { display: none; }
   :host([position^="top"]) { top: 0; }
   :host([position^="bottom"]), :host(:not([position])) { bottom: 0; }
-  :host([position$="right"]), :host(:not([position])) { right: 0; }
-  :host([position$="left"]) { left: 0; }
-  :host([position$="center"]) { left: 50%; transform: translateX(-50%); }
+  :host([position$="right"]), :host(:not([position])) { right: 0; } /* physical */
+  :host([position$="left"]) { left: 0; } /* physical */
+  :host([position$="center"]) { left: 50%; transform: translateX(-50%); } /* physical */
   /* Toasts are placed by layout(): absolute, stacked from the edge. */
   ::slotted(*) {
     position: absolute;
-    left: var(--ray-space-4);
-    right: var(--ray-space-4);
+    inset-inline: var(--ray-space-4);
     pointer-events: auto;
     touch-action: pan-y;
     transform-origin: 50% 100%;
@@ -222,10 +222,10 @@ const toasterStyles = css`
   ::slotted([data-swiping]) { transition: none; }
   /* Phones: full width at the bottom (or top), wherever the desktop position is. */
   @media (max-width: 40em) {
-    :host { width: auto; left: 0; right: 0; transform: none; padding: var(--ray-space-3); }
+    :host { width: auto; inset-inline: 0; transform: none; padding: var(--ray-space-3); }
     :host([position^="top"]) { top: 0; bottom: auto; }
     :host(:not([position^="top"])) { bottom: 0; top: auto; }
-    ::slotted(*) { left: var(--ray-space-3); right: var(--ray-space-3); }
+    ::slotted(*) { inset-inline: var(--ray-space-3); }
     :host(:not([position^="top"])) ::slotted(*) { bottom: var(--ray-space-3); }
     :host([position^="top"]) ::slotted(*) { top: var(--ray-space-3); }
   }

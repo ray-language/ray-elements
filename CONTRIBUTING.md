@@ -73,6 +73,11 @@ in the README has the checklist of conventions.
   EXTENDING.md.
 - **Styling hooks:** tokens (custom properties), `::part()` and slots, all
   documented in `component.toml`. No global CSS from a component.
+- **Logical CSS:** `inset-inline-start`, `margin-inline-end`,
+  `text-align: start`… rather than `left`/`right`, so a component follows the
+  writing direction. `build` rejects a physical declaration in `src/` unless
+  its line carries `/* physical */` (a centering `left: 50%`, an attribute
+  that names a side of the screen, geometry measured in JS).
 - **Accessibility:** native semantics first (a real `<button>`, `<a>`,
   `<dialog>`, form association through `ElementInternals`), the WAI-ARIA
   pattern when there is none, visible focus rings (`class="focus-ring"`),

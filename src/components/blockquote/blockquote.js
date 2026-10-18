@@ -22,7 +22,7 @@ const styles = css`
   :host([hide-edge]) { --_edge: 0px; }
   figure { position: relative; margin: 0; }
   /* Room for the mark, so it does not cover what is above or beside. */
-  :host([data-icon]) figure { padding: calc(var(--_icon) / 2) 0 0 calc(var(--_icon) / 2); }
+  :host([data-icon]) figure { padding-block-start: calc(var(--_icon) / 2); padding-inline-start: calc(var(--_icon) / 2); }
   blockquote {
     margin: 0;
     padding: var(--_p) calc(var(--_p) * 1.25);
@@ -43,7 +43,7 @@ const styles = css`
   .icon {
     position: absolute;
     top: 0;
-    left: 0;
+    inset-inline-start: 0;
     display: grid;
     place-items: center;
     width: var(--_icon);

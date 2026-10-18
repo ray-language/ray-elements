@@ -47,12 +47,12 @@ const styles = css`
     transition: opacity var(--ray-duration-fast);
   }
   .edge[data-show] { opacity: 1; }
-  .top, .bottom { left: 0; right: 0; height: 0.75rem; }
+  .top, .bottom { inset-inline: 0; height: 0.75rem; }
   .left, .right { top: 0; bottom: 0; width: 0.75rem; }
   .top { top: 0; background: linear-gradient(var(--_shadow), transparent); }
   .bottom { bottom: 0; background: linear-gradient(transparent, var(--_shadow)); }
-  .left { left: 0; background: linear-gradient(to right, var(--_shadow), transparent); }
-  .right { right: 0; background: linear-gradient(to left, var(--_shadow), transparent); }
+  .left { left: 0; background: linear-gradient(to right, var(--_shadow), transparent); } /* physical */
+  .right { right: 0; background: linear-gradient(to left, var(--_shadow), transparent); } /* physical */
   :host([no-shadows]) .edge { display: none; }
 `;
 

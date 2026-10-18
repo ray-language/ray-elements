@@ -34,7 +34,8 @@ const styles = css`
     justify-content: center;
     width: 1.5rem;
     height: 1.5rem;
-    margin: -0.125rem -0.375rem 0 0;
+    margin: -0.125rem 0 0;
+    margin-inline-end: -0.375rem;
     padding: 0;
     color: inherit;
     background: transparent;

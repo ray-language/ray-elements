@@ -154,7 +154,7 @@ export const loaderStyles = css`
     width: var(--_loader, 1em);
     height: var(--_loader, 1em);
     border: max(2px, calc(var(--_loader, 1em) / 8)) solid currentColor;
-    border-right-color: transparent;
+    border-right-color: transparent; /* physical */
     border-radius: 50%;
     animation: ray-spin 0.75s linear infinite;
   }

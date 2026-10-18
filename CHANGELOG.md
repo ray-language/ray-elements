@@ -7,6 +7,20 @@ change the API.
 
 ## [Unreleased]
 
+### Changed
+
+- The components' CSS uses logical properties (`inset-inline-start`,
+  `padding-inline-end`, `text-align: start`…) instead of left and right, the
+  first step toward right-to-left support: under `dir="rtl"` paddings,
+  labels, the switch's thumb, vertical tabs, select and search adornments and
+  the like mirror. Nothing changes left to right. Still physical: attributes
+  that name a side (`ray-drawer` and `ray-sidebar` `left`/`right`,
+  `ray-notification` positions, `ray-timeline` align) and what is placed by
+  JS (carousel, scroll-area shadows, indicator, segmented-control,
+  color-picker). `ray-code` always lays code out left to right.
+- `build` rejects physical CSS in the components unless the line is marked
+  `/* physical */`.
+
 ## [0.7.0] - 2026-10-18
 
 ### Added

@@ -104,7 +104,7 @@ const itemStyles = css`
     font-size: var(--ray-font-size-md);
     font-weight: var(--ray-font-weight-medium);
     color: var(--ray-foreground);
-    text-align: left;
+    text-align: start;
     background: transparent;
     border: 0;
     border-radius: inherit;

@@ -84,7 +84,7 @@
   }
   :where(.ray-table) :where(th, td) {
     padding: var(--ray-space-2) var(--ray-space-3);
-    text-align: left;
+    text-align: start;
     vertical-align: middle;
     border-bottom: 1px solid var(--ray-border);
   }

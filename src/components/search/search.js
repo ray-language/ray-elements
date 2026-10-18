@@ -14,14 +14,14 @@ const styles = css`
   :host(:not([variant])) .box { background: var(--ray-muted); border-color: transparent; }
   .lead {
     display: inline-flex;
-    padding-left: calc(var(--_px) * 0.66);
+    padding-inline-start: calc(var(--_px) * 0.66);
     color: var(--ray-muted-foreground);
     pointer-events: none;
   }
   .lead svg { width: 1.1em; height: 1.1em; }
-  .control { padding-left: calc(var(--_px) * 0.5); }
+  .control { padding-inline-start: calc(var(--_px) * 0.5); }
   .control::-webkit-search-cancel-button, .control::-webkit-search-decoration { -webkit-appearance: none; appearance: none; }
-  .tail { display: inline-flex; align-items: center; gap: var(--ray-space-1); padding-right: calc(var(--_px) * 0.4); }
+  .tail { display: inline-flex; align-items: center; gap: var(--ray-space-1); padding-inline-end: calc(var(--_px) * 0.4); }
   .clear {
     display: inline-flex;
     align-items: center;

@@ -30,7 +30,8 @@ const styles = css`
     max-width: 100%;
     height: calc(var(--_h) - 0.75rem);
     min-height: 1.375rem;
-    padding: 0 0.125rem 0 0.5rem;
+    padding-block: 0;
+    padding-inline: 0.5rem 0.125rem;
     font-size: calc(var(--_fs) - 0.0625rem);
     color: var(--ray-foreground);
     background: var(--ray-muted);

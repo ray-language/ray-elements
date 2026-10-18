@@ -21,7 +21,7 @@ const styles = css`
     position: absolute;
     z-index: 1;
     top: var(--_top);
-    left: var(--_left);
+    left: var(--_left); /* physical */
     display: inline-flex;
     align-items: center;
     justify-content: center;

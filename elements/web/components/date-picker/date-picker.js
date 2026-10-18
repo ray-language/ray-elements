@@ -321,7 +321,7 @@ const pickerStyles = css`
     gap: var(--ray-space-2);
     width: 100%;
     min-width: 0;
-    text-align: left;
+    text-align: start;
     color: inherit;
     background: transparent;
     border: 0;
@@ -340,7 +340,7 @@ const pickerStyles = css`
     justify-content: center;
     width: calc(var(--_h) * 0.6);
     height: calc(var(--_h) * 0.6);
-    margin-right: calc(var(--_px) * 0.4);
+    margin-inline-end: calc(var(--_px) * 0.4);
     padding: 0;
     color: var(--ray-muted-foreground);
     background: transparent;

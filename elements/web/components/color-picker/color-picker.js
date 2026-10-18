@@ -180,7 +180,7 @@ const pickerStyles = css`
   :host([full-width]) .area { height: auto; aspect-ratio: 5 / 3; }
   .area-thumb {
     position: absolute;
-    left: var(--_s);
+    left: var(--_s); /* physical */
     top: calc(100% - var(--_v));
     width: var(--_thumb);
     height: var(--_thumb);
@@ -215,7 +215,7 @@ const pickerStyles = css`
   .slider-thumb {
     position: absolute;
     top: 50%;
-    left: var(--_pos);
+    left: var(--_pos); /* physical */
     width: var(--_thumb);
     height: var(--_thumb);
     box-sizing: border-box;

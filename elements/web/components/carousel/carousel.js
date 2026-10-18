@@ -74,9 +74,9 @@ const styles = css`
   .control:hover:not(:disabled) { background: var(--ray-accent); }
   .control:disabled { opacity: 0; pointer-events: none; }
   .control svg { width: 1rem; height: 1rem; }
-  .prev { left: var(--ray-space-2); }
-  .next { right: var(--ray-space-2); }
-  :host([orientation="vertical"]) .control { top: auto; left: 50%; transform: translateX(-50%) rotate(90deg); }
+  .prev { left: var(--ray-space-2); } /* physical */
+  .next { right: var(--ray-space-2); } /* physical */
+  :host([orientation="vertical"]) .control { top: auto; left: 50%; transform: translateX(-50%) rotate(90deg); } /* physical */
   :host([orientation="vertical"]) .prev { top: var(--ray-space-2); }
   :host([orientation="vertical"]) .next { bottom: var(--ray-space-2); }
   :host([hide-controls]) .control { display: none; }

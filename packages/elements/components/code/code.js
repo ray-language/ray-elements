@@ -293,7 +293,8 @@ const styles = css`
     align-items: center;
     gap: var(--ray-space-2);
     min-height: 2.5rem;
-    padding: 0 var(--ray-space-2) 0 var(--ray-space-4);
+    padding-block: 0;
+    padding-inline: var(--ray-space-4) var(--ray-space-2);
     font-size: var(--ray-font-size-xs);
     color: var(--ray-muted-foreground);
     border-bottom: 1px solid var(--ray-border);
@@ -325,12 +326,13 @@ const styles = css`
   .copy-label { display: none; }
   .copy[data-copied] .copy-label { display: inline; }
   /* Without a header, the button floats in the top-end corner. */
-  .copy.floating { position: absolute; z-index: 1; top: var(--ray-space-2); right: var(--ray-space-2); background: var(--ray-code-background); opacity: 0; transition: opacity var(--ray-duration-fast); }
+  .copy.floating { position: absolute; z-index: 1; top: var(--ray-space-2); inset-inline-end: var(--ray-space-2); background: var(--ray-code-background); opacity: 0; transition: opacity var(--ray-duration-fast); }
   .frame:hover .copy.floating, .copy.floating:focus-visible, .copy.floating[data-copied] { opacity: 1; }
   @media (hover: none) { .copy.floating { opacity: 1; } }
   .copy[hidden] { display: none; }
 
-  .scroller { overflow: auto; max-height: var(--_max, none); outline: none; }
+  /* Code reads left to right, in a right-to-left page too. */
+  .scroller { direction: ltr; overflow: auto; max-height: var(--_max, none); outline: none; }
   .scroller:focus-visible { box-shadow: inset 0 0 0 2px var(--ray-ring); }
   :host([expanded]) .scroller { max-height: none; }
   pre { margin: 0; padding: var(--ray-space-3) 0; font-family: var(--ray-font-mono); font-size: var(--_fs); line-height: var(--_lh); tab-size: 2; }
@@ -339,19 +341,19 @@ const styles = css`
   .line { display: block; padding: 0 var(--ray-space-4); white-space: pre; border-inline-start: 2px solid transparent; }
   :host([wrap]) .line { white-space: pre-wrap; overflow-wrap: anywhere; }
   .line:empty::after { content: " "; }
-  :host([line-numbers]) .line { counter-increment: line; padding-left: 0; }
+  :host([line-numbers]) .line { counter-increment: line; padding-inline-start: 0; }
   :host([line-numbers]) .line::before {
     content: counter(line);
     display: inline-block;
     width: calc(var(--_digits, 2) * 1ch + var(--ray-space-6));
     padding-inline-end: var(--ray-space-4);
     box-sizing: border-box;
-    text-align: right;
+    text-align: end;
     color: var(--ray-code-comment);
     opacity: 0.7;
     user-select: none;
   }
-  :host([line-numbers][wrap]) .line { padding-left: calc(var(--_digits, 2) * 1ch + var(--ray-space-6)); text-indent: calc((var(--_digits, 2) * 1ch + var(--ray-space-6)) * -1); }
+  :host([line-numbers][wrap]) .line { padding-inline-start: calc(var(--_digits, 2) * 1ch + var(--ray-space-6)); text-indent: calc((var(--_digits, 2) * 1ch + var(--ray-space-6)) * -1); }
   .line[data-highlight] { background: color-mix(in srgb, var(--ray-primary) 12%, transparent); border-inline-start-color: var(--ray-primary); }
   .line[data-diff="add"] { color: var(--ray-code-added); background: color-mix(in srgb, var(--ray-code-added) 12%, transparent); }
   .line[data-diff="remove"] { color: var(--ray-code-removed); background: color-mix(in srgb, var(--ray-code-removed) 12%, transparent); }
