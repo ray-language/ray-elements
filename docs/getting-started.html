@@ -338,6 +338,25 @@ system-wide. In your markup: <code>&lt;ray-icon name=&quot;info&quot; label=&quo
 (decorative without <code>label</code>). Register icons from your code only — the markup
 is inserted as HTML.</p>
 
+<p><strong>More icons.</strong> The built-in set is small (45, listed in <code>llms.txt</code>). For the
+rest, take them from <a href="https://lucide.dev">Lucide</a> (ISC license): the same
+24×24 grid and 2px stroke, so they sit with the built-in ones.
+<a href="https://www.npmjs.com/package/lucide-static"><code>lucide-static</code></a> exports each
+icon as SVG markup, which is what <code>setIcons</code> takes, and a bundler keeps only
+the ones you import:</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> { setIcons } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
+<span class="tk-keyword">import</span> { Trash2, Save, Bookmark } <span class="tk-keyword">from</span> <span class="tk-string">&quot;lucide-static&quot;</span>;
+
+setIcons({ trash: Trash2, save: Save, bookmark: Bookmark });
+<span class="tk-comment">// &lt;ray-icon name=&quot;trash&quot;&gt;&lt;/ray-icon&gt;</span></code></pre>
+<p>Replacing a built-in name (<code>setIcons({ close: X })</code>) changes it in the
+components too. Without a bundler (a raylang app's page), copy the SVG from
+<code>lucide-static/icons/&lt;name&gt;.svg</code> or lucide.dev into the <code>setIcons</code> call.
+Lucide has no filled versions; for one, register <code>&quot;&lt;name&gt;:filled&quot;</code> from a
+family that has them (Phosphor's fill weight, Material Symbols' filled).
+<code>ray-elements check</code> finds the names you register in <code>setIcons({ … })</code>.</p>
+
 <h2 id="commands">Commands</h2>
 <p>From anywhere (<code>tools/run.sh</code> runs them from <code>tools/</code>; paths stay yours):</p>
 

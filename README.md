@@ -132,6 +132,28 @@ system-wide. In your markup: `<ray-icon name="info" label="Information">`
 (decorative without `label`). Register icons from your code only — the markup
 is inserted as HTML.
 
+**More icons.** The built-in set is small (45, listed in `llms.txt`). For the
+rest, take them from [Lucide](https://lucide.dev) (ISC license): the same
+24×24 grid and 2px stroke, so they sit with the built-in ones.
+[`lucide-static`](https://www.npmjs.com/package/lucide-static) exports each
+icon as SVG markup, which is what `setIcons` takes, and a bundler keeps only
+the ones you import:
+
+```js
+import { setIcons } from "@raylang/elements";
+import { Trash2, Save, Bookmark } from "lucide-static";
+
+setIcons({ trash: Trash2, save: Save, bookmark: Bookmark });
+// <ray-icon name="trash"></ray-icon>
+```
+
+Replacing a built-in name (`setIcons({ close: X })`) changes it in the
+components too. Without a bundler (a raylang app's page), copy the SVG from
+`lucide-static/icons/<name>.svg` or lucide.dev into the `setIcons` call.
+Lucide has no filled versions; for one, register `"<name>:filled"` from a
+family that has them (Phosphor's fill weight, Material Symbols' filled).
+`ray-elements check` finds the names you register in `setIcons({ … })`.
+
 ## Commands
 
 From anywhere (`tools/run.sh` runs them from `tools/`; paths stay yours):
