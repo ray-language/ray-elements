@@ -97,6 +97,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/empty-state/empty-state.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/notification/notification.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/progress/progress.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/ring-progress/ring-progress.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/skeleton/skeleton.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/spinner/spinner.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/app-bar/app-bar.js" fetchpriority="low">
@@ -126,7 +127,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/focus.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/floating.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/input/input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/input/input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/ring-progress/ring-progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -222,6 +223,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Empty state" href="#empty-state"></ray-nav-link>
 <ray-nav-link label="Notification" href="#notification"></ray-nav-link>
 <ray-nav-link label="Progress" href="#progress"></ray-nav-link>
+<ray-nav-link label="Ring progress" href="#ring-progress"></ray-nav-link>
 <ray-nav-link label="Skeleton" href="#skeleton"></ray-nav-link>
 <ray-nav-link label="Spinner" href="#spinner"></ray-nav-link>
 </div>
@@ -310,6 +312,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#empty-state">Empty state</a>
 <a class="side-link" href="#notification">Notification</a>
 <a class="side-link" href="#progress">Progress</a>
+<a class="side-link" href="#ring-progress">Ring progress</a>
 <a class="side-link" href="#skeleton">Skeleton</a>
 <a class="side-link" href="#spinner">Spinner</a>
 </div>
@@ -4315,6 +4318,82 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>track</code></td><td>The background track.</td></tr><tr><td><code>bar</code></td><td>The filled bar.</td></tr><tr><td><code>value</code></td><td>The percentage beside the bar (show-value on xs, sm, md).</td></tr></tbody></table></div>
+</section>
+<section id="ring-progress" class="component">
+<h2>Ring progress</h2>
+<p class="summary">Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload. Announced as a progressbar.</p>
+<div class="example"><div class="demo-caption">A countdown: the value goes down</div>
+<div class="demo-row" style="align-items: center; gap: var(--ray-space-6)">
+  <ray-ring-progress id="demo-ring-timer" size="12rem" thickness="12" round-caps value="100" label="Round time left">
+    <div><div id="demo-ring-clock" style="font-size: 2.25em; font-weight: 600">3:00</div><div class="demo-muted" style="font-size: 0.5em">Round 4 / 12</div></div>
+  </ray-ring-progress>
+  <ray-stack gap="xs">
+    <ray-button id="demo-ring-go" size="sm" variant="light">Start</ray-button>
+    <p class="demo-muted" style="margin: 0">value from 100 to 0; the clock is the default slot.</p>
+  </ray-stack>
+</div>
+
+<div class="demo-caption">Sizes, colors and the percentage</div>
+<div class="demo-row" style="align-items: center">
+  <ray-ring-progress size="xs" value="30"></ray-ring-progress>
+  <ray-ring-progress size="sm" value="45" color="teal" show-value></ray-ring-progress>
+  <ray-ring-progress size="md" value="60" color="violet" show-value round-caps></ray-ring-progress>
+  <ray-ring-progress size="lg" value="75" color="orange" thickness="6" show-value round-caps></ray-ring-progress>
+  <ray-ring-progress size="md" label="Loading"></ray-ring-progress>
+</div>
+<p class="demo-muted" style="margin: 0">Without <code>value</code> the arc spins (indeterminate).</p>
+
+<div class="demo-caption">A goal: value of max</div>
+<div class="demo-row" style="align-items: center">
+  <ray-ring-progress size="lg" value="6400" max="10000" color="green" round-caps label="Steps today">
+    <div><div style="font-weight: 600">6,400</div><div class="demo-muted" style="font-size: 0.6em">of 10,000 steps</div></div>
+  </ray-ring-progress>
+</div>
+
+<script type="module">
+  // Three seconds per demo "minute": the ring drains while the clock counts down.
+  const ring = document.getElementById("demo-ring-timer");
+  const clock = document.getElementById("demo-ring-clock");
+  const go = document.getElementById("demo-ring-go");
+  const total = 180;
+  let left = total;
+  let timer = 0;
+  const paint = () => {
+    ring.value = (left / total) * 100;
+    clock.textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, "0")}`;
+  };
+  go.addEventListener("click", () => {
+    if (timer) {
+      clearInterval(timer);
+      timer = 0;
+      go.textContent = "Start";
+      return;
+    }
+    if (left === 0) left = total;
+    go.textContent = "Pause";
+    timer = setInterval(() => {
+      left = Math.max(0, left - 5);
+      paint();
+      if (left === 0) {
+        clearInterval(timer);
+        timer = 0;
+        go.textContent = "Start";
+      }
+    }, 250);
+  });
+  paint();
+</script>
+</div>
+<details class="source" data-code-src="code/ring-progress.html"><summary>Code</summary>
+<div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
+<div class="source-body"><p class="source-status"><a href="../code/ring-progress.html">Open the code</a></p></div></details>
+<p class="tag"><code>&lt;ray-ring-progress&gt;</code> &middot; <code>RayRingProgress</code></p>
+<p class="note">The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value.</p>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>number</td><td></td><td>Progress, from 0 to max. Unset: indeterminate (a spinning arc).</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>number</td><td><code>100</code></td><td>The value of a full ring.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>A palette color or any CSS color. Default: the primary color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length.</td></tr><tr><td><code>thickness</code></td><td><code>thickness</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter.</td></tr><tr><td><code>roundCaps</code></td><td><code>round-caps</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Rounded ends of the arc.</td></tr><tr><td><code>showValue</code></td><td><code>show-value</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows the percentage in the middle (when the default slot is empty).</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Accessible name (default: Progress).</td></tr></tbody></table></div>
+
+
+<div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>The middle of the ring (a clock, a figure, an icon); its font scales with size.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>track</code></td><td>The background circle.</td></tr><tr><td><code>bar</code></td><td>The arc.</td></tr><tr><td><code>center</code></td><td>The middle, around the default slot.</td></tr></tbody></table></div>
 </section>
 <section id="skeleton" class="component">
 <h2>Skeleton</h2>

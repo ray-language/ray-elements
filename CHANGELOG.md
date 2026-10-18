@@ -18,6 +18,10 @@ change the API.
   seconds), with an `aria-valuetext` such as "3 minutes, 15 seconds" in the
   page's language. The form still gets the seconds. `formatDuration`,
   `parseDuration` and `durationText` are exported beside `formatNumber`.
+- `ray-ring-progress`: progress as a ring, with the default slot in the
+  middle (a countdown's clock, a goal). `value` of `max`, `color`, `size`
+  (xs…xl or a length: the diameter), `thickness`, `round-caps`, `show-value`;
+  indeterminate without a value; announced as a progressbar.
 
 ## [0.5.2] - 2026-10-17
 

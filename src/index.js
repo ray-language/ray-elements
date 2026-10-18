@@ -52,6 +52,7 @@ import "./components/alert/alert.js";
 import "./components/empty-state/empty-state.js";
 import "./components/notification/notification.js";
 import "./components/progress/progress.js";
+import "./components/ring-progress/ring-progress.js";
 import "./components/skeleton/skeleton.js";
 import "./components/spinner/spinner.js";
 import "./components/app-bar/app-bar.js";

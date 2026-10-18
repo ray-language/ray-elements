@@ -5151,6 +5151,46 @@
       ]
     },
     {
+      "name": "ray-ring-progress",
+      "description": "The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Progress, from 0 to max. Unset: indeterminate (a spinning arc)."
+        },
+        {
+          "name": "max",
+          "description": "The value of a full ring."
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length."
+        },
+        {
+          "name": "thickness",
+          "description": "Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter."
+        },
+        {
+          "name": "round-caps",
+          "description": "Rounded ends of the arc.",
+          "valueSet": "v"
+        },
+        {
+          "name": "show-value",
+          "description": "Shows the percentage in the middle (when the default slot is empty).",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Accessible name (default: Progress)."
+        }
+      ]
+    },
+    {
       "name": "ray-skeleton",
       "description": "aria-busy=\"true\" on the host while loading; the placeholder is aria-hidden.",
       "attributes": [

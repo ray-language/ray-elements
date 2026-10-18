@@ -2778,6 +2778,37 @@ Parts (`::part()`):
 - `bar`: The filled bar.
 - `value`: The percentage beside the bar (show-value on xs, sm, md).
 
+### Ring progress
+
+Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload. Announced as a progressbar.
+
+Import: `import "@raylang/elements/ring-progress";` · Category: Feedback
+
+#### `<ray-ring-progress>` (RayRingProgress, extends RayElement)
+
+The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value.
+
+Properties:
+
+- `value`: number. Progress, from 0 to max. Unset: indeterminate (a spinning arc).
+- `max`: number, default `100`. The value of a full ring.
+- `color`: string, reflects. A palette color or any CSS color. Default: the primary color.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | (string & {})`, default `md`, reflects. Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length.
+- `thickness`: string, reflects. Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter.
+- `roundCaps` (attribute `round-caps`): boolean, reflects. Rounded ends of the arc.
+- `showValue` (attribute `show-value`): boolean, reflects. Shows the percentage in the middle (when the default slot is empty).
+- `label`: string. Accessible name (default: Progress).
+
+Slots:
+
+- (default): The middle of the ring (a clock, a figure, an icon); its font scales with size.
+
+Parts (`::part()`):
+
+- `track`: The background circle.
+- `bar`: The arc.
+- `center`: The middle, around the default slot.
+
 ### Skeleton
 
 A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.

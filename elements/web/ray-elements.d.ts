@@ -2200,6 +2200,27 @@ export declare class RayProgress extends RayElement {
   label: string | undefined;
 }
 
+// --- Ring progress (ring-progress)
+/** <ray-ring-progress> The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value. */
+export declare class RayRingProgress extends RayElement {
+  /** Progress, from 0 to max. Unset: indeterminate (a spinning arc). */
+  value: number | undefined;
+  /** The value of a full ring. */
+  max: number;
+  /** A palette color or any CSS color. Default: the primary color. */
+  color: string | undefined;
+  /** Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length. */
+  size: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
+  /** Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter. */
+  thickness: string | undefined;
+  /** Rounded ends of the arc. */
+  roundCaps: boolean | undefined;
+  /** Shows the percentage in the middle (when the default slot is empty). */
+  showValue: boolean | undefined;
+  /** Accessible name (default: Progress). */
+  label: string | undefined;
+}
+
 // --- Skeleton (skeleton)
 /** <ray-skeleton> aria-busy="true" on the host while loading; the placeholder is aria-hidden. */
 export declare class RaySkeleton extends RayElement {
@@ -2551,6 +2572,7 @@ declare global {
     "ray-notification": RayNotification;
     "ray-toaster": RayToaster;
     "ray-progress": RayProgress;
+    "ray-ring-progress": RayRingProgress;
     "ray-skeleton": RaySkeleton;
     "ray-spinner": RaySpinner;
     "ray-app-bar": RayAppBar;

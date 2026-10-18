@@ -308,6 +308,7 @@ Members whose name starts with `_` are internal.
 - [Empty state](https://elements.raylang.dev/components/empty-state.md): `<ray-empty-state>` (Feedback). What a list, table or pane shows when it is empty: icon, title, text and the action that fills it.
 - [Notification](https://elements.raylang.dev/components/notification.md): `<ray-notification>`, `<ray-toaster>` (Feedback). Toasts: notify(), updateNotification(), hideNotification(), clearNotifications(); shown in a ray-toaster (a polite live region in the top layer).
 - [Progress](https://elements.raylang.dev/components/progress.md): `<ray-progress>` (Feedback). A determinate or (without value) indeterminate progress bar, announced as a progressbar.
+- [Ring progress](https://elements.raylang.dev/components/ring-progress.md): `<ray-ring-progress>` (Feedback). Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload.
 - [Skeleton](https://elements.raylang.dev/components/skeleton.md): `<ray-skeleton>` (Feedback). A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.
 - [Spinner](https://elements.raylang.dev/components/spinner.md): `<ray-spinner>` (Feedback). An indeterminate loading indicator, announced as a status.
 - [App bar](https://elements.raylang.dev/components/app-bar.md): `<ray-app-bar>` (Layout). The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it.

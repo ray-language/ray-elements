@@ -1933,6 +1933,28 @@ export type RayProgressProps = RayProgressOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-progress> as a React component. */
 export declare const RayProgress: React.ForwardRefExoticComponent<RayProgressProps & React.RefAttributes<Ray.RayProgress>>;
 
+export interface RayRingProgressOwnProps {
+  /** Progress, from 0 to max. Unset: indeterminate (a spinning arc). */
+  value?: number;
+  /** The value of a full ring. */
+  max?: number;
+  /** A palette color or any CSS color. Default: the primary color. */
+  color?: string;
+  /** Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
+  /** Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter. */
+  thickness?: string;
+  /** Rounded ends of the arc. */
+  roundCaps?: boolean;
+  /** Shows the percentage in the middle (when the default slot is empty). */
+  showValue?: boolean;
+  /** Accessible name (default: Progress). */
+  label?: string;
+}
+export type RayRingProgressProps = RayRingProgressOwnProps & Omit<React.HTMLAttributes<Ray.RayRingProgress>, keyof RayRingProgressOwnProps> & { children?: React.ReactNode };
+/** <ray-ring-progress> as a React component. */
+export declare const RayRingProgress: React.ForwardRefExoticComponent<RayRingProgressProps & React.RefAttributes<Ray.RayRingProgress>>;
+
 export interface RaySkeletonOwnProps {
   /** Width (CSS length, a number is px). Default: 100% (a circle: 2.5rem). */
   width?: string;

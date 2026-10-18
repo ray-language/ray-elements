@@ -1949,6 +1949,27 @@ export interface RayProgressProps {
 /** <ray-progress> as a Vue component. */
 export declare const RayProgress: DefineComponent<RayProgressProps>;
 
+export interface RayRingProgressProps {
+  /** Progress, from 0 to max. Unset: indeterminate (a spinning arc). */
+  value?: number;
+  /** The value of a full ring. */
+  max?: number;
+  /** A palette color or any CSS color. Default: the primary color. */
+  color?: string;
+  /** Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
+  /** Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter. */
+  thickness?: string;
+  /** Rounded ends of the arc. */
+  roundCaps?: boolean;
+  /** Shows the percentage in the middle (when the default slot is empty). */
+  showValue?: boolean;
+  /** Accessible name (default: Progress). */
+  label?: string;
+}
+/** <ray-ring-progress> as a Vue component. */
+export declare const RayRingProgress: DefineComponent<RayRingProgressProps>;
+
 export interface RaySkeletonProps {
   /** Width (CSS length, a number is px). Default: 100% (a circle: 2.5rem). */
   width?: string;
@@ -2251,6 +2272,7 @@ export declare const components: {
   RayNotification: typeof RayNotification;
   RayToaster: typeof RayToaster;
   RayProgress: typeof RayProgress;
+  RayRingProgress: typeof RayRingProgress;
   RaySkeleton: typeof RaySkeleton;
   RaySpinner: typeof RaySpinner;
   RayAppBar: typeof RayAppBar;
@@ -2343,6 +2365,7 @@ declare module "vue" {
     RayNotification: typeof RayNotification;
     RayToaster: typeof RayToaster;
     RayProgress: typeof RayProgress;
+    RayRingProgress: typeof RayRingProgress;
     RaySkeleton: typeof RaySkeleton;
     RaySpinner: typeof RaySpinner;
     RayAppBar: typeof RayAppBar;
