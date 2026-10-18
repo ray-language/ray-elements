@@ -340,8 +340,10 @@ system-wide.</p>
 <code>ui.remove</code> (a chip's ×), <code>ui.clear</code> (a field's ×), <code>ui.expand</code>, <code>ui.next</code>,
 <code>ui.checked</code>… (<code>iconAliases()</code> lists them with their glyphs). A role draws its
 glyph until you register the role itself: <code>setIcons({ close: X })</code> changes
-every ×, <code>setIcons({ &quot;ui.remove&quot;: Trash })</code> only the chips'. In your markup: <code>&lt;ray-icon name=&quot;info&quot; label=&quot;Information&quot;&gt;</code>
-(decorative without <code>label</code>). Register icons from your code only — the markup
+every ×, <code>setIcons({ &quot;ui.remove&quot;: Trash })</code> only the chips'. The roles that
+point along the text (<code>ui.next</code>, <code>ui.previous</code>, <code>ui.first</code>, <code>ui.last</code>,
+<code>ui.disclosure</code>, <code>ui.separator</code>) are drawn mirrored under <code>dir=&quot;rtl&quot;</code>. In your markup: <code>&lt;ray-icon name=&quot;info&quot; label=&quot;Information&quot;&gt;</code>
+(decorative without <code>label</code>; <code>mirror</code> mirrors a back arrow right to left). Register icons from your code only — the markup
 is inserted as HTML.</p>
 
 <p><strong>More icons.</strong> The built-in set is small (45, listed in <code>llms.txt</code>). For the

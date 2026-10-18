@@ -1,7 +1,8 @@
 // <ray-icon name="…">: an icon of the registry (setIcons), so the app's own
 // markup uses the same set as the components. Decorative unless `label`.
 // `filled` draws the icon's filled version (a state: active, selected,
-// favorite), or the outline one when it has none.
+// favorite), or the outline one when it has none. `mirror` mirrors it right
+// to left (a back arrow), as the roles that point along the text (ui.next…) are.
 
 import { RayElement, css, define } from "../../core/core.js";
 
@@ -13,6 +14,7 @@ const styles = css`
      size) must not reach the icon. size= overrides it inline. */
   :host { --_size: 1em; display: inline-flex; vertical-align: -0.125em; line-height: 1; }
   .icon svg { width: var(--_size); height: var(--_size); }
+  :host([mirror]) .icon:dir(rtl) > svg { transform: scaleX(-1); }
 `;
 
 export class RayIcon extends RayElement {
@@ -23,6 +25,7 @@ export class RayIcon extends RayElement {
     color: { type: String, reflect: true },
     stroke: { type: Number },
     filled: { type: Boolean, reflect: true },
+    mirror: { type: Boolean, reflect: true },
   };
   static styles = [styles];
   static template = `<span class="icon" part="icon" data-ray-icon=""></span>`;

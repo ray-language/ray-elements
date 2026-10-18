@@ -134,8 +134,10 @@ The components ask for **roles**, not glyphs: `ui.close` (a dialog's ×),
 `ui.remove` (a chip's ×), `ui.clear` (a field's ×), `ui.expand`, `ui.next`,
 `ui.checked`… (`iconAliases()` lists them with their glyphs). A role draws its
 glyph until you register the role itself: `setIcons({ close: X })` changes
-every ×, `setIcons({ "ui.remove": Trash })` only the chips'. In your markup: `<ray-icon name="info" label="Information">`
-(decorative without `label`). Register icons from your code only — the markup
+every ×, `setIcons({ "ui.remove": Trash })` only the chips'. The roles that
+point along the text (`ui.next`, `ui.previous`, `ui.first`, `ui.last`,
+`ui.disclosure`, `ui.separator`) are drawn mirrored under `dir="rtl"`. In your markup: `<ray-icon name="info" label="Information">`
+(decorative without `label`; `mirror` mirrors a back arrow right to left). Register icons from your code only — the markup
 is inserted as HTML.
 
 **More icons.** The built-in set is small (45, listed in `llms.txt`). For the

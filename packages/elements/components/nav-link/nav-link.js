@@ -43,6 +43,8 @@ const styles = css`
   .chevron svg { width: 0.875rem; height: 0.875rem; }
   :host([data-parent]) .chevron { display: inline-flex; }
   :host([opened]) .chevron { transform: rotate(90deg); }
+  /* Right to left the chevron is mirrored (it points left): it turns the other way. */
+  :host([opened]) .chevron:dir(rtl) { transform: rotate(-90deg); }
   /* Children expand and collapse: a 0fr → 1fr grid row animates the height
      in both directions without measuring it (like the accordion). */
   .children {

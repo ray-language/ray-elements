@@ -2,7 +2,7 @@
 // the theme API. No dependencies; loads as a plain ES module (also from
 // ray://app in a std/ui window).
 
-import { getIcon, onIconsChange } from "./icons.js";
+import { getIcon, mirrorsInRtl, onIconsChange } from "./icons.js";
 import { parseColor, shades, contrastRatio, toHex, toOklch } from "./color.js";
 
 export { setIcons, getIcon, iconNames, iconAliases } from "./icons.js";
@@ -59,6 +59,8 @@ export const hostStyles = css`
     height: var(--ray-icon-size, 1em);
     stroke-width: var(--ray-icon-stroke, 2);
   }
+  /* Right to left, the roles that point along the text. */
+  :where([data-ray-icon-mirror]):dir(rtl) > svg { transform: scaleX(-1); }
   .focus-ring:focus-visible {
     outline: var(--ray-focus-ring-width) solid var(--ray-ring);
     outline-offset: var(--ray-focus-ring-offset);
@@ -315,11 +317,14 @@ export class RayElement extends HTMLElement {
    * it for markup they create after the template. An empty name or "none"
    * (the value components use to hide an icon) leaves the slot empty;
    * data-ray-icon-filled asks for the filled version (the outline without one).
+   * A role that points along the text (ui.next…) gets data-ray-icon-mirror,
+   * which mirrors it under dir="rtl".
    */
   paintIcons(root = this.shadowRoot) {
     for (const slot of root.querySelectorAll("[data-ray-icon]")) {
       const name = slot.getAttribute("data-ray-icon");
       slot.innerHTML = name && name !== "none" ? getIcon(name, { filled: slot.hasAttribute("data-ray-icon-filled") }) : "";
+      slot.toggleAttribute("data-ray-icon-mirror", mirrorsInRtl(name));
     }
   }
 }

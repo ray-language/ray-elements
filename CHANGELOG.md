@@ -7,6 +7,16 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- Icons with a direction: under `dir="rtl"` the roles that point along the
+  text (`ui.next`, `ui.previous`, `ui.first`, `ui.last`, `ui.disclosure`,
+  `ui.separator`) are drawn mirrored, the built-in glyph or the app's own
+  (pagination, date-picker, breadcrumbs, nav-link, whose open chevron turns
+  the other way). `<ray-icon mirror>` does it for an icon of yours (a back
+  arrow). The carousel keeps its arrows until its scroll follows the
+  direction.
+
 ### Changed
 
 - The components' CSS uses logical properties (`inset-inline-start`,

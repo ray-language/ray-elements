@@ -101,6 +101,39 @@ T.test("icons: roles draw their glyph; a registered role wins, only for it", asy
   box.remove();
 });
 
+T.test("icons: right to left, the roles that point along the text mirror", async (T) => {
+  await Promise.all(["ray-pagination", "ray-carousel", "ray-nav-link"].map((t) => customElements.whenDefined(t)));
+  const box = await mount(`
+    <div dir="rtl">
+      <ray-icon name="ui.next"></ray-icon><ray-icon name="arrow-left" mirror></ray-icon><ray-icon name="arrow-left"></ray-icon>
+      <ray-pagination total="5" value="2"></ray-pagination>
+      <ray-carousel><div>1</div><div>2</div></ray-carousel>
+      <ray-nav-link label="Parent" opened><ray-nav-link label="Child" href="#"></ray-nav-link></ray-nav-link>
+    </div>
+    <div dir="ltr"><ray-icon name="ui.next"></ray-icon><ray-icon name="arrow-left" mirror></ray-icon></div>`);
+  await T.settle();
+  const [rtl, ltr] = box.children;
+  const MIRRORED = "matrix(-1, 0, 0, 1, 0, 0)";
+  const transform = (el) => (el ? getComputedStyle(el).transform : "missing");
+  const [role, asked, plain] = rtl.querySelectorAll("ray-icon");
+  T.eq(transform(inner(role, ".icon svg")), MIRRORED, "a role with a direction");
+  T.eq(transform(inner(asked, ".icon svg")), MIRRORED, "ray-icon mirror");
+  T.eq(transform(inner(plain, ".icon svg")), "none", "a plain glyph keeps its drawing");
+  for (const icon of ltr.querySelectorAll("ray-icon")) T.eq(transform(inner(icon, ".icon svg")), "none", `left to right: ${icon.name}`);
+  role.name = "star";
+  await T.settle();
+  T.eq(transform(inner(role, ".icon svg")), "none", "renamed to a glyph without a direction");
+  const pagination = rtl.querySelector("ray-pagination");
+  T.eq(transform(pagination.shadowRoot.querySelector('[data-ray-icon="ui.next"] svg')), MIRRORED, "pagination's next arrow");
+  const carousel = rtl.querySelector("ray-carousel");
+  T.eq(transform(carousel.shadowRoot.querySelector('[data-ray-icon="ui.next"] svg')), "none", "the carousel's buttons stay physical (its scroll is)");
+  const chevron = inner(rtl.querySelector("ray-nav-link"), ".chevron");
+  const [a, b] = new DOMMatrix(transform(chevron)).toFloat32Array();
+  T.ok(Math.abs(a) < 1e-6 && b < 0, `an open nav-link turns its mirrored chevron the other way (${transform(chevron)})`);
+  T.eq(transform(chevron.querySelector("svg")), MIRRORED, "its chevron is mirrored");
+  box.remove();
+});
+
 T.test("icons: invalid input and unknown names", (T) => {
   let threw = false;
   try { core.setIcons({ bad: "<div>not svg</div>" }); } catch (e) { threw = e instanceof TypeError; }
