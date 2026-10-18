@@ -358,7 +358,9 @@ your template) in the top layer, placed with flip and shift.</p>
 <p><code>css</code>, <code>define</code>, <code>uid</code>, <code>applyColor(el, color)</code> + <code>variantStyles</code> (the
 filled/light/outline/subtle/default variants on <code>[data-variant]</code>),
 <code>loaderStyles</code>, <code>srOnlyStyles</code>, <code>place()</code>, <code>autoUpdate()</code>, <code>tabbables()</code>,
-<code>focusFirst()</code>, <code>setIcons()</code> / <code>getIcon()</code>, <code>configure()</code>.</p>
+<code>focusFirst()</code>, <code>setIcons()</code> / <code>getIcon()</code>, <code>configure()</code>, <code>isRtl(el)</code> and
+<code>inlineKey(e.key, el)</code> (arrow keys right to left: compare with &quot;ArrowRight&quot;
+for forward).</p>
 
 <p><strong>Motion</strong> (<code>core/motion.js</code>): <code>play(el, keyframes, { speed, ease })</code> runs an
 animation with the duration/easing tokens and resolves when it ends — at

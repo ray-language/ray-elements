@@ -14,8 +14,17 @@ change the API.
   `ui.separator`) are drawn mirrored, the built-in glyph or the app's own
   (pagination, date-picker, breadcrumbs, nav-link, whose open chevron turns
   the other way). `<ray-icon mirror>` does it for an icon of yours (a back
-  arrow). The carousel keeps its arrows until its scroll follows the
-  direction.
+  arrow).
+- Keyboard and pointer right to left. Arrow keys follow the reading
+  direction (ArrowLeft is forward under `dir="rtl"`) in tabs, radio groups,
+  the segmented control, toggle groups, the calendar, the carousel and the
+  split. The split drags and sizes its start pane on the right, the carousel
+  scrolls toward the left with its next button there, `ray-scroll-area`'s
+  shadows, `scrollToEnd()` and `ray-reach-end` (`edge: "left"`) follow, and
+  the slider's fill and marks and `ray-indicator`'s `start`/`end` positions
+  mirror. The
+  color picker stays as it is: a color space is a picture, not text.
+- `isRtl(el)` and `inlineKey(key, el)`, for components of your own.
 
 ### Changed
 
@@ -29,7 +38,7 @@ change the API.
   JS (carousel, scroll-area shadows, indicator, segmented-control,
   color-picker). `ray-code` always lays code out left to right.
 - `build` rejects physical CSS in the components unless the line is marked
-  `/* physical */`.
+  `/* physical */`, gradients toward a side included.
 
 ### Fixed
 

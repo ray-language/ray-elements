@@ -33,9 +33,11 @@ const styles = css`
   input::-webkit-slider-runnable-track {
     height: var(--_track);
     border-radius: var(--ray-radius-full);
-    background: linear-gradient(to right, var(--_filled) var(--_pct), var(--ray-muted) var(--_pct));
+    background: linear-gradient(to right, var(--_filled) var(--_pct), var(--ray-muted) var(--_pct)); /* physical */
     box-shadow: inset 0 0 0 1px var(--ray-border);
   }
+  /* Right to left the native range runs from the right: so does its fill. */
+  input:dir(rtl)::-webkit-slider-runnable-track { background: linear-gradient(to left, var(--_filled) var(--_pct), var(--ray-muted) var(--_pct)); } /* physical */
   input::-moz-range-track { height: var(--_track); border-radius: var(--ray-radius-full); background: var(--ray-muted); }
   input::-moz-range-progress { height: var(--_track); border-radius: var(--ray-radius-full); background: var(--_filled); }
   input::-webkit-slider-thumb {
@@ -62,6 +64,7 @@ const styles = css`
   .marks { position: relative; height: 1.25rem; margin: var(--ray-space-1) calc(var(--_thumb) / 2) 0; font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
   .marks:empty { display: none; }
   .mark { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+  .mark:dir(rtl) { transform: translateX(50%); }
   .mark::before { content: ""; display: block; width: 1px; height: 0.25rem; margin: 0 auto 0.125rem; background: var(--ray-border); }
 `;
 
@@ -137,7 +140,7 @@ export class RaySlider extends FieldControl {
       const v = typeof m === "number" ? m : m.value;
       const span = document.createElement("span");
       span.className = "mark";
-      span.style.left = `${((v - min) / (max - min || 1)) * 100}%`;
+      span.style.insetInlineStart = `${((v - min) / (max - min || 1)) * 100}%`;
       span.textContent = typeof m === "number" ? String(m) : (m.label ?? String(m.value));
       box.append(span);
     }

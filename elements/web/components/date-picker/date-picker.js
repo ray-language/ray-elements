@@ -12,6 +12,7 @@
 // arithmetic), so no time zone shifts a day.
 
 import { RayElement, css, define } from "../../core/core.js";
+import { inlineKey } from "../../core/direction.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
@@ -268,7 +269,8 @@ export class RayCalendar extends RayElement {
     const d = this._focusDate();
     const first = this.firstDay ?? firstDayOf(localeOf(this));
     let next = null;
-    switch (e.key) {
+    // The grid follows the writing direction: right to left, ArrowLeft is the next day.
+    switch (inlineKey(e.key, this)) {
       case "ArrowLeft": next = addDays(d, -1); break;
       case "ArrowRight": next = addDays(d, 1); break;
       case "ArrowUp": next = addDays(d, -7); break;

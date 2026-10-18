@@ -13,6 +13,7 @@
 //   </ray-toggle-group>
 
 import { css, define } from "../../core/core.js";
+import { inlineKey } from "../../core/direction.js";
 import { RayButtonGroup } from "../button-group/button-group.js";
 import "../toggle/toggle.js";
 
@@ -113,14 +114,15 @@ export class RayToggleGroup extends RayButtonGroup {
     const vertical = this.orientation === "vertical";
     const next = vertical ? "ArrowDown" : "ArrowRight";
     const prev = vertical ? "ArrowUp" : "ArrowLeft";
-    if (![next, prev, "Home", "End"].includes(e.key)) return;
+    const key = vertical ? e.key : inlineKey(e.key, this);
+    if (![next, prev, "Home", "End"].includes(key)) return;
     const items = this.toggles.filter((t) => !t.disabled);
     if (items.length === 0) return;
     const current = items.findIndex((t) => t.matches(":focus-within"));
     let i = current;
-    if (e.key === "Home") i = 0;
-    else if (e.key === "End") i = items.length - 1;
-    else if (e.key === next) i = (current + 1) % items.length;
+    if (key === "Home") i = 0;
+    else if (key === "End") i = items.length - 1;
+    else if (key === next) i = (current + 1) % items.length;
     else i = (current - 1 + items.length) % items.length;
     e.preventDefault();
     this.#rove(items[i]);

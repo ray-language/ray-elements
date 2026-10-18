@@ -50,8 +50,8 @@ type = "string"
 description = "Accessible name: makes the scrolling box a named region."
 
 [ray-scroll-area.events.ray-reach-end]
-detail = "{ edge: \"bottom\" | \"right\" }"
-description = "The end came within threshold (once per arrival)."
+detail = "{ edge: \"bottom\" | \"right\" | \"left\" }"
+description = "The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left)."
 
 [ray-scroll-area.slots.default]
 description = "The content."
@@ -68,8 +68,8 @@ description = "The scrolling element (scrollTop, scrollTo…)."
 
 [ray-scroll-area.members.scrollToStart]
 ts = "scrollToStart(options?: { behavior?: ScrollBehavior }): void"
-description = "Scrolls to the top (left)."
+description = "Scrolls to the start: the top, or the left when horizontal (the right right to left)."
 
 [ray-scroll-area.members.scrollToEnd]
 ts = "scrollToEnd(options?: { behavior?: ScrollBehavior }): void"
-description = "Scrolls to the bottom (right when horizontal)."
+description = "Scrolls to the end: the bottom, or the right when horizontal (the left right to left)."

@@ -60,6 +60,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/core.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/styles.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/direction.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/form.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/position.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
@@ -392,7 +393,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="note">Give it a size: height, max-height, CSS, or a flex/grid parent. The scrolling box is focusable (keyboard scrolling); name it with label when it holds a region of its own.</p>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>height</code></td><td><code>height</code></td><td>string</td><td></td><td>Height (CSS length).</td></tr><tr><td><code>maxHeight</code></td><td><code>max-height</code></td><td>string</td><td></td><td>Maximum height: it grows with its content up to this, then scrolls.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>vertical</code> | <code>horizontal</code> | <code>both</code></td><td><code>vertical</code></td><td>Which ways it scrolls.</td></tr><tr><td><code>type</code></td><td><code>type</code> <span class="reflects">reflects</span></td><td><code>auto</code> | <code>hover</code> | <code>never</code></td><td><code>auto</code></td><td>The scrollbar: auto (when it scrolls), hover (while hovered or scrolling), never (still scrolls).</td></tr><tr><td><code>noShadows</code></td><td><code>no-shadows</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No edge shadows.</td></tr><tr><td><code>threshold</code></td><td><code>threshold</code></td><td>number</td><td><code>48</code></td><td>Distance from the end (px) at which ray-reach-end fires.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Accessible name: makes the scrolling box a named region.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-reach-end</code></td><td>The end came within threshold (once per arrival).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-reach-end</code></td><td>The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left).</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>The content.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>viewport</code></td><td>The scrolling box.</td></tr><tr><td><code>shadow</code></td><td>The edge shadows.</td></tr></tbody></table></div>
 </section>

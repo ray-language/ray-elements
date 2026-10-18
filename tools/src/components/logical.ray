@@ -105,6 +105,9 @@ fn strip_comments(line: string, open: bool) -> (string, bool) {
 // The physical declarations of a line of CSS.
 fn problems(line: string) -> [string] {
     let out: [string] = [];
+    if (line.contains("gradient(to left") || line.contains("gradient(to right")) {
+        out.push("a gradient toward a side — mirror it under :dir(rtl) and mark both lines ${MARK}, or mark it if the side is meant");
+    }
     for part in line.replace("{", ";").replace("}", ";").split(";") {
         let colon = part.index_of(":").unwrap_or(-1);
         if (colon < 0) {
@@ -229,15 +232,16 @@ fn values(value: string) -> [string] {
 
 @test
 fn finds_physical_declarations() {
-    let src = "const a = { left: 1 };\nconst styles = css`\n  .a { margin-left: 1px; text-align: right; }\n  .b { left: 0; inset-inline-end: 0; }\n  .c { padding: 0 1px 0 2px; margin: 0 auto; }\n  .d { border-radius: 4px 0 0 4px; border-start-start-radius: 2px; }\n  .e { border-left-color: red; }\n`;\nconst x = { right: 2 };\n";
+    let src = "const a = { left: 1 };\nconst styles = css`\n  .a { margin-left: 1px; text-align: right; }\n  .g { background:\n    linear-gradient(to right, red, blue); }\n  .b { left: 0; inset-inline-end: 0; }\n  .c { padding: 0 1px 0 2px; margin: 0 auto; }\n  .d { border-radius: 4px 0 0 4px; border-start-start-radius: 2px; }\n  .e { border-left-color: red; }\n`;\nconst x = { right: 2 };\n";
     let p = scan(src, false);
-    assert_eq(p.len(), 6);
+    assert_eq(p.len(), 7);
     assert(p[0].starts_with("3: margin-left — use margin-inline-start"));
     assert(p[1].starts_with("3: text-align: right — use text-align: end"));
-    assert(p[2].starts_with("4: left — use inset-inline-start"));
-    assert(p[3].starts_with("5: padding: 0 1px 0 2px"));
-    assert(p[4].starts_with("6: border-radius: 4px 0 0 4px"));
-    assert(p[5].starts_with("7: border-left-color — use border-inline-start-color"));
+    assert(p[2].starts_with("5: a gradient toward a side"));
+    assert(p[3].starts_with("6: left — use inset-inline-start"));
+    assert(p[4].starts_with("7: padding: 0 1px 0 2px"));
+    assert(p[5].starts_with("8: border-radius: 4px 0 0 4px"));
+    assert(p[6].starts_with("9: border-left-color — use border-inline-start-color"));
 }
 
 @test

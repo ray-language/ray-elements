@@ -19152,21 +19152,21 @@
             {
               "kind": "method",
               "name": "scrollToStart",
-              "description": "Scrolls to the top (left)."
+              "description": "Scrolls to the start: the top, or the left when horizontal (the right right to left)."
             },
             {
               "kind": "method",
               "name": "scrollToEnd",
-              "description": "Scrolls to the bottom (right when horizontal)."
+              "description": "Scrolls to the end: the bottom, or the right when horizontal (the left right to left)."
             }
           ],
           "events": [
             {
               "name": "ray-reach-end",
               "type": {
-                "text": "CustomEvent<{ edge: \"bottom\" | \"right\" }>"
+                "text": "CustomEvent<{ edge: \"bottom\" | \"right\" | \"left\" }>"
               },
-              "description": "The end came within threshold (once per arrival)."
+              "description": "The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left)."
             }
           ],
           "slots": [

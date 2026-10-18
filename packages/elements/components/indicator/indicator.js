@@ -21,7 +21,7 @@ const styles = css`
     position: absolute;
     z-index: 1;
     top: var(--_top);
-    left: var(--_left); /* physical */
+    inset-inline-start: var(--_left);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -34,6 +34,7 @@ const styles = css`
     transform: translate(-50%, -50%);
     pointer-events: none;
   }
+  .indicator:dir(rtl) { transform: translate(50%, -50%); }
   .indicator[data-label] {
     height: auto;
     min-height: var(--_size);

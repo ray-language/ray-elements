@@ -2171,8 +2171,8 @@ export interface RayScrollAreaProps {
   threshold?: number;
   /** Accessible name: makes the scrolling box a named region. */
   label?: string;
-  /** The end came within threshold (once per arrival). */
-  onRayReachEnd?: (event: CustomEvent<{ edge: "bottom" | "right" }>) => void;
+  /** The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left). */
+  onRayReachEnd?: (event: CustomEvent<{ edge: "bottom" | "right" | "left" }>) => void;
 }
 /** <ray-scroll-area> as a Vue component. */
 export declare const RayScrollArea: DefineComponent<RayScrollAreaProps>;
