@@ -16,6 +16,8 @@ const styles = css`
     --_t: calc(var(--_d) / 10);
     position: relative;
     display: inline-grid;
+    /* One cell of exactly the diameter: the svg's intrinsic 300×150 must not size it. */
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
     vertical-align: middle;
     width: var(--_d);
     height: var(--_d);
@@ -45,7 +47,7 @@ const styles = css`
   /* A round cap draws a dot at 0. */
   .bar[data-empty] { visibility: hidden; }
   svg[data-indeterminate] { animation: ray-ring-spin 1.2s linear infinite; }
-  svg[data-indeterminate] .bar { --_pct: 25; transition: none; }
+  svg[data-indeterminate] .bar { transition: none; }
   @keyframes ray-ring-spin { from { transform: rotate(-90deg); } to { transform: rotate(270deg); } }
   .center {
     grid-area: 1 / 1;
@@ -98,7 +100,8 @@ export class RayRingProgress extends RayElement {
     const indeterminate = this.value === undefined || this.value === null || Number.isNaN(this.value);
     svg.toggleAttribute("data-indeterminate", indeterminate);
     const pct = indeterminate ? 0 : Math.min(100, Math.max(0, (this.value / max) * 100));
-    bar.style.setProperty("--_pct", String(pct));
+    // Indeterminate: a quarter arc that spins.
+    bar.style.setProperty("--_pct", String(indeterminate ? 25 : pct));
     bar.toggleAttribute("data-empty", !indeterminate && pct === 0);
     // The percentage in the middle only when the app puts nothing there.
     const empty = this.$("slot").assignedNodes().every((n) => n.nodeType === Node.TEXT_NODE && !n.textContent.trim());
