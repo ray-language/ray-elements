@@ -13,6 +13,11 @@ change the API.
   length besides xs…xl; the font, the padding and the icon follow.
   `<ray-icon-button size="5.5rem" radius="full" variant="gradient">` is the big
   main action of a phone screen (start, pause, record).
+- `ray-number-input format="duration"`: the value is seconds, shown and typed
+  as m:ss (h:mm:ss when min or max reaches an hour; a plain number is
+  seconds), with an `aria-valuetext` such as "3 minutes, 15 seconds" in the
+  page's language. The form still gets the seconds. `formatDuration`,
+  `parseDuration` and `durationText` are exported beside `formatNumber`.
 
 ## [0.5.2] - 2026-10-17
 

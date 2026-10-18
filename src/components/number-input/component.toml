@@ -1,7 +1,7 @@
 [component]
 name = "Number input"
 category = "Inputs"
-summary = "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton."
+summary = "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton."
 files = ["number-input.js"]
 requires = []
 tags = ["ray-number-input"]
@@ -58,6 +58,13 @@ type = "string"
 values = ["blur", "strict", "none"]
 default = "blur"
 description = "When out-of-range input is clamped: on blur, while typing, or never (then it is invalid)."
+
+[ray-number-input.properties.format]
+type = "string"
+values = ["number", "duration"]
+default = "number"
+reflect = true
+description = "duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says \"3 minutes, 15 seconds\" in the page's language. decimals, prefix, suffix and the separators do not apply."
 
 [ray-number-input.properties.hideControls]
 attribute = "hide-controls"

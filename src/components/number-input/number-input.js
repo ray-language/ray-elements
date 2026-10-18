@@ -2,7 +2,8 @@
 // buttons (hold to repeat), the arrow keys (Shift: ×10), min/max/step,
 // a fixed number of decimals, a prefix and a suffix ("$", " kg") and a
 // thousands separator in the shown text. The value is a number (or empty);
-// the form gets its plain digits.
+// the form gets its plain digits. format="duration": the value is seconds,
+// shown and typed as m:ss (h:mm:ss from an hour).
 //
 // An ARIA spinbutton: aria-valuenow/min/max/valuetext on the text field.
 
@@ -60,6 +61,36 @@ export function formatNumber(n, { decimals, thousands = "", decimal = "." } = {}
   return frac !== undefined ? `${int}${decimal}${frac}` : int;
 }
 
+/** Seconds as m:ss, or h:mm:ss with `hours` (or from an hour); "" if not a number. */
+export function formatDuration(seconds, { hours = false } = {}) {
+  if (!Number.isFinite(seconds)) return "";
+  const sign = seconds < 0 ? "-" : "";
+  const t = Math.round(Math.abs(seconds));
+  const h = Math.floor(t / 3600);
+  const m = Math.floor((t % 3600) / 60);
+  const ss = String(t % 60).padStart(2, "0");
+  return hours || h > 0 ? `${sign}${h}:${String(m).padStart(2, "0")}:${ss}` : `${sign}${m}:${ss}`;
+}
+
+/** Seconds from "m:ss", "h:mm:ss" or a plain number of seconds ("3:", "3:0" while typing); NaN if none. */
+export function parseDuration(text) {
+  const m = String(text ?? "").replace(/\s+/g, "").match(/^(-?)(\d*)(?::(\d*))?(?::(\d*))?$/);
+  if (!m || (m[2] === "" && !m[3])) return NaN;
+  const parts = [m[2], m[3], m[4]].filter((p) => p !== undefined).map((p) => Number(p || 0));
+  const seconds = parts.reduce((total, p) => total * 60 + p, 0);
+  return m[1] ? -seconds : seconds;
+}
+
+/** "3 minutes, 15 seconds" in `lang` (Intl), for aria-valuetext. */
+export function durationText(seconds, lang) {
+  const t = Math.round(Math.abs(seconds));
+  const units = [["hour", Math.floor(t / 3600)], ["minute", Math.floor((t % 3600) / 60)], ["second", t % 60]];
+  const said = units.filter(([, n], i) => n > 0 || (t === 0 && i === 2));
+  const words = said.map(([unit, n]) => new Intl.NumberFormat(lang, { style: "unit", unit, unitDisplay: "long" }).format(n));
+  const text = new Intl.ListFormat(lang, { style: "long", type: "unit" }).format(words);
+  return seconds < 0 ? `-${text}` : text;
+}
+
 export class RayNumberInput extends FieldControl {
   /** Enter submits the form (core/form.js). */
   static implicitSubmission = true;
@@ -78,6 +109,7 @@ export class RayNumberInput extends FieldControl {
     placeholder: { type: String },
     hideControls: { type: Boolean, reflect: true, attribute: "hide-controls" },
     clamp: { type: String, default: "blur" },
+    format: { type: String, reflect: true, default: "number" },
     readonly: { type: Boolean, reflect: true },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
@@ -135,6 +167,8 @@ export class RayNumberInput extends FieldControl {
   update() {
     const c = this.control;
     c.readOnly = Boolean(this.readonly);
+    // The number pad has no ":".
+    c.inputMode = this._duration ? "text" : "decimal";
     if (this.placeholder !== undefined) c.placeholder = this.placeholder;
     if (!this.#typing) this._paint();
     this.syncField();
@@ -162,10 +196,15 @@ export class RayNumberInput extends FieldControl {
     let v = n;
     if (this.min !== undefined && this.min !== null && v < this.min) v = this.min;
     if (this.max !== undefined && this.max !== null && v > this.max) v = this.max;
-    return this.decimals !== undefined && this.decimals !== null ? Number(v.toFixed(this.decimals)) : v;
+    return this.decimals !== undefined && this.decimals !== null && !this._duration ? Number(v.toFixed(this.decimals)) : v;
+  }
+
+  get _duration() {
+    return this.format === "duration";
   }
 
   _parse(text) {
+    if (this._duration) return parseDuration(text);
     let s = String(text ?? "");
     if (this.prefix) s = s.split(this.prefix).join("");
     if (this.suffix) s = s.split(this.suffix).join("");
@@ -184,10 +223,16 @@ export class RayNumberInput extends FieldControl {
     }
   }
 
-  // The shown text: prefix, separators, decimals, suffix.
+  // The shown text: prefix, separators, decimals, suffix; or m:ss.
   _text() {
-    if (this.value === undefined || this.value === null || !Number.isFinite(this.value)) return "";
-    const num = formatNumber(this.value, { decimals: this.decimals, thousands: this.thousandsSeparator || "", decimal: this.decimalSeparator || "." });
+    return this._show(this.value);
+  }
+
+  _show(n) {
+    if (n === undefined || n === null || !Number.isFinite(n)) return "";
+    // h:mm:ss when the range reaches an hour, so the width does not jump.
+    if (this._duration) return formatDuration(n, { hours: Math.abs(this.max ?? 0) >= 3600 || Math.abs(this.min ?? 0) >= 3600 });
+    const num = formatNumber(n, { decimals: this.decimals, thousands: this.thousandsSeparator || "", decimal: this.decimalSeparator || "." });
     return `${this.prefix ?? ""}${num}${this.suffix ?? ""}`;
   }
 
@@ -206,7 +251,8 @@ export class RayNumberInput extends FieldControl {
     set("aria-valuenow", this.value);
     set("aria-valuemin", this.min);
     set("aria-valuemax", this.max);
-    if (this.prefix || this.suffix || this.thousandsSeparator) set("aria-valuetext", this._text() || undefined);
+    if (this._duration) set("aria-valuetext", Number.isFinite(this.value) ? durationText(this.value, this.closest("[lang]")?.lang || undefined) : undefined);
+    else if (this.prefix || this.suffix || this.thousandsSeparator) set("aria-valuetext", this._text() || undefined);
     else c.removeAttribute("aria-valuetext");
   }
 
@@ -225,8 +271,8 @@ export class RayNumberInput extends FieldControl {
     const c = this.control;
     let msg = "";
     if (this.required && (this.value === undefined || this.value === null)) msg = "Please enter a number.";
-    else if (this.value !== undefined && this.min !== undefined && this.value < this.min) msg = `The minimum is ${this.min}.`;
-    else if (this.value !== undefined && this.max !== undefined && this.value > this.max) msg = `The maximum is ${this.max}.`;
+    else if (this.value !== undefined && this.min !== undefined && this.value < this.min) msg = `The minimum is ${this._show(this.min)}.`;
+    else if (this.value !== undefined && this.max !== undefined && this.value > this.max) msg = `The maximum is ${this._show(this.max)}.`;
     if (msg) this.internals.setValidity(this.value === undefined ? { valueMissing: true } : this.value < (this.min ?? -Infinity) ? { rangeUnderflow: true } : { rangeOverflow: true }, msg, c);
     else this.internals.setValidity({});
   }

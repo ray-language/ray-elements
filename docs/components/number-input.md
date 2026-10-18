@@ -1,6 +1,6 @@
 # Number input
 
-A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton.
+A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton.
 
 Import: `import "@raylang/elements/number-input";` · Category: Inputs
 
@@ -20,6 +20,7 @@ Properties:
 - `thousandsSeparator` (attribute `thousands-separator`): string. Groups thousands in the shown text (",", ".", " ").
 - `decimalSeparator` (attribute `decimal-separator`): string, default `.`. The decimal mark shown and typed ("," in many locales).
 - `clamp`: `blur` | `strict` | `none`, default `blur`. When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).
+- `format`: `number` | `duration`, default `number`, reflects. duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says "3 minutes, 15 seconds" in the page's language. decimals, prefix, suffix and the separators do not apply.
 - `hideControls` (attribute `hide-controls`): boolean, reflects. No + and − buttons (the keys still step).
 - `placeholder`: string. Shown while empty.
 - `readonly`: boolean, reflects. Not editable, still submitted.
@@ -82,6 +83,13 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-number-input label="Temperature" value="-4" suffix=" °C" min="-40" max="50"></ray-number-input>
   <ray-number-input label="Precio (es)" value="1234567.8" prefix="€ " decimals="2" thousands-separator="." decimal-separator=","></ray-number-input>
   <ray-number-input label="Port" value="8080" min="1" max="65535" hide-controls description="hide-controls: the keys still step."></ray-number-input>
+</div>
+
+<div class="demo-caption">Durations: format="duration"</div>
+<div class="demo-grid">
+  <ray-number-input label="Round" format="duration" value="180" min="15" max="600" step="15" description="Seconds, shown as m:ss; type 2:30 or 150."></ray-number-input>
+  <ray-number-input label="Rest" format="duration" value="60" min="0" max="300" step="15"></ray-number-input>
+  <ray-number-input label="Session" format="duration" value="5400" min="0" max="14400" step="300" description="h:mm:ss: max reaches an hour."></ray-number-input>
 </div>
 
 <div class="demo-caption">Clamping, states and variants</div>

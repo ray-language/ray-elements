@@ -911,7 +911,7 @@ Vue `v-model`: `value` (updated on input).
 
 ### Number input
 
-A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton.
+A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton.
 
 Import: `import "@raylang/elements/number-input";` · Category: Inputs
 
@@ -931,6 +931,7 @@ Properties:
 - `thousandsSeparator` (attribute `thousands-separator`): string. Groups thousands in the shown text (",", ".", " ").
 - `decimalSeparator` (attribute `decimal-separator`): string, default `.`. The decimal mark shown and typed ("," in many locales).
 - `clamp`: `blur` | `strict` | `none`, default `blur`. When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).
+- `format`: `number` | `duration`, default `number`, reflects. duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says "3 minutes, 15 seconds" in the page's language. decimals, prefix, suffix and the separators do not apply.
 - `hideControls` (attribute `hide-controls`): boolean, reflects. No + and − buttons (the keys still step).
 - `placeholder`: string. Shown while empty.
 - `readonly`: boolean, reflects. Not editable, still submitted.

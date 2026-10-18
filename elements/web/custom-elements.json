@@ -4878,6 +4878,15 @@
               "default": "blur"
             },
             {
+              "name": "format",
+              "type": {
+                "text": "\"number\" | \"duration\""
+              },
+              "description": "duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says \"3 minutes, 15 seconds\" in the page's language. decimals, prefix, suffix and the separators do not apply.",
+              "fieldName": "format",
+              "default": "number"
+            },
+            {
               "name": "hide-controls",
               "type": {
                 "text": "boolean"
@@ -5088,6 +5097,17 @@
               "attribute": "clamp",
               "reflects": false,
               "default": "blur"
+            },
+            {
+              "kind": "field",
+              "name": "format",
+              "type": {
+                "text": "\"number\" | \"duration\""
+              },
+              "description": "duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says \"3 minutes, 15 seconds\" in the page's language. decimals, prefix, suffix and the separators do not apply.",
+              "attribute": "format",
+              "reflects": true,
+              "default": "number"
             },
             {
               "kind": "field",
