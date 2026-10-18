@@ -15,6 +15,16 @@ change the API.
   and `ray-timeline-item` take it, in TypeScript and in the React and Vue
   wrappers; the VS Code data suggests the names (and the scale of an open
   `size`). The list is generated from the registry, so it cannot drift.
+- Filled icons, for a state: `<ray-icon name="star" filled>` draws the
+  filled version, or the outline one when there is none. Built in for `user`,
+  `info`, `circle-check`, `alert-triangle`, `circle-x`, `folder`, `bell`,
+  `star`, `settings`, `home` and `message-circle`; an app adds its own with
+  `setIcons({ "name:filled": … })`. `getIcon(name, { filled })`,
+  `iconNames({ filled: true })`, and `data-ray-icon-filled` for
+  `paintIcons()` in your own components. The current item of a
+  `ray-bottom-nav` draws its icon filled.
+- `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
+  without a filled version; it reads `"name:filled"` keys in `setIcons()`.
 
 ### Changed
 

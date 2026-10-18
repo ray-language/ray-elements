@@ -1,5 +1,7 @@
 // <ray-icon name="…">: an icon of the registry (setIcons), so the app's own
 // markup uses the same set as the components. Decorative unless `label`.
+// `filled` draws the icon's filled version (a state: active, selected,
+// favorite), or the outline one when it has none.
 
 import { RayElement, css, define } from "../../core/core.js";
 
@@ -20,6 +22,7 @@ export class RayIcon extends RayElement {
     label: { type: String },
     color: { type: String, reflect: true },
     stroke: { type: Number },
+    filled: { type: Boolean, reflect: true },
   };
   static styles = [styles];
   static template = `<span class="icon" part="icon" data-ray-icon=""></span>`;
@@ -31,8 +34,10 @@ export class RayIcon extends RayElement {
 
   update() {
     const icon = this.$(".icon");
-    if (icon.getAttribute("data-ray-icon") !== (this.name ?? "")) {
+    const filled = Boolean(this.filled);
+    if (icon.getAttribute("data-ray-icon") !== (this.name ?? "") || icon.hasAttribute("data-ray-icon-filled") !== filled) {
       icon.setAttribute("data-ray-icon", this.name ?? "");
+      icon.toggleAttribute("data-ray-icon-filled", filled);
       this.paintIcons();
     }
     // xs…xl from the scale, or any CSS length.

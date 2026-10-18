@@ -4,6 +4,6 @@ import "@raylang/elements/icon";
 import { createComponent } from "../create.js";
 
 export const RayIcon = /*#__PURE__*/ createComponent("RayIcon", "ray-icon", {
-  properties: ["name", "size", "label", "color", "stroke"],
-  booleans: [],
+  properties: ["name", "filled", "size", "label", "color", "stroke"],
+  booleans: ["filled"],
 });

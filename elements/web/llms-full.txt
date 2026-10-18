@@ -75,7 +75,9 @@ reference of every component follows them.
   (`label` is required: it is the accessible name). Add or replace icons with
   `setIcons({ inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">…</svg>' })`
   (the style of the built-in set: 24×24, a 2px `currentColor` stroke) from
-  your own code, never from user input.
+  your own code, never from user input. `filled` draws an icon's filled
+  version for a state (`<ray-icon name="star" filled>` when it is a favorite);
+  `"name:filled"` in `setIcons` adds one.
 - **Overlays are in the top layer**: `ray-dialog` is a native modal
   `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
   elements. Never fight them with `z-index` or `overflow`.
@@ -1448,7 +1450,7 @@ Properties:
 
 - `value`: string, reflects. Its value (default: its href, else its label).
 - `label`: string. The label.
-- `icon`: `IconName`. An icon of the registry (or put one in the icon slot).
+- `icon`: `IconName`. An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is).
 - `href`: string, reflects. Makes it a link.
 - `badge`: string. A count or a short text on the icon.
 - `dot`: boolean, reflects. A dot on the icon (something new).
@@ -2461,11 +2463,12 @@ Import: `import "@raylang/elements/icon";` · Category: Data display
 
 #### `<ray-icon>` (RayIcon, extends RayElement)
 
-setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
+setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
 
 Properties:
 
 - `name`: `IconName`, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
+- `filled`: boolean, reflects. The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle.
 - `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.
@@ -3588,12 +3591,12 @@ export declare function getCustomPrimary(el?: Element): string | null;
 
 // --- icons -------------------------------------------------------------------
 
-/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. */
+/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. "<name>:filled" is an icon's filled version. */
 export declare function setIcons(icons: Record<string, string | SVGElement>): void;
-/** The SVG markup of a registered icon ("" if unknown). */
-export declare function getIcon(name: string): string;
-/** The registered icon names. */
-export declare function iconNames(): string[];
+/** The SVG markup of a registered icon ("" if unknown); with filled, its filled version (the outline one without it). */
+export declare function getIcon(name: string, options?: { filled?: boolean }): string;
+/** The registered icon names; with filled, those that have a filled version. */
+export declare function iconNames(options?: { filled?: boolean }): string[];
 
 // --- base classes ------------------------------------------------------------
 

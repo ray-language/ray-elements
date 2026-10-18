@@ -610,6 +610,7 @@ pre.code code, .prose pre code { font-size: inherit; }
 .demo-icon-tile span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 .demo-icon-scale { gap: var(--ray-space-6); align-items: end; }
 .demo-icon-scale > span { display: grid; justify-items: center; gap: var(--ray-space-2); }
+.demo-icon-pair { display: inline-flex; gap: var(--ray-space-2); }
 .demo-icon-scale small { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 
 /* Charts guide: live examples (the palette strip, chart cards and legends). */

@@ -9143,7 +9143,7 @@
               "type": {
                 "text": "IconName"
               },
-              "description": "An icon of the registry (or put one in the icon slot).",
+              "description": "An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is).",
               "fieldName": "icon"
             },
             {
@@ -9222,7 +9222,7 @@
               "type": {
                 "text": "IconName"
               },
-              "description": "An icon of the registry (or put one in the icon slot).",
+              "description": "An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is).",
               "attribute": "icon",
               "reflects": false
             },
@@ -14844,7 +14844,7 @@
           "name": "RayIcon",
           "tagName": "ray-icon",
           "customElement": true,
-          "description": "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.",
+          "description": "setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; \"<name>:filled\" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.",
           "superclass": {
             "name": "RayElement"
           },
@@ -14856,6 +14856,14 @@
               },
               "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "fieldName": "name"
+            },
+            {
+              "name": "filled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle.",
+              "fieldName": "filled"
             },
             {
               "name": "size",
@@ -14899,6 +14907,16 @@
               },
               "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "filled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle.",
+              "attribute": "filled",
               "reflects": true
             },
             {

@@ -6,11 +6,12 @@ Import: `import "@raylang/elements/icon";` · Category: Data display
 
 ## `<ray-icon>` (RayIcon, extends RayElement)
 
-setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
+setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system.
 
 Properties:
 
 - `name`: `IconName`, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
+- `filled`: boolean, reflects. The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle.
 - `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.
@@ -57,6 +58,13 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <span><ray-icon name="folder" size="2rem" stroke="2.5"></ray-icon><small>2.5</small></span>
 </div>
 
+<div class="demo-caption">Filled: a state</div>
+<div class="demo-row demo-icon-scale" id="demo-icon-filled"></div>
+<div class="demo-row">
+  <ray-toggle id="demo-icon-fav" variant="outline" square label="Favorite"><ray-icon name="star" color="yellow"></ray-icon></ray-toggle>
+  <span class="demo-muted">Outline at rest, filled when on: <code>&lt;ray-icon name="star" filled&gt;</code>. The current tab of a <code>ray-bottom-nav</code> draws its icon filled.</span>
+</div>
+
 <div class="demo-caption">Colors</div>
 <div class="demo-row demo-icon-scale">
   <span><ray-icon name="info" size="lg" color="blue" label="Information"></ray-icon><small>blue</small></span>
@@ -78,7 +86,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 <div class="demo-caption">Swap the set</div>
 <div class="demo-row">
-  <ray-toggle id="demo-icons-swap" variant="outline">Filled icons</ray-toggle>
+  <ray-toggle id="demo-icons-swap" variant="outline">Filled set</ray-toggle>
   <ray-alert color="blue" label="setIcons()" style="flex: 1; min-width: min(18rem, 100%)">Replaces icons app-wide: the gallery above and every component follow.</ray-alert>
 </div>
 
@@ -124,19 +132,17 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     }
   });
 
-  // A "filled" set for a few icons, to show the gallery and the components
-  // (select chevron, alert status, button icons) following it; off restores.
-  const solid = (d) => `<svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="${d}"/></svg>`;
-  const filled = {
-    "info": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"),
-    "circle-x": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM14.12 8.46 15.54 9.88 13.41 12 15.54 14.12 14.12 15.54 12 13.41 9.88 15.54 8.46 14.12 10.59 12 8.46 9.88 9.88 8.46 12 10.59z"),
-    "alert-triangle": solid("M10.3 3.2 1.6 18.1a2 2 0 0 0 1.7 3h17.4a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0zM11 8.5h2v5.5h-2zM12 16a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"),
-    "circle-check": solid("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"),
-    "plus": solid("M11 5h2v14h-2zM5 11h14v2H5z"),
-    "chevron-down": solid("M7 9h10l-5 6z"),
-    "star": solid("m12 2 3 6.9 7.5.7-5.7 5 1.7 7.4L12 18.2 5.5 22l1.7-7.4-5.7-5 7.5-.7z"),
-    "user": `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg>`,
-  };
+  // Each outline icon and its filled version, side by side.
+  const pairs = document.getElementById("demo-icon-filled");
+  for (const name of iconNames({ filled: true })) {
+    pairs.insertAdjacentHTML("beforeend", `<span><span class="demo-icon-pair"><ray-icon name="${name}" size="xl"></ray-icon><ray-icon name="${name}" size="xl" filled></ray-icon></span><small>${name}</small></span>`);
+  }
+  const fav = document.getElementById("demo-icon-fav");
+  fav.addEventListener("change", () => fav.querySelector("ray-icon").toggleAttribute("filled", fav.pressed));
+
+  // The whole set swapped for the filled versions (setIcons on the outline
+  // names): the gallery and the components (alert status…) follow; off restores.
+  const filled = Object.fromEntries(iconNames({ filled: true }).map((n) => [n, getIcon(n, { filled: true })]));
   const original = Object.fromEntries(Object.keys(filled).map((n) => [n, getIcon(n)]));
   document.getElementById("demo-icons-swap").addEventListener("change", (e) => {
     setIcons(e.currentTarget.pressed ? filled : original);

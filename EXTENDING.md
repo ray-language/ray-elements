@@ -53,7 +53,7 @@ One rule for every component, so nobody has to guess what to listen to:
 | `requestUpdate()` | schedule `update` |
 | `emit(type, detail, { cancelable })` | bubbling, composed CustomEvent |
 | `$(selector)` | `shadowRoot.querySelector` |
-| `paintIcons(root)` | **protected**: fill `[data-ray-icon="name"]` placeholders from the icon registry |
+| `paintIcons(root)` | **protected**: fill `[data-ray-icon="name"]` placeholders from the icon registry (`data-ray-icon-filled` for the filled version) |
 
 Call `super.connectedCallback()` / `super.disconnectedCallback()` when you
 override them.

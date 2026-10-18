@@ -124,7 +124,10 @@ setIcons({ close: '<svg viewBox="0 0 24 24">…</svg>', "chevron-down": svgEleme
 ```
 
 Icons are SVG markup (or an SVGElement) drawn with `currentColor`; mounted
-components repaint. `--ray-icon-size` and `--ray-icon-stroke` tune them
+components repaint. An icon may have a filled version for a state (the
+active tab, a favorite): `<ray-icon name="star" filled>`, or
+`setIcons({ "star:filled": … })` for your own; without one, the outline icon
+is drawn. `--ray-icon-size` and `--ray-icon-stroke` tune them
 system-wide. In your markup: `<ray-icon name="info" label="Information">`
 (decorative without `label`). Register icons from your code only — the markup
 is inserted as HTML.
