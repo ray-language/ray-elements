@@ -55,6 +55,7 @@ import "./components/progress/progress.js";
 import "./components/ring-progress/ring-progress.js";
 import "./components/skeleton/skeleton.js";
 import "./components/spinner/spinner.js";
+import "./components/step-dots/step-dots.js";
 import "./components/app-bar/app-bar.js";
 import "./components/app-shell/app-shell.js";
 import "./components/aspect-ratio/aspect-ratio.js";

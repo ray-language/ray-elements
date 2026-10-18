@@ -59,6 +59,7 @@ export { RayProgress } from "./components/progress.js";
 export { RayRingProgress } from "./components/ring-progress.js";
 export { RaySkeleton } from "./components/skeleton.js";
 export { RaySpinner } from "./components/spinner.js";
+export { RayStepDots } from "./components/step-dots.js";
 export { RayAppBar } from "./components/app-bar.js";
 export { RayAppShell } from "./components/app-shell.js";
 export { RayAspectRatio } from "./components/aspect-ratio.js";

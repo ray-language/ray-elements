@@ -17573,6 +17573,172 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/step-dots/step-dots.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayStepDots",
+          "tagName": "ray-step-dots",
+          "customElement": true,
+          "description": "Dots before value are done (filled), the one at value is current (a filled pill), the rest are to do (empty). Not interactive: for steps the user picks, use ray-stepper (or the dots of ray-carousel). Many dots wrap onto more lines.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Number of steps (dots).",
+              "fieldName": "count",
+              "default": "0"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current step, 0-based; count means every step is done.",
+              "fieldName": "value",
+              "default": "0"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for done and current dots. Default: the primary color.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of a dot.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "align",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\""
+              },
+              "description": "Where the row sits in its width.",
+              "fieldName": "align",
+              "default": "center"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps).",
+              "fieldName": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Number of steps (dots).",
+              "attribute": "count",
+              "reflects": false,
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "The current step, 0-based; count means every step is done.",
+              "attribute": "value",
+              "reflects": false,
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color for done and current dots. Default: the primary color.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of a dot.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "align",
+              "type": {
+                "text": "\"start\" | \"center\" | \"end\""
+              },
+              "description": "Where the row sits in its width.",
+              "attribute": "align",
+              "reflects": true,
+              "default": "center"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "What a step is called: \"Round\" is announced \"Round 4 of 12\" and names the element. Default: Step (named Steps).",
+              "attribute": "label",
+              "reflects": false
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "dots",
+              "description": "The row."
+            },
+            {
+              "name": "dot",
+              "description": "Each dot ([data-state] done, current or todo)."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayStepDots",
+          "declaration": {
+            "name": "RayStepDots",
+            "module": "components/step-dots/step-dots.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-step-dots",
+          "declaration": {
+            "name": "RayStepDots",
+            "module": "components/step-dots/step-dots.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/app-bar/app-bar.js",
       "declarations": [
         {

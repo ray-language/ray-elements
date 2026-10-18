@@ -2023,6 +2023,23 @@ export interface RaySpinnerProps {
 /** <ray-spinner> as a Vue component. */
 export declare const RaySpinner: DefineComponent<RaySpinnerProps>;
 
+export interface RayStepDotsProps {
+  /** Number of steps (dots). */
+  count?: number;
+  /** The current step, 0-based; count means every step is done. */
+  value?: number;
+  /** A palette color or any CSS color for done and current dots. Default: the primary color. */
+  color?: string;
+  /** Size of a dot. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Where the row sits in its width. */
+  align?: "start" | "center" | "end";
+  /** What a step is called: "Round" is announced "Round 4 of 12" and names the element. Default: Step (named Steps). */
+  label?: string;
+}
+/** <ray-step-dots> as a Vue component. */
+export declare const RayStepDots: DefineComponent<RayStepDotsProps>;
+
 export interface RayAppBarProps {
   /** The title. */
   label?: string;
@@ -2299,6 +2316,7 @@ export declare const components: {
   RayRingProgress: typeof RayRingProgress;
   RaySkeleton: typeof RaySkeleton;
   RaySpinner: typeof RaySpinner;
+  RayStepDots: typeof RayStepDots;
   RayAppBar: typeof RayAppBar;
   RayAppShell: typeof RayAppShell;
   RayAspectRatio: typeof RayAspectRatio;
@@ -2393,6 +2411,7 @@ declare module "vue" {
     RayRingProgress: typeof RayRingProgress;
     RaySkeleton: typeof RaySkeleton;
     RaySpinner: typeof RaySpinner;
+    RayStepDots: typeof RayStepDots;
     RayAppBar: typeof RayAppBar;
     RayAppShell: typeof RayAppShell;
     RayAspectRatio: typeof RayAspectRatio;

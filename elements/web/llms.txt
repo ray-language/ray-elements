@@ -311,6 +311,7 @@ Members whose name starts with `_` are internal.
 - [Ring progress](https://elements.raylang.dev/components/ring-progress.md): `<ray-ring-progress>` (Feedback). Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload.
 - [Skeleton](https://elements.raylang.dev/components/skeleton.md): `<ray-skeleton>` (Feedback). A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.
 - [Spinner](https://elements.raylang.dev/components/spinner.md): `<ray-spinner>` (Feedback). An indeterminate loading indicator, announced as a status.
+- [Step dots](https://elements.raylang.dev/components/step-dots.md): `<ray-step-dots>` (Feedback). A row of dots, one per step: done, current, to do.
 - [App bar](https://elements.raylang.dev/components/app-bar.md): `<ray-app-bar>` (Layout). The top bar of a phone screen (Material's top app bar, the iOS navigation bar): back or menu, a title and subtitle, actions, and an optional row under it.
 - [App shell](https://elements.raylang.dev/components/app-shell.md): `<ray-app-shell>` (Layout). The frame of an app (Mantine's AppShell): header, navbar, main, aside and footer on wide screens; on phones one column with a bottom bar.
 - [Aspect ratio](https://elements.raylang.dev/components/aspect-ratio.md): `<ray-aspect-ratio>` (Layout). A box with a fixed width/height ratio; its image, video or iframe fills it.
