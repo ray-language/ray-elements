@@ -36,6 +36,7 @@ T.test("ring-progress: the arc follows value of max; ARIA", async (T) => {
   ring.value = undefined;
   await T.settle();
   T.ok(inner(ring, "svg").hasAttribute("data-indeterminate"), "without value: indeterminate");
+  T.eq(bar.style.getPropertyValue("--_pct"), "25", "a quarter arc spins");
   T.eq(ring.internals.ariaValueNow, null);
   box.remove();
 });
@@ -44,6 +45,11 @@ T.test("ring-progress: size, thickness and the middle", async (T) => {
   const box = await mount(`<ray-ring-progress size="lg" value="40" show-value></ray-ring-progress><ray-ring-progress size="180px" thickness="12" value="40" show-value><b>3:00</b></ray-ring-progress>`);
   const [lg, own] = box.children;
   T.eq(Math.round(lg.getBoundingClientRect().width), 160, "lg: 10rem");
+  lg.size = "xs";
+  await T.settle();
+  T.eq(Math.round(inner(lg, "svg").getBoundingClientRect().width), 48, "xs: the drawing is 3rem too");
+  lg.size = "lg";
+  await T.settle();
   T.eq(inner(lg, ".value").textContent, "40%", "show-value with an empty slot");
   T.eq(Math.round(own.getBoundingClientRect().width), 180, "a length");
   T.eq(Math.round(own.getBoundingClientRect().height), 180);
