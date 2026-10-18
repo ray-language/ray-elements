@@ -593,6 +593,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Ring progress",
+    "group": "Components · Feedback",
+    "description": "Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload. Announced as a progressbar.",
+    "href": "components/ring-progress.html",
+    "keywords": [
+      "ring-progress",
+      "ray-ring-progress"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Skeleton",
     "group": "Components · Feedback",
     "description": "A placeholder while content loads: a shimmering block, a circle or text lines; with loaded it shows its content.",

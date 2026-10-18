@@ -1,0 +1,66 @@
+[component]
+name = "Ring progress"
+category = "Feedback"
+summary = "Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload. Announced as a progressbar."
+files = ["ring-progress.js"]
+requires = []
+tags = ["ray-ring-progress"]
+
+[ray-ring-progress]
+class = "RayRingProgress"
+extends = "RayElement"
+summary = "The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value."
+
+[ray-ring-progress.properties.value]
+type = "number"
+description = "Progress, from 0 to max. Unset: indeterminate (a spinning arc)."
+
+[ray-ring-progress.properties.max]
+type = "number"
+default = "100"
+description = "The value of a full ring."
+
+[ray-ring-progress.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color. Default: the primary color."
+
+[ray-ring-progress.properties.size]
+type = "string"
+default = "md"
+reflect = true
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | (string & {})'
+description = "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length."
+
+[ray-ring-progress.properties.thickness]
+type = "string"
+reflect = true
+description = "Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter."
+
+[ray-ring-progress.properties.roundCaps]
+attribute = "round-caps"
+type = "boolean"
+reflect = true
+description = "Rounded ends of the arc."
+
+[ray-ring-progress.properties.showValue]
+attribute = "show-value"
+type = "boolean"
+reflect = true
+description = "Shows the percentage in the middle (when the default slot is empty)."
+
+[ray-ring-progress.properties.label]
+type = "string"
+description = "Accessible name (default: Progress)."
+
+[ray-ring-progress.slots.default]
+description = "The middle of the ring (a clock, a figure, an icon); its font scales with size."
+
+[ray-ring-progress.parts.track]
+description = "The background circle."
+
+[ray-ring-progress.parts.bar]
+description = "The arc."
+
+[ray-ring-progress.parts.center]
+description = "The middle, around the default slot."

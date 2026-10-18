@@ -16869,6 +16869,213 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/ring-progress/ring-progress.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayRingProgress",
+          "tagName": "ray-ring-progress",
+          "customElement": true,
+          "description": "The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "Progress, from 0 to max. Unset: indeterminate (a spinning arc).",
+              "fieldName": "value"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of a full ring.",
+              "fieldName": "max",
+              "default": "100"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary color.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | (string & {})"
+              },
+              "description": "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "thickness",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter.",
+              "fieldName": "thickness"
+            },
+            {
+              "name": "round-caps",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Rounded ends of the arc.",
+              "fieldName": "roundCaps"
+            },
+            {
+              "name": "show-value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the percentage in the middle (when the default slot is empty).",
+              "fieldName": "showValue"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name (default: Progress).",
+              "fieldName": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "Progress, from 0 to max. Unset: indeterminate (a spinning arc).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The value of a full ring.",
+              "attribute": "max",
+              "reflects": false,
+              "default": "100"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary color.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | (string & {})"
+              },
+              "description": "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "thickness",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width of the ring: a CSS length (a bare number is px). Default: a tenth of the diameter.",
+              "attribute": "thickness",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "roundCaps",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Rounded ends of the arc.",
+              "attribute": "round-caps",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "showValue",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the percentage in the middle (when the default slot is empty).",
+              "attribute": "show-value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name (default: Progress).",
+              "attribute": "label",
+              "reflects": false
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The middle of the ring (a clock, a figure, an icon); its font scales with size."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "track",
+              "description": "The background circle."
+            },
+            {
+              "name": "bar",
+              "description": "The arc."
+            },
+            {
+              "name": "center",
+              "description": "The middle, around the default slot."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayRingProgress",
+          "declaration": {
+            "name": "RayRingProgress",
+            "module": "components/ring-progress/ring-progress.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-ring-progress",
+          "declaration": {
+            "name": "RayRingProgress",
+            "module": "components/ring-progress/ring-progress.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/skeleton/skeleton.js",
       "declarations": [
         {
