@@ -26,6 +26,9 @@ change the API.
 - `ray-step-dots` `value-text` and `done-text`: the announced text in the
   page's language (`value-text="Asalto {step} de {count}"`), numbers formatted
   with Intl; it was always English ("Round 4 of 12").
+- The icon gallery finds icons by what they are for ("favorite" finds `star`,
+  "warning" `alert-triangle`), and `llms.txt` lists the icons with a filled
+  version (and now `quote`, which it missed).
 - `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
   without a filled version; it reads `"name:filled"` keys in `setIcons()`.
 

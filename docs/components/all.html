@@ -3883,7 +3883,7 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 <p class="summary">An icon of the registry: the whole set (the components' too) changes with setIcons().</p>
 <div class="example"><div class="demo-caption">Registered icons</div>
 <div class="demo-panel-head">
-  <ray-search id="demo-icon-filter" aria-label="Filter icons" placeholder="Filter icons" size="sm" style="width: min(18rem, 100%)"></ray-search>
+  <ray-search id="demo-icon-filter" aria-label="Filter icons" placeholder="Filter icons (favorite, warning…)" size="sm" style="width: min(18rem, 100%)"></ray-search>
   <span class="demo-muted" id="demo-icon-count"></span>
 </div>
 <div class="demo-icon-grid" id="demo-icon-grid"></div>
@@ -3947,11 +3947,30 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
   const filter = document.getElementById("demo-icon-filter");
   const count = document.getElementById("demo-icon-count");
   const names = iconNames();
+  // What people search for: the filter matches a name or one of its words.
+  const keywords = {
+    "close": "x cancel dismiss remove exit", "check": "tick done ok confirm yes", "minus": "remove subtract less collapse",
+    "plus": "add new create more expand", "chevron-down": "arrow caret expand open dropdown", "chevron-up": "arrow caret collapse",
+    "chevron-right": "arrow caret next forward", "chevron-left": "arrow caret previous back", "chevrons-left": "first rewind start",
+    "chevrons-right": "last fast-forward end", "search": "find magnifier lookup zoom", "arrow-up-right": "external link open trend up increase",
+    "arrow-down-right": "trend down decrease", "sun": "light theme day bright", "moon": "dark theme night", "monitor": "system screen desktop display computer",
+    "user": "person profile account avatar people", "info": "information help about details", "circle-check": "success done passed ok valid",
+    "alert-triangle": "warning caution danger error attention", "circle-x": "error failed invalid cancel", "menu": "hamburger navigation list",
+    "more-horizontal": "ellipsis dots overflow options actions", "file": "document page paper", "folder": "directory files project",
+    "pause": "stop hold media", "play": "start run media resume", "terminal": "console shell command prompt code",
+    "calendar": "date day schedule event", "image": "picture photo media gallery", "download": "save export get",
+    "eye": "view show visible preview watch", "eye-off": "hide hidden invisible private", "bell": "notification alert alarm reminder",
+    "copy": "duplicate clipboard clone", "quote": "blockquote citation", "pipette": "eyedropper color picker",
+    "star": "favorite bookmark rating like", "upload": "import send share", "paperclip": "attachment attach clip",
+    "panel-left": "sidebar layout drawer", "settings": "preferences options sliders adjust filter", "home": "house start dashboard",
+    "arrow-left": "back previous return", "message-circle": "chat comment conversation bubble",
+  };
   for (const name of names) {
     const tile = document.createElement("button");
     tile.type = "button";
     tile.className = "demo-icon-tile";
     tile.dataset.name = name;
+    tile.dataset.words = `${name} ${keywords[name] ?? ""}`;
     tile.title = `<ray-icon name="${name}">`;
     tile.innerHTML = `<ray-icon name="${name}" size="1.5rem"></ray-icon><span></span>`;
     tile.querySelector("span").textContent = name;
@@ -3961,11 +3980,11 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
     const q = (filter.value ?? "").trim().toLowerCase();
     let shown = 0;
     for (const tile of grid.children) {
-      const hit = !q || tile.dataset.name.includes(q);
+      const hit = !q || tile.dataset.words.split(" ").some((w) => w.startsWith(q)) || tile.dataset.name.includes(q);
       tile.hidden = !hit;
       if (hit) shown++;
     }
-    count.textContent = q ? `${shown} of ${names.length}` : `${names.length} icons`;
+    count.textContent = q ? (shown ? `${shown} of ${names.length}` : "None: add yours with setIcons()") : `${names.length} icons`;
   };
   filter.addEventListener("input", show);
   show();
