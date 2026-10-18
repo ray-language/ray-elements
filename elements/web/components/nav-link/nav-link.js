@@ -153,6 +153,7 @@ export class RayNavLink extends RayElement {
     });
     this.shadowRoot.prepend(el);
     this._el = el;
+    this.paintIcons(el);
   }
 }
 

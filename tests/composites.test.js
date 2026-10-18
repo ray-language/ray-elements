@@ -90,6 +90,7 @@ T.test("nav link: link, aria-current, nested toggle", async (T) => {
   const b = inner(settings, ".link");
   T.eq(b.localName, "button", "a parent toggles");
   T.eq(b.getAttribute("aria-expanded"), "false");
+  T.ok(inner(settings, ".chevron svg"), "a parent draws its chevron");
   const kids = inner(settings, ".children");
   T.eq(kids.getBoundingClientRect().height, 0, "collapsed: no height");
   T.eq(kids.inert, true, "collapsed children are inert");

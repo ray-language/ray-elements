@@ -21,6 +21,11 @@ change the API.
 - `build` rejects physical CSS in the components unless the line is marked
   `/* physical */`.
 
+### Fixed
+
+- A parent `ray-nav-link` draws its chevron (the icon was never
+  painted into the link, rendered after the template).
+
 ## [0.7.0] - 2026-10-18
 
 ### Added
