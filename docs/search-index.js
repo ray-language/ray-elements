@@ -138,7 +138,7 @@ export default [
   {
     "label": "Number input",
     "group": "Components · Inputs",
-    "description": "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator. An ARIA spinbutton.",
+    "description": "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton.",
     "href": "components/number-input.html",
     "keywords": [
       "number-input",

@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayNumberInput = /*#__PURE__*/ createComponent("ray-number-input", {
   displayName: "RayNumberInput",
-  properties: ["value", "min", "max", "step", "decimals", "prefix", "suffix", "thousandsSeparator", "decimalSeparator", "clamp", "hideControls", "placeholder", "readonly", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
+  properties: ["value", "min", "max", "step", "decimals", "prefix", "suffix", "thousandsSeparator", "decimalSeparator", "clamp", "format", "hideControls", "placeholder", "readonly", "name", "label", "description", "error", "required", "disabled", "size", "radius", "variant", "descriptionPosition"],
   events: { onInput: "input", onChange: "change" },
 });

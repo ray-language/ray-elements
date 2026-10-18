@@ -585,6 +585,8 @@ export interface RayNumberInputProps {
   decimalSeparator?: string;
   /** When out-of-range input is clamped: on blur, while typing, or never (then it is invalid). */
   clamp?: "blur" | "strict" | "none";
+  /** duration: the value is seconds, shown and typed as m:ss (h:mm:ss when min or max reaches an hour; a plain number is seconds); aria-valuetext says "3 minutes, 15 seconds" in the page's language. decimals, prefix, suffix and the separators do not apply. */
+  format?: "number" | "duration";
   /** No + and − buttons (the keys still step). */
   hideControls?: boolean;
   /** Shown while empty. */

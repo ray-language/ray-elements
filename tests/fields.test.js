@@ -4,7 +4,7 @@
 
 const T = window.__rayTest;
 await Promise.all(["ray-checkbox", "ray-checkbox-group", "ray-number-input", "ray-combobox"].map((t) => customElements.whenDefined(t)));
-const { parseNumber, formatNumber } = await import("../../src/components/number-input/number-input.js");
+const { parseNumber, formatNumber, parseDuration, formatDuration, durationText } = await import("../../src/components/number-input/number-input.js");
 
 async function mount(html) {
   const box = document.createElement("div");
@@ -123,6 +123,59 @@ T.test("number-input: shift ×10, thousands, strict clamp, required", async (T) 
   await type(b.control, "9");
   T.eq(b.value, 5, "strict: clamped while typing");
   T.eq(c.validity.valueMissing, true);
+  box.remove();
+});
+
+T.test("number-input: duration helpers", async (T) => {
+  T.eq(formatDuration(180), "3:00");
+  T.eq(formatDuration(5), "0:05");
+  T.eq(formatDuration(3725), "1:02:05", "from an hour");
+  T.eq(formatDuration(65, { hours: true }), "0:01:05");
+  T.eq(formatDuration(-15), "-0:15");
+  T.eq(formatDuration(NaN), "");
+  T.eq(parseDuration("3:00"), 180);
+  T.eq(parseDuration("1:02:05"), 3725);
+  T.eq(parseDuration("150"), 150, "a plain number is seconds");
+  T.eq(parseDuration("3:"), 180, "while typing");
+  T.eq(parseDuration(" 2 : 30 "), 150);
+  T.eq(parseDuration("-0:15"), -15);
+  T.ok(Number.isNaN(parseDuration("")), "empty");
+  T.ok(Number.isNaN(parseDuration("3 min")), "not a duration");
+  T.eq(durationText(195, "en"), "3 minutes, 15 seconds");
+  T.eq(durationText(180, "en"), "3 minutes");
+  T.eq(durationText(0, "en"), "0 seconds");
+  T.eq(durationText(3600, "es"), "1 hora");
+});
+
+T.test("number-input: format=duration shows m:ss, steps, types, submits seconds", async (T) => {
+  const box = await mount(`<form lang="en"><ray-number-input name="round" format="duration" value="180" min="15" max="600" step="15" decimals="2"></ray-number-input><ray-number-input name="long" format="duration" value="60" max="7200"></ray-number-input></form>`);
+  const form = box.querySelector("form");
+  const [n, long] = form.children;
+  const input = n.control;
+  T.eq(input.value, "3:00", "m:ss (decimals do not apply)");
+  T.eq(input.inputMode, "text", "a keyboard with \":\"");
+  T.eq(input.getAttribute("aria-valuenow"), "180");
+  T.eq(input.getAttribute("aria-valuetext"), "3 minutes");
+  T.eq(long.control.value, "0:01:00", "h:mm:ss when max reaches an hour");
+  key(input, "ArrowUp");
+  await T.settle();
+  T.eq(n.value, 195);
+  T.eq(input.value, "3:15");
+  T.eq(input.getAttribute("aria-valuetext"), "3 minutes, 15 seconds");
+  T.eq(new FormData(form).get("round"), "195", "the form gets seconds");
+  await type(input, "2:30");
+  T.eq(n.value, 150, "typed m:ss");
+  await type(input, "45");
+  T.eq(n.value, 45, "typed seconds");
+  input.dispatchEvent(new Event("blur"));
+  await T.settle();
+  T.eq(input.value, "0:45", "shown as m:ss on blur");
+  n.clamp = "none";
+  await type(input, "11:00");
+  T.eq(n.validationMessage, "The maximum is 10:00.", "limits in m:ss");
+  n.format = "number";
+  await T.settle();
+  T.eq(input.inputMode, "decimal", "back to a number");
   box.remove();
 });
 
