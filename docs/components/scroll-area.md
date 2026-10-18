@@ -20,7 +20,7 @@ Properties:
 
 Events:
 
-- `ray-reach-end` (detail `{ edge: "bottom" | "right" }`): The end came within threshold (once per arrival).
+- `ray-reach-end` (detail `{ edge: "bottom" | "right" | "left" }`): The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left).
 
 Slots:
 
@@ -34,8 +34,8 @@ Parts (`::part()`):
 Methods and properties:
 
 - `readonly viewport: HTMLElement`: The scrolling element (scrollTop, scrollTo…).
-- `scrollToStart(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the top (left).
-- `scrollToEnd(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the bottom (right when horizontal).
+- `scrollToStart(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the start: the top, or the left when horizontal (the right right to left).
+- `scrollToEnd(options?: { behavior?: ScrollBehavior }): void`: Scrolls to the end: the bottom, or the right when horizontal (the left right to left).
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.7.0.
 

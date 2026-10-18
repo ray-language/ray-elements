@@ -7,6 +7,7 @@
 // Give it a size: height / max-height (or CSS, or a flex/grid parent).
 
 import { RayElement, css, define } from "../../core/core.js";
+import { isRtl } from "../../core/direction.js";
 
 const styles = css`
   :host {
@@ -48,11 +49,13 @@ const styles = css`
   }
   .edge[data-show] { opacity: 1; }
   .top, .bottom { inset-inline: 0; height: 0.75rem; }
-  .left, .right { top: 0; bottom: 0; width: 0.75rem; }
+  .start, .end { top: 0; bottom: 0; width: 0.75rem; }
   .top { top: 0; background: linear-gradient(var(--_shadow), transparent); }
   .bottom { bottom: 0; background: linear-gradient(transparent, var(--_shadow)); }
-  .left { left: 0; background: linear-gradient(to right, var(--_shadow), transparent); } /* physical */
-  .right { right: 0; background: linear-gradient(to left, var(--_shadow), transparent); } /* physical */
+  .start { inset-inline-start: 0; background: linear-gradient(to right, var(--_shadow), transparent); } /* physical */
+  .end { inset-inline-end: 0; background: linear-gradient(to left, var(--_shadow), transparent); } /* physical */
+  .start:dir(rtl) { background: linear-gradient(to left, var(--_shadow), transparent); } /* physical */
+  .end:dir(rtl) { background: linear-gradient(to right, var(--_shadow), transparent); } /* physical */
   :host([no-shadows]) .edge { display: none; }
 `;
 
@@ -70,7 +73,7 @@ export class RayScrollArea extends RayElement {
   static template = `
     <div class="viewport" part="viewport" tabindex="0"><slot></slot></div>
     <span class="edge top" part="shadow"></span><span class="edge bottom" part="shadow"></span>
-    <span class="edge left" part="shadow"></span><span class="edge right" part="shadow"></span>`;
+    <span class="edge start" part="shadow"></span><span class="edge end" part="shadow"></span>`;
 
   #ro = null;
   #atEnd = false;
@@ -115,15 +118,15 @@ export class RayScrollArea extends RayElement {
     this._edges();
   }
 
-  /** Scrolls to the start (top/left). */
+  /** Scrolls to the start (the top, or the left; the right right to left). */
   scrollToStart({ behavior = "smooth" } = {}) {
     this.viewport.scrollTo({ top: 0, left: 0, behavior });
   }
 
-  /** Scrolls to the end (bottom, or right when horizontal). */
+  /** Scrolls to the end (the bottom, or the right when horizontal; the left right to left). */
   scrollToEnd({ behavior = "smooth" } = {}) {
     const v = this.viewport;
-    if (this.orientation === "horizontal") v.scrollTo({ left: v.scrollWidth, behavior });
+    if (this.orientation === "horizontal") v.scrollTo({ left: isRtl(this) ? -v.scrollWidth : v.scrollWidth, behavior });
     else v.scrollTo({ top: v.scrollHeight, behavior });
   }
 
@@ -144,13 +147,13 @@ export class RayScrollArea extends RayElement {
     const x = Math.abs(v.scrollLeft);
     show("top", v.scrollTop > 1);
     show("bottom", maxY > 1 && v.scrollTop < maxY - 1);
-    show("left", x > 1);
-    show("right", maxX > 1 && x < maxX - 1);
+    show("start", x > 1);
+    show("end", maxX > 1 && x < maxX - 1);
     const horizontal = this.orientation === "horizontal";
     const left = horizontal ? maxX - x : maxY - v.scrollTop;
     const scrollable = horizontal ? maxX > 1 : maxY > 1;
     const atEnd = scrollable && left <= (this.threshold ?? 48);
-    if (atEnd && !this.#atEnd) this.emit("ray-reach-end", { edge: horizontal ? "right" : "bottom" });
+    if (atEnd && !this.#atEnd) this.emit("ray-reach-end", { edge: !horizontal ? "bottom" : isRtl(this) ? "left" : "right" });
     this.#atEnd = atEnd;
   }
 }

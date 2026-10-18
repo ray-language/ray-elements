@@ -2168,8 +2168,8 @@ export interface RayScrollAreaOwnProps {
   threshold?: number;
   /** Accessible name: makes the scrolling box a named region. */
   label?: string;
-  /** The end came within threshold (once per arrival). */
-  onRayReachEnd?: (event: CustomEvent<{ edge: "bottom" | "right" }>) => void;
+  /** The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left). */
+  onRayReachEnd?: (event: CustomEvent<{ edge: "bottom" | "right" | "left" }>) => void;
 }
 export type RayScrollAreaProps = RayScrollAreaOwnProps & Omit<React.HTMLAttributes<Ray.RayScrollArea>, keyof RayScrollAreaOwnProps> & { children?: React.ReactNode };
 /** <ray-scroll-area> as a React component. */

@@ -8,6 +8,7 @@ export { COLORS, VARIANT_TOKENS, applyColor, spaceValue, sizeStyles, radiusStyle
 export { place, pointRect, autoUpdate } from "./core/position.js";
 export { scrollerOf, watchScroll } from "./core/scroll.js";
 export { tabbables, focusFirst } from "./core/focus.js";
+export { isRtl, inlineKey } from "./core/direction.js";
 export { duration, motionAllowed, play, playAll, collapseOut, POP_OUT } from "./core/motion.js";
 export { dismissable } from "./core/dismiss.js";
 export { matchesHotkey, formatHotkey } from "./core/hotkey.js";

@@ -8,6 +8,7 @@
 // plans, presets, shipping methods. Both can share a group.
 
 import { RayElement, css, define } from "../../core/core.js";
+import { inlineKey } from "../../core/direction.js";
 import { applyColor, sizeStyles } from "../../core/styles.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
 
@@ -136,9 +137,10 @@ export class RayRadioGroup extends FormControl {
     const radios = this.radios.filter((r) => !r.disabled);
     const i = radios.indexOf(e.target.closest?.(RADIOS));
     if (i < 0) return;
+    const key = inlineKey(e.key, this);
     let next = null;
-    if (e.key === "ArrowDown" || e.key === "ArrowRight") next = radios[(i + 1) % radios.length];
-    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") next = radios[(i - 1 + radios.length) % radios.length];
+    if (key === "ArrowDown" || key === "ArrowRight") next = radios[(i + 1) % radios.length];
+    else if (key === "ArrowUp" || key === "ArrowLeft") next = radios[(i - 1 + radios.length) % radios.length];
     else if (e.key === " ") next = radios[i];
     if (!next) return;
     e.preventDefault();

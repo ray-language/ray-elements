@@ -126,7 +126,7 @@ T.test("icons: right to left, the roles that point along the text mirror", async
   const pagination = rtl.querySelector("ray-pagination");
   T.eq(transform(pagination.shadowRoot.querySelector('[data-ray-icon="ui.next"] svg')), MIRRORED, "pagination's next arrow");
   const carousel = rtl.querySelector("ray-carousel");
-  T.eq(transform(carousel.shadowRoot.querySelector('[data-ray-icon="ui.next"] svg')), "none", "the carousel's buttons stay physical (its scroll is)");
+  T.eq(transform(carousel.shadowRoot.querySelector('[data-ray-icon="ui.next"] svg')), MIRRORED, "the carousel's next arrow");
   const chevron = inner(rtl.querySelector("ray-nav-link"), ".chevron");
   const [a, b] = new DOMMatrix(transform(chevron)).toFloat32Array();
   T.ok(Math.abs(a) < 1e-6 && b < 0, `an open nav-link turns its mirrored chevron the other way (${transform(chevron)})`);

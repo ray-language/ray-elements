@@ -9,6 +9,7 @@
 
 import { RayElement, css, define } from "../../core/core.js";
 import { motionAllowed } from "../../core/motion.js";
+import { isRtl, inlineKey } from "../../core/direction.js";
 
 const styles = css`
   :host {
@@ -74,11 +75,11 @@ const styles = css`
   .control:hover:not(:disabled) { background: var(--ray-accent); }
   .control:disabled { opacity: 0; pointer-events: none; }
   .control svg { width: 1rem; height: 1rem; }
-  /* The buttons stay left and right (the scroll is physical), so their arrows do too. */
-  .control [data-ray-icon] > svg { transform: none; }
-  .prev { left: var(--ray-space-2); } /* physical */
-  .next { right: var(--ray-space-2); } /* physical */
+  .prev { inset-inline-start: var(--ray-space-2); }
+  .next { inset-inline-end: var(--ray-space-2); }
   :host([orientation="vertical"]) .control { top: auto; left: 50%; transform: translateX(-50%) rotate(90deg); } /* physical */
+  /* Up and down do not depend on the writing direction: the turned arrows are not mirrored. */
+  :host([orientation="vertical"]) .control [data-ray-icon] > svg { transform: none; }
   :host([orientation="vertical"]) .prev { top: var(--ray-space-2); }
   :host([orientation="vertical"]) .next { bottom: var(--ray-space-2); }
   :host([hide-controls]) .control { display: none; }
@@ -274,6 +275,14 @@ export class RayCarousel extends RayElement {
     return this.orientation === "vertical";
   }
 
+  // The scroll offset from the start. Right to left, scrollLeft runs from 0
+  // (the start, on the right) down to negative values.
+  _scroll() {
+    const vp = this.viewport;
+    if (this._vertical()) return vp.scrollTop;
+    return isRtl(this) ? -vp.scrollLeft : vp.scrollLeft;
+  }
+
   _current() {
     return Math.min(Math.max(0, this.index ?? 0), this.count - 1);
   }
@@ -296,11 +305,12 @@ export class RayCarousel extends RayElement {
     const vr = vp.getBoundingClientRect();
     const size = v ? vp.clientHeight : vp.clientWidth;
     const max = Math.max(0, v ? vp.scrollHeight - vp.clientHeight : vp.scrollWidth - vp.clientWidth);
-    const scroll = v ? vp.scrollTop : vp.scrollLeft;
+    const scroll = this._scroll();
+    const rtl = !v && isRtl(this);
     const snaps = [];
     for (const s of slides) {
       const r = s.getBoundingClientRect();
-      const start = (v ? r.top - vr.top : r.left - vr.left) + scroll;
+      const start = (v ? r.top - vr.top : rtl ? vr.right - r.right : r.left - vr.left) + scroll;
       const length = v ? r.height : r.width;
       const pos = this.align === "center" ? start - (size - length) / 2 : start;
       const clamped = Math.round(Math.min(max, Math.max(0, pos)));
@@ -335,8 +345,7 @@ export class RayCarousel extends RayElement {
 
   // The position closest to the current scroll offset.
   _track() {
-    const vp = this.viewport;
-    const scroll = this._vertical() ? vp.scrollTop : vp.scrollLeft;
+    const scroll = this._scroll();
     let best = 0;
     for (let i = 1; i < this.#snaps.length; i++) {
       if (Math.abs(this.#snaps[i] - scroll) < Math.abs(this.#snaps[best] - scroll)) best = i;
@@ -360,7 +369,7 @@ export class RayCarousel extends RayElement {
     const smooth = user && !instant && !reduced?.matches && motionAllowed(this);
     const opts = { behavior: smooth ? "smooth" : "instant" };
     if (this._vertical()) this.viewport.scrollTo({ top: pos, ...opts });
-    else this.viewport.scrollTo({ left: pos, ...opts });
+    else this.viewport.scrollTo({ left: isRtl(this) ? -pos : pos, ...opts });
     this._setIndex(i);
     this._paint();
     this._schedule();
@@ -418,10 +427,11 @@ export class RayCarousel extends RayElement {
     const v = this._vertical();
     const back = v ? "ArrowUp" : "ArrowLeft";
     const fwd = v ? "ArrowDown" : "ArrowRight";
-    if (e.key === fwd) {
+    const key = v ? e.key : inlineKey(e.key, this);
+    if (key === fwd) {
       e.preventDefault();
       this.next();
-    } else if (e.key === back) {
+    } else if (key === back) {
       e.preventDefault();
       this.prev();
     } else if (e.key === "Home") {

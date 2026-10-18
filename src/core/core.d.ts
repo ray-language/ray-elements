@@ -244,6 +244,10 @@ export declare function autoUpdate(anchor: Element | object, floating: HTMLEleme
 export declare function tabbables(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): HTMLElement[];
 /** Focuses the first [autofocus] or tabbable element; whether something got focus. */
 export declare function focusFirst(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): boolean;
+/** Whether the element lays out right to left (dir="rtl" on it or an ancestor). */
+export declare function isRtl(el: Element): boolean;
+/** An arrow key as the reading direction sees it: right to left, ArrowLeft comes back as "ArrowRight" and the reverse. */
+export declare function inlineKey(key: string, el: Element): string;
 
 // --- charts (core/charts.js) -----------------------------------------------------
 

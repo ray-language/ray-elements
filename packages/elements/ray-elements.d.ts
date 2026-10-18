@@ -246,6 +246,10 @@ export declare function autoUpdate(anchor: Element | object, floating: HTMLEleme
 export declare function tabbables(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): HTMLElement[];
 /** Focuses the first [autofocus] or tabbable element; whether something got focus. */
 export declare function focusFirst(root: Element | ShadowRoot, options?: { lightOnly?: boolean }): boolean;
+/** Whether the element lays out right to left (dir="rtl" on it or an ancestor). */
+export declare function isRtl(el: Element): boolean;
+/** An arrow key as the reading direction sees it: right to left, ArrowLeft comes back as "ArrowRight" and the reverse. */
+export declare function inlineKey(key: string, el: Element): string;
 
 // --- charts (core/charts.js) -----------------------------------------------------
 
@@ -2432,9 +2436,9 @@ export declare class RayScrollArea extends RayElement {
   label: string | undefined;
   /** The scrolling element (scrollTop, scrollTo…). */
   readonly viewport: HTMLElement;
-  /** Scrolls to the top (left). */
+  /** Scrolls to the start: the top, or the left when horizontal (the right right to left). */
   scrollToStart(options?: { behavior?: ScrollBehavior }): void;
-  /** Scrolls to the bottom (right when horizontal). */
+  /** Scrolls to the end: the bottom, or the right when horizontal (the left right to left). */
   scrollToEnd(options?: { behavior?: ScrollBehavior }): void;
   addEventListener<K extends keyof RayScrollAreaEventMap>(type: K, listener: (this: RayScrollArea, ev: RayScrollAreaEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
@@ -2442,8 +2446,8 @@ export declare class RayScrollArea extends RayElement {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RayScrollAreaEventMap extends HTMLElementEventMap {
-  /** The end came within threshold (once per arrival). */
-  "ray-reach-end": CustomEvent<{ edge: "bottom" | "right" }>;
+  /** The end came within threshold (once per arrival): the bottom, or the right when horizontal (the left right to left). */
+  "ray-reach-end": CustomEvent<{ edge: "bottom" | "right" | "left" }>;
 }
 
 // --- Separator (separator)

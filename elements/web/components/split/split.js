@@ -7,6 +7,7 @@
 // pane. With `autosave="key"` the size survives reloads (localStorage).
 
 import { RayElement, css, define } from "../../core/core.js";
+import { isRtl, inlineKey } from "../../core/direction.js";
 
 const styles = css`
   :host {
@@ -182,13 +183,16 @@ export class RaySplit extends RayElement {
     this.setAttribute("data-dragging", "");
     const rect = this.getBoundingClientRect();
     const vertical = this._vertical();
-    const move = (ev) => this._resizeTo(vertical ? ev.clientY - rect.top : ev.clientX - rect.left, false);
+    // The start pane's size: right to left it is on the right.
+    const rtl = !vertical && isRtl(this);
+    const at = (ev) => (vertical ? ev.clientY - rect.top : rtl ? rect.right - ev.clientX : ev.clientX - rect.left);
+    const move = (ev) => this._resizeTo(at(ev), false);
     const up = (ev) => {
       this.divider.removeEventListener("pointermove", move);
       this.divider.removeEventListener("pointerup", up);
       this.divider.removeEventListener("pointercancel", up);
       this.removeAttribute("data-dragging");
-      this._resizeTo(vertical ? ev.clientY - rect.top : ev.clientX - rect.left, true);
+      this._resizeTo(at(ev), true);
     };
     this.divider.addEventListener("pointermove", move);
     this.divider.addEventListener("pointerup", up);
@@ -202,9 +206,11 @@ export class RaySplit extends RayElement {
     const current = this.collapsed ? 0 : this.size;
     const less = vertical ? "ArrowUp" : "ArrowLeft";
     const more = vertical ? "ArrowDown" : "ArrowRight";
+    // Right to left, ArrowLeft moves the divider away from the start pane.
+    const key = vertical ? e.key : inlineKey(e.key, this);
     let next = null;
-    if (e.key === less) next = current - step;
-    else if (e.key === more) next = current + step;
+    if (key === less) next = current - step;
+    else if (key === more) next = current + step;
     else if (e.key === "Home") next = this.min ?? 0;
     else if (e.key === "End") next = this.max ?? this._total();
     else if (e.key === "Enter") {

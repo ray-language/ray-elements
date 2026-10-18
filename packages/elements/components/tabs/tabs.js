@@ -5,6 +5,7 @@
 // panel share a `value`.
 
 import { RayElement, css, define, uid } from "../../core/core.js";
+import { inlineKey } from "../../core/direction.js";
 import { applyColor } from "../../core/styles.js";
 
 const tabsStyles = css`
@@ -114,9 +115,11 @@ export class RayTabs extends RayElement {
     const vertical = this.orientation === "vertical";
     const next = vertical ? "ArrowDown" : "ArrowRight";
     const prev = vertical ? "ArrowUp" : "ArrowLeft";
+    // Right to left, ArrowLeft is the next tab.
+    const key = vertical ? e.key : inlineKey(e.key, this);
     let target = null;
-    if (e.key === next) target = tabs[(i + 1) % tabs.length];
-    else if (e.key === prev) target = tabs[(i - 1 + tabs.length) % tabs.length];
+    if (key === next) target = tabs[(i + 1) % tabs.length];
+    else if (key === prev) target = tabs[(i - 1 + tabs.length) % tabs.length];
     else if (e.key === "Home") target = tabs[0];
     else if (e.key === "End") target = tabs[tabs.length - 1];
     else if ((e.key === "Enter" || e.key === " ") && this.activation === "manual") {

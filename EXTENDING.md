@@ -106,7 +106,9 @@ See `examples/extending/components/hover-card`.
 `css`, `define`, `uid`, `applyColor(el, color)` + `variantStyles` (the
 filled/light/outline/subtle/default variants on `[data-variant]`),
 `loaderStyles`, `srOnlyStyles`, `place()`, `autoUpdate()`, `tabbables()`,
-`focusFirst()`, `setIcons()` / `getIcon()`, `configure()`.
+`focusFirst()`, `setIcons()` / `getIcon()`, `configure()`, `isRtl(el)` and
+`inlineKey(e.key, el)` (arrow keys right to left: compare with "ArrowRight"
+for forward).
 
 **Motion** (`core/motion.js`): `play(el, keyframes, { speed, ease })` runs an
 animation with the duration/easing tokens and resolves when it ends — at
