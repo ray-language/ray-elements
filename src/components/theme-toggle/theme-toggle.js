@@ -6,7 +6,7 @@ const ORDER = ["system", "light", "dark"];
 const LABEL = { system: "System theme", light: "Light theme", dark: "Dark theme" };
 
 // Icon of each theme (from the icon registry).
-const ICONS = { system: "monitor", light: "sun", dark: "moon" };
+const ICONS = { system: "ui.theme-system", light: "ui.theme-light", dark: "ui.theme-dark" };
 
 const styles = css`
   :host {
@@ -41,7 +41,7 @@ export class RayThemeToggle extends RayElement {
   };
   static styles = [styles];
   static delegatesFocus = true;
-  static template = `<button part="button" class="focus-ring" type="button"><span class="icon" data-ray-icon="monitor" aria-hidden="true"></span></button>`;
+  static template = `<button part="button" class="focus-ring" type="button"><span class="icon" data-ray-icon="ui.theme-system" aria-hidden="true"></span></button>`;
 
   connectedCallback() {
     super.connectedCallback();

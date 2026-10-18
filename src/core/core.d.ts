@@ -58,6 +58,8 @@ export declare function setIcons(icons: Record<string, string | SVGElement>): vo
 export declare function getIcon(name: string, options?: { filled?: boolean }): string;
 /** The registered icon names; with filled, those that have a filled version. */
 export declare function iconNames(options?: { filled?: boolean }): string[];
+/** The roles the components draw ("ui.close", "ui.remove", "ui.expand"…) and the glyph each one uses unless the app registers the role. */
+export declare function iconAliases(): Record<string, string>;
 
 // --- base classes ------------------------------------------------------------
 

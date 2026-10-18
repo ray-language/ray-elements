@@ -172,7 +172,7 @@ export class RayStepper extends RayElement {
       indicator.setAttribute("aria-hidden", "true");
       if (step.loading) indicator.innerHTML = `<span class="spinner"></span>`;
       else if (step.error) indicator.append(glyph("close"));
-      else if (state === "done") indicator.append(glyph(step.completedIcon || "check"));
+      else if (state === "done") indicator.append(glyph(step.completedIcon || "ui.checked"));
       else if (step.icon) indicator.append(glyph(step.icon));
       else indicator.textContent = String(i + 1);
       const text = document.createElement("span");

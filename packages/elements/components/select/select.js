@@ -101,7 +101,7 @@ const styles = css`
   .empty { padding: var(--ray-space-2); color: var(--ray-muted-foreground); }
 `;
 
-const CHEVRON = `<span class="chevron" aria-hidden="true" data-ray-icon="chevron-down"></span>`;
+const CHEVRON = `<span class="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span>`;
 
 export class RaySelect extends FieldControl {
   static properties = {
@@ -261,7 +261,7 @@ export class RaySelect extends FieldControl {
       const group = o.parentElement?.localName === "optgroup" ? o.parentElement : null;
       const disabled = o.disabled || Boolean(group?.disabled);
       el.setAttribute("aria-disabled", String(disabled));
-      el.innerHTML = `<span class="text"></span><span class="mark" aria-hidden="true" data-ray-icon="check"></span>`;
+      el.innerHTML = `<span class="text"></span><span class="mark" aria-hidden="true" data-ray-icon="ui.checked"></span>`;
       el.firstChild.textContent = o.label || o.text;
       this.#items.push({ el, value: o.value, disabled, text: (o.label || o.text).trim().toLowerCase() });
       return el;

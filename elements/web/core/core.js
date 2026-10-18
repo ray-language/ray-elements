@@ -5,7 +5,7 @@
 import { getIcon, onIconsChange } from "./icons.js";
 import { parseColor, shades, contrastRatio, toHex, toOklch } from "./color.js";
 
-export { setIcons, getIcon, iconNames } from "./icons.js";
+export { setIcons, getIcon, iconNames, iconAliases } from "./icons.js";
 
 export const PREFIX = "ray";
 

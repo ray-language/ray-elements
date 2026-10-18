@@ -139,15 +139,15 @@ export class RayPagination extends RayElement {
     const items = [];
     const control = (role, target, icon, label, off) => ({ kind: "control", role, target, icon, label, off });
     if (!this.hideControls) {
-      if (this.withEdges) items.push(control("first", 1, "chevrons-left", "First page", page <= 1));
-      items.push(control("previous", page - 1, "chevron-left", "Previous page", page <= 1));
+      if (this.withEdges) items.push(control("first", 1, "ui.first", "First page", page <= 1));
+      items.push(control("previous", page - 1, "ui.previous", "Previous page", page <= 1));
     }
     for (const it of paginationRange(total, page, this.siblings ?? 1, this.boundaries ?? 1)) {
       items.push(it === "dots" ? { kind: "dots" } : { kind: "page", target: it });
     }
     if (!this.hideControls) {
-      items.push(control("next", page + 1, "chevron-right", "Next page", page >= total));
-      if (this.withEdges) items.push(control("last", total, "chevrons-right", "Last page", page >= total));
+      items.push(control("next", page + 1, "ui.next", "Next page", page >= total));
+      if (this.withEdges) items.push(control("last", total, "ui.last", "Last page", page >= total));
     }
     list.replaceChildren(...items.map((it) => this._item(it, page)));
     this.paintIcons(list);

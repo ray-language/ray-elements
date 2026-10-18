@@ -128,7 +128,7 @@ const styles = css`
   .play svg { width: 0.875rem; height: 0.875rem; }
 `;
 
-const PAUSE_ICON = `<span data-ray-icon="pause" aria-hidden="true"></span>`;
+const PAUSE_ICON = `<span data-ray-icon="ui.pause" aria-hidden="true"></span>`;
 
 const reduced = typeof matchMedia === "function" ? matchMedia("(prefers-reduced-motion: reduce)") : null;
 
@@ -150,8 +150,8 @@ export class RayCarousel extends RayElement {
     <div class="root" part="root" role="region" aria-roledescription="carousel">
       <div class="stage">
         <div class="viewport" part="viewport" tabindex="0" aria-live="polite"><slot></slot></div>
-        <button class="control prev" part="previous" type="button" aria-label="Previous slide"><span data-ray-icon="chevron-left" aria-hidden="true"></span></button>
-        <button class="control next" part="next" type="button" aria-label="Next slide"><span data-ray-icon="chevron-right" aria-hidden="true"></span></button>
+        <button class="control prev" part="previous" type="button" aria-label="Previous slide"><span data-ray-icon="ui.previous" aria-hidden="true"></span></button>
+        <button class="control next" part="next" type="button" aria-label="Next slide"><span data-ray-icon="ui.next" aria-hidden="true"></span></button>
       </div>
       <div class="footer" part="footer">
         <button class="play" part="play" type="button" hidden></button>
@@ -403,7 +403,7 @@ export class RayCarousel extends RayElement {
     const paused = this.#userPaused;
     if (auto && play.dataset.state !== (paused ? "paused" : "playing")) {
       play.dataset.state = paused ? "paused" : "playing";
-      play.innerHTML = paused ? `<span data-ray-icon="play" aria-hidden="true"></span>` : PAUSE_ICON;
+      play.innerHTML = paused ? `<span data-ray-icon="ui.play" aria-hidden="true"></span>` : PAUSE_ICON;
       this.paintIcons(play);
       play.setAttribute("aria-label", paused ? "Start autoplay" : "Pause autoplay");
     }

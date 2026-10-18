@@ -427,7 +427,7 @@ export class RayCode extends RayElement {
     b.type = "button";
     b.className = "copy focus-ring";
     b.setAttribute("part", "copy");
-    b.innerHTML = `<span class="idle" data-ray-icon="copy" aria-hidden="true"></span><span class="done" data-ray-icon="check" aria-hidden="true"></span><span class="copy-label"></span>`;
+    b.innerHTML = `<span class="idle" data-ray-icon="ui.copy" aria-hidden="true"></span><span class="done" data-ray-icon="ui.copied" aria-hidden="true"></span><span class="copy-label"></span>`;
     b.addEventListener("click", () => this.copy());
     this.$(".more button").addEventListener("click", () => { this.expanded = !this.expanded; });
     this.$("slot").addEventListener("slotchange", () => this.requestUpdate());

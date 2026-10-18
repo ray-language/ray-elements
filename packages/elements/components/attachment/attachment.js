@@ -191,7 +191,7 @@ export class RayAttachment extends RayElement {
     <div class="item" part="item" role="group">
       <span class="thumb" part="thumbnail"><img alt="" hidden><span class="icon" aria-hidden="true"></span><span class="badge" part="badge" aria-hidden="true"></span></span>
       <span class="text"><span class="name-box"></span><span class="meta" part="meta"></span></span>
-      <button class="remove focus-ring" part="remove" type="button" hidden><span data-ray-icon="close" aria-hidden="true"></span></button>
+      <button class="remove focus-ring" part="remove" type="button" hidden><span data-ray-icon="ui.remove" aria-hidden="true"></span></button>
       <span class="bar" part="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" hidden><span></span></span>
     </div>`;
 

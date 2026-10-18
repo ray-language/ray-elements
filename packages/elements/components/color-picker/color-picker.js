@@ -540,7 +540,7 @@ export class RayColorInput extends FieldControl {
   static template = fieldTemplate(
     `<button type="button" class="preview" part="preview" tabindex="-1" aria-hidden="true"></button>` +
       `<input id="control" class="control" part="input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="none" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
-      `<button type="button" class="dropper focus-ring" part="eyedropper" aria-label="Pick a color from the screen" hidden><span data-ray-icon="pipette" aria-hidden="true"></span></button>`,
+      `<button type="button" class="dropper focus-ring" part="eyedropper" aria-label="Pick a color from the screen" hidden><span data-ray-icon="ui.eyedropper" aria-hidden="true"></span></button>`,
     { sections: false },
   ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a color"><ray-color-picker part="picker"></ray-color-picker></div>`;
 

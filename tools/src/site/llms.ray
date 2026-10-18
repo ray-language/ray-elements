@@ -10,7 +10,7 @@
 // the version it is.
 
 import std/fs;
-from components/meta import Component, Element, Prop, Named, Decl, CATEGORIES, base_elements, all_elements, icon_names, filled_icon_names;
+from components/meta import Component, Element, Prop, Named, Decl, CATEGORIES, base_elements, all_elements, icon_names, filled_icon_names, icon_aliases;
 from tokens/model import Model, depends_on_scheme;
 import tokens/refs;
 
@@ -292,7 +292,8 @@ fn icon_list(js: string) -> string {
     let code = fn(n: string) -> string { "`${n}`" };
     let names = join(icon_names(js).map(code), ", ");
     let filled = join(filled_icon_names(js).map(code), ", ");
-    "${names}\n\nWith a filled version (`<ray-icon name=\"star\" filled>`; the others draw their outline): ${filled}"
+    let roles = join(icon_aliases(js).map(fn(e: (string, string)) -> string { "`${e.0}` (${e.1})" }), ", ");
+    "${names}\n\nWith a filled version (`<ray-icon name=\"star\" filled>`; the others draw their outline): ${filled}\n\nThe roles the components draw, each with its default glyph; `setIcons({ \"ui.remove\": … })` changes one role only, `setIcons({ close: … })` every role that uses the glyph: ${roles}"
 }
 
 // The example's imports of the repository's modules ("../src/components/dialog/dialog.js",

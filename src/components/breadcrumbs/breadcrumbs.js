@@ -150,7 +150,7 @@ export class RayBreadcrumb extends RayElement {
     if (sep === this.#sep) return;
     this.#sep = sep;
     for (const el of this.shadowRoot.querySelectorAll(".sep")) {
-      if (sep === "chevron") el.innerHTML = `<span data-ray-icon="chevron-right"></span>`;
+      if (sep === "chevron") el.innerHTML = `<span data-ray-icon="ui.separator"></span>`;
       else el.textContent = sep;
     }
     this.paintIcons();

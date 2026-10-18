@@ -76,7 +76,9 @@ reference of every component follows them.
   `"name:filled"` in `setIcons` adds one. An icon the set lacks (`trash`,
   `save`): register it from Lucide, the same grid and stroke —
   `import { Trash2 } from "lucide-static"; setIcons({ trash: Trash2 })` (or
-  its SVG pasted in, without a bundler); never draw your own paths.
+  its SVG pasted in, without a bundler); never draw your own paths. To change
+  one control's icon (only the chips' ×), register its role
+  (`setIcons({ "ui.remove": … })`, roles listed in the reference).
 - **Overlays are in the top layer**: `ray-dialog` is a native modal
   `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
   elements. Never fight them with `z-index` or `overflow`.

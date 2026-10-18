@@ -29,6 +29,11 @@ change the API.
 - The icon gallery finds icons by what they are for ("favorite" finds `star`,
   "warning" `alert-triangle`), and `llms.txt` lists the icons with a filled
   version (and now `quote`, which it missed).
+- Icon roles: the components draw `ui.close`, `ui.remove`, `ui.clear`,
+  `ui.expand`, `ui.next`, `ui.checked`… instead of glyph names. Each role
+  draws its glyph until the app registers the role, so `setIcons({ close: … })`
+  still changes every × and `setIcons({ "ui.remove": … })` only the chips'.
+  `iconAliases()` lists them; `llms.txt` too.
 - `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
   without a filled version; it reads `"name:filled"` keys in `setIcons()`.
 

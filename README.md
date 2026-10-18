@@ -128,7 +128,13 @@ components repaint. An icon may have a filled version for a state (the
 active tab, a favorite): `<ray-icon name="star" filled>`, or
 `setIcons({ "star:filled": … })` for your own; without one, the outline icon
 is drawn. `--ray-icon-size` and `--ray-icon-stroke` tune them
-system-wide. In your markup: `<ray-icon name="info" label="Information">`
+system-wide.
+
+The components ask for **roles**, not glyphs: `ui.close` (a dialog's ×),
+`ui.remove` (a chip's ×), `ui.clear` (a field's ×), `ui.expand`, `ui.next`,
+`ui.checked`… (`iconAliases()` lists them with their glyphs). A role draws its
+glyph until you register the role itself: `setIcons({ close: X })` changes
+every ×, `setIcons({ "ui.remove": Trash })` only the chips'. In your markup: `<ray-icon name="info" label="Information">`
 (decorative without `label`). Register icons from your code only — the markup
 is inserted as HTML.
 

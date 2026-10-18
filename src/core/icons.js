@@ -7,6 +7,12 @@
 // setIcons() also adds new names, for <ray-icon name="…">. Icons are SVG
 // markup (or an SVGElement) drawn with currentColor; components size them.
 //
+// The components ask for roles, not glyphs: "ui.close" (a dialog's close
+// button), "ui.remove" (a chip's ×), "ui.clear" (a field's ×)… Each role
+// draws its glyph (ALIASES) unless the app registers the role itself, so
+// setIcons({ close: … }) still changes every × and setIcons({ "ui.remove": … })
+// only the chips'.
+//
 // An icon may have a filled version, "<name>:filled", for a state: the active
 // tab, a favorite, unread. <ray-icon name="star" filled> draws it, and the
 // outline one when there is none. setIcons({ "star:filled": … }) adds one.
@@ -89,6 +95,42 @@ const FILLED = {
 
 const FILLED_SUFFIX = ":filled";
 
+/** The roles the components draw, and the glyph each one uses by default. */
+const ALIASES = {
+  "ui.close": "close",
+  "ui.clear": "close",
+  "ui.remove": "close",
+  "ui.expand": "chevron-down",
+  "ui.disclosure": "chevron-right",
+  "ui.previous": "chevron-left",
+  "ui.next": "chevron-right",
+  "ui.first": "chevrons-left",
+  "ui.last": "chevrons-right",
+  "ui.separator": "chevron-right",
+  "ui.increment": "chevron-up",
+  "ui.decrement": "chevron-down",
+  "ui.sort": "chevron-up",
+  "ui.checked": "check",
+  "ui.indeterminate": "minus",
+  "ui.copy": "copy",
+  "ui.copied": "check",
+  "ui.show-password": "eye",
+  "ui.hide-password": "eye-off",
+  "ui.play": "play",
+  "ui.pause": "pause",
+  "ui.search": "search",
+  "ui.calendar": "calendar",
+  "ui.eyedropper": "pipette",
+  "ui.upload": "upload",
+  "ui.avatar": "user",
+  "ui.theme-light": "sun",
+  "ui.theme-dark": "moon",
+  "ui.theme-system": "monitor",
+  "ui.trend-up": "arrow-up-right",
+  "ui.trend-down": "arrow-down-right",
+  "ui.trend-flat": "minus",
+};
+
 const registry = new Map([...Object.entries(DEFAULTS), ...Object.entries(FILLED).map(([name, markup]) => [name + FILLED_SUFFIX, markup])]);
 const listeners = new Set();
 const warned = new Set();
@@ -110,21 +152,29 @@ export function setIcons(icons) {
 }
 
 /**
- * The SVG markup of an icon ("" and one warning when it is not registered).
- * With `filled`, its filled version, or the outline one when it has none.
+ * The SVG markup of an icon or a role ("" and one warning when it is not
+ * registered). With `filled`, its filled version, or the outline one when it
+ * has none.
  */
 export function getIcon(name, { filled = false } = {}) {
+  // A role the app has not registered draws its glyph.
+  const glyph = ALIASES[name];
   if (filled) {
-    const solidMarkup = registry.get(name + FILLED_SUFFIX);
+    const solidMarkup = registry.get(name + FILLED_SUFFIX) ?? (glyph && !registry.has(name) ? registry.get(glyph + FILLED_SUFFIX) : undefined);
     if (solidMarkup !== undefined) return solidMarkup;
   }
-  const markup = registry.get(name);
+  const markup = registry.get(name) ?? (glyph ? registry.get(glyph) : undefined);
   if (markup !== undefined) return markup;
   if (!warned.has(name)) {
     warned.add(name);
     console.warn(`ray-elements: no icon named "${name}" (setIcons to add it)`);
   }
   return "";
+}
+
+/** The roles the components draw ("ui.close"…) and the glyph each one uses unless registered. */
+export function iconAliases() {
+  return { ...ALIASES };
 }
 
 /** The registered icon names; with `filled`, those that have a filled version. */

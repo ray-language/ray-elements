@@ -66,7 +66,7 @@ export class RayAlert extends RayElement {
         <p class="title" part="title"></p>
         <div class="text" part="text"><slot></slot></div>
       </div>
-      <button class="close focus-ring" part="close" type="button" hidden><span data-ray-icon="close" aria-hidden="true"></span></button>
+      <button class="close focus-ring" part="close" type="button" hidden><span data-ray-icon="ui.close" aria-hidden="true"></span></button>
     </div>`;
 
   constructor() {

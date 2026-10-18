@@ -149,7 +149,7 @@ export class RayAccordionItem extends RayElement {
       <button class="control focus-ring" id="control" part="control" type="button" aria-expanded="false" aria-controls="panel">
         <span class="section" part="left-section"><slot name="left"></slot></span>
         <span class="label" part="label"><span class="label-text"><slot name="label"></slot></span><span class="description" part="description"></span></span>
-        <span class="chevron" part="chevron" aria-hidden="true" data-ray-icon="chevron-down"></span>
+        <span class="chevron" part="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span>
       </button>
     </h3>
     <div class="panel" id="panel" part="panel" role="region" aria-labelledby="control" inert>

@@ -62,9 +62,9 @@ export class RaySearch extends RayInput {
   };
   static styles = [...RayInput.styles, styles];
   static template = fieldTemplate(
-    `<span class="lead" part="icon" aria-hidden="true" data-ray-icon="search"></span>` +
+    `<span class="lead" part="icon" aria-hidden="true" data-ray-icon="ui.search"></span>` +
       `<input id="control" class="control" part="input" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false">` +
-      `<span class="tail"><button class="clear focus-ring" part="clear" type="button" aria-label="Clear search" tabindex="-1" hidden><span data-ray-icon="close" aria-hidden="true"></span></button>` +
+      `<span class="tail"><button class="clear focus-ring" part="clear" type="button" aria-label="Clear search" tabindex="-1" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>` +
       `<kbd class="shortcut" part="shortcut" aria-hidden="true" hidden></kbd></span>`,
   );
 

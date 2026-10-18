@@ -34,7 +34,7 @@ const styles = css`
 `;
 
 // Icon of each trend (from the icon registry).
-const ARROWS = { up: "arrow-up-right", down: "arrow-down-right", flat: "minus" };
+const ARROWS = { up: "ui.trend-up", down: "ui.trend-down", flat: "ui.trend-flat" };
 
 export class RayStat extends RayElement {
   static properties = {
