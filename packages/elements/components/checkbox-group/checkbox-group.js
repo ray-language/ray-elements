@@ -15,7 +15,7 @@ const styles = css`
   .items { display: flex; flex-direction: column; gap: var(--ray-space-3); margin-top: var(--ray-space-2); }
   :host([orientation="horizontal"]) .items { flex-direction: row; flex-wrap: wrap; gap: var(--ray-space-3) var(--ray-space-5); }
   .label { margin-bottom: 0; }
-  .count { margin-left: var(--ray-space-1); font-weight: 400; color: var(--ray-muted-foreground); font-variant-numeric: tabular-nums; }
+  .count { margin-inline-start: var(--ray-space-1); font-weight: 400; color: var(--ray-muted-foreground); font-variant-numeric: tabular-nums; }
 `;
 
 /** "a, b" (an attribute) or an array, as an array of values. */

@@ -18,7 +18,7 @@ const styles = css`
   :host([variant="dotted"]) { --_style: dotted; }
   :host([orientation="vertical"]) { display: inline-block; align-self: stretch; height: auto; min-height: 1em; vertical-align: middle; }
   .line { border-top: var(--_w) var(--_style) var(--_color); }
-  :host([orientation="vertical"]) .line { height: 100%; border-top: 0; border-left: var(--_w) var(--_style) var(--_color); }
+  :host([orientation="vertical"]) .line { height: 100%; border-top: 0; border-inline-start: var(--_w) var(--_style) var(--_color); }
   .labeled {
     display: flex;
     align-items: center;

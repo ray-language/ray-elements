@@ -22,7 +22,7 @@ const styles = css`
   .indicator {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 0; /* physical */
     z-index: 0;
     box-sizing: border-box;
     background: var(--ray-raised);

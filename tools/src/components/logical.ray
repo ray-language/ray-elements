@@ -1,0 +1,247 @@
+// The components' CSS is written with logical properties (inline-start /
+// inline-end, not left / right), so that it follows the writing direction:
+// `dir="rtl"` mirrors the layout with no extra rule.
+//
+// `check` reads the CSS of src/core and src/components (the css`…` templates
+// of the .js files, and the .css files) and lists every physical declaration.
+// A declaration that is physical on purpose (a centering `left: 50%`, a
+// `position="left"` that names a side of the screen, geometry measured in
+// JS) carries the comment `/* physical */` on its line.
+
+import std/fs;
+
+const MARK: string = "/* physical */";
+
+// Every physical declaration under src/core and src/components, as
+// "path:line: problem".
+pub fn check(root: string) -> Result<[string], string> {
+    let out: [string] = [];
+    for dir in ["src/core", "src/components"] {
+        walk(root, dir, out)?;
+    }
+    Result.Ok(out)
+}
+
+fn walk(root: string, dir: string, out: [string]) -> Result<int, string> {
+    for name in fs.list_dir("${root}/${dir}")? {
+        if (name.starts_with(".")) {
+            continue;
+        }
+        let rel = "${dir}/${name}";
+        if (fs.is_dir("${root}/${rel}")) {
+            walk(root, rel, out)?;
+        } else if (name.ends_with(".js") || name.ends_with(".css")) {
+            for p in scan(fs.read_file("${root}/${rel}")?, name.ends_with(".css")) {
+                out.push("${rel}:${p}");
+            }
+        }
+    }
+    Result.Ok(0)
+}
+
+// The physical declarations of one file, as "line: problem". In a .js file
+// only the css`…` templates are read.
+pub fn scan(src: string, is_css: bool) -> [string] {
+    let out: [string] = [];
+    var in_css = is_css;
+    var in_comment = false;
+    var n = 0;
+    for raw in src.split("\n") {
+        n = n + 1;
+        var line = raw;
+        if (!is_css) {
+            if (!in_css) {
+                let at = line.index_of("css`").unwrap_or(-1);
+                if (at < 0) {
+                    continue;
+                }
+                in_css = true;
+                line = line.substring(at + 4, line.len());
+            }
+            let close = line.index_of("`").unwrap_or(-1);
+            if (close >= 0) {
+                in_css = false;
+                line = line.substring(0, close);
+            }
+        }
+        if (raw.contains(MARK)) {
+            continue;
+        }
+        let text = strip_comments(line, in_comment);
+        in_comment = text.1;
+        for p in problems(text.0) {
+            out.push("${n}: ${p}");
+        }
+    }
+    out
+}
+
+// The line without its comments, and whether a comment is still open at its end.
+fn strip_comments(line: string, open: bool) -> (string, bool) {
+    var rest = line;
+    var text = "";
+    var inside = open;
+    while (true) {
+        if (inside) {
+            let end = rest.index_of("*/").unwrap_or(-1);
+            if (end < 0) {
+                return (text, true);
+            }
+            rest = rest.substring(end + 2, rest.len());
+            inside = false;
+        } else {
+            let start = rest.index_of("/*").unwrap_or(-1);
+            if (start < 0) {
+                return (text + rest, false);
+            }
+            text = text + rest.substring(0, start) + " ";
+            rest = rest.substring(start + 2, rest.len());
+            inside = true;
+        }
+    }
+    (text, inside)
+}
+
+// The physical declarations of a line of CSS.
+fn problems(line: string) -> [string] {
+    let out: [string] = [];
+    for part in line.replace("{", ";").replace("}", ";").split(";") {
+        let colon = part.index_of(":").unwrap_or(-1);
+        if (colon < 0) {
+            continue;
+        }
+        let prop = part.substring(0, colon).trim();
+        if (!is_property(prop)) {
+            continue;
+        }
+        let value = part.substring(colon + 1, part.len()).replace("!important", "").trim();
+        let p = problem(prop, value);
+        if (p != "") {
+            out.push(p);
+        }
+    }
+    out
+}
+
+fn is_property(s: string) -> bool {
+    if (s == "") {
+        return false;
+    }
+    for ch in s.chars() {
+        if (!((ch >= 'a' && ch <= 'z') || ch == '-')) {
+            return false;
+        }
+    }
+    true
+}
+
+fn problem(prop: string, value: string) -> string {
+    let logical = logical_name(prop);
+    if (logical != "") {
+        return "${prop} — use ${logical}, or mark the line ${MARK}";
+    }
+    let v = value.to_lower();
+    if ((prop == "text-align" || prop == "float" || prop == "clear") && (v == "left" || v == "right")) {
+        let side = if (v == "left") { "start" } else { "end" };
+        let want = if (prop == "text-align") { side } else { "inline-${side}" };
+        return "${prop}: ${v} — use ${prop}: ${want}, or mark the line ${MARK}";
+    }
+    let parts = values(value);
+    let boxes = ["margin", "padding", "inset", "scroll-margin", "scroll-padding"];
+    if (boxes.contains(prop) && parts.len() == 4 && parts[1] != parts[3]) {
+        return "${prop}: ${value} — different left and right; use ${prop}-block and ${prop}-inline-start/-end, or mark the line ${MARK}";
+    }
+    if (prop == "border-radius" && !value.contains("/") && parts.len() > 1 && !mirrors(parts)) {
+        return "border-radius: ${value} — different left and right corners; use border-start-start-radius and the like, or mark the line ${MARK}";
+    }
+    ""
+}
+
+// The logical name of a physical property, or "".
+fn logical_name(prop: string) -> string {
+    if (prop == "left") {
+        return "inset-inline-start";
+    }
+    if (prop == "right") {
+        return "inset-inline-end";
+    }
+    let corners = [
+        ("border-top-left-radius", "border-start-start-radius"),
+        ("border-top-right-radius", "border-start-end-radius"),
+        ("border-bottom-left-radius", "border-end-start-radius"),
+        ("border-bottom-right-radius", "border-end-end-radius"),
+    ];
+    for c in corners {
+        if (prop == c.0) {
+            return c.1;
+        }
+    }
+    for base in ["margin", "padding", "border", "scroll-margin", "scroll-padding"] {
+        for side in [("left", "inline-start"), ("right", "inline-end")] {
+            let p = "${base}-${side.0}";
+            if (prop == p || prop.starts_with(p + "-")) {
+                return "${base}-${side.1}" + prop.substring(p.len(), prop.len());
+            }
+        }
+    }
+    ""
+}
+
+// Whether a border-radius reads the same mirrored: top-left = top-right and
+// bottom-right = bottom-left.
+fn mirrors(parts: [string]) -> bool {
+    let c = if (parts.len() == 2) {
+        [parts[0], parts[1], parts[0], parts[1]]
+    } else if (parts.len() == 3) {
+        [parts[0], parts[1], parts[2], parts[1]]
+    } else {
+        parts
+    };
+    c.len() == 4 && c[0] == c[1] && c[2] == c[3]
+}
+
+// The space-separated values of a declaration, a function call (calc(…),
+// var(…)) being one value.
+fn values(value: string) -> [string] {
+    let out: [string] = [];
+    var cur = "";
+    var depth = 0;
+    for ch in value.chars() {
+        if (ch == '(') {
+            depth = depth + 1;
+        } else if (ch == ')') {
+            depth = depth - 1;
+        }
+        if ((ch == ' ' || ch == '\t') && depth == 0) {
+            if (cur != "") {
+                out.push(cur);
+            }
+            cur = "";
+        } else {
+            cur = cur + to_string(ch);
+        }
+    }
+    if (cur != "") {
+        out.push(cur);
+    }
+    out
+}
+
+@test
+fn finds_physical_declarations() {
+    let src = "const a = { left: 1 };\nconst styles = css`\n  .a { margin-left: 1px; text-align: right; }\n  .b { left: 0; inset-inline-end: 0; }\n  .c { padding: 0 1px 0 2px; margin: 0 auto; }\n  .d { border-radius: 4px 0 0 4px; border-start-start-radius: 2px; }\n  .e { border-left-color: red; }\n`;\nconst x = { right: 2 };\n";
+    let p = scan(src, false);
+    assert_eq(p.len(), 6);
+    assert(p[0].starts_with("3: margin-left — use margin-inline-start"));
+    assert(p[1].starts_with("3: text-align: right — use text-align: end"));
+    assert(p[2].starts_with("4: left — use inset-inline-start"));
+    assert(p[3].starts_with("5: padding: 0 1px 0 2px"));
+    assert(p[4].starts_with("6: border-radius: 4px 0 0 4px"));
+    assert(p[5].starts_with("7: border-left-color — use border-inline-start-color"));
+}
+
+@test
+fn skips_marked_lines_comments_and_symmetric_values() {
+    let src = ".a { left: 50%; } /* physical */\n/* left: 0;\n   right: 0; */\n.b { margin: 0 1px; padding: 1px 2px 3px; inset: 0 1rem 0 1rem; }\n.c { border-radius: 4px 4px 0 0; }\n.d { padding: 0 calc(1px + 2px) 0 calc(1px + 2px); }\n.e:hover, .left { color: red; }\n";
+    assert_eq(join(scan(src, true), "|"), "");
+}

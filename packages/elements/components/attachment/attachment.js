@@ -25,7 +25,7 @@ const styles = css`
     width: 16rem;
     max-width: 100%;
     padding: var(--ray-space-2);
-    padding-right: var(--ray-space-3);
+    padding-inline-end: var(--ray-space-3);
     color: var(--ray-foreground);
     background: var(--ray-card);
     border: 1px solid var(--ray-border);
@@ -53,7 +53,7 @@ const styles = css`
   .badge {
     position: absolute;
     bottom: 3px;
-    left: 50%;
+    left: 50%; /* physical */
     transform: translateX(-50%);
     padding: 0 0.25rem;
     font-size: 0.5625rem;
@@ -82,8 +82,7 @@ const styles = css`
   :host([status="error"]) .meta { color: var(--ray-destructive); }
   .bar {
     position: absolute;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     bottom: 0;
     height: 2px;
     background: var(--ray-muted);
@@ -131,7 +130,7 @@ const styles = css`
   :host([variant="card"]) .remove {
     position: absolute;
     top: calc(var(--ray-space-2) + 4px);
-    right: calc(var(--ray-space-2) + 4px);
+    inset-inline-end: calc(var(--ray-space-2) + 4px);
     background: var(--ray-card);
     box-shadow: var(--ray-shadow-xs);
     opacity: 1;

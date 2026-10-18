@@ -30,7 +30,7 @@ const stepperStyles = css`
     padding: 0;
     font: inherit;
     color: inherit;
-    text-align: left;
+    text-align: start;
     background: none;
     border: 0;
     border-radius: var(--ray-radius-md);
@@ -58,7 +58,7 @@ const stepperStyles = css`
   .step[data-state="active"] .indicator { color: var(--_light-color); background: var(--ray-background); border-color: var(--_filled); }
   .step[data-state="done"] .indicator { color: var(--_contrast); background: var(--_filled); border-color: var(--_filled); }
   .step[data-error] .indicator { color: #fff; background: var(--ray-red-filled); border-color: var(--ray-red-filled); }
-  .spinner { width: 50%; height: 50%; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: ray-step-spin 0.8s linear infinite; }
+  .spinner { width: 50%; height: 50%; border: 2px solid currentColor; border-inline-end-color: transparent; border-radius: 50%; animation: ray-step-spin 0.8s linear infinite; }
   @keyframes ray-step-spin { to { rotate: 1turn; } }
   .text { display: grid; min-width: 0; }
   .label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--ray-font-size-sm); font-weight: var(--ray-font-weight-medium); }
@@ -69,7 +69,7 @@ const stepperStyles = css`
   .connector { flex: 1; min-width: var(--ray-space-4); height: 2px; border-radius: 1px; background: var(--ray-border); transition: background-color var(--ray-duration-base); }
   .step[data-state="done"] .connector { background: var(--_filled); }
   .step:last-child .connector { display: none; }
-  :host([orientation="vertical"]) .connector { flex: none; width: 2px; min-width: 0; height: auto; min-height: var(--ray-space-6); margin: var(--ray-space-1) 0 var(--ray-space-1) calc(var(--_icon) / 2 - 1px); }
+  :host([orientation="vertical"]) .connector { flex: none; width: 2px; min-width: 0; height: auto; min-height: var(--ray-space-6); margin-block: var(--ray-space-1); margin-inline-start: calc(var(--_icon) / 2 - 1px); }
   /* Narrow (labels-below or a narrow stepper): the labels under the numbers. */
   :host([icon-position="top"]) .step { align-items: flex-start; }
   :host([icon-position="top"]) .head { flex-direction: column; align-items: center; text-align: center; gap: var(--ray-space-1); }

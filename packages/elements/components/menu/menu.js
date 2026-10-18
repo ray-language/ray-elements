@@ -230,7 +230,7 @@ const itemStyles = css`
   .section { display: inline-flex; align-items: center; color: var(--ray-muted-foreground); }
   :host([color]) .section { color: inherit; }
   .section:not([data-filled]) { display: none; }
-  .right { margin-left: var(--ray-space-6); font-size: var(--ray-font-size-xs); }
+  .right { margin-inline-start: var(--ray-space-6); font-size: var(--ray-font-size-xs); }
   ::slotted(svg) { width: 1rem; height: 1rem; }
 `;
 

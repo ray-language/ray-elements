@@ -34,13 +34,13 @@ const styles = css`
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%;
+    left: 50%; /* physical */
     width: 1px;
     background: var(--ray-border);
     transform: translateX(-50%);
     transition: background-color var(--ray-duration-fast) var(--ray-easing-standard), width var(--ray-duration-fast) var(--ray-easing-standard);
   }
-  :host([orientation="vertical"]) .divider::before { top: 50%; bottom: auto; left: 0; right: 0; width: auto; height: 1px; transform: translateY(-50%); }
+  :host([orientation="vertical"]) .divider::before { top: 50%; bottom: auto; inset-inline: 0; width: auto; height: 1px; transform: translateY(-50%); }
   :host(:not([disabled])) .divider:hover::before,
   .divider:focus-visible::before,
   :host([data-dragging]) .divider::before { width: 3px; background: var(--ray-primary); }

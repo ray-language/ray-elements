@@ -42,7 +42,7 @@ const styles = css`
   .value {
     flex: none;
     min-width: 2.75em;
-    text-align: right;
+    text-align: end;
     font-size: var(--ray-font-size-xs);
     font-variant-numeric: tabular-nums;
     color: var(--ray-muted-foreground);
@@ -59,7 +59,7 @@ const styles = css`
     width: 40%;
     animation: ray-indeterminate 1.4s var(--ray-easing-standard) infinite;
   }
-  @keyframes ray-indeterminate { from { left: -40%; } to { left: 100%; } }
+  @keyframes ray-indeterminate { from { inset-inline-start: -40%; } to { inset-inline-start: 100%; } }
 `;
 
 export class RayProgress extends RayElement {

@@ -49,7 +49,7 @@ const styles = css`
   dialog {
     --_from: -100%;
     position: fixed;
-    inset: 0 auto 0 0;
+    inset: 0 auto 0 0; /* physical */
     box-sizing: border-box;
     width: min(var(--_w), calc(100vw - 3rem));
     max-width: none;
@@ -61,7 +61,7 @@ const styles = css`
     background: transparent;
     overflow: visible;
   }
-  :host([side="right"]) dialog { inset: 0 0 0 auto; }
+  :host([side="right"]) dialog { inset: 0 0 0 auto; } /* physical */
   dialog[open] { display: block; animation: ray-sidebar-in var(--ray-duration-slow) var(--ray-easing-out); }
   dialog .panel { box-shadow: var(--ray-shadow-xl); background: var(--ray-card); }
   @keyframes ray-sidebar-in { from { transform: translateX(var(--_from)); } }

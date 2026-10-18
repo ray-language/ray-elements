@@ -27,6 +27,7 @@ import tokens/foundations;
 import components/meta;
 import components/docs;
 import components/add;
+import components/logical;
 import webtest;
 import site/shell;
 import site/guides;
@@ -146,6 +147,13 @@ fn only_flags(o: Opts, allowed: [string]) -> Result<int, string> {
 
 fn cmd_build(o: Opts) -> Result<int, string> {
     only_flags(o, [])?;
+    let physical = logical.check(o.root)?;
+    for p in physical {
+        eprint("error: ${p}");
+    }
+    if (physical.len() > 0) {
+        return Result.Err("${physical.len()} physical CSS declaration(s): the components' CSS follows the writing direction (see tools/src/components/logical.ray)");
+    }
     cmd_tokens(o)?;
     cmd_docs(o)?;
     cmd_package(o)

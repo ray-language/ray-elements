@@ -40,7 +40,7 @@ const navStyles = css`
     grid-auto-columns: minmax(0, 1fr);
     grid-auto-flow: column;
     align-items: stretch;
-    padding: var(--ray-space-1) max(var(--ray-space-1), env(safe-area-inset-right, 0px)) max(var(--ray-space-1), env(safe-area-inset-bottom, 0px)) max(var(--ray-space-1), env(safe-area-inset-left, 0px));
+    padding: var(--ray-space-1) max(var(--ray-space-1), env(safe-area-inset-right, 0px)) max(var(--ray-space-1), env(safe-area-inset-bottom, 0px)) max(var(--ray-space-1), env(safe-area-inset-left, 0px)); /* physical */
     background: var(--ray-bottom-nav, var(--ray-background));
     border-top: 1px solid var(--ray-border);
   }
@@ -109,7 +109,7 @@ const itemStyles = css`
   .badge {
     position: absolute;
     top: 0;
-    left: calc(50% + 0.375rem);
+    inset-inline-start: calc(50% + 0.375rem);
     min-width: 1rem;
     height: 1rem;
     padding: 0 0.25rem;
@@ -125,7 +125,7 @@ const itemStyles = css`
     box-sizing: content-box;
   }
   .badge:empty:not([data-dot]) { display: none; }
-  .badge[data-dot] { min-width: 0; width: 0.5rem; height: 0.5rem; padding: 0; top: 0.25rem; left: calc(50% + 0.5rem); }
+  .badge[data-dot] { min-width: 0; width: 0.5rem; height: 0.5rem; padding: 0; top: 0.25rem; inset-inline-start: calc(50% + 0.5rem); }
   .label {
     max-width: 100%;
     overflow: hidden;

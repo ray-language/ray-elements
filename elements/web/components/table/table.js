@@ -27,14 +27,14 @@ const styles = css`
   .scroll { max-height: var(--ray-table-max-height, none); overflow: auto; }
   :host([with-border]) .scroll { border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); }
   table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
-  caption { padding: var(--_py) var(--_px); text-align: left; font-weight: var(--ray-font-weight-semibold); }
-  th, td { padding: var(--_py) var(--_px); text-align: left; vertical-align: middle; border-bottom: 1px solid var(--ray-border); }
-  :host([with-column-borders]) th + th, :host([with-column-borders]) td + td { border-left: 1px solid var(--ray-border); }
+  caption { padding: var(--_py) var(--_px); text-align: start; font-weight: var(--ray-font-weight-semibold); }
+  th, td { padding: var(--_py) var(--_px); text-align: start; vertical-align: middle; border-bottom: 1px solid var(--ray-border); }
+  :host([with-column-borders]) th + th, :host([with-column-borders]) td + td { border-inline-start: 1px solid var(--ray-border); }
   tbody tr:last-child td { border-bottom: 0; }
   :host(:not([with-border])) tbody tr:last-child td { border-bottom: 1px solid var(--ray-border); }
   th { font-size: var(--ray-font-size-xs); font-weight: var(--ray-font-weight-semibold); color: var(--ray-muted-foreground); white-space: nowrap; background: var(--ray-background); }
   :host([sticky-header]) thead th { position: sticky; top: 0; z-index: 1; box-shadow: 0 1px 0 var(--ray-border); }
-  [data-align="right"] { text-align: right; }
+  [data-align="right"] { text-align: right; } /* physical */
   [data-align="center"] { text-align: center; }
   :host([striped]) tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--ray-muted) 60%, transparent); }
   tbody tr:hover td { background: var(--ray-default-hover); }
@@ -61,7 +61,7 @@ const styles = css`
   th[aria-sort="ascending"] .sort, th[aria-sort="descending"] .sort { color: var(--ray-foreground); }
   th[aria-sort="ascending"] .sort svg, th[aria-sort="descending"] .sort svg { opacity: 1; }
   th[aria-sort="descending"] .sort svg { transform: rotate(180deg); }
-  .check { width: 1%; padding-right: 0; }
+  .check { width: 1%; padding-inline-end: 0; }
   .check input { width: 1rem; height: 1rem; margin: 0; accent-color: var(--ray-primary); cursor: pointer; vertical-align: middle; }
   .empty td { padding: var(--ray-space-8) var(--_px); text-align: center; color: var(--ray-muted-foreground); }
   .empty:hover td { background: inherit; }

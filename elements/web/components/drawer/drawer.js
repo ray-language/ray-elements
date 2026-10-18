@@ -33,17 +33,17 @@ const styles = css`
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
 
   :host(:not([position])) dialog, :host([position="right"]) dialog {
-    inset: var(--_inset) var(--_inset) var(--_inset) auto;
+    inset: var(--_inset) var(--_inset) var(--_inset) auto; /* physical */
     width: min(var(--_size), calc(100vw - 2 * var(--_inset)));
     height: calc(100dvh - 2 * var(--_inset));
-    border-left-width: 1px;
+    border-left-width: 1px; /* physical */
     --_from: translateX(100%);
   }
   :host([position="left"]) dialog {
-    inset: var(--_inset) auto var(--_inset) var(--_inset);
+    inset: var(--_inset) auto var(--_inset) var(--_inset); /* physical */
     width: min(var(--_size), calc(100vw - 2 * var(--_inset)));
     height: calc(100dvh - 2 * var(--_inset));
-    border-right-width: 1px;
+    border-right-width: 1px; /* physical */
     --_from: translateX(-100%);
   }
   :host([position="top"]) dialog {
@@ -83,7 +83,7 @@ const styles = css`
     justify-content: center;
     width: var(--ray-control-height-xs);
     height: var(--ray-control-height-xs);
-    margin-left: auto;
+    margin-inline-start: auto;
     padding: 0;
     color: var(--ray-muted-foreground);
     background: transparent;

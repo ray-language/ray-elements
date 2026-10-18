@@ -17,7 +17,7 @@ const styles = css`
     font: inherit;
     font-size: var(--ray-font-size-sm);
     color: var(--ray-foreground);
-    text-align: left;
+    text-align: start;
     text-decoration: none;
     background: transparent;
     border: 0;
@@ -58,7 +58,7 @@ const styles = css`
   :host([icon-only]) .body, :host([icon-only]) .chevron, :host([icon-only]) .section.right { display: none; }
   :host([icon-only]) .children { display: none; }
   /* 2px of room so the focus ring of a child is not clipped. */
-  .children-inner { min-height: 0; overflow: hidden; margin: -2px 0; padding: 2px 0 2px var(--ray-space-5); }
+  .children-inner { min-height: 0; overflow: hidden; margin: -2px 0; padding-block: 2px; padding-inline-start: var(--ray-space-5); }
 `;
 
 const INNER = `
