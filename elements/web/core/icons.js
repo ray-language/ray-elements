@@ -13,6 +13,10 @@
 // setIcons({ close: … }) still changes every × and setIcons({ "ui.remove": … })
 // only the chips'.
 //
+// The roles that point along the text (ui.next, ui.previous, ui.disclosure…;
+// MIRRORED) are drawn mirrored in a right-to-left context, the glyph or the
+// app's own icon alike: the next page is to the left there.
+//
 // An icon may have a filled version, "<name>:filled", for a state: the active
 // tab, a favorite, unread. <ray-icon name="star" filled> draws it, and the
 // outline one when there is none. setIcons({ "star:filled": … }) adds one.
@@ -130,6 +134,14 @@ const ALIASES = {
   "ui.trend-down": "arrow-down-right",
   "ui.trend-flat": "minus",
 };
+
+/** The roles that point along the text: mirrored in a right-to-left context. */
+const MIRRORED = new Set(["ui.disclosure", "ui.previous", "ui.next", "ui.first", "ui.last", "ui.separator"]);
+
+/** Whether an icon is drawn mirrored right to left (a role that points along the text). */
+export function mirrorsInRtl(name) {
+  return MIRRORED.has(name);
+}
 
 const registry = new Map([...Object.entries(DEFAULTS), ...Object.entries(FILLED).map(([name, markup]) => [name + FILLED_SUFFIX, markup])]);
 const listeners = new Set();

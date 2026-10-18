@@ -74,6 +74,8 @@ const styles = css`
   .control:hover:not(:disabled) { background: var(--ray-accent); }
   .control:disabled { opacity: 0; pointer-events: none; }
   .control svg { width: 1rem; height: 1rem; }
+  /* The buttons stay left and right (the scroll is physical), so their arrows do too. */
+  .control [data-ray-icon] > svg { transform: none; }
   .prev { left: var(--ray-space-2); } /* physical */
   .next { right: var(--ray-space-2); } /* physical */
   :host([orientation="vertical"]) .control { top: auto; left: 50%; transform: translateX(-50%) rotate(90deg); } /* physical */

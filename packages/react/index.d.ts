@@ -1712,6 +1712,8 @@ export interface RayIconOwnProps {
   name?: Ray.IconName;
   /** The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle. */
   filled?: boolean;
+  /** Mirrored in a right-to-left context (dir="rtl"), for an icon that points along the text: back, forward, send, undo. The roles that do (ui.next, ui.previous, ui.first, ui.last, ui.disclosure, ui.separator) mirror by themselves. */
+  mirror?: boolean;
   /** xs…xl or any CSS length. Default: 1em. */
   size?: string;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */
