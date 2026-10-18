@@ -73,7 +73,10 @@ reference of every component follows them.
   (the style of the built-in set: 24×24, a 2px `currentColor` stroke) from
   your own code, never from user input. `filled` draws an icon's filled
   version for a state (`<ray-icon name="star" filled>` when it is a favorite);
-  `"name:filled"` in `setIcons` adds one.
+  `"name:filled"` in `setIcons` adds one. An icon the set lacks (`trash`,
+  `save`): register it from Lucide, the same grid and stroke —
+  `import { Trash2 } from "lucide-static"; setIcons({ trash: Trash2 })` (or
+  its SVG pasted in, without a bundler); never draw your own paths.
 - **Overlays are in the top layer**: `ray-dialog` is a native modal
   `<dialog>`; popovers, menus, tooltips and notifications are `[popover]`
   elements. Never fight them with `z-index` or `overflow`.
