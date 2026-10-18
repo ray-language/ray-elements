@@ -1448,7 +1448,7 @@ Properties:
 
 - `value`: string, reflects. Its value (default: its href, else its label).
 - `label`: string. The label.
-- `icon`: string. An icon of the registry (or put one in the icon slot).
+- `icon`: `IconName`. An icon of the registry (or put one in the icon slot).
 - `href`: string, reflects. Makes it a link.
 - `badge`: string. A count or a short text on the icon.
 - `dot`: boolean, reflects. A dot on the icon (something new).
@@ -2334,7 +2334,7 @@ Properties:
 - `href`: string. URL of the source: the inner blockquote's cite attribute.
 - `color`: string, reflects. A palette color or any CSS color, for the edge, the mark and the tint. Default: the primary.
 - `variant`: `light` | `outline` | `filled`, default `light`, reflects. light: tinted background; outline: border and edge only; filled: solid color (a pull quote).
-- `icon`: string, default `quote`. Registry icon of the mark, or none. The icon slot replaces it.
+- `icon`: `IconName`, default `quote`. Registry icon of the mark, or none. The icon slot replaces it.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Text size (lg for a pull quote).
 - `padding`: string, reflects. Inner spacing: xs…xl (the spacing scale), px as a number, or a CSS length. Default: md.
 - `hideEdge` (attribute `hide-edge`): boolean, reflects. No colored edge on the start side (the tint, border and mark stay).
@@ -2465,7 +2465,7 @@ setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGEleme
 
 Properties:
 
-- `name`: string, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
+- `name`: `IconName`, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
 - `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.
@@ -2474,6 +2474,10 @@ Properties:
 Parts (`::part()`):
 
 - `icon`: The icon box.
+
+Types:
+
+- `"close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {})`: An icon name: one of the default set, or any name an app registers with setIcons().
 
 ### Indicator
 
@@ -2637,7 +2641,7 @@ Properties:
 
 - `label`: string. The title of the event.
 - `time`: string. When ("2 h ago", a date).
-- `icon`: string. An icon of the registry in the bullet.
+- `icon`: `IconName`. An icon of the registry in the bullet.
 - `color`: string, reflects. Its own color (a failed step in red).
 - `lineVariant` (attribute `line-variant`): `solid` | `dashed` | `dotted`, default `solid`, reflects. The line to the next item (dashed: not happened yet).
 
@@ -2670,7 +2674,7 @@ Properties:
 - `color`: string, reflects. A palette color or any CSS color.
 - `variant`: `light` | `filled` | `outline` | `default` | `transparent`, default `light`, reflects. Visual style.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius.
-- `icon`: string, reflects. A registered icon name, or none.
+- `icon`: `IconName`, reflects. A registered icon name, or none.
 - `closable`: boolean, reflects. A close button; closing hides the alert (cancel ray-close to keep it).
 - `closeLabel` (attribute `close-label`): string, default `Dismiss`. Accessible name of the close button.
 
@@ -2722,7 +2726,7 @@ Properties:
 
 - `label`: string. Title.
 - `color`: string, reflects. Status color: tints the status icon (and a slotted icon's circle).
-- `icon`: string. Status icon from the registry (default: from the color); "none" for no icon.
+- `icon`: `IconName`. Status icon from the registry (default: from the color); "none" for no icon.
 - `loading`: boolean, reflects. Shows a spinner (notify() does not auto-close it).
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button.
 - `withBorder` (attribute `with-border`): boolean, reflects. Draws a border.

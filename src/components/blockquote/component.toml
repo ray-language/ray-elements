@@ -34,6 +34,7 @@ description = "light: tinted background; outline: border and edge only; filled: 
 [ray-blockquote.properties.icon]
 type = "string"
 default = "quote"
+ts = "IconName"
 description = "Registry icon of the mark, or none. The icon slot replaces it."
 
 [ray-blockquote.properties.size]

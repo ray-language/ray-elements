@@ -9141,7 +9141,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "An icon of the registry (or put one in the icon slot).",
               "fieldName": "icon"
@@ -9220,7 +9220,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "An icon of the registry (or put one in the icon slot).",
               "attribute": "icon",
@@ -13997,7 +13997,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Registry icon of the mark, or none. The icon slot replaces it.",
               "fieldName": "icon",
@@ -14083,7 +14083,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Registry icon of the mark, or none. The icon slot replaces it.",
               "attribute": "icon",
@@ -14852,7 +14852,7 @@
             {
               "name": "name",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "fieldName": "name"
@@ -14895,7 +14895,7 @@
               "kind": "field",
               "name": "name",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
               "attribute": "name",
@@ -15999,7 +15999,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "An icon of the registry in the bullet.",
               "fieldName": "icon"
@@ -16047,7 +16047,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "An icon of the registry in the bullet.",
               "attribute": "icon",
@@ -16195,7 +16195,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "A registered icon name, or none.",
               "fieldName": "icon"
@@ -16264,7 +16264,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "A registered icon name, or none.",
               "attribute": "icon",
@@ -16483,7 +16483,7 @@
             {
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Status icon from the registry (default: from the color); \"none\" for no icon.",
               "fieldName": "icon"
@@ -16546,7 +16546,7 @@
               "kind": "field",
               "name": "icon",
               "type": {
-                "text": "string"
+                "text": "IconName"
               },
               "description": "Status icon from the registry (default: from the color); \"none\" for no icon.",
               "attribute": "icon",

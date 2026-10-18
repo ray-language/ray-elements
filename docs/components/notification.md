@@ -12,7 +12,7 @@ Properties:
 
 - `label`: string. Title.
 - `color`: string, reflects. Status color: tints the status icon (and a slotted icon's circle).
-- `icon`: string. Status icon from the registry (default: from the color); "none" for no icon.
+- `icon`: `IconName`. Status icon from the registry (default: from the color); "none" for no icon.
 - `loading`: boolean, reflects. Shows a spinner (notify() does not auto-close it).
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button.
 - `withBorder` (attribute `with-border`): boolean, reflects. Draws a border.

@@ -45,7 +45,24 @@
         },
         {
           "name": "size",
-          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow)."
+          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
         },
         {
           "name": "radius",
@@ -194,7 +211,24 @@
         },
         {
           "name": "size",
-          "description": "Width and height: xs…xl or any CSS length (\"5.5rem\": a big main action, round with radius=full); the icon scales with it."
+          "description": "Width and height: xs…xl or any CSS length (\"5.5rem\": a big main action, round with radius=full); the icon scales with it.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
         },
         {
           "name": "disabled",
@@ -317,7 +351,24 @@
         },
         {
           "name": "size",
-          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow)."
+          "description": "Height, padding and font size: xs…xl or any CSS length (the padding and the font follow).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
         },
         {
           "name": "radius",
@@ -738,7 +789,27 @@
         },
         {
           "name": "format",
-          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider."
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla. Formats ending in a show the opacity slider.",
+          "values": [
+            {
+              "name": "hex"
+            },
+            {
+              "name": "hexa"
+            },
+            {
+              "name": "rgb"
+            },
+            {
+              "name": "rgba"
+            },
+            {
+              "name": "hsl"
+            },
+            {
+              "name": "hsla"
+            }
+          ]
         },
         {
           "name": "swatches",
@@ -804,7 +875,27 @@
         },
         {
           "name": "format",
-          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla."
+          "description": "How value is written: hex, hexa, rgb, rgba, hsl or hsla.",
+          "values": [
+            {
+              "name": "hex"
+            },
+            {
+              "name": "hexa"
+            },
+            {
+              "name": "rgb"
+            },
+            {
+              "name": "rgba"
+            },
+            {
+              "name": "hsl"
+            },
+            {
+              "name": "hsla"
+            }
+          ]
         },
         {
           "name": "swatches",
@@ -3197,7 +3288,147 @@
         },
         {
           "name": "icon",
-          "description": "An icon of the registry (or put one in the icon slot)."
+          "description": "An icon of the registry (or put one in the icon slot).",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "href",
@@ -3747,7 +3978,27 @@
         },
         {
           "name": "size",
-          "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window."
+          "description": "Width: xs…xl, full (the whole window), or any CSS length; a percentage is of the window (70% = 70vw, at least 40rem). Never wider than the window.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
         },
         {
           "name": "height",
@@ -3822,7 +4073,27 @@
         },
         {
           "name": "size",
-          "description": "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length."
+          "description": "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
         },
         {
           "name": "modeless",
@@ -4455,7 +4726,147 @@
         },
         {
           "name": "icon",
-          "description": "Registry icon of the mark, or none. The icon slot replaces it."
+          "description": "Registry icon of the mark, or none. The icon slot replaces it.",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "size",
@@ -4632,7 +5043,147 @@
       "attributes": [
         {
           "name": "name",
-          "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check)."
+          "description": "Registered icon name (iconNames()); \"none\" draws nothing, a blank that keeps the alignment (a menu item without its check).",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "size",
@@ -4942,7 +5493,147 @@
         },
         {
           "name": "icon",
-          "description": "An icon of the registry in the bullet."
+          "description": "An icon of the registry in the bullet.",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "color",
@@ -5021,7 +5712,147 @@
         },
         {
           "name": "icon",
-          "description": "A registered icon name, or none."
+          "description": "A registered icon name, or none.",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "closable",
@@ -5068,7 +5899,147 @@
         },
         {
           "name": "icon",
-          "description": "Status icon from the registry (default: from the color); \"none\" for no icon."
+          "description": "Status icon from the registry (default: from the color); \"none\" for no icon.",
+          "values": [
+            {
+              "name": "close"
+            },
+            {
+              "name": "check"
+            },
+            {
+              "name": "minus"
+            },
+            {
+              "name": "plus"
+            },
+            {
+              "name": "chevron-down"
+            },
+            {
+              "name": "chevron-up"
+            },
+            {
+              "name": "chevron-right"
+            },
+            {
+              "name": "chevron-left"
+            },
+            {
+              "name": "chevrons-left"
+            },
+            {
+              "name": "chevrons-right"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "arrow-up-right"
+            },
+            {
+              "name": "arrow-down-right"
+            },
+            {
+              "name": "sun"
+            },
+            {
+              "name": "moon"
+            },
+            {
+              "name": "monitor"
+            },
+            {
+              "name": "user"
+            },
+            {
+              "name": "info"
+            },
+            {
+              "name": "circle-check"
+            },
+            {
+              "name": "alert-triangle"
+            },
+            {
+              "name": "circle-x"
+            },
+            {
+              "name": "menu"
+            },
+            {
+              "name": "more-horizontal"
+            },
+            {
+              "name": "file"
+            },
+            {
+              "name": "folder"
+            },
+            {
+              "name": "pause"
+            },
+            {
+              "name": "play"
+            },
+            {
+              "name": "terminal"
+            },
+            {
+              "name": "calendar"
+            },
+            {
+              "name": "image"
+            },
+            {
+              "name": "download"
+            },
+            {
+              "name": "eye"
+            },
+            {
+              "name": "eye-off"
+            },
+            {
+              "name": "bell"
+            },
+            {
+              "name": "copy"
+            },
+            {
+              "name": "quote"
+            },
+            {
+              "name": "pipette"
+            },
+            {
+              "name": "star"
+            },
+            {
+              "name": "upload"
+            },
+            {
+              "name": "paperclip"
+            },
+            {
+              "name": "panel-left"
+            },
+            {
+              "name": "settings"
+            },
+            {
+              "name": "home"
+            },
+            {
+              "name": "arrow-left"
+            },
+            {
+              "name": "message-circle"
+            },
+            {
+              "name": "none"
+            }
+          ]
         },
         {
           "name": "loading",
@@ -5238,7 +6209,24 @@
         },
         {
           "name": "size",
-          "description": "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length."
+          "description": "Diameter: xs…xl (3, 5, 7.5, 10, 12.5rem) or any CSS length.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
         },
         {
           "name": "thickness",

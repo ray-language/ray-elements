@@ -14,7 +14,7 @@ Properties:
 - `color`: string, reflects. A palette color or any CSS color.
 - `variant`: `light` | `filled` | `outline` | `default` | `transparent`, default `light`, reflects. Visual style.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius.
-- `icon`: string, reflects. A registered icon name, or none.
+- `icon`: `IconName`, reflects. A registered icon name, or none.
 - `closable`: boolean, reflects. A close button; closing hides the alert (cancel ray-close to keep it).
 - `closeLabel` (attribute `close-label`): string, default `Dismiss`. Accessible name of the close button.
 

@@ -66,6 +66,7 @@ description = "When (\"2 h ago\", a date)."
 
 [ray-timeline-item.properties.icon]
 type = "string"
+ts = "IconName"
 description = "An icon of the registry in the bullet."
 
 [ray-timeline-item.properties.color]

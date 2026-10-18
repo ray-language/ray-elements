@@ -35,6 +35,7 @@ description = "Corner radius."
 [ray-alert.properties.icon]
 type = "string"
 reflect = true
+ts = "IconName"
 description = "A registered icon name, or none."
 
 [ray-alert.properties.closable]

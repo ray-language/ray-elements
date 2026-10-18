@@ -31,7 +31,7 @@ Properties:
 
 - `label`: string. The title of the event.
 - `time`: string. When ("2 h ago", a date).
-- `icon`: string. An icon of the registry in the bullet.
+- `icon`: `IconName`. An icon of the registry in the bullet.
 - `color`: string, reflects. Its own color (a failed step in red).
 - `lineVariant` (attribute `line-variant`): `solid` | `dashed` | `dotted`, default `solid`, reflects. The line to the next item (dashed: not happened yet).
 

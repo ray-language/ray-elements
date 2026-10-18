@@ -100,6 +100,7 @@ description = "The label."
 
 [ray-bottom-nav-item.properties.icon]
 type = "string"
+ts = "IconName"
 description = "An icon of the registry (or put one in the icon slot)."
 
 [ray-bottom-nav-item.properties.href]

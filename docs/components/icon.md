@@ -10,7 +10,7 @@ setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGEleme
 
 Properties:
 
-- `name`: string, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
+- `name`: `IconName`, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
 - `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.
@@ -19,6 +19,10 @@ Properties:
 Parts (`::part()`):
 
 - `icon`: The icon box.
+
+Types:
+
+- `"close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {})`: An icon name: one of the default set, or any name an app registers with setIcons().
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.6.0.
 
