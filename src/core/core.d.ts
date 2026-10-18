@@ -52,12 +52,12 @@ export declare function getCustomPrimary(el?: Element): string | null;
 
 // --- icons -------------------------------------------------------------------
 
-/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. */
+/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. "<name>:filled" is an icon's filled version. */
 export declare function setIcons(icons: Record<string, string | SVGElement>): void;
-/** The SVG markup of a registered icon ("" if unknown). */
-export declare function getIcon(name: string): string;
-/** The registered icon names. */
-export declare function iconNames(): string[];
+/** The SVG markup of a registered icon ("" if unknown); with filled, its filled version (the outline one without it). */
+export declare function getIcon(name: string, options?: { filled?: boolean }): string;
+/** The registered icon names; with filled, those that have a filled version. */
+export declare function iconNames(options?: { filled?: boolean }): string[];
 
 // --- base classes ------------------------------------------------------------
 

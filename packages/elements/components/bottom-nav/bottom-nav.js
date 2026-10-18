@@ -193,8 +193,10 @@ export class RayBottomNavItem extends RayElement {
     }
     if (this.active && !this.action) item.setAttribute("aria-current", "page");
     else item.removeAttribute("aria-current");
+    // The current destination draws its icon filled (when it has a filled version).
     const icon = this.$(".icon");
     icon.setAttribute("data-ray-icon", this.icon ?? "");
+    icon.toggleAttribute("data-ray-icon-filled", Boolean(this.active && !this.action));
     this.paintIcons();
     this.$(".label").textContent = this.label ?? "";
     const badge = this.$(".badge");

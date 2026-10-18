@@ -47,7 +47,7 @@ Properties:
 
 - `value`: string, reflects. Its value (default: its href, else its label).
 - `label`: string. The label.
-- `icon`: `IconName`. An icon of the registry (or put one in the icon slot).
+- `icon`: `IconName`. An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is).
 - `href`: string, reflects. Makes it a link.
 - `badge`: string. A count or a short text on the icon.
 - `dot`: boolean, reflects. A dot on the icon (something new).

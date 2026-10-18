@@ -14,6 +14,8 @@ export interface CheckOptions {
   manifest: object | object[];
   /** The registered icon names; without them icons are not checked. */
   icons?: string[];
+  /** The icon names that have a filled version (iconNames({ filled: true })); without them filled is not checked. */
+  filledIcons?: string[];
   /** More values of an attribute, for every element: an app's own variant, { variant: ["brand"] }. */
   allow?: Record<string, string[]>;
   /** Reported in the diagnostics; its extension picks the language. */

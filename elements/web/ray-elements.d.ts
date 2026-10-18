@@ -54,12 +54,12 @@ export declare function getCustomPrimary(el?: Element): string | null;
 
 // --- icons -------------------------------------------------------------------
 
-/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. */
+/** Replaces or adds icons (SVG markup or an SVGElement); repaints every component. "<name>:filled" is an icon's filled version. */
 export declare function setIcons(icons: Record<string, string | SVGElement>): void;
-/** The SVG markup of a registered icon ("" if unknown). */
-export declare function getIcon(name: string): string;
-/** The registered icon names. */
-export declare function iconNames(): string[];
+/** The SVG markup of a registered icon ("" if unknown); with filled, its filled version (the outline one without it). */
+export declare function getIcon(name: string, options?: { filled?: boolean }): string;
+/** The registered icon names; with filled, those that have a filled version. */
+export declare function iconNames(options?: { filled?: boolean }): string[];
 
 // --- base classes ------------------------------------------------------------
 
@@ -1216,7 +1216,7 @@ export declare class RayBottomNavItem extends RayElement {
   value: string | undefined;
   /** The label. */
   label: string | undefined;
-  /** An icon of the registry (or put one in the icon slot). */
+  /** An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is). */
   icon: IconName | undefined;
   /** Makes it a link. */
   href: string | undefined;
@@ -1930,10 +1930,12 @@ export interface RayCodeEventMap extends HTMLElementEventMap {
 // --- Icon (icon)
 /** An icon name: one of the default set, or any name an app registers with setIcons(). */
 export type IconName = "close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {});
-/** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
+/** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name: IconName | undefined;
+  /** The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle. */
+  filled: boolean | undefined;
   /** xs…xl or any CSS length. Default: 1em. */
   size: string | undefined;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */

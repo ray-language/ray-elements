@@ -330,7 +330,10 @@ from one registry. Switch the whole set, or add names for <code>&lt;ray-icon&gt;
 <pre class="code"><code><span class="tk-keyword">import</span> { setIcons, iconNames } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
 setIcons({ close: <span class="tk-string">'&lt;svg viewBox=&quot;0 0 24 24&quot;&gt;…&lt;/svg&gt;'</span>, <span class="tk-string">&quot;chevron-down&quot;</span>: svgElement, logo: <span class="tk-string">&quot;…&quot;</span> });</code></pre>
 <p>Icons are SVG markup (or an SVGElement) drawn with <code>currentColor</code>; mounted
-components repaint. <code>--ray-icon-size</code> and <code>--ray-icon-stroke</code> tune them
+components repaint. An icon may have a filled version for a state (the
+active tab, a favorite): <code>&lt;ray-icon name=&quot;star&quot; filled&gt;</code>, or
+<code>setIcons({ &quot;star:filled&quot;: … })</code> for your own; without one, the outline icon
+is drawn. <code>--ray-icon-size</code> and <code>--ray-icon-stroke</code> tune them
 system-wide. In your markup: <code>&lt;ray-icon name=&quot;info&quot; label=&quot;Information&quot;&gt;</code>
 (decorative without <code>label</code>). Register icons from your code only — the markup
 is inserted as HTML.</p>

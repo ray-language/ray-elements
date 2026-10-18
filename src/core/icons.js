@@ -6,6 +6,10 @@
 //
 // setIcons() also adds new names, for <ray-icon name="…">. Icons are SVG
 // markup (or an SVGElement) drawn with currentColor; components size them.
+//
+// An icon may have a filled version, "<name>:filled", for a state: the active
+// tab, a favorite, unread. <ray-icon name="star" filled> draws it, and the
+// outline one when there is none. setIcons({ "star:filled": … }) adds one.
 // The markup is inserted as HTML: register icons from your own code only,
 // never from user input.
 
@@ -62,12 +66,36 @@ const DEFAULTS = {
   "message-circle": svg(`<path d="M20 11.5a8 8 0 0 1-11.6 7.2L4 20l1.3-4.2A8 8 0 1 1 20 11.5z"/>`),
 };
 
-const registry = new Map(Object.entries(DEFAULTS));
+// The filled versions: the outline's shapes filled (same silhouette: the
+// stroke stays), or one even-odd path where a mark is cut out of a disc.
+const solid = (body) =>
+  `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+const cut = (d) => `<svg viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" aria-hidden="true"><path d="${d}"/></svg>`;
+
+/** The filled versions of the default set (registered as "<name>:filled"). */
+const FILLED = {
+  "user": solid(`<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/>`),
+  "info": cut("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"),
+  "circle-check": cut("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.5 14.5-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4z"),
+  "alert-triangle": cut("M10.3 3.2 1.6 18.1a2 2 0 0 0 1.7 3h17.4a2 2 0 0 0 1.7-3L13.7 3.2a2 2 0 0 0-3.4 0zM11 8.5h2v5.5h-2zM12 16a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"),
+  "circle-x": cut("M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM14.12 8.46 15.54 9.88 13.41 12 15.54 14.12 14.12 15.54 12 13.41 9.88 15.54 8.46 14.12 10.59 12 8.46 9.88 9.88 8.46 12 10.59z"),
+  "folder": solid(`<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>`),
+  bell: solid(`<path d="M10.3 21a1.9 1.9 0 0 0 3.4 0z"/><path d="M3.3 15.3A1 1 0 0 0 4 17h16a1 1 0 0 0 .7-1.7C19.4 14 18 12.6 18 8A6 6 0 0 0 6 8c0 4.6-1.4 6-2.7 7.3"/>`),
+  "star": solid(`<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>`),
+  "settings": solid(`<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>`),
+  "home": solid(`<path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/>`),
+  "message-circle": solid(`<path d="M20 11.5a8 8 0 0 1-11.6 7.2L4 20l1.3-4.2A8 8 0 1 1 20 11.5z"/>`),
+};
+
+const FILLED_SUFFIX = ":filled";
+
+const registry = new Map([...Object.entries(DEFAULTS), ...Object.entries(FILLED).map(([name, markup]) => [name + FILLED_SUFFIX, markup])]);
 const listeners = new Set();
 const warned = new Set();
 
 /**
- * Replaces or adds icons. Values are SVG markup or an SVGElement.
+ * Replaces or adds icons. Values are SVG markup or an SVGElement; a name
+ * ending in ":filled" is the filled version of an icon.
  * @param {Record<string, string | SVGElement>} icons
  */
 export function setIcons(icons) {
@@ -81,8 +109,15 @@ export function setIcons(icons) {
   for (const cb of listeners) cb();
 }
 
-/** The SVG markup of an icon ("" and one warning when it is not registered). */
-export function getIcon(name) {
+/**
+ * The SVG markup of an icon ("" and one warning when it is not registered).
+ * With `filled`, its filled version, or the outline one when it has none.
+ */
+export function getIcon(name, { filled = false } = {}) {
+  if (filled) {
+    const solidMarkup = registry.get(name + FILLED_SUFFIX);
+    if (solidMarkup !== undefined) return solidMarkup;
+  }
   const markup = registry.get(name);
   if (markup !== undefined) return markup;
   if (!warned.has(name)) {
@@ -92,9 +127,11 @@ export function getIcon(name) {
   return "";
 }
 
-/** The registered icon names. */
-export function iconNames() {
-  return [...registry.keys()];
+/** The registered icon names; with `filled`, those that have a filled version. */
+export function iconNames({ filled = false } = {}) {
+  const names = [...registry.keys()];
+  if (filled) return names.filter((n) => n.endsWith(FILLED_SUFFIX)).map((n) => n.slice(0, -FILLED_SUFFIX.length));
+  return names.filter((n) => !n.endsWith(FILLED_SUFFIX));
 }
 
 /** @internal Called by the core runtime to repaint components after setIcons. */

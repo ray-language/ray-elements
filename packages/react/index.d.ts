@@ -1102,7 +1102,7 @@ export interface RayBottomNavItemOwnProps {
   value?: string;
   /** The label. */
   label?: string;
-  /** An icon of the registry (or put one in the icon slot). */
+  /** An icon of the registry, drawn filled on the current item when it has a filled version (or put one in the icon slot: yours, as it is). */
   icon?: Ray.IconName;
   /** Makes it a link. */
   href?: string;
@@ -1710,6 +1710,8 @@ export declare const RayCode: React.ForwardRefExoticComponent<RayCodeProps & Rea
 export interface RayIconOwnProps {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
   name?: Ray.IconName;
+  /** The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle. */
+  filled?: boolean;
   /** xs…xl or any CSS length. Default: 1em. */
   size?: string;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */

@@ -109,11 +109,19 @@ test("an app's own variants and icons", () => {
   assert.deepEqual(rules(`<ray-icon name="inbox"></ray-icon>`, "a.html", { icons: [...icons, "inbox"] }), []);
 });
 
+test("filled: a warning when the icon has no filled version", () => {
+  const src = `<ray-icon name="star" filled></ray-icon>\n<ray-icon name="search" filled></ray-icon>\n<ray-icon name="search"></ray-icon>`;
+  const found = checkMarkup(src, { manifest, icons: ["star", "search"], filledIcons: ["star"], file: "a.html" });
+  assert.deepEqual(found.map((d) => `${d.line}:${d.rule}`), ["2:no-filled-icon"]);
+  assert.match(found[0].message, /"search" has no filled version/);
+  assert.deepEqual(checkMarkup(src, { manifest, icons: ["star", "search"], file: "a.html" }), [], "not checked without filledIcons");
+});
+
 test("the command: files, setIcons, JSON and the exit status", () => {
   const dir = mkdtempSync(join(tmpdir(), "ray-elements-check-"));
   try {
-    writeFileSync(join(dir, "index.html"), `<ray-icon name="inbox"></ray-icon>\n<ray-button variant="brand"></ray-button>\n`);
-    writeFileSync(join(dir, "main.js"), `setIcons({ inbox: '<svg viewBox="0 0 24 24"></svg>' });\nRayButton.extendStyles(css\`[data-variant="brand"] {}\`);\n`);
+    writeFileSync(join(dir, "index.html"), `<ray-icon name="inbox" filled></ray-icon>\n<ray-icon name="star" filled></ray-icon>\n<ray-button variant="brand"></ray-button>\n`);
+    writeFileSync(join(dir, "main.js"), `setIcons({ inbox: '<svg viewBox="0 0 24 24"></svg>', "inbox:filled": '<svg viewBox="0 0 24 24"></svg>' });\nRayButton.extendStyles(css\`[data-variant="brand"] {}\`);\n`);
     const cli = new URL("check/cli.js", pkg).pathname;
     const ok = spawnSync(process.execPath, [cli, "check", dir], { encoding: "utf8" });
     assert.equal(ok.status, 0, ok.stdout + ok.stderr);

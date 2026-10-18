@@ -52,6 +52,30 @@ T.test("icons: setIcons repaints live components and adds names", async (T) => {
   box.remove();
 });
 
+T.test("icons: filled versions, ray-icon filled, the outline as fallback", async (T) => {
+  const filledNames = core.iconNames({ filled: true });
+  for (const name of ["star", "bell", "home", "user", "circle-check", "info"]) T.ok(filledNames.includes(name), `${name} has a filled version`);
+  T.ok(!core.iconNames().some((n) => n.includes(":")), "iconNames() lists the base names");
+  T.ok(core.getIcon("star", { filled: true }) !== core.getIcon("star"), "a different drawing");
+  T.eq(core.getIcon("search", { filled: true }), core.getIcon("search"), "none: the outline one");
+  const box = await mount(`<ray-icon name="star"></ray-icon><ray-icon name="search" filled></ray-icon>`);
+  const [star, search] = box.children;
+  const fill = (el) => inner(el, ".icon svg").getAttribute("fill");
+  T.eq(fill(star), "none", "outline at rest");
+  star.filled = true;
+  await T.settle();
+  T.eq(fill(star), "currentColor", "filled repaints");
+  T.ok(star.hasAttribute("filled"), "reflected");
+  T.eq(fill(search), "none", "no filled version: the outline");
+  core.setIcons({ "search:filled": `<svg data-test="solid-search" viewBox="0 0 24 24"><rect width="24" height="24"/></svg>` });
+  T.ok(inner(search, '[data-test="solid-search"]'), "setIcons adds a filled version, live");
+  T.ok(core.iconNames({ filled: true }).includes("search"));
+  star.filled = false;
+  await T.settle();
+  T.eq(fill(star), "none", "back to the outline");
+  box.remove();
+});
+
 T.test("icons: invalid input and unknown names", (T) => {
   let threw = false;
   try { core.setIcons({ bad: "<div>not svg</div>" }); } catch (e) { threw = e instanceof TypeError; }

@@ -204,6 +204,9 @@ T.test("bottom-nav: value and change, aria-current, badge in the name, action, l
   T.eq(changes, 1);
   T.eq(inbox.active, true);
   T.eq(control(home).hasAttribute("aria-current"), false);
+  const drawn = (i) => i.shadowRoot.querySelector(".icon svg").getAttribute("fill");
+  T.eq(drawn(inbox), "currentColor", "the current item draws its icon filled");
+  T.eq(drawn(home), "none", "the others, outline");
   control(add).click();
   await T.settle();
   T.eq(selected, "new", "an action fires ray-select");
