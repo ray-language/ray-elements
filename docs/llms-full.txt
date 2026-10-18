@@ -1053,7 +1053,7 @@ for e in ui.events() {
 
 ### Radio group
 
-One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.
+One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control.
 
 Import: `import "@raylang/elements/radio";` · Category: Inputs
 
@@ -1083,11 +1083,11 @@ Events:
 
 Slots:
 
-- (default): ray-radio elements (may be wrapped in layout elements).
+- (default): ray-radio or ray-radio-card elements (may be wrapped in layout elements: a ray-grid of cards).
 
 Methods and properties:
 
-- `readonly radios: RayRadio[]`: The radios of the group.
+- `readonly radios: RayRadio[]`: The radios (and radio cards) of the group.
 
 Vue `v-model`: `value` (updated on change).
 
@@ -1112,6 +1112,26 @@ Parts (`::part()`):
 
 - `indicator`: The circle.
 - `label`: The label.
+
+#### `<ray-radio-card>` (RayRadioCard, extends RayRadio)
+
+A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns.
+
+Properties:
+
+- `hideIndicator` (attribute `hide-indicator`): boolean, reflects. No radio circle: the card's border and background alone show the choice.
+
+Also the properties of RayRadio (`<ray-radio>`): `value`, `checked`, `label`, `description`, `disabled`, `color`, `size`, `variant`.
+
+Slots:
+
+- (default): More content under the description.
+- `icon`: An icon before the title.
+
+Parts (`::part()`):
+
+- `root`: The card.
+- `icon`: Around the icon slot.
 
 ### Search
 

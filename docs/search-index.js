@@ -173,12 +173,13 @@ export default [
   {
     "label": "Radio group",
     "group": "Components · Inputs",
-    "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
+    "description": "One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control.",
     "href": "components/radio.html",
     "keywords": [
       "radio",
       "ray-radio-group",
-      "ray-radio"
+      "ray-radio",
+      "ray-radio-card"
     ],
     "icon": "layers"
   },

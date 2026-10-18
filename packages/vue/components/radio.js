@@ -12,3 +12,7 @@ export const RayRadio = /*#__PURE__*/ createComponent("RayRadio", "ray-radio", {
   properties: ["value", "checked", "label", "description", "disabled", "color", "size", "variant"],
   booleans: ["checked", "disabled"],
 });
+export const RayRadioCard = /*#__PURE__*/ createComponent("RayRadioCard", "ray-radio-card", {
+  properties: ["hideIndicator", "value", "checked", "label", "description", "disabled", "color", "size", "variant"],
+  booleans: ["hideIndicator", "checked", "disabled"],
+});

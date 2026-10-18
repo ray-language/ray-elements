@@ -803,6 +803,30 @@ export type RayRadioProps = RayRadioOwnProps & Omit<React.HTMLAttributes<Ray.Ray
 /** <ray-radio> as a React component. */
 export declare const RayRadio: React.ForwardRefExoticComponent<RayRadioProps & React.RefAttributes<Ray.RayRadio>>;
 
+export interface RayRadioCardOwnProps {
+  /** No radio circle: the card's border and background alone show the choice. */
+  hideIndicator?: boolean;
+  /** Value given to the group when chosen. */
+  value?: string;
+  /** Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute). */
+  checked?: boolean;
+  /** Label text (or the content). */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** Cannot be chosen. */
+  disabled?: boolean;
+  /** Overrides the group color. */
+  color?: string;
+  /** Overrides the group size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Overrides the group variant. */
+  variant?: "filled" | "outline";
+}
+export type RayRadioCardProps = RayRadioCardOwnProps & Omit<React.HTMLAttributes<Ray.RayRadioCard>, keyof RayRadioCardOwnProps> & { children?: React.ReactNode };
+/** <ray-radio-card> as a React component. */
+export declare const RayRadioCard: React.ForwardRefExoticComponent<RayRadioCardProps & React.RefAttributes<Ray.RayRadioCard>>;
+
 export interface RaySearchOwnProps {
   /** Current text. */
   value?: string;

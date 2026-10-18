@@ -22,6 +22,11 @@ change the API.
   middle (a countdown's clock, a goal). `value` of `max`, `color`, `size`
   (xs…xl or a length: the diameter), `thickness`, `round-caps`, `show-value`;
   indeterminate without a value; announced as a progressbar.
+- `ray-radio-card`: a radio drawn as a card (title, detail, icon, more
+  content), in a `ray-radio-group` like a `ray-radio`: arrow keys, the form,
+  `required` and `disabled` come from the group, and cards and radios can be
+  mixed. Put the cards in a `ray-grid` for columns; `hide-indicator` leaves
+  the border and the background alone to show the choice.
 
 ## [0.5.2] - 2026-10-17
 

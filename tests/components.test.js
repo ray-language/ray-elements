@@ -4,7 +4,7 @@
 // (FormData, validity, reset, fieldset), events, keyboard and ARIA.
 
 const T = window.__rayTest;
-const tags = ["ray-button", "ray-icon-button", "ray-input", "ray-number-input", "ray-search", "ray-textarea", "ray-select", "ray-checkbox", "ray-switch", "ray-radio-group", "ray-radio", "ray-badge", "ray-avatar", "ray-card", "ray-kbd", "ray-separator", "ray-spinner"];
+const tags = ["ray-button", "ray-icon-button", "ray-input", "ray-number-input", "ray-search", "ray-textarea", "ray-select", "ray-checkbox", "ray-switch", "ray-radio-group", "ray-radio", "ray-radio-card", "ray-badge", "ray-avatar", "ray-card", "ray-kbd", "ray-separator", "ray-spinner"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
 const { COLORS, VARIANT_TOKENS } = await import("../../src/core/styles.js");
 const { initials } = await import("../../src/components/avatar/avatar.js");
@@ -477,6 +477,54 @@ T.test("radio group: value, click, keyboard, roving tabindex, form", async (T) =
   form.reset();
   await T.settle();
   T.eq(g.value, "b", "reset");
+  box.remove();
+});
+
+T.test("radio card: a radio of the group, as a card", async (T) => {
+  const box = await mount(`<form><ray-radio-group name="preset" label="Preset" required>
+    <div class="grid">
+      <ray-radio-card value="pro" label="Pro" description="12 × 3:00"><b slot="icon">P</b></ray-radio-card>
+      <ray-radio-card value="mma" label="MMA" description="5 × 5:00" hide-indicator></ray-radio-card>
+    </div>
+    <ray-radio value="custom" label="Custom"></ray-radio>
+    <ray-radio-card value="off" label="Off" disabled></ray-radio-card>
+  </ray-radio-group></form>`);
+  const form = box.querySelector("form");
+  const group = box.querySelector("ray-radio-group");
+  const [pro, mma] = group.querySelectorAll("ray-radio-card");
+  const custom = group.querySelector("ray-radio");
+  T.eq(group.radios.length, 4, "cards and radios, wrapped or not");
+  T.eq(pro.internals.role, "radio");
+  T.eq(group.validity.valueMissing, true, "required");
+  T.eq(pro.tabIndex, 0, "the first one is the tab stop");
+  T.eq(inner(pro, ".icon").hidden, false, "an icon given");
+  T.eq(inner(mma, ".icon").hidden, true, "no icon, no room");
+  T.eq(inner(pro, ".extra").hidden, true, "no extra content");
+  T.eq(getComputedStyle(inner(mma, ".indicator")).display, "none", "hide-indicator");
+  let changes = 0;
+  group.addEventListener("change", () => changes++);
+  pro.click();
+  await T.settle();
+  T.eq(group.value, "pro", "a click picks the card");
+  T.eq(pro.checked, true);
+  T.eq(pro.internals.ariaChecked, "true");
+  T.ok(getComputedStyle(inner(pro, ".root")).borderColor !== getComputedStyle(inner(mma, ".root")).borderColor, "the checked card is marked");
+  T.eq(new FormData(form).get("preset"), "pro");
+  pro.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+  await T.settle();
+  T.eq(group.value, "mma", "arrows move between cards");
+  mma.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+  await T.settle();
+  T.eq(group.value, "custom", "and on to a plain radio");
+  custom.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
+  await T.settle();
+  T.eq(group.value, "pro", "the disabled card is skipped");
+  T.eq(changes, 4);
+  mma.checked = true;
+  T.eq(group.value, "mma", "checked sets the group's value");
+  group.disabled = true;
+  await T.settle();
+  T.ok(pro.hasAttribute("data-disabled"), "a disabled group disables the cards");
   box.remove();
 });
 

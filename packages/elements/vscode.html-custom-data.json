@@ -2244,8 +2244,78 @@
     },
     {
       "name": "ray-radio",
-      "description": "One choice among options: ray-radio elements inside a ray-radio-group, which is the form control.",
+      "description": "One choice among options: ray-radio (or ray-radio-card) elements inside a ray-radio-group, which is the form control.",
       "attributes": [
+        {
+          "name": "value",
+          "description": "Value given to the group when chosen."
+        },
+        {
+          "name": "checked",
+          "description": "Whether this radio is the group's value; setting it sets the group's value. The checked attribute marks the group's initial value (when the group has no value attribute).",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "Label text (or the content)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "disabled",
+          "description": "Cannot be chosen.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "Overrides the group color."
+        },
+        {
+          "name": "size",
+          "description": "Overrides the group size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Overrides the group variant.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ray-radio-card",
+      "description": "A radio drawn as a card: a title (label), a detail (description), an icon, more content; checked, it takes the color's border and light background. Inside a ray-radio-group like a ray-radio (arrow keys, the form, required, disabled); put the cards in a ray-grid for columns.",
+      "attributes": [
+        {
+          "name": "hide-indicator",
+          "description": "No radio circle: the card's border and background alone show the choice.",
+          "valueSet": "v"
+        },
         {
           "name": "value",
           "description": "Value given to the group when chosen."

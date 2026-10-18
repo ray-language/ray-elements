@@ -19,7 +19,7 @@ export { RayInput } from "./components/input/input.js";
 export { RayNumberInput, parseNumber, formatNumber } from "./components/number-input/number-input.js";
 export { RayPasswordInput } from "./components/password-input/password-input.js";
 export { RayPathInput, dirName, baseName } from "./components/path-input/path-input.js";
-export { RayRadioGroup, RayRadio } from "./components/radio/radio.js";
+export { RayRadioGroup, RayRadio, RayRadioCard } from "./components/radio/radio.js";
 export { RaySearch } from "./components/search/search.js";
 export { RaySegmentedControl } from "./components/segmented-control/segmented-control.js";
 export { RaySelect } from "./components/select/select.js";
