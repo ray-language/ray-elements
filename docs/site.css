@@ -102,6 +102,21 @@ code { font-family: var(--ray-font-mono); font-size: 0.875em; }
 .site-search:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 2px; }
 .site-search ray-icon { --_size: 1rem; flex: none; }
 .site-search-label { flex: 1; text-align: left; }
+.site-dir {
+  height: var(--ray-control-height-sm);
+  padding: 0 var(--ray-space-2);
+  font: inherit;
+  font-size: var(--ray-font-size-xs);
+  font-weight: var(--ray-font-weight-medium);
+  color: var(--ray-muted-foreground);
+  background: transparent;
+  border: 1px solid var(--ray-border);
+  border-radius: var(--ray-radius-md);
+  cursor: pointer;
+}
+.site-dir:hover { color: var(--ray-foreground); }
+.site-dir[aria-pressed="true"] { color: var(--ray-primary-foreground); background: var(--ray-primary); border-color: var(--ray-primary); }
+.site-dir:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 2px; }
 .site-search kbd {
   padding: 0 var(--ray-space-1);
   font-family: var(--ray-font-sans);
@@ -1355,7 +1370,7 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .thumb .t-crumbs svg { width: 0.6rem; height: 0.6rem; }
 .thumb .t-steps { display: flex; align-items: center; gap: 0.3rem; }
 .thumb .t-steps .n { display: grid; place-items: center; width: 1.2rem; height: 1.2rem; font-size: 0.55rem; font-weight: 700; color: var(--ray-muted-foreground); background: var(--ray-muted); border: 2px solid var(--ray-border); border-radius: 50%; box-sizing: border-box; }
-.thumb .t-steps .n.done { color: var(--ray-primary-contrast, #fff); background: var(--ray-primary); border-color: var(--ray-primary); }
+.thumb .t-steps .n.done { color: var(--ray-primary-foreground); background: var(--ray-primary); border-color: var(--ray-primary); }
 .thumb .t-steps .n.on { color: var(--ray-primary); background: var(--ray-background); border-color: var(--ray-primary); }
 .thumb .t-steps .c { width: 1.4rem; height: 2px; background: var(--ray-border); }
 .thumb .t-steps .c.done { background: var(--ray-primary); }

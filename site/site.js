@@ -201,6 +201,31 @@ for (const p of pickers) {
 syncPrimaryControls();
 customElements.whenDefined("ray-select").then(syncPrimaryControls);
 
+// --- direction: the RTL button shows the examples right to left (dir="rtl"
+// on each .example, remembered) to see the components mirror; the site
+// around them stays left to right.
+const DIR_KEY = "ray-elements-site-dir";
+function setExampleDir(rtl) {
+  for (const ex of $$(".example")) {
+    if (rtl) ex.dir = "rtl";
+    else ex.removeAttribute("dir");
+  }
+  for (const b of $$("[data-site-dir]")) b.setAttribute("aria-pressed", String(rtl));
+}
+let savedDir = null;
+try { savedDir = localStorage.getItem(DIR_KEY); } catch {}
+setExampleDir(savedDir === "rtl");
+for (const b of $$("[data-site-dir]")) {
+  b.addEventListener("click", () => {
+    const rtl = b.getAttribute("aria-pressed") !== "true";
+    setExampleDir(rtl);
+    try {
+      if (rtl) localStorage.setItem(DIR_KEY, "rtl");
+      else localStorage.removeItem(DIR_KEY);
+    } catch {}
+  });
+}
+
 // --- mobile menu: a drawer with the site nav, the page's sidebar and the tools
 // (loaded the first time the menu opens).
 const drawer = document.getElementById("site-menu");

@@ -30,6 +30,7 @@
 <button class="site-search" type="button" data-site-search aria-keyshortcuts="Meta+K Control+K"><ray-icon name="search"></ray-icon><span class="site-search-label">Search…</span><kbd data-site-search-key>⌘K</kbd></button>
 <span class="desktop-only"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select></span>
 <input class="brand-color desktop-only" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color" title="Custom primary color (definePrimary)">
+<span class="desktop-only"><button class="site-dir" type="button" data-site-dir aria-pressed="false" title="Show the examples right to left (dir=&quot;rtl&quot;)">RTL</button></span>
 <ray-theme-toggle></ray-theme-toggle>
 <ray-icon-button class="site-github" label="GitHub" variant="subtle" href="{{ repo }}"><ray-icon name="github"></ray-icon></ray-icon-button>
 </div>
@@ -41,7 +42,7 @@
 <ray-nav-link label="Home" href="{{ base }}index.html"{% if home %} active{% endif %}></ray-nav-link>
 {% for n in nav %}<ray-nav-link label="{{ n.label }}" href="{{ n.href }}"{% if n.current %} active{% endif %}></ray-nav-link>
 {% endfor %}</nav>
-<div class="drawer-tools"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select><input class="brand-color" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color"></div>
+<div class="drawer-tools"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select><input class="brand-color" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color"><button class="site-dir" type="button" data-site-dir aria-pressed="false" title="Show the examples right to left (dir=&quot;rtl&quot;)">RTL</button></div>
 {% if sidebar %}<ray-separator label="On this page" label-position="start"></ray-separator>
 <div class="drawer-nav">
 {% for g in groups %}<div class="nav-group">{% if g.title != "" %}<p class="nav-group-title">{{ g.title }}</p>{% endif %}

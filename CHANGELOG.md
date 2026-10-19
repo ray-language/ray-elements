@@ -25,6 +25,9 @@ change the API.
   mirror. The
   color picker stays as it is: a color space is a picture, not text.
 - `isRtl(el)` and `inlineKey(key, el)`, for components of your own.
+- Right to left in the docs: a README section and the `llms.txt` rules,
+  and an **RTL** button on the site that shows every example with
+  `dir="rtl"` (remembered; the site around them stays left to right).
 - `start`/`end` values for the attributes that name a side, following the
   writing direction: `ray-checkbox`/`ray-switch` `label-position`,
   `ray-accordion` `chevron-position`, `ray-separator` `label-position`,
