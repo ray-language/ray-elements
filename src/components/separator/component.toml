@@ -25,10 +25,10 @@ description = "Text in the middle of a horizontal rule."
 [ray-separator.properties.labelPosition]
 attribute = "label-position"
 type = "string"
-values = ["left", "center", "right"]
+values = ["start", "center", "end", "left", "right"]
 default = "center"
 reflect = true
-description = "Where the label sits."
+description = "Where the label sits: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-separator.properties.size]
 type = "string"

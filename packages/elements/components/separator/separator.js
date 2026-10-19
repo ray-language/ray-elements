@@ -27,8 +27,13 @@ const styles = css`
     color: var(--ray-muted-foreground);
   }
   .labeled::before, .labeled::after { content: ""; flex: 1; border-top: var(--_w) var(--_style) var(--_color); }
-  :host([label-position="left"]) .labeled::before { flex: 0 0 var(--ray-space-3); }
-  :host([label-position="right"]) .labeled::after { flex: 0 0 var(--ray-space-3); }
+  /* start/end follow the writing direction; left/right are sides of the screen. */
+  :host([label-position="start"]) .labeled::before,
+  :host([label-position="left"]) .labeled:dir(ltr)::before,
+  :host([label-position="right"]) .labeled:dir(rtl)::before,
+  :host([label-position="end"]) .labeled::after,
+  :host([label-position="right"]) .labeled:dir(ltr)::after,
+  :host([label-position="left"]) .labeled:dir(rtl)::after { flex: 0 0 var(--ray-space-3); }
   [hidden] { display: none !important; }
 `;
 

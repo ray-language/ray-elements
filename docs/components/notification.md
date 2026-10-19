@@ -38,7 +38,7 @@ Created by notify() when missing; add one yourself to choose its position. A sta
 
 Properties:
 
-- `position`: `bottom-right` | `bottom-left` | `bottom-center` | `top-right` | `top-left` | `top-center`, default `bottom-right`, reflects. Corner of the stack.
+- `position`: `bottom-end` | `bottom-start` | `bottom-center` | `top-end` | `top-start` | `top-center` | `bottom-right` | `bottom-left` | `top-right` | `top-left`, default `bottom-end`, reflects. Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen.
 - `limit`: number, default `5`. Maximum kept; the oldest go first.
 - `visible`: number, default `3`. Toasts shown in the collapsed stack (the rest wait, hidden).
 - `expand`: boolean, reflects. Always expanded: a list instead of a stack.

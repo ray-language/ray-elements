@@ -12,7 +12,7 @@ Properties:
 
 - `collapsed`: boolean, reflects. Wide screens: an icon rail instead of the full panel.
 - `open`: boolean, reflects. Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it).
-- `side`: `left` | `right`, default `left`, reflects. The edge it sits on.
+- `side`: `start` | `end` | `left` | `right`, default `start`, reflects. The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.
 - `variant`: `sidebar` | `floating`, default `sidebar`, reflects. A panel against the edge, or a floating card with a margin.
 - `width`: string. Width when expanded (CSS length). Default 16rem.
 - `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.

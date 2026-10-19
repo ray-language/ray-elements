@@ -10,7 +10,7 @@ Properties:
 
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction of the rule.
 - `label`: string, reflects. Text in the middle of a horizontal rule.
-- `labelPosition` (attribute `label-position`): `left` | `center` | `right`, default `center`, reflects. Where the label sits.
+- `labelPosition` (attribute `label-position`): `start` | `center` | `end` | `left` | `right`, default `center`, reflects. Where the label sits: start/end follow the writing direction; left/right are sides of the screen.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `xs`, reflects. Thickness (1–5px).
 - `variant`: `solid` | `dashed` | `dotted`, default `solid`, reflects. Line style.
 
@@ -29,7 +29,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 <div style="display: grid; gap: 1rem">
   <ray-separator></ray-separator>
   <ray-separator label="Or continue with"></ray-separator>
-  <ray-separator label="Left" label-position="left" variant="dashed"></ray-separator>
+  <ray-separator label="Start" label-position="start" variant="dashed"></ray-separator>
   <div class="demo-row">Files <ray-separator orientation="vertical"></ray-separator> Edit <ray-separator orientation="vertical"></ray-separator> View</div>
 </div>
 ```

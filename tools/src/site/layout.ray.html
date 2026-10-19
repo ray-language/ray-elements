@@ -36,13 +36,13 @@
 </div>
 </header>
 <ray-command-palette id="site-palette" label="Search the docs" placeholder="Search components, guides and sections…" empty-label="No matches"></ray-command-palette>
-<ray-drawer id="site-menu" label="ray·elements" position="left" size="xs">
+<ray-drawer id="site-menu" label="ray·elements" position="start" size="xs">
 <nav class="drawer-nav" aria-label="Site">
 <ray-nav-link label="Home" href="{{ base }}index.html"{% if home %} active{% endif %}></ray-nav-link>
 {% for n in nav %}<ray-nav-link label="{{ n.label }}" href="{{ n.href }}"{% if n.current %} active{% endif %}></ray-nav-link>
 {% endfor %}</nav>
 <div class="drawer-tools"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue">{% for c in colors %}<option value="{{ c }}">{{ c }}</option>{% endfor %}</ray-select><input class="brand-color" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color"></div>
-{% if sidebar %}<ray-separator label="On this page" label-position="left"></ray-separator>
+{% if sidebar %}<ray-separator label="On this page" label-position="start"></ray-separator>
 <div class="drawer-nav">
 {% for g in groups %}<div class="nav-group">{% if g.title != "" %}<p class="nav-group-title">{{ g.title }}</p>{% endif %}
 {% for l in g.links %}<ray-nav-link label="{{ l.label }}" href="{{ l.href }}"></ray-nav-link>

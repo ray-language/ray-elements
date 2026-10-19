@@ -19,10 +19,10 @@ description = "Index of the last reached item (-1: none)."
 
 [ray-timeline.properties.align]
 type = "string"
-values = ["left", "right"]
-default = "left"
+values = ["start", "end", "left", "right"]
+default = "start"
 reflect = true
-description = "Side of the line."
+description = "Side of the line: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-timeline.properties.bulletSize]
 attribute = "bullet-size"

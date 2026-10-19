@@ -29,10 +29,10 @@ description = "A line under the title (the drawer's accessible description)."
 
 [ray-drawer.properties.position]
 type = "string"
-values = ["right", "left", "top", "bottom"]
-default = "right"
+values = ["end", "start", "right", "left", "top", "bottom"]
+default = "end"
 reflect = true
-description = "The edge it slides from."
+description = "The edge it slides from: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-drawer.properties.size]
 type = "string"

@@ -13,7 +13,7 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `label`: string. Heading (also the accessible name).
 - `description`: string. A line under the title (the drawer's accessible description).
-- `position`: `right` | `left` | `top` | `bottom`, default `right`, reflects. The edge it slides from.
+- `position`: `end` | `start` | `right` | `left` | `top` | `bottom`, default `end`, reflects. The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.
 - `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.
 - `modeless`: boolean, reflects. No backdrop nor scroll lock: the page stays interactive (a side panel).
 - `floating`: boolean, reflects. Detached from the edge, with rounded corners.
@@ -89,8 +89,8 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 <div class="demo-caption">Positions and sizes</div>
 <div class="demo-row">
-  <ray-button size="xs" variant="light" data-drawer-at="left">left</ray-button>
-  <ray-button size="xs" variant="light" data-drawer-at="right">right</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="start">start</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="end">end</ray-button>
   <ray-button size="xs" variant="light" data-drawer-at="top">top</ray-button>
   <ray-button size="xs" variant="light" data-drawer-at="bottom">bottom</ray-button>
   <span class="demo-indicator-sep"></span>
@@ -118,7 +118,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   </div>
 </ray-drawer>
 
-<ray-drawer id="drw-filters" label="Filters" description="12 results" position="left" size="sm" overlay-blur="2px">
+<ray-drawer id="drw-filters" label="Filters" description="12 results" position="start" size="sm" overlay-blur="2px">
   <div class="demo-stack">
     <div class="demo-filter-checks" id="drw-filter-checks" role="group" aria-labelledby="drw-filter-cat-label">
       <span class="demo-field-title" id="drw-filter-cat-label">Category</span>
@@ -139,7 +139,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   </div>
 </ray-drawer>
 
-<ray-drawer id="drw-nav" label="ray·elements" position="left" size="xs" floating>
+<ray-drawer id="drw-nav" label="ray·elements" position="start" size="xs" floating>
   <nav class="demo-drawer-nav" aria-label="App">
     <ray-nav-link label="Dashboard" active><ray-icon slot="left" name="monitor"></ray-icon></ray-nav-link>
     <ray-nav-link label="Builds" description="2 running"><ray-icon slot="left" name="terminal"></ray-icon></ray-nav-link>
@@ -184,7 +184,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 </ray-drawer>
 
 <ray-drawer id="drw-demo" label="A drawer" size="sm">
-  <p class="demo-muted" id="drw-demo-text">position="right" · size="sm"</p>
+  <p class="demo-muted" id="drw-demo-text">position="end" · size="sm"</p>
 </ray-drawer>
 
 <script type="module">
@@ -244,6 +244,6 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   const demo = document.getElementById("drw-demo");
   const describe = () => { document.getElementById("drw-demo-text").textContent = `position="${demo.position}" · size="${demo.size}"`; };
   for (const b of document.querySelectorAll("[data-drawer-at]")) b.addEventListener("click", () => { demo.position = b.dataset.drawerAt; demo.size = "sm"; describe(); demo.show(); });
-  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "right"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
+  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "end"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
 </script>
 ```

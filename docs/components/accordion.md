@@ -11,7 +11,7 @@ Properties:
 - `value`: `string | string[] | undefined`. Open item's value; with multiple, an array (attribute: comma-separated).
 - `multiple`: boolean, reflects. Several items may be open.
 - `variant`: `default` | `contained` | `separated` | `filled`, default `default`, reflects. Visual style.
-- `chevronPosition` (attribute `chevron-position`): `right` | `left`, default `right`, reflects. Side of the chevron.
+- `chevronPosition` (attribute `chevron-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the chevron: start/end follow the writing direction; left/right are sides of the screen.
 
 Events:
 
@@ -159,8 +159,8 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 <div class="demo-caption">Options</div>
 <div class="demo-grid">
   <div class="demo-stack">
-    <span class="demo-matrix-label">chevron-position="left" · multiple</span>
-    <ray-accordion chevron-position="left" multiple value="a,b">
+    <span class="demo-matrix-label">chevron-position="start" · multiple</span>
+    <ray-accordion chevron-position="start" multiple value="a,b">
       <ray-accordion-item value="a" label="src/">main.ray, ui.ray, files.ray</ray-accordion-item>
       <ray-accordion-item value="b" label="tests/">files_test.ray, ui_test.ray</ray-accordion-item>
       <ray-accordion-item value="c" label="assets/">index.html, app.css, icon.png</ray-accordion-item>

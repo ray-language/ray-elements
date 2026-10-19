@@ -25,6 +25,14 @@ change the API.
   mirror. The
   color picker stays as it is: a color space is a picture, not text.
 - `isRtl(el)` and `inlineKey(key, el)`, for components of your own.
+- `start`/`end` values for the attributes that name a side, following the
+  writing direction: `ray-checkbox`/`ray-switch` `label-position`,
+  `ray-accordion` `chevron-position`, `ray-separator` `label-position`,
+  `ray-timeline` `align`, `ray-drawer` `position`, `ray-sidebar` `side`
+  (its border and its narrow-screen drawer) and `ray-toaster` `position`
+  (`top-start`, `bottom-end`…). `left` and `right` stay sides of the
+  screen, whatever the direction; `ray-stepper` `icon-position` is now
+  `start` (`left` still works).
 
 ### Changed
 
@@ -32,15 +40,22 @@ change the API.
   `padding-inline-end`, `text-align: start`…) instead of left and right, the
   first step toward right-to-left support: under `dir="rtl"` paddings,
   labels, the switch's thumb, vertical tabs, select and search adornments and
-  the like mirror. Nothing changes left to right. Still physical: attributes
-  that name a side (`ray-drawer` and `ray-sidebar` `left`/`right`,
-  `ray-notification` positions, `ray-timeline` align) and the color picker.
-  `ray-code` always lays code out left to right.
+  the like mirror. Nothing changes left to right. Still physical: the
+  `left`/`right` values of the attributes that name a side (see the
+  `start`/`end` values below) and the color picker. `ray-code` always lays
+  code out left to right.
 - Floating panels align `-start`/`-end` with the writing direction: under
   `dir="rtl"` a `bottom-start` popover, menu, select, combobox or
   date-picker panel lines up with the right edge of its trigger, and a
   context menu opens to the left of the pointer. The sides (`top`, `bottom`,
   `left`, `right`) stay sides of the screen; nothing changes left to right.
+- The defaults that named a side are logical: `end` for `label-position`,
+  `chevron-position` and `ray-drawer` `position`, `start` for
+  `ray-sidebar` `side`, `ray-timeline` `align` and `ray-stepper`
+  `icon-position`, `bottom-end` for `ray-toaster`. Left to right they look
+  the same; code that read the default (`drawer.position === "right"`) sees
+  the new name. Right to left, a drawer opens from the left, notifications
+  stack bottom left and a sidebar's drawer slides in from the right.
 - `build` rejects physical CSS in the components unless the line is marked
   `/* physical */`, gradients toward a side included.
 

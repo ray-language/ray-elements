@@ -12,7 +12,7 @@ Properties:
 
 - `active`: number, default `0`, reflects. Index of the active step (steps.length: completed).
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Steps in a row above the content, or in a column beside it.
-- `iconPosition` (attribute `icon-position`): `left` | `top`, default `left`, reflects. Label beside the number, or under it (narrow screens, many steps).
+- `iconPosition` (attribute `icon-position`): `start` | `top` | `left`, default `start`, reflects. Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). "left", its former name, still works.
 - `allowStepSelect` (attribute `allow-step-select`): boolean, reflects. Completed steps are buttons that go back to them.
 - `linear`: boolean, default `true`. With allow-step-select off, false lets the user jump to any step.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Size of the numbers.

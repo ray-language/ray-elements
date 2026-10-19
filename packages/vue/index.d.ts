@@ -186,8 +186,8 @@ export interface RayCheckboxProps {
   color?: string;
   /** Box and font size. */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  /** Side of the label. */
-  labelPosition?: "right" | "left";
+  /** Side of the label: start/end follow the writing direction; left/right are sides of the screen. */
+  labelPosition?: "end" | "start" | "right" | "left";
   /** Corner radius. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Description before or after the control. */
@@ -1015,8 +1015,8 @@ export interface RaySwitchProps {
   description?: string;
   /** Error text. */
   error?: string;
-  /** Side of the label. */
-  labelPosition?: "right" | "left";
+  /** Side of the label: start/end follow the writing direction; left/right are sides of the screen. */
+  labelPosition?: "end" | "start" | "right" | "left";
   /** Track color when on. */
   color?: string;
   /** Track size. */
@@ -1234,8 +1234,8 @@ export interface RaySidebarProps {
   collapsed?: boolean;
   /** Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it). */
   open?: boolean;
-  /** The edge it sits on. */
-  side?: "left" | "right";
+  /** The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen. */
+  side?: "start" | "end" | "left" | "right";
   /** A panel against the edge, or a floating card with a margin. */
   variant?: "sidebar" | "floating";
   /** Width when expanded (CSS length). Default 16rem. */
@@ -1268,8 +1268,8 @@ export interface RayStepperProps {
   active?: number;
   /** Steps in a row above the content, or in a column beside it. */
   orientation?: "horizontal" | "vertical";
-  /** Label beside the number, or under it (narrow screens, many steps). */
-  iconPosition?: "left" | "top";
+  /** Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). "left", its former name, still works. */
+  iconPosition?: "start" | "top" | "left";
   /** Completed steps are buttons that go back to them. */
   allowStepSelect?: boolean;
   /** With allow-step-select off, false lets the user jump to any step. */
@@ -1423,8 +1423,8 @@ export interface RayDrawerProps {
   label?: string;
   /** A line under the title (the drawer's accessible description). */
   description?: string;
-  /** The edge it slides from. */
-  position?: "right" | "left" | "top" | "bottom";
+  /** The edge it slides from: start/end follow the writing direction; left/right are sides of the screen. */
+  position?: "end" | "start" | "right" | "left" | "top" | "bottom";
   /** Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length. */
   size?: "xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {});
   /** No backdrop nor scroll lock: the page stays interactive (a side panel). */
@@ -1551,8 +1551,8 @@ export interface RayAccordionProps {
   multiple?: boolean;
   /** Visual style. */
   variant?: "default" | "contained" | "separated" | "filled";
-  /** Side of the chevron. */
-  chevronPosition?: "right" | "left";
+  /** Side of the chevron: start/end follow the writing direction; left/right are sides of the screen. */
+  chevronPosition?: "end" | "start" | "right" | "left";
   /** v-model: the element's `value`. */
   modelValue?: string | string[] | undefined;
   "onUpdate:modelValue"?: (value: string | string[] | undefined) => void;
@@ -1854,8 +1854,8 @@ export declare const RayTable: DefineComponent<RayTableProps>;
 export interface RayTimelineProps {
   /** Index of the last reached item (-1: none). */
   active?: number;
-  /** Side of the line. */
-  align?: "left" | "right";
+  /** Side of the line: start/end follow the writing direction; left/right are sides of the screen. */
+  align?: "start" | "end" | "left" | "right";
   /** Bullet size: px as a number or a CSS length (default 20px). */
   bulletSize?: string;
   /** Line width in px (default 2). */
@@ -1939,8 +1939,8 @@ export interface RayNotificationProps {
 export declare const RayNotification: DefineComponent<RayNotificationProps>;
 
 export interface RayToasterProps {
-  /** Corner of the stack. */
-  position?: "bottom-right" | "bottom-left" | "bottom-center" | "top-right" | "top-left" | "top-center";
+  /** Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen. */
+  position?: "bottom-end" | "bottom-start" | "bottom-center" | "top-end" | "top-start" | "top-center" | "bottom-right" | "bottom-left" | "top-right" | "top-left";
   /** Maximum kept; the oldest go first. */
   limit?: number;
   /** Toasts shown in the collapsed stack (the rest wait, hidden). */
@@ -2182,8 +2182,8 @@ export interface RaySeparatorProps {
   orientation?: "horizontal" | "vertical";
   /** Text in the middle of a horizontal rule. */
   label?: string;
-  /** Where the label sits. */
-  labelPosition?: "left" | "center" | "right";
+  /** Where the label sits: start/end follow the writing direction; left/right are sides of the screen. */
+  labelPosition?: "start" | "center" | "end" | "left" | "right";
   /** Thickness (1–5px). */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Line style. */

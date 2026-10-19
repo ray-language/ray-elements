@@ -1504,11 +1504,11 @@
             {
               "name": "label-position",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the label.",
+              "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "labelPosition",
-              "default": "right"
+              "default": "end"
             },
             {
               "name": "radius",
@@ -1654,12 +1654,12 @@
               "kind": "field",
               "name": "labelPosition",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the label.",
+              "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "label-position",
               "reflects": true,
-              "default": "right"
+              "default": "end"
             },
             {
               "kind": "field",
@@ -8238,11 +8238,11 @@
             {
               "name": "label-position",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the label.",
+              "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "labelPosition",
-              "default": "right"
+              "default": "end"
             },
             {
               "name": "color",
@@ -8376,12 +8376,12 @@
               "kind": "field",
               "name": "labelPosition",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the label.",
+              "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "label-position",
               "reflects": true,
-              "default": "right"
+              "default": "end"
             },
             {
               "kind": "field",
@@ -10183,11 +10183,11 @@
             {
               "name": "side",
               "type": {
-                "text": "\"left\" | \"right\""
+                "text": "\"start\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "The edge it sits on.",
+              "description": "The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "side",
-              "default": "left"
+              "default": "start"
             },
             {
               "name": "variant",
@@ -10258,12 +10258,12 @@
               "kind": "field",
               "name": "side",
               "type": {
-                "text": "\"left\" | \"right\""
+                "text": "\"start\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "The edge it sits on.",
+              "description": "The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "side",
               "reflects": true,
-              "default": "left"
+              "default": "start"
             },
             {
               "kind": "field",
@@ -10509,11 +10509,11 @@
             {
               "name": "icon-position",
               "type": {
-                "text": "\"left\" | \"top\""
+                "text": "\"start\" | \"top\" | \"left\""
               },
-              "description": "Label beside the number, or under it (narrow screens, many steps).",
+              "description": "Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). \"left\", its former name, still works.",
               "fieldName": "iconPosition",
-              "default": "left"
+              "default": "start"
             },
             {
               "name": "allow-step-select",
@@ -10586,12 +10586,12 @@
               "kind": "field",
               "name": "iconPosition",
               "type": {
-                "text": "\"left\" | \"top\""
+                "text": "\"start\" | \"top\" | \"left\""
               },
-              "description": "Label beside the number, or under it (narrow screens, many steps).",
+              "description": "Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). \"left\", its former name, still works.",
               "attribute": "icon-position",
               "reflects": true,
-              "default": "left"
+              "default": "start"
             },
             {
               "kind": "field",
@@ -11877,11 +11877,11 @@
             {
               "name": "position",
               "type": {
-                "text": "\"right\" | \"left\" | \"top\" | \"bottom\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\" | \"top\" | \"bottom\""
               },
-              "description": "The edge it slides from.",
+              "description": "The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "position",
-              "default": "right"
+              "default": "end"
             },
             {
               "name": "size",
@@ -11968,12 +11968,12 @@
               "kind": "field",
               "name": "position",
               "type": {
-                "text": "\"right\" | \"left\" | \"top\" | \"bottom\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\" | \"top\" | \"bottom\""
               },
-              "description": "The edge it slides from.",
+              "description": "The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "position",
               "reflects": true,
-              "default": "right"
+              "default": "end"
             },
             {
               "kind": "field",
@@ -12988,11 +12988,11 @@
             {
               "name": "chevron-position",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the chevron.",
+              "description": "Side of the chevron: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "chevronPosition",
-              "default": "right"
+              "default": "end"
             }
           ],
           "members": [
@@ -13031,12 +13031,12 @@
               "kind": "field",
               "name": "chevronPosition",
               "type": {
-                "text": "\"right\" | \"left\""
+                "text": "\"end\" | \"start\" | \"right\" | \"left\""
               },
-              "description": "Side of the chevron.",
+              "description": "Side of the chevron: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "chevron-position",
               "reflects": true,
-              "default": "right"
+              "default": "end"
             },
             {
               "kind": "field",
@@ -15889,11 +15889,11 @@
             {
               "name": "align",
               "type": {
-                "text": "\"left\" | \"right\""
+                "text": "\"start\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "Side of the line.",
+              "description": "Side of the line: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "align",
-              "default": "left"
+              "default": "start"
             },
             {
               "name": "bullet-size",
@@ -15944,12 +15944,12 @@
               "kind": "field",
               "name": "align",
               "type": {
-                "text": "\"left\" | \"right\""
+                "text": "\"start\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "Side of the line.",
+              "description": "Side of the line: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "align",
               "reflects": true,
-              "default": "left"
+              "default": "start"
             },
             {
               "kind": "field",
@@ -16675,11 +16675,11 @@
             {
               "name": "position",
               "type": {
-                "text": "\"bottom-right\" | \"bottom-left\" | \"bottom-center\" | \"top-right\" | \"top-left\" | \"top-center\""
+                "text": "\"bottom-end\" | \"bottom-start\" | \"bottom-center\" | \"top-end\" | \"top-start\" | \"top-center\" | \"bottom-right\" | \"bottom-left\" | \"top-right\" | \"top-left\""
               },
-              "description": "Corner of the stack.",
+              "description": "Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen.",
               "fieldName": "position",
-              "default": "bottom-right"
+              "default": "bottom-end"
             },
             {
               "name": "limit",
@@ -16722,12 +16722,12 @@
               "kind": "field",
               "name": "position",
               "type": {
-                "text": "\"bottom-right\" | \"bottom-left\" | \"bottom-center\" | \"top-right\" | \"top-left\" | \"top-center\""
+                "text": "\"bottom-end\" | \"bottom-start\" | \"bottom-center\" | \"top-end\" | \"top-start\" | \"top-center\" | \"bottom-right\" | \"bottom-left\" | \"top-right\" | \"top-left\""
               },
-              "description": "Corner of the stack.",
+              "description": "Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen.",
               "attribute": "position",
               "reflects": true,
-              "default": "bottom-right"
+              "default": "bottom-end"
             },
             {
               "kind": "field",
@@ -19240,9 +19240,9 @@
             {
               "name": "label-position",
               "type": {
-                "text": "\"left\" | \"center\" | \"right\""
+                "text": "\"start\" | \"center\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "Where the label sits.",
+              "description": "Where the label sits: start/end follow the writing direction; left/right are sides of the screen.",
               "fieldName": "labelPosition",
               "default": "center"
             },
@@ -19291,9 +19291,9 @@
               "kind": "field",
               "name": "labelPosition",
               "type": {
-                "text": "\"left\" | \"center\" | \"right\""
+                "text": "\"start\" | \"center\" | \"end\" | \"left\" | \"right\""
               },
-              "description": "Where the label sits.",
+              "description": "Where the label sits: start/end follow the writing direction; left/right are sides of the screen.",
               "attribute": "label-position",
               "reflects": true,
               "default": "center"
