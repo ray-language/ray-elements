@@ -202,7 +202,10 @@ const toasterStyles = css`
   :host(:not(:popover-open)) { display: none; }
   :host([position^="top"]) { top: 0; }
   :host([position^="bottom"]), :host(:not([position])) { bottom: 0; }
-  :host([position$="right"]), :host(:not([position])) { right: 0; } /* physical */
+  /* -start/-end follow the writing direction; -left/-right are sides of the screen. */
+  :host([position$="-end"]), :host(:not([position])) { inset-inline-end: 0; }
+  :host([position$="-start"]) { inset-inline-start: 0; }
+  :host([position$="right"]) { right: 0; } /* physical */
   :host([position$="left"]) { left: 0; } /* physical */
   :host([position$="center"]) { left: 50%; transform: translateX(-50%); } /* physical */
   /* Toasts are placed by layout(): absolute, stacked from the edge. */
@@ -272,7 +275,7 @@ const SHRINK = 0.05;
 
 export class RayToaster extends RayElement {
   static properties = {
-    position: { type: String, reflect: true, default: "bottom-right" },
+    position: { type: String, reflect: true, default: "bottom-end" },
     limit: { type: Number, default: 5 },
     // Toasts visible in the collapsed stack (the rest wait, invisible).
     visible: { type: Number, default: 3 },
@@ -358,7 +361,7 @@ export class RayToaster extends RayElement {
   /** Places every toast: a stack (collapsed) or a list (expanded). */
   layout() {
     const toasts = this.toasts;
-    const top = (this.position ?? "bottom-right").startsWith("top");
+    const top = (this.position ?? "bottom-end").startsWith("top");
     const dir = top ? 1 : -1;
     const heights = toasts.map((el) => el.shadowRoot?.querySelector(".card")?.offsetHeight || el.offsetHeight || 0);
     const front = heights[0] ?? 0;
@@ -529,7 +532,7 @@ export function notify(options = {}) {
   el._onClose = options.onClose;
   t.append(el);
   // Enter from the edge: start off-screen, then let layout() transition it in.
-  const top = (t.position ?? "bottom-right").startsWith("top");
+  const top = (t.position ?? "bottom-end").startsWith("top");
   el.style.transition = "none";
   el.style.opacity = "0";
   el.style.transform = `translateY(${top ? -100 : 100}%)`;

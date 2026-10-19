@@ -66,10 +66,10 @@ extends = "RayElement"
 
 [ray-toaster.properties.position]
 type = "string"
-values = ["bottom-right", "bottom-left", "bottom-center", "top-right", "top-left", "top-center"]
-default = "bottom-right"
+values = ["bottom-end", "bottom-start", "bottom-center", "top-end", "top-start", "top-center", "bottom-right", "bottom-left", "top-right", "top-left"]
+default = "bottom-end"
 reflect = true
-description = "Corner of the stack."
+description = "Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen."
 
 [ray-toaster.properties.limit]
 type = "number"

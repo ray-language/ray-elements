@@ -16,7 +16,7 @@ Properties:
 - `label`: string. Label text (or the content).
 - `description`: string. Help text.
 - `error`: string. Error text.
-- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+- `labelPosition` (attribute `label-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the label: start/end follow the writing direction; left/right are sides of the screen.
 - `color`: string. Track color when on.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Track size.
 - `disabled`: boolean. Not interactive nor submitted.
@@ -70,7 +70,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 <div class="demo-caption">Labels, descriptions and sides</div>
 <div class="demo-grid">
   <ray-switch label="Public profile" description="Anyone with the link can see it." checked></ray-switch>
-  <ray-switch label="Label on the left" label-position="left"></ray-switch>
+  <ray-switch label="Label before" label-position="start"></ray-switch>
   <ray-switch label="Two-factor authentication" error="Required by your organization." color="red"></ray-switch>
   <ray-switch label="Disabled, on" checked disabled></ray-switch>
 </div>

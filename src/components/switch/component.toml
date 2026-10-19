@@ -41,10 +41,10 @@ description = "Error text."
 [ray-switch.properties.labelPosition]
 attribute = "label-position"
 type = "string"
-values = ["right", "left"]
-default = "right"
+values = ["end", "start", "right", "left"]
+default = "end"
 reflect = true
-description = "Side of the label."
+description = "Side of the label: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-switch.properties.color]
 type = "string"

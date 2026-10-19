@@ -91,7 +91,7 @@ export class RayStepper extends RayElement {
   static properties = {
     active: { type: Number, reflect: true, default: 0 },
     orientation: { type: String, reflect: true, default: "horizontal" },
-    iconPosition: { type: String, reflect: true, attribute: "icon-position", default: "left" },
+    iconPosition: { type: String, reflect: true, attribute: "icon-position", default: "start" },
     allowStepSelect: { type: Boolean, reflect: true, attribute: "allow-step-select" },
     linear: { type: Boolean, default: true },
     size: { type: String, reflect: true, default: "md" },

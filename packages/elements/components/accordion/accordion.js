@@ -17,7 +17,7 @@ export class RayAccordion extends RayElement {
     value: { type: String },
     multiple: { type: Boolean, reflect: true },
     variant: { type: String, reflect: true, default: "default" },
-    chevronPosition: { type: String, reflect: true, default: "right" },
+    chevronPosition: { type: String, reflect: true, default: "end" },
   };
   static styles = [accordionStyles];
   static template = `<div class="items" part="items"><slot></slot></div>`;
@@ -52,7 +52,7 @@ export class RayAccordion extends RayElement {
     items.forEach((item, i) => {
       item._setOpen(open.includes(item.value));
       item.dataset.variant = this.variant || "default";
-      item.dataset.chevron = this.chevronPosition || "right";
+      item.dataset.chevron = this.chevronPosition || "end";
       item.toggleAttribute("data-first", i === 0);
       item.toggleAttribute("data-last", i === items.length - 1);
     });
@@ -116,7 +116,10 @@ const itemStyles = css`
   .label { display: grid; flex: 1; gap: 0.125rem; min-width: 0; }
   .description { font-size: var(--ray-font-size-sm); font-weight: var(--ray-font-weight-normal, 400); color: var(--ray-muted-foreground); }
   .description:empty { display: none; }
-  :host([data-chevron="left"]) .chevron { order: -1; }
+  /* The chevron before the label: start, or left/right as sides of the screen. */
+  :host([data-chevron="start"]) .chevron,
+  :host([data-chevron="left"]) .chevron:dir(ltr),
+  :host([data-chevron="right"]) .chevron:dir(rtl) { order: -1; }
   .chevron { display: inline-flex; color: var(--ray-muted-foreground); transition: transform var(--ray-duration-base) var(--ray-easing-standard); }
   .chevron svg { width: 1rem; height: 1rem; }
   :host([data-open]) .chevron { transform: rotate(180deg); }

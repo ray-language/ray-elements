@@ -72,10 +72,10 @@ description = "Box and font size."
 [ray-checkbox.properties.labelPosition]
 attribute = "label-position"
 type = "string"
-values = ["right", "left"]
-default = "right"
+values = ["end", "start", "right", "left"]
+default = "end"
 reflect = true
-description = "Side of the label."
+description = "Side of the label: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-checkbox.events.change]
 description = "When the user toggles it."

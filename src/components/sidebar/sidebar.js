@@ -38,7 +38,11 @@ const styles = css`
     background: var(--ray-sidebar, color-mix(in srgb, var(--ray-muted) 70%, var(--ray-background)));
     border-inline-end: 1px solid var(--ray-border);
   }
-  :host([side="right"]) .panel { border-inline-end: 0; border-inline-start: 1px solid var(--ray-border); }
+  /* side: start/end follow the writing direction, left/right are sides of
+     the screen; the border faces the content. */
+  :host([side="end"]) .panel { border-inline-end: 0; border-inline-start: 1px solid var(--ray-border); }
+  :host([side="left"]) .panel { border: 0; border-right: 1px solid var(--ray-border); } /* physical */
+  :host([side="right"]) .panel { border: 0; border-left: 1px solid var(--ray-border); } /* physical */
   :host([variant="floating"]:not([data-mobile])) { padding: var(--ray-space-2); box-sizing: border-box; }
   :host([variant="floating"]) .panel { border: 1px solid var(--ray-border); border-radius: var(--ray-radius-lg); box-shadow: var(--ray-shadow-sm); }
   .header, .footer { flex: none; padding: var(--ray-space-2); }
@@ -49,7 +53,8 @@ const styles = css`
   dialog {
     --_from: -100%;
     position: fixed;
-    inset: 0 auto 0 0; /* physical */
+    inset-block: 0;
+    inset-inline: 0 auto;
     box-sizing: border-box;
     width: min(var(--_w), calc(100vw - 3rem));
     max-width: none;
@@ -61,11 +66,14 @@ const styles = css`
     background: transparent;
     overflow: visible;
   }
-  :host([side="right"]) dialog { inset: 0 0 0 auto; } /* physical */
+  dialog:dir(rtl) { --_from: 100%; }
+  :host([side="end"]) dialog { inset-inline: auto 0; --_from: 100%; }
+  :host([side="end"]) dialog:dir(rtl) { --_from: -100%; }
+  :host([side="left"]) dialog { inset: 0 auto 0 0; --_from: -100%; } /* physical */
+  :host([side="right"]) dialog { inset: 0 0 0 auto; --_from: 100%; } /* physical */
   dialog[open] { display: block; animation: ray-sidebar-in var(--ray-duration-slow) var(--ray-easing-out); }
   dialog .panel { box-shadow: var(--ray-shadow-xl); background: var(--ray-card); }
   @keyframes ray-sidebar-in { from { transform: translateX(var(--_from)); } }
-  :host([side="right"]) dialog { --_from: 100%; }
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
   @keyframes ray-fade-in { from { opacity: 0; } }
 `;
@@ -74,7 +82,7 @@ export class RaySidebar extends RayElement {
   static properties = {
     collapsed: { type: Boolean, reflect: true },
     open: { type: Boolean, reflect: true },
-    side: { type: String, reflect: true, default: "left" },
+    side: { type: String, reflect: true, default: "start" },
     variant: { type: String, reflect: true, default: "sidebar" },
     width: { type: String },
     collapsedWidth: { type: String },
@@ -193,7 +201,7 @@ export class RaySidebar extends RayElement {
   }
 
   async _leave() {
-    const to = this.side === "right" ? "translateX(100%)" : "translateX(-100%)";
+    const to = `translateX(${getComputedStyle(this.dialog).getPropertyValue("--_from").trim() || "-100%"})`;
     const exit = playAll([
       play(this.dialog, [{ transform: "none" }, { transform: to }]),
       play(this.dialog, [{ opacity: 1 }, { opacity: 0 }], { pseudoElement: "::backdrop" }),

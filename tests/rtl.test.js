@@ -2,12 +2,13 @@
 //
 // Right to left: arrow keys follow the reading direction, and what JS places
 // or scrolls (split, carousel, scroll-area, slider marks, indicator,
-// segmented-control) mirrors, and floating panels align -start/-end to the
-// right.
+// segmented-control) mirrors, floating panels align -start/-end to the
+// right, and the start/end values of the API follow the direction while
+// left/right stay sides of the screen.
 
 const T = window.__rayTest;
 const { isRtl, inlineKey } = await import("../../src/core/direction.js");
-const tags = ["ray-tabs", "ray-tab", "ray-radio-group", "ray-radio", "ray-segmented-control", "ray-toggle-group", "ray-toggle", "ray-calendar", "ray-split", "ray-carousel", "ray-scroll-area", "ray-slider", "ray-indicator", "ray-popover", "ray-menu", "ray-menu-item", "ray-select"];
+const tags = ["ray-tabs", "ray-tab", "ray-radio-group", "ray-radio", "ray-segmented-control", "ray-toggle-group", "ray-toggle", "ray-calendar", "ray-split", "ray-carousel", "ray-scroll-area", "ray-slider", "ray-indicator", "ray-popover", "ray-menu", "ray-menu-item", "ray-select", "ray-checkbox", "ray-switch", "ray-accordion", "ray-accordion-item", "ray-separator", "ray-timeline", "ray-timeline-item", "ray-drawer", "ray-sidebar", "ray-toaster"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
 
 async function mount(html, dir = "rtl") {
@@ -216,4 +217,69 @@ T.test("rtl: -start and -end placements line up the right and the left edges", a
   select.open = false;
   await T.settle();
   box.remove();
+});
+
+T.test("rtl: start/end values follow the direction, left/right stay sides of the screen", async (T) => {
+  const html = `
+    <ray-checkbox label="a"></ray-checkbox><ray-checkbox label="b" label-position="start"></ray-checkbox><ray-checkbox label="c" label-position="left"></ray-checkbox>
+    <ray-switch label="d" label-position="right"></ray-switch>
+    <ray-accordion value="x"><ray-accordion-item value="x" label="x">x</ray-accordion-item></ray-accordion>
+    <ray-accordion chevron-position="left"><ray-accordion-item value="y" label="y">y</ray-accordion-item></ray-accordion>
+    <ray-separator label="s" label-position="start"></ray-separator>
+    <ray-timeline><ray-timeline-item title="t">t</ray-timeline-item></ray-timeline>
+    <ray-timeline align="left"><ray-timeline-item title="u">u</ray-timeline-item></ray-timeline>
+    <ray-timeline align="end"><ray-timeline-item title="v">v</ray-timeline-item></ray-timeline>
+    <ray-drawer label="d1"></ray-drawer><ray-drawer label="d2" position="start"></ray-drawer><ray-drawer label="d3" position="right"></ray-drawer>
+    <ray-sidebar></ray-sidebar><ray-sidebar side="end"></ray-sidebar><ray-sidebar side="left"></ray-sidebar>
+    <ray-toaster></ray-toaster><ray-toaster position="top-start"></ray-toaster><ray-toaster position="bottom-left"></ray-toaster>`;
+  const rtl = await mount(`<div style="width: 400px">${html}</div>`);
+  const ltr = await mount(`<div style="width: 400px">${html}</div>`, "ltr");
+  const x = (el) => el.getBoundingClientRect().left;
+  // Whether the label sits left of the box.
+  const labelLeft = (c) => x(c.shadowRoot.querySelector(".body")) < x(c.shadowRoot.querySelector(".inner"));
+  const sides = (box) => [...box.querySelectorAll("ray-checkbox, ray-switch")].map(labelLeft).join();
+  T.eq(sides(rtl), "true,false,true,false", "rtl labels: end (default) left, start right, left left, right right");
+  T.eq(sides(ltr), "false,true,true,false", "ltr labels: end right, start left, left left, right right");
+  const chevronLeft = (a) => {
+    const item = a.querySelector("ray-accordion-item");
+    return x(item.shadowRoot.querySelector(".chevron")) < x(item.shadowRoot.querySelector(".label"));
+  };
+  T.eq([...rtl.querySelectorAll("ray-accordion")].map(chevronLeft).join(), "true,true", "rtl chevron: end (default) on the left, left on the left");
+  T.eq([...ltr.querySelectorAll("ray-accordion")].map(chevronLeft).join(), "false,true", "ltr chevron: end on the right, left on the left");
+  const sep = (box) => {
+    const el = box.querySelector("ray-separator");
+    const range = document.createRange();
+    range.selectNodeContents(el.shadowRoot.querySelector(".labeled"));
+    const t = range.getBoundingClientRect();
+    return Math.round((t.left + t.right) / 2 - el.getBoundingClientRect().left);
+  };
+  T.ok(sep(rtl) > 300, `rtl separator start: the label on the right (${sep(rtl)})`);
+  T.ok(sep(ltr) < 100, `ltr separator start: the label on the left (${sep(ltr)})`);
+  const bulletLeft = (tl) => {
+    const item = tl.querySelector("ray-timeline-item");
+    return x(item.shadowRoot.querySelector(".bullet-col")) < x(item.shadowRoot.querySelector(".body"));
+  };
+  T.eq([...rtl.querySelectorAll("ray-timeline")].map(bulletLeft).join(), "false,true,true", "rtl timeline: start right, left left, end left");
+  T.eq([...ltr.querySelectorAll("ray-timeline")].map(bulletLeft).join(), "true,true,false", "ltr timeline: start left, left left, end right");
+  // The closed dialog's computed insets: which edge it hangs from.
+  const edge = (el) => {
+    const cs = getComputedStyle(el);
+    return cs.left === "auto" ? "right" : cs.right === "auto" ? "left" : "?";
+  };
+  const drawers = (box) => [...box.querySelectorAll("ray-drawer")].map((d) => edge(d.shadowRoot.querySelector("dialog"))).join();
+  T.eq(drawers(rtl), "left,right,right", "rtl drawers: end (default) left, start right, right right");
+  T.eq(drawers(ltr), "right,left,right", "ltr drawers");
+  const from = (d) => getComputedStyle(d.shadowRoot.querySelector("dialog")).getPropertyValue("--_from").trim();
+  T.eq(from(rtl.querySelector("ray-drawer")), "translateX(-100%)", "rtl: the default drawer slides in from the left");
+  const sidebars = (box) => [...box.querySelectorAll("ray-sidebar")].map((sb) => {
+    const p = getComputedStyle(sb.shadowRoot.querySelector(".panel"));
+    return `${edge(sb.shadowRoot.querySelector("dialog"))}/${p.borderLeftWidth === "1px" ? "bl" : p.borderRightWidth === "1px" ? "br" : "?"}`;
+  }).join();
+  T.eq(sidebars(rtl), "right/bl,left/br,left/br", "rtl sidebars: start on the right, border facing the content");
+  T.eq(sidebars(ltr), "left/br,right/bl,left/br", "ltr sidebars");
+  const toasters = (box) => [...box.querySelectorAll("ray-toaster")].map(edge).join();
+  T.eq(toasters(rtl), "left,right,left", "rtl toasters: bottom-end (default) left, top-start right, bottom-left left");
+  T.eq(toasters(ltr), "right,left,left", "ltr toasters");
+  rtl.remove();
+  ltr.remove();
 });

@@ -642,8 +642,14 @@
         },
         {
           "name": "label-position",
-          "description": "Side of the label.",
+          "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "end"
+            },
+            {
+              "name": "start"
+            },
             {
               "name": "right"
             },
@@ -2954,8 +2960,14 @@
         },
         {
           "name": "label-position",
-          "description": "Side of the label.",
+          "description": "Side of the label: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "end"
+            },
+            {
+              "name": "start"
+            },
             {
               "name": "right"
             },
@@ -3674,8 +3686,14 @@
         },
         {
           "name": "side",
-          "description": "The edge it sits on.",
+          "description": "The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            },
             {
               "name": "left"
             },
@@ -3746,13 +3764,16 @@
         },
         {
           "name": "icon-position",
-          "description": "Label beside the number, or under it (narrow screens, many steps).",
+          "description": "Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). \"left\", its former name, still works.",
           "values": [
             {
-              "name": "left"
+              "name": "start"
             },
             {
               "name": "top"
+            },
+            {
+              "name": "left"
             }
           ]
         },
@@ -4055,8 +4076,14 @@
         },
         {
           "name": "position",
-          "description": "The edge it slides from.",
+          "description": "The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "end"
+            },
+            {
+              "name": "start"
+            },
             {
               "name": "right"
             },
@@ -4401,8 +4428,14 @@
         },
         {
           "name": "chevron-position",
-          "description": "Side of the chevron.",
+          "description": "Side of the chevron: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "end"
+            },
+            {
+              "name": "start"
+            },
             {
               "name": "right"
             },
@@ -5460,8 +5493,14 @@
         },
         {
           "name": "align",
-          "description": "Side of the line.",
+          "description": "Side of the line: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            },
             {
               "name": "left"
             },
@@ -6078,8 +6117,26 @@
       "attributes": [
         {
           "name": "position",
-          "description": "Corner of the stack.",
+          "description": "Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen.",
           "values": [
+            {
+              "name": "bottom-end"
+            },
+            {
+              "name": "bottom-start"
+            },
+            {
+              "name": "bottom-center"
+            },
+            {
+              "name": "top-end"
+            },
+            {
+              "name": "top-start"
+            },
+            {
+              "name": "top-center"
+            },
             {
               "name": "bottom-right"
             },
@@ -6087,16 +6144,10 @@
               "name": "bottom-left"
             },
             {
-              "name": "bottom-center"
-            },
-            {
               "name": "top-right"
             },
             {
               "name": "top-left"
-            },
-            {
-              "name": "top-center"
             }
           ]
         },
@@ -6837,13 +6888,19 @@
         },
         {
           "name": "label-position",
-          "description": "Where the label sits.",
+          "description": "Where the label sits: start/end follow the writing direction; left/right are sides of the screen.",
           "values": [
             {
-              "name": "left"
+              "name": "start"
             },
             {
               "name": "center"
+            },
+            {
+              "name": "end"
+            },
+            {
+              "name": "left"
             },
             {
               "name": "right"

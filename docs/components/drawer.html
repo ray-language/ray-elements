@@ -94,7 +94,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </div>
 </header>
 <ray-command-palette id="site-palette" label="Search the docs" placeholder="Search components, guides and sections…" empty-label="No matches"></ray-command-palette>
-<ray-drawer id="site-menu" label="ray·elements" position="left" size="xs">
+<ray-drawer id="site-menu" label="ray·elements" position="start" size="xs">
 <nav class="drawer-nav" aria-label="Site">
 <ray-nav-link label="Home" href="../index.html"></ray-nav-link>
 <ray-nav-link label="Get started" href="../getting-started.html"></ray-nav-link>
@@ -105,7 +105,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="raylang" href="../raylang.html"></ray-nav-link>
 </nav>
 <div class="drawer-tools"><ray-select size="sm" aria-label="Primary color" data-site-primary value="blue"><option value="dark">dark</option><option value="gray">gray</option><option value="red">red</option><option value="pink">pink</option><option value="violet">violet</option><option value="indigo">indigo</option><option value="blue">blue</option><option value="cyan">cyan</option><option value="teal">teal</option><option value="green">green</option><option value="yellow">yellow</option><option value="orange">orange</option><option value="custom">custom</option></ray-select><input class="brand-color" type="color" value="#7c3aed" data-site-brand hidden aria-label="Custom primary color"></div>
-<ray-separator label="On this page" label-position="left"></ray-separator>
+<ray-separator label="On this page" label-position="start"></ray-separator>
 <div class="drawer-nav">
 <div class="nav-group"><p class="nav-group-title">Buttons</p>
 <ray-nav-link label="Button" href="button.html"></ray-nav-link>
@@ -342,8 +342,8 @@ if (location.protocol === "file:") window.__rayServeHint();
 
 <div class="demo-caption">Positions and sizes</div>
 <div class="demo-row">
-  <ray-button size="xs" variant="light" data-drawer-at="left">left</ray-button>
-  <ray-button size="xs" variant="light" data-drawer-at="right">right</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="start">start</ray-button>
+  <ray-button size="xs" variant="light" data-drawer-at="end">end</ray-button>
   <ray-button size="xs" variant="light" data-drawer-at="top">top</ray-button>
   <ray-button size="xs" variant="light" data-drawer-at="bottom">bottom</ray-button>
   <span class="demo-indicator-sep"></span>
@@ -371,7 +371,7 @@ if (location.protocol === "file:") window.__rayServeHint();
   </div>
 </ray-drawer>
 
-<ray-drawer id="drw-filters" label="Filters" description="12 results" position="left" size="sm" overlay-blur="2px">
+<ray-drawer id="drw-filters" label="Filters" description="12 results" position="start" size="sm" overlay-blur="2px">
   <div class="demo-stack">
     <div class="demo-filter-checks" id="drw-filter-checks" role="group" aria-labelledby="drw-filter-cat-label">
       <span class="demo-field-title" id="drw-filter-cat-label">Category</span>
@@ -392,7 +392,7 @@ if (location.protocol === "file:") window.__rayServeHint();
   </div>
 </ray-drawer>
 
-<ray-drawer id="drw-nav" label="ray·elements" position="left" size="xs" floating>
+<ray-drawer id="drw-nav" label="ray·elements" position="start" size="xs" floating>
   <nav class="demo-drawer-nav" aria-label="App">
     <ray-nav-link label="Dashboard" active><ray-icon slot="left" name="monitor"></ray-icon></ray-nav-link>
     <ray-nav-link label="Builds" description="2 running"><ray-icon slot="left" name="terminal"></ray-icon></ray-nav-link>
@@ -437,7 +437,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 </ray-drawer>
 
 <ray-drawer id="drw-demo" label="A drawer" size="sm">
-  <p class="demo-muted" id="drw-demo-text">position="right" · size="sm"</p>
+  <p class="demo-muted" id="drw-demo-text">position="end" · size="sm"</p>
 </ray-drawer>
 
 <script type="module">
@@ -497,7 +497,7 @@ if (location.protocol === "file:") window.__rayServeHint();
   const demo = document.getElementById("drw-demo");
   const describe = () => { document.getElementById("drw-demo-text").textContent = `position="${demo.position}" · size="${demo.size}"`; };
   for (const b of document.querySelectorAll("[data-drawer-at]")) b.addEventListener("click", () => { demo.position = b.dataset.drawerAt; demo.size = "sm"; describe(); demo.show(); });
-  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "right"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
+  for (const b of document.querySelectorAll("[data-drawer-size]")) b.addEventListener("click", () => { demo.position = "end"; demo.size = b.dataset.drawerSize; describe(); demo.show(); });
 </script>
 </div>
 <details class="source" data-code-src="code/drawer.html"><summary>Code</summary>
@@ -507,7 +507,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="api-markdown">For AI agents: <a href="drawer.md">this API as Markdown</a>, or every component in <a href="../llms-full.txt">llms-full.txt</a>.</p>
 <p class="tag"><code>&lt;ray-drawer&gt;</code> &middot; <code>RayDrawer</code></p>
 <p class="note">Any slotted element with data-dialog-close closes it. JS: show(), close(returnValue).</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the accessible name).</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>A line under the title (the drawer's accessible description).</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>right</code> | <code>left</code> | <code>top</code> | <code>bottom</code></td><td><code>right</code></td><td>The edge it slides from.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.</td></tr><tr><td><code>modeless</code></td><td><code>modeless</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No backdrop nor scroll lock: the page stays interactive (a side panel).</td></tr><tr><td><code>floating</code></td><td><code>floating</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Detached from the edge, with rounded corners.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>open</code></td><td><code>open</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shown.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Heading (also the accessible name).</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>A line under the title (the drawer's accessible description).</td></tr><tr><td><code>position</code></td><td><code>position</code> <span class="reflects">reflects</span></td><td><code>end</code> | <code>start</code> | <code>right</code> | <code>left</code> | <code>top</code> | <code>bottom</code></td><td><code>end</code></td><td>The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.</td></tr><tr><td><code>modeless</code></td><td><code>modeless</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No backdrop nor scroll lock: the page stays interactive (a side panel).</td></tr><tr><td><code>floating</code></td><td><code>floating</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Detached from the edge, with rounded corners.</td></tr><tr><td><code>persistent</code></td><td><code>persistent</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Escape and backdrop clicks do not close it.</td></tr><tr><td><code>hideClose</code></td><td><code>hide-close</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>No close button in the header.</td></tr><tr><td><code>overlayBlur</code></td><td><code>overlay-blur</code></td><td>string</td><td></td><td>Blur of the page behind: px (&quot;8&quot;), a CSS length or &quot;none&quot;. Default: --ray-overlay-blur ([overlay] blur in tokens.toml).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-open</code></td><td>After it opened.</td></tr><tr><td><code>ray-close</code></td><td>After it closed; detail: { returnValue }.</td></tr><tr><td><code>ray-request-close</code></td><td>Escape, backdrop or close button; cancelable.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Body (scrolls).</td></tr><tr><td><code>header</code></td><td>Extra header content.</td></tr><tr><td><code>footer</code></td><td>Actions, at the bottom.</td></tr></tbody></table></div>

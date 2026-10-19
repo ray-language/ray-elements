@@ -23,10 +23,10 @@ description = "Narrow screens: the drawer is shown (modal, focus trapped; Escape
 
 [ray-sidebar.properties.side]
 type = "string"
-values = ["left", "right"]
-default = "left"
+values = ["start", "end", "left", "right"]
+default = "start"
 reflect = true
-description = "The edge it sits on."
+description = "The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-sidebar.properties.variant]
 type = "string"

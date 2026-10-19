@@ -27,10 +27,10 @@ description = "Steps in a row above the content, or in a column beside it."
 [ray-stepper.properties.iconPosition]
 attribute = "icon-position"
 type = "string"
-values = ["left", "top"]
-default = "left"
+values = ["start", "top", "left"]
+default = "start"
 reflect = true
-description = "Label beside the number, or under it (narrow screens, many steps)."
+description = "Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). \"left\", its former name, still works."
 
 [ray-stepper.properties.allowStepSelect]
 attribute = "allow-step-select"

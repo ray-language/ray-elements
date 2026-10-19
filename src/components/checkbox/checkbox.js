@@ -19,7 +19,10 @@ export const checkStyles = css`
     align-items: flex-start;
     gap: calc(var(--_s) * 0.6);
   }
-  :host([label-position="left"]) .root { flex-direction: row-reverse; justify-content: flex-end; }
+  /* The label before the box: start, or left/right as sides of the screen. */
+  :host([label-position="start"]) .root,
+  :host([label-position="left"]) .root:dir(ltr),
+  :host([label-position="right"]) .root:dir(rtl) { flex-direction: row-reverse; justify-content: flex-end; }
   .inner {
     position: relative;
     flex: none;
@@ -100,7 +103,7 @@ export class RayCheckbox extends FieldControl {
     value: { type: String, reflect: true, default: "on" },
     color: { type: String, reflect: true },
     variant: { type: String, reflect: true, default: "filled" },
-    labelPosition: { type: String, reflect: true, default: "right" },
+    labelPosition: { type: String, reflect: true, default: "end" },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, checkStyles, styles];
   static template = checkTemplate(`<span class="indicator" part="indicator" aria-hidden="true"><span class="check" data-ray-icon="ui.checked"></span><span class="dash" data-ray-icon="ui.indeterminate"></span></span>`);

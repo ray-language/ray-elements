@@ -30,10 +30,10 @@ description = "Visual style."
 [ray-accordion.properties.chevronPosition]
 attribute = "chevron-position"
 type = "string"
-values = ["right", "left"]
-default = "right"
+values = ["end", "start", "right", "left"]
+default = "end"
 reflect = true
-description = "Side of the chevron."
+description = "Side of the chevron: start/end follow the writing direction; left/right are sides of the screen."
 
 [ray-accordion.events.change]
 description = "The user opened or closed an item."

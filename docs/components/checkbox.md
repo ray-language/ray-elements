@@ -20,7 +20,7 @@ Properties:
 - `variant`: `filled` | `outline`, default `filled`, reflects. Checked look: filled box, or colored border and mark.
 - `color`: string. A palette color or any CSS color for the checked state.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Box and font size.
-- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+- `labelPosition` (attribute `label-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the label: start/end follow the writing direction; left/right are sides of the screen.
 
 Also the properties of FieldControl: `radius`, `descriptionPosition`.
 

@@ -466,7 +466,7 @@ Properties:
 - `variant`: `filled` | `outline`, default `filled`, reflects. Checked look: filled box, or colored border and mark.
 - `color`: string. A palette color or any CSS color for the checked state.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Box and font size.
-- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+- `labelPosition` (attribute `label-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the label: start/end follow the writing direction; left/right are sides of the screen.
 
 Also the properties of FieldControl: `radius`, `descriptionPosition`.
 
@@ -1337,7 +1337,7 @@ Properties:
 - `label`: string. Label text (or the content).
 - `description`: string. Help text.
 - `error`: string. Error text.
-- `labelPosition` (attribute `label-position`): `right` | `left`, default `right`, reflects. Side of the label.
+- `labelPosition` (attribute `label-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the label: start/end follow the writing direction; left/right are sides of the screen.
 - `color`: string. Track color when on.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Track size.
 - `disabled`: boolean. Not interactive nor submitted.
@@ -1637,7 +1637,7 @@ Properties:
 
 - `collapsed`: boolean, reflects. Wide screens: an icon rail instead of the full panel.
 - `open`: boolean, reflects. Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it).
-- `side`: `left` | `right`, default `left`, reflects. The edge it sits on.
+- `side`: `start` | `end` | `left` | `right`, default `start`, reflects. The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.
 - `variant`: `sidebar` | `floating`, default `sidebar`, reflects. A panel against the edge, or a floating card with a margin.
 - `width`: string. Width when expanded (CSS length). Default 16rem.
 - `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.
@@ -1700,7 +1700,7 @@ Properties:
 
 - `active`: number, default `0`, reflects. Index of the active step (steps.length: completed).
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Steps in a row above the content, or in a column beside it.
-- `iconPosition` (attribute `icon-position`): `left` | `top`, default `left`, reflects. Label beside the number, or under it (narrow screens, many steps).
+- `iconPosition` (attribute `icon-position`): `start` | `top` | `left`, default `start`, reflects. Label beside the number (after it in the reading direction), or under it (narrow screens, many steps). "left", its former name, still works.
 - `allowStepSelect` (attribute `allow-step-select`): boolean, reflects. Completed steps are buttons that go back to them.
 - `linear`: boolean, default `true`. With allow-step-select off, false lets the user jump to any step.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Size of the numbers.
@@ -1972,7 +1972,7 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `label`: string. Heading (also the accessible name).
 - `description`: string. A line under the title (the drawer's accessible description).
-- `position`: `right` | `left` | `top` | `bottom`, default `right`, reflects. The edge it slides from.
+- `position`: `end` | `start` | `right` | `left` | `top` | `bottom`, default `end`, reflects. The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.
 - `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.
 - `modeless`: boolean, reflects. No backdrop nor scroll lock: the page stays interactive (a side panel).
 - `floating`: boolean, reflects. Detached from the edge, with rounded corners.
@@ -2177,7 +2177,7 @@ Properties:
 - `value`: `string | string[] | undefined`. Open item's value; with multiple, an array (attribute: comma-separated).
 - `multiple`: boolean, reflects. Several items may be open.
 - `variant`: `default` | `contained` | `separated` | `filled`, default `default`, reflects. Visual style.
-- `chevronPosition` (attribute `chevron-position`): `right` | `left`, default `right`, reflects. Side of the chevron.
+- `chevronPosition` (attribute `chevron-position`): `end` | `start` | `right` | `left`, default `end`, reflects. Side of the chevron: start/end follow the writing direction; left/right are sides of the screen.
 
 Events:
 
@@ -2633,7 +2633,7 @@ A list (role="list") of ray-timeline-item.
 Properties:
 
 - `active`: number, default `-1`, reflects. Index of the last reached item (-1: none).
-- `align`: `left` | `right`, default `left`, reflects. Side of the line.
+- `align`: `start` | `end` | `left` | `right`, default `start`, reflects. Side of the line: start/end follow the writing direction; left/right are sides of the screen.
 - `bulletSize` (attribute `bullet-size`): string. Bullet size: px as a number or a CSS length (default 20px).
 - `lineWidth` (attribute `line-width`): number. Line width in px (default 2).
 - `color`: string, reflects. A palette color or any CSS color for what is reached (default: primary).
@@ -2764,7 +2764,7 @@ Created by notify() when missing; add one yourself to choose its position. A sta
 
 Properties:
 
-- `position`: `bottom-right` | `bottom-left` | `bottom-center` | `top-right` | `top-left` | `top-center`, default `bottom-right`, reflects. Corner of the stack.
+- `position`: `bottom-end` | `bottom-start` | `bottom-center` | `top-end` | `top-start` | `top-center` | `bottom-right` | `bottom-left` | `top-right` | `top-left`, default `bottom-end`, reflects. Corner of the stack: -start/-end follow the writing direction; -left/-right are sides of the screen.
 - `limit`: number, default `5`. Maximum kept; the oldest go first.
 - `visible`: number, default `3`. Toasts shown in the collapsed stack (the rest wait, hidden).
 - `expand`: boolean, reflects. Always expanded: a list instead of a stack.
@@ -3210,7 +3210,7 @@ Properties:
 
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction of the rule.
 - `label`: string, reflects. Text in the middle of a horizontal rule.
-- `labelPosition` (attribute `label-position`): `left` | `center` | `right`, default `center`, reflects. Where the label sits.
+- `labelPosition` (attribute `label-position`): `start` | `center` | `end` | `left` | `right`, default `center`, reflects. Where the label sits: start/end follow the writing direction; left/right are sides of the screen.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `xs`, reflects. Thickness (1–5px).
 - `variant`: `solid` | `dashed` | `dotted`, default `solid`, reflects. Line style.
 

@@ -11,7 +11,7 @@ A list (role="list") of ray-timeline-item.
 Properties:
 
 - `active`: number, default `-1`, reflects. Index of the last reached item (-1: none).
-- `align`: `left` | `right`, default `left`, reflects. Side of the line.
+- `align`: `start` | `end` | `left` | `right`, default `start`, reflects. Side of the line: start/end follow the writing direction; left/right are sides of the screen.
 - `bulletSize` (attribute `bullet-size`): string. Bullet size: px as a number or a CSS length (default 20px).
 - `lineWidth` (attribute `line-width`): number. Line width in px (default 2).
 - `color`: string, reflects. A palette color or any CSS color for what is reached (default: primary).
@@ -83,7 +83,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 <div class="demo-caption">Right-aligned, colors, line variants</div>
 <div class="demo-grid">
-  <ray-timeline active="1" align="right" color="violet">
+  <ray-timeline active="1" align="end" color="violet">
     <ray-timeline-item label="Ordered" time="Mon 10:24"></ray-timeline-item>
     <ray-timeline-item label="Shipped" time="Tue 08:02"></ray-timeline-item>
     <ray-timeline-item label="Out for delivery" time="expected Thu"></ray-timeline-item>

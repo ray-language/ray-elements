@@ -32,17 +32,33 @@ const styles = css`
   dialog[open] { display: flex; flex-direction: column; }
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
 
-  :host(:not([position])) dialog, :host([position="right"]) dialog {
-    inset: var(--_inset) var(--_inset) var(--_inset) auto; /* physical */
+  /* position: start/end follow the writing direction, left/right are sides
+     of the screen. */
+  dialog {
+    inset-block: var(--_inset);
+    inset-inline: auto var(--_inset);
     width: min(var(--_size), calc(100vw - 2 * var(--_inset)));
     height: calc(100dvh - 2 * var(--_inset));
+    border-inline-start-width: 1px;
+    --_from: translateX(100%);
+  }
+  dialog:dir(rtl) { --_from: translateX(-100%); }
+  :host([position="start"]) dialog {
+    inset-inline: var(--_inset) auto;
+    border-inline-start-width: 0;
+    border-inline-end-width: 1px;
+    --_from: translateX(-100%);
+  }
+  :host([position="start"]) dialog:dir(rtl) { --_from: translateX(100%); }
+  :host([position="right"]) dialog {
+    inset: var(--_inset) var(--_inset) var(--_inset) auto; /* physical */
+    border-width: 0;
     border-left-width: 1px; /* physical */
     --_from: translateX(100%);
   }
   :host([position="left"]) dialog {
     inset: var(--_inset) auto var(--_inset) var(--_inset); /* physical */
-    width: min(var(--_size), calc(100vw - 2 * var(--_inset)));
-    height: calc(100dvh - 2 * var(--_inset));
+    border-width: 0;
     border-right-width: 1px; /* physical */
     --_from: translateX(-100%);
   }
@@ -50,6 +66,7 @@ const styles = css`
     inset: var(--_inset) var(--_inset) auto var(--_inset);
     width: calc(100vw - 2 * var(--_inset));
     height: min(var(--_size), calc(100dvh - 2 * var(--_inset)));
+    border-width: 0;
     border-bottom-width: 1px;
     --_from: translateY(-100%);
   }
@@ -57,6 +74,7 @@ const styles = css`
     inset: auto var(--_inset) var(--_inset) var(--_inset);
     width: calc(100vw - 2 * var(--_inset));
     height: min(var(--_size), calc(100dvh - 2 * var(--_inset)));
+    border-width: 0;
     border-top-width: 1px;
     --_from: translateY(100%);
   }
@@ -101,7 +119,7 @@ const styles = css`
 export class RayDrawer extends RayDialog {
   static properties = {
     ...RayDialog.properties,
-    position: { type: String, reflect: true, default: "right" },
+    position: { type: String, reflect: true, default: "end" },
     size: { type: String, reflect: true, default: "md" },
     modeless: { type: Boolean, reflect: true },
     floating: { type: Boolean, reflect: true },
