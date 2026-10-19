@@ -283,9 +283,11 @@ pre.code code, .prose pre code { font-size: inherit; }
 .api th { text-align: left; font-weight: var(--ray-font-weight-semibold); color: var(--ray-muted-foreground); font-size: var(--ray-font-size-xs); }
 .api th, .api td { padding: var(--ray-space-2) var(--ray-space-3); border-bottom: 1px solid var(--ray-border); vertical-align: top; }
 .api td code { font-size: var(--ray-font-size-xs); }
-/* The description (always the last column) keeps a readable width: on a
-   narrow screen the table scrolls sideways instead of squeezing it. */
+/* The description (always the last column) and a property's type (its
+   values) keep a readable width: on a narrow screen the table scrolls
+   sideways instead of squeezing them. */
 .api td:last-child { min-width: min(22rem, 80vw); }
+.api td:nth-child(3):not(:last-child) { min-width: min(13rem, 55vw); }
 .reflects { font-size: 0.6875rem; color: var(--ray-muted-foreground); white-space: nowrap; }
 
 /* --- foundations page ----------------------------------------------------- */
