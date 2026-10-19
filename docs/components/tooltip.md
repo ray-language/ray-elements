@@ -9,7 +9,7 @@ Import: `import "@raylang/elements/tooltip";` · Category: Overlays
 Properties:
 
 - `label`: string. Tooltip text.
-- `placement`: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end`, default `top`, reflects. Preferred side.
+- `placement`: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end`, default `top`, reflects. Preferred side; -start/-end follow the writing direction.
 - `openDelay` (attribute `open-delay`): number, default `300`. ms before showing.
 - `closeDelay` (attribute `close-delay`): number, default `0`. ms before hiding.
 - `color`: string. A palette color or any CSS color. Default: inverted foreground/background.

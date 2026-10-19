@@ -1420,7 +1420,7 @@ export declare const RayDrawer: React.ForwardRefExoticComponent<RayDrawerProps &
 export interface RayMenuOwnProps {
   /** Shown. */
   open?: boolean;
-  /** Preferred side and alignment. */
+  /** Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges). */
   placement?: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "right-start" | "left-start";
   /** Opens on right click (contextmenu) over the trigger area, at the pointer. */
   context?: boolean;
@@ -1468,7 +1468,7 @@ export declare const RayMenuDivider: React.ForwardRefExoticComponent<RayMenuDivi
 export interface RayPopoverOwnProps {
   /** Shown. */
   open?: boolean;
-  /** Preferred side and alignment. */
+  /** Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges). */
   placement?: "bottom" | "bottom-start" | "bottom-end" | "top" | "top-start" | "top-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   /** Gap to the trigger in px. */
   offset?: number;
@@ -1492,7 +1492,7 @@ export declare const RayPopover: React.ForwardRefExoticComponent<RayPopoverProps
 export interface RayTooltipOwnProps {
   /** Tooltip text. */
   label?: string;
-  /** Preferred side. */
+  /** Preferred side; -start/-end follow the writing direction. */
   placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
   /** ms before showing. */
   openDelay?: number;

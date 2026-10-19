@@ -84,7 +84,8 @@ the current ones.
 Overlays use the platform: `ray-dialog` is a native modal `<dialog>`; popovers,
 menus, tooltips and the toaster are `[popover]` elements in the top layer
 (never clipped, above everything), positioned in JS (`core/position.js`: flip +
-shift) since CSS anchor positioning is not in every webview yet. Keyboard
+shift, `-start`/`-end` following the writing direction) since CSS anchor
+positioning is not in every webview yet. Keyboard
 behavior follows the WAI-ARIA patterns (menu button, tabs, accordion, radio
 group). While a modal dialog is open, notifications move into it so they stay
 clickable (a modal makes the rest of the page inert). Full API: `docs/components.html` (generated from each

@@ -12147,7 +12147,7 @@
               "type": {
                 "text": "\"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\" | \"right-start\" | \"left-start\""
               },
-              "description": "Preferred side and alignment.",
+              "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
               "fieldName": "placement",
               "default": "bottom-start"
             },
@@ -12202,7 +12202,7 @@
               "type": {
                 "text": "\"bottom-start\" | \"bottom\" | \"bottom-end\" | \"top-start\" | \"top\" | \"top-end\" | \"right-start\" | \"left-start\""
               },
-              "description": "Preferred side and alignment.",
+              "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
               "attribute": "placement",
               "reflects": true,
               "default": "bottom-start"
@@ -12528,7 +12528,7 @@
               "type": {
                 "text": "\"bottom\" | \"bottom-start\" | \"bottom-end\" | \"top\" | \"top-start\" | \"top-end\" | \"left\" | \"left-start\" | \"left-end\" | \"right\" | \"right-start\" | \"right-end\""
               },
-              "description": "Preferred side and alignment.",
+              "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
               "fieldName": "placement",
               "default": "bottom"
             },
@@ -12592,7 +12592,7 @@
               "type": {
                 "text": "\"bottom\" | \"bottom-start\" | \"bottom-end\" | \"top\" | \"top-start\" | \"top-end\" | \"left\" | \"left-start\" | \"left-end\" | \"right\" | \"right-start\" | \"right-end\""
               },
-              "description": "Preferred side and alignment.",
+              "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
               "attribute": "placement",
               "reflects": true,
               "default": "bottom"
@@ -12750,7 +12750,7 @@
               "type": {
                 "text": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\""
               },
-              "description": "Preferred side.",
+              "description": "Preferred side; -start/-end follow the writing direction.",
               "fieldName": "placement",
               "default": "top"
             },
@@ -12823,7 +12823,7 @@
               "type": {
                 "text": "\"top\" | \"bottom\" | \"left\" | \"right\" | \"top-start\" | \"top-end\" | \"bottom-start\" | \"bottom-end\""
               },
-              "description": "Preferred side.",
+              "description": "Preferred side; -start/-end follow the writing direction.",
               "attribute": "placement",
               "reflects": true,
               "default": "top"

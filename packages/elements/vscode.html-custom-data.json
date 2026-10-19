@@ -4132,7 +4132,7 @@
         },
         {
           "name": "placement",
-          "description": "Preferred side and alignment.",
+          "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
           "values": [
             {
               "name": "bottom-start"
@@ -4221,7 +4221,7 @@
         },
         {
           "name": "placement",
-          "description": "Preferred side and alignment.",
+          "description": "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges).",
           "values": [
             {
               "name": "bottom"
@@ -4312,7 +4312,7 @@
         },
         {
           "name": "placement",
-          "description": "Preferred side.",
+          "description": "Preferred side; -start/-end follow the writing direction.",
           "values": [
             {
               "name": "top"

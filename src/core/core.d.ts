@@ -227,6 +227,7 @@ export declare const srOnlyStyles: CSSStyleSheet;
 // --- positioning and focus ---------------------------------------------------
 
 export interface PlaceOptions {
+  /** side[-align]: top|bottom|left|right, -start|-end; on top/bottom, -start/-end follow the writing direction. */
   placement?: string;
   offset?: number;
   padding?: number;

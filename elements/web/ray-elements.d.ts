@@ -229,6 +229,7 @@ export declare const srOnlyStyles: CSSStyleSheet;
 // --- positioning and focus ---------------------------------------------------
 
 export interface PlaceOptions {
+  /** side[-align]: top|bottom|left|right, -start|-end; on top/bottom, -start/-end follow the writing direction. */
   placement?: string;
   offset?: number;
   padding?: number;
@@ -1601,7 +1602,7 @@ export interface RayDrawerEventMap extends HTMLElementEventMap {
 export declare class RayMenu extends Floating {
   /** Shown. */
   open: boolean | undefined;
-  /** Preferred side and alignment. */
+  /** Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges). */
   placement: "bottom-start" | "bottom" | "bottom-end" | "top-start" | "top" | "top-end" | "right-start" | "left-start";
   /** Opens on right click (contextmenu) over the trigger area, at the pointer. */
   context: boolean | undefined;
@@ -1655,7 +1656,7 @@ export declare class RayMenuDivider extends RayElement {
 export declare class RayPopover extends Floating {
   /** Shown. */
   open: boolean | undefined;
-  /** Preferred side and alignment. */
+  /** Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges). */
   placement: "bottom" | "bottom-start" | "bottom-end" | "top" | "top-start" | "top-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   /** Gap to the trigger in px. */
   offset: number;
@@ -1692,7 +1693,7 @@ export interface RayPopoverEventMap extends HTMLElementEventMap {
 export declare class RayTooltip extends Floating {
   /** Tooltip text. */
   label: string | undefined;
-  /** Preferred side. */
+  /** Preferred side; -start/-end follow the writing direction. */
   placement: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end";
   /** ms before showing. */
   openDelay: number;

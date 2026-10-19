@@ -2,11 +2,12 @@
 //
 // Right to left: arrow keys follow the reading direction, and what JS places
 // or scrolls (split, carousel, scroll-area, slider marks, indicator,
-// segmented-control) mirrors.
+// segmented-control) mirrors, and floating panels align -start/-end to the
+// right.
 
 const T = window.__rayTest;
 const { isRtl, inlineKey } = await import("../../src/core/direction.js");
-const tags = ["ray-tabs", "ray-tab", "ray-radio-group", "ray-radio", "ray-segmented-control", "ray-toggle-group", "ray-toggle", "ray-calendar", "ray-split", "ray-carousel", "ray-scroll-area", "ray-slider", "ray-indicator"];
+const tags = ["ray-tabs", "ray-tab", "ray-radio-group", "ray-radio", "ray-segmented-control", "ray-toggle-group", "ray-toggle", "ray-calendar", "ray-split", "ray-carousel", "ray-scroll-area", "ray-slider", "ray-indicator", "ray-popover", "ray-menu", "ray-menu-item", "ray-select"];
 await Promise.all(tags.map((t) => customElements.whenDefined(t)));
 
 async function mount(html, dir = "rtl") {
@@ -176,5 +177,43 @@ T.test("rtl: slider marks and the indicator mirror", async (T) => {
   const host = el.getBoundingClientRect();
   const d = el.shadowRoot.querySelector(".indicator").getBoundingClientRect();
   T.eq(Math.round(d.left + d.width / 2 - host.left), 0, "top-end: centered on the left edge");
+  box.remove();
+});
+
+T.test("rtl: -start and -end placements line up the right and the left edges", async (T) => {
+  const box = await mount(`<div style="display: flex; justify-content: center; padding: 40px">
+    <ray-popover placement="bottom-start"><button slot="trigger" style="width: 200px">start</button><div style="width: 80px">a</div></ray-popover>
+    <ray-popover placement="bottom-end"><button slot="trigger" style="width: 200px">end</button><div style="width: 80px">b</div></ray-popover>
+    <ray-menu><button slot="trigger" style="width: 200px">menu</button><ray-menu-item>Item</ray-menu-item></ray-menu>
+    <ray-select style="width: 200px" value="a"><option value="a">A</option><option value="b">B</option></ray-select>
+  </div>`);
+  const edges = (trigger, panel) => {
+    const t = trigger.getBoundingClientRect();
+    const p = panel.getBoundingClientRect();
+    return { left: Math.round(p.left - t.left), right: Math.round(t.right - p.right) };
+  };
+  const [start, end] = box.querySelectorAll("ray-popover");
+  start.open = true;
+  await T.settle();
+  T.eq(edges(start.querySelector("button"), start.panel).right, 0, "-start: the right edges line up");
+  T.ok(edges(start.querySelector("button"), start.panel).left > 0, "and the panel is narrower, so it sits right");
+  T.ok(start.panel.dataset.placement.endsWith("-start"), `the placement keeps its logical name (${start.panel.dataset.placement})`);
+  start.open = false;
+  end.open = true;
+  await T.settle();
+  T.eq(edges(end.querySelector("button"), end.panel).left, 0, "-end: the left edges");
+  end.open = false;
+  const menu = box.querySelector("ray-menu");
+  menu.open = true;
+  await T.settle();
+  T.eq(edges(menu.querySelector("button"), menu.panel).right, 0, "a menu (bottom-start) opens under the right edge");
+  menu.open = false;
+  const select = box.querySelector("ray-select");
+  select.open = true;
+  await T.settle();
+  await pause();
+  T.eq(edges(select, select.listbox).right, 0, "a select's listbox too");
+  select.open = false;
+  await T.settle();
   box.remove();
 });
