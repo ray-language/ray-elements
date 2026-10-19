@@ -80,7 +80,7 @@ With `native` and [the native bridge](https://elements.raylang.dev/raylang.html#
 
 Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.7.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 
 ## Example
 

@@ -80,7 +80,7 @@ Parts (`::part()`):
 - `root`: The card.
 - `icon`: Around the icon slot.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.7.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 
 ## Example
 

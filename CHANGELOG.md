@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-19
+
 ### Added
 
 - Icons with a direction: under `dir="rtl"` the roles that point along the
