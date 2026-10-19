@@ -163,6 +163,37 @@ Lucide has no filled versions; for one, register `"<name>:filled"` from a
 family that has them (Phosphor's fill weight, Material Symbols' filled).
 `ray-elements check` finds the names you register in `setIcons({ … })`.
 
+### Right to left
+
+Set `dir="rtl"` on the page (`<html dir="rtl" lang="ar">`) or on any subtree
+and the components mirror; nothing to configure, and a `dir` changed later
+applies at once:
+
+- The layout: the CSS is written with logical properties (`inset-inline-start`,
+  `padding-inline-end`, `text-align: start`), so paddings, labels, adornments,
+  the switch's thumb, vertical tabs and the like follow the direction.
+- Icons: the roles that point along the text (`ui.next`, `ui.previous`,
+  `ui.first`, `ui.last`, `ui.disclosure`, `ui.separator`) are drawn mirrored;
+  `<ray-icon mirror>` mirrors one of yours (a back arrow).
+- Keyboard and pointer: ArrowLeft goes forward in tabs, radio groups, the
+  segmented control, toggle groups, the calendar, the carousel and the split;
+  the split, the carousel, `ray-scroll-area`, the slider and `ray-indicator`
+  measure and scroll from the right.
+- Floating panels: `-start`/`-end` placements line up with the trigger's
+  right edge (a `bottom-start` menu), a context menu opens to the left of
+  the pointer. `top`/`bottom`/`left`/`right` are sides of the screen.
+- Attributes that name a side take `start`/`end`, which follow the direction,
+  and `left`/`right`, which do not: `label-position`, `chevron-position`,
+  `ray-timeline` `align`, `ray-drawer` `position`, `ray-sidebar` `side`,
+  `ray-toaster` `position` (`bottom-end`, `top-start`…). The defaults are
+  logical: right to left a drawer opens from the left and notifications stack
+  bottom left.
+
+What stays left to right: `ray-code` (code is left to right in any language)
+and the color picker (a color space is a picture, not text). The translated
+texts (`label`, `close-label`, the calendar's `locale`) are yours to give.
+To see it, the site's **RTL** button shows every example right to left.
+
 ## Commands
 
 From anywhere (`tools/run.sh` runs them from `tools/`; paths stay yours):

@@ -108,7 +108,10 @@ filled/light/outline/subtle/default variants on `[data-variant]`),
 `loaderStyles`, `srOnlyStyles`, `place()`, `autoUpdate()`, `tabbables()`,
 `focusFirst()`, `setIcons()` / `getIcon()`, `configure()`, `isRtl(el)` and
 `inlineKey(e.key, el)` (arrow keys right to left: compare with "ArrowRight"
-for forward).
+for forward). Write the component's CSS with logical properties
+(`inset-inline-start`, `padding-inline-end`, `text-align: start`) so it
+mirrors under `dir="rtl"`; for an attribute that names a side, take
+`start`/`end` and keep `left`/`right` as sides of the screen.
 
 **Motion** (`core/motion.js`): `play(el, keyframes, { speed, ease })` runs an
 animation with the duration/easing tokens and resolves when it ends — at

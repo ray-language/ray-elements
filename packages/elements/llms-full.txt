@@ -167,6 +167,21 @@ green a check, red an error, yellow a warning, others info).
 - App-wide defaults for a component: `configure({ defaults: { "ray-button":
   { variant: "light" } } })`.
 
+## Right to left
+
+- `dir="rtl"` on `<html>` (with its `lang`) or a subtree mirrors the
+  components: layout, the icons that point along the text, arrow keys
+  (ArrowLeft is forward), sliders, carousels, splits and floating panels
+  (`bottom-start` lines up with the right edge). Nothing to configure.
+- For a side, write `start`/`end` (they follow the direction):
+  `label-position="start"`, `<ray-drawer position="start">`,
+  `<ray-sidebar side="end">`, `<ray-toaster position="top-start">`.
+  `left`/`right` are sides of the screen whatever the direction; use them
+  only when the side is meant (a map's legend).
+- Your own CSS: logical properties (`margin-inline-start`, `inset-inline-end`,
+  `text-align: start`), never `left`/`right`; an icon of yours that points
+  (back, send) takes `mirror`.
+
 ## React and Vue
 
 ```tsx
