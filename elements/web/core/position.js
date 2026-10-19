@@ -5,12 +5,19 @@
 // side when it does not fit, and shifted to stay inside the viewport.
 // Done in JS rather than CSS anchor positioning, which not every webview
 // ships yet (WebKitGTK, older WKWebView).
+//
+// The sides top/bottom/left/right are sides of the screen; the alignments
+// -start/-end follow the writing direction of the floating element: right to
+// left, "bottom-start" lines up the right edges.
+
+import { isRtl } from "./direction.js";
 
 const OPPOSITE = { top: "bottom", bottom: "top", left: "right", right: "left" };
 
 /**
  * @typedef {object} PlaceOptions
- * @property {string} [placement]  side[-align]: top|bottom|left|right, -start|-end (default "bottom")
+ * @property {string} [placement]  side[-align]: top|bottom|left|right, -start|-end (default "bottom");
+ *   on top/bottom, -start/-end follow the writing direction
  * @property {number} [offset]     gap to the anchor in px (default 8)
  * @property {number} [padding]    minimum distance to the viewport edges (default 8)
  * @property {boolean} [flip]      try the opposite side when it does not fit (default true)
@@ -45,8 +52,9 @@ export function place(anchor, floating, { placement = "bottom", offset = 8, padd
   let y;
   if (side === "top" || side === "bottom") {
     y = side === "bottom" ? anchor.bottom + offset : anchor.top - offset - f.height;
-    x = align === "start" ? anchor.left
-      : align === "end" ? anchor.right - f.width
+    const rtl = align !== "center" && isRtl(floating);
+    x = align === (rtl ? "end" : "start") ? anchor.left
+      : align === (rtl ? "start" : "end") ? anchor.right - f.width
       : anchor.left + anchor.width / 2 - f.width / 2;
   } else {
     x = side === "right" ? anchor.right + offset : anchor.left - offset - f.width;

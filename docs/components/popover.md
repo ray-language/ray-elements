@@ -11,7 +11,7 @@ Positioned in JS (flip + shift to stay in the viewport). JS: show(), hide(), tog
 Properties:
 
 - `open`: boolean, reflects. Shown.
-- `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment.
+- `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `offset`: number, default `8`. Gap to the trigger in px.
 - `width`: string. Panel width (px number or CSS length). Default: its content.
 - `matchWidth` (attribute `match-width`): boolean. At least as wide as the trigger.

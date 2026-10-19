@@ -2016,7 +2016,7 @@ Import: `import "@raylang/elements/menu";` · Category: Overlays
 Properties:
 
 - `open`: boolean, reflects. Shown.
-- `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment.
+- `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
 - `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.
@@ -2100,7 +2100,7 @@ Positioned in JS (flip + shift to stay in the viewport). JS: show(), hide(), tog
 Properties:
 
 - `open`: boolean, reflects. Shown.
-- `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment.
+- `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `offset`: number, default `8`. Gap to the trigger in px.
 - `width`: string. Panel width (px number or CSS length). Default: its content.
 - `matchWidth` (attribute `match-width`): boolean. At least as wide as the trigger.
@@ -2141,7 +2141,7 @@ Import: `import "@raylang/elements/tooltip";` · Category: Overlays
 Properties:
 
 - `label`: string. Tooltip text.
-- `placement`: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end`, default `top`, reflects. Preferred side.
+- `placement`: `top` | `bottom` | `left` | `right` | `top-start` | `top-end` | `bottom-start` | `bottom-end`, default `top`, reflects. Preferred side; -start/-end follow the writing direction.
 - `openDelay` (attribute `open-delay`): number, default `300`. ms before showing.
 - `closeDelay` (attribute `close-delay`): number, default `0`. ms before hiding.
 - `color`: string. A palette color or any CSS color. Default: inverted foreground/background.
@@ -3781,6 +3781,7 @@ export declare const srOnlyStyles: CSSStyleSheet;
 // --- positioning and focus ---------------------------------------------------
 
 export interface PlaceOptions {
+  /** side[-align]: top|bottom|left|right, -start|-end; on top/bottom, -start/-end follow the writing direction. */
   placement?: string;
   offset?: number;
   padding?: number;

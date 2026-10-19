@@ -9,7 +9,7 @@ Import: `import "@raylang/elements/menu";` · Category: Overlays
 Properties:
 
 - `open`: boolean, reflects. Shown.
-- `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment.
+- `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
 - `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.

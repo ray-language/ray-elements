@@ -21,7 +21,7 @@ type = "string"
 values = ["bottom", "bottom-start", "bottom-end", "top", "top-start", "top-end", "left", "left-start", "left-end", "right", "right-start", "right-end"]
 default = "bottom"
 reflect = true
-description = "Preferred side and alignment."
+description = "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges)."
 
 [ray-popover.properties.offset]
 type = "number"

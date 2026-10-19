@@ -34,9 +34,13 @@ change the API.
   labels, the switch's thumb, vertical tabs, select and search adornments and
   the like mirror. Nothing changes left to right. Still physical: attributes
   that name a side (`ray-drawer` and `ray-sidebar` `left`/`right`,
-  `ray-notification` positions, `ray-timeline` align) and what is placed by
-  JS (carousel, scroll-area shadows, indicator, segmented-control,
-  color-picker). `ray-code` always lays code out left to right.
+  `ray-notification` positions, `ray-timeline` align) and the color picker.
+  `ray-code` always lays code out left to right.
+- Floating panels align `-start`/`-end` with the writing direction: under
+  `dir="rtl"` a `bottom-start` popover, menu, select, combobox or
+  date-picker panel lines up with the right edge of its trigger, and a
+  context menu opens to the left of the pointer. The sides (`top`, `bottom`,
+  `left`, `right`) stay sides of the screen; nothing changes left to right.
 - `build` rejects physical CSS in the components unless the line is marked
   `/* physical */`, gradients toward a side included.
 

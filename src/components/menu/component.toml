@@ -20,7 +20,7 @@ type = "string"
 values = ["bottom-start", "bottom", "bottom-end", "top-start", "top", "top-end", "right-start", "left-start"]
 default = "bottom-start"
 reflect = true
-description = "Preferred side and alignment."
+description = "Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, \"bottom-start\" lines up the right edges)."
 
 [ray-menu.properties.context]
 type = "boolean"
