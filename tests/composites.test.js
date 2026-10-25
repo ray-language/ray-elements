@@ -260,6 +260,18 @@ function silencePagePalettes() {
   return () => { for (const [p, hotkey] of saved) p.hotkey = hotkey; };
 }
 
+T.test("palette: the keyboard hint and the accessible name translate", async (T) => {
+  const box = await mount(`<ray-command-palette hotkey="" label="Paleta de comandos" navigate-label="moverse" run-label="ejecutar"></ray-command-palette>`);
+  const p = box.querySelector("ray-command-palette");
+  const hint = () => p.shadowRoot.querySelector('[part="hint"]').textContent.replace(/\s+/g, " ").trim();
+  T.eq(hint(), "↑↓ moverse↵ ejecutaresc close", "attributes, and the default where none is given");
+  p.closeLabel = "cerrar";
+  await T.settle();
+  T.eq(hint(), "↑↓ moverse↵ ejecutaresc cerrar", "the property");
+  T.eq(p.input.getAttribute("aria-label"), "Paleta de comandos");
+  box.remove();
+});
+
 T.test("palette: hotkey, filter, combobox ARIA, run, close", async (T) => {
   // The docs page has its own palettes (the site search takes ⌘K): silence them here.
   const restore = silencePagePalettes();

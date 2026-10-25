@@ -187,6 +187,9 @@ export class RayCommandPalette extends RayElement {
     emptyLabel: { type: String, default: "Nothing found" },
     label: { type: String, default: "Command palette" },
     hideHint: { type: Boolean, reflect: true },
+    navigateLabel: { type: String, default: "navigate" },
+    runLabel: { type: String, default: "run" },
+    closeLabel: { type: String, default: "close" },
     overlayBlur: { type: String },
     nativeMenus: { type: Boolean, attribute: "native-menus", reflect: true },
   };
@@ -196,7 +199,7 @@ export class RayCommandPalette extends RayElement {
       <div class="search" part="search">${SEARCH_ICON}<input id="input" part="input" role="combobox" aria-expanded="true" aria-controls="list" aria-autocomplete="list" autocomplete="off" spellcheck="false"></div>
       <div class="list" id="list" role="listbox" part="list"></div>
       <div class="empty" part="empty" hidden></div>
-      <div class="hint" part="hint"><span><b>↑↓</b> navigate</span><span><b>↵</b> run</span><span><b>esc</b> close</span></div>
+      <div class="hint" part="hint"><span><b>↑↓</b> <span id="hint-navigate"></span></span><span><b>↵</b> <span id="hint-run"></span></span><span><b>esc</b> <span id="hint-close"></span></span></div>
       <slot name="overlay"></slot>
     </dialog>`;
 
@@ -281,6 +284,9 @@ export class RayCommandPalette extends RayElement {
     this.dialog.setAttribute("aria-label", this.label ?? "Command palette");
     if (this.input.value !== (this.query ?? "")) this.input.value = this.query ?? "";
     this.$(".hint").hidden = Boolean(this.hideHint);
+    this.$("#hint-navigate").textContent = this.navigateLabel ?? "";
+    this.$("#hint-run").textContent = this.runLabel ?? "";
+    this.$("#hint-close").textContent = this.closeLabel ?? "";
     this._render();
     if (changed.has("open") || this._first === undefined) {
       this._first = false;

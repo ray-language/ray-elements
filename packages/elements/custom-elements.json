@@ -11296,6 +11296,33 @@
               "fieldName": "hideHint"
             },
             {
+              "name": "navigate-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for ↑↓.",
+              "fieldName": "navigateLabel",
+              "default": "navigate"
+            },
+            {
+              "name": "run-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for ↵.",
+              "fieldName": "runLabel",
+              "default": "run"
+            },
+            {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for esc.",
+              "fieldName": "closeLabel",
+              "default": "close"
+            },
+            {
               "name": "native-menus",
               "type": {
                 "text": "boolean"
@@ -11405,6 +11432,39 @@
               "description": "No keyboard hint at the bottom.",
               "attribute": "hide-hint",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "navigateLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for ↑↓.",
+              "attribute": "navigate-label",
+              "reflects": false,
+              "default": "navigate"
+            },
+            {
+              "kind": "field",
+              "name": "runLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for ↵.",
+              "attribute": "run-label",
+              "reflects": false,
+              "default": "run"
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The keyboard hint's word for esc.",
+              "attribute": "close-label",
+              "reflects": false,
+              "default": "close"
             },
             {
               "kind": "field",

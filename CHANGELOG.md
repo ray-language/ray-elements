@@ -7,6 +7,11 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-command-palette` `navigate-label`, `run-label` and `close-label`: the
+  words of its keyboard hint, which were fixed in English.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

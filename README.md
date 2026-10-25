@@ -191,7 +191,8 @@ applies at once:
 
 What stays left to right: `ray-code` (code is left to right in any language)
 and the color picker (a color space is a picture, not text). The translated
-texts (`label`, `close-label`, the calendar's `locale`) are yours to give.
+texts (`label`, `close-label`, the command palette's hint words, the
+calendar's `locale`) are yours to give.
 To see it, the site's **RTL** button shows every example right to left.
 
 ## Commands

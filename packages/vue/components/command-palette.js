@@ -4,7 +4,7 @@ import "@raylang/elements/command-palette";
 import { createComponent } from "../create.js";
 
 export const RayCommandPalette = /*#__PURE__*/ createComponent("RayCommandPalette", "ray-command-palette", {
-  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "nativeMenus", "overlayBlur"],
+  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "navigateLabel", "runLabel", "closeLabel", "nativeMenus", "overlayBlur"],
   booleans: ["open", "hideHint", "nativeMenus"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });

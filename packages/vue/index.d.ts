@@ -1365,6 +1365,12 @@ export interface RayCommandPaletteProps {
   label?: string;
   /** No keyboard hint at the bottom. */
   hideHint?: boolean;
+  /** The keyboard hint's word for ↑↓. */
+  navigateLabel?: string;
+  /** The keyboard hint's word for ↵. */
+  runLabel?: string;
+  /** The keyboard hint's word for esc. */
+  closeLabel?: string;
   /** With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event. */
   nativeMenus?: boolean;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */

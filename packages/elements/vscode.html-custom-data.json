@@ -3970,6 +3970,18 @@
           "valueSet": "v"
         },
         {
+          "name": "navigate-label",
+          "description": "The keyboard hint's word for ↑↓."
+        },
+        {
+          "name": "run-label",
+          "description": "The keyboard hint's word for ↵."
+        },
+        {
+          "name": "close-label",
+          "description": "The keyboard hint's word for esc."
+        },
+        {
           "name": "native-menus",
           "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
           "valueSet": "v"
