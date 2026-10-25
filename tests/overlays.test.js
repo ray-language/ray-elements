@@ -302,6 +302,33 @@ T.test("menu: context mode opens at the pointer", async (T) => {
   box.remove();
 });
 
+T.test("menu: ray-request-open comes before it opens; cancelling keeps it closed", async (T) => {
+  const box = await mount(`<ray-menu><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const trigger = menu.querySelector("[slot=trigger]");
+  const seen = [];
+  let cancel = true;
+  menu.addEventListener("ray-request-open", (e) => {
+    seen.push(`${e.detail.event.type}:${Boolean(menu.open)}`);
+    if (cancel) e.preventDefault();
+  });
+  trigger.click();
+  await T.settle();
+  T.ok(!menu.open, "cancelled");
+  trigger.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true, cancelable: true }));
+  await T.settle();
+  T.ok(!menu.open, "cancelled from the keyboard too");
+  cancel = false;
+  trigger.click();
+  await T.settle();
+  T.eq(menu.open, true, "opens");
+  trigger.click();
+  await T.settle();
+  T.ok(!menu.open, "closing asks nothing");
+  T.eq(seen.join(), "click:false,keydown:false,click:false");
+  box.remove();
+});
+
 // --- notifications ----------------------------------------------------------
 
 T.test("notify: shows in a live region, updates, hides, auto-closes", async (T) => {

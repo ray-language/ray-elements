@@ -256,7 +256,9 @@ fn run() -> Result<int, string> {
 
 With the bridge: `<ray-file-upload native>` and `<ray-path-input>` use the
 system file dialogs and give real paths, `confirmDialog()` asks with the
-system dialog, `<ray-menu native>` opens a native context menu,
+system dialog, `<ray-menu native>` opens a native context menu (fill
+items that depend on the click in its `ray-request-open`, not in your own
+`contextmenu` listener),
 `<ray-command-palette native-menus>` runs the app's menu bar
 (`bridge.menu`, `bridge.route`), `ray-app-shell` becomes the title bar of a
 `full_content` window, and `trackEdits(form)` shows the unsaved mark. The
@@ -2041,6 +2043,7 @@ Also the properties of Floating: `offset`.
 Events:
 
 - `ray-select` (detail `{ value: string; item: RayMenuItem }`): An item was chosen; detail: { value, item }.
+- `ray-request-open` (detail `{ event: Event }`): Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }.
 - `ray-open`: After it opened.
 - `ray-close`: After it closed.
 
@@ -2101,6 +2104,15 @@ With `native` and [the native bridge](https://elements.raylang.dev/raylang.html#
 ```
 
 Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+
+The native menu reads its items the moment it opens, so items that depend on what was clicked go in `ray-request-open`, which comes first (a `contextmenu` listener of your own on the trigger may run after the menu's):
+
+```js
+menu.addEventListener("ray-request-open", (e) => {
+  const row = e.detail.event.target.closest(".file-row");
+  menu.replaceChildren(menu.querySelector("[slot=trigger]"), ...itemsFor(row));
+});
+```
 
 ### Popover
 

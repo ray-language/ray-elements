@@ -12288,6 +12288,13 @@
               "description": "An item was chosen; detail: { value, item }."
             },
             {
+              "name": "ray-request-open",
+              "type": {
+                "text": "CustomEvent<{ event: Event }>"
+              },
+              "description": "Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }."
+            },
+            {
               "name": "ray-open",
               "type": {
                 "text": "CustomEvent<unknown>"

@@ -42,6 +42,10 @@ description = "With a native host (ray-elements/core/raylang.js in a std/ui wind
 description = "An item was chosen; detail: { value, item }."
 detail = "{ value: string; item: RayMenuItem }"
 
+[ray-menu.events.ray-request-open]
+description = "Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }."
+detail = "{ event: Event }"
+
 [ray-menu.events.ray-open]
 description = "After it opened."
 
