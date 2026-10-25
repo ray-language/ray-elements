@@ -400,6 +400,7 @@ export class RayCode extends RayElement {
     lineNumbers: { type: Boolean, reflect: true },
     highlight: { type: String },
     wrap: { type: Boolean, reflect: true },
+    verbatim: { type: Boolean, reflect: true },
     maxHeight: { type: String },
     expanded: { type: Boolean, reflect: true },
     hideCopy: { type: Boolean, reflect: true },
@@ -450,20 +451,22 @@ export class RayCode extends RayElement {
     this.#observer.disconnect();
   }
 
-  /** The code shown (dedented), whatever its source. */
+  /** The code shown (dedented unless verbatim), whatever its source. */
   get source() {
     return this.#source;
   }
 
   #readSource() {
-    if (typeof this.code === "string") return dedent(this.code);
+    // verbatim: data (a response body, a log) is shown and copied as it came.
+    const shape = this.verbatim ? String : dedent;
+    if (typeof this.code === "string") return shape(this.code);
     // A <template> is parsed as HTML: perfect for markup; its serialization
     // escapes &, < and > in text, undone here.
     const tpl = this.querySelector(":scope > template");
-    if (tpl) return dedent(tpl.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, "\u00a0").replace(/&amp;/g, "&"));
+    if (tpl) return shape(tpl.innerHTML.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&nbsp;/g, "\u00a0").replace(/&amp;/g, "&"));
     const script = this.querySelector(':scope > script[type="text/plain"]');
-    if (script) return dedent(script.textContent);
-    return dedent(this.textContent);
+    if (script) return shape(script.textContent);
+    return shape(this.textContent);
   }
 
   update() {

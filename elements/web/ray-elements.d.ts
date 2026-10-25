@@ -1890,7 +1890,7 @@ export declare class RayCarousel extends RayElement {
 export declare function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void;
 /** The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text. */
 export declare function tokenize(code: string, lang?: string): [type: string, text: string][];
-/** <ray-code> The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme. */
+/** <ray-code> The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed (not with verbatim). Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme. */
 export declare class RayCode extends RayElement {
   /** The code, from script (the most convenient in React and Vue). Wins over the content. */
   code: string | undefined;
@@ -1904,6 +1904,8 @@ export declare class RayCode extends RayElement {
   highlight: string | undefined;
   /** Wraps long lines instead of scrolling sideways. */
   wrap: boolean | undefined;
+  /** Shows and copies the text exactly as given: no common indentation or blank first and last lines removed. For data (a response body, a log) rather than code written in the page. */
+  verbatim: boolean | undefined;
   /** Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button. */
   maxHeight: string | undefined;
   /** Shown whole, past max-height. */

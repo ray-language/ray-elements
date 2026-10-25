@@ -7,6 +7,12 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-code` `verbatim`: shows and copies the text exactly as given, with
+  its common indentation and blank first and last lines, for data such as
+  a response body or a log.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

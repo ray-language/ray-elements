@@ -1684,6 +1684,8 @@ export interface RayCodeOwnProps {
   highlight?: string;
   /** Wraps long lines instead of scrolling sideways. */
   wrap?: boolean;
+  /** Shows and copies the text exactly as given: no common indentation or blank first and last lines removed. For data (a response body, a log) rather than code written in the page. */
+  verbatim?: boolean;
   /** Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button. */
   maxHeight?: string;
   /** Shown whole, past max-height. */

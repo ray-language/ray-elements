@@ -6,7 +6,7 @@ Import: `import "@raylang/elements/code";` · Category: Data display
 
 ## `<ray-code>` (RayCode, extends RayElement)
 
-The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed. Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.
+The code comes from the code property, a <script type="text/plain"> child (raw text: anything but a closing script tag), a <template> child (parsed as HTML: the easiest for markup, but a < that is not a tag, as in Promise<void>, breaks it), or the element's text; common indentation and blank edges are removed (not with verbatim). Built-in languages: js/ts (jsx, tsx), json, html/xml/svg/vue, css, shell, ray and diff; others show as plain text. Library classes painted with the tokens: Prism's .token.*, highlight.js's .hljs-*, and Shiki's css-variables theme.
 
 Properties:
 
@@ -16,6 +16,7 @@ Properties:
 - `lineNumbers` (attribute `line-numbers`): boolean, reflects. Numbers each line (not copied, not selectable).
 - `highlight`: string. Lines to highlight: "3, 5-7".
 - `wrap`: boolean, reflects. Wraps long lines instead of scrolling sideways.
+- `verbatim`: boolean, reflects. Shows and copies the text exactly as given: no common indentation or blank first and last lines removed. For data (a response body, a log) rather than code written in the page.
 - `maxHeight` (attribute `max-height`): string. Height before it scrolls: px as a number, or a CSS length. A taller block gets a "Show all N lines" button.
 - `expanded`: boolean, reflects. Shown whole, past max-height.
 - `hideCopy` (attribute `hide-copy`): boolean, reflects. No copy button.
@@ -130,6 +131,10 @@ echo "done: $HOME/dist"
 </div>
 <ray-code language="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
 
+<div class="demo-caption">Data as it came</div>
+<p class="demo-muted" style="margin: 0">verbatim shows and copies the text untouched: a response body or a log keeps its indentation and its blank last line.</p>
+<ray-code filename="response body" line-numbers verbatim id="demo-code-verbatim"></ray-code>
+
 <div class="demo-caption">Bring your own highlighter</div>
 <p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
 <div class="demo-grid demo-code-grid">
@@ -161,5 +166,6 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
   // Code from script: the `code` property (what React and Vue use).
   document.getElementById("demo-long").code = Array.from({ length: 24 }, (_, i) =>
     `export const space${i} = "${(i * 0.25).toFixed(2)}rem"; // step ${i} of the spacing scale, used by gaps and paddings`).join("\n");
+  document.getElementById("demo-code-verbatim").code = "    error: connection refused\n    retrying in 2s\n";
 </script>
 ```

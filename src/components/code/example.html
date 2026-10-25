@@ -70,6 +70,10 @@ echo "done: $HOME/dist"
 </div>
 <ray-code language="js" filename="tokens.js" line-numbers max-height="12rem" wrap id="demo-long"></ray-code>
 
+<div class="demo-caption">Data as it came</div>
+<p class="demo-muted" style="margin: 0">verbatim shows and copies the text untouched: a response body or a log keeps its indentation and its blank last line.</p>
+<ray-code filename="response body" line-numbers verbatim id="demo-code-verbatim"></ray-code>
+
 <div class="demo-caption">Bring your own highlighter</div>
 <p class="demo-muted" style="margin: 0">setHighlighter() hands every block to a library; its classes are painted with the ray-elements tokens, so the colors stay the same. Returning nothing falls back to the built-in one.</p>
 <div class="demo-grid demo-code-grid">
@@ -101,4 +105,5 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
   // Code from script: the `code` property (what React and Vue use).
   document.getElementById("demo-long").code = Array.from({ length: 24 }, (_, i) =>
     `export const space${i} = "${(i * 0.25).toFixed(2)}rem"; // step ${i} of the spacing scale, used by gaps and paddings`).join("\n");
+  document.getElementById("demo-code-verbatim").code = "    error: connection refused\n    retrying in 2s\n";
 </script>
