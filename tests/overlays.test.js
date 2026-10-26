@@ -283,6 +283,40 @@ T.test("menu: keyboard opens, moves, skips disabled, typeahead, selects", async 
   box.remove();
 });
 
+T.test("menu: checkbox and radio items", async (T) => {
+  const box = await mount(`<ray-menu keep-open>
+    <ray-button slot="trigger">View</ray-button>
+    <ray-menu-item type="checkbox" value="wrap" checked>Word wrap</ray-menu-item>
+    <ray-menu-item type="radio" name="mode" value="text" checked>Text</ray-menu-item>
+    <ray-menu-item type="radio" name="mode" value="file">File</ray-menu-item>
+    <ray-menu-item type="radio" name="sort" value="name" checked>By name</ray-menu-item>
+    <ray-menu-item value="plain">Plain</ray-menu-item>
+  </ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const [wrap, text, file, byName, plain] = menu.items;
+  const mark = (i) => getComputedStyle(i.shadowRoot.querySelector('[part="mark"]'));
+  T.eq([wrap, text, plain].map((i) => i.internals.role).join(), "menuitemcheckbox,menuitemradio,menuitem");
+  T.eq(wrap.internals.ariaChecked, "true");
+  T.eq(file.internals.ariaChecked, "false");
+  T.eq(plain.internals.ariaChecked, null, "a plain item has no aria-checked");
+  T.eq(mark(wrap).visibility, "visible", "checked: the mark shows");
+  T.eq(mark(file).display !== "none" && mark(file).visibility === "hidden", true, "unchecked: its column is kept");
+  T.eq(mark(plain).display, "none", "a plain item has no mark column");
+  let seen = null;
+  menu.addEventListener("ray-select", (e) => { seen = `${e.detail.value}:${e.detail.item.checked}`; });
+  wrap.click();
+  await T.settle();
+  T.eq(seen, "wrap:false", "checkbox toggled before ray-select");
+  T.eq(wrap.internals.ariaChecked, "false");
+  file.click();
+  await T.settle();
+  T.eq(`${text.checked},${file.checked},${byName.checked}`, "false,true,true", "one radio per name");
+  file.click();
+  await T.settle();
+  T.eq(file.checked, true, "choosing a checked radio keeps it checked");
+  box.remove();
+});
+
 T.test("menu: context mode opens at the pointer", async (T) => {
   const box = await mount(`<div style="position: fixed; top: 20px; left: 20px"><ray-menu context><div slot="trigger" style="width: 300px; height: 100px"></div><ray-menu-item>Copy</ray-menu-item></ray-menu></div>`);
   const menu = box.querySelector("ray-menu");

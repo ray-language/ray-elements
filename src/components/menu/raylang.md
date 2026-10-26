@@ -10,4 +10,4 @@ With `native` and [the native bridge](RAYLANG.md#using-the-bridge), the menu ope
 </ray-menu>
 ```
 
-Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+Checkbox and radio items show their check mark there too. Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.

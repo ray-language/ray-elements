@@ -7,6 +7,14 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-menu-item` `type="checkbox"` and `type="radio"` (with `name`), and
+  `checked`: choosing one toggles it, or checks it and unchecks the other
+  radio items of its group, before `ray-select`; it shows a check mark,
+  with the `menuitemcheckbox`/`menuitemradio` roles, and the native menu
+  shows the mark too.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

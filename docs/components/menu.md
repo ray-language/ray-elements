@@ -49,12 +49,23 @@ Properties:
 - `value`: string, reflects. Reported in ray-select (default: the text).
 - `disabled`: boolean, reflects. Skipped by the keyboard, cannot be chosen.
 - `color`: string, reflects. Text and hover color (e.g. red for destructive actions).
+- `type`: `item` | `checkbox` | `radio`, default `item`, reflects. checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too.
+- `checked`: boolean, reflects. Checked (checkbox and radio items). Already updated when ray-select fires.
+- `name`: string, reflects. The group of a radio item: one checked per name in the menu.
 
 Slots:
 
 - (default): Label.
 - `left`: Icon.
 - `right`: Shortcut or badge.
+
+Parts (`::part()`):
+
+- `mark`: The check mark of a checkbox or radio item.
+
+Methods and properties:
+
+- `readonly checkable: boolean`: Whether type is checkbox or radio.
 
 ## `<ray-menu-label>` (RayMenuLabel, extends RayElement)
 
@@ -78,7 +89,7 @@ With `native` and [the native bridge](https://elements.raylang.dev/raylang.html#
 </ray-menu>
 ```
 
-Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+Checkbox and radio items show their check mark there too. Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 
@@ -124,12 +135,16 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-menu id="demo-view-menu" keep-open placement="bottom-start">
     <ray-button slot="trigger" variant="default"><ray-icon slot="left" name="eye"></ray-icon>View<ray-icon slot="right" name="chevron-down"></ray-icon></ray-button>
     <ray-menu-label>Show (keep-open)</ray-menu-label>
-    <ray-menu-item value="lines" data-on><ray-icon slot="left" name="check"></ray-icon>Line numbers</ray-menu-item>
-    <ray-menu-item value="minimap"><ray-icon slot="left" name="none"></ray-icon>Minimap</ray-menu-item>
-    <ray-menu-item value="wrap" data-on><ray-icon slot="left" name="check"></ray-icon>Word wrap</ray-menu-item>
-    <ray-menu-item value="whitespace"><ray-icon slot="left" name="none"></ray-icon>Whitespace</ray-menu-item>
+    <ray-menu-item type="checkbox" value="lines" checked>Line numbers</ray-menu-item>
+    <ray-menu-item type="checkbox" value="minimap">Minimap</ray-menu-item>
+    <ray-menu-item type="checkbox" value="wrap" checked>Word wrap</ray-menu-item>
+    <ray-menu-item type="checkbox" value="whitespace">Whitespace</ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-label>Density</ray-menu-label>
+    <ray-menu-item type="radio" name="density" value="compact">Compact</ray-menu-item>
+    <ray-menu-item type="radio" name="density" value="comfortable" checked>Comfortable</ray-menu-item>
   </ray-menu>
-  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap</span>
+  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap · comfortable</span>
 </div>
 
 <div class="demo-caption">Placements</div>
@@ -178,13 +193,11 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
   // View options: keep-open, each item toggles a check.
   const view = document.getElementById("demo-view-menu");
-  view.addEventListener("ray-select", (e) => {
-    const item = view.querySelector(`ray-menu-item[value="${e.detail.value}"]`);
-    const on = !item.hasAttribute("data-on");
-    item.toggleAttribute("data-on", on);
-    item.querySelector("ray-icon").name = on ? "check" : "none";
-    const shown = [...view.querySelectorAll("ray-menu-item[data-on]")].map((i) => i.getAttribute("value"));
-    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"}`;
+  // Checkbox and radio items update `checked` themselves, before ray-select.
+  view.addEventListener("ray-select", () => {
+    const shown = [...view.querySelectorAll('ray-menu-item[type="checkbox"][checked]')].map((i) => i.value);
+    const density = view.querySelector('ray-menu-item[name="density"][checked]').value;
+    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"} · ${density}`;
   });
 
   document.getElementById("demo-context").addEventListener("ray-select", (e) => {

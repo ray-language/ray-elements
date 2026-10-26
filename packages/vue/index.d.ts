@@ -1483,6 +1483,12 @@ export interface RayMenuItemProps {
   disabled?: boolean;
   /** Text and hover color (e.g. red for destructive actions). */
   color?: string;
+  /** checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too. */
+  type?: "item" | "checkbox" | "radio";
+  /** Checked (checkbox and radio items). Already updated when ray-select fires. */
+  checked?: boolean;
+  /** The group of a radio item: one checked per name in the menu. */
+  name?: string;
 }
 /** <ray-menu-item> as a Vue component. */
 export declare const RayMenuItem: DefineComponent<RayMenuItemProps>;

@@ -10,7 +10,7 @@ export const RayMenu = /*#__PURE__*/ createComponent("ray-menu", {
 });
 export const RayMenuItem = /*#__PURE__*/ createComponent("ray-menu-item", {
   displayName: "RayMenuItem",
-  properties: ["value", "disabled", "color"],
+  properties: ["value", "disabled", "color", "type", "checked", "name"],
   events: {  },
 });
 export const RayMenuLabel = /*#__PURE__*/ createComponent("ray-menu-label", {

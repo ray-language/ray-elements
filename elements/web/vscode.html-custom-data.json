@@ -4224,6 +4224,30 @@
         {
           "name": "color",
           "description": "Text and hover color (e.g. red for destructive actions)."
+        },
+        {
+          "name": "type",
+          "description": "checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too.",
+          "values": [
+            {
+              "name": "item"
+            },
+            {
+              "name": "checkbox"
+            },
+            {
+              "name": "radio"
+            }
+          ]
+        },
+        {
+          "name": "checked",
+          "description": "Checked (checkbox and radio items). Already updated when ray-select fires.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "The group of a radio item: one checked per name in the menu."
         }
       ]
     },

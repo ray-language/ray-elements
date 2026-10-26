@@ -9,8 +9,8 @@ export const RayMenu = /*#__PURE__*/ createComponent("RayMenu", "ray-menu", {
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });
 export const RayMenuItem = /*#__PURE__*/ createComponent("RayMenuItem", "ray-menu-item", {
-  properties: ["value", "disabled", "color"],
-  booleans: ["disabled"],
+  properties: ["value", "disabled", "color", "type", "checked", "name"],
+  booleans: ["disabled", "checked"],
 });
 export const RayMenuLabel = /*#__PURE__*/ createComponent("RayMenuLabel", "ray-menu-label", {
   properties: [],

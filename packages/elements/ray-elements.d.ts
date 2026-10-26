@@ -1643,6 +1643,14 @@ export declare class RayMenuItem extends RayElement {
   disabled: boolean | undefined;
   /** Text and hover color (e.g. red for destructive actions). */
   color: string | undefined;
+  /** checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too. */
+  type: "item" | "checkbox" | "radio";
+  /** Checked (checkbox and radio items). Already updated when ray-select fires. */
+  checked: boolean | undefined;
+  /** The group of a radio item: one checked per name in the menu. */
+  name: string | undefined;
+  /** Whether type is checkbox or radio. */
+  readonly checkable: boolean;
 }
 /** <ray-menu-label> A section caption inside the menu. */
 export declare class RayMenuLabel extends RayElement {
