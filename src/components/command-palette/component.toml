@@ -67,6 +67,24 @@ type = "boolean"
 reflect = true
 description = "No keyboard hint at the bottom."
 
+[ray-command-palette.properties.navigateLabel]
+attribute = "navigate-label"
+type = "string"
+default = "navigate"
+description = "The keyboard hint's word for ↑↓."
+
+[ray-command-palette.properties.runLabel]
+attribute = "run-label"
+type = "string"
+default = "run"
+description = "The keyboard hint's word for ↵."
+
+[ray-command-palette.properties.closeLabel]
+attribute = "close-label"
+type = "string"
+default = "close"
+description = "The keyboard hint's word for esc."
+
 [ray-command-palette.properties.nativeMenus]
 attribute = "native-menus"
 type = "boolean"

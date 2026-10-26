@@ -7,6 +7,11 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-command-palette` `navigate-label`, `run-label` and `close-label`: the
+  words of its keyboard hint, which were fixed in English.
+
 ### Fixed
 
 - `ray-icon-button` gives its host the square's width, so an `auto` grid

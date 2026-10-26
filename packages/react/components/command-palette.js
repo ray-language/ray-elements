@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayCommandPalette = /*#__PURE__*/ createComponent("ray-command-palette", {
   displayName: "RayCommandPalette",
-  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "nativeMenus", "overlayBlur"],
+  properties: ["open", "actions", "query", "placeholder", "hotkey", "limit", "emptyLabel", "label", "hideHint", "navigateLabel", "runLabel", "closeLabel", "nativeMenus", "overlayBlur"],
   events: { onRaySelect: "ray-select", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
