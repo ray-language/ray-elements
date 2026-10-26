@@ -1438,6 +1438,8 @@ export interface RayMenuOwnProps {
   offset?: number;
   /** An item was chosen; detail: { value, item }. */
   onRaySelect?: (event: CustomEvent<{ value: string; item: Ray.RayMenuItem }>) => void;
+  /** Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }. */
+  onRayRequestOpen?: (event: CustomEvent<{ event: Event }>) => void;
   /** After it opened. */
   onRayOpen?: (event: CustomEvent<unknown>) => void;
   /** After it closed. */

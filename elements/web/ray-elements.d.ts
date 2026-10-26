@@ -1636,6 +1636,8 @@ export declare class RayMenu extends Floating {
 export interface RayMenuEventMap extends HTMLElementEventMap {
   /** An item was chosen; detail: { value, item }. */
   "ray-select": CustomEvent<{ value: string; item: RayMenuItem }>;
+  /** Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }. */
+  "ray-request-open": CustomEvent<{ event: Event }>;
   /** After it opened. */
   "ray-open": CustomEvent<unknown>;
   /** After it closed. */

@@ -252,7 +252,9 @@ fn run() -> Result<int, string> {
 
 With the bridge: `<ray-file-upload native>` and `<ray-path-input>` use the
 system file dialogs and give real paths, `confirmDialog()` asks with the
-system dialog, `<ray-menu native>` opens a native context menu,
+system dialog, `<ray-menu native>` opens a native context menu (fill
+items that depend on the click in its `ray-request-open`, not in your own
+`contextmenu` listener),
 `<ray-command-palette native-menus>` runs the app's menu bar
 (`bridge.menu`, `bridge.route`), `ray-app-shell` becomes the title bar of a
 `full_content` window, and `trackEdits(form)` shows the unsaved mark. The

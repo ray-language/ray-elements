@@ -6,7 +6,7 @@ import { createComponent } from "../create.js";
 export const RayMenu = /*#__PURE__*/ createComponent("ray-menu", {
   displayName: "RayMenu",
   properties: ["open", "placement", "context", "keepOpen", "native", "offset"],
-  events: { onRaySelect: "ray-select", onRayOpen: "ray-open", onRayClose: "ray-close" },
+  events: { onRaySelect: "ray-select", onRayRequestOpen: "ray-request-open", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
 export const RayMenuItem = /*#__PURE__*/ createComponent("ray-menu-item", {
   displayName: "RayMenuItem",

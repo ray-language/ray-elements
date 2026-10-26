@@ -19,6 +19,7 @@ Also the properties of Floating: `offset`.
 Events:
 
 - `ray-select` (detail `{ value: string; item: RayMenuItem }`): An item was chosen; detail: { value, item }.
+- `ray-request-open` (detail `{ event: Event }`): Its trigger is about to open it (click, Arrow keys, right click), before the items are read, native menu included: fill items that depend on what was clicked here. Cancelable (preventDefault keeps it closed). Not fired by show() or open = true. detail: { event }.
 - `ray-open`: After it opened.
 - `ray-close`: After it closed.
 
@@ -79,6 +80,15 @@ With `native` and [the native bridge](https://elements.raylang.dev/raylang.html#
 ```
 
 Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+
+The native menu reads its items the moment it opens, so items that depend on what was clicked go in `ray-request-open`, which comes first (a `contextmenu` listener of your own on the trigger may run after the menu's):
+
+```js
+menu.addEventListener("ray-request-open", (e) => {
+  const row = e.detail.event.target.closest(".file-row");
+  menu.replaceChildren(menu.querySelector("[slot=trigger]"), ...itemsFor(row));
+});
+```
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 

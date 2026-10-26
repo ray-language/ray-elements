@@ -11,6 +11,11 @@ change the API.
 
 - `ray-command-palette` `navigate-label`, `run-label` and `close-label`: the
   words of its keyboard hint, which were fixed in English.
+- `ray-menu` fires a cancelable `ray-request-open` (`{ event }`) before its
+  trigger opens it, ahead of reading the items: the place to fill items that
+  depend on what was clicked. A native context menu read them in the same
+  `contextmenu` as the app's own listener, so it could show the previous
+  click's items.
 
 ### Fixed
 

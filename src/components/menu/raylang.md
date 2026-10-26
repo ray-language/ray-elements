@@ -11,3 +11,12 @@ With `native` and [the native bridge](RAYLANG.md#using-the-bridge), the menu ope
 ```
 
 Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+
+The native menu reads its items the moment it opens, so items that depend on what was clicked go in `ray-request-open`, which comes first (a `contextmenu` listener of your own on the trigger may run after the menu's):
+
+```js
+menu.addEventListener("ray-request-open", (e) => {
+  const row = e.detail.event.target.closest(".file-row");
+  menu.replaceChildren(menu.querySelector("[slot=trigger]"), ...itemsFor(row));
+});
+```

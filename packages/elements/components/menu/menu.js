@@ -3,7 +3,9 @@
 // context menu opened at the pointer over the trigger area.
 //
 // Choosing an item fires `ray-select` ({ value, item }) on the menu and
-// closes it (unless keep-open).
+// closes it (unless keep-open). Before its trigger opens it, the menu fires
+// a cancelable `ray-request-open` ({ event }): the place to fill items that
+// depend on what was clicked, read only after it.
 //
 // With `native` and a native host that offers "popup_menu" (core/host.js; a
 // std/ui window with core/raylang.js), it opens as the system's context menu
@@ -64,6 +66,7 @@ export class RayMenu extends Floating {
     if (this.context) {
       t.addEventListener("contextmenu", (e) => {
         e.preventDefault();
+        if (!this._requestOpen(e)) return;
         if (this._native()) {
           this.popupNative();
           return;
@@ -84,12 +87,12 @@ export class RayMenu extends Floating {
       });
       return;
     }
-    t.addEventListener("click", () => {
+    t.addEventListener("click", (e) => {
       if (this._native()) {
-        this.popupNative();
+        if (this._requestOpen(e)) this.popupNative();
         return;
       }
-      if (!this.open && this.justClosed()) return;
+      if (!this.open && (this.justClosed() || !this._requestOpen(e))) return;
       this._focusOnOpen = "first";
       this.toggle();
     });
@@ -98,9 +101,18 @@ export class RayMenu extends Floating {
         e.preventDefault();
         this._focusOnOpen = e.key === "ArrowDown" ? "first" : "last";
         if (this.open) this._focus(this._focusOnOpen);
-        else this.open = true;
+        else if (this._requestOpen(e)) this.open = true;
       }
     });
+  }
+
+  /**
+   * Fires ray-request-open before the trigger opens the menu; false when a
+   * listener cancelled it. It comes before the items are read: an app's own
+   * listener on the trigger may run after the menu's.
+   */
+  _requestOpen(event) {
+    return this.emit("ray-request-open", { event }, { cancelable: true });
   }
 
   _native() {

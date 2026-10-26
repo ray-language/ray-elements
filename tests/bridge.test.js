@@ -236,6 +236,38 @@ T.test("menu native: the system's context menu", async (T) => {
   box.remove();
 });
 
+T.test("menu native: ray-request-open fills the items before they are read", async (T) => {
+  const box = await mount(`
+    <ray-menu native context>
+      <div slot="trigger"><div class="row" data-kind="folder">Folder</div><div class="row" data-kind="request">Request</div></div>
+    </ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const host = getHost();
+  const original = host.popupMenu;
+  const sent = [];
+  host.popupMenu = (items) => { sent.push(items.map((i) => i.title).join()); return Promise.resolve(null); };
+  menu.addEventListener("ray-request-open", (e) => {
+    for (const item of menu.querySelectorAll("ray-menu-item")) item.remove();
+    const kind = e.detail.event.target.dataset.kind;
+    for (const label of kind === "folder" ? ["New request", "Rename folder"] : ["Duplicate"]) {
+      const item = document.createElement("ray-menu-item");
+      item.textContent = label;
+      menu.append(item);
+    }
+  });
+  const rightClick = (el) => el.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
+  const [folder, request] = box.querySelectorAll(".row");
+  rightClick(folder);
+  rightClick(request);
+  const cancel = (e) => e.preventDefault();
+  menu.addEventListener("ray-request-open", cancel);
+  rightClick(folder);
+  await T.settle();
+  host.popupMenu = original;
+  T.eq(sent.join(" | "), "New request,Rename folder | Duplicate", "each click's own items; a cancelled request shows nothing");
+  box.remove();
+});
+
 T.test("menu native: a dropdown too; a newer popup settles the older", async (T) => {
   const box = await mount(`<ray-menu native><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
   const menu = box.querySelector("ray-menu");
