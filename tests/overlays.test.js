@@ -329,6 +329,40 @@ T.test("menu: ray-request-open comes before it opens; cancelling keeps it closed
   box.remove();
 });
 
+T.test("tabs: too many for the width — the hidden edge is marked, the wheel scrolls, the selected tab shows", async (T) => {
+  const names = ["Params", "Headers", "Body", "Auth", "Tests", "Variables", "Scripts", "Settings"];
+  const tabs = names.map((n) => `<ray-tab value="${n}">${n}</ray-tab>`).join("");
+  const box = await mount(`<ray-tabs style="width: 220px">${tabs}</ray-tabs><ray-tabs style="width: 220px" dir="rtl">${tabs}</ray-tabs><ray-tabs style="width: 900px">${tabs}</ray-tabs>`);
+  const [el, rtl, wide] = box.querySelectorAll("ray-tabs");
+  const list = el.shadowRoot.querySelector('[part="list"]');
+  const marks = (t) => `${t.hasAttribute("data-overflow-start")},${t.hasAttribute("data-overflow-end")}`;
+  T.eq(marks(el), "false,true", "at the start: more at the end");
+  T.ok(getComputedStyle(list).maskImage !== "none" || getComputedStyle(list).webkitMaskImage !== "none", "the end fades");
+  T.eq(marks(wide), "false,false", "all fit: no marks");
+  T.eq(getComputedStyle(wide.shadowRoot.querySelector('[part="list"]')).webkitMaskImage, "none", "and no fade");
+  el.value = "Settings";
+  await T.settle();
+  const last = el.querySelector('ray-tab[value="Settings"]').getBoundingClientRect();
+  const l = list.getBoundingClientRect();
+  T.ok(last.right <= l.right + 1 && last.left >= l.left - 1, "the selected tab scrolled into view");
+  T.eq(marks(el), "true,false", "now more at the start");
+  const wheel = (dy) => {
+    const e = new WheelEvent("wheel", { deltaY: dy, bubbles: true, cancelable: true });
+    list.dispatchEvent(e);
+    return e.defaultPrevented;
+  };
+  T.eq(wheel(120), false, "at the end the wheel is the page's");
+  const before = list.scrollLeft;
+  T.eq(wheel(-120), true, "a vertical wheel scrolls the list");
+  T.ok(list.scrollLeft < before, `back toward the start (${before} → ${list.scrollLeft})`);
+  T.eq(marks(rtl), "false,true", "right to left: more at the end (the left)");
+  rtl.value = "Settings";
+  await T.settle();
+  T.ok(rtl.shadowRoot.querySelector('[part="list"]').scrollLeft < 0, "scrolled toward the left");
+  T.eq(marks(rtl), "true,false");
+  box.remove();
+});
+
 // --- notifications ----------------------------------------------------------
 
 T.test("notify: shows in a live region, updates, hides, auto-closes", async (T) => {

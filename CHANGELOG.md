@@ -22,6 +22,12 @@ change the API.
 - `ray-tabs` `size` (`xs` to `xl`, `sm` by default): the height, font size
   and padding of its tabs, for a compact tab bar without restyling each
   `ray-tab` from outside.
+- `ray-tabs` with more tabs than width says so: the edge that hides tabs
+  fades out, a vertical wheel scrolls the list sideways, and the selected
+  tab scrolls into view when `value` changes. The host carries
+  `data-overflow-start` / `data-overflow-end` to style it further. Before,
+  the list scrolled with no sign, and with a mouse without a trackpad the
+  hidden tabs were reachable only from the keyboard.
 
 ### Fixed
 
