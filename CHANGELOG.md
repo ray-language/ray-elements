@@ -7,6 +7,14 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-sidebar` `collapse="offcanvas"`: collapsed on a wide screen, the
+  sidebar leaves no width and drops out of the tab order instead of
+  becoming an icon rail (`collapse="icon"`, the default). Its docs now say
+  what it is for (navigation) and what to use for content such as a tree
+  of documents (a `ray-split` pane).
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

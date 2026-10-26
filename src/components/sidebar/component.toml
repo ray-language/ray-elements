@@ -1,7 +1,7 @@
 [component]
 name = "Sidebar"
 category = "Navigation"
-summary = "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen."
+summary = "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed)."
 files = ["sidebar.js"]
 requires = []
 tags = ["ray-sidebar", "ray-sidebar-group"]
@@ -14,7 +14,14 @@ extends = "RayElement"
 [ray-sidebar.properties.collapsed]
 type = "boolean"
 reflect = true
-description = "Wide screens: an icon rail instead of the full panel."
+description = "Wide screens: collapsed as collapse says (an icon rail, or out of view)."
+
+[ray-sidebar.properties.collapse]
+type = "string"
+values = ["icon", "offcanvas"]
+default = "icon"
+reflect = true
+description = "What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order)."
 
 [ray-sidebar.properties.open]
 type = "boolean"

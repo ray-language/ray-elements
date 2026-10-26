@@ -298,7 +298,7 @@ export default [
   {
     "label": "Sidebar",
     "group": "Components · Navigation",
-    "description": "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen.",
+    "description": "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed).",
     "href": "components/sidebar.html",
     "keywords": [
       "sidebar",

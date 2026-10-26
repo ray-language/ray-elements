@@ -10169,8 +10169,17 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Wide screens: an icon rail instead of the full panel.",
+              "description": "Wide screens: collapsed as collapse says (an icon rail, or out of view).",
               "fieldName": "collapsed"
+            },
+            {
+              "name": "collapse",
+              "type": {
+                "text": "\"icon\" | \"offcanvas\""
+              },
+              "description": "What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order).",
+              "fieldName": "collapse",
+              "default": "icon"
             },
             {
               "name": "open",
@@ -10240,9 +10249,20 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Wide screens: an icon rail instead of the full panel.",
+              "description": "Wide screens: collapsed as collapse says (an icon rail, or out of view).",
               "attribute": "collapsed",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "collapse",
+              "type": {
+                "text": "\"icon\" | \"offcanvas\""
+              },
+              "description": "What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order).",
+              "attribute": "collapse",
+              "reflects": true,
+              "default": "icon"
             },
             {
               "kind": "field",

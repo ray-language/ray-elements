@@ -1,6 +1,7 @@
 // <ray-sidebar>: the side navigation of an app shell (shadcn's Sidebar).
 // Header, content and footer slots; on wide screens a panel that can
-// collapse to an icon rail (`collapsed`); below `breakpoint` an off-canvas
+// collapse (`collapsed`) to an icon rail, or out of view with
+// collapse="offcanvas"; below `breakpoint` an off-canvas
 // drawer (`open`): a modal <dialog> sliding in from its side, with focus
 // trapped, Escape and backdrop click closing it.
 //
@@ -26,6 +27,10 @@ const styles = css`
     transition: width var(--ray-duration-base) var(--ray-easing-standard);
   }
   :host([collapsed]:not([data-mobile])) { width: var(--_rail); }
+  /* offcanvas: collapsed is out of view, and out of the tab order once the
+     width has animated to 0 (visibility waits for it; showing does not). */
+  :host([collapse="offcanvas"][collapsed]:not([data-mobile])) { width: 0; padding: 0; }
+  :host([collapse="offcanvas"][collapsed]:not([data-mobile])) .panel { visibility: hidden; transition: visibility 0s var(--ray-duration-base); }
   :host([data-mobile]) { width: 0; }
   .panel {
     box-sizing: border-box;
@@ -81,6 +86,7 @@ const styles = css`
 export class RaySidebar extends RayElement {
   static properties = {
     collapsed: { type: Boolean, reflect: true },
+    collapse: { type: String, reflect: true, default: "icon" },
     open: { type: Boolean, reflect: true },
     side: { type: String, reflect: true, default: "start" },
     variant: { type: String, reflect: true, default: "sidebar" },
@@ -182,7 +188,7 @@ export class RaySidebar extends RayElement {
     else this.style.removeProperty("--_rail");
     this.$(".content").setAttribute("aria-label", this.label ?? "Sidebar");
     if (changed.has("breakpoint") && this.isConnected) this._watch();
-    if (changed.has("collapsed")) this._syncCollapsed();
+    if (changed.has("collapsed") || changed.has("collapse")) this._syncCollapsed();
     if (changed.has("open") && this.mobile) {
       if (this.open && this.#exit) {
         this.#exit.cancel();
@@ -217,7 +223,7 @@ export class RaySidebar extends RayElement {
 
   // The rail shows icons only: nav links and group titles follow.
   _syncCollapsed() {
-    const rail = Boolean(this.collapsed) && !this.mobile;
+    const rail = Boolean(this.collapsed) && !this.mobile && this.collapse !== "offcanvas";
     for (const el of this.querySelectorAll("ray-nav-link")) el.iconOnly = rail;
     for (const el of this.querySelectorAll("ray-sidebar-group")) el.toggleAttribute("collapsed", rail);
   }

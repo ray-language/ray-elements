@@ -1230,8 +1230,10 @@ export interface RayPaginationProps {
 export declare const RayPagination: DefineComponent<RayPaginationProps>;
 
 export interface RaySidebarProps {
-  /** Wide screens: an icon rail instead of the full panel. */
+  /** Wide screens: collapsed as collapse says (an icon rail, or out of view). */
   collapsed?: boolean;
+  /** What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order). */
+  collapse?: "icon" | "offcanvas";
   /** Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it). */
   open?: boolean;
   /** The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen. */
