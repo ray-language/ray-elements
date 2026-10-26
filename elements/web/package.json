@@ -84,6 +84,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/input/input.js"
     },
+    "./mode-input": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/mode-input/mode-input.js"
+    },
     "./number-input": {
       "types": "./ray-elements.d.ts",
       "default": "./components/number-input/number-input.js"

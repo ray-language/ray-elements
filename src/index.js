@@ -12,6 +12,7 @@ import "./components/combobox/combobox.js";
 import "./components/date-picker/date-picker.js";
 import "./components/file-upload/file-upload.js";
 import "./components/input/input.js";
+import "./components/mode-input/mode-input.js";
 import "./components/number-input/number-input.js";
 import "./components/password-input/password-input.js";
 import "./components/path-input/path-input.js";

@@ -9,6 +9,14 @@ change the API.
 
 ### Added
 
+- `ray-mode-input`: a text field with a menu of modes on one side; choosing
+  a mode applies its attributes to the field (`type`, `placeholder`,
+  `pattern`…), so one control says what a value is and the value (text or
+  a file, € or $, by name or ID). Modes come from `<option>` children
+  (`data-set-<attribute>`) or `options`; `ray-mode-change` is cancelable;
+  the menu is native with `native-menu`. Everything else is `ray-input`.
+- EXTENDING.md: putting a ray-element, such as a `ray-menu`, in your
+  component's shadow root.
 - `ray-menu-item` `type="checkbox"` and `type="radio"` (with `name`), and
   `checked`: choosing one toggles it, or checks it and unchecks the other
   radio items of its group, before `ray-select`; it shows a check mark,

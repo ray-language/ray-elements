@@ -162,6 +162,37 @@ export class AppSaveButton extends RayButton {
 define("app-save-button", AppSaveButton);
 ```
 
+### A ray-element inside your component's shadow root
+
+Components compose inside a template as in a page: import the module that
+defines them and write the markup. A `ray-menu` in the shadow root (what
+`ray-mode-input` does for its modes):
+
+```js
+import { RayInput, define, fieldTemplate } from "@raylang/elements";
+
+export class AppPickInput extends RayInput {
+  static template = fieldTemplate(
+    `<input id="control" class="control" part="input">` +
+    `<ray-menu class="menu" part="menu"><button type="button" slot="trigger" class="focus-ring">…</button></ray-menu>`,
+  );
+
+  wire() {
+    super.wire();
+    this.$(".menu").addEventListener("ray-select", (e) => {
+      e.stopPropagation();   // an internal event: fire your own instead
+      this.emit("app-pick", { value: e.detail.value });
+    });
+  }
+}
+define("app-pick-input", AppPickInput);
+```
+
+Its items can be created in `update` (`document.createElement("ray-menu-item")`,
+appended to the menu); its panel goes to the top layer, so `overflow: hidden`
+around your component does not clip it. Events of the inner component are
+`composed`: stop the ones that are details of your implementation.
+
 ## Types, manifest and React/Vue wrappers for your components
 
 Describe each component in a `component.toml` (same format as ray-elements's, any

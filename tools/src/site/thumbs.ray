@@ -60,6 +60,7 @@ fn thumbs() -> [(string, string)] {
         ("file-upload", "<i class=\"t-drop\">" + svg(I_UP) + ln("4.5rem") + "</i>"),
         ("input", col(ln("2.5rem") + inp("9rem", ln("4rem")))),
         ("path-input", col(ln("3rem") + inp("10rem", "<i class=\"t-gl\">" + svg(I_FOLDER) + "</i>" + ln("3.5rem") + "<i class=\"t-grow\"></i>" + btn("l", "1.6rem")))),
+        ("mode-input", col(ln("3rem") + inp("10rem", "<i class=\"t-gl\">" + txt("", "€") + svg(I_DOWN) + "</i>" + ln("4rem")))),
         ("password-input", col(ln("3rem") + inp("9rem", txt("dots", "••••••••") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_EYE) + "</i>"))),
         ("radio", col(row(rd(false) + ln("3.5rem")) + row(rd(true) + ln("4.5rem")) + row(rd(false) + ln("3rem")))),
         ("search", inp("10rem", "<i class=\"t-gl\">" + svg(I_SEARCH) + "</i>" + ln("4rem") + "<i class=\"t-grow\"></i>" + txt("key", "⌘K"))),

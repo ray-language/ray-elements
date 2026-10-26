@@ -403,6 +403,33 @@ configure({ defaults: { <span class="tk-string">&quot;ray-button&quot;</span>: {
   }
 }
 define(<span class="tk-string">&quot;app-save-button&quot;</span>, AppSaveButton);</code></pre>
+<h3 id="a-ray-element-inside-your-component-s-shadow-root">A ray-element inside your component's shadow root</h3>
+<p>Components compose inside a template as in a page: import the module that
+defines them and write the markup. A <code>ray-menu</code> in the shadow root (what
+<code>ray-mode-input</code> does for its modes):</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> { RayInput, define, fieldTemplate } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">class</span> AppPickInput <span class="tk-keyword">extends</span> RayInput {
+  <span class="tk-keyword">static</span> template = fieldTemplate(
+    <span class="tk-string">`&lt;input id=&quot;control&quot; class=&quot;control&quot; part=&quot;input&quot;&gt;`</span> +
+    <span class="tk-string">`&lt;ray-menu class=&quot;menu&quot; part=&quot;menu&quot;&gt;&lt;button type=&quot;button&quot; slot=&quot;trigger&quot; class=&quot;focus-ring&quot;&gt;…&lt;/button&gt;&lt;/ray-menu&gt;`</span>,
+  );
+
+  wire() {
+    <span class="tk-keyword">super</span>.wire();
+    <span class="tk-keyword">this</span>.$(<span class="tk-string">&quot;.menu&quot;</span>).addEventListener(<span class="tk-string">&quot;ray-select&quot;</span>, (e) =&gt; {
+      e.stopPropagation();   <span class="tk-comment">// an internal event: fire your own instead</span>
+      <span class="tk-keyword">this</span>.emit(<span class="tk-string">&quot;app-pick&quot;</span>, { value: e.detail.value });
+    });
+  }
+}
+define(<span class="tk-string">&quot;app-pick-input&quot;</span>, AppPickInput);</code></pre>
+<p>Its items can be created in <code>update</code> (<code>document.createElement(&quot;ray-menu-item&quot;)</code>,
+appended to the menu); its panel goes to the top layer, so <code>overflow: hidden</code>
+around your component does not clip it. Events of the inner component are
+<code>composed</code>: stop the ones that are details of your implementation.</p>
+
 <h2 id="types-manifest-and-react-vue-wrappers-for-your-components">Types, manifest and React/Vue wrappers for your components</h2>
 <p>Describe each component in a <code>component.toml</code> (same format as ray-elements's, any
 <code>category</code>, <code>extends</code> naming its parent class) next to its JS, then:</p>

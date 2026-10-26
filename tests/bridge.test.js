@@ -253,6 +253,29 @@ T.test("menu native: checkbox and radio items carry checked", async (T) => {
   box.remove();
 });
 
+T.test("mode-input native-menu: the system's menu, radio checks, no descriptions", async (T) => {
+  await customElements.whenDefined("ray-mode-input");
+  const box = await mount(`<ray-mode-input native-menu label="Part" mode="text">
+    <option value="text" label="Text" data-description="As typed"></option>
+    <option value="file" label="File" data-description="From disk"></option>
+  </ray-mode-input>`);
+  const el = box.firstElementChild;
+  const host = getHost();
+  const original = host.popupMenu;
+  let sent = null;
+  host.popupMenu = (items) => { sent = items; return Promise.resolve(1); };
+  let changed = null;
+  el.addEventListener("ray-mode-change", (e) => { changed = e.detail.mode; });
+  el.shadowRoot.querySelector('[part="trigger"]').click();
+  await T.settle();
+  await T.settle();
+  host.popupMenu = original;
+  T.eq(JSON.stringify(sent), JSON.stringify([{ title: "Text", enabled: true, checked: true }, { title: "File", enabled: true, checked: false }]));
+  T.eq(changed, "file", "the choice switches the mode");
+  T.eq(el.mode, "file");
+  box.remove();
+});
+
 T.test("menu native: a dropdown too; a newer popup settles the older", async (T) => {
   const box = await mount(`<ray-menu native><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
   const menu = box.querySelector("ray-menu");

@@ -1646,6 +1646,234 @@
       ]
     },
     {
+      "name": "ray-mode-input",
+      "description": "Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field.",
+      "attributes": [
+        {
+          "name": "mode",
+          "description": "The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change."
+        },
+        {
+          "name": "display",
+          "description": "What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.",
+          "values": [
+            {
+              "name": "label"
+            },
+            {
+              "name": "icon"
+            },
+            {
+              "name": "both"
+            }
+          ]
+        },
+        {
+          "name": "position",
+          "description": "The side of the field the trigger sits on.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        },
+        {
+          "name": "menu-label",
+          "description": "The trigger's accessible name, read with the current mode (\"Mode: File\")."
+        },
+        {
+          "name": "native-menu",
+          "description": "With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).",
+          "valueSet": "v"
+        },
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial value (restored on form reset)."
+        },
+        {
+          "name": "type",
+          "description": "Input type.",
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "email"
+            },
+            {
+              "name": "password"
+            },
+            {
+              "name": "search"
+            },
+            {
+              "name": "number"
+            },
+            {
+              "name": "url"
+            },
+            {
+              "name": "tel"
+            }
+          ]
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "description-position",
+          "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid (display only — does not block submit)."
+        },
+        {
+          "name": "placeholder",
+          "description": "Placeholder text."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission; shows an asterisk.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not editable nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "Not editable, still submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Height and font size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "autocomplete",
+          "description": "Forwarded to the inner input."
+        },
+        {
+          "name": "inputmode",
+          "description": "Virtual keyboard hint."
+        },
+        {
+          "name": "pattern",
+          "description": "Validation pattern (regular expression)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum (number/date types)."
+        },
+        {
+          "name": "max",
+          "description": "Maximum (number/date types)."
+        },
+        {
+          "name": "step",
+          "description": "Step (number types)."
+        },
+        {
+          "name": "minlength",
+          "description": "Minimum length."
+        },
+        {
+          "name": "maxlength",
+          "description": "Maximum length."
+        },
+        {
+          "name": "autocapitalize",
+          "description": "Mobile auto-capitalization."
+        },
+        {
+          "name": "enterkeyhint",
+          "description": "Label of the Enter key on virtual keyboards."
+        },
+        {
+          "name": "list",
+          "description": "Id of a <datalist> with suggestions."
+        }
+      ]
+    },
+    {
       "name": "ray-number-input",
       "description": "Arrow Up/Down step (Shift: ×10), Page Up/Down ×10, Home/End go to min/max. The value is a number (undefined when empty); the form gets its plain digits; min and max are checked (rangeUnderflow, rangeOverflow). Enter submits its form, as in ray-input.",
       "attributes": [
