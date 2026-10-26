@@ -1823,11 +1823,16 @@ Properties:
 
 - `value`: string, reflects. Matches a ray-tab-panel's value.
 - `disabled`: boolean, reflects. Cannot be activated.
+- `count`: string, reflects. A small number after the label ("3", "99+"), lighter than a badge; part of the tab's accessible name. Empty: none.
 
 Slots:
 
 - `left`: Icon.
-- `right`: Badge or count.
+- `right`: A badge or other content after the label (for a plain number, count is lighter).
+
+Parts (`::part()`):
+
+- `count`: The count.
 
 #### `<ray-tab-panel>` (RayTabPanel, extends RayElement)
 

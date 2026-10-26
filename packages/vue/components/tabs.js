@@ -9,7 +9,7 @@ export const RayTabs = /*#__PURE__*/ createComponent("RayTabs", "ray-tabs", {
   model: { prop: "value", events: ["change"] },
 });
 export const RayTab = /*#__PURE__*/ createComponent("RayTab", "ray-tab", {
-  properties: ["value", "disabled"],
+  properties: ["value", "disabled", "count"],
   booleans: ["disabled"],
 });
 export const RayTabPanel = /*#__PURE__*/ createComponent("RayTabPanel", "ray-tab-panel", {

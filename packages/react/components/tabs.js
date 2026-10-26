@@ -10,7 +10,7 @@ export const RayTabs = /*#__PURE__*/ createComponent("ray-tabs", {
 });
 export const RayTab = /*#__PURE__*/ createComponent("ray-tab", {
   displayName: "RayTab",
-  properties: ["value", "disabled"],
+  properties: ["value", "disabled", "count"],
   events: {  },
 });
 export const RayTabPanel = /*#__PURE__*/ createComponent("ray-tab-panel", {

@@ -397,6 +397,23 @@ T.test("tabs: too many for the width — the hidden edge is marked, the wheel sc
   box.remove();
 });
 
+T.test("tabs: count, a small number after the label", async (T) => {
+  const box = await mount(`<ray-tabs><ray-tab value="a">Tests</ray-tab><ray-tab value="b" count="2">Headers</ray-tab></ray-tabs>`);
+  const [a, b] = box.querySelectorAll("ray-tab");
+  const count = (t) => t.shadowRoot.querySelector('[part="count"]');
+  T.eq(getComputedStyle(count(a)).display, "none", "no count: nothing");
+  T.eq(count(b).textContent, "2");
+  T.ok(parseFloat(getComputedStyle(count(b)).fontSize) < parseFloat(getComputedStyle(b).fontSize), "smaller than the label");
+  a.count = "99+";
+  await T.settle();
+  T.eq(a.getAttribute("count"), "99+", "reflected");
+  T.eq(count(a).textContent, "99+");
+  a.count = "";
+  await T.settle();
+  T.eq(getComputedStyle(count(a)).display, "none", "emptied: gone");
+  box.remove();
+});
+
 // --- notifications ----------------------------------------------------------
 
 T.test("notify: shows in a live region, updates, hides, auto-closes", async (T) => {

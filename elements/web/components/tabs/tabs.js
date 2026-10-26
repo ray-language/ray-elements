@@ -257,15 +257,20 @@ const tabStyles = css`
   .section { display: inline-flex; }
   .section:not([data-filled]) { display: none; }
   ::slotted(svg) { width: 1rem; height: 1rem; }
+  /* count: a small number after the label, lighter than a badge. */
+  .count { font-size: 0.85em; font-variant-numeric: tabular-nums; color: var(--ray-muted-foreground); }
+  .count:empty { display: none; }
+  :host([data-active]) .count, :host(:hover) .count { color: inherit; opacity: 0.75; }
 `;
 
 export class RayTab extends RayElement {
   static properties = {
     value: { type: String, reflect: true },
     disabled: { type: Boolean, reflect: true },
+    count: { type: String, reflect: true },
   };
   static styles = [tabStyles];
-  static template = `<span class="section" part="left-section"><slot name="left"></slot></span><slot></slot><span class="section" part="right-section"><slot name="right"></slot></span>`;
+  static template = `<span class="section" part="left-section"><slot name="left"></slot></span><slot></slot><span class="count" part="count"></span><span class="section" part="right-section"><slot name="right"></slot></span>`;
 
   constructor() {
     super();
@@ -281,6 +286,7 @@ export class RayTab extends RayElement {
   }
 
   update(changed) {
+    this.$(".count").textContent = this.count ?? "";
     if (changed.has("value") || changed.has("disabled")) this.closest("ray-tabs")?.requestUpdate();
   }
 }

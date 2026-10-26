@@ -11235,6 +11235,14 @@
               },
               "description": "Cannot be activated.",
               "fieldName": "disabled"
+            },
+            {
+              "name": "count",
+              "type": {
+                "text": "string"
+              },
+              "description": "A small number after the label (\"3\", \"99+\"), lighter than a badge; part of the tab's accessible name. Empty: none.",
+              "fieldName": "count"
             }
           ],
           "members": [
@@ -11257,6 +11265,16 @@
               "description": "Cannot be activated.",
               "attribute": "disabled",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "string"
+              },
+              "description": "A small number after the label (\"3\", \"99+\"), lighter than a badge; part of the tab's accessible name. Empty: none.",
+              "attribute": "count",
+              "reflects": true
             }
           ],
           "events": [],
@@ -11267,10 +11285,15 @@
             },
             {
               "name": "right",
-              "description": "Badge or count."
+              "description": "A badge or other content after the label (for a plain number, count is lighter)."
             }
           ],
-          "cssParts": []
+          "cssParts": [
+            {
+              "name": "count",
+              "description": "The count."
+            }
+          ]
         },
         {
           "kind": "class",

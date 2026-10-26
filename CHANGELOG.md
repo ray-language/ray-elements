@@ -45,6 +45,9 @@ change the API.
 - `ray-command-palette` actions take `prefix`: text or a node of any width
   before the label (a colored HTTP method, a status), where `icon` is a
   small square.
+- `ray-tab` `count`: a small number after the label (`"3"`, `"99+"`),
+  lighter than a `ray-badge`, for tab bars where a pill per tab does not
+  fit.
 
 ### Changed
 
