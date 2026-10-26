@@ -26,7 +26,7 @@ Types:
 
 - `"close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {})`: An icon name: one of the default set, or any name an app registers with setIcons().
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
 
 ## Example
 

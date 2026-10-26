@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-25
+
 ### Added
 
 - `ray-command-palette` `navigate-label`, `run-label` and `close-label`: the
