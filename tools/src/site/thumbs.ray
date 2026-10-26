@@ -69,6 +69,7 @@ fn thumbs() -> [(string, string)] {
         ("switch", col(row(sw(true) + ln("3.5rem")) + row(sw(false) + ln("2.75rem")))),
         ("textarea", col(ln("3rem") + "<i class=\"t-in tall\" style=\"--w:10rem\">" + ln("8rem") + ln("7rem") + ln("4rem") + "</i>")),
         // Navigation
+        ("doc-tabs", col("<i class=\"t-doctabs\"><i class=\"on\">" + lp("2.5rem") + txt("x", "×") + "</i><i>" + ln("2rem") + dot("blue") + "</i><i>" + ln("1.75rem") + "</i></i>" + ln("8rem") + ln("6rem"))),
         ("nav-link", sf("nav", "<i>" + ln("3rem") + "</i><i class=\"on\">" + lp("4rem") + "</i><i>" + ln("3.5rem") + "</i>")),
         ("pagination", row(sq("o sm", svg("<path d=\"M15 6l-6 6 6 6\"/>")) + sq("o sm", txt("", "1")) + sq("f sm", txt("", "2")) + sq("o sm", txt("", "3")) + sq("o sm", svg(I_RIGHT)))),
         ("sidebar", sf("shell", "<i class=\"side\">" + lp("2rem") + ln("2.5rem") + ln("2rem") + ln("2.25rem") + "</i><i class=\"body\">" + ln("5rem") + ln("6rem") + ln("4rem") + "</i>")),

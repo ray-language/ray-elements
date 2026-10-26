@@ -132,6 +132,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/breadcrumbs/breadcrumbs.js"
     },
+    "./doc-tabs": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/doc-tabs/doc-tabs.js"
+    },
     "./nav-link": {
       "types": "./ray-elements.d.ts",
       "default": "./components/nav-link/nav-link.js"

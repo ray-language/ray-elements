@@ -28,6 +28,7 @@ export { RaySwitch } from "./components/switch.js";
 export { RayTextarea } from "./components/textarea.js";
 export { RayBottomNav, RayBottomNavItem } from "./components/bottom-nav.js";
 export { RayBreadcrumbs, RayBreadcrumb } from "./components/breadcrumbs.js";
+export { RayDocTabs, RayDocTab } from "./components/doc-tabs.js";
 export { RayNavLink } from "./components/nav-link.js";
 export { RayPagination } from "./components/pagination.js";
 export { RaySidebar, RaySidebarGroup } from "./components/sidebar.js";

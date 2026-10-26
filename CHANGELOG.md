@@ -9,6 +9,14 @@ change the API.
 
 ### Added
 
+- `ray-doc-tabs` + `ray-doc-tab`: the tabs of open documents over one
+  shared panel (`panel`, WAI-ARIA tabs). Each tab has an icon or tag slot,
+  its name, and a × (or, with `dirty`, an unsaved dot that turns into the ×
+  under the pointer); the ×, a middle click or Delete fire
+  `ray-request-close` and the app removes the tab. The tab that takes the
+  closed one's place is selected and, if the closed tab had the focus,
+  focused. An `end` slot holds a new-tab button; too many tabs scroll
+  sideways like `ray-tabs`.
 - `ray-tabs` with more tabs than width says so: the edge that hides tabs
   fades out, a vertical wheel scrolls the list sideways, and the selected
   tab scrolls into view when `value` changes. The host carries

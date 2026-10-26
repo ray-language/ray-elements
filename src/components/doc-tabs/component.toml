@@ -1,0 +1,102 @@
+[component]
+name = "Document tabs"
+category = "Navigation"
+summary = "The tabs of open documents (an editor's, a browser's): closable, with an unsaved mark, all over one shared panel; WAI-ARIA tabs with arrows, Home/End and Delete to close. The app closes them: ray-request-close asks."
+files = ["doc-tabs.js"]
+requires = []
+tags = ["ray-doc-tabs", "ray-doc-tab"]
+
+[ray-doc-tabs]
+class = "RayDocTabs"
+extends = "RayElement"
+summary = "Unlike ray-tabs, a tab has no panel of its own: they all control the element named by panel, whose content the app fills for the selected one. Closing is the app's: the ×, a middle click or Delete/Backspace fire ray-request-close, and the app removes the tab (after asking about unsaved changes, if it must). When the selected tab is removed, the one at its place is selected (change) and, if the closed tab had the focus, focused. More tabs than width: the bar scrolls sideways, fades the edge that hides tabs (data-overflow-start / data-overflow-end on the host), scrolls with a vertical wheel and keeps the selected tab in view."
+
+[ray-doc-tabs.properties.value]
+type = "string"
+description = "Value of the selected tab (default: the first)."
+
+[ray-doc-tabs.properties.panel]
+type = "string"
+description = "The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls."
+
+[ray-doc-tabs.properties.label]
+type = "string"
+description = "Accessible name of the tab list (\"Open requests\")."
+
+[ray-doc-tabs.properties.closeLabel]
+attribute = "close-label"
+type = "string"
+default = "Close"
+description = "Tooltip of the ×."
+
+[ray-doc-tabs.properties.dirtyLabel]
+attribute = "dirty-label"
+type = "string"
+default = "Unsaved changes"
+description = "What assistive technology hears after the name of a dirty tab."
+
+[ray-doc-tabs.events.change]
+description = "The selected tab changed: a click, the arrow keys, or the selected tab removed."
+
+[ray-doc-tabs.events.ray-request-close]
+detail = "{ value: string; tab: RayDocTab; source: \"button\" | \"middle\" | \"key\" }"
+description = "The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs)."
+
+[ray-doc-tabs.slots.default]
+description = "ray-doc-tab elements."
+
+[ray-doc-tabs.slots.end]
+description = "After the tabs, outside the scrolling list: a new-tab button."
+
+[ray-doc-tabs.parts.list]
+description = "The tab list (it scrolls sideways when the tabs do not fit)."
+
+[ray-doc-tabs.parts.end]
+description = "The end slot's box."
+
+[ray-doc-tabs.members.tabs]
+ts = "readonly tabs: RayDocTab[]"
+description = "Its tabs, in order."
+
+[ray-doc-tabs.members.panelElement]
+ts = "readonly panelElement: HTMLElement | null"
+description = "The shared panel, found by the panel id."
+
+[ray-doc-tab]
+class = "RayDocTab"
+extends = "RayElement"
+summary = "A document's tab: an icon or tag (slot left), its name (cut with an ellipsis; give the full one in title), and the × or the unsaved dot."
+
+[ray-doc-tab.properties.value]
+type = "string"
+reflect = true
+description = "Identifies the document (ray-doc-tabs value)."
+
+[ray-doc-tab.properties.dirty]
+type = "boolean"
+reflect = true
+description = "Unsaved changes: a dot in place of the ×, which comes back under the pointer."
+
+[ray-doc-tab.properties.hideClose]
+attribute = "hide-close"
+type = "boolean"
+reflect = true
+description = "Cannot be closed: no ×, no middle click, no Delete."
+
+[ray-doc-tab.slots.default]
+description = "The document's name."
+
+[ray-doc-tab.slots.left]
+description = "An icon or a tag (a file type, an HTTP method)."
+
+[ray-doc-tab.parts.label]
+description = "The name."
+
+[ray-doc-tab.parts.left-section]
+description = "The left slot's box."
+
+[ray-doc-tab.parts.close]
+description = "The × (pointer only: it is not focusable)."
+
+[ray-doc-tab.parts.dot]
+description = "The unsaved mark."

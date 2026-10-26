@@ -274,6 +274,18 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Document tabs",
+    "group": "Components · Navigation",
+    "description": "The tabs of open documents (an editor's, a browser's): closable, with an unsaved mark, all over one shared panel; WAI-ARIA tabs with arrows, Home/End and Delete to close. The app closes them: ray-request-close asks.",
+    "href": "components/doc-tabs.html",
+    "keywords": [
+      "doc-tabs",
+      "ray-doc-tabs",
+      "ray-doc-tab"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Nav link",
     "group": "Components · Navigation",
     "description": "A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.",
