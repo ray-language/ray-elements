@@ -25,6 +25,8 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Font size.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
 - `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
+- `complete` (property only): `((text: string, caret: number) => CompletionResult | null | Promise<CompletionResult | null>) | null`. Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant).
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. Accessible name of the suggestion list.
 
 Also the properties of FieldControl: `radius`.
 
@@ -38,6 +40,7 @@ Attributes (forwarded to the inner element):
 
 Events:
 
+- `ray-complete` (detail `{ item: CompletionItem; from: number; to: number }`): A suggestion was accepted (the text already has it).
 - `input`: On every edit.
 - `change`: When an edit is committed.
 
@@ -45,6 +48,8 @@ Parts (`::part()`):
 
 - `textarea`: The inner <textarea>.
 - `wrapper`: The box.
+- `suggestions`: The suggestion list (a listbox in the top layer).
+- `suggestion`: Each suggestion ([aria-selected] when active).
 - `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
 - `text-layer`: The layer behind the text that holds the marks.
 

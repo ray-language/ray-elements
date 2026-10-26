@@ -25,6 +25,8 @@ Properties:
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
 - `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
+- `complete` (property only): `((text: string, caret: number) => CompletionResult | null | Promise<CompletionResult | null>) | null`. Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant).
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. Accessible name of the suggestion list.
 
 Attributes (forwarded to the inner element):
 
@@ -42,6 +44,7 @@ Attributes (forwarded to the inner element):
 
 Events:
 
+- `ray-complete` (detail `{ item: CompletionItem; from: number; to: number }`): A suggestion was accepted (the text already has it).
 - `input`: On every edit (value already updated).
 - `change`: When an edit is committed (blur, Enter).
 
@@ -57,6 +60,8 @@ Parts (`::part()`):
 - `label`: The label.
 - `description`: The description.
 - `error`: The error message.
+- `suggestions`: The suggestion list (a listbox in the top layer).
+- `suggestion`: Each suggestion ([aria-selected] when active).
 - `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
 - `text-layer`: The layer behind the text that holds the marks.
 
@@ -70,6 +75,8 @@ Vue `v-model`: `value` (updated on input).
 Types:
 
 - `{ start: number; end: number; kind?: string; title?: string }`: A range of a field's text to mark (ray-input and ray-textarea highlight): offsets into the text, end excluded.
+- `{ value: string; label?: string; detail?: string; description?: string }`: A suggestion of a field's complete(): value is inserted; label (default: value) and detail are shown, description under them.
+- `{ from: number; to: number; items: CompletionItem[] }`: What complete() returns: the part of the text (offsets, to excluded) a suggestion replaces, and the suggestions.
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 
@@ -89,14 +96,25 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 <div class="demo-caption">Highlighted text</div>
 <div class="demo-grid">
-  <ray-input id="demo-input-vars" label="Request URL" value="https://{{host}}/v1/{{resource}}?key={{api_key}}" description="highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one."></ray-input>
+  <ray-input id="demo-input-vars" label="Request URL" value="https://{{host}}/v1/{{resource}}?key={{api_key}}" description="highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one; type {{ for suggestions (complete)."></ray-input>
 </div>
 <style>
   #demo-input-vars::part(highlight-var) { background: color-mix(in srgb, var(--ray-teal-6) 20%, transparent); }
 </style>
 <script type="module">
   const defined = { host: "api.example.com", resource: "releases" };
-  document.getElementById("demo-input-vars").highlight = (text) =>
+  const vars = document.getElementById("demo-input-vars");
+  // After an unclosed {{: the defined names that start with what is typed.
+  vars.complete = (text, caret) => {
+    const open = text.lastIndexOf("{{", caret);
+    const partial = open < 0 ? null : text.slice(open + 2, caret);
+    if (partial === null || !/^[\w.-]*$/.test(partial)) return null;
+    const items = Object.entries(defined)
+      .filter(([name]) => name.startsWith(partial))
+      .map(([name, value]) => ({ value: `${name}}}`, label: name, detail: value }));
+    return { from: open + 2, to: caret, items };
+  };
+  vars.highlight = (text) =>
     [...text.matchAll(/\{\{([\w.-]+)\}\}/g)].map((m) => ({
       start: m.index,
       end: m.index + m[0].length,

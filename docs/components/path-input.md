@@ -15,7 +15,7 @@ Properties:
 - `browseLabel` (attribute `browse-label`): string, default `Browse…`. Text of the button.
 - `dialogTitle` (attribute `dialog-title`): string. Title of the system dialog (default: the label).
 
-Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`.
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
 
 Events:
 

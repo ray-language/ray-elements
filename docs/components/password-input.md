@@ -14,7 +14,7 @@ Properties:
 - `showLabel` (attribute `show-label`): string, default `Show password`. Accessible name of the toggle while hidden.
 - `hideLabel` (attribute `hide-label`): string, default `Hide password`. Accessible name of the toggle while shown.
 
-Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`.
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
 
 Events:
 

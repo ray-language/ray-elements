@@ -9,14 +9,25 @@
 
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Highlighted text<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
-  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-input-vars&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Request URL&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one.&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-input</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-input-vars&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Request URL&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one; type {{ for suggestions (complete).&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-input</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">style</span><span class="tk-punctuation">&gt;</span>
   #demo-input-vars::part(highlight-var) { <span class="tk-attr">background</span>: color-mix(in srgb, var(--ray-teal-6) <span class="tk-number">20%</span>, transparent); }
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">style</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-keyword">const</span> defined = { host: <span class="tk-string">&quot;api.example.com&quot;</span>, resource: <span class="tk-string">&quot;releases&quot;</span> };
-  document.getElementById(<span class="tk-string">&quot;demo-input-vars&quot;</span>).highlight = (text) =&gt;
+  <span class="tk-keyword">const</span> vars = document.getElementById(<span class="tk-string">&quot;demo-input-vars&quot;</span>);
+  <span class="tk-comment">// After an unclosed {{: the defined names that start with what is typed.</span>
+  vars.complete = (text, caret) =&gt; {
+    <span class="tk-keyword">const</span> open = text.lastIndexOf(<span class="tk-string">&quot;{{&quot;</span>, caret);
+    <span class="tk-keyword">const</span> partial = open &lt; <span class="tk-number">0</span> ? <span class="tk-keyword">null</span> : text.slice(open + <span class="tk-number">2</span>, caret);
+    <span class="tk-keyword">if</span> (partial === <span class="tk-keyword">null</span> || !/^[\w.-]*$/.test(partial)) <span class="tk-keyword">return</span> <span class="tk-keyword">null</span>;
+    <span class="tk-keyword">const</span> items = Object.entries(defined)
+      .filter(([name]) =&gt; name.startsWith(partial))
+      .map(([name, value]) =&gt; ({ value: <span class="tk-string">`${name}}}`</span>, label: name, detail: value }));
+    <span class="tk-keyword">return</span> { <span class="tk-keyword">from</span>: open + <span class="tk-number">2</span>, to: caret, items };
+  };
+  vars.highlight = (text) =&gt;
     [...text.matchAll(/\{\{([\w.-]+)\}\}/g)].map((m) =&gt; ({
       start: m.index,
       end: m.index + m[<span class="tk-number">0</span>].length,
@@ -27,7 +38,7 @@
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayInput } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
 
 <span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
-<span class="tk-comment">// and listen with the on* handlers (onInput, onChange…).</span>
+<span class="tk-comment">// and listen with the on* handlers (onRayComplete, onInput, onChange…).</span>
 <span class="tk-keyword">export</span> <span class="tk-keyword">function</span> InputExample() {
   <span class="tk-keyword">return</span> (
     &lt;&gt;
@@ -42,7 +53,7 @@
 
       &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;Highlighted text&lt;/div&gt;
       &lt;div className=<span class="tk-string">&quot;demo-grid&quot;</span>&gt;
-        &lt;RayInput id=<span class="tk-string">&quot;demo-input-vars&quot;</span> label=<span class="tk-string">&quot;Request URL&quot;</span> value=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> description=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one.&quot;</span> /&gt;
+        &lt;RayInput id=<span class="tk-string">&quot;demo-input-vars&quot;</span> label=<span class="tk-string">&quot;Request URL&quot;</span> value=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> description=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one; type {{ for suggestions (complete).&quot;</span> /&gt;
       &lt;/div&gt;
     &lt;/&gt;
   );
@@ -61,6 +72,6 @@
 
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>Highlighted text<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-grid&quot;</span><span class="tk-punctuation">&gt;</span>
-    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-input-vars&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Request URL&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one.&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayInput</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-input-vars&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Request URL&quot;</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;https://{{host}}/v1/{{resource}}?key={{api_key}}&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one; type {{ for suggestions (complete).&quot;</span> /<span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>
