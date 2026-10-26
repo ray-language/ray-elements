@@ -1775,6 +1775,8 @@ Import: `import "@raylang/elements/tabs";` · Category: Navigation
 
 #### `<ray-tabs>` (RayTabs, extends RayElement)
 
+More tabs than width: the list scrolls sideways, fades the edge that hides tabs, scrolls with a vertical wheel and keeps the selected tab in view. The host then carries data-overflow-start and data-overflow-end (following the writing direction), to style it further.
+
 Properties:
 
 - `value`: string. Value of the active tab (default: the first enabled one).
@@ -1794,7 +1796,7 @@ Slots:
 
 Parts (`::part()`):
 
-- `list`: The tab list.
+- `list`: The tab list (it scrolls sideways when the tabs do not fit).
 - `panels`: The panel area.
 
 Methods and properties:

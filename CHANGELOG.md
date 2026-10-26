@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-tabs` with more tabs than width says so: the edge that hides tabs
+  fades out, a vertical wheel scrolls the list sideways, and the selected
+  tab scrolls into view when `value` changes. The host carries
+  `data-overflow-start` / `data-overflow-end` to style it further. Before,
+  the list scrolled with no sign, and with a mouse without a trackpad the
+  hidden tabs were reachable only from the keyboard.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

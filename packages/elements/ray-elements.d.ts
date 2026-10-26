@@ -1424,7 +1424,7 @@ export declare class RayStep extends RayElement {
 }
 
 // --- Tabs (tabs)
-/** <ray-tabs> Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation. */
+/** <ray-tabs> More tabs than width: the list scrolls sideways, fades the edge that hides tabs, scrolls with a vertical wheel and keeps the selected tab in view. The host then carries data-overflow-start and data-overflow-end (following the writing direction), to style it further. */
 export declare class RayTabs extends RayElement {
   /** Value of the active tab (default: the first enabled one). */
   value: string | undefined;

@@ -10905,7 +10905,7 @@
           "name": "RayTabs",
           "tagName": "ray-tabs",
           "customElement": true,
-          "description": "Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation.",
+          "description": "More tabs than width: the list scrolls sideways, fades the edge that hides tabs, scrolls with a vertical wheel and keeps the selected tab in view. The host then carries data-overflow-start and data-overflow-end (following the writing direction), to style it further.",
           "superclass": {
             "name": "RayElement"
           },
@@ -11055,7 +11055,7 @@
           "cssParts": [
             {
               "name": "list",
-              "description": "The tab list."
+              "description": "The tab list (it scrolls sideways when the tabs do not fit)."
             },
             {
               "name": "panels",

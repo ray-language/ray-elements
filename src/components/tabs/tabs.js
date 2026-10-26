@@ -3,9 +3,13 @@
 // Tabs and panels are light-DOM children, so their roles, ids,
 // aria-controls and aria-labelledby work as plain attributes. A tab and its
 // panel share a `value`.
+//
+// Too many tabs for the width: the list scrolls sideways, fades the edge that
+// hides tabs (the host carries data-overflow-start / data-overflow-end), turns
+// a vertical wheel into a sideways scroll and keeps the selected tab in view.
 
 import { RayElement, css, define, uid } from "../../core/core.js";
-import { inlineKey } from "../../core/direction.js";
+import { inlineKey, isRtl } from "../../core/direction.js";
 import { applyColor } from "../../core/styles.js";
 
 const tabsStyles = css`
@@ -24,6 +28,15 @@ const tabsStyles = css`
     box-shadow: inset 0 calc(-1 * var(--_line)) 0 var(--ray-border);
   }
   .list::-webkit-scrollbar { display: none; }
+  /* The edge that hides tabs fades out. */
+  .list { --_fade-start: 0px; --_fade-end: 0px; --_fade-dir: to right; }
+  .list:dir(rtl) { --_fade-dir: to left; }
+  :host([data-overflow-start]) .list { --_fade-start: 2.5rem; }
+  :host([data-overflow-end]) .list { --_fade-end: 2.5rem; }
+  :host([data-overflow-start]) .list, :host([data-overflow-end]) .list {
+    -webkit-mask-image: linear-gradient(var(--_fade-dir), transparent, #000 var(--_fade-start), #000 calc(100% - var(--_fade-end)), transparent);
+    mask-image: linear-gradient(var(--_fade-dir), transparent, #000 var(--_fade-start), #000 calc(100% - var(--_fade-end)), transparent);
+  }
   .list ::slotted(ray-tab) { flex: none; }
   :host([orientation="vertical"]) .list { flex-direction: column; overflow-x: visible; box-shadow: none; border-inline-end: 2px solid var(--ray-border); }
   :host([variant="outline"]) .list { --_line: 1px; }
@@ -56,6 +69,20 @@ export class RayTabs extends RayElement {
     for (const slot of this.shadowRoot.querySelectorAll("slot")) {
       slot.addEventListener("slotchange", () => this.requestUpdate());
     }
+    const list = this.$(".list");
+    list.addEventListener("scroll", () => this._overflow(), { passive: true });
+    list.addEventListener("wheel", (e) => this._wheel(e), { passive: false });
+    if (typeof ResizeObserver === "function") this._ro = new ResizeObserver(() => this.requestUpdate());
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._ro?.observe(this.$(".list"));
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this._ro?.disconnect();
   }
 
   get tabs() {
@@ -99,6 +126,51 @@ export class RayTabs extends RayElement {
       panel.tabIndex = 0;
       panel.hidden = panel.value !== this.value;
     }
+    // Once laid out: a list with no width yet tries again on the next update.
+    if (this.value !== this._revealed && this._reveal(tabs.find((t) => t.value === this.value))) {
+      this._revealed = this.value;
+    }
+    this._overflow();
+  }
+
+  /** How far the list is scrolled from its start, and how much is left to its end. */
+  _scrolled() {
+    const list = this.$(".list");
+    // Right to left, scrollLeft runs from 0 to negative.
+    const start = Math.abs(list.scrollLeft);
+    return { start, end: list.scrollWidth - list.clientWidth - start };
+  }
+
+  _overflow() {
+    const horizontal = this.orientation !== "vertical";
+    const { start, end } = this._scrolled();
+    this.toggleAttribute("data-overflow-start", horizontal && start > 1);
+    this.toggleAttribute("data-overflow-end", horizontal && end > 1);
+  }
+
+  /** Scrolls the list (only the list, not the page) to show the tab; false before layout. */
+  _reveal(tab) {
+    if (!tab || this.orientation === "vertical") return true;
+    const list = this.$(".list");
+    const l = list.getBoundingClientRect();
+    const t = tab.getBoundingClientRect();
+    if (!l.width) return false;
+    if (t.left < l.left) list.scrollLeft -= l.left - t.left;
+    else if (t.right > l.right) list.scrollLeft += t.right - l.right;
+    return true;
+  }
+
+  // A vertical wheel (a mouse without a trackpad) scrolls the list sideways
+  // while it can; at its ends the page scrolls as usual.
+  _wheel(e) {
+    if (this.orientation === "vertical" || e.ctrlKey || Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    const forward = e.deltaY > 0;
+    const { start, end } = this._scrolled();
+    if (forward ? end <= 1 : start <= 1) return;
+    e.preventDefault();
+    const step = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+    this.$(".list").scrollLeft += isRtl(this) ? -step : step;
+    this._overflow();
   }
 
   _select(tab, user) {
