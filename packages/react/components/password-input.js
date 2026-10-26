@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayPasswordInput = /*#__PURE__*/ createComponent("ray-password-input", {
   displayName: "RayPasswordInput",
-  properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
   events: { onRayVisibilityChange: "ray-visibility-change", onInput: "input", onChange: "change" },
 });

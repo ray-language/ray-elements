@@ -4706,9 +4706,22 @@
               "default": "default"
             },
             {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "((text: string) => HighlightRange[]) | null"
+              },
+              "description": "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
+            },
+            {
               "kind": "method",
               "name": "select",
               "description": "Selects the text."
+            },
+            {
+              "kind": "method",
+              "name": "refreshHighlight",
+              "description": "Runs highlight again, when what it marks changed but the text did not."
             }
           ],
           "events": [
@@ -4757,6 +4770,14 @@
             {
               "name": "error",
               "description": "The error message."
+            },
+            {
+              "name": "highlight",
+              "description": "Each marked range (also highlight-<kind> for a range with a kind)."
+            },
+            {
+              "name": "text-layer",
+              "description": "The layer behind the text that holds the marks."
             }
           ]
         }
@@ -5672,6 +5693,14 @@
               "attribute": "variant",
               "reflects": true,
               "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "((text: string) => HighlightRange[]) | null"
+              },
+              "description": "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
             }
           ],
           "events": [
@@ -6076,6 +6105,14 @@
               "attribute": "variant",
               "reflects": true,
               "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "((text: string) => HighlightRange[]) | null"
+              },
+              "description": "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
             },
             {
               "kind": "field",
@@ -8834,6 +8871,14 @@
             },
             {
               "kind": "field",
+              "name": "highlight",
+              "type": {
+                "text": "((text: string) => HighlightRange[]) | null"
+              },
+              "description": "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
+            },
+            {
+              "kind": "field",
               "name": "radius",
               "type": {
                 "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
@@ -8841,6 +8886,11 @@
               "description": "Corner radius.",
               "attribute": "radius",
               "reflects": true
+            },
+            {
+              "kind": "method",
+              "name": "refreshHighlight",
+              "description": "Runs highlight again, when what it marks changed but the text did not."
             }
           ],
           "events": [
@@ -8868,6 +8918,14 @@
             {
               "name": "wrapper",
               "description": "The box."
+            },
+            {
+              "name": "highlight",
+              "description": "Each marked range (also highlight-<kind> for a range with a kind)."
+            },
+            {
+              "name": "text-layer",
+              "description": "The layer behind the text that holds the marks."
             }
           ]
         }

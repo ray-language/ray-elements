@@ -7,6 +7,18 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `highlight` on `ray-input` and `ray-textarea`: a function from the text
+  to ranges (`{ start, end, kind?, title? }`) painted in a layer behind it,
+  in step with typing and with values set from script; `kind: "error"` is
+  red with a wavy underline, other kinds are styled with
+  `::part(highlight-<kind>)`, and a range's `title` is the tooltip over
+  it. `refreshHighlight()` runs it again when what it marks changes (the
+  `{{variables}}` an app defines, say).
+- EXTENDING.md: why a sheet pushed into a component's
+  `adoptedStyleSheets` disappears, and what to use instead.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

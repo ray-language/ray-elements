@@ -895,6 +895,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+- `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 
 Attributes (forwarded to the inner element):
 
@@ -927,12 +928,19 @@ Parts (`::part()`):
 - `label`: The label.
 - `description`: The description.
 - `error`: The error message.
+- `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
+- `text-layer`: The layer behind the text that holds the marks.
 
 Methods and properties:
 
 - `select(): void`: Selects the text.
+- `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
+
+Types:
+
+- `{ start: number; end: number; kind?: string; title?: string }`: A range of a field's text to mark (ray-input and ray-textarea highlight): offsets into the text, end excluded.
 
 ### Number input
 
@@ -1007,7 +1015,7 @@ Properties:
 - `showLabel` (attribute `show-label`): string, default `Show password`. Accessible name of the toggle while hidden.
 - `hideLabel` (attribute `hide-label`): string, default `Hide password`. Accessible name of the toggle while shown.
 
-Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`.
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`.
 
 Events:
 
@@ -1034,7 +1042,7 @@ Properties:
 - `browseLabel` (attribute `browse-label`): string, default `Browse…`. Text of the button.
 - `dialogTitle` (attribute `dialog-title`): string. Title of the system dialog (default: the label).
 
-Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`.
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`.
 
 Events:
 
@@ -1401,6 +1409,7 @@ Properties:
 - `readonly`: boolean. Not editable, still submitted.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Font size.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+- `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 
 Also the properties of FieldControl: `radius`.
 
@@ -1421,6 +1430,12 @@ Parts (`::part()`):
 
 - `textarea`: The inner <textarea>.
 - `wrapper`: The box.
+- `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
+- `text-layer`: The layer behind the text that holds the marks.
+
+Methods and properties:
+
+- `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
 
