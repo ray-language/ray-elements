@@ -1457,8 +1457,8 @@ export declare class RayTabPanel extends RayElement {
 }
 
 // --- Command palette (command-palette)
-/** An action of ray-command-palette. */
-export type CommandAction = { id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void };
+/** An action of ray-command-palette. icon is a 1.25rem square (a registered icon name, text or a Node); prefix is content of any width before the label (text or a Node, e.g. a ray-badge with an HTTP method), not searched. */
+export type CommandAction = { id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; prefix?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void };
 /** How well an action matches a query (0 = not at all). */
 export declare function score(action: CommandAction, query: string): number;
 /** <ray-command-palette> Running an action fires ray-select and calls its onSelect. The best matches come first, grouped. */

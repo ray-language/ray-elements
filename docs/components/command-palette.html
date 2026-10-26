@@ -51,6 +51,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/segmented-control/segmented-control.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/select/select.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/command-palette/command-palette.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/badge/badge.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/icon/icon.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/kbd/kbd.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/theme-toggle/theme-toggle.js" fetchpriority="low">
@@ -65,7 +66,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/host.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/icon/icon.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/badge/badge.js"; import "../../src/components/icon/icon.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -315,7 +316,17 @@ if (location.protocol === "file:") window.__rayServeHint();
     { id: "test", label: "Run tests", description: "ray test", group: "Raylang", icon: "circle-check", onSelect: () => say("ray test") },
     { id: "fmt", label: "Format document", description: "ray fmt", group: "Raylang", icon: "terminal", keywords: ["prettier", "style"], onSelect: () => say("ray fmt") },
     { id: "theme", label: "Toggle theme", group: "View", icon: "moon", onSelect: () => say("Theme") },
+    // prefix: content of any width before the label, here a colored method.
+    { id: "list", label: "List releases", description: "/repos/ray/releases", group: "Requests", prefix: method("GET", "green"), onSelect: () => say("GET") },
+    { id: "create", label: "Create release", description: "/repos/ray/releases", group: "Requests", prefix: method("POST", "blue"), onSelect: () => say("POST") },
   ];
+  function method(name, color) {
+    const badge = document.createElement("ray-badge");
+    Object.assign(badge, { size: "xs", color, variant: "light" });
+    badge.textContent = name;
+    badge.style.minWidth = "3rem";
+    return badge;
+  }
   document.getElementById("demo-palette-open").addEventListener("click", () => palette.show());
 </script>
 </div>

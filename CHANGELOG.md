@@ -7,6 +7,12 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-command-palette` actions take `prefix`: text or a node of any width
+  before the label (a colored HTTP method, a status), where `icon` is a
+  small square.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

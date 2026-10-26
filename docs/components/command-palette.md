@@ -49,7 +49,7 @@ Exports (from `@raylang/elements/command-palette` and `@raylang/elements`):
 
 Types:
 
-- `{ id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void }`: An action of ray-command-palette.
+- `{ id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; prefix?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void }`: An action of ray-command-palette. icon is a 1.25rem square (a registered icon name, text or a Node); prefix is content of any width before the label (text or a Node, e.g. a ray-badge with an HTTP method), not searched.
 
 ## In a raylang app
 
@@ -99,7 +99,17 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     { id: "test", label: "Run tests", description: "ray test", group: "Raylang", icon: "circle-check", onSelect: () => say("ray test") },
     { id: "fmt", label: "Format document", description: "ray fmt", group: "Raylang", icon: "terminal", keywords: ["prettier", "style"], onSelect: () => say("ray fmt") },
     { id: "theme", label: "Toggle theme", group: "View", icon: "moon", onSelect: () => say("Theme") },
+    // prefix: content of any width before the label, here a colored method.
+    { id: "list", label: "List releases", description: "/repos/ray/releases", group: "Requests", prefix: method("GET", "green"), onSelect: () => say("GET") },
+    { id: "create", label: "Create release", description: "/repos/ray/releases", group: "Requests", prefix: method("POST", "blue"), onSelect: () => say("POST") },
   ];
+  function method(name, color) {
+    const badge = document.createElement("ray-badge");
+    Object.assign(badge, { size: "xs", color, variant: "light" });
+    badge.textContent = name;
+    badge.style.minWidth = "3rem";
+    return badge;
+  }
   document.getElementById("demo-palette-open").addEventListener("click", () => palette.show());
 </script>
 ```
