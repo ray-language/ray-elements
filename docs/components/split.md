@@ -16,7 +16,7 @@ Properties:
 - `max`: number. Maximum size of the start pane in px.
 - `collapsed`: boolean, reflects. The start pane is hidden.
 - `disabled`: boolean, reflects. The divider cannot be moved.
-- `autosave`: string. A key: the size is saved in localStorage and restored.
+- `autosave`: string. A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute).
 
 Events:
 

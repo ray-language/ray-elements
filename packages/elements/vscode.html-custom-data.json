@@ -7023,7 +7023,7 @@
         },
         {
           "name": "autosave",
-          "description": "A key: the size is saved in localStorage and restored."
+          "description": "A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute)."
         }
       ]
     },

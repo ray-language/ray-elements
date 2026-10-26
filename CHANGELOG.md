@@ -29,6 +29,13 @@ change the API.
   the list scrolled with no sign, and with a mouse without a trackpad the
   hidden tabs were reachable only from the keyboard.
 
+### Changed
+
+- `ray-split` `autosave` also keeps whether the start pane is collapsed
+  (by the divider or by script), not only its size: a hidden side panel
+  stays hidden after a reload. A saved state wins over the `collapsed`
+  attribute.
+
 ### Fixed
 
 - `ray-icon-button` gives its host the square's width, so an `auto` grid

@@ -2493,7 +2493,7 @@ export declare class RaySplit extends RayElement {
   collapsed: boolean | undefined;
   /** The divider cannot be moved. */
   disabled: boolean | undefined;
-  /** A key: the size is saved in localStorage and restored. */
+  /** A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute). */
   autosave: string | undefined;
   /** The start pane's size in px. */
   readonly size: number;

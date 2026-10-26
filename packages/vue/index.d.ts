@@ -2217,7 +2217,7 @@ export interface RaySplitProps {
   collapsed?: boolean;
   /** The divider cannot be moved. */
   disabled?: boolean;
-  /** A key: the size is saved in localStorage and restored. */
+  /** A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute). */
   autosave?: string;
   /** After a drag, a key or a collapse. */
   onRayResize?: (event: CustomEvent<{ size: number; collapsed: boolean }>) => void;
