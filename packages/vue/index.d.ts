@@ -1169,6 +1169,36 @@ export interface RayBreadcrumbProps {
 /** <ray-breadcrumb> as a Vue component. */
 export declare const RayBreadcrumb: DefineComponent<RayBreadcrumbProps>;
 
+export interface RayDocTabsProps {
+  /** Value of the selected tab (default: the first). */
+  value?: string;
+  /** The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls. */
+  panel?: string;
+  /** Accessible name of the tab list ("Open requests"). */
+  label?: string;
+  /** Tooltip of the ×. */
+  closeLabel?: string;
+  /** What assistive technology hears after the name of a dirty tab. */
+  dirtyLabel?: string;
+  /** The selected tab changed: a click, the arrow keys, or the selected tab removed. */
+  onChange?: (event: Event) => void;
+  /** The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs). */
+  onRayRequestClose?: (event: CustomEvent<{ value: string; tab: Ray.RayDocTab; source: "button" | "middle" | "key" }>) => void;
+}
+/** <ray-doc-tabs> as a Vue component. */
+export declare const RayDocTabs: DefineComponent<RayDocTabsProps>;
+
+export interface RayDocTabProps {
+  /** Identifies the document (ray-doc-tabs value). */
+  value?: string;
+  /** Unsaved changes: a dot in place of the ×, which comes back under the pointer. */
+  dirty?: boolean;
+  /** Cannot be closed: no ×, no middle click, no Delete. */
+  hideClose?: boolean;
+}
+/** <ray-doc-tab> as a Vue component. */
+export declare const RayDocTab: DefineComponent<RayDocTabProps>;
+
 export interface RayNavLinkProps {
   /** Text. */
   label?: string;
@@ -2316,6 +2346,8 @@ export declare const components: {
   RayBottomNavItem: typeof RayBottomNavItem;
   RayBreadcrumbs: typeof RayBreadcrumbs;
   RayBreadcrumb: typeof RayBreadcrumb;
+  RayDocTabs: typeof RayDocTabs;
+  RayDocTab: typeof RayDocTab;
   RayNavLink: typeof RayNavLink;
   RayPagination: typeof RayPagination;
   RaySidebar: typeof RaySidebar;
@@ -2411,6 +2443,8 @@ declare module "vue" {
     RayBottomNavItem: typeof RayBottomNavItem;
     RayBreadcrumbs: typeof RayBreadcrumbs;
     RayBreadcrumb: typeof RayBreadcrumb;
+    RayDocTabs: typeof RayDocTabs;
+    RayDocTab: typeof RayDocTab;
     RayNavLink: typeof RayNavLink;
     RayPagination: typeof RayPagination;
     RaySidebar: typeof RaySidebar;

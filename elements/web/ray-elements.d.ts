@@ -1263,6 +1263,42 @@ export declare class RayBreadcrumb extends RayElement {
   current: boolean | undefined;
 }
 
+// --- Document tabs (doc-tabs)
+/** <ray-doc-tabs> Unlike ray-tabs, a tab has no panel of its own: they all control the element named by panel, whose content the app fills for the selected one. Closing is the app's: the ×, a middle click or Delete/Backspace fire ray-request-close, and the app removes the tab (after asking about unsaved changes, if it must). When the selected tab is removed, the one at its place is selected (change) and, if the closed tab had the focus, focused. More tabs than width: the bar scrolls sideways, fades the edge that hides tabs (data-overflow-start / data-overflow-end on the host), scrolls with a vertical wheel and keeps the selected tab in view. */
+export declare class RayDocTabs extends RayElement {
+  /** Value of the selected tab (default: the first). */
+  value: string | undefined;
+  /** The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls. */
+  panel: string | undefined;
+  /** Accessible name of the tab list ("Open requests"). */
+  label: string | undefined;
+  /** Tooltip of the ×. */
+  closeLabel: string;
+  /** What assistive technology hears after the name of a dirty tab. */
+  dirtyLabel: string;
+  /** Its tabs, in order. */
+  readonly tabs: RayDocTab[];
+  /** The shared panel, found by the panel id. */
+  readonly panelElement: HTMLElement | null;
+  addEventListener<K extends keyof RayDocTabsEventMap>(type: K, listener: (this: RayDocTabs, ev: RayDocTabsEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayDocTabsEventMap>(type: K, listener: (this: RayDocTabs, ev: RayDocTabsEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayDocTabsEventMap extends HTMLElementEventMap {
+  /** The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs). */
+  "ray-request-close": CustomEvent<{ value: string; tab: RayDocTab; source: "button" | "middle" | "key" }>;
+}
+/** <ray-doc-tab> A document's tab: an icon or tag (slot left), its name (cut with an ellipsis; give the full one in title), and the × or the unsaved dot. */
+export declare class RayDocTab extends RayElement {
+  /** Identifies the document (ray-doc-tabs value). */
+  value: string | undefined;
+  /** Unsaved changes: a dot in place of the ×, which comes back under the pointer. */
+  dirty: boolean | undefined;
+  /** Cannot be closed: no ×, no middle click, no Delete. */
+  hideClose: boolean | undefined;
+}
+
 // --- Nav link (nav-link)
 /** <ray-nav-link> A link with href (aria-current=page when active), or a button that toggles its nested links. */
 export declare class RayNavLink extends RayElement {
@@ -2609,6 +2645,8 @@ declare global {
     "ray-bottom-nav-item": RayBottomNavItem;
     "ray-breadcrumbs": RayBreadcrumbs;
     "ray-breadcrumb": RayBreadcrumb;
+    "ray-doc-tabs": RayDocTabs;
+    "ray-doc-tab": RayDocTab;
     "ray-nav-link": RayNavLink;
     "ray-pagination": RayPagination;
     "ray-sidebar": RaySidebar;

@@ -3524,6 +3524,52 @@
       ]
     },
     {
+      "name": "ray-doc-tabs",
+      "description": "Unlike ray-tabs, a tab has no panel of its own: they all control the element named by panel, whose content the app fills for the selected one. Closing is the app's: the ×, a middle click or Delete/Backspace fire ray-request-close, and the app removes the tab (after asking about unsaved changes, if it must). When the selected tab is removed, the one at its place is selected (change) and, if the closed tab had the focus, focused. More tabs than width: the bar scrolls sideways, fades the edge that hides tabs (data-overflow-start / data-overflow-end on the host), scrolls with a vertical wheel and keeps the selected tab in view.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Value of the selected tab (default: the first)."
+        },
+        {
+          "name": "panel",
+          "description": "The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the tab list (\"Open requests\")."
+        },
+        {
+          "name": "close-label",
+          "description": "Tooltip of the ×."
+        },
+        {
+          "name": "dirty-label",
+          "description": "What assistive technology hears after the name of a dirty tab."
+        }
+      ]
+    },
+    {
+      "name": "ray-doc-tab",
+      "description": "A document's tab: an icon or tag (slot left), its name (cut with an ellipsis; give the full one in title), and the × or the unsaved dot.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Identifies the document (ray-doc-tabs value)."
+        },
+        {
+          "name": "dirty",
+          "description": "Unsaved changes: a dot in place of the ×, which comes back under the pointer.",
+          "valueSet": "v"
+        },
+        {
+          "name": "hide-close",
+          "description": "Cannot be closed: no ×, no middle click, no Delete.",
+          "valueSet": "v"
+        }
+      ]
+    },
+    {
       "name": "ray-nav-link",
       "description": "A link with href (aria-current=page when active), or a button that toggles its nested links.",
       "attributes": [

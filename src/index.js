@@ -24,6 +24,7 @@ import "./components/switch/switch.js";
 import "./components/textarea/textarea.js";
 import "./components/bottom-nav/bottom-nav.js";
 import "./components/breadcrumbs/breadcrumbs.js";
+import "./components/doc-tabs/doc-tabs.js";
 import "./components/nav-link/nav-link.js";
 import "./components/pagination/pagination.js";
 import "./components/sidebar/sidebar.js";

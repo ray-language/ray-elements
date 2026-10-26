@@ -1545,6 +1545,66 @@ Parts (`::part()`):
 - `separator`: The separator before it.
 - `more`: The "…" button of a collapsed path.
 
+### Document tabs
+
+The tabs of open documents (an editor's, a browser's): closable, with an unsaved mark, all over one shared panel; WAI-ARIA tabs with arrows, Home/End and Delete to close. The app closes them: ray-request-close asks.
+
+Import: `import "@raylang/elements/doc-tabs";` · Category: Navigation
+
+#### `<ray-doc-tabs>` (RayDocTabs, extends RayElement)
+
+Unlike ray-tabs, a tab has no panel of its own: they all control the element named by panel, whose content the app fills for the selected one. Closing is the app's: the ×, a middle click or Delete/Backspace fire ray-request-close, and the app removes the tab (after asking about unsaved changes, if it must). When the selected tab is removed, the one at its place is selected (change) and, if the closed tab had the focus, focused. More tabs than width: the bar scrolls sideways, fades the edge that hides tabs (data-overflow-start / data-overflow-end on the host), scrolls with a vertical wheel and keeps the selected tab in view.
+
+Properties:
+
+- `value`: string. Value of the selected tab (default: the first).
+- `panel`: string. The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls.
+- `label`: string. Accessible name of the tab list ("Open requests").
+- `closeLabel` (attribute `close-label`): string, default `Close`. Tooltip of the ×.
+- `dirtyLabel` (attribute `dirty-label`): string, default `Unsaved changes`. What assistive technology hears after the name of a dirty tab.
+
+Events:
+
+- `change`: The selected tab changed: a click, the arrow keys, or the selected tab removed.
+- `ray-request-close` (detail `{ value: string; tab: RayDocTab; source: "button" | "middle" | "key" }`): The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs).
+
+Slots:
+
+- (default): ray-doc-tab elements.
+- `end`: After the tabs, outside the scrolling list: a new-tab button.
+
+Parts (`::part()`):
+
+- `list`: The tab list (it scrolls sideways when the tabs do not fit).
+- `end`: The end slot's box.
+
+Methods and properties:
+
+- `readonly tabs: RayDocTab[]`: Its tabs, in order.
+- `readonly panelElement: HTMLElement | null`: The shared panel, found by the panel id.
+
+#### `<ray-doc-tab>` (RayDocTab, extends RayElement)
+
+A document's tab: an icon or tag (slot left), its name (cut with an ellipsis; give the full one in title), and the × or the unsaved dot.
+
+Properties:
+
+- `value`: string, reflects. Identifies the document (ray-doc-tabs value).
+- `dirty`: boolean, reflects. Unsaved changes: a dot in place of the ×, which comes back under the pointer.
+- `hideClose` (attribute `hide-close`): boolean, reflects. Cannot be closed: no ×, no middle click, no Delete.
+
+Slots:
+
+- (default): The document's name.
+- `left`: An icon or a tag (a file type, an HTTP method).
+
+Parts (`::part()`):
+
+- `label`: The name.
+- `left-section`: The left slot's box.
+- `close`: The × (pointer only: it is not focusable).
+- `dot`: The unsaved mark.
+
 ### Nav link
 
 A sidebar/navigation item: icon, label, description, badge, active state, and nested nav links that collapse under it.

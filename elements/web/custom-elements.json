@@ -9585,6 +9585,297 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/doc-tabs/doc-tabs.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayDocTabs",
+          "tagName": "ray-doc-tabs",
+          "customElement": true,
+          "description": "Unlike ray-tabs, a tab has no panel of its own: they all control the element named by panel, whose content the app fills for the selected one. Closing is the app's: the ×, a middle click or Delete/Backspace fire ray-request-close, and the app removes the tab (after asking about unsaved changes, if it must). When the selected tab is removed, the one at its place is selected (change) and, if the closed tab had the focus, focused. More tabs than width: the bar scrolls sideways, fades the edge that hides tabs (data-overflow-start / data-overflow-end on the host), scrolls with a vertical wheel and keeps the selected tab in view.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Value of the selected tab (default: the first).",
+              "fieldName": "value"
+            },
+            {
+              "name": "panel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls.",
+              "fieldName": "panel"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the tab list (\"Open requests\").",
+              "fieldName": "label"
+            },
+            {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Tooltip of the ×.",
+              "fieldName": "closeLabel",
+              "default": "Close"
+            },
+            {
+              "name": "dirty-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "What assistive technology hears after the name of a dirty tab.",
+              "fieldName": "dirtyLabel",
+              "default": "Unsaved changes"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Value of the selected tab (default: the first).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "panel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls.",
+              "attribute": "panel",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the tab list (\"Open requests\").",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Tooltip of the ×.",
+              "attribute": "close-label",
+              "reflects": false,
+              "default": "Close"
+            },
+            {
+              "kind": "field",
+              "name": "dirtyLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "What assistive technology hears after the name of a dirty tab.",
+              "attribute": "dirty-label",
+              "reflects": false,
+              "default": "Unsaved changes"
+            },
+            {
+              "kind": "field",
+              "name": "tabs",
+              "description": "Its tabs, in order."
+            },
+            {
+              "kind": "field",
+              "name": "panelElement",
+              "description": "The shared panel, found by the panel id."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The selected tab changed: a click, the arrow keys, or the selected tab removed."
+            },
+            {
+              "name": "ray-request-close",
+              "type": {
+                "text": "CustomEvent<{ value: string; tab: RayDocTab; source: \"button\" | \"middle\" | \"key\" }>"
+              },
+              "description": "The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs)."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "ray-doc-tab elements."
+            },
+            {
+              "name": "end",
+              "description": "After the tabs, outside the scrolling list: a new-tab button."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "list",
+              "description": "The tab list (it scrolls sideways when the tabs do not fit)."
+            },
+            {
+              "name": "end",
+              "description": "The end slot's box."
+            }
+          ]
+        },
+        {
+          "kind": "class",
+          "name": "RayDocTab",
+          "tagName": "ray-doc-tab",
+          "customElement": true,
+          "description": "A document's tab: an icon or tag (slot left), its name (cut with an ellipsis; give the full one in title), and the × or the unsaved dot.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Identifies the document (ray-doc-tabs value).",
+              "fieldName": "value"
+            },
+            {
+              "name": "dirty",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Unsaved changes: a dot in place of the ×, which comes back under the pointer.",
+              "fieldName": "dirty"
+            },
+            {
+              "name": "hide-close",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be closed: no ×, no middle click, no Delete.",
+              "fieldName": "hideClose"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Identifies the document (ray-doc-tabs value).",
+              "attribute": "value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "dirty",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Unsaved changes: a dot in place of the ×, which comes back under the pointer.",
+              "attribute": "dirty",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "hideClose",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Cannot be closed: no ×, no middle click, no Delete.",
+              "attribute": "hide-close",
+              "reflects": true
+            }
+          ],
+          "events": [],
+          "slots": [
+            {
+              "name": "",
+              "description": "The document's name."
+            },
+            {
+              "name": "left",
+              "description": "An icon or a tag (a file type, an HTTP method)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "The name."
+            },
+            {
+              "name": "left-section",
+              "description": "The left slot's box."
+            },
+            {
+              "name": "close",
+              "description": "The × (pointer only: it is not focusable)."
+            },
+            {
+              "name": "dot",
+              "description": "The unsaved mark."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayDocTabs",
+          "declaration": {
+            "name": "RayDocTabs",
+            "module": "components/doc-tabs/doc-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-doc-tabs",
+          "declaration": {
+            "name": "RayDocTabs",
+            "module": "components/doc-tabs/doc-tabs.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "RayDocTab",
+          "declaration": {
+            "name": "RayDocTab",
+            "module": "components/doc-tabs/doc-tabs.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-doc-tab",
+          "declaration": {
+            "name": "RayDocTab",
+            "module": "components/doc-tabs/doc-tabs.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/nav-link/nav-link.js",
       "declarations": [
         {

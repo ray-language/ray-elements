@@ -1145,6 +1145,38 @@ export type RayBreadcrumbProps = RayBreadcrumbOwnProps & Omit<React.HTMLAttribut
 /** <ray-breadcrumb> as a React component. */
 export declare const RayBreadcrumb: React.ForwardRefExoticComponent<RayBreadcrumbProps & React.RefAttributes<Ray.RayBreadcrumb>>;
 
+export interface RayDocTabsOwnProps {
+  /** Value of the selected tab (default: the first). */
+  value?: string;
+  /** The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls. */
+  panel?: string;
+  /** Accessible name of the tab list ("Open requests"). */
+  label?: string;
+  /** Tooltip of the ×. */
+  closeLabel?: string;
+  /** What assistive technology hears after the name of a dirty tab. */
+  dirtyLabel?: string;
+  /** The selected tab changed: a click, the arrow keys, or the selected tab removed. */
+  onChange?: (event: Event) => void;
+  /** The × was clicked, the tab middle-clicked, or Delete/Backspace pressed on it: remove the tab to close it (not fired for hide-close tabs). */
+  onRayRequestClose?: (event: CustomEvent<{ value: string; tab: Ray.RayDocTab; source: "button" | "middle" | "key" }>) => void;
+}
+export type RayDocTabsProps = RayDocTabsOwnProps & Omit<React.HTMLAttributes<Ray.RayDocTabs>, keyof RayDocTabsOwnProps> & { children?: React.ReactNode };
+/** <ray-doc-tabs> as a React component. */
+export declare const RayDocTabs: React.ForwardRefExoticComponent<RayDocTabsProps & React.RefAttributes<Ray.RayDocTabs>>;
+
+export interface RayDocTabOwnProps {
+  /** Identifies the document (ray-doc-tabs value). */
+  value?: string;
+  /** Unsaved changes: a dot in place of the ×, which comes back under the pointer. */
+  dirty?: boolean;
+  /** Cannot be closed: no ×, no middle click, no Delete. */
+  hideClose?: boolean;
+}
+export type RayDocTabProps = RayDocTabOwnProps & Omit<React.HTMLAttributes<Ray.RayDocTab>, keyof RayDocTabOwnProps> & { children?: React.ReactNode };
+/** <ray-doc-tab> as a React component. */
+export declare const RayDocTab: React.ForwardRefExoticComponent<RayDocTabProps & React.RefAttributes<Ray.RayDocTab>>;
+
 export interface RayNavLinkOwnProps {
   /** Text. */
   label?: string;

@@ -919,6 +919,10 @@ pre.code code, .prose pre code { font-size: inherit; }
 .thumb .t-tabs { display: flex; gap: 0.75rem; width: 9rem; padding-bottom: 0.1rem; margin-bottom: 0.2rem; border-bottom: 1px solid var(--ray-border); }
 .thumb .t-tabs > i { padding: 0.3rem 0 0.35rem; }
 .thumb .t-tabs > i.on { box-shadow: inset 0 -2px var(--ray-primary); }
+.thumb .t-doctabs { display: flex; gap: 0.2rem; width: 9rem; padding-bottom: 0.2rem; margin-bottom: 0.2rem; border-bottom: 1px solid var(--ray-border); }
+.thumb .t-doctabs > i { display: flex; align-items: center; gap: 0.3rem; padding: 0.25rem 0.4rem; border: 1px solid transparent; border-radius: 4px; }
+.thumb .t-doctabs > i.on { background: var(--ray-card); border-color: var(--ray-border); }
+.thumb .t-doctabs .t-tx.x { font-size: 0.6rem; line-height: 1; color: var(--ray-muted-foreground); }
 .thumb .t-sf.wide { width: 11rem; padding: 0.3rem; gap: 0.15rem; box-shadow: var(--ray-shadow-md); }
 .thumb .t-pal-q { display: flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.35rem 0.45rem; margin-bottom: 0.15rem; border-bottom: 1px solid var(--ray-border); }
 .thumb .t-pal-i { display: flex; align-items: center; padding: 0.35rem; border-radius: 0.25rem; }
@@ -1450,3 +1454,11 @@ main.notfound { display: grid; place-items: center; flex: 1; padding: var(--ray-
 .demo-path-bar { padding: var(--ray-space-3) var(--ray-space-4); background: var(--ray-muted); border-radius: var(--ray-radius-md); }
 .demo-path-form { display: grid; gap: var(--ray-space-4); }
 .demo-path-form ray-path-input { min-width: 0; }
+
+/* ray-doc-tabs */
+.demo-doc-tabs { border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); overflow: hidden; }
+.demo-doc-tabs ray-doc-tabs { padding: var(--ray-space-1) var(--ray-space-2); background: var(--ray-muted); border-bottom: 1px solid var(--ray-border); }
+.demo-doc-tabs-panel { min-height: 5rem; padding: var(--ray-space-4); font-family: var(--ray-font-mono); font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+.demo-method { font-family: var(--ray-font-mono); font-size: 0.6875rem; font-weight: var(--ray-font-weight-bold); color: var(--ray-green-light-color); }
+.demo-method[data-method="POST"] { color: var(--ray-blue-light-color); }
+.demo-method[data-method="DELETE"] { color: var(--ray-red-light-color); }
