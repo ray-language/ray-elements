@@ -4,7 +4,7 @@ import "@raylang/elements/input";
 import { createComponent } from "../create.js";
 
 export const RayInput = /*#__PURE__*/ createComponent("RayInput", "ray-input", {
-  properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
+  properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight", "complete", "suggestionsLabel"],
   booleans: ["required", "disabled", "readonly"],
   model: { prop: "value", events: ["input"] },
 });

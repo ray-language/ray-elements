@@ -194,8 +194,9 @@ export class TextLayer {
 export function syncHighlight(host) {
   const fn = typeof host.highlight === "function" ? host.highlight : null;
   if (!fn && !host._textLayer) return;
-  if (!host._textLayer) {
-    host._textLayer = new TextLayer(host.control);
+  host._textLayer ??= new TextLayer(host.control);
+  if (!host._highlightTitles) {
+    host._highlightTitles = true;
     host.control.addEventListener("pointermove", (e) => {
       const title = host._textLayer.rangeAt(e.clientX, e.clientY)?.title ?? "";
       if (host.control.title !== title) host.control.title = title;

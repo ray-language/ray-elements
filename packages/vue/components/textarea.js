@@ -4,7 +4,7 @@ import "@raylang/elements/textarea";
 import { createComponent } from "../create.js";
 
 export const RayTextarea = /*#__PURE__*/ createComponent("RayTextarea", "ray-textarea", {
-  properties: ["value", "rows", "autosize", "maxRows", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "readonly", "size", "variant", "highlight", "radius"],
+  properties: ["value", "rows", "autosize", "maxRows", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "readonly", "size", "variant", "highlight", "complete", "suggestionsLabel", "radius"],
   booleans: ["autosize", "required", "disabled", "readonly"],
   model: { prop: "value", events: ["input"] },
 });

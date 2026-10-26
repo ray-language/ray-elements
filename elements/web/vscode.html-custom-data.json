@@ -1600,6 +1600,10 @@
           ]
         },
         {
+          "name": "suggestions-label",
+          "description": "Accessible name of the suggestion list."
+        },
+        {
           "name": "autocomplete",
           "description": "Forwarded to the inner input."
         },
@@ -1826,6 +1830,10 @@
               "name": "unstyled"
             }
           ]
+        },
+        {
+          "name": "suggestions-label",
+          "description": "Accessible name of the suggestion list."
         },
         {
           "name": "autocomplete",
@@ -2210,6 +2218,10 @@
           ]
         },
         {
+          "name": "suggestions-label",
+          "description": "Accessible name of the suggestion list."
+        },
+        {
           "name": "autocomplete",
           "description": "Forwarded to the inner input."
         },
@@ -2423,6 +2435,10 @@
               "name": "unstyled"
             }
           ]
+        },
+        {
+          "name": "suggestions-label",
+          "description": "Accessible name of the suggestion list."
         },
         {
           "name": "autocomplete",
@@ -3393,6 +3409,10 @@
               "name": "unstyled"
             }
           ]
+        },
+        {
+          "name": "suggestions-label",
+          "description": "Accessible name of the suggestion list."
         },
         {
           "name": "radius",

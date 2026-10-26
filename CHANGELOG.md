@@ -73,6 +73,14 @@ change the API.
   `{{variables}}` an app defines, say).
 - EXTENDING.md: why a sheet pushed into a component's
   `adoptedStyleSheets` disappears, and what to use instead.
+- `complete` on `ray-input` and `ray-textarea`: inline suggestions over
+  free text. A function of the text and the caret returns the part a
+  suggestion replaces and the suggestions (`{ from, to, items }`, or a
+  promise of it); a list opens under that part (arrows, Enter or Tab,
+  Escape, Ctrl+Space to ask), the chosen value replaces it as an undoable
+  edit, and `ray-complete` follows. The field is a combobox for assistive
+  technology. `ray-combobox` still picks a value from a list; this
+  completes a fragment inside the text.
 
 ### Changed
 

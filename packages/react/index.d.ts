@@ -522,6 +522,10 @@ export interface RayInputOwnProps {
   variant?: "default" | "filled" | "unstyled";
   /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
   highlight?: ((text: string) => Ray.HighlightRange[]) | null;
+  /** Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant). */
+  complete?: ((text: string, caret: number) => Ray.CompletionResult | null | Promise<Ray.CompletionResult | null>) | null;
+  /** Accessible name of the suggestion list. */
+  suggestionsLabel?: string;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -544,6 +548,8 @@ export interface RayInputOwnProps {
   enterkeyhint?: string;
   /** Id of a <datalist> with suggestions. */
   list?: string;
+  /** A suggestion was accepted (the text already has it). */
+  onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -596,6 +602,10 @@ export interface RayModeInputOwnProps {
   variant?: "default" | "filled" | "unstyled";
   /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
   highlight?: ((text: string) => Ray.HighlightRange[]) | null;
+  /** Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant). */
+  complete?: ((text: string, caret: number) => Ray.CompletionResult | null | Promise<Ray.CompletionResult | null>) | null;
+  /** Accessible name of the suggestion list. */
+  suggestionsLabel?: string;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -620,6 +630,8 @@ export interface RayModeInputOwnProps {
   list?: string;
   /** The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode. */
   onRayModeChange?: (event: CustomEvent<{ mode: string; previous: string | null; option: Ray.ModeOption }>) => void;
+  /** A suggestion was accepted (the text already has it). */
+  onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -724,6 +736,10 @@ export interface RayPasswordInputOwnProps {
   variant?: "default" | "filled" | "unstyled";
   /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
   highlight?: ((text: string) => Ray.HighlightRange[]) | null;
+  /** Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant). */
+  complete?: ((text: string, caret: number) => Ray.CompletionResult | null | Promise<Ray.CompletionResult | null>) | null;
+  /** Accessible name of the suggestion list. */
+  suggestionsLabel?: string;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -748,6 +764,8 @@ export interface RayPasswordInputOwnProps {
   list?: string;
   /** The user showed or hid the password. */
   onRayVisibilityChange?: (event: CustomEvent<{ visible: boolean }>) => void;
+  /** A suggestion was accepted (the text already has it). */
+  onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -796,6 +814,10 @@ export interface RayPathInputOwnProps {
   variant?: "default" | "filled" | "unstyled";
   /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
   highlight?: ((text: string) => Ray.HighlightRange[]) | null;
+  /** Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant). */
+  complete?: ((text: string, caret: number) => Ray.CompletionResult | null | Promise<Ray.CompletionResult | null>) | null;
+  /** Accessible name of the suggestion list. */
+  suggestionsLabel?: string;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -822,6 +844,8 @@ export interface RayPathInputOwnProps {
   onChange?: (event: Event) => void;
   /** The system dialog failed. */
   onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+  /** A suggestion was accepted (the text already has it). */
+  onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
 }
@@ -1132,6 +1156,10 @@ export interface RayTextareaOwnProps {
   variant?: "default" | "filled" | "unstyled";
   /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
   highlight?: ((text: string) => Ray.HighlightRange[]) | null;
+  /** Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant). */
+  complete?: ((text: string, caret: number) => Ray.CompletionResult | null | Promise<Ray.CompletionResult | null>) | null;
+  /** Accessible name of the suggestion list. */
+  suggestionsLabel?: string;
   /** Corner radius. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Placeholder text. */
@@ -1144,6 +1172,8 @@ export interface RayTextareaOwnProps {
   maxlength?: string;
   /** soft or hard. */
   wrap?: string;
+  /** A suggestion was accepted (the text already has it). */
+  onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
   /** On every edit. */
   onInput?: (event: Event) => void;
   /** When an edit is committed. */

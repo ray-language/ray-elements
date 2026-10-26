@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayModeInput = /*#__PURE__*/ createComponent("ray-mode-input", {
   displayName: "RayModeInput",
-  properties: ["mode", "options", "display", "position", "menuLabel", "nativeMenu", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
-  events: { onRayModeChange: "ray-mode-change", onInput: "input", onChange: "change" },
+  properties: ["mode", "options", "display", "position", "menuLabel", "nativeMenu", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight", "complete", "suggestionsLabel"],
+  events: { onRayModeChange: "ray-mode-change", onRayComplete: "ray-complete", onInput: "input", onChange: "change" },
 });

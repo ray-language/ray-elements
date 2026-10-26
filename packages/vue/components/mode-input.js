@@ -4,6 +4,6 @@ import "@raylang/elements/mode-input";
 import { createComponent } from "../create.js";
 
 export const RayModeInput = /*#__PURE__*/ createComponent("RayModeInput", "ray-mode-input", {
-  properties: ["mode", "options", "display", "position", "menuLabel", "nativeMenu", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
+  properties: ["mode", "options", "display", "position", "menuLabel", "nativeMenu", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight", "complete", "suggestionsLabel"],
   booleans: ["nativeMenu", "required", "disabled", "readonly"],
 });

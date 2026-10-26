@@ -17,7 +17,7 @@ Properties:
 - `menuLabel` (attribute `menu-label`): string, default `Mode`. The trigger's accessible name, read with the current mode ("Mode: File").
 - `nativeMenu` (attribute `native-menu`): boolean, reflects. With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).
 
-Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`.
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
 
 Events:
 
