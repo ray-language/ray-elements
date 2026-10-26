@@ -418,6 +418,26 @@ T.test("tabs: ARIA wiring, click, keyboard, disabled, manual activation", async 
   box.remove();
 });
 
+T.test("tabs: size scales the tabs; a nested tab bar keeps its own", async (T) => {
+  const box = await mount(`<ray-tabs id="outer"><ray-tab value="a">A</ray-tab><ray-tab-panel value="a"><ray-tabs id="inner"><ray-tab value="x">X</ray-tab></ray-tabs></ray-tab-panel></ray-tabs>`);
+  const outer = box.querySelector("#outer");
+  const tabA = outer.querySelector('ray-tab[value="a"]');
+  const tabX = box.querySelector('#inner ray-tab');
+  const px = (v) => parseFloat(v);
+  const sm = { h: px(getComputedStyle(tabA).minHeight), fs: px(getComputedStyle(tabA).fontSize), pad: px(getComputedStyle(tabA).paddingInlineStart) };
+  T.eq(outer.size, "sm", "sm by default");
+  outer.size = "xs";
+  await T.settle();
+  const xs = getComputedStyle(tabA);
+  T.eq(outer.getAttribute("size"), "xs", "reflected");
+  T.ok(px(xs.minHeight) < sm.h && px(xs.fontSize) < sm.fs && px(xs.paddingInlineStart) < sm.pad, `smaller (${xs.minHeight}, ${xs.fontSize}, ${xs.paddingInlineStart})`);
+  T.eq(px(getComputedStyle(tabX).minHeight), sm.h, "the nested bar stays sm");
+  outer.size = "lg";
+  await T.settle();
+  T.ok(px(getComputedStyle(tabA).minHeight) > sm.h, "lg is taller");
+  box.remove();
+});
+
 // --- segmented control ------------------------------------------------------
 
 T.test("segmented control: form value, arrows, data, reset", async (T) => {

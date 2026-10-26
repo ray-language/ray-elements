@@ -10945,6 +10945,15 @@
               "fieldName": "color"
             },
             {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height, font size and padding of the tabs (xs for a compact bar).",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
               "name": "activation",
               "type": {
                 "text": "\"auto\" | \"manual\""
@@ -11004,6 +11013,17 @@
               "description": "Active indicator color.",
               "attribute": "color",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height, font size and padding of the tabs (xs for a compact bar).",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
             },
             {
               "kind": "field",

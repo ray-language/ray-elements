@@ -366,6 +366,16 @@ if (location.protocol === "file:") window.__rayServeHint();
     </div>
   </ray-tab-panel>
 </ray-tabs>
+<div class="demo-caption">Compact · size xs</div>
+<ray-tabs size="xs" value="headers">
+  <ray-tab value="params">Params</ray-tab>
+  <ray-tab value="headers">Headers</ray-tab>
+  <ray-tab value="body">Body</ray-tab>
+  <ray-tab value="auth">Auth</ray-tab>
+  <ray-tab value="tests">Tests</ray-tab>
+  <ray-tab value="settings">Settings</ray-tab>
+</ray-tabs>
+
 <div class="demo-caption">Outline · vertical</div>
 <ray-tabs variant="outline" orientation="vertical" value="editor">
   <ray-tab value="general">General</ray-tab>
@@ -414,7 +424,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <h2 class="api-title">API</h2>
 <p class="api-markdown">For AI agents: <a href="tabs.md">this API as Markdown</a>, or every component in <a href="../llms-full.txt">llms-full.txt</a>.</p>
 <h3><code>&lt;ray-tabs&gt;</code></h3>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td></td><td>Value of the active tab (default: the first enabled one).</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>default</code> | <code>outline</code> | <code>pills</code></td><td><code>default</code></td><td>Tab style.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>horizontal</code> | <code>vertical</code></td><td><code>horizontal</code></td><td>Tab list direction (and arrow keys).</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Active indicator color.</td></tr><tr><td><code>activation</code></td><td><code>activation</code></td><td><code>auto</code> | <code>manual</code></td><td><code>auto</code></td><td>manual: arrows move focus, Enter/Space activates.</td></tr><tr><td><code>grow</code></td><td><code>grow</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Tabs share the full width.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td></td><td>Value of the active tab (default: the first enabled one).</td></tr><tr><td><code>variant</code></td><td><code>variant</code> <span class="reflects">reflects</span></td><td><code>default</code> | <code>outline</code> | <code>pills</code></td><td><code>default</code></td><td>Tab style.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>horizontal</code> | <code>vertical</code></td><td><code>horizontal</code></td><td>Tab list direction (and arrow keys).</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Active indicator color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Height, font size and padding of the tabs (xs for a compact bar).</td></tr><tr><td><code>activation</code></td><td><code>activation</code></td><td><code>auto</code> | <code>manual</code></td><td><code>auto</code></td><td>manual: arrows move focus, Enter/Space activates.</td></tr><tr><td><code>grow</code></td><td><code>grow</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Tabs share the full width.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The user activated another tab.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>ray-tab and ray-tab-panel elements (tabs move to the tab list on their own).</td></tr></tbody></table></div>

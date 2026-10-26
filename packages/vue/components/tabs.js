@@ -4,7 +4,7 @@ import "@raylang/elements/tabs";
 import { createComponent } from "../create.js";
 
 export const RayTabs = /*#__PURE__*/ createComponent("RayTabs", "ray-tabs", {
-  properties: ["value", "variant", "orientation", "color", "activation", "grow"],
+  properties: ["value", "variant", "orientation", "color", "size", "activation", "grow"],
   booleans: ["grow"],
   model: { prop: "value", events: ["change"] },
 });

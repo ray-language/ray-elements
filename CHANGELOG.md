@@ -19,6 +19,9 @@ change the API.
 - `ray-code` `verbatim`: shows and copies the text exactly as given, with
   its common indentation and blank first and last lines, for data such as
   a response body or a log.
+- `ray-tabs` `size` (`xs` to `xl`, `sm` by default): the height, font size
+  and padding of its tabs, for a compact tab bar without restyling each
+  `ray-tab` from outside.
 
 ### Fixed
 

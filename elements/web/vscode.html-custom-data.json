@@ -3888,6 +3888,27 @@
           "description": "Active indicator color."
         },
         {
+          "name": "size",
+          "description": "Height, font size and padding of the tabs (xs for a compact bar).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
           "name": "activation",
           "description": "manual: arrows move focus, Enter/Space activates.",
           "values": [
