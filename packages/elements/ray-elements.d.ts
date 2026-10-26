@@ -1449,6 +1449,8 @@ export declare class RayTab extends RayElement {
   value: string | undefined;
   /** Cannot be activated. */
   disabled: boolean | undefined;
+  /** A small number after the label ("3", "99+"), lighter than a badge; part of the tab's accessible name. Empty: none. */
+  count: string | undefined;
 }
 /** <ray-tab-panel> Tabs and panels (WAI-ARIA tabs pattern): arrows, Home/End, automatic or manual activation. */
 export declare class RayTabPanel extends RayElement {

@@ -7,6 +7,12 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-tab` `count`: a small number after the label (`"3"`, `"99+"`),
+  lighter than a `ray-badge`, for tab bars where a pill per tab does not
+  fit.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

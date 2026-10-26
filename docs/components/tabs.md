@@ -41,11 +41,16 @@ Properties:
 
 - `value`: string, reflects. Matches a ray-tab-panel's value.
 - `disabled`: boolean, reflects. Cannot be activated.
+- `count`: string, reflects. A small number after the label ("3", "99+"), lighter than a badge; part of the tab's accessible name. Empty: none.
 
 Slots:
 
 - `left`: Icon.
-- `right`: Badge or count.
+- `right`: A badge or other content after the label (for a plain number, count is lighter).
+
+Parts (`::part()`):
+
+- `count`: The count.
 
 ## `<ray-tab-panel>` (RayTabPanel, extends RayElement)
 
@@ -62,7 +67,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 ```html
 <div class="demo-caption">Default · underline</div>
 <ray-tabs value="code">
-  <ray-tab value="code">Code</ray-tab>
+  <ray-tab value="code" count="3">Code</ray-tab>
   <ray-tab value="tests">Tests <ray-badge slot="right" size="xs" color="gray">12</ray-badge></ray-tab>
   <ray-tab value="settings">Settings</ray-tab>
   <ray-tab value="billing" disabled>Billing</ray-tab>

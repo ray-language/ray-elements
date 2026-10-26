@@ -304,7 +304,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="page-source"><a href="https://github.com/ray-language/ray-elements/tree/main/src/components/tabs">Source on GitHub</a></p>
 <div class="example"><div class="demo-caption">Default · underline</div>
 <ray-tabs value="code">
-  <ray-tab value="code">Code</ray-tab>
+  <ray-tab value="code" count="3">Code</ray-tab>
   <ray-tab value="tests">Tests <ray-badge slot="right" size="xs" color="gray">12</ray-badge></ray-tab>
   <ray-tab value="settings">Settings</ray-tab>
   <ray-tab value="billing" disabled>Billing</ray-tab>
@@ -420,11 +420,11 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>ray-tab and ray-tab-panel elements (tabs move to the tab list on their own).</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>list</code></td><td>The tab list.</td></tr><tr><td><code>panels</code></td><td>The panel area.</td></tr></tbody></table></div>
 <h3><code>&lt;ray-tab&gt;</code></h3>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Matches a ray-tab-panel's value.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Cannot be activated.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Matches a ray-tab-panel's value.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Cannot be activated.</td></tr><tr><td><code>count</code></td><td><code>count</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>A small number after the label (&quot;3&quot;, &quot;99+&quot;), lighter than a badge; part of the tab's accessible name. Empty: none.</td></tr></tbody></table></div>
 
 
-<div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>left</code></td><td>Icon.</td></tr><tr><td><code>right</code></td><td>Badge or count.</td></tr></tbody></table></div>
-
+<div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>left</code></td><td>Icon.</td></tr><tr><td><code>right</code></td><td>A badge or other content after the label (for a plain number, count is lighter).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>count</code></td><td>The count.</td></tr></tbody></table></div>
 <h3><code>&lt;ray-tab-panel&gt;</code></h3>
 <div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Matches a ray-tab's value.</td></tr></tbody></table></div>
 

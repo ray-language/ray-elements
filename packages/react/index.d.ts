@@ -1306,6 +1306,8 @@ export interface RayTabOwnProps {
   value?: string;
   /** Cannot be activated. */
   disabled?: boolean;
+  /** A small number after the label ("3", "99+"), lighter than a badge; part of the tab's accessible name. Empty: none. */
+  count?: string;
 }
 export type RayTabProps = RayTabOwnProps & Omit<React.HTMLAttributes<Ray.RayTab>, keyof RayTabOwnProps> & { children?: React.ReactNode };
 /** <ray-tab> as a React component. */

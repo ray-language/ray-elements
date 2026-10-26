@@ -3918,6 +3918,10 @@
           "name": "disabled",
           "description": "Cannot be activated.",
           "valueSet": "v"
+        },
+        {
+          "name": "count",
+          "description": "A small number after the label (\"3\", \"99+\"), lighter than a badge; part of the tab's accessible name. Empty: none."
         }
       ]
     },

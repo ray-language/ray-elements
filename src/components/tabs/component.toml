@@ -70,11 +70,19 @@ type = "boolean"
 reflect = true
 description = "Cannot be activated."
 
+[ray-tab.properties.count]
+type = "string"
+reflect = true
+description = "A small number after the label (\"3\", \"99+\"), lighter than a badge; part of the tab's accessible name. Empty: none."
+
 [ray-tab.slots.left]
 description = "Icon."
 
 [ray-tab.slots.right]
-description = "Badge or count."
+description = "A badge or other content after the label (for a plain number, count is lighter)."
+
+[ray-tab.parts.count]
+description = "The count."
 
 [ray-tab-panel]
 class = "RayTabPanel"
