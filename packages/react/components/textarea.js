@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayTextarea = /*#__PURE__*/ createComponent("ray-textarea", {
   displayName: "RayTextarea",
-  properties: ["value", "rows", "autosize", "maxRows", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "readonly", "size", "variant", "radius"],
+  properties: ["value", "rows", "autosize", "maxRows", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "readonly", "size", "variant", "highlight", "radius"],
   events: { onInput: "input", onChange: "change" },
 });

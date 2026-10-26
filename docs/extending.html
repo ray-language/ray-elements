@@ -387,6 +387,12 @@ RayButton.extendStyles(css<span class="tk-string">`
 <p>From a plain stylesheet, <code>::part()</code> works too:
 <code>ray-button[variant=&quot;brand&quot;]::part(button) { … }</code>.</p>
 
+<p>Do not push sheets into an instance's <code>shadowRoot.adoptedStyleSheets</code>: the
+component sets that list itself (its styles, <code>extendStyles</code>, a transition
+guard while it settles) and replaces it, dropping yours. <code>extendStyles</code> is
+the way in, for every instance of the class; for one instance, a selector on
+it (<code>ray-input.url::part(input)</code>) or a subclass.</p>
+
 <p>App-wide defaults for properties left unset:</p>
 
 <pre class="code"><code><span class="tk-keyword">import</span> { configure } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements&quot;</span>;

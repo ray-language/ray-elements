@@ -6,6 +6,10 @@ files = ["input.js"]
 requires = []
 tags = ["ray-input"]
 
+[component.types.HighlightRange]
+ts = "{ start: number; end: number; kind?: string; title?: string }"
+description = "A range of a field's text to mark (ray-input and ray-textarea highlight): offsets into the text, end excluded."
+
 [ray-input]
 class = "RayInput"
 summary = "Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. Enter submits its form as a native field does: through the first submit button (ray-button type=\"submit\" included; nothing when it is disabled), or, without one, only when the form has a single text field."
@@ -82,6 +86,12 @@ default = "default"
 reflect = true
 description = "Box style."
 
+[ray-input.properties.highlight]
+attribute = false
+type = "function"
+ts = "((text: string) => HighlightRange[]) | null"
+description = "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
+
 [ray-input.events.input]
 description = "On every edit (value already updated)."
 
@@ -109,6 +119,12 @@ description = "The description."
 [ray-input.parts.error]
 description = "The error message."
 
+[ray-input.parts.highlight]
+description = "Each marked range (also highlight-<kind> for a range with a kind)."
+
+[ray-input.parts.text-layer]
+description = "The layer behind the text that holds the marks."
+
 [ray-input.model]
 property = "value"
 events = ["input"]
@@ -116,6 +132,10 @@ events = ["input"]
 [ray-input.members.select]
 ts = "select(): void"
 description = "Selects the text."
+
+[ray-input.members.refreshHighlight]
+ts = "refreshHighlight(): void"
+description = "Runs highlight again, when what it marks changed but the text did not."
 
 [ray-input.attributes.autocomplete]
 description = "Forwarded to the inner input."

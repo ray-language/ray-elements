@@ -520,6 +520,8 @@ export interface RayInputOwnProps {
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Box style. */
   variant?: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight?: ((text: string) => Ray.HighlightRange[]) | null;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -592,6 +594,8 @@ export interface RayModeInputOwnProps {
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Box style. */
   variant?: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight?: ((text: string) => Ray.HighlightRange[]) | null;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -718,6 +722,8 @@ export interface RayPasswordInputOwnProps {
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Box style. */
   variant?: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight?: ((text: string) => Ray.HighlightRange[]) | null;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -788,6 +794,8 @@ export interface RayPathInputOwnProps {
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Box style. */
   variant?: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight?: ((text: string) => Ray.HighlightRange[]) | null;
   /** Forwarded to the inner input. */
   autocomplete?: string;
   /** Virtual keyboard hint. */
@@ -1122,6 +1130,8 @@ export interface RayTextareaOwnProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** Box style. */
   variant?: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight?: ((text: string) => Ray.HighlightRange[]) | null;
   /** Corner radius. */
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Placeholder text. */

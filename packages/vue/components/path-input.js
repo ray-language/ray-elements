@@ -4,6 +4,6 @@ import "@raylang/elements/path-input";
 import { createComponent } from "../create.js";
 
 export const RayPathInput = /*#__PURE__*/ createComponent("RayPathInput", "ray-path-input", {
-  properties: ["mode", "accept", "browseLabel", "dialogTitle", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  properties: ["mode", "accept", "browseLabel", "dialogTitle", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
   booleans: ["required", "disabled", "readonly"],
 });

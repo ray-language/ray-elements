@@ -24,6 +24,7 @@ Properties:
 - `readonly`: boolean. Not editable, still submitted.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Font size.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+- `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 
 Also the properties of FieldControl: `radius`.
 
@@ -44,6 +45,12 @@ Parts (`::part()`):
 
 - `textarea`: The inner <textarea>.
 - `wrapper`: The box.
+- `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
+- `text-layer`: The layer behind the text that holds the marks.
+
+Methods and properties:
+
+- `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
 

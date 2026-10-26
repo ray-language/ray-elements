@@ -811,6 +811,8 @@ export interface RayFileUploadEventMap extends HTMLElementEventMap {
 }
 
 // --- Input (input)
+/** A range of a field's text to mark (ray-input and ray-textarea highlight): offsets into the text, end excluded. */
+export type HighlightRange = { start: number; end: number; kind?: string; title?: string };
 /** <ray-input> Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, minlength, maxlength, spellcheck, autocapitalize, enterkeyhint and list to the inner input. Enter submits its form as a native field does: through the first submit button (ray-button type="submit" included; nothing when it is disabled), or, without one, only when the form has a single text field. */
 export declare class RayInput extends FieldControl {
   /** Current value. The value attribute is the initial value (restored on form reset). */
@@ -841,8 +843,12 @@ export declare class RayInput extends FieldControl {
   radius: "xs" | "sm" | "md" | "lg" | "xl" | "full" | undefined;
   /** Box style. */
   variant: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight: ((text: string) => HighlightRange[]) | null;
   /** Selects the text. */
   select(): void;
+  /** Runs highlight again, when what it marks changed but the text did not. */
+  refreshHighlight(): void;
 }
 
 // --- Mode input (mode-input)
@@ -1216,6 +1222,10 @@ export declare class RayTextarea extends FieldControl {
   size: "xs" | "sm" | "md" | "lg" | "xl";
   /** Box style. */
   variant: "default" | "filled" | "unstyled";
+  /** Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap. */
+  highlight: ((text: string) => HighlightRange[]) | null;
+  /** Runs highlight again, when what it marks changed but the text did not. */
+  refreshHighlight(): void;
 }
 
 // --- Bottom nav (bottom-nav)

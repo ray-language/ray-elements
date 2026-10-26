@@ -24,6 +24,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
+- `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 
 Attributes (forwarded to the inner element):
 
@@ -56,12 +57,19 @@ Parts (`::part()`):
 - `label`: The label.
 - `description`: The description.
 - `error`: The error message.
+- `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
+- `text-layer`: The layer behind the text that holds the marks.
 
 Methods and properties:
 
 - `select(): void`: Selects the text.
+- `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
+
+Types:
+
+- `{ start: number; end: number; kind?: string; title?: string }`: A range of a field's text to mark (ray-input and ray-textarea highlight): offsets into the text, end excluded.
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.8.0.
 
@@ -78,4 +86,22 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-input label="Filled variant" variant="filled" placeholder="Filled"></ray-input>
   <ray-input aria-label="No visible label" placeholder="aria-label only" size="lg" radius="full"></ray-input>
 </div>
+
+<div class="demo-caption">Highlighted text</div>
+<div class="demo-grid">
+  <ray-input id="demo-input-vars" label="Request URL" value="https://{{host}}/v1/{{resource}}?key={{api_key}}" description="highlight marks the {{variables}}: defined ones tinted, the undefined api_key in red. Hover one."></ray-input>
+</div>
+<style>
+  #demo-input-vars::part(highlight-var) { background: color-mix(in srgb, var(--ray-teal-6) 20%, transparent); }
+</style>
+<script type="module">
+  const defined = { host: "api.example.com", resource: "releases" };
+  document.getElementById("demo-input-vars").highlight = (text) =>
+    [...text.matchAll(/\{\{([\w.-]+)\}\}/g)].map((m) => ({
+      start: m.index,
+      end: m.index + m[0].length,
+      kind: m[1] in defined ? "var" : "error",
+      title: m[1] in defined ? `${m[1]} = ${defined[m[1]]}` : `${m[1]} is not defined`,
+    }));
+</script>
 ```

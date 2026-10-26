@@ -79,6 +79,12 @@ default = "default"
 reflect = true
 description = "Box style."
 
+[ray-textarea.properties.highlight]
+attribute = false
+type = "function"
+ts = "((text: string) => HighlightRange[]) | null"
+description = "Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind \"error\" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap."
+
 [ray-textarea.events.input]
 description = "On every edit."
 
@@ -91,9 +97,19 @@ description = "The inner <textarea>."
 [ray-textarea.parts.wrapper]
 description = "The box."
 
+[ray-textarea.parts.highlight]
+description = "Each marked range (also highlight-<kind> for a range with a kind)."
+
+[ray-textarea.parts.text-layer]
+description = "The layer behind the text that holds the marks."
+
 [ray-textarea.model]
 property = "value"
 events = ["input"]
+
+[ray-textarea.members.refreshHighlight]
+ts = "refreshHighlight(): void"
+description = "Runs highlight again, when what it marks changed but the text did not."
 
 [ray-textarea.attributes.placeholder]
 description = "Placeholder text."

@@ -4,6 +4,6 @@ import "@raylang/elements/password-input";
 import { createComponent } from "../create.js";
 
 export const RayPasswordInput = /*#__PURE__*/ createComponent("RayPasswordInput", "ray-password-input", {
-  properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant"],
+  properties: ["visible", "showLabel", "hideLabel", "value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight"],
   booleans: ["visible", "required", "disabled", "readonly"],
 });

@@ -139,6 +139,12 @@ RayButton.extendStyles(css`
 From a plain stylesheet, `::part()` works too:
 `ray-button[variant="brand"]::part(button) { … }`.
 
+Do not push sheets into an instance's `shadowRoot.adoptedStyleSheets`: the
+component sets that list itself (its styles, `extendStyles`, a transition
+guard while it settles) and replaces it, dropping yours. `extendStyles` is
+the way in, for every instance of the class; for one instance, a selector on
+it (`ray-input.url::part(input)`) or a subclass.
+
 App-wide defaults for properties left unset:
 
 ```js
