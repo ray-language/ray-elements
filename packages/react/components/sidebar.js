@@ -5,8 +5,8 @@ import { createComponent } from "../create.js";
 
 export const RaySidebar = /*#__PURE__*/ createComponent("ray-sidebar", {
   displayName: "RaySidebar",
-  properties: ["collapsed", "collapse", "open", "side", "variant", "width", "collapsedWidth", "breakpoint", "label"],
-  events: { onRayToggle: "ray-toggle", onRayOpen: "ray-open", onRayClose: "ray-close" },
+  properties: ["collapsed", "collapse", "open", "side", "variant", "width", "collapsedWidth", "breakpoint", "label", "resizable", "minWidth", "maxWidth", "autosave", "resizeLabel"],
+  events: { onRayResize: "ray-resize", onRayToggle: "ray-toggle", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
 export const RaySidebarGroup = /*#__PURE__*/ createComponent("ray-sidebar-group", {
   displayName: "RaySidebarGroup",

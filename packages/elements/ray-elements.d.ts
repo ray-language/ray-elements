@@ -1358,6 +1358,16 @@ export declare class RaySidebar extends RayElement {
   breakpoint: string;
   /** Accessible name of its navigation. */
   label: string;
+  /** Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width. */
+  resizable: boolean | undefined;
+  /** Narrowest width when resizing, in px. */
+  minWidth: number;
+  /** Widest width when resizing, in px. */
+  maxWidth: number;
+  /** A key: the resized width is saved in localStorage and restored. A later change of width wins. */
+  autosave: string | undefined;
+  /** Accessible name of the resize edge. */
+  resizeLabel: string;
   /** Collapses/expands on wide screens; opens/closes the drawer on narrow ones. */
   toggle(): void;
   /** Whether it is in drawer mode (at or below the breakpoint). */
@@ -1368,6 +1378,8 @@ export declare class RaySidebar extends RayElement {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RaySidebarEventMap extends HTMLElementEventMap {
+  /** After a drag or a key resized it (resizable). */
+  "ray-resize": CustomEvent<{ width: number }>;
   /** After toggle(). */
   "ray-toggle": CustomEvent<{ collapsed: boolean; open: boolean; mobile: boolean }>;
   /** The drawer opened (narrow screens). */

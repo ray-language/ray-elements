@@ -10240,6 +10240,49 @@
               "description": "Accessible name of its navigation.",
               "fieldName": "label",
               "default": "Sidebar"
+            },
+            {
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.",
+              "fieldName": "resizable"
+            },
+            {
+              "name": "min-width",
+              "type": {
+                "text": "number"
+              },
+              "description": "Narrowest width when resizing, in px.",
+              "fieldName": "minWidth",
+              "default": "192"
+            },
+            {
+              "name": "max-width",
+              "type": {
+                "text": "number"
+              },
+              "description": "Widest width when resizing, in px.",
+              "fieldName": "maxWidth",
+              "default": "480"
+            },
+            {
+              "name": "autosave",
+              "type": {
+                "text": "string"
+              },
+              "description": "A key: the resized width is saved in localStorage and restored. A later change of width wins.",
+              "fieldName": "autosave"
+            },
+            {
+              "name": "resize-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the resize edge.",
+              "fieldName": "resizeLabel",
+              "default": "Resize sidebar"
             }
           ],
           "members": [
@@ -10339,6 +10382,59 @@
               "default": "Sidebar"
             },
             {
+              "kind": "field",
+              "name": "resizable",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.",
+              "attribute": "resizable",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "minWidth",
+              "type": {
+                "text": "number"
+              },
+              "description": "Narrowest width when resizing, in px.",
+              "attribute": "min-width",
+              "reflects": false,
+              "default": "192"
+            },
+            {
+              "kind": "field",
+              "name": "maxWidth",
+              "type": {
+                "text": "number"
+              },
+              "description": "Widest width when resizing, in px.",
+              "attribute": "max-width",
+              "reflects": false,
+              "default": "480"
+            },
+            {
+              "kind": "field",
+              "name": "autosave",
+              "type": {
+                "text": "string"
+              },
+              "description": "A key: the resized width is saved in localStorage and restored. A later change of width wins.",
+              "attribute": "autosave",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "resizeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the resize edge.",
+              "attribute": "resize-label",
+              "reflects": false,
+              "default": "Resize sidebar"
+            },
+            {
               "kind": "method",
               "name": "toggle",
               "description": "Collapses/expands on wide screens; opens/closes the drawer on narrow ones."
@@ -10350,6 +10446,13 @@
             }
           ],
           "events": [
+            {
+              "name": "ray-resize",
+              "type": {
+                "text": "CustomEvent<{ width: number }>"
+              },
+              "description": "After a drag or a key resized it (resizable)."
+            },
             {
               "name": "ray-toggle",
               "type": {
@@ -10402,6 +10505,10 @@
             {
               "name": "footer",
               "description": "The footer area."
+            },
+            {
+              "name": "resizer",
+              "description": "The resize edge (a separator), shown when resizable."
             },
             {
               "name": "drawer",

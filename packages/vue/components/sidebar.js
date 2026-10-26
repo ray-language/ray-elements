@@ -4,8 +4,8 @@ import "@raylang/elements/sidebar";
 import { createComponent } from "../create.js";
 
 export const RaySidebar = /*#__PURE__*/ createComponent("RaySidebar", "ray-sidebar", {
-  properties: ["collapsed", "collapse", "open", "side", "variant", "width", "collapsedWidth", "breakpoint", "label"],
-  booleans: ["collapsed", "open"],
+  properties: ["collapsed", "collapse", "open", "side", "variant", "width", "collapsedWidth", "breakpoint", "label", "resizable", "minWidth", "maxWidth", "autosave", "resizeLabel"],
+  booleans: ["collapsed", "open", "resizable"],
 });
 export const RaySidebarGroup = /*#__PURE__*/ createComponent("RaySidebarGroup", "ray-sidebar-group", {
   properties: ["label"],

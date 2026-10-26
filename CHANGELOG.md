@@ -33,6 +33,10 @@ change the API.
   becoming an icon rail (`collapse="icon"`, the default). Its docs now say
   what it is for (navigation) and what to use for content such as a tree
   of documents (a `ray-split` pane).
+- `ray-sidebar` `resizable`: on a wide screen its inner edge is a
+  separator that drags, or arrow-keys, the width between `min-width` and
+  `max-width` (px), with `ray-resize` after each change and `autosave` to
+  keep it.
 
 ### Changed
 

@@ -8,11 +8,16 @@
 // toggle() does the right thing for the screen: collapse/expand on wide
 // screens, open/close the drawer on narrow ones — wire it to a menu button.
 //
+// With `resizable`, its inner edge is a separator (WAI-ARIA window splitter)
+// that drags or arrow-keys the width between min-width and max-width;
+// `autosave="key"` keeps it (localStorage).
+//
 // <ray-sidebar-group label="Projects">: a titled section of nav links; the
 // title hides when the sidebar collapses.
 
 import { RayElement, css, define } from "../../core/core.js";
 import { overlayStyles } from "../../core/styles.js";
+import { isRtl } from "../../core/direction.js";
 import { play, playAll } from "../../core/motion.js";
 
 const styles = css`
@@ -81,7 +86,30 @@ const styles = css`
   @keyframes ray-sidebar-in { from { transform: translateX(var(--_from)); } }
   dialog::backdrop { animation: ray-fade-in var(--ray-duration-base) var(--ray-easing-out); }
   @keyframes ray-fade-in { from { opacity: 0; } }
+
+  /* resizable: a separator on the edge that faces the content. */
+  :host { position: relative; }
+  .resizer { display: none; position: absolute; z-index: 1; inset-block: 0; inset-inline-end: -0.25rem; width: 0.5rem; cursor: col-resize; touch-action: none; outline: none; }
+  :host([resizable]:not([collapsed]):not([data-mobile])) .resizer { display: block; }
+  :host([side="end"]) .resizer { inset-inline-end: auto; inset-inline-start: -0.25rem; }
+  :host([side="left"]) .resizer { inset-inline: auto; right: -0.25rem; } /* physical */
+  :host([side="right"]) .resizer { inset-inline: auto; left: -0.25rem; } /* physical */
+  .resizer::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 50%; /* physical */
+    width: 3px;
+    background: transparent;
+    transform: translateX(-50%);
+    transition: background-color var(--ray-duration-fast) var(--ray-easing-standard);
+  }
+  .resizer:hover::before, .resizer:focus-visible::before, :host([data-dragging]) .resizer::before { background: var(--ray-primary); }
+  :host([data-dragging]) { transition: none; user-select: none; cursor: col-resize; }
 `;
+
+const STEP = 10;
+const BIG_STEP = 50;
 
 export class RaySidebar extends RayElement {
   static properties = {
@@ -94,6 +122,11 @@ export class RaySidebar extends RayElement {
     collapsedWidth: { type: String },
     breakpoint: { type: String, default: "48em" },
     label: { type: String, default: "Sidebar" },
+    resizable: { type: Boolean, reflect: true },
+    minWidth: { type: Number, default: 192 },
+    maxWidth: { type: Number, default: 480 },
+    autosave: { type: String },
+    resizeLabel: { type: String, default: "Resize sidebar" },
   };
   static styles = [overlayStyles, styles];
   static template = `
@@ -102,7 +135,8 @@ export class RaySidebar extends RayElement {
       <nav class="content" part="content"><slot></slot></nav>
       <div class="footer" part="footer"><slot name="footer"></slot></div>
     </div>
-    <dialog part="drawer"></dialog>`;
+    <dialog part="drawer"></dialog>
+    <div class="resizer" part="resizer" role="separator" tabindex="0" aria-orientation="vertical"></div>`;
 
   #mq = null;
   #exit = null;
@@ -134,11 +168,27 @@ export class RaySidebar extends RayElement {
     });
     // New nav links and groups pick up the collapsed state.
     this.$(".content slot").addEventListener("slotchange", () => this._syncCollapsed());
+    this._px = null;
+    this.resizer = this.$(".resizer");
+    this.resizer.addEventListener("pointerdown", (e) => this._down(e));
+    this.resizer.addEventListener("keydown", (e) => this._resizeKey(e));
   }
 
   connectedCallback() {
     super.connectedCallback();
     this._watch();
+    if (this.autosave && !this._restored) {
+      this._restored = true;
+      try {
+        const saved = Number(localStorage.getItem(`ray-sidebar:${this.autosave}`));
+        if (saved > 0) {
+          this._px = saved;
+          this.requestUpdate();
+        }
+      } catch {
+        // No storage: the default width is fine.
+      }
+    }
   }
 
   disconnectedCallback() {
@@ -182,8 +232,16 @@ export class RaySidebar extends RayElement {
   }
 
   update(changed) {
-    if (this.width) this.style.setProperty("--_w", this.width);
+    // A later change of `width` wins over a dragged or restored one.
+    if (changed.has("width") && this._updated) this._px = null;
+    this._updated = true;
+    if (this._px !== null) this.style.setProperty("--_w", `${this._clamp(this._px)}px`);
+    else if (this.width) this.style.setProperty("--_w", this.width);
     else this.style.removeProperty("--_w");
+    this.resizer.setAttribute("aria-label", this.resizeLabel ?? "Resize sidebar");
+    this.resizer.setAttribute("aria-valuemin", String(this.minWidth ?? 0));
+    this.resizer.setAttribute("aria-valuemax", String(this.maxWidth ?? 0));
+    queueMicrotask(() => this.resizer.setAttribute("aria-valuenow", String(Math.round(this._width()))));
     if (this.collapsedWidth) this.style.setProperty("--_rail", this.collapsedWidth);
     else this.style.removeProperty("--_rail");
     this.$(".content").setAttribute("aria-label", this.label ?? "Sidebar");
@@ -199,6 +257,77 @@ export class RaySidebar extends RayElement {
         this._leave();
       }
     }
+  }
+
+  /** The expanded width in px (not mid-transition when it was set here). */
+  _width() {
+    return this._px !== null ? this._clamp(this._px) : this.getBoundingClientRect().width;
+  }
+
+  _clamp(px) {
+    return Math.round(Math.max(this.minWidth ?? 0, Math.min(px, this.maxWidth ?? Infinity)));
+  }
+
+  /** The screen side it sits on: start and end follow the writing direction. */
+  _onLeft() {
+    if (this.side === "left" || this.side === "right") return this.side === "left";
+    return (this.side === "end") === isRtl(this);
+  }
+
+  _resizeTo(px, commit) {
+    this._px = this._clamp(px);
+    this.requestUpdate();
+    if (!commit) return;
+    if (this.autosave) {
+      try {
+        localStorage.setItem(`ray-sidebar:${this.autosave}`, String(this._px));
+      } catch {
+        // Not persisted: fine.
+      }
+    }
+    this.emit("ray-resize", { width: this._px });
+  }
+
+  _down(e) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    this.resizer.focus();
+    try {
+      this.resizer.setPointerCapture(e.pointerId);
+    } catch {
+      // The pointer is already gone: drag without capture.
+    }
+    this.setAttribute("data-dragging", "");
+    const rect = this.getBoundingClientRect();
+    const left = this._onLeft();
+    const at = (ev) => (left ? ev.clientX - rect.left : rect.right - ev.clientX);
+    const move = (ev) => this._resizeTo(at(ev), false);
+    const up = (ev) => {
+      this.resizer.removeEventListener("pointermove", move);
+      this.resizer.removeEventListener("pointerup", up);
+      this.resizer.removeEventListener("pointercancel", up);
+      this.removeAttribute("data-dragging");
+      this._resizeTo(at(ev), true);
+    };
+    this.resizer.addEventListener("pointermove", move);
+    this.resizer.addEventListener("pointerup", up);
+    this.resizer.addEventListener("pointercancel", up);
+  }
+
+  // Arrows move the edge on screen: toward the content widens it.
+  _resizeKey(e) {
+    const step = e.shiftKey ? BIG_STEP : STEP;
+    const current = this._width();
+    const wider = this._onLeft() ? "ArrowRight" : "ArrowLeft";
+    const narrower = this._onLeft() ? "ArrowLeft" : "ArrowRight";
+    let next = null;
+    if (e.key === wider) next = current + step;
+    else if (e.key === narrower) next = current - step;
+    else if (e.key === "Home") next = this.minWidth ?? 0;
+    else if (e.key === "End") next = this.maxWidth ?? current;
+    if (next === null) return;
+    e.preventDefault();
+    this._resizeTo(next, true);
   }
 
   _show() {

@@ -1,5 +1,5 @@
 <div class="sidebar-demo" style="display: flex; height: 24rem; overflow: hidden; border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); background: var(--ray-background)">
-  <ray-sidebar id="demo-sidebar" label="Project">
+  <ray-sidebar id="demo-sidebar" label="Project" resizable>
     <div slot="header" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.5rem; height: 2.25rem; overflow: hidden">
       <ray-avatar name="ray remote" size="sm" color="blue" radius="md" variant="filled"></ray-avatar>
       <strong class="demo-sidebar-name" style="white-space: nowrap; font-size: var(--ray-font-size-sm)">ray-remote</strong>
@@ -21,7 +21,7 @@
       <span style="font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Files</span>
       <ray-switch id="demo-sidebar-offcanvas" size="xs" label="Hide entirely" style="margin-inline-start: auto"></ray-switch>
     </div>
-    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons, or out of view with collapse="offcanvas"; on a narrow screen it opens it as a drawer.</div>
+    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons, or out of view with collapse="offcanvas"; its edge drags it wider (resizable); on a narrow screen it opens it as a drawer.</div>
   </div>
 </div>
 <style>
