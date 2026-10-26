@@ -15,7 +15,17 @@
     { id: <span class="tk-string">&quot;test&quot;</span>, label: <span class="tk-string">&quot;Run tests&quot;</span>, description: <span class="tk-string">&quot;ray test&quot;</span>, group: <span class="tk-string">&quot;Raylang&quot;</span>, icon: <span class="tk-string">&quot;circle-check&quot;</span>, onSelect: () =&gt; say(<span class="tk-string">&quot;ray test&quot;</span>) },
     { id: <span class="tk-string">&quot;fmt&quot;</span>, label: <span class="tk-string">&quot;Format document&quot;</span>, description: <span class="tk-string">&quot;ray fmt&quot;</span>, group: <span class="tk-string">&quot;Raylang&quot;</span>, icon: <span class="tk-string">&quot;terminal&quot;</span>, keywords: [<span class="tk-string">&quot;prettier&quot;</span>, <span class="tk-string">&quot;style&quot;</span>], onSelect: () =&gt; say(<span class="tk-string">&quot;ray fmt&quot;</span>) },
     { id: <span class="tk-string">&quot;theme&quot;</span>, label: <span class="tk-string">&quot;Toggle theme&quot;</span>, group: <span class="tk-string">&quot;View&quot;</span>, icon: <span class="tk-string">&quot;moon&quot;</span>, onSelect: () =&gt; say(<span class="tk-string">&quot;Theme&quot;</span>) },
+    <span class="tk-comment">// prefix: content of any width before the label, here a colored method.</span>
+    { id: <span class="tk-string">&quot;list&quot;</span>, label: <span class="tk-string">&quot;List releases&quot;</span>, description: <span class="tk-string">&quot;/repos/ray/releases&quot;</span>, group: <span class="tk-string">&quot;Requests&quot;</span>, prefix: method(<span class="tk-string">&quot;GET&quot;</span>, <span class="tk-string">&quot;green&quot;</span>), onSelect: () =&gt; say(<span class="tk-string">&quot;GET&quot;</span>) },
+    { id: <span class="tk-string">&quot;create&quot;</span>, label: <span class="tk-string">&quot;Create release&quot;</span>, description: <span class="tk-string">&quot;/repos/ray/releases&quot;</span>, group: <span class="tk-string">&quot;Requests&quot;</span>, prefix: method(<span class="tk-string">&quot;POST&quot;</span>, <span class="tk-string">&quot;blue&quot;</span>), onSelect: () =&gt; say(<span class="tk-string">&quot;POST&quot;</span>) },
   ];
+  <span class="tk-keyword">function</span> method(name, color) {
+    <span class="tk-keyword">const</span> badge = document.createElement(<span class="tk-string">&quot;ray-badge&quot;</span>);
+    Object.assign(badge, { size: <span class="tk-string">&quot;xs&quot;</span>, color, variant: <span class="tk-string">&quot;light&quot;</span> });
+    badge.textContent = name;
+    badge.style.minWidth = <span class="tk-string">&quot;3rem&quot;</span>;
+    <span class="tk-keyword">return</span> badge;
+  }
   document.getElementById(<span class="tk-string">&quot;demo-palette-open&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; palette.show());
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
 <pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> <span class="tk-keyword">type</span> { CSSProperties } <span class="tk-keyword">from</span> <span class="tk-string">&quot;react&quot;</span>;

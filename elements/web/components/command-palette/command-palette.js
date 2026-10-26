@@ -86,6 +86,7 @@ const styles = css`
   .icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 1.25rem; height: 1.25rem; color: var(--ray-muted-foreground); }
   .option[aria-selected="true"] .icon { color: inherit; }
   .icon svg { width: 1rem; height: 1rem; }
+  .prefix { flex: none; display: inline-flex; align-items: center; font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
   .text { display: flex; flex: 1; flex-direction: column; min-width: 0; }
   .label, .description { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .label { font-size: var(--ray-font-size-sm); }
@@ -404,6 +405,14 @@ export class RayCommandPalette extends RayElement {
       else if (getIcon(String(a.icon))) icon.innerHTML = getIcon(String(a.icon));
       else icon.textContent = String(a.icon);
       opt.append(icon);
+    }
+    // Content of its own before the text, any width: a colored method tag.
+    if (a.prefix !== undefined && a.prefix !== null && a.prefix !== "") {
+      const prefix = document.createElement("span");
+      prefix.className = "prefix";
+      if (a.prefix instanceof Node) prefix.append(a.prefix);
+      else prefix.textContent = String(a.prefix);
+      opt.append(prefix);
     }
     const text = document.createElement("span");
     text.className = "text";

@@ -284,6 +284,29 @@ T.test("palette: the keyboard hint and the accessible name translate", async (T)
   box.remove();
 });
 
+T.test("palette: prefix, text or a node, before the label; not searched", async (T) => {
+  const box = await mount(`<ray-command-palette hotkey=""></ray-command-palette>`);
+  const p = box.querySelector("ray-command-palette");
+  const tag = document.createElement("b");
+  tag.textContent = "POST";
+  p.actions = [
+    { id: "get", label: "List users", prefix: "GET" },
+    { id: "post", label: "Create user", prefix: tag, icon: "file" },
+    { id: "plain", label: "Settings" },
+  ];
+  await T.settle();
+  const options = () => [...p.shadowRoot.querySelectorAll('[role="option"]')];
+  const prefixes = () => options().map((o) => o.querySelector(".prefix")?.textContent ?? "-").join();
+  T.eq(prefixes(), "GET,POST,-");
+  const post = options()[1];
+  T.eq([...post.children].map((c) => c.className).slice(0, 3).join(), "icon,prefix,text", "after the icon, before the text");
+  T.ok(post.querySelector(".prefix").firstElementChild === tag, "the node itself");
+  p.query = "post";
+  await T.settle();
+  T.eq(options().length, 0, "the prefix is not searched");
+  box.remove();
+});
+
 T.test("palette: hotkey, filter, combobox ARIA, run, close", async (T) => {
   // The docs page has its own palettes (the site search takes ⌘K): silence them here.
   const restore = silencePagePalettes();

@@ -42,6 +42,9 @@ change the API.
   radio items of its group, before `ray-select`; it shows a check mark,
   with the `menuitemcheckbox`/`menuitemradio` roles, and the native menu
   shows the mark too.
+- `ray-command-palette` actions take `prefix`: text or a node of any width
+  before the label (a colored HTTP method, a status), where `icon` is a
+  small square.
 
 ### Changed
 
