@@ -18,9 +18,15 @@ Properties:
 - `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.
 - `breakpoint`: string, default `48em`. At this viewport width and below, it becomes a drawer.
 - `label`: string, default `Sidebar`. Accessible name of its navigation.
+- `resizable`: boolean, reflects. Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.
+- `minWidth` (attribute `min-width`): number, default `192`. Narrowest width when resizing, in px.
+- `maxWidth` (attribute `max-width`): number, default `480`. Widest width when resizing, in px.
+- `autosave`: string. A key: the resized width is saved in localStorage and restored. A later change of width wins.
+- `resizeLabel` (attribute `resize-label`): string, default `Resize sidebar`. Accessible name of the resize edge.
 
 Events:
 
+- `ray-resize` (detail `{ width: number }`): After a drag or a key resized it (resizable).
 - `ray-toggle` (detail `{ collapsed: boolean; open: boolean; mobile: boolean }`): After toggle().
 - `ray-open`: The drawer opened (narrow screens).
 - `ray-close`: The drawer closed (narrow screens).
@@ -37,6 +43,7 @@ Parts (`::part()`):
 - `header`: The header area.
 - `content`: The scrolling <nav>.
 - `footer`: The footer area.
+- `resizer`: The resize edge (a separator), shown when resizable.
 - `drawer`: The <dialog> used on narrow screens.
 
 Methods and properties:
@@ -69,7 +76,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 ```html
 <div class="sidebar-demo" style="display: flex; height: 24rem; overflow: hidden; border: 1px solid var(--ray-border); border-radius: var(--ray-radius-md); background: var(--ray-background)">
-  <ray-sidebar id="demo-sidebar" label="Project">
+  <ray-sidebar id="demo-sidebar" label="Project" resizable>
     <div slot="header" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.25rem 0.5rem; height: 2.25rem; overflow: hidden">
       <ray-avatar name="ray remote" size="sm" color="blue" radius="md" variant="filled"></ray-avatar>
       <strong class="demo-sidebar-name" style="white-space: nowrap; font-size: var(--ray-font-size-sm)">ray-remote</strong>
@@ -90,7 +97,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
       <ray-icon-button id="demo-sidebar-toggle" variant="subtle" label="Toggle sidebar"><ray-icon name="panel-left"></ray-icon></ray-icon-button>
       <span style="font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Files</span>
     </div>
-    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons; on a narrow screen it opens it as a drawer.</div>
+    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons; its edge drags it wider (resizable); on a narrow screen it opens it as a drawer.</div>
   </div>
 </div>
 <style>

@@ -3729,6 +3729,27 @@
         {
           "name": "label",
           "description": "Accessible name of its navigation."
+        },
+        {
+          "name": "resizable",
+          "description": "Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.",
+          "valueSet": "v"
+        },
+        {
+          "name": "min-width",
+          "description": "Narrowest width when resizing, in px."
+        },
+        {
+          "name": "max-width",
+          "description": "Widest width when resizing, in px."
+        },
+        {
+          "name": "autosave",
+          "description": "A key: the resized width is saved in localStorage and restored. A later change of width wins."
+        },
+        {
+          "name": "resize-label",
+          "description": "Accessible name of the resize edge."
         }
       ]
     },

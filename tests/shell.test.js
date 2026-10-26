@@ -72,6 +72,50 @@ T.test("sidebar (wide): collapses to an icon rail; toggle(); group titles", asyn
   box.remove();
 });
 
+T.test("sidebar (wide): resizable by drag and keys, clamped, autosaved; mirrored at the end", async (T) => {
+  try { localStorage.removeItem("ray-sidebar:test"); } catch {}
+  const html = SIDEBAR("1px").replace('<ray-sidebar ', '<ray-sidebar resizable min-width="200" max-width="400" autosave="test" ');
+  const box = await mount(html);
+  const s = box.querySelector("ray-sidebar");
+  const edge = inner(s, '[part="resizer"]');
+  const width = () => Math.round(s.getBoundingClientRect().width);
+  T.eq(edge.getAttribute("role"), "separator");
+  T.eq(edge.getAttribute("aria-label"), "Resize sidebar");
+  T.eq(getComputedStyle(edge).display, "block", "shown when resizable");
+  let resized = null;
+  s.addEventListener("ray-resize", (e) => { resized = e.detail.width; });
+  edge.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true, cancelable: true }));
+  await T.settle();
+  T.eq(resized, 266, "ArrowRight widens a start sidebar by 10");
+  edge.dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true, cancelable: true }));
+  await T.settle();
+  T.eq(resized, 400, "End: max-width");
+  const r = s.getBoundingClientRect();
+  edge.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, button: 0, pointerId: 3, clientX: r.right, clientY: r.top + 10 }));
+  edge.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, pointerId: 3, clientX: r.left + 100, clientY: r.top + 10 }));
+  T.eq(s.hasAttribute("data-dragging"), true, "dragging");
+  edge.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 3, clientX: r.left + 300, clientY: r.top + 10 }));
+  await T.settle();
+  T.eq(resized, 300, "dragged");
+  T.eq(edge.getAttribute("aria-valuenow"), "300");
+  s.collapsed = true;
+  await T.settle();
+  T.eq(getComputedStyle(edge).display, "none", "no edge on the rail");
+  box.remove();
+  const again = await mount(html);
+  T.eq(Math.round(parseFloat(again.querySelector("ray-sidebar").style.getPropertyValue("--_w"))), 300, "autosave restored");
+  again.remove();
+  try { localStorage.removeItem("ray-sidebar:test"); } catch {}
+  const end = await mount(SIDEBAR("1px").replace('<ray-sidebar ', '<ray-sidebar resizable side="end" '));
+  const e2 = end.querySelector("ray-sidebar");
+  let w = null;
+  e2.addEventListener("ray-resize", (e) => { w = e.detail.width; });
+  inner(e2, '[part="resizer"]').dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true, cancelable: true }));
+  await T.settle();
+  T.eq(w, 266, "at the end, ArrowLeft widens");
+  end.remove();
+});
+
 T.test("sidebar (narrow): a modal drawer; toggle opens; Escape and links close", async (T) => {
   const box = await mount(SIDEBAR("99999px"));
   const s = box.querySelector("ray-sidebar");

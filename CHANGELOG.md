@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-sidebar` `resizable`: on a wide screen its inner edge is a
+  separator that drags, or arrow-keys, the width between `min-width` and
+  `max-width` (px), with `ray-resize` after each change and `autosave` to
+  keep it.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

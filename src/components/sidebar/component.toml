@@ -54,6 +54,37 @@ type = "string"
 default = "Sidebar"
 description = "Accessible name of its navigation."
 
+[ray-sidebar.properties.resizable]
+type = "boolean"
+reflect = true
+description = "Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width."
+
+[ray-sidebar.properties.minWidth]
+attribute = "min-width"
+type = "number"
+default = "192"
+description = "Narrowest width when resizing, in px."
+
+[ray-sidebar.properties.maxWidth]
+attribute = "max-width"
+type = "number"
+default = "480"
+description = "Widest width when resizing, in px."
+
+[ray-sidebar.properties.autosave]
+type = "string"
+description = "A key: the resized width is saved in localStorage and restored. A later change of width wins."
+
+[ray-sidebar.properties.resizeLabel]
+attribute = "resize-label"
+type = "string"
+default = "Resize sidebar"
+description = "Accessible name of the resize edge."
+
+[ray-sidebar.events.ray-resize]
+detail = "{ width: number }"
+description = "After a drag or a key resized it (resizable)."
+
 [ray-sidebar.events.ray-toggle]
 detail = "{ collapsed: boolean; open: boolean; mobile: boolean }"
 description = "After toggle()."
@@ -84,6 +115,9 @@ description = "The scrolling <nav>."
 
 [ray-sidebar.parts.footer]
 description = "The footer area."
+
+[ray-sidebar.parts.resizer]
+description = "The resize edge (a separator), shown when resizable."
 
 [ray-sidebar.parts.drawer]
 description = "The <dialog> used on narrow screens."

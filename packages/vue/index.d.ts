@@ -1246,6 +1246,18 @@ export interface RaySidebarProps {
   breakpoint?: string;
   /** Accessible name of its navigation. */
   label?: string;
+  /** Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width. */
+  resizable?: boolean;
+  /** Narrowest width when resizing, in px. */
+  minWidth?: number;
+  /** Widest width when resizing, in px. */
+  maxWidth?: number;
+  /** A key: the resized width is saved in localStorage and restored. A later change of width wins. */
+  autosave?: string;
+  /** Accessible name of the resize edge. */
+  resizeLabel?: string;
+  /** After a drag or a key resized it (resizable). */
+  onRayResize?: (event: CustomEvent<{ width: number }>) => void;
   /** After toggle(). */
   onRayToggle?: (event: CustomEvent<{ collapsed: boolean; open: boolean; mobile: boolean }>) => void;
   /** The drawer opened (narrow screens). */
