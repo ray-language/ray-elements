@@ -53,6 +53,24 @@ T.test("code: sources, dedent, lines, numbers, highlight", async (T) => {
   box.remove();
 });
 
+T.test("code: verbatim keeps the indentation and the blank edges", async (T) => {
+  const box = await mount(`<ray-code></ray-code>`);
+  const el = box.firstElementChild;
+  const body = "\n  {\n    \"a\": 1\n  }\n\n";
+  el.code = body;
+  await T.settle();
+  T.eq(el.source, '{\n  "a": 1\n}', "dedented by default");
+  el.verbatim = true;
+  await T.settle();
+  T.eq(el.source, body, "as given");
+  T.eq(lines(el).length, 6, "every line shown, the blank ones too");
+  let copied = null;
+  el.addEventListener("ray-copy", (e) => { copied = e.detail.code; }, { once: true });
+  await el.copy();
+  T.eq(copied, body, "and copied as given");
+  box.remove();
+});
+
 T.test("code: diff lines, header and floating copy button", async (T) => {
   const box = await mount(`<ray-code language="diff" filename="a.js"><script type="text/plain">@@ -1 +1 @@
 -old

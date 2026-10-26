@@ -4,6 +4,6 @@ import "@raylang/elements/code";
 import { createComponent } from "../create.js";
 
 export const RayCode = /*#__PURE__*/ createComponent("RayCode", "ray-code", {
-  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
-  booleans: ["lineNumbers", "wrap", "expanded", "hideCopy", "hideHeader"],
+  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "verbatim", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
+  booleans: ["lineNumbers", "wrap", "verbatim", "expanded", "hideCopy", "hideHeader"],
 });

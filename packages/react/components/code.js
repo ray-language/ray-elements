@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayCode = /*#__PURE__*/ createComponent("ray-code", {
   displayName: "RayCode",
-  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
+  properties: ["code", "language", "filename", "lineNumbers", "highlight", "wrap", "verbatim", "maxHeight", "expanded", "hideCopy", "hideHeader", "size", "radius", "copyLabel", "copiedLabel"],
   events: { onRayCopy: "ray-copy" },
 });

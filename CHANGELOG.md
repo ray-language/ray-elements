@@ -16,6 +16,9 @@ change the API.
   depend on what was clicked. A native context menu read them in the same
   `contextmenu` as the app's own listener, so it could show the previous
   click's items.
+- `ray-code` `verbatim`: shows and copies the text exactly as given, with
+  its common indentation and blank first and last lines, for data such as
+  a response body or a log.
 
 ### Fixed
 
