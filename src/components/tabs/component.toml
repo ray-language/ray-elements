@@ -33,6 +33,13 @@ type = "string"
 reflect = true
 description = "Active indicator color."
 
+[ray-tabs.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "Height, font size and padding of the tabs (xs for a compact bar)."
+
 [ray-tabs.properties.activation]
 type = "string"
 values = ["auto", "manual"]

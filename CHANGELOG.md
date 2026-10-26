@@ -7,6 +7,12 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-tabs` `size` (`xs` to `xl`, `sm` by default): the height, font size
+  and padding of its tabs, for a compact tab bar without restyling each
+  `ray-tab` from outside.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

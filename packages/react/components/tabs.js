@@ -5,7 +5,7 @@ import { createComponent } from "../create.js";
 
 export const RayTabs = /*#__PURE__*/ createComponent("ray-tabs", {
   displayName: "RayTabs",
-  properties: ["value", "variant", "orientation", "color", "activation", "grow"],
+  properties: ["value", "variant", "orientation", "color", "size", "activation", "grow"],
   events: { onChange: "change" },
 });
 export const RayTab = /*#__PURE__*/ createComponent("ray-tab", {

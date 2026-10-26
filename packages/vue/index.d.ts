@@ -1317,6 +1317,8 @@ export interface RayTabsProps {
   orientation?: "horizontal" | "vertical";
   /** Active indicator color. */
   color?: string;
+  /** Height, font size and padding of the tabs (xs for a compact bar). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
   /** manual: arrows move focus, Enter/Space activates. */
   activation?: "auto" | "manual";
   /** Tabs share the full width. */

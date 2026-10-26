@@ -12,6 +12,7 @@ Properties:
 - `variant`: `default` | `outline` | `pills`, default `default`, reflects. Tab style.
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Tab list direction (and arrow keys).
 - `color`: string, reflects. Active indicator color.
+- `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height, font size and padding of the tabs (xs for a compact bar).
 - `activation`: `auto` | `manual`, default `auto`. manual: arrows move focus, Enter/Space activates.
 - `grow`: boolean, reflects. Tabs share the full width.
 
@@ -124,6 +125,16 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     </div>
   </ray-tab-panel>
 </ray-tabs>
+<div class="demo-caption">Compact · size xs</div>
+<ray-tabs size="xs" value="headers">
+  <ray-tab value="params">Params</ray-tab>
+  <ray-tab value="headers">Headers</ray-tab>
+  <ray-tab value="body">Body</ray-tab>
+  <ray-tab value="auth">Auth</ray-tab>
+  <ray-tab value="tests">Tests</ray-tab>
+  <ray-tab value="settings">Settings</ray-tab>
+</ray-tabs>
+
 <div class="demo-caption">Outline · vertical</div>
 <ray-tabs variant="outline" orientation="vertical" value="editor">
   <ray-tab value="general">General</ray-tab>

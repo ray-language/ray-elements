@@ -10,6 +10,13 @@ import { applyColor } from "../../core/styles.js";
 
 const tabsStyles = css`
   :host { display: block; }
+  /* The size scale, inherited by the ray-tab children (own names: they reach
+     the panels' content too). */
+  :host { --_tab-h: var(--ray-control-height-sm); --_tab-fs: var(--ray-font-size-sm); --_tab-px: var(--ray-space-4); --_tab-gap: var(--ray-space-2); }
+  :host([size="xs"]) { --_tab-h: var(--ray-control-height-xs); --_tab-fs: var(--ray-font-size-xs); --_tab-px: var(--ray-space-3); --_tab-gap: var(--ray-space-1); }
+  :host([size="md"]) { --_tab-h: var(--ray-control-height-md); --_tab-fs: var(--ray-font-size-md); --_tab-px: var(--ray-space-5); }
+  :host([size="lg"]) { --_tab-h: var(--ray-control-height-lg); --_tab-fs: var(--ray-font-size-lg); --_tab-px: var(--ray-space-6); --_tab-gap: var(--ray-space-3); }
+  :host([size="xl"]) { --_tab-h: var(--ray-control-height-xl); --_tab-fs: var(--ray-font-size-xl); --_tab-px: var(--ray-space-8); --_tab-gap: var(--ray-space-3); }
   :host([orientation="vertical"]) { display: flex; gap: var(--ray-space-4); }
   /* Too many tabs for the width: the list scrolls sideways instead of
      wrapping (a wrapped underline reads as two separate tab bars). The
@@ -42,6 +49,7 @@ export class RayTabs extends RayElement {
     color: { type: String, reflect: true },
     activation: { type: String, default: "auto" },
     grow: { type: Boolean, reflect: true },
+    size: { type: String, reflect: true, default: "sm" },
   };
   static styles = [tabsStyles];
   static template = `<div class="list" part="list" role="tablist"><slot name="tab"></slot></div><div class="panels" part="panels"><slot></slot></div>`;
@@ -139,10 +147,10 @@ const tabStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--ray-space-2);
-    min-height: var(--ray-control-height-sm);
-    padding: 0 var(--ray-space-4);
-    font-size: var(--ray-font-size-sm);
+    gap: var(--_tab-gap, var(--ray-space-2));
+    min-height: var(--_tab-h, var(--ray-control-height-sm));
+    padding: 0 var(--_tab-px, var(--ray-space-4));
+    font-size: var(--_tab-fs, var(--ray-font-size-sm));
     font-weight: var(--ray-font-weight-medium);
     color: var(--ray-muted-foreground);
     white-space: nowrap;
