@@ -155,6 +155,16 @@ T.test("icon-button: size takes a CSS length; the icon scales with it", async (T
   box.remove();
 });
 
+T.test("icon-button: the host is its square; a width from outside wins", async (T) => {
+  const box = await mount(`<div style="display:grid;grid-template-columns:1fr auto;width:300px"><input><ray-icon-button size="sm" label="Remove"><svg></svg></ray-icon-button></div><ray-icon-button size="xs" label="Small" style="width:1.25rem"><svg></svg></ray-icon-button>`);
+  const [btn, narrow] = box.querySelectorAll("ray-icon-button");
+  const side = inner(btn, "button").getBoundingClientRect().height;
+  T.ok(side > 0, `drawn (${side}px)`);
+  T.eq(Math.round(btn.getBoundingClientRect().width), Math.round(side), "an auto track takes the square");
+  T.eq(Math.round(inner(narrow, "button").getBoundingClientRect().width), 20, "the inner button fills a narrower host");
+  box.remove();
+});
+
 T.test("button: size takes a CSS length; the font follows", async (T) => {
   const box = await mount(`<ray-button size="4rem">Start</ray-button><ray-button size="xl">Start</ray-button>`);
   const [big, xl] = box.children;

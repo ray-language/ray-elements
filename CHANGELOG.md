@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-icon-button` gives its host the square's width, so an `auto` grid
+  track or a shrink-to-fit box sizes it without relying on the inner
+  button's flex basis (an app saw it measure 0 in WebKit). A width set on
+  the element still wins.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added
