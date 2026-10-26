@@ -72,6 +72,26 @@ T.test("sidebar (wide): collapses to an icon rail; toggle(); group titles", asyn
   box.remove();
 });
 
+T.test("sidebar (wide): collapse=offcanvas hides it entirely", async (T) => {
+  const box = await mount(SIDEBAR("1px").replace('<ray-sidebar ', '<ray-sidebar collapse="offcanvas" variant="floating" '));
+  const s = box.querySelector("ray-sidebar");
+  const links = [...s.querySelectorAll("ray-nav-link")];
+  s.toggle();
+  await T.settle();
+  T.eq(s.collapsed, true);
+  T.eq(s.getBoundingClientRect().width, 0, "no width, padding of the floating variant included");
+  T.ok(links.every((l) => !l.iconOnly), "no icon rail");
+  T.eq(s.querySelector("ray-sidebar-group").hasAttribute("collapsed"), false, "group titles untouched");
+  s.collapse = "icon";
+  await T.settle();
+  T.eq(s.getBoundingClientRect().width, 56, "icon again: the rail");
+  T.ok(links.every((l) => l.iconOnly));
+  s.toggle();
+  await T.settle();
+  T.eq(getComputedStyle(inner(s, ".panel")).visibility, "visible", "expanded: shown");
+  box.remove();
+});
+
 T.test("sidebar (narrow): a modal drawer; toggle opens; Escape and links close", async (T) => {
   const box = await mount(SIDEBAR("99999px"));
   const s = box.querySelector("ray-sidebar");

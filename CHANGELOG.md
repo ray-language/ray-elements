@@ -28,6 +28,11 @@ change the API.
   `data-overflow-start` / `data-overflow-end` to style it further. Before,
   the list scrolled with no sign, and with a mouse without a trackpad the
   hidden tabs were reachable only from the keyboard.
+- `ray-sidebar` `collapse="offcanvas"`: collapsed on a wide screen, the
+  sidebar leaves no width and drops out of the tab order instead of
+  becoming an icon rail (`collapse="icon"`, the default). Its docs now say
+  what it is for (navigation) and what to use for content such as a tree
+  of documents (a `ray-split` pane).
 
 ### Changed
 

@@ -1,6 +1,6 @@
 # Sidebar
 
-The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail, below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen.
+The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed).
 
 Import: `import "@raylang/elements/sidebar";` · Category: Navigation
 
@@ -10,7 +10,8 @@ Put ray-sidebar-group + ray-nav-link (with an icon in slot=left) inside. Collaps
 
 Properties:
 
-- `collapsed`: boolean, reflects. Wide screens: an icon rail instead of the full panel.
+- `collapsed`: boolean, reflects. Wide screens: collapsed as collapse says (an icon rail, or out of view).
+- `collapse`: `icon` | `offcanvas`, default `icon`, reflects. What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order).
 - `open`: boolean, reflects. Narrow screens: the drawer is shown (modal, focus trapped; Escape, backdrop click or a followed link close it).
 - `side`: `start` | `end` | `left` | `right`, default `start`, reflects. The edge it sits on (its border faces the content, its narrow-screen drawer slides from there): start/end follow the writing direction; left/right are sides of the screen.
 - `variant`: `sidebar` | `floating`, default `sidebar`, reflects. A panel against the edge, or a floating card with a margin.
@@ -89,8 +90,9 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-bottom: 1px solid var(--ray-border)">
       <ray-icon-button id="demo-sidebar-toggle" variant="subtle" label="Toggle sidebar"><ray-icon name="panel-left"></ray-icon></ray-icon-button>
       <span style="font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Files</span>
+      <ray-switch id="demo-sidebar-offcanvas" size="xs" label="Hide entirely" style="margin-inline-start: auto"></ray-switch>
     </div>
-    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons; on a narrow screen it opens it as a drawer.</div>
+    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons, or out of view with collapse="offcanvas"; on a narrow screen it opens it as a drawer.</div>
   </div>
 </div>
 <style>
@@ -99,5 +101,8 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 <script type="module">
   const sidebar = document.getElementById("demo-sidebar");
   document.getElementById("demo-sidebar-toggle").addEventListener("click", () => sidebar.toggle());
+  document.getElementById("demo-sidebar-offcanvas").addEventListener("change", (e) => {
+    sidebar.collapse = e.target.checked ? "offcanvas" : "icon";
+  });
 </script>
 ```

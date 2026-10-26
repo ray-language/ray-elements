@@ -3676,8 +3676,20 @@
       "attributes": [
         {
           "name": "collapsed",
-          "description": "Wide screens: an icon rail instead of the full panel.",
+          "description": "Wide screens: collapsed as collapse says (an icon rail, or out of view).",
           "valueSet": "v"
+        },
+        {
+          "name": "collapse",
+          "description": "What collapsed does on wide screens: icon, a rail of the nav links' icons; offcanvas, hidden entirely (no width, out of the tab order).",
+          "values": [
+            {
+              "name": "icon"
+            },
+            {
+              "name": "offcanvas"
+            }
+          ]
         },
         {
           "name": "open",

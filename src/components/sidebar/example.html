@@ -19,8 +19,9 @@
     <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; border-bottom: 1px solid var(--ray-border)">
       <ray-icon-button id="demo-sidebar-toggle" variant="subtle" label="Toggle sidebar"><ray-icon name="panel-left"></ray-icon></ray-icon-button>
       <span style="font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground)">Files</span>
+      <ray-switch id="demo-sidebar-offcanvas" size="xs" label="Hide entirely" style="margin-inline-start: auto"></ray-switch>
     </div>
-    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons; on a narrow screen it opens it as a drawer.</div>
+    <div style="padding: 1rem; color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">The button collapses the sidebar to icons, or out of view with collapse="offcanvas"; on a narrow screen it opens it as a drawer.</div>
   </div>
 </div>
 <style>
@@ -29,4 +30,7 @@
 <script type="module">
   const sidebar = document.getElementById("demo-sidebar");
   document.getElementById("demo-sidebar-toggle").addEventListener("click", () => sidebar.toggle());
+  document.getElementById("demo-sidebar-offcanvas").addEventListener("change", (e) => {
+    sidebar.collapse = e.target.checked ? "offcanvas" : "icon";
+  });
 </script>
