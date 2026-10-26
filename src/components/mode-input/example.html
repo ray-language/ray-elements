@@ -1,0 +1,26 @@
+<div class="demo-stack" style="max-width: 28rem">
+  <ray-mode-input id="demo-mode-part" label="Form part" mode="text" display="both" placeholder="Value">
+    <option value="text" label="Text" data-description="Sent as it is typed"></option>
+    <option value="file" label="File" data-icon="file" data-description="The contents of a file on disk" data-set-placeholder="Path to a file" data-set-spellcheck="false"></option>
+  </ray-mode-input>
+  <ray-mode-input label="Amount" mode="eur" display="label" inputmode="decimal" placeholder="0.00">
+    <option value="eur" label="Euro" data-hint="€" data-set-pattern="\d+([.,]\d{1,2})?"></option>
+    <option value="usd" label="US dollar" data-hint="$" data-set-pattern="\d+(\.\d{1,2})?"></option>
+    <option value="btc" label="Bitcoin" data-hint="₿" data-set-pattern="\d+(\.\d{1,8})?" data-set-placeholder="0.00000000"></option>
+  </ray-mode-input>
+  <ray-mode-input id="demo-mode-search" label="Find" position="end" display="label" placeholder="Name">
+    <option value="name" label="Name" data-set-placeholder="Name"></option>
+    <option value="id" label="ID" data-set-placeholder="Numeric ID" data-set-inputmode="numeric"></option>
+    <option value="regex" label="Regex" data-set-placeholder="Pattern, e.g. ^ray" data-set-spellcheck="false"></option>
+  </ray-mode-input>
+  <span class="demo-muted" id="demo-mode-out">Alt+↓ opens the menu from the field.</span>
+</div>
+
+<script type="module">
+  const out = document.getElementById("demo-mode-out");
+  for (const el of document.querySelectorAll("#demo-mode-part, #demo-mode-search")) {
+    el.addEventListener("ray-mode-change", (e) => {
+      out.textContent = `${el.label}: ${e.detail.previous} → ${e.detail.mode}`;
+    });
+  }
+</script>

@@ -936,6 +936,48 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on input).
 
+### Mode input
+
+A text field with a menu of modes on one side: choosing a mode applies its attributes to the field (type, placeholder, inputmode, pattern…), so one control says what a value is and the value — a file path or text, an amount in € or $, a search by name or ID. Everything else is ray-input.
+
+Import: `import "@raylang/elements/mode-input";` · Category: Inputs
+
+#### `<ray-mode-input>` (RayModeInput, extends RayInput)
+
+Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field.
+
+Properties:
+
+- `mode`: string, reflects. The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change.
+- `options` (property only): `ModeOption[]`. The modes; when not set, the <option> children.
+- `display`: `label` | `icon` | `both`, reflects. What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.
+- `position`: `start` | `end`, default `start`, reflects. The side of the field the trigger sits on.
+- `menuLabel` (attribute `menu-label`): string, default `Mode`. The trigger's accessible name, read with the current mode ("Mode: File").
+- `nativeMenu` (attribute `native-menu`): boolean, reflects. With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).
+
+Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`.
+
+Events:
+
+- `ray-mode-change` (detail `{ mode: string; previous: string | null; option: ModeOption }`): The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode.
+
+Parts (`::part()`):
+
+- `trigger`: The button that opens the menu.
+- `trigger-icon`: The current mode's icon in the trigger.
+- `trigger-label`: The current mode's hint or label in the trigger.
+- `menu`: The ray-menu of modes.
+
+Methods and properties:
+
+- `readonly modes: ModeOption[]`: The modes in use.
+- `readonly currentOption: ModeOption | null`: The chosen mode.
+- `choose(value: string): void`: Chooses a mode as the user would (fires ray-mode-change).
+
+Types:
+
+- `{ value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> }`: A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field.
+
 ### Number input
 
 A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton.

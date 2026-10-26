@@ -136,6 +136,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Mode input",
+    "group": "Components · Inputs",
+    "description": "A text field with a menu of modes on one side: choosing a mode applies its attributes to the field (type, placeholder, inputmode, pattern…), so one control says what a value is and the value — a file path or text, an amount in € or $, a search by name or ID. Everything else is ray-input.",
+    "href": "components/mode-input.html",
+    "keywords": [
+      "mode-input",
+      "ray-mode-input"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Number input",
     "group": "Components · Inputs",
     "description": "A number field (Mantine's NumberInput): + and − buttons (hold to repeat), arrow keys, min, max and step, fixed decimals, a prefix and a suffix, a thousands separator, or a duration (m:ss). An ARIA spinbutton.",

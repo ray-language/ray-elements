@@ -845,6 +845,39 @@ export declare class RayInput extends FieldControl {
   select(): void;
 }
 
+// --- Mode input (mode-input)
+/** A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field. */
+export type ModeOption = { value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> };
+/** <ray-mode-input> Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field. */
+export declare class RayModeInput extends RayInput {
+  /** The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change. */
+  mode: string | undefined;
+  /** The modes; when not set, the <option> children. */
+  options: ModeOption[] | undefined;
+  /** What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label. */
+  display: "label" | "icon" | "both" | undefined;
+  /** The side of the field the trigger sits on. */
+  position: "start" | "end";
+  /** The trigger's accessible name, read with the current mode ("Mode: File"). */
+  menuLabel: string;
+  /** With a native host (a std/ui window with the bridge), the system's menu (no descriptions there). */
+  nativeMenu: boolean | undefined;
+  /** The modes in use. */
+  readonly modes: ModeOption[];
+  /** The chosen mode. */
+  readonly currentOption: ModeOption | null;
+  /** Chooses a mode as the user would (fires ray-mode-change). */
+  choose(value: string): void;
+  addEventListener<K extends keyof RayModeInputEventMap>(type: K, listener: (this: RayModeInput, ev: RayModeInputEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayModeInputEventMap>(type: K, listener: (this: RayModeInput, ev: RayModeInputEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayModeInputEventMap extends HTMLElementEventMap {
+  /** The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode. */
+  "ray-mode-change": CustomEvent<{ mode: string; previous: string | null; option: ModeOption }>;
+}
+
 // --- Number input (number-input)
 /** The number in a text with separators, prefix or suffix (NaN if none). */
 export declare function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number;
@@ -2629,6 +2662,7 @@ declare global {
     "ray-calendar": RayCalendar;
     "ray-file-upload": RayFileUpload;
     "ray-input": RayInput;
+    "ray-mode-input": RayModeInput;
     "ray-number-input": RayNumberInput;
     "ray-password-input": RayPasswordInput;
     "ray-path-input": RayPathInput;

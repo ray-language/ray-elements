@@ -56,6 +56,14 @@ change the API.
   closed one's place is selected and, if the closed tab had the focus,
   focused. An `end` slot holds a new-tab button; too many tabs scroll
   sideways like `ray-tabs`.
+- `ray-mode-input`: a text field with a menu of modes on one side; choosing
+  a mode applies its attributes to the field (`type`, `placeholder`,
+  `pattern`…), so one control says what a value is and the value (text or
+  a file, € or $, by name or ID). Modes come from `<option>` children
+  (`data-set-<attribute>`) or `options`; `ray-mode-change` is cancelable;
+  the menu is native with `native-menu`. Everything else is `ray-input`.
+- EXTENDING.md: putting a ray-element, such as a `ray-menu`, in your
+  component's shadow root.
 
 ### Changed
 

@@ -551,6 +551,80 @@ export type RayInputProps = RayInputOwnProps & Omit<React.HTMLAttributes<Ray.Ray
 /** <ray-input> as a React component. */
 export declare const RayInput: React.ForwardRefExoticComponent<RayInputProps & React.RefAttributes<Ray.RayInput>>;
 
+export interface RayModeInputOwnProps {
+  /** The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change. */
+  mode?: string;
+  /** The modes; when not set, the <option> children. */
+  options?: Ray.ModeOption[];
+  /** What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label. */
+  display?: "label" | "icon" | "both";
+  /** The side of the field the trigger sits on. */
+  position?: "start" | "end";
+  /** The trigger's accessible name, read with the current mode ("Mode: File"). */
+  menuLabel?: string;
+  /** With a native host (a std/ui window with the bridge), the system's menu (no descriptions there). */
+  nativeMenu?: boolean;
+  /** Current value. The value attribute is the initial value (restored on form reset). */
+  value?: string;
+  /** Input type. */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** The description before the control (help first) or after it, with the error (fields in a row stay aligned). */
+  descriptionPosition?: "above" | "below";
+  /** Error text; marks the field invalid (display only — does not block submit). */
+  error?: string;
+  /** Placeholder text. */
+  placeholder?: string;
+  /** Required for form submission; shows an asterisk. */
+  required?: boolean;
+  /** Not editable nor submitted. */
+  disabled?: boolean;
+  /** Not editable, still submitted. */
+  readonly?: boolean;
+  /** Height and font size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Forwarded to the inner input. */
+  autocomplete?: string;
+  /** Virtual keyboard hint. */
+  inputmode?: string;
+  /** Validation pattern (regular expression). */
+  pattern?: string;
+  /** Minimum (number/date types). */
+  min?: string;
+  /** Maximum (number/date types). */
+  max?: string;
+  /** Step (number types). */
+  step?: string;
+  /** Minimum length. */
+  minlength?: string;
+  /** Maximum length. */
+  maxlength?: string;
+  /** Mobile auto-capitalization. */
+  autocapitalize?: string;
+  /** Label of the Enter key on virtual keyboards. */
+  enterkeyhint?: string;
+  /** Id of a <datalist> with suggestions. */
+  list?: string;
+  /** The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode. */
+  onRayModeChange?: (event: CustomEvent<{ mode: string; previous: string | null; option: Ray.ModeOption }>) => void;
+  /** On every edit (value already updated). */
+  onInput?: (event: Event) => void;
+  /** When an edit is committed (blur, Enter). */
+  onChange?: (event: Event) => void;
+}
+export type RayModeInputProps = RayModeInputOwnProps & Omit<React.HTMLAttributes<Ray.RayModeInput>, keyof RayModeInputOwnProps> & { children?: React.ReactNode };
+/** <ray-mode-input> as a React component. */
+export declare const RayModeInput: React.ForwardRefExoticComponent<RayModeInputProps & React.RefAttributes<Ray.RayModeInput>>;
+
 export interface RayNumberInputOwnProps {
   /** The number (undefined when empty). */
   value?: number;

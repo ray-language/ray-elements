@@ -1,0 +1,80 @@
+[component]
+name = "Mode input"
+category = "Inputs"
+summary = "A text field with a menu of modes on one side: choosing a mode applies its attributes to the field (type, placeholder, inputmode, pattern…), so one control says what a value is and the value — a file path or text, an amount in € or $, a search by name or ID. Everything else is ray-input."
+files = ["mode-input.js"]
+requires = ["input", "menu"]
+tags = ["ray-mode-input"]
+
+[ray-mode-input]
+class = "RayModeInput"
+extends = "RayInput"
+summary = "Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field."
+
+[component.types.ModeOption]
+ts = "{ value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> }"
+description = "A mode of ray-mode-input: hint is the trigger's short text (\"€\"), attrs the attributes it sets on the field."
+
+[ray-mode-input.properties.mode]
+type = "string"
+reflect = true
+description = "The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change."
+
+[ray-mode-input.properties.options]
+attribute = false
+type = "array"
+ts = "ModeOption[]"
+description = "The modes; when not set, the <option> children."
+
+[ray-mode-input.properties.display]
+type = "string"
+values = ["label", "icon", "both"]
+reflect = true
+description = "What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label."
+
+[ray-mode-input.properties.position]
+type = "string"
+values = ["start", "end"]
+default = "start"
+reflect = true
+description = "The side of the field the trigger sits on."
+
+[ray-mode-input.properties.menuLabel]
+attribute = "menu-label"
+type = "string"
+default = "Mode"
+description = "The trigger's accessible name, read with the current mode (\"Mode: File\")."
+
+[ray-mode-input.properties.nativeMenu]
+attribute = "native-menu"
+type = "boolean"
+reflect = true
+description = "With a native host (a std/ui window with the bridge), the system's menu (no descriptions there)."
+
+[ray-mode-input.events.ray-mode-change]
+detail = "{ mode: string; previous: string | null; option: ModeOption }"
+description = "The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode."
+
+[ray-mode-input.members.modes]
+ts = "readonly modes: ModeOption[]"
+description = "The modes in use."
+
+[ray-mode-input.members.currentOption]
+ts = "readonly currentOption: ModeOption | null"
+description = "The chosen mode."
+
+[ray-mode-input.members.choose]
+ts = "choose(value: string): void"
+description = "Chooses a mode as the user would (fires ray-mode-change)."
+
+[ray-mode-input.parts.trigger]
+description = "The button that opens the menu."
+
+[ray-mode-input.parts.trigger-icon]
+description = "The current mode's icon in the trigger."
+
+[ray-mode-input.parts.trigger-label]
+description = "The current mode's hint or label in the trigger."
+
+[ray-mode-input.parts.menu]
+description = "The ray-menu of modes."

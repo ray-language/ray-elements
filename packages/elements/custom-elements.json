@@ -4782,6 +4782,463 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/mode-input/mode-input.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayModeInput",
+          "tagName": "ray-mode-input",
+          "customElement": true,
+          "description": "Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field.",
+          "superclass": {
+            "name": "RayInput"
+          },
+          "attributes": [
+            {
+              "name": "mode",
+              "type": {
+                "text": "string"
+              },
+              "description": "The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change.",
+              "fieldName": "mode"
+            },
+            {
+              "name": "display",
+              "type": {
+                "text": "\"label\" | \"icon\" | \"both\""
+              },
+              "description": "What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.",
+              "fieldName": "display"
+            },
+            {
+              "name": "position",
+              "type": {
+                "text": "\"start\" | \"end\""
+              },
+              "description": "The side of the field the trigger sits on.",
+              "fieldName": "position",
+              "default": "start"
+            },
+            {
+              "name": "menu-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The trigger's accessible name, read with the current mode (\"Mode: File\").",
+              "fieldName": "menuLabel",
+              "default": "Mode"
+            },
+            {
+              "name": "native-menu",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).",
+              "fieldName": "nativeMenu"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "fieldName": "type",
+              "default": "text"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "fieldName": "error"
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "fieldName": "readonly"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "mode",
+              "type": {
+                "text": "string"
+              },
+              "description": "The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change.",
+              "attribute": "mode",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "options",
+              "type": {
+                "text": "ModeOption[]"
+              },
+              "description": "The modes; when not set, the <option> children."
+            },
+            {
+              "kind": "field",
+              "name": "display",
+              "type": {
+                "text": "\"label\" | \"icon\" | \"both\""
+              },
+              "description": "What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.",
+              "attribute": "display",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "position",
+              "type": {
+                "text": "\"start\" | \"end\""
+              },
+              "description": "The side of the field the trigger sits on.",
+              "attribute": "position",
+              "reflects": true,
+              "default": "start"
+            },
+            {
+              "kind": "field",
+              "name": "menuLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The trigger's accessible name, read with the current mode (\"Mode: File\").",
+              "attribute": "menu-label",
+              "reflects": false,
+              "default": "Mode"
+            },
+            {
+              "kind": "field",
+              "name": "nativeMenu",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).",
+              "attribute": "native-menu",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "Current value. The value attribute is the initial value (restored on form reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"text\" | \"email\" | \"password\" | \"search\" | \"number\" | \"url\" | \"tel\""
+              },
+              "description": "Input type.",
+              "attribute": "type",
+              "reflects": true,
+              "default": "text"
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "The description before the control (help first) or after it, with the error (fields in a row stay aligned).",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid (display only — does not block submit).",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Placeholder text.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission; shows an asterisk.",
+              "attribute": "required",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable nor submitted.",
+              "attribute": "disabled",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "readonly",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not editable, still submitted.",
+              "attribute": "readonly",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height and font size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "modes",
+              "description": "The modes in use."
+            },
+            {
+              "kind": "field",
+              "name": "currentOption",
+              "description": "The chosen mode."
+            },
+            {
+              "kind": "method",
+              "name": "choose",
+              "description": "Chooses a mode as the user would (fires ray-mode-change)."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-mode-change",
+              "type": {
+                "text": "CustomEvent<{ mode: string; previous: string | null; option: ModeOption }>"
+              },
+              "description": "The user chose a mode (mode is already the new one); cancelable: preventDefault keeps the previous mode."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "On every edit (value already updated)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "When an edit is committed (blur, Enter)."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "trigger",
+              "description": "The button that opens the menu."
+            },
+            {
+              "name": "trigger-icon",
+              "description": "The current mode's icon in the trigger."
+            },
+            {
+              "name": "trigger-label",
+              "description": "The current mode's hint or label in the trigger."
+            },
+            {
+              "name": "menu",
+              "description": "The ray-menu of modes."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayModeInput",
+          "declaration": {
+            "name": "RayModeInput",
+            "module": "components/mode-input/mode-input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-mode-input",
+          "declaration": {
+            "name": "RayModeInput",
+            "module": "components/mode-input/mode-input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/number-input/number-input.js",
       "declarations": [
         {
