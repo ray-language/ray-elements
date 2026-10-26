@@ -107,7 +107,7 @@ T.test("nav link: link, aria-current, nested toggle", async (T) => {
 });
 
 T.test("split: keyboard, clamping, collapse, drag, autosave", async (T) => {
-  try { localStorage.removeItem("ray-split:test"); } catch {}
+  try { localStorage.removeItem("ray-split:test"); localStorage.removeItem("ray-split:test:collapsed"); } catch {}
   const html = `<ray-split position="200" min="100" max="300" autosave="test" style="width: 600px; height: 200px"><div slot="start">a</div><div slot="end">b</div></ray-split>`;
   const box = await mount(html);
   const split = box.querySelector("ray-split");
@@ -153,8 +153,20 @@ T.test("split: keyboard, clamping, collapse, drag, autosave", async (T) => {
   // A new split with the same autosave key comes back at the saved size.
   const again = await mount(html);
   T.eq(Math.round(again.querySelector("ray-split").size), 240, "autosave restored");
+  again.querySelector("ray-split").collapsed = true;
+  await T.settle();
   again.remove();
-  try { localStorage.removeItem("ray-split:test"); } catch {}
+  const third = await mount(html);
+  const restored = third.querySelector("ray-split");
+  T.eq(restored.collapsed, true, "collapsed by script, restored collapsed");
+  key(restored.divider, "Enter");
+  await T.settle();
+  T.eq(Math.round(restored.size), 240, "and opens at the saved size");
+  third.remove();
+  const fourth = await mount(html.replace("<ray-split ", "<ray-split collapsed "));
+  T.eq(fourth.querySelector("ray-split").collapsed, false, "the saved state wins over the attribute");
+  fourth.remove();
+  try { localStorage.removeItem("ray-split:test"); localStorage.removeItem("ray-split:test:collapsed"); } catch {}
 });
 
 T.test("table: rows, text-only cells, nodes, sorting with aria-sort", async (T) => {

@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Changed
+
+- `ray-split` `autosave` also keeps whether the start pane is collapsed
+  (by the divider or by script), not only its size: a hidden side panel
+  stays hidden after a reload. A saved state wins over the `collapsed`
+  attribute.
+
 ## [0.8.0] - 2026-10-19
 
 ### Added

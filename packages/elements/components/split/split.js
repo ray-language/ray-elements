@@ -4,7 +4,8 @@
 //
 // The divider is a focusable separator (WAI-ARIA window splitter): arrows
 // move it (Shift: faster), Home/End go to min/max, Enter collapses the start
-// pane. With `autosave="key"` the size survives reloads (localStorage).
+// pane. With `autosave="key"` the size and the collapsed state survive
+// reloads (localStorage).
 
 import { RayElement, css, define } from "../../core/core.js";
 import { isRtl, inlineKey } from "../../core/direction.js";
@@ -88,6 +89,9 @@ export class RaySplit extends RayElement {
       try {
         const saved = Number(localStorage.getItem(`ray-split:${this.autosave}`));
         if (saved > 0) this._px = saved;
+        // "1" or "0"; nothing saved keeps the markup's collapsed.
+        const collapsed = localStorage.getItem(`ray-split:${this.autosave}:collapsed`);
+        if (collapsed !== null) this.collapsed = collapsed === "1";
       } catch {
         // No storage: the default position is fine.
       }
@@ -109,6 +113,14 @@ export class RaySplit extends RayElement {
     // A later change of `position` wins over a dragged/restored size; the
     // first update (position from the markup) does not.
     if (changed.has("position") && this._updated) this._px = null;
+    // Collapsed by the divider or by script after the first update: saved.
+    if (changed.has("collapsed") && this._updated && this.autosave) {
+      try {
+        localStorage.setItem(`ray-split:${this.autosave}:collapsed`, this.collapsed ? "1" : "0");
+      } catch {
+        // Not persisted: fine.
+      }
+    }
     this._updated = true;
     const min = Math.max(0, this.min ?? 0);
     const max = this.max ?? null;

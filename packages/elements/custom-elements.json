@@ -19424,7 +19424,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "A key: the size is saved in localStorage and restored.",
+              "description": "A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute).",
               "fieldName": "autosave"
             }
           ],
@@ -19498,7 +19498,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "A key: the size is saved in localStorage and restored.",
+              "description": "A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute).",
               "attribute": "autosave",
               "reflects": false
             },
