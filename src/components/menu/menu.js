@@ -3,9 +3,11 @@
 // context menu opened at the pointer over the trigger area.
 //
 // Choosing an item fires `ray-select` ({ value, item }) on the menu and
-// closes it (unless keep-open). Before its trigger opens it, the menu fires
-// a cancelable `ray-request-open` ({ event }): the place to fill items that
-// depend on what was clicked, read only after it.
+// closes it (unless keep-open). An item of type="checkbox" toggles its
+// `checked` first; one of type="radio" checks itself and unchecks the radio
+// items of the menu with the same `name`. Before its trigger opens it, the
+// menu fires a cancelable `ray-request-open` ({ event }): the place to fill
+// items that depend on what was clicked, read only after it.
 //
 // With `native` and a native host that offers "popup_menu" (core/host.js; a
 // std/ui window with core/raylang.js), it opens as the system's context menu
@@ -128,7 +130,7 @@ export class RayMenu extends Floating {
     const entries = [...this.querySelectorAll("ray-menu-item, ray-menu-divider")].filter((el) => el.closest("ray-menu") === this);
     const items = entries.map((el) => (el.localName === "ray-menu-divider"
       ? { separator: true }
-      : { title: itemLabel(el), enabled: !el.disabled }));
+      : { title: itemLabel(el), enabled: !el.disabled, ...(el.checkable ? { checked: Boolean(el.checked) } : {}) }));
     const index = await getHost().popupMenu(items);
     const item = index === null || index === undefined ? null : entries[index];
     if (!item || item.localName !== "ray-menu-item") return null;
@@ -205,6 +207,13 @@ export class RayMenu extends Floating {
 
   _choose(item) {
     if (item.disabled) return;
+    if (item.type === "checkbox") item.checked = !item.checked;
+    else if (item.type === "radio") {
+      for (const other of this.items) {
+        if (other !== item && other.type === "radio" && (other.name ?? "") === (item.name ?? "")) other.checked = false;
+      }
+      item.checked = true;
+    }
     this.emit("ray-select", { value: item.value ?? item.textContent.trim(), item });
     if (!this.keepOpen) this.open = false;
   }
@@ -239,6 +248,10 @@ const itemStyles = css`
   :host([color]:hover), :host([color]:focus) { background: var(--_light); color: var(--_light-color); }
   :host([disabled]) { color: var(--ray-muted-foreground); background: transparent; cursor: not-allowed; opacity: 0.6; }
   .label { flex: 1; white-space: nowrap; }
+  /* A checkbox or radio item keeps a column for its mark, checked or not. */
+  .mark { display: none; flex: none; width: 1rem; height: 1rem; visibility: hidden; }
+  :host([type="checkbox"]) .mark, :host([type="radio"]) .mark { display: inline-flex; }
+  :host([checked]) .mark { visibility: visible; }
   .section { display: inline-flex; align-items: center; color: var(--ray-muted-foreground); }
   :host([color]) .section { color: inherit; }
   .section:not([data-filled]) { display: none; }
@@ -251,9 +264,12 @@ export class RayMenuItem extends RayElement {
     value: { type: String, reflect: true },
     disabled: { type: Boolean, reflect: true },
     color: { type: String, reflect: true },
+    type: { type: String, reflect: true, default: "item" },
+    checked: { type: Boolean, reflect: true },
+    name: { type: String, reflect: true },
   };
   static styles = [itemStyles];
-  static template = `<span class="section left" part="left-section"><slot name="left"></slot></span><span class="label" part="label"><slot></slot></span><span class="section right" part="right-section"><slot name="right"></slot></span>`;
+  static template = `<span class="mark" part="mark" aria-hidden="true" data-ray-icon="ui.checked"></span><span class="section left" part="left-section"><slot name="left"></slot></span><span class="label" part="label"><slot></slot></span><span class="section right" part="right-section"><slot name="right"></slot></span>`;
 
   constructor() {
     super();
@@ -264,8 +280,15 @@ export class RayMenuItem extends RayElement {
     }
   }
 
+  /** Whether it is a checkbox or radio item. */
+  get checkable() {
+    return this.type === "checkbox" || this.type === "radio";
+  }
+
   update() {
     this.tabIndex = -1;
+    this.internals.role = this.type === "checkbox" ? "menuitemcheckbox" : this.type === "radio" ? "menuitemradio" : "menuitem";
+    this.internals.ariaChecked = this.checkable ? String(Boolean(this.checked)) : null;
     this.internals.ariaDisabled = this.disabled ? "true" : "false";
     if (this.color) applyColor(this, this.color);
   }

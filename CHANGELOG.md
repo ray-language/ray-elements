@@ -37,6 +37,11 @@ change the API.
   separator that drags, or arrow-keys, the width between `min-width` and
   `max-width` (px), with `ray-resize` after each change and `autosave` to
   keep it.
+- `ray-menu-item` `type="checkbox"` and `type="radio"` (with `name`), and
+  `checked`: choosing one toggles it, or checks it and unchecks the other
+  radio items of its group, before `ray-select`; it shows a check mark,
+  with the `menuitemcheckbox`/`menuitemradio` roles, and the native menu
+  shows the mark too.
 
 ### Changed
 

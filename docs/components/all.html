@@ -3075,12 +3075,16 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
   <ray-menu id="demo-view-menu" keep-open placement="bottom-start">
     <ray-button slot="trigger" variant="default"><ray-icon slot="left" name="eye"></ray-icon>View<ray-icon slot="right" name="chevron-down"></ray-icon></ray-button>
     <ray-menu-label>Show (keep-open)</ray-menu-label>
-    <ray-menu-item value="lines" data-on><ray-icon slot="left" name="check"></ray-icon>Line numbers</ray-menu-item>
-    <ray-menu-item value="minimap"><ray-icon slot="left" name="none"></ray-icon>Minimap</ray-menu-item>
-    <ray-menu-item value="wrap" data-on><ray-icon slot="left" name="check"></ray-icon>Word wrap</ray-menu-item>
-    <ray-menu-item value="whitespace"><ray-icon slot="left" name="none"></ray-icon>Whitespace</ray-menu-item>
+    <ray-menu-item type="checkbox" value="lines" checked>Line numbers</ray-menu-item>
+    <ray-menu-item type="checkbox" value="minimap">Minimap</ray-menu-item>
+    <ray-menu-item type="checkbox" value="wrap" checked>Word wrap</ray-menu-item>
+    <ray-menu-item type="checkbox" value="whitespace">Whitespace</ray-menu-item>
+    <ray-menu-divider></ray-menu-divider>
+    <ray-menu-label>Density</ray-menu-label>
+    <ray-menu-item type="radio" name="density" value="compact">Compact</ray-menu-item>
+    <ray-menu-item type="radio" name="density" value="comfortable" checked>Comfortable</ray-menu-item>
   </ray-menu>
-  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap</span>
+  <span class="demo-muted" id="demo-view-out">Showing: lines, wrap · comfortable</span>
 </div>
 
 <div class="demo-caption">Placements</div>
@@ -3129,13 +3133,11 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
 
   // View options: keep-open, each item toggles a check.
   const view = document.getElementById("demo-view-menu");
-  view.addEventListener("ray-select", (e) => {
-    const item = view.querySelector(`ray-menu-item[value="${e.detail.value}"]`);
-    const on = !item.hasAttribute("data-on");
-    item.toggleAttribute("data-on", on);
-    item.querySelector("ray-icon").name = on ? "check" : "none";
-    const shown = [...view.querySelectorAll("ray-menu-item[data-on]")].map((i) => i.getAttribute("value"));
-    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"}`;
+  // Checkbox and radio items update `checked` themselves, before ray-select.
+  view.addEventListener("ray-select", () => {
+    const shown = [...view.querySelectorAll('ray-menu-item[type="checkbox"][checked]')].map((i) => i.value);
+    const density = view.querySelector('ray-menu-item[name="density"][checked]').value;
+    document.getElementById("demo-view-out").textContent = `Showing: ${shown.join(", ") || "nothing"} · ${density}`;
   });
 
   document.getElementById("demo-context").addEventListener("ray-select", (e) => {
@@ -3156,7 +3158,7 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-menu-divider</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu-divider</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-menu-item</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;delete&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span><span class="tk-punctuation">&gt;</span>Delete<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu-item</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu</span><span class="tk-punctuation">&gt;</span></code></pre>
-<p>Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.</p>
+<p>Checkbox and radio items show their check mark there too. Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.</p>
 
 <p>The native menu reads its items the moment it opens, so items that depend on what was clicked go in <code>ray-request-open</code>, which comes first (a <code>contextmenu</code> listener of your own on the trigger may run after the menu's):</p>
 
@@ -3171,11 +3173,11 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td><code>trigger</code></td><td>The button that opens it, or the area for a context menu.</td></tr><tr><td>(default)</td><td>ray-menu-item, ray-menu-label and ray-menu-divider elements.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>dropdown</code></td><td>The panel.</td></tr></tbody></table></div>
 <h3><code>&lt;ray-menu-item&gt;</code></h3>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Reported in ray-select (default: the text).</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Skipped by the keyboard, cannot be chosen.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Text and hover color (e.g. red for destructive actions).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Reported in ray-select (default: the text).</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Skipped by the keyboard, cannot be chosen.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Text and hover color (e.g. red for destructive actions).</td></tr><tr><td><code>type</code></td><td><code>type</code> <span class="reflects">reflects</span></td><td><code>item</code> | <code>checkbox</code> | <code>radio</code></td><td><code>item</code></td><td>checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too.</td></tr><tr><td><code>checked</code></td><td><code>checked</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Checked (checkbox and radio items). Already updated when ray-select fires.</td></tr><tr><td><code>name</code></td><td><code>name</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>The group of a radio item: one checked per name in the menu.</td></tr></tbody></table></div>
 
 
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>Label.</td></tr><tr><td><code>left</code></td><td>Icon.</td></tr><tr><td><code>right</code></td><td>Shortcut or badge.</td></tr></tbody></table></div>
-
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>mark</code></td><td>The check mark of a checkbox or radio item.</td></tr></tbody></table></div>
 <h3><code>&lt;ray-menu-label&gt;</code></h3>
 <p class="note">A section caption inside the menu.</p>
 

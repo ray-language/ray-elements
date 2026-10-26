@@ -10,7 +10,7 @@ With `native` and [the native bridge](RAYLANG.md#using-the-bridge), the menu ope
 </ray-menu>
 ```
 
-Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
+Checkbox and radio items show their check mark there too. Labels, nested menus, icons and colors are the page menu's only. A dismissed native menu fires nothing.
 
 The native menu reads its items the moment it opens, so items that depend on what was clicked go in `ray-request-open`, which comes first (a `contextmenu` listener of your own on the trigger may run after the menu's):
 

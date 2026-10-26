@@ -80,6 +80,30 @@ type = "string"
 reflect = true
 description = "Text and hover color (e.g. red for destructive actions)."
 
+[ray-menu-item.properties.type]
+type = "string"
+values = ["item", "checkbox", "radio"]
+default = "item"
+reflect = true
+description = "checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too."
+
+[ray-menu-item.properties.checked]
+type = "boolean"
+reflect = true
+description = "Checked (checkbox and radio items). Already updated when ray-select fires."
+
+[ray-menu-item.properties.name]
+type = "string"
+reflect = true
+description = "The group of a radio item: one checked per name in the menu."
+
+[ray-menu-item.members.checkable]
+ts = "readonly checkable: boolean"
+description = "Whether type is checkbox or radio."
+
+[ray-menu-item.parts.mark]
+description = "The check mark of a checkbox or radio item."
+
 [ray-menu-item.slots.default]
 description = "Label."
 

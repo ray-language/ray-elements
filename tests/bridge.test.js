@@ -268,6 +268,23 @@ T.test("menu native: ray-request-open fills the items before they are read", asy
   box.remove();
 });
 
+T.test("menu native: checkbox and radio items carry checked", async (T) => {
+  const box = await mount(`<ray-menu native><ray-button slot="trigger">View</ray-button>
+    <ray-menu-item type="checkbox" checked>Wrap</ray-menu-item>
+    <ray-menu-item type="radio" name="m">Text</ray-menu-item>
+    <ray-menu-item>Plain</ray-menu-item></ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  const host = getHost();
+  const original = host.popupMenu;
+  let sent = null;
+  host.popupMenu = (items) => { sent = items; return Promise.resolve(0); };
+  const item = await menu.popupNative();
+  host.popupMenu = original;
+  T.eq(JSON.stringify(sent), JSON.stringify([{ title: "Wrap", enabled: true, checked: true }, { title: "Text", enabled: true, checked: false }, { title: "Plain", enabled: true }]));
+  T.eq(item.checked, false, "choosing the checkbox in the native menu toggles it");
+  box.remove();
+});
+
 T.test("menu native: a dropdown too; a newer popup settles the older", async (T) => {
   const box = await mount(`<ray-menu native><ray-button slot="trigger">Actions</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
   const menu = box.querySelector("ray-menu");

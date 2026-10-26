@@ -12566,6 +12566,31 @@
               },
               "description": "Text and hover color (e.g. red for destructive actions).",
               "fieldName": "color"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"item\" | \"checkbox\" | \"radio\""
+              },
+              "description": "checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too.",
+              "fieldName": "type",
+              "default": "item"
+            },
+            {
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Checked (checkbox and radio items). Already updated when ray-select fires.",
+              "fieldName": "checked"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The group of a radio item: one checked per name in the menu.",
+              "fieldName": "name"
             }
           ],
           "members": [
@@ -12598,6 +12623,42 @@
               "description": "Text and hover color (e.g. red for destructive actions).",
               "attribute": "color",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"item\" | \"checkbox\" | \"radio\""
+              },
+              "description": "checkbox: choosing it toggles checked (menuitemcheckbox); radio: choosing it checks it and unchecks the radio items of the menu with the same name (menuitemradio). Both show a check mark when checked, in the native menu too.",
+              "attribute": "type",
+              "reflects": true,
+              "default": "item"
+            },
+            {
+              "kind": "field",
+              "name": "checked",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Checked (checkbox and radio items). Already updated when ray-select fires.",
+              "attribute": "checked",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The group of a radio item: one checked per name in the menu.",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "checkable",
+              "description": "Whether type is checkbox or radio."
             }
           ],
           "events": [],
@@ -12615,7 +12676,12 @@
               "description": "Shortcut or badge."
             }
           ],
-          "cssParts": []
+          "cssParts": [
+            {
+              "name": "mark",
+              "description": "The check mark of a checkbox or radio item."
+            }
+          ]
         },
         {
           "kind": "class",
