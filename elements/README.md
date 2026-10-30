@@ -4,7 +4,7 @@
 system's web components, which the app's pages import by their npm name
 (`@raylang/elements`) with no npm and no copied files, and the native bridge
 that gives them the system's dialogs, menus and window in a `std/ui` window.
-Needs raylang 1.27.48 or later.
+Needs raylang 1.27.81 or later.
 
 This repository is the `elements/` directory of
 [ray-language/ray-elements](https://github.com/ray-language/ray-elements), published from

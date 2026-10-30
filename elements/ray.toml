@@ -3,7 +3,7 @@ name = "elements"
 version = "0.9.0"
 description = "ray-elements for raylang apps: the npm package @raylang/elements served to the app's pages by its npm name ([web] package) and the native bridge for std/ui windows (elements/bridge)"
 license = "Apache-2.0"
-raylang = "1.27.48"
+raylang = "1.27.81"
 
 # @raylang/elements, as published to npm: raylang serves it at
 # ray://app/node_modules/@raylang/elements/ with an import map, bakes it into a
