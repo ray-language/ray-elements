@@ -50,7 +50,8 @@ pub struct Native {
     window_colors: fn(int, string, Option<string>) -> Result<int, string>,
     // The "unsaved changes" mark of a window.
     set_edited: fn(int, bool) -> Result<int, string>,
-    // The menus declared with menu(), menu_at() and replace_menu().
+    // The menus declared with menu(), menu_at() and replace_menu() (and
+    // renamed with rename_menu()).
     menus: [Menu],
 }
 
@@ -116,6 +117,14 @@ pub fn replace_menu(n: Native, title: string, items: [ui.MenuItem]) -> Result<in
     Result.Ok(r)
 }
 
+// ui.rename_menu, recorded for the page: the palette lists the items under
+// `new`, and a later replace_menu(n, new, …) replaces that menu.
+pub fn rename_menu(n: Native, old: string, new: string) -> Result<int, string> {
+    let r = ui.rename_menu(old, new)?;
+    record_rename(n, old, new);
+    Result.Ok(r)
+}
+
 // ui.set_menu_item, recorded for the page.
 pub fn set_menu_item(n: Native, tag: string, enabled: bool, checked: bool) -> Result<int, string> {
     let r = ui.set_menu_item(tag, enabled, checked)?;
@@ -140,6 +149,17 @@ pub fn record(n: Native, title: string, items: [ui.MenuItem]) {
         }
     }
     n.menus.push(Menu { title: title, items: items });
+}
+
+// Records the menu `old` as `new`, without touching the menu bar; nothing
+// when no menu `old` was recorded.
+pub fn record_rename(n: Native, old: string, new: string) {
+    for i in 0..n.menus.len() {
+        if (n.menus[i].title == old) {
+            n.menus[i] = Menu { title: new, items: n.menus[i].items };
+            return;
+        }
+    }
 }
 
 // The tags of a context menu opened for the page: "ray-elements:popup:<id>:<index>".
@@ -561,6 +581,18 @@ fn lists_the_menus() {
     record(n, "View", [ui.item("full", "Full screen", "f")]);
     let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
     assert(a.contains("\"tag\":\"full\",\"title\":\"Full screen\",\"shortcut\":\"cmd+f\"") && !a.contains("zoom"));
+}
+
+@test
+fn renames_a_menu() {
+    let n = with_menus();
+    record_rename(n, "File", "Archivo");
+    record(n, "Archivo", [ui.item("open", "Abrir", "")]);
+    record_rename(n, "Missing", "Other");
+    assert_eq(n.menus.len(), 2);
+    let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
+    assert(a.starts_with("{\"ok\":true,\"value\":[{\"menu\":\"Archivo\",\"tag\":\"open\""));
+    assert(!a.contains("\"File\"") && !a.contains("\"new\"") && !a.contains("Other"));
 }
 
 @test

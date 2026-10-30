@@ -212,8 +212,9 @@ bridge.menu(n, <span class="tk-string">&quot;File&quot;</span>, [ui.item(<span c
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;trigger&quot;</span><span class="tk-punctuation">&gt;</span>…<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
   <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-menu-item</span> <span class="tk-attr">value</span>=<span class="tk-string">&quot;rename&quot;</span><span class="tk-punctuation">&gt;</span>Rename<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu-item</span><span class="tk-punctuation">&gt;</span>
 <span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-menu</span><span class="tk-punctuation">&gt;</span></code></pre>
-<p><code>bridge.menu_at</code>, <code>replace_menu</code> and <code>set_menu_item</code> keep the record up to
-date the same way (<code>bridge.record</code> records a menu without touching the bar).</p>
+<p><code>bridge.menu_at</code>, <code>replace_menu</code>, <code>rename_menu</code> and <code>set_menu_item</code> keep the
+record up to date the same way (<code>bridge.record</code> and <code>bridge.record_rename</code>
+record a menu without touching the bar).</p>
 
 <p>The window: open it with <code>o.kind = &quot;full_content&quot;</code> and <code>enableRaylang()</code> sets
 <code>--ray-titlebar-height</code> and <code>--ray-titlebar-inset</code> (the room for the macOS
@@ -439,7 +440,7 @@ elements = &quot;git+https://github.com/ray-language/elements@v0.3.0&quot;
 with Vite: <code>import &quot;@raylang/elements/button&quot;</code>,
 <code>import { enableRaylang } from &quot;@raylang/elements/core&quot;</code>. The package's
 <code>ray.toml</code> declares it (<code>[web] package = &quot;web&quot;</code>), and raylang (the package
-needs 1.27.48 or later) does the rest, under <code>ray run</code> and in a native binary:</p>
+needs 1.27.81 or later) does the rest, under <code>ray run</code> and in a native binary:</p>
 
 <ul>
 <li>it serves the package at <code>ray://app/node_modules/@raylang/elements/</code>, where
