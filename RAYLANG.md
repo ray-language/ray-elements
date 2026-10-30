@@ -95,8 +95,9 @@ for raw in ui.events() {
 </ray-menu>
 ```
 
-`bridge.menu_at`, `replace_menu` and `set_menu_item` keep the record up to
-date the same way (`bridge.record` records a menu without touching the bar).
+`bridge.menu_at`, `replace_menu`, `rename_menu` and `set_menu_item` keep the
+record up to date the same way (`bridge.record` and `bridge.record_rename`
+record a menu without touching the bar).
 
 The window: open it with `o.kind = "full_content"` and `enableRaylang()` sets
 `--ray-titlebar-height` and `--ray-titlebar-inset` (the room for the macOS
@@ -249,7 +250,7 @@ The page imports `@raylang/elements` by its npm name, the same as an app built
 with Vite: `import "@raylang/elements/button"`,
 `import { enableRaylang } from "@raylang/elements/core"`. The package's
 `ray.toml` declares it (`[web] package = "web"`), and raylang (the package
-needs 1.27.48 or later) does the rest, under `ray run` and in a native binary:
+needs 1.27.81 or later) does the rest, under `ray run` and in a native binary:
 
 - it serves the package at `ray://app/node_modules/@raylang/elements/`, where
   npm would put it (so the stylesheets are linked by that path);
