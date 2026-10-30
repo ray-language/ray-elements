@@ -7,6 +7,17 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-input` and `ray-textarea` parts `suggestion-label`,
+  `suggestion-detail` and `suggestion-description`: the pieces of an inline
+  suggestion, styleable from outside.
+
+### Fixed
+
+- An inline suggestion's description is in the interface font, not the
+  label's mono one: it sat inside the label (whose text it also joined).
+
 ## [0.9.0] - 2026-10-25
 
 ### Added

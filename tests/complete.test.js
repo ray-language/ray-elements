@@ -145,3 +145,20 @@ T.test("complete: a click on a suggestion accepts it; async answers, a stale one
   T.eq(c.getAttribute("aria-autocomplete"), "list");
   box.remove();
 });
+
+T.test("complete: the label in the mono font, the description in the interface's, a part each", async (T) => {
+  const box = await mount(`<ray-input label="URL"></ray-input>`);
+  const el = box.firstElementChild;
+  el.complete = () => ({ from: 0, to: 0, items: [{ value: "a", label: "a", detail: "1", description: "From the Default environment" }] });
+  await T.settle();
+  await type(el, "x");
+  const [o] = options(el);
+  const part = (p) => o.querySelector(`[part="${p}"]`);
+  T.eq(part("suggestion-label").textContent, "a", "the label alone");
+  T.eq(part("suggestion-detail").textContent, "1");
+  T.eq(part("suggestion-description").textContent, "From the Default environment");
+  const font = (n) => getComputedStyle(n).fontFamily;
+  T.ok(font(part("suggestion-description")) !== font(part("suggestion-label")), `not the label's font (${font(part("suggestion-description"))})`);
+  T.eq(font(part("suggestion-description")), font(list(el)), "the list's font");
+  box.remove();
+});
