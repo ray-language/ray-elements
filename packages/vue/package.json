@@ -1,6 +1,6 @@
 {
   "name": "@raylang/vue",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Vue 3 wrappers (with v-model) of the ray-elements web components",
   "license": "Apache-2.0",
   "keywords": ["web-components", "design-system", "ui", "raylang", "vue"],
@@ -28,7 +28,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
-    "@raylang/elements": "^0.9.0",
+    "@raylang/elements": "^0.10.0",
     "vue": ">=3.3"
   }
 }

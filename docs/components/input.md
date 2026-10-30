@@ -81,7 +81,7 @@ Types:
 - `{ value: string; label?: string; detail?: string; description?: string }`: A suggestion of a field's complete(): value is inserted; label (default: value) and detail are shown, description under them.
 - `{ from: number; to: number; items: CompletionItem[] }`: What complete() returns: the part of the text (offsets, to excluded) a suggestion replaces, and the suggestions.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

@@ -21,7 +21,7 @@ Slots:
 - `icon`: Icon next to the label.
 - (default): Extra content (e.g. a ray-progress).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

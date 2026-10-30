@@ -51,7 +51,7 @@ Types:
 - `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
 - `{ key: string; direction: "asc" | "desc" }`: The sort state of ray-table.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

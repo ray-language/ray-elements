@@ -1,6 +1,6 @@
 # ray-elements
 
-> Web components (custom elements, Shadow DOM, no dependencies) for any web app: plain HTML, React, Vue or a raylang app. npm: `@raylang/elements`, `@raylang/react`, `@raylang/vue`; raylang: the `elements` package. This file describes version 0.9.0.
+> Web components (custom elements, Shadow DOM, no dependencies) for any web app: plain HTML, React, Vue or a raylang app. npm: `@raylang/elements`, `@raylang/react`, `@raylang/vue`; raylang: the `elements` package. This file describes version 0.10.0.
 
 ray-elements is a design system of standard web components (custom elements
 with Shadow DOM, no dependencies): `<ray-button>`, `<ray-input>`,

@@ -52,7 +52,7 @@ Exports (from `@raylang/elements/code` and `@raylang/elements`):
 - `function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void`: Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one.
 - `function tokenize(code: string, lang?: string): [type: string, text: string][]`: The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

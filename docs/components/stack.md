@@ -22,7 +22,7 @@ Exports (from `@raylang/elements/stack` and `@raylang/elements`):
 
 - `function applyFlex(el: HTMLElement, options: { gap?: string; align?: string; justify?: string }, alignDefault: string): void`: Gap, align and justify of a stack or group onto an element's custom properties (for a layout component of your own).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

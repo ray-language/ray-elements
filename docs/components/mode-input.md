@@ -40,7 +40,7 @@ Types:
 
 - `{ value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> }`: A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.9.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.10.0.
 
 ## Example
 

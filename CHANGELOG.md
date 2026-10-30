@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-10-30
+
 ### Added
 
 - `ray-input` and `ray-textarea` parts `suggestion-label`,
