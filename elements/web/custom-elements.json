@@ -4815,6 +4815,18 @@
               "description": "Each suggestion ([aria-selected] when active)."
             },
             {
+              "name": "suggestion-label",
+              "description": "A suggestion's label (in the mono font)."
+            },
+            {
+              "name": "suggestion-detail",
+              "description": "A suggestion's detail."
+            },
+            {
+              "name": "suggestion-description",
+              "description": "A suggestion's description, under its label (in the interface font)."
+            },
+            {
               "name": "highlight",
               "description": "Each marked range (also highlight-<kind> for a range with a kind)."
             },
@@ -9574,6 +9586,18 @@
             {
               "name": "suggestion",
               "description": "Each suggestion ([aria-selected] when active)."
+            },
+            {
+              "name": "suggestion-label",
+              "description": "A suggestion's label (in the mono font)."
+            },
+            {
+              "name": "suggestion-detail",
+              "description": "A suggestion's detail."
+            },
+            {
+              "name": "suggestion-description",
+              "description": "A suggestion's description, under its label (in the interface font)."
             },
             {
               "name": "highlight",

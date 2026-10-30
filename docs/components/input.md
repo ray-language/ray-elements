@@ -62,6 +62,9 @@ Parts (`::part()`):
 - `error`: The error message.
 - `suggestions`: The suggestion list (a listbox in the top layer).
 - `suggestion`: Each suggestion ([aria-selected] when active).
+- `suggestion-label`: A suggestion's label (in the mono font).
+- `suggestion-detail`: A suggestion's detail.
+- `suggestion-description`: A suggestion's description, under its label (in the interface font).
 - `highlight`: Each marked range (also highlight-<kind> for a range with a kind).
 - `text-layer`: The layer behind the text that holds the marks.
 

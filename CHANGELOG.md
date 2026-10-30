@@ -9,11 +9,19 @@ change the API.
 
 ### Added
 
+- `ray-input` and `ray-textarea` parts `suggestion-label`,
+  `suggestion-detail` and `suggestion-description`: the pieces of an inline
+  suggestion, styleable from outside.
 - `bridge.rename_menu(n, old, new)`: `ui.rename_menu`, recorded for the page,
   so the command palette lists the items under the new title and a later
   `replace_menu` with it replaces that menu instead of adding a second one;
   `bridge.record_rename` records it without touching the bar. The package now
   needs raylang 1.27.81 (`ui.rename_menu`).
+
+### Fixed
+
+- An inline suggestion's description is in the interface font, not the
+  label's mono one: it sat inside the label (whose text it also joined).
 
 ## [0.9.0] - 2026-10-25
 

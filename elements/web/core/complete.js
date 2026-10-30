@@ -42,7 +42,8 @@ export const completeStyles = css`
     white-space: nowrap;
   }
   .suggestion[aria-selected="true"] { color: var(--ray-accent-foreground); background: var(--ray-accent); }
-  .suggestion .s-label { flex: none; font-family: var(--ray-font-mono); }
+  .suggestion .s-main { flex: none; }
+  .suggestion .s-label { font-family: var(--ray-font-mono); }
   .suggestion .s-detail { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--ray-muted-foreground); }
   .suggestion .s-description { display: block; font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 `;
@@ -127,21 +128,29 @@ class Completer {
       option.dataset.index = String(i);
       option.setAttribute("role", "option");
       option.setAttribute("part", "suggestion");
+      // The label (code, in the mono font) with the description (prose)
+      // under it, then the detail.
+      const main = document.createElement("span");
+      main.className = "s-main";
       const label = document.createElement("span");
       label.className = "s-label";
+      label.setAttribute("part", "suggestion-label");
       label.textContent = item.label ?? String(item.value);
-      option.append(label);
-      if (item.detail) {
-        const detail = document.createElement("span");
-        detail.className = "s-detail";
-        detail.textContent = item.detail;
-        option.append(detail);
-      }
+      main.append(label);
       if (item.description) {
         const d = document.createElement("span");
         d.className = "s-description";
+        d.setAttribute("part", "suggestion-description");
         d.textContent = item.description;
-        label.append(d);
+        main.append(d);
+      }
+      option.append(main);
+      if (item.detail) {
+        const detail = document.createElement("span");
+        detail.className = "s-detail";
+        detail.setAttribute("part", "suggestion-detail");
+        detail.textContent = item.detail;
+        option.append(detail);
       }
       return option;
     }));
