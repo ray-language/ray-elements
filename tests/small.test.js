@@ -1,9 +1,9 @@
 // page: tests/pages/small.html
 //
-// Pagination, skeleton and aspect ratio in the real webview.
+// Pagination, skeleton, pulse and aspect ratio in the real webview.
 
 const T = window.__rayTest;
-await Promise.all(["ray-pagination", "ray-skeleton", "ray-aspect-ratio"].map((t) => customElements.whenDefined(t)));
+await Promise.all(["ray-pagination", "ray-skeleton", "ray-pulse", "ray-aspect-ratio"].map((t) => customElements.whenDefined(t)));
 const { paginationRange } = await import("../../src/components/pagination/pagination.js");
 const { parseRatio } = await import("../../src/components/aspect-ratio/aspect-ratio.js");
 
@@ -139,5 +139,45 @@ T.test("aspect ratio: ratio parsing, box size, the media fills it", async (T) =>
   w.ratio = "4:3";
   await T.settle();
   T.eq(Math.round(w.getBoundingClientRect().height), 240, "ratio changes");
+  box.remove();
+});
+
+T.test("pulse: presets, overrides, clamp, parts, aria", async (T) => {
+  const { PRESETS, MAX_COUNT } = await import("../../src/components/pulse/pulse.js");
+  const box = await mount(`<ray-pulse id="c"></ray-pulse>
+    <ray-pulse id="r" variant="ripple" color="teal" label="Connecting"></ray-pulse>
+    <ray-pulse id="d" variant="dots" size="xs"></ray-pulse>
+    <ray-pulse id="o" variant="breathe" count="9" shape="ring" fade direction="normal"></ray-pulse>`);
+  const [c, r, d, o] = ["c", "r", "d", "o"].map((id) => box.querySelector("#" + id));
+  const dots = (el) => el.shadowRoot.querySelectorAll(".dot:not(.core)");
+  const pulse = (el) => inner(el, ".pulse");
+  T.eq(c.getAttribute("role"), "status");
+  T.eq(inner(c, ".sr-only").textContent, "Loading");
+  T.eq(inner(r, ".sr-only").textContent, "Connecting");
+  T.eq(dots(c).length, PRESETS.cluster.count, "cluster: the preset's count");
+  T.ok(pulse(c).classList.contains("gradient"), "concentric filled circles fade with size");
+  T.eq(pulse(c).style.getPropertyValue("--_direction"), "alternate");
+  T.eq(pulse(c).style.getPropertyValue("--_fade-end"), "1", "cluster does not fade");
+  T.eq(dots(r).length, PRESETS.ripple.count);
+  T.ok(inner(r, ".core"), "ripple: a static center");
+  T.eq(inner(r, ".core").getAttribute("part"), "dot core");
+  T.ok(pulse(r).classList.contains("ring"));
+  T.eq(pulse(r).style.getPropertyValue("--_fade-end"), "0", "ripple fades");
+  T.ok(pulse(r).style.getPropertyValue("--_filled").includes("teal"), "its own color");
+  T.ok(pulse(d).classList.contains("row"), "dots: in a row");
+  const dd = dots(d)[0].getBoundingClientRect();
+  T.ok(dd.width > 3 && dd.width < 8, `row dots are sized from the box (${dd.width})`);
+  T.ok(pulse(d).getBoundingClientRect().width > pulse(d).getBoundingClientRect().height, "a row is wider than tall");
+  T.eq(dots(o).length, MAX_COUNT, "count is clamped");
+  T.ok(pulse(o).classList.contains("ring") && !pulse(o).classList.contains("gradient"), "rings do not fade with size");
+  T.eq(pulse(o).style.getPropertyValue("--_fade-end"), "0", "bare fade = out");
+  T.eq(pulse(o).style.getPropertyValue("--_direction"), "normal");
+  const sizes = [...dots(o)].map((i) => i.style.getPropertyValue("--_w"));
+  T.eq(sizes.join(), "100%,80%,60%,40%,20%", "largest first");
+  o.fade = "none";
+  o.count = 2;
+  await T.settle();
+  T.eq(pulse(o).style.getPropertyValue("--_fade-end"), "1");
+  T.eq(dots(o).length, 2, "rebuilt on count");
   box.remove();
 });

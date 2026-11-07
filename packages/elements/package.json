@@ -252,6 +252,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/progress/progress.js"
     },
+    "./pulse": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/pulse/pulse.js"
+    },
     "./ring-progress": {
       "types": "./ray-elements.d.ts",
       "default": "./components/ring-progress/ring-progress.js"

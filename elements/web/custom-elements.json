@@ -18465,6 +18465,206 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/pulse/pulse.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayPulse",
+          "tagName": "ray-pulse",
+          "customElement": true,
+          "description": "Four presets (variant), each a bundle of count, shape, fade and direction, which override it one by one. The rest is tuned with custom properties on the element: --ray-pulse-cycle (one cycle, default 1.6s; doubled with reduced motion), --ray-pulse-floor (opacity of the largest of concentric filled circles, 0 to 1, default 0.2), --ray-pulse-scale (where a cycle starts, 1 = full size; default per variant) and --ray-pulse-stagger (how much of the cycle separates the phases of the circles, 0 together to 1 spread evenly; default per variant).",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"cluster\" | \"breathe\" | \"ripple\" | \"dots\""
+              },
+              "description": "The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence).",
+              "fieldName": "variant",
+              "default": "cluster"
+            },
+            {
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Number of circles, 1 to 5 (more are clamped). Default: the variant's.",
+              "fieldName": "count"
+            },
+            {
+              "name": "shape",
+              "type": {
+                "text": "\"filled\" | \"ring\""
+              },
+              "description": "Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's.",
+              "fieldName": "shape"
+            },
+            {
+              "name": "fade",
+              "type": {
+                "text": "\"out\" | \"none\""
+              },
+              "description": "Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade).",
+              "fieldName": "fade"
+            },
+            {
+              "name": "direction",
+              "type": {
+                "text": "\"alternate\" | \"normal\""
+              },
+              "description": "alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's.",
+              "fieldName": "direction"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary color.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height of the figure (the dots variant is wider).",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text read by screen readers.",
+              "fieldName": "label",
+              "default": "Loading"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"cluster\" | \"breathe\" | \"ripple\" | \"dots\""
+              },
+              "description": "The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence).",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "cluster"
+            },
+            {
+              "kind": "field",
+              "name": "count",
+              "type": {
+                "text": "number"
+              },
+              "description": "Number of circles, 1 to 5 (more are clamped). Default: the variant's.",
+              "attribute": "count",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "shape",
+              "type": {
+                "text": "\"filled\" | \"ring\""
+              },
+              "description": "Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's.",
+              "attribute": "shape",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "fade",
+              "type": {
+                "text": "\"out\" | \"none\""
+              },
+              "description": "Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade).",
+              "attribute": "fade",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "direction",
+              "type": {
+                "text": "\"alternate\" | \"normal\""
+              },
+              "description": "alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's.",
+              "attribute": "direction",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "A palette color or any CSS color. Default: the primary color.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Height of the figure (the dots variant is wider).",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Text read by screen readers.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Loading"
+            }
+          ],
+          "events": [],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "pulse",
+              "description": "The box holding the circles."
+            },
+            {
+              "name": "dot",
+              "description": "Each circle (the static center of ripple is also part core)."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayPulse",
+          "declaration": {
+            "name": "RayPulse",
+            "module": "components/pulse/pulse.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-pulse",
+          "declaration": {
+            "name": "RayPulse",
+            "module": "components/pulse/pulse.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/ring-progress/ring-progress.js",
       "declarations": [
         {

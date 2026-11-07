@@ -2153,6 +2153,27 @@ export interface RayProgressProps {
 /** <ray-progress> as a Vue component. */
 export declare const RayProgress: DefineComponent<RayProgressProps>;
 
+export interface RayPulseProps {
+  /** The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence). */
+  variant?: "cluster" | "breathe" | "ripple" | "dots";
+  /** Number of circles, 1 to 5 (more are clamped). Default: the variant's. */
+  count?: number;
+  /** Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's. */
+  shape?: "filled" | "ring";
+  /** Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade). */
+  fade?: "out" | "none";
+  /** alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's. */
+  direction?: "alternate" | "normal";
+  /** A palette color or any CSS color. Default: the primary color. */
+  color?: string;
+  /** Height of the figure (the dots variant is wider). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Text read by screen readers. */
+  label?: string;
+}
+/** <ray-pulse> as a Vue component. */
+export declare const RayPulse: DefineComponent<RayPulseProps>;
+
 export interface RayRingProgressProps {
   /** Progress, from 0 to max. Unset: indeterminate (a spinning arc). */
   value?: number;
@@ -2501,6 +2522,7 @@ export declare const components: {
   RayNotification: typeof RayNotification;
   RayToaster: typeof RayToaster;
   RayProgress: typeof RayProgress;
+  RayPulse: typeof RayPulse;
   RayRingProgress: typeof RayRingProgress;
   RaySkeleton: typeof RaySkeleton;
   RaySpinner: typeof RaySpinner;
@@ -2599,6 +2621,7 @@ declare module "vue" {
     RayNotification: typeof RayNotification;
     RayToaster: typeof RayToaster;
     RayProgress: typeof RayProgress;
+    RayPulse: typeof RayPulse;
     RayRingProgress: typeof RayRingProgress;
     RaySkeleton: typeof RaySkeleton;
     RaySpinner: typeof RaySpinner;

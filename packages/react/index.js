@@ -58,6 +58,7 @@ export { RayAlert } from "./components/alert.js";
 export { RayEmptyState } from "./components/empty-state.js";
 export { RayNotification, RayToaster } from "./components/notification.js";
 export { RayProgress } from "./components/progress.js";
+export { RayPulse } from "./components/pulse.js";
 export { RayRingProgress } from "./components/ring-progress.js";
 export { RaySkeleton } from "./components/skeleton.js";
 export { RaySpinner } from "./components/spinner.js";

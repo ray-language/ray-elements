@@ -617,6 +617,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Pulse",
+    "group": "Components · Feedback",
+    "description": "An indeterminate wait indicator softer than the spinner: circles that breathe or ripple, announced as a status.",
+    "href": "components/pulse.html",
+    "keywords": [
+      "pulse",
+      "ray-pulse"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Ring progress",
     "group": "Components · Feedback",
     "description": "Progress as a ring (Mantine's RingProgress), with content in the middle: a countdown, a goal, an upload. Announced as a progressbar.",

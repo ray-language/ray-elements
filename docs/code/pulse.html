@@ -1,0 +1,32 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-pulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-pulse</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-pulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;breathe&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-pulse</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-pulse</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;ripple&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-pulse</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-pulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dots&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-pulse</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-pulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> <span class="tk-attr">count</span>=<span class="tk-string">&quot;5&quot;</span> <span class="tk-attr">shape</span>=<span class="tk-string">&quot;ring&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;gray&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Connecting&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-pulse</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayPulse } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
+
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> PulseExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-row&quot;</span>&gt;
+        &lt;RayPulse size=<span class="tk-string">&quot;xs&quot;</span> /&gt;
+        &lt;RayPulse size=<span class="tk-string">&quot;sm&quot;</span> variant=<span class="tk-string">&quot;breathe&quot;</span> /&gt;
+        &lt;RayPulse variant=<span class="tk-string">&quot;ripple&quot;</span> /&gt;
+        &lt;RayPulse size=<span class="tk-string">&quot;lg&quot;</span> variant=<span class="tk-string">&quot;dots&quot;</span> color=<span class="tk-string">&quot;teal&quot;</span> /&gt;
+        &lt;RayPulse size=<span class="tk-string">&quot;xl&quot;</span> count={<span class="tk-number">5</span>} shape=<span class="tk-string">&quot;ring&quot;</span> color=<span class="tk-string">&quot;gray&quot;</span> label=<span class="tk-string">&quot;Connecting&quot;</span> /&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayElements) (from &quot;@raylang/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-row&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xs&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;breathe&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPulse</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;ripple&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;lg&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;dots&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;teal&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayPulse</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> <span class="tk-attr">:count</span>=<span class="tk-string">&quot;5&quot;</span> <span class="tk-attr">shape</span>=<span class="tk-string">&quot;ring&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;gray&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Connecting&quot;</span> /<span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>
