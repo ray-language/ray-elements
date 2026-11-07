@@ -2367,6 +2367,27 @@ export declare class RayProgress extends RayElement {
   label: string | undefined;
 }
 
+// --- Pulse (pulse)
+/** <ray-pulse> Four presets (variant), each a bundle of count, shape, fade and direction, which override it one by one. The rest is tuned with custom properties on the element: --ray-pulse-cycle (one cycle, default 1.6s; doubled with reduced motion), --ray-pulse-floor (opacity of the largest of concentric filled circles, 0 to 1, default 0.2), --ray-pulse-scale (where a cycle starts, 1 = full size; default per variant) and --ray-pulse-stagger (how much of the cycle separates the phases of the circles, 0 together to 1 spread evenly; default per variant). */
+export declare class RayPulse extends RayElement {
+  /** The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence). */
+  variant: "cluster" | "breathe" | "ripple" | "dots";
+  /** Number of circles, 1 to 5 (more are clamped). Default: the variant's. */
+  count: number | undefined;
+  /** Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's. */
+  shape: "filled" | "ring" | undefined;
+  /** Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade). */
+  fade: "out" | "none" | undefined;
+  /** alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's. */
+  direction: "alternate" | "normal" | undefined;
+  /** A palette color or any CSS color. Default: the primary color. */
+  color: string | undefined;
+  /** Height of the figure (the dots variant is wider). */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Text read by screen readers. */
+  label: string;
+}
+
 // --- Ring progress (ring-progress)
 /** <ray-ring-progress> The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value. */
 export declare class RayRingProgress extends RayElement {
@@ -2764,6 +2785,7 @@ declare global {
     "ray-notification": RayNotification;
     "ray-toaster": RayToaster;
     "ray-progress": RayProgress;
+    "ray-pulse": RayPulse;
     "ray-ring-progress": RayRingProgress;
     "ray-skeleton": RaySkeleton;
     "ray-spinner": RaySpinner;

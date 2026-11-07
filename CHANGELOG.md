@@ -7,6 +7,14 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-pulse`: an indeterminate wait indicator softer than `ray-spinner`, up
+  to five circles that breathe or ripple. Four presets (`variant`: `cluster`,
+  `breathe`, `ripple`, `dots`) overridden one knob at a time by `count`,
+  `shape`, `fade` and `direction`; cycle, opacity floor, start scale and
+  phase stagger come from `--ray-pulse-*` custom properties.
+
 ## [0.10.0] - 2026-10-30
 
 ### Added

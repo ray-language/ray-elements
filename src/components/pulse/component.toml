@@ -1,0 +1,65 @@
+[component]
+name = "Pulse"
+category = "Feedback"
+summary = "An indeterminate wait indicator softer than the spinner: circles that breathe or ripple, announced as a status."
+files = ["pulse.js"]
+requires = []
+tags = ["ray-pulse"]
+
+[ray-pulse]
+class = "RayPulse"
+extends = "RayElement"
+summary = "Four presets (variant), each a bundle of count, shape, fade and direction, which override it one by one. The rest is tuned with custom properties on the element: --ray-pulse-cycle (one cycle, default 1.6s; doubled with reduced motion), --ray-pulse-floor (opacity of the largest of concentric filled circles, 0 to 1, default 0.2), --ray-pulse-scale (where a cycle starts, 1 = full size; default per variant) and --ray-pulse-stagger (how much of the cycle separates the phases of the circles, 0 together to 1 spread evenly; default per variant)."
+
+[ray-pulse.properties.variant]
+type = "string"
+values = ["cluster", "breathe", "ripple", "dots"]
+default = "cluster"
+reflect = true
+description = "The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence)."
+
+[ray-pulse.properties.count]
+type = "number"
+reflect = true
+description = "Number of circles, 1 to 5 (more are clamped). Default: the variant's."
+
+[ray-pulse.properties.shape]
+type = "string"
+values = ["filled", "ring"]
+reflect = true
+description = "Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's."
+
+[ray-pulse.properties.fade]
+type = "string"
+values = ["out", "none"]
+reflect = true
+description = "Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade)."
+
+[ray-pulse.properties.direction]
+type = "string"
+values = ["alternate", "normal"]
+reflect = true
+description = "alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's."
+
+[ray-pulse.properties.color]
+type = "string"
+reflect = true
+description = "A palette color or any CSS color. Default: the primary color."
+
+[ray-pulse.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "md"
+reflect = true
+description = "Height of the figure (the dots variant is wider)."
+
+[ray-pulse.properties.label]
+type = "string"
+default = "Loading"
+description = "Text read by screen readers."
+
+[ray-pulse.parts.pulse]
+description = "The box holding the circles."
+
+[ray-pulse.parts.dot]
+description = "Each circle (the static center of ripple is also part core)."

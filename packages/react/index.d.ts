@@ -2141,6 +2141,28 @@ export type RayProgressProps = RayProgressOwnProps & Omit<React.HTMLAttributes<R
 /** <ray-progress> as a React component. */
 export declare const RayProgress: React.ForwardRefExoticComponent<RayProgressProps & React.RefAttributes<Ray.RayProgress>>;
 
+export interface RayPulseOwnProps {
+  /** The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence). */
+  variant?: "cluster" | "breathe" | "ripple" | "dots";
+  /** Number of circles, 1 to 5 (more are clamped). Default: the variant's. */
+  count?: number;
+  /** Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's. */
+  shape?: "filled" | "ring";
+  /** Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade). */
+  fade?: "out" | "none";
+  /** alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's. */
+  direction?: "alternate" | "normal";
+  /** A palette color or any CSS color. Default: the primary color. */
+  color?: string;
+  /** Height of the figure (the dots variant is wider). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Text read by screen readers. */
+  label?: string;
+}
+export type RayPulseProps = RayPulseOwnProps & Omit<React.HTMLAttributes<Ray.RayPulse>, keyof RayPulseOwnProps> & { children?: React.ReactNode };
+/** <ray-pulse> as a React component. */
+export declare const RayPulse: React.ForwardRefExoticComponent<RayPulseProps & React.RefAttributes<Ray.RayPulse>>;
+
 export interface RayRingProgressOwnProps {
   /** Progress, from 0 to max. Unset: indeterminate (a spinning arc). */
   value?: number;

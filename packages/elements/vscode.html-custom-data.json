@@ -6646,6 +6646,99 @@
       ]
     },
     {
+      "name": "ray-pulse",
+      "description": "Four presets (variant), each a bundle of count, shape, fade and direction, which override it one by one. The rest is tuned with custom properties on the element: --ray-pulse-cycle (one cycle, default 1.6s; doubled with reduced motion), --ray-pulse-floor (opacity of the largest of concentric filled circles, 0 to 1, default 0.2), --ray-pulse-scale (where a cycle starts, 1 = full size; default per variant) and --ray-pulse-stagger (how much of the cycle separates the phases of the circles, 0 together to 1 spread evenly; default per variant).",
+      "attributes": [
+        {
+          "name": "variant",
+          "description": "The figure: cluster (three concentric circles breathing out of phase), breathe (one dot over a halo), ripple (rings expanding from a dot) or dots (three in a row, in sequence).",
+          "values": [
+            {
+              "name": "cluster"
+            },
+            {
+              "name": "breathe"
+            },
+            {
+              "name": "ripple"
+            },
+            {
+              "name": "dots"
+            }
+          ]
+        },
+        {
+          "name": "count",
+          "description": "Number of circles, 1 to 5 (more are clamped). Default: the variant's."
+        },
+        {
+          "name": "shape",
+          "description": "Filled discs (concentric ones fade with size, see --ray-pulse-floor) or outlined rings. Default: the variant's.",
+          "values": [
+            {
+              "name": "filled"
+            },
+            {
+              "name": "ring"
+            }
+          ]
+        },
+        {
+          "name": "fade",
+          "description": "Whether a cycle ends transparent; the bare attribute means out. Default: the variant's (ripple and dots fade).",
+          "values": [
+            {
+              "name": "out"
+            },
+            {
+              "name": "none"
+            }
+          ]
+        },
+        {
+          "name": "direction",
+          "description": "alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's.",
+          "values": [
+            {
+              "name": "alternate"
+            },
+            {
+              "name": "normal"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "A palette color or any CSS color. Default: the primary color."
+        },
+        {
+          "name": "size",
+          "description": "Height of the figure (the dots variant is wider).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Text read by screen readers."
+        }
+      ]
+    },
+    {
       "name": "ray-ring-progress",
       "description": "The arc starts at 12 o'clock and runs clockwise; a countdown is a value that goes down. Without value it spins (indeterminate). The middle holds the default slot (a clock), or the percentage with show-value.",
       "attributes": [
