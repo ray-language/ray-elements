@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-11-07
+
 ### Added
 
 - `ray-pulse`: an indeterminate wait indicator softer than `ray-spinner`, up
