@@ -116,6 +116,10 @@ description = "Accessible name of the suggestion list."
 detail = "{ item: CompletionItem; from: number; to: number }"
 description = "A suggestion was accepted (the text already has it)."
 
+[ray-input.events.ray-highlight-hover]
+detail = "{ range: HighlightRange | null; rect: DOMRect | null }"
+description = "The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title."
+
 [ray-input.events.input]
 description = "On every edit (value already updated)."
 
@@ -171,6 +175,10 @@ events = ["input"]
 [ray-input.members.select]
 ts = "select(): void"
 description = "Selects the text."
+
+[ray-input.members.highlightAt]
+ts = "highlightAt(x: number, y: number): HighlightRange | null"
+description = "The highlight range under a point of the viewport (clientX, clientY), or null."
 
 [ray-input.members.refreshHighlight]
 ts = "refreshHighlight(): void"

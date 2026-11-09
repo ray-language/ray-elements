@@ -142,6 +142,13 @@ export class RayMenu extends Floating {
     return this.context && this._point ? this._point : super.anchorRect();
   }
 
+  // A context menu's trigger is the area it serves: a press there, outside
+  // the panel, closes it like a system context menu (a right click reopens
+  // it at the new point).
+  triggerDismisses() {
+    return Boolean(this.context);
+  }
+
   toggled(open) {
     if (open) {
       this._focus(this._focusOnOpen ?? "first");

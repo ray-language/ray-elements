@@ -855,6 +855,8 @@ export declare class RayInput extends FieldControl {
   suggestionsLabel: string;
   /** Selects the text. */
   select(): void;
+  /** The highlight range under a point of the viewport (clientX, clientY), or null. */
+  highlightAt(x: number, y: number): HighlightRange | null;
   /** Runs highlight again, when what it marks changed but the text did not. */
   refreshHighlight(): void;
   addEventListener<K extends keyof RayInputEventMap>(type: K, listener: (this: RayInput, ev: RayInputEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
@@ -865,6 +867,8 @@ export declare class RayInput extends FieldControl {
 export interface RayInputEventMap extends HTMLElementEventMap {
   /** A suggestion was accepted (the text already has it). */
   "ray-complete": CustomEvent<{ item: CompletionItem; from: number; to: number }>;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
 // --- Mode input (mode-input)
@@ -900,6 +904,8 @@ export interface RayModeInputEventMap extends HTMLElementEventMap {
   "ray-mode-change": CustomEvent<{ mode: string; previous: string | null; option: ModeOption }>;
   /** A suggestion was accepted (the text already has it). */
   "ray-complete": CustomEvent<{ item: CompletionItem; from: number; to: number }>;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
 // --- Number input (number-input)
@@ -960,6 +966,8 @@ export interface RayPasswordInputEventMap extends HTMLElementEventMap {
   "ray-visibility-change": CustomEvent<{ visible: boolean }>;
   /** A suggestion was accepted (the text already has it). */
   "ray-complete": CustomEvent<{ item: CompletionItem; from: number; to: number }>;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
 // --- Path input (path-input)
@@ -991,6 +999,8 @@ export interface RayPathInputEventMap extends HTMLElementEventMap {
   "ray-error": CustomEvent<{ error: Error }>;
   /** A suggestion was accepted (the text already has it). */
   "ray-complete": CustomEvent<{ item: CompletionItem; from: number; to: number }>;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
 // --- Radio group (radio)
@@ -1250,6 +1260,8 @@ export declare class RayTextarea extends FieldControl {
   complete: ((text: string, caret: number) => CompletionResult | null | Promise<CompletionResult | null>) | null;
   /** Accessible name of the suggestion list. */
   suggestionsLabel: string;
+  /** The highlight range under a point of the viewport (clientX, clientY), or null. */
+  highlightAt(x: number, y: number): HighlightRange | null;
   /** Runs highlight again, when what it marks changed but the text did not. */
   refreshHighlight(): void;
   addEventListener<K extends keyof RayTextareaEventMap>(type: K, listener: (this: RayTextarea, ev: RayTextareaEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
@@ -1260,6 +1272,8 @@ export declare class RayTextarea extends FieldControl {
 export interface RayTextareaEventMap extends HTMLElementEventMap {
   /** A suggestion was accepted (the text already has it). */
   "ray-complete": CustomEvent<{ item: CompletionItem; from: number; to: number }>;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
 // --- Bottom nav (bottom-nav)
@@ -1747,6 +1761,8 @@ export declare class RayMenu extends Floating {
   keepOpen: boolean | undefined;
   /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
   native: boolean | undefined;
+  /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
+  anchor: Element | DOMRect | (() => DOMRect) | null;
   /** Opens the items as the system's context menu (needs a native host); resolves to the chosen item, or null. */
   popupNative(): Promise<RayMenuItem | null>;
   /** Opens it. */
@@ -1807,6 +1823,8 @@ export declare class RayPopover extends Floating {
   placement: "bottom" | "bottom-start" | "bottom-end" | "top" | "top-start" | "top-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   /** Gap to the trigger in px. */
   offset: number;
+  /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
+  anchor: Element | DOMRect | (() => DOMRect) | null;
   /** Panel width (px number or CSS length). Default: its content. */
   width: string | undefined;
   /** At least as wide as the trigger. */

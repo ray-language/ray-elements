@@ -28,6 +28,12 @@ type = "number"
 default = "8"
 description = "Gap to the trigger in px."
 
+[ray-popover.properties.anchor]
+attribute = false
+type = "object"
+ts = "Element | DOMRect | (() => DOMRect) | null"
+description = "What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it."
+
 [ray-popover.properties.width]
 type = "string"
 description = "Panel width (px number or CSS length). Default: its content."

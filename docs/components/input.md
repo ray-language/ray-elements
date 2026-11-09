@@ -45,6 +45,7 @@ Attributes (forwarded to the inner element):
 Events:
 
 - `ray-complete` (detail `{ item: CompletionItem; from: number; to: number }`): A suggestion was accepted (the text already has it).
+- `ray-highlight-hover` (detail `{ range: HighlightRange | null; rect: DOMRect | null }`): The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title.
 - `input`: On every edit (value already updated).
 - `change`: When an edit is committed (blur, Enter).
 
@@ -71,6 +72,7 @@ Parts (`::part()`):
 Methods and properties:
 
 - `select(): void`: Selects the text.
+- `highlightAt(x: number, y: number): HighlightRange | null`: The highlight range under a point of the viewport (clientX, clientY), or null.
 - `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).

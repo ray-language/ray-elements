@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayPopover = /*#__PURE__*/ createComponent("ray-popover", {
   displayName: "RayPopover",
-  properties: ["open", "placement", "offset", "width", "matchWidth", "padding", "trapFocus"],
+  properties: ["open", "placement", "offset", "anchor", "width", "matchWidth", "padding", "trapFocus"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close" },
 });

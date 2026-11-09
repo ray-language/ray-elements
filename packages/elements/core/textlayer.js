@@ -176,10 +176,18 @@ export class TextLayer {
 
   /** The range under a point of the viewport, or null. */
   rangeAt(x, y) {
+    return this.hitAt(x, y)?.range ?? null;
+  }
+
+  /**
+   * The range under a point of the viewport and the box of the line of it
+   * the point is on (a range may wrap), or null.
+   */
+  hitAt(x, y) {
     const marks = [...this.text.querySelectorAll("mark")];
     for (let i = 0; i < marks.length; i++) {
       for (const r of marks[i].getClientRects()) {
-        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return this.ranges[i];
+        if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) return { range: this.ranges[i], rect: r };
       }
     }
     return null;
@@ -189,7 +197,9 @@ export class TextLayer {
 /**
  * Paints `host.highlight(text)` behind `host.control` (ray-input,
  * ray-textarea): the layer is made the first time a highlight function is
- * set. A range's `title` becomes the field's tooltip under the pointer.
+ * set. A range's `title` becomes the field's tooltip under the pointer, and
+ * `ray-highlight-hover` fires when the range under it changes (null leaving
+ * one), with its box, so an app can show its own popover over a range.
  */
 export function syncHighlight(host) {
   const fn = typeof host.highlight === "function" ? host.highlight : null;
@@ -197,10 +207,18 @@ export function syncHighlight(host) {
   host._textLayer ??= new TextLayer(host.control);
   if (!host._highlightTitles) {
     host._highlightTitles = true;
-    host.control.addEventListener("pointermove", (e) => {
-      const title = host._textLayer.rangeAt(e.clientX, e.clientY)?.title ?? "";
+    let over = null;
+    const hover = (x, y) => {
+      const hit = host._textLayer.hitAt(x, y);
+      const title = hit?.range.title ?? "";
       if (host.control.title !== title) host.control.title = title;
-    });
+      const range = hit?.range ?? null;
+      if (range === over) return;
+      over = range;
+      host.emit("ray-highlight-hover", { range, rect: hit?.rect ?? null });
+    };
+    host.control.addEventListener("pointermove", (e) => hover(e.clientX, e.clientY));
+    host.control.addEventListener("pointerleave", () => hover(-1, -1));
   }
   let ranges = [];
   if (fn) {

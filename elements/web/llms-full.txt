@@ -918,6 +918,7 @@ Attributes (forwarded to the inner element):
 Events:
 
 - `ray-complete` (detail `{ item: CompletionItem; from: number; to: number }`): A suggestion was accepted (the text already has it).
+- `ray-highlight-hover` (detail `{ range: HighlightRange | null; rect: DOMRect | null }`): The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title.
 - `input`: On every edit (value already updated).
 - `change`: When an edit is committed (blur, Enter).
 
@@ -944,6 +945,7 @@ Parts (`::part()`):
 Methods and properties:
 
 - `select(): void`: Selects the text.
+- `highlightAt(x: number, y: number): HighlightRange | null`: The highlight range under a point of the viewport (clientX, clientY), or null.
 - `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
@@ -1480,6 +1482,7 @@ Attributes (forwarded to the inner element):
 Events:
 
 - `ray-complete` (detail `{ item: CompletionItem; from: number; to: number }`): A suggestion was accepted (the text already has it).
+- `ray-highlight-hover` (detail `{ range: HighlightRange | null; rect: DOMRect | null }`): The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title.
 - `input`: On every edit.
 - `change`: When an edit is committed.
 
@@ -1497,6 +1500,7 @@ Parts (`::part()`):
 
 Methods and properties:
 
+- `highlightAt(x: number, y: number): HighlightRange | null`: The highlight range under a point of the viewport (clientX, clientY), or null.
 - `refreshHighlight(): void`: Runs highlight again, when what it marks changed but the text did not.
 
 Vue `v-model`: `value` (updated on input).
@@ -2191,6 +2195,7 @@ Properties:
 - `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
 - `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.
+- `anchor` (property only): `Element | DOMRect | (() => DOMRect) | null`. What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it.
 
 Also the properties of Floating: `offset`.
 
@@ -2203,7 +2208,7 @@ Events:
 
 Slots:
 
-- `trigger`: The button that opens it, or the area for a context menu.
+- `trigger`: The button that opens it, or the area for a context menu (a press on the area outside the open menu closes it; a right click reopens it at the new point).
 - (default): ray-menu-item, ray-menu-label and ray-menu-divider elements.
 
 Parts (`::part()`):
@@ -2294,6 +2299,7 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `offset`: number, default `8`. Gap to the trigger in px.
+- `anchor` (property only): `Element | DOMRect | (() => DOMRect) | null`. What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it.
 - `width`: string. Panel width (px number or CSS length). Default: its content.
 - `matchWidth` (attribute `match-width`): boolean. At least as wide as the trigger.
 - `padding`: `0` | `xs` | `sm` | `md` | `lg`, default `md`, reflects. Panel padding.
