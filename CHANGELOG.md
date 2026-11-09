@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-11-08
+
 ### Added
 
 - `ray-input` and `ray-textarea`: `highlightAt(x, y)` and the
