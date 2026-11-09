@@ -38,6 +38,12 @@ type = "boolean"
 reflect = true
 description = "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select."
 
+[ray-menu.properties.anchor]
+attribute = false
+type = "object"
+ts = "Element | DOMRect | (() => DOMRect) | null"
+description = "What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it."
+
 [ray-menu.events.ray-select]
 description = "An item was chosen; detail: { value, item }."
 detail = "{ value: string; item: RayMenuItem }"
@@ -53,7 +59,7 @@ description = "After it opened."
 description = "After it closed."
 
 [ray-menu.slots.trigger]
-description = "The button that opens it, or the area for a context menu."
+description = "The button that opens it, or the area for a context menu (a press on the area outside the open menu closes it; a right click reopens it at the new point)."
 
 [ray-menu.slots.default]
 description = "ray-menu-item, ray-menu-label and ray-menu-divider elements."

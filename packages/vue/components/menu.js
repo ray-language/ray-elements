@@ -4,7 +4,7 @@ import "@raylang/elements/menu";
 import { createComponent } from "../create.js";
 
 export const RayMenu = /*#__PURE__*/ createComponent("RayMenu", "ray-menu", {
-  properties: ["open", "placement", "context", "keepOpen", "native", "offset"],
+  properties: ["open", "placement", "context", "keepOpen", "native", "anchor", "offset"],
   booleans: ["open", "context", "keepOpen", "native"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });

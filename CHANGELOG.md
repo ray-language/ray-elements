@@ -7,6 +7,27 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-input` and `ray-textarea`: `highlightAt(x, y)` and the
+  `ray-highlight-hover` event (the range under the pointer and the box of
+  the line of it, null on leaving), so an app can put its own popover over a
+  highlighted range without reaching into the text layer.
+- `ray-popover` and `ray-menu`: `anchor` (an element, a DOMRect or a
+  function returning one) places the panel against something other than the
+  trigger: a text range, the pointer.
+
+### Fixed
+
+- `ray-menu`, `ray-popover`: an `open = false` right after `open = true` (or
+  the reverse) was undone when the popover's late `toggle` event re-committed
+  the earlier state; the menu reappeared, anchored to the trigger, and kept
+  the focus. The newer value now wins.
+- `ray-menu` with `context`: a press on the trigger area outside the open
+  menu did not close it, since the trigger is excused from light dismiss;
+  for a context menu the trigger is the whole area it serves, so there it
+  closes like a system context menu.
+
 ## [0.11.0] - 2026-11-07
 
 ### Added

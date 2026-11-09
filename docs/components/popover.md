@@ -13,6 +13,7 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `placement`: `bottom` | `bottom-start` | `bottom-end` | `top` | `top-start` | `top-end` | `left` | `left-start` | `left-end` | `right` | `right-start` | `right-end`, default `bottom`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `offset`: number, default `8`. Gap to the trigger in px.
+- `anchor` (property only): `Element | DOMRect | (() => DOMRect) | null`. What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it.
 - `width`: string. Panel width (px number or CSS length). Default: its content.
 - `matchWidth` (attribute `match-width`): boolean. At least as wide as the trigger.
 - `padding`: `0` | `xs` | `sm` | `md` | `lg`, default `md`, reflects. Panel padding.

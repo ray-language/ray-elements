@@ -73,6 +73,11 @@ export class RayInput extends FieldControl {
     syncComplete(this);
   }
 
+  /** The highlight range under a point of the viewport, or null. */
+  highlightAt(x, y) {
+    return this._textLayer?.rangeAt(x, y) ?? null;
+  }
+
   /** Runs `highlight` again (what it marks changed, not the text). */
   refreshHighlight() {
     syncHighlight(this);

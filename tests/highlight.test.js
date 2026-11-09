@@ -84,10 +84,22 @@ T.test("highlight: the layer lies on the text; a range's title under the pointer
   const expected = c.left + parseFloat(getComputedStyle(el.control).paddingLeft) + ctx.measureText("GET ").width;
   const m = marks(el)[0].getBoundingClientRect();
   T.ok(Math.abs(m.left - expected) < 2, `the mark starts where its text does (${m.left} ≈ ${expected})`);
-  el.control.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: m.left + m.width / 2, clientY: m.top + m.height / 2 }));
+  const hovers = [];
+  el.addEventListener("ray-highlight-hover", (e) => hovers.push(e.detail));
+  const x = m.left + m.width / 2, y = m.top + m.height / 2;
+  el.control.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: x, clientY: y }));
   T.eq(el.control.title, "host = example.com", "the tooltip");
-  el.control.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: c.right - 2, clientY: m.top + m.height / 2 }));
+  T.eq(hovers.length, 1, "entering a range: one hover event");
+  T.eq(hovers[0].range.title, "host = example.com");
+  T.ok(hovers[0].rect && Math.abs(hovers[0].rect.left - m.left) < 1, "with the box of the range");
+  T.eq(el.highlightAt(x, y)?.title, "host = example.com", "highlightAt: public");
+  el.control.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: x + 2, clientY: y }));
+  T.eq(hovers.length, 1, "moving inside the same range: no new event");
+  el.control.dispatchEvent(new PointerEvent("pointermove", { bubbles: true, clientX: c.right - 2, clientY: y }));
   T.eq(el.control.title, "", "off a range: none");
+  T.eq(hovers.length, 2);
+  T.eq(hovers[1].range, null, "leaving: null");
+  T.eq(el.highlightAt(c.right - 2, y), null);
   box.remove();
 });
 

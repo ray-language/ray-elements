@@ -550,6 +550,8 @@ export interface RayInputOwnProps {
   list?: string;
   /** A suggestion was accepted (the text already has it). */
   onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  onRayHighlightHover?: (event: CustomEvent<{ range: Ray.HighlightRange | null; rect: DOMRect | null }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -632,6 +634,8 @@ export interface RayModeInputOwnProps {
   onRayModeChange?: (event: CustomEvent<{ mode: string; previous: string | null; option: Ray.ModeOption }>) => void;
   /** A suggestion was accepted (the text already has it). */
   onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  onRayHighlightHover?: (event: CustomEvent<{ range: Ray.HighlightRange | null; rect: DOMRect | null }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -766,6 +770,8 @@ export interface RayPasswordInputOwnProps {
   onRayVisibilityChange?: (event: CustomEvent<{ visible: boolean }>) => void;
   /** A suggestion was accepted (the text already has it). */
   onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  onRayHighlightHover?: (event: CustomEvent<{ range: Ray.HighlightRange | null; rect: DOMRect | null }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
   /** When an edit is committed (blur, Enter). */
@@ -846,6 +852,8 @@ export interface RayPathInputOwnProps {
   onRayError?: (event: CustomEvent<{ error: Error }>) => void;
   /** A suggestion was accepted (the text already has it). */
   onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  onRayHighlightHover?: (event: CustomEvent<{ range: Ray.HighlightRange | null; rect: DOMRect | null }>) => void;
   /** On every edit (value already updated). */
   onInput?: (event: Event) => void;
 }
@@ -1174,6 +1182,8 @@ export interface RayTextareaOwnProps {
   wrap?: string;
   /** A suggestion was accepted (the text already has it). */
   onRayComplete?: (event: CustomEvent<{ item: Ray.CompletionItem; from: number; to: number }>) => void;
+  /** The highlight range under the pointer changed: the range and the box of the line of it the pointer is on, or null on leaving a range. Anchor a ray-popover to rect (its anchor property) to show more than the title. */
+  onRayHighlightHover?: (event: CustomEvent<{ range: Ray.HighlightRange | null; rect: DOMRect | null }>) => void;
   /** On every edit. */
   onInput?: (event: Event) => void;
   /** When an edit is committed. */
@@ -1598,6 +1608,8 @@ export interface RayMenuOwnProps {
   keepOpen?: boolean;
   /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
   native?: boolean;
+  /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
+  anchor?: Element | DOMRect | (() => DOMRect) | null;
   /** Gap to the anchor in px. */
   offset?: number;
   /** An item was chosen; detail: { value, item }. */
@@ -1650,6 +1662,8 @@ export interface RayPopoverOwnProps {
   placement?: "bottom" | "bottom-start" | "bottom-end" | "top" | "top-start" | "top-end" | "left" | "left-start" | "left-end" | "right" | "right-start" | "right-end";
   /** Gap to the trigger in px. */
   offset?: number;
+  /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
+  anchor?: Element | DOMRect | (() => DOMRect) | null;
   /** Panel width (px number or CSS length). Default: its content. */
   width?: string;
   /** At least as wide as the trigger. */

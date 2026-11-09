@@ -855,3 +855,99 @@ T.test("notifications: a color gets a status icon in place of the loader", async
   T.eq(getComputedStyle(card(els[0]), "::before").content, "none", "no accent bar");
   box.remove();
 });
+
+T.test("floating: a newer open value wins over the popover's late toggle event", async (T) => {
+  const box = await mount(`<div style="position: fixed; top: 20px; left: 20px"><ray-menu context><div slot="trigger" style="width: 300px; height: 100px"></div><ray-menu-item>Copy</ray-menu-item></ray-menu></div>`);
+  const menu = box.querySelector("ray-menu");
+  const events = [];
+  menu.addEventListener("ray-open", () => events.push("open"));
+  menu.addEventListener("ray-close", () => events.push("close"));
+  // open, then close before the `toggle` task of the showPopover() ran.
+  menu.open = true;
+  await Promise.resolve();
+  menu.open = false;
+  await T.settle();
+  await new Promise((r) => setTimeout(r, 50));
+  T.eq(menu.open, false, "stays closed");
+  T.eq(menu.panel.matches(":popover-open"), false, "panel hidden");
+  // With motion on, the stale open toggle still arrives (ray-open, then ray-close); in the test
+  // window the hide is immediate and the popover coalesces both into one closed toggle.
+  T.ok(events.join() === "open,close" || events.join() === "close", `ends closed (${events.join()})`);
+  // the reverse: close, then reopen before the close's toggle ran.
+  menu.open = true;
+  await T.settle();
+  menu.open = false;
+  await Promise.resolve();
+  menu.open = true;
+  await T.settle();
+  await new Promise((r) => setTimeout(r, 50));
+  T.eq(menu.open, true, "stays open");
+  T.eq(menu.panel.matches(":popover-open"), true, "panel shown");
+  menu.open = false;
+  await T.settle();
+  // With an exit animation the hide is deferred: the stale open toggle arrives while the panel
+  // animates out and must not re-commit open = true (what the app saw: the menu reappearing).
+  menu.style.setProperty("--ray-duration-fast", "80ms");
+  events.length = 0;
+  menu.open = true;
+  await Promise.resolve();
+  menu.open = false;
+  await new Promise((r) => setTimeout(r, 200));
+  T.eq(menu.open, false, "animated: stays closed");
+  T.eq(menu.panel.matches(":popover-open"), false, "animated: panel hidden");
+  T.eq(events.join(), "open,close", "animated: both events, in order");
+  box.remove();
+});
+
+T.test("menu: context mode closes on a press on its area, outside the panel", async (T) => {
+  const box = await mount(`<div style="position: fixed; top: 20px; left: 20px"><ray-menu context><div slot="trigger" style="width: 300px; height: 100px"></div><ray-menu-item>Copy</ray-menu-item></ray-menu>
+    <ray-menu><ray-button slot="trigger">Open</ray-button><ray-menu-item>A</ray-menu-item></ray-menu></div>`);
+  const [ctx, drop] = box.querySelectorAll("ray-menu");
+  const area = box.querySelector("[slot=trigger]");
+  const r = area.getBoundingClientRect();
+  area.dispatchEvent(new MouseEvent("contextmenu", { bubbles: true, cancelable: true, clientX: r.left + 50, clientY: r.top + 30 }));
+  await T.settle();
+  T.eq(ctx.open, true);
+  area.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true, clientX: r.left + 200, clientY: r.top + 80 }));
+  await T.settle();
+  T.eq(ctx.open, false, "a press on the area closes a context menu");
+  // A dropdown's trigger still does not: its click toggles.
+  drop.querySelector("ray-button").click();
+  await T.settle();
+  T.eq(drop.open, true);
+  drop.querySelector("ray-button").dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true }));
+  await T.settle();
+  T.eq(drop.open, true, "a press on a dropdown's button is not outside");
+  drop.open = false;
+  await T.settle();
+  box.remove();
+});
+
+T.test("popover: anchor places the panel against a rect, a function or an element instead of the trigger", async (T) => {
+  const box = await mount(`<div style="position: fixed; top: 20px; left: 20px"><ray-popover><ray-button slot="trigger">Open</ray-button><p>Content</p></ray-popover><div id="mark" style="position: fixed; top: 150px; left: 300px; width: 40px; height: 10px"></div></div>`);
+  const pop = box.querySelector("ray-popover");
+  const assigned = () => [parseFloat(pop.panel.style.left), parseFloat(pop.panel.style.top)];
+  pop.anchor = new DOMRect(200, 100, 20, 10);
+  pop.open = true;
+  await T.settle();
+  let [left, top] = assigned();
+  T.ok(Math.abs(top - (110 + 8)) <= 1, `below the rect (${top})`);
+  T.ok(left < 200 + 20 && left + pop.panel.offsetWidth > 200, `centered on it (${left})`);
+  let rect = new DOMRect(400, 100, 20, 10);
+  pop.anchor = () => rect;
+  pop.reposition();
+  [left] = assigned();
+  T.ok(left > 200, `a function is read on every reposition (${left})`);
+  pop.anchor = box.querySelector("#mark");
+  pop.reposition();
+  [, top] = assigned();
+  T.ok(Math.abs(top - (160 + 8)) <= 1, `an element (${top})`);
+  pop.anchor = null;
+  pop.reposition();
+  const t = pop.trigger.getBoundingClientRect();
+  [, top] = assigned();
+  T.ok(Math.abs(top - (t.bottom + 8)) <= 1, `back to the trigger (${top})`);
+  pop.open = false;
+  await T.settle();
+  box.remove();
+});

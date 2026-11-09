@@ -13,6 +13,7 @@ Properties:
 - `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
 - `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.
+- `anchor` (property only): `Element | DOMRect | (() => DOMRect) | null`. What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it.
 
 Also the properties of Floating: `offset`.
 
@@ -25,7 +26,7 @@ Events:
 
 Slots:
 
-- `trigger`: The button that opens it, or the area for a context menu.
+- `trigger`: The button that opens it, or the area for a context menu (a press on the area outside the open menu closes it; a right click reopens it at the new point).
 - (default): ray-menu-item, ray-menu-label and ray-menu-divider elements.
 
 Parts (`::part()`):

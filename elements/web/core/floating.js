@@ -35,6 +35,7 @@ export class Floating extends RayElement {
     open: { type: Boolean, reflect: true },
     placement: { type: String, reflect: true, default: "bottom" },
     offset: { type: Number, default: 8 },
+    anchor: { attribute: false },
   };
   /** popover attribute of the panel ("manual": closing is handled here). */
   static popoverMode = "manual";
@@ -102,8 +103,15 @@ export class Floating extends RayElement {
   /** Subclasses attach their trigger listeners here. */
   wireTrigger(_trigger) {}
 
-  /** The rectangle the panel is placed against (default: the trigger). */
+  /**
+   * The rectangle the panel is placed against: `anchor` when set (an element,
+   * a DOMRect or a function returning one: a text range, the pointer), else
+   * the trigger.
+   */
   anchorRect() {
+    const a = typeof this.anchor === "function" ? this.anchor() : this.anchor;
+    if (a instanceof Element) return a.getBoundingClientRect();
+    if (a && typeof a.left === "number") return a;
     return (this.trigger ?? this).getBoundingClientRect();
   }
 
@@ -132,7 +140,20 @@ export class Floating extends RayElement {
   _dismissable() {
     const ctor = /** @type {typeof Floating} */ (this.constructor);
     if (this.#undismiss || !ctor.lightDismiss || ctor.popoverMode !== "manual") return;
-    this.#undismiss = dismissable({ panel: this.panel, owner: this, trigger: this.trigger, close: () => { this.open = false; } });
+    // When the trigger dismisses, so does the rest of the host's light DOM
+    // (the area is a child of the host): only the panel is inside then.
+    const area = this.triggerDismisses();
+    this.#undismiss = dismissable({ panel: this.panel, owner: area ? this.panel : this, trigger: area ? null : this.trigger, close: () => { this.open = false; } });
+  }
+
+  /**
+   * Whether a press on the trigger counts as outside and closes the panel.
+   * Default false: a button that toggles the panel handles its own click
+   * (closing it there too would reopen it). A context menu's trigger is the
+   * whole area it serves, so there it is true.
+   */
+  triggerDismisses() {
+    return false;
   }
 
   /** The keyframes the panel leaves with (subclasses may change them). */
@@ -166,6 +187,15 @@ export class Floating extends RayElement {
 
   _onToggle(e) {
     const opening = e.newState === "open";
+    // `toggle` is a task: `open` may have changed again since the state it
+    // reports. An open that a later `open = false` is already animating out,
+    // or a close that a later `open = true` re-showed, must not win over
+    // that newer value; only the pair of events is still emitted.
+    const stale = opening ? !this.open && Boolean(this.#exit) : Boolean(this.open) && this.panel.matches(":popover-open");
+    if (stale) {
+      this.emit(opening ? "ray-open" : "ray-close");
+      return;
+    }
     if (this.popupKind()) this.#trigger?.setAttribute("aria-expanded", String(opening));
     if (opening) {
       this.reposition();

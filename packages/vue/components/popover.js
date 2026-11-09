@@ -4,7 +4,7 @@ import "@raylang/elements/popover";
 import { createComponent } from "../create.js";
 
 export const RayPopover = /*#__PURE__*/ createComponent("RayPopover", "ray-popover", {
-  properties: ["open", "placement", "offset", "width", "matchWidth", "padding", "trapFocus"],
+  properties: ["open", "placement", "offset", "anchor", "width", "matchWidth", "padding", "trapFocus"],
   booleans: ["open", "matchWidth", "trapFocus"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });

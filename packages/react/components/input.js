@@ -6,5 +6,5 @@ import { createComponent } from "../create.js";
 export const RayInput = /*#__PURE__*/ createComponent("ray-input", {
   displayName: "RayInput",
   properties: ["value", "type", "name", "label", "description", "descriptionPosition", "error", "placeholder", "required", "disabled", "readonly", "size", "radius", "variant", "highlight", "complete", "suggestionsLabel"],
-  events: { onRayComplete: "ray-complete", onInput: "input", onChange: "change" },
+  events: { onRayComplete: "ray-complete", onRayHighlightHover: "ray-highlight-hover", onInput: "input", onChange: "change" },
 });
