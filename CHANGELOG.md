@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.14.2] - 2026-11-10
+
 ### Fixed
 
 - `ray-number-input`: on iOS, a tap on the suffix or on the slack beside the
