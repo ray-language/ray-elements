@@ -702,6 +702,40 @@ T.test("drawer: notifications move into a modal drawer", async (T) => {
   box.remove();
 });
 
+T.test("toaster: after a drawer, back in body and a tap outside still collapses; cards behind keep their edges", async (T) => {
+  clearNotifications();
+  for (const t of document.querySelectorAll("ray-toaster")) t.remove();
+  const box = await mount(`<ray-toaster position="top-center"></ray-toaster><ray-drawer label="D" style="--ray-duration-base: 80ms; --ray-duration-fast: 80ms"><p>x</p></ray-drawer>`);
+  const t = box.querySelector("ray-toaster");
+  const d = box.querySelector("ray-drawer");
+  const touch = (el) => el.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true, pointerType: "touch" }));
+  notify({ id: "tall", title: "Alarm", message: "A long message that wraps over several lines so that this card is clearly taller than the short one in front of it.", autoClose: false });
+  notify({ id: "short", message: "Short", autoClose: false });
+  await T.settle();
+  T.eq(t.parentElement, box, "the page's own toaster");
+  d.show();
+  await T.settle();
+  T.eq(t.parentElement, d, "hosted by the drawer");
+  d.close();
+  await wait(250);
+  await T.settle();
+  T.eq(t.parentElement === document.body || t.parentElement === box, true, `back out of the drawer (${t.parentElement?.localName})`);
+  touch(t.toasts[0]);
+  T.eq(t.expanded, true, "a tap expands");
+  touch(document.body);
+  T.eq(t.expanded, false, "a tap outside collapses, after the drawer too");
+  t.layout();
+  const [front, behind] = t.toasts;
+  const card = behind.shadowRoot.querySelector(".card");
+  T.eq(card.offsetHeight, behind.offsetHeight, "the card behind fits its clipped box: its bottom edge shows");
+  t.expanded = true;
+  await T.settle();
+  t.layout();
+  T.ok(card.offsetHeight > front.shadowRoot.querySelector(".card").offsetHeight, "expanded: the tall card has its own height again");
+  clearNotifications();
+  box.remove();
+});
+
 // --- light dismiss (core/dismiss.js) ---------------------------------------
 
 T.test("light dismiss: outside press, nesting, Escape over a dialog, one open at a time", async (T) => {

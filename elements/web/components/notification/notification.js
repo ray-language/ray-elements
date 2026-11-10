@@ -30,6 +30,9 @@ const notificationStyles = css`
   /* Behind the front toast of a collapsed stack: only its edge shows. */
   .card > * { transition: opacity var(--ray-duration-base) var(--ray-easing-standard); }
   :host([data-behind]) .card > * { opacity: 0; }
+  /* Its box is clipped to the front toast's height: the card follows, so its
+     border and corners show instead of being cut. */
+  :host([data-behind]) .card { height: 100%; }
   .card[data-icon], .card[data-loading], .card[data-glyph] { padding-inline-start: var(--ray-space-3); }
   .icon {
     display: none;
@@ -254,16 +257,20 @@ document.addEventListener("ray-open", (e) => {
 });
 document.addEventListener("ray-close", (e) => {
   const i = openDialogs.indexOf(e.target);
-  if (i >= 0) {
-    openDialogs.splice(i, 1);
-    rehome();
-  }
+  if (i >= 0) openDialogs.splice(i, 1);
+  // Also when the closing overlay was not the one listed: never stay inside
+  // an overlay that is no longer open.
+  rehome();
 });
 
 function rehome() {
   const t = document.querySelector("ray-toaster");
   if (!t) return;
-  const host = openDialogs.filter((d) => d.isConnected).at(-1) ?? document.body;
+  for (let i = openDialogs.length - 1; i >= 0; i--) {
+    const d = openDialogs[i];
+    if (!d.isConnected || !d.dialog?.open) openDialogs.splice(i, 1);
+  }
+  const host = openDialogs.at(-1) ?? document.body;
   if (t.parentElement === host) return;
   if (host === document.body) t.removeAttribute("slot");
   else t.slot = "overlay";
@@ -299,6 +306,11 @@ export class RayToaster extends RayElement {
     this.setAttribute("role", "region");
     this.setAttribute("aria-label", this.getAttribute("aria-label") ?? "Notifications");
     this.setAttribute("aria-live", "polite");
+    // Every time: moving into an overlay and back disconnects and reconnects it.
+    this._outside ??= (e) => {
+      if (this.#expanded && e.pointerType !== "mouse" && !e.composedPath().includes(this)) this.expanded = false;
+    };
+    document.addEventListener("pointerdown", this._outside, true);
     if (this._wired) return;
     this._wired = true;
     // Mouse: expand while hovered. Keyboard: while focus is inside.
@@ -317,11 +329,15 @@ export class RayToaster extends RayElement {
         e.stopPropagation();
       }
     }, true);
-    this._outside = (e) => {
-      if (this.#expanded && e.pointerType !== "mouse" && !e.composedPath().includes(this)) this.expanded = false;
-    };
-    document.addEventListener("pointerdown", this._outside, true);
-    this.#ro = new ResizeObserver(() => this.layout());
+    // Next frame: layout() resizes the cards behind (they fill their clipped
+    // box), which inside the observer's callback would be a resize loop.
+    this.#ro = new ResizeObserver(() => {
+      if (this._frame) return;
+      this._frame = requestAnimationFrame(() => {
+        this._frame = 0;
+        this.layout();
+      });
+    });
     this.shadowRoot.querySelector("slot").addEventListener("slotchange", () => {
       // Observe each card (its natural height): the host's height is set by
       // layout() for toasts behind, and observing it would loop.
@@ -366,15 +382,19 @@ export class RayToaster extends RayElement {
     const toasts = this.toasts;
     const top = (this.position ?? "bottom-end").startsWith("top");
     const dir = top ? 1 : -1;
+    const open = this.expanded;
+    // Before measuring: a card behind fills its clipped box, so only the
+    // front's height (collapsed) or no one's (expanded) is clipped.
+    toasts.forEach((el, i) => {
+      el.toggleAttribute("data-behind", !open && i > 0);
+      el.toggleAttribute("data-front", i === 0);
+    });
     const heights = toasts.map((el) => el.shadowRoot?.querySelector(".card")?.offsetHeight || el.offsetHeight || 0);
     const front = heights[0] ?? 0;
-    const open = this.expanded;
     const shown = Math.min(toasts.length, Math.max(1, this.visible ?? 3));
     let offset = 0;
     toasts.forEach((el, i) => {
       el.style.zIndex = String(toasts.length - i);
-      el.toggleAttribute("data-behind", !open && i > 0);
-      el.toggleAttribute("data-front", i === 0);
       const swiping = el === this.#swipe?.el;
       const swipe = swiping ? ` translateX(${this.#swipe.dx}px)` : "";
       if (open) {

@@ -7,6 +7,16 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-toaster`: after a modal dialog or drawer opened, a tap outside no
+  longer collapsed the expanded stack on a touch screen (moving into the
+  overlay and back dropped the document listener). It also leaves any
+  overlay that is no longer open, whatever closed it.
+- `ray-toaster`: in the collapsed stack, a card behind that is taller than
+  the front one fills its clipped box, so its bottom border and corners show
+  instead of being cut.
+
 ## [0.14.2] - 2026-11-10
 
 ### Fixed
