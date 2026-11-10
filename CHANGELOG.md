@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-11-09
+
 ### Added
 
 - `ray-date-picker` `native`: which picker the trigger opens, the system's
