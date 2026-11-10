@@ -32,7 +32,7 @@ Parts (`::part()`):
 - `icon`: The disc with the mark.
 - `cite`: The attribution (a <figcaption>).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.14.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.14.2.
 
 ## Example
 
