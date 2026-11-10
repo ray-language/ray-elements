@@ -68,7 +68,7 @@ Types:
 - `{ label: string; icon?: string | Node; variant?: "default" | "filled" | "light" | "outline" | "subtle" | "transparent"; color?: string; name?: string; onClick?: () => void }`: An action button of notify(): its text, an icon name or a node before it, its variant (default "default"; "filled" for the main answer) and color, a name (the part action-<name>), and what pressing it runs (the notification closes).
 - `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }`: Options of notify() and updateNotification().
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.15.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.16.0.
 
 ## Example
 
