@@ -8,7 +8,7 @@ tags = ["ray-date-picker", "ray-calendar"]
 
 [ray-date-picker]
 class = "RayDatePicker"
-summary = "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it."
+summary = "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. On a touch screen the trigger opens the system's picker instead (native)."
 extends = "FieldControl"
 
 [ray-date-picker.properties.value]
@@ -52,6 +52,13 @@ description = "Shows a button that clears the date."
 type = "boolean"
 reflect = true
 description = "The calendar dropdown is shown."
+
+[ray-date-picker.properties.native]
+type = "string"
+values = ["auto", "always", "never"]
+default = "auto"
+reflect = true
+description = "Which picker the trigger opens: the system's (the native date input's, the usual one on a phone) or the calendar dropdown. auto: the system's on a touch screen (pointer: coarse), else the calendar. A date picked in the system's picker is the value like one picked in the calendar."
 
 [ray-date-picker.properties.name]
 type = "string"

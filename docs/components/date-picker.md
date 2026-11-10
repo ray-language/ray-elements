@@ -6,7 +6,7 @@ Import: `import "@raylang/elements/date-picker";` · Category: Inputs
 
 ## `<ray-date-picker>` (RayDatePicker, extends FieldControl)
 
-Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it.
+Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. On a touch screen the trigger opens the system's picker instead (native).
 
 Properties:
 
@@ -19,6 +19,7 @@ Properties:
 - `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
 - `clearable`: boolean, reflects. Shows a button that clears the date.
 - `open`: boolean, reflects. The calendar dropdown is shown.
+- `native`: `auto` | `always` | `never`, default `auto`, reflects. Which picker the trigger opens: the system's (the native date input's, the usual one on a phone) or the calendar dropdown. auto: the system's on a touch screen (pointer: coarse), else the calendar. A date picked in the system's picker is the value like one picked in the calendar.
 - `name`: string, reflects. Form field name.
 - `label`: string. Visible label (also the accessible name).
 - `description`: string. Help text.

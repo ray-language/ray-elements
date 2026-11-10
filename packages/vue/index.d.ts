@@ -396,6 +396,8 @@ export interface RayDatePickerProps {
   clearable?: boolean;
   /** The calendar dropdown is shown. */
   open?: boolean;
+  /** Which picker the trigger opens: the system's (the native date input's, the usual one on a phone) or the calendar dropdown. auto: the system's on a touch screen (pointer: coarse), else the calendar. A date picked in the system's picker is the value like one picked in the calendar. */
+  native?: "auto" | "always" | "never";
   /** Form field name. */
   name?: string;
   /** Visible label (also the accessible name). */

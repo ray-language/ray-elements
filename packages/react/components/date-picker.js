@@ -5,7 +5,7 @@ import { createComponent } from "../create.js";
 
 export const RayDatePicker = /*#__PURE__*/ createComponent("ray-date-picker", {
   displayName: "RayDatePicker",
-  properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
+  properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "native", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
   events: { onInput: "input", onChange: "change", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
 export const RayCalendar = /*#__PURE__*/ createComponent("ray-calendar", {

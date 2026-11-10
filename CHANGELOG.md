@@ -9,6 +9,9 @@ change the API.
 
 ### Added
 
+- `ray-date-picker` `native`: which picker the trigger opens, the system's
+  (`always`), the calendar (`never`) or, by default, the system's on a touch
+  screen and the calendar elsewhere.
 - `ray-input` `type="time"`, `"date"` and `"datetime-local"`: the browser's
   pickers (the native ones on phones) in a field with label, description,
   error and form value.
@@ -24,6 +27,12 @@ change the API.
 
 ### Fixed
 
+- `ray-date-picker`: a date picked in the native date input (the system's
+  picker on a phone, which a form's previous/next keys could reach beside
+  the calendar) was not the field's value and fired no `change`; and the
+  two pickers competed on a phone. The native input now sets the value like
+  a calendar pick, stays out of the focus order while the calendar is the
+  picker, and is the picker on touch screens.
 - `ray-toaster` with `position="top-center"` or `"bottom-center"` took half
   the width on a phone: the `-center` rule's `left: 50%` outlived the phone
   layout's full width.
