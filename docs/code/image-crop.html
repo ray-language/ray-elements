@@ -1,0 +1,165 @@
+<pre class="code" data-source="html"><code><span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A profile photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-profile&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-avatar</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-avatar&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;Ada Lovelace&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-avatar</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-profile-text&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Ada Lovelace<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-actions&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-choose&quot;</span><span class="tk-punctuation">&gt;</span>Choose photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;subtle&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-sample&quot;</span><span class="tk-punctuation">&gt;</span>Use a sample<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;subtle&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-remove&quot;</span> <span class="tk-attr">hidden</span><span class="tk-punctuation">&gt;</span>Remove photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">input</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;file&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;image/*&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-file&quot;</span> <span class="tk-attr">hidden</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-drawer</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-sheet&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Adjust the photo&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Drag to move it, pinch or scroll to zoom.&quot;</span> <span class="tk-attr">position</span>=<span class="tk-string">&quot;bottom&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;content&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-image-crop</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop&quot;</span> <span class="tk-attr">shape</span>=<span class="tk-string">&quot;circle&quot;</span> <span class="tk-attr">zoom-control</span> <span class="tk-attr">output-size</span>=<span class="tk-string">&quot;320&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Profile photo&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-image-crop</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-cancel&quot;</span><span class="tk-punctuation">&gt;</span>Cancel<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-button</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-use&quot;</span><span class="tk-punctuation">&gt;</span>Use photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-button</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-drawer</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A cover in 16:9, with the framing read back<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-cover&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">ray-image-crop</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-wide&quot;</span> <span class="tk-attr">aspect</span>=<span class="tk-string">&quot;16/9&quot;</span> <span class="tk-attr">zoom-control</span> <span class="tk-attr">max-zoom</span>=<span class="tk-string">&quot;3&quot;</span> <span class="tk-attr">output-size</span>=<span class="tk-string">&quot;1280x720&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;image/webp&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Cover image&quot;</span><span class="tk-punctuation">&gt;</span><span class="tk-punctuation">&lt;/</span><span class="tk-tag">ray-image-crop</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-rect&quot;</span><span class="tk-punctuation">&gt;</span>—<span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">script</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;module&quot;</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-comment">// A picture to crop without a download: a landscape drawn on a canvas.</span>
+  <span class="tk-keyword">function</span> sample(width = <span class="tk-number">1600</span>, height = <span class="tk-number">1200</span>) {
+    <span class="tk-keyword">const</span> c = document.createElement(<span class="tk-string">&quot;canvas&quot;</span>);
+    c.width = width;
+    c.height = height;
+    <span class="tk-keyword">const</span> g = c.getContext(<span class="tk-string">&quot;2d&quot;</span>);
+    <span class="tk-keyword">const</span> sky = g.createLinearGradient(<span class="tk-number">0</span>, <span class="tk-number">0</span>, <span class="tk-number">0</span>, height);
+    sky.addColorStop(<span class="tk-number">0</span>, <span class="tk-string">&quot;#7dd3fc&quot;</span>);
+    sky.addColorStop(<span class="tk-number">1</span>, <span class="tk-string">&quot;#fde68a&quot;</span>);
+    g.fillStyle = sky;
+    g.fillRect(<span class="tk-number">0</span>, <span class="tk-number">0</span>, width, height);
+    g.fillStyle = <span class="tk-string">&quot;#f97316&quot;</span>;
+    g.beginPath();
+    g.arc(width * <span class="tk-number">0.68</span>, height * <span class="tk-number">0.36</span>, height * <span class="tk-number">0.12</span>, <span class="tk-number">0</span>, Math.PI * <span class="tk-number">2</span>);
+    g.fill();
+    g.fillStyle = <span class="tk-string">&quot;#6d28d9&quot;</span>;
+    g.beginPath();
+    g.moveTo(<span class="tk-number">0</span>, height * <span class="tk-number">0.75</span>);
+    g.lineTo(width * <span class="tk-number">0.3</span>, height * <span class="tk-number">0.42</span>);
+    g.lineTo(width * <span class="tk-number">0.55</span>, height * <span class="tk-number">0.7</span>);
+    g.lineTo(width * <span class="tk-number">0.8</span>, height * <span class="tk-number">0.5</span>);
+    g.lineTo(width, height * <span class="tk-number">0.72</span>);
+    g.lineTo(width, height);
+    g.lineTo(<span class="tk-number">0</span>, height);
+    g.fill();
+    g.fillStyle = <span class="tk-string">&quot;#0e7490&quot;</span>;
+    g.fillRect(<span class="tk-number">0</span>, height * <span class="tk-number">0.82</span>, width, height * <span class="tk-number">0.18</span>);
+    <span class="tk-keyword">return</span> <span class="tk-keyword">new</span> Promise((resolve) =&gt; c.toBlob(resolve, <span class="tk-string">&quot;image/png&quot;</span>));
+  }
+
+  <span class="tk-keyword">const</span> avatar = document.getElementById(<span class="tk-string">&quot;demo-crop-avatar&quot;</span>);
+  <span class="tk-keyword">const</span> sheet = document.getElementById(<span class="tk-string">&quot;demo-crop-sheet&quot;</span>);
+  <span class="tk-keyword">const</span> crop = document.getElementById(<span class="tk-string">&quot;demo-crop&quot;</span>);
+  <span class="tk-keyword">const</span> file = document.getElementById(<span class="tk-string">&quot;demo-crop-file&quot;</span>);
+  <span class="tk-keyword">const</span> remove = document.getElementById(<span class="tk-string">&quot;demo-crop-remove&quot;</span>);
+  <span class="tk-keyword">const</span> choose = document.getElementById(<span class="tk-string">&quot;demo-crop-choose&quot;</span>);
+
+  <span class="tk-keyword">const</span> edit = (blob) =&gt; {
+    crop.src = blob;
+    sheet.open = <span class="tk-keyword">true</span>;
+  };
+  choose.addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; file.click());
+  file.addEventListener(<span class="tk-string">&quot;change&quot;</span>, () =&gt; {
+    <span class="tk-keyword">if</span> (file.files[<span class="tk-number">0</span>]) edit(file.files[<span class="tk-number">0</span>]);
+    file.value = <span class="tk-string">&quot;&quot;</span>;
+  });
+  document.getElementById(<span class="tk-string">&quot;demo-crop-sample&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, <span class="tk-keyword">async</span> () =&gt; edit(<span class="tk-keyword">await</span> sample()));
+  document.getElementById(<span class="tk-string">&quot;demo-crop-cancel&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; (sheet.open = <span class="tk-keyword">false</span>));
+  document.getElementById(<span class="tk-string">&quot;demo-crop-use&quot;</span>).addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; {
+    avatar.src = crop.toDataURL();
+    remove.hidden = <span class="tk-keyword">false</span>;
+    choose.textContent = <span class="tk-string">&quot;Change photo&quot;</span>;
+    sheet.open = <span class="tk-keyword">false</span>;
+  });
+  remove.addEventListener(<span class="tk-string">&quot;click&quot;</span>, () =&gt; {
+    avatar.src = <span class="tk-string">&quot;&quot;</span>;
+    remove.hidden = <span class="tk-keyword">true</span>;
+    choose.textContent = <span class="tk-string">&quot;Choose photo&quot;</span>;
+  });
+
+  <span class="tk-comment">// The framing is a rectangle of the original: save it, set it back later.</span>
+  <span class="tk-keyword">const</span> wide = document.getElementById(<span class="tk-string">&quot;demo-crop-wide&quot;</span>);
+  <span class="tk-keyword">const</span> rect = document.getElementById(<span class="tk-string">&quot;demo-crop-rect&quot;</span>);
+  <span class="tk-keyword">const</span> show = () =&gt; {
+    <span class="tk-keyword">const</span> r = wide.crop;
+    rect.textContent = r ? <span class="tk-string">`crop = { x: ${Math.round(r.x)}, y: ${Math.round(r.y)}, width: ${Math.round(r.width)}, height: ${Math.round(r.height)} }`</span> : <span class="tk-string">&quot;—&quot;</span>;
+  };
+  wide.addEventListener(<span class="tk-string">&quot;input&quot;</span>, show);
+  wide.addEventListener(<span class="tk-string">&quot;ray-load&quot;</span>, show);
+  sample(<span class="tk-number">2400</span>, <span class="tk-number">1600</span>).then((blob) =&gt; {
+    wide.crop = { x: <span class="tk-number">1200</span>, y: <span class="tk-number">300</span>, width: <span class="tk-number">1000</span>, height: <span class="tk-number">562</span> };
+    wide.src = blob;
+  });
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">script</span><span class="tk-punctuation">&gt;</span></code></pre>
+<pre class="code" data-source="react" hidden><code><span class="tk-keyword">import</span> { RayAvatar, RayButton, RayDrawer, RayImageCrop } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/react&quot;</span>;
+
+<span class="tk-comment">// The live example's &lt;script&gt;/&lt;style&gt; is left out: pass data as props</span>
+<span class="tk-comment">// and listen with the on* handlers (onRayOpen, onRayClose, onRayRequestClose…).</span>
+<span class="tk-keyword">export</span> <span class="tk-keyword">function</span> ImageCropExample() {
+  <span class="tk-keyword">return</span> (
+    &lt;&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;A profile photo&lt;/div&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-crop-profile&quot;</span>&gt;
+        &lt;RayAvatar id=<span class="tk-string">&quot;demo-crop-avatar&quot;</span> name=<span class="tk-string">&quot;Ada Lovelace&quot;</span> size=<span class="tk-string">&quot;xl&quot;</span> /&gt;
+        &lt;div className=<span class="tk-string">&quot;demo-crop-profile-text&quot;</span>&gt;
+          &lt;strong&gt;Ada Lovelace&lt;/strong&gt;
+          &lt;div className=<span class="tk-string">&quot;demo-crop-actions&quot;</span>&gt;
+            &lt;RayButton size=<span class="tk-string">&quot;sm&quot;</span> variant=<span class="tk-string">&quot;default&quot;</span> id=<span class="tk-string">&quot;demo-crop-choose&quot;</span>&gt;Choose photo&lt;/RayButton&gt;
+            &lt;RayButton size=<span class="tk-string">&quot;sm&quot;</span> variant=<span class="tk-string">&quot;subtle&quot;</span> id=<span class="tk-string">&quot;demo-crop-sample&quot;</span>&gt;Use a sample&lt;/RayButton&gt;
+            &lt;RayButton size=<span class="tk-string">&quot;sm&quot;</span> variant=<span class="tk-string">&quot;subtle&quot;</span> color=<span class="tk-string">&quot;red&quot;</span> id=<span class="tk-string">&quot;demo-crop-remove&quot;</span> hidden&gt;Remove photo&lt;/RayButton&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;input <span class="tk-keyword">type</span>=<span class="tk-string">&quot;file&quot;</span> accept=<span class="tk-string">&quot;image/*&quot;</span> id=<span class="tk-string">&quot;demo-crop-file&quot;</span> hidden /&gt;
+      &lt;/div&gt;
+
+      &lt;RayDrawer id=<span class="tk-string">&quot;demo-crop-sheet&quot;</span> label=<span class="tk-string">&quot;Adjust the photo&quot;</span> description=<span class="tk-string">&quot;Drag to move it, pinch or scroll to zoom.&quot;</span> position=<span class="tk-string">&quot;bottom&quot;</span> size=<span class="tk-string">&quot;content&quot;</span>&gt;
+        &lt;RayImageCrop id=<span class="tk-string">&quot;demo-crop&quot;</span> shape=<span class="tk-string">&quot;circle&quot;</span> zoomControl outputSize=<span class="tk-string">&quot;320&quot;</span> label=<span class="tk-string">&quot;Profile photo&quot;</span> /&gt;
+        &lt;RayButton slot=<span class="tk-string">&quot;footer&quot;</span> variant=<span class="tk-string">&quot;default&quot;</span> id=<span class="tk-string">&quot;demo-crop-cancel&quot;</span>&gt;Cancel&lt;/RayButton&gt;
+        &lt;RayButton slot=<span class="tk-string">&quot;footer&quot;</span> id=<span class="tk-string">&quot;demo-crop-use&quot;</span>&gt;Use photo&lt;/RayButton&gt;
+      &lt;/RayDrawer&gt;
+
+      &lt;div className=<span class="tk-string">&quot;demo-caption&quot;</span>&gt;A cover <span class="tk-keyword">in</span> <span class="tk-number">16</span>:<span class="tk-number">9</span>, with the framing read back&lt;/div&gt;
+      &lt;div className=<span class="tk-string">&quot;demo-crop-cover&quot;</span>&gt;
+        &lt;RayImageCrop id=<span class="tk-string">&quot;demo-crop-wide&quot;</span> aspect=<span class="tk-string">&quot;16/9&quot;</span> zoomControl maxZoom={<span class="tk-number">3</span>} outputSize=<span class="tk-string">&quot;1280x720&quot;</span> <span class="tk-keyword">type</span>=<span class="tk-string">&quot;image/webp&quot;</span> label=<span class="tk-string">&quot;Cover image&quot;</span> /&gt;
+        &lt;code id=<span class="tk-string">&quot;demo-crop-rect&quot;</span>&gt;—&lt;/code&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+<pre class="code" data-source="vue" hidden><code><span class="tk-comment">&lt;!-- app.use(RayElements) (from &quot;@raylang/vue&quot;) registers the components. --&gt;</span>
+<span class="tk-comment">&lt;!-- The live example's &lt;script&gt;/&lt;style&gt; is left out: bind data with :prop and listen with @event. --&gt;</span>
+<span class="tk-punctuation">&lt;</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A profile photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-profile&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayAvatar</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-avatar&quot;</span> <span class="tk-attr">name</span>=<span class="tk-string">&quot;Ada Lovelace&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;xl&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-profile-text&quot;</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>Ada Lovelace<span class="tk-punctuation">&lt;/</span><span class="tk-tag">strong</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-actions&quot;</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-choose&quot;</span><span class="tk-punctuation">&gt;</span>Choose photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;subtle&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-sample&quot;</span><span class="tk-punctuation">&gt;</span>Use a sample<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+        <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;sm&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;subtle&quot;</span> <span class="tk-attr">color</span>=<span class="tk-string">&quot;red&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-remove&quot;</span> <span class="tk-attr">hidden</span><span class="tk-punctuation">&gt;</span>Remove photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+      <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">input</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;file&quot;</span> <span class="tk-attr">accept</span>=<span class="tk-string">&quot;image/*&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-file&quot;</span> <span class="tk-attr">hidden</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayDrawer</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-sheet&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Adjust the photo&quot;</span> <span class="tk-attr">description</span>=<span class="tk-string">&quot;Drag to move it, pinch or scroll to zoom.&quot;</span> <span class="tk-attr">position</span>=<span class="tk-string">&quot;bottom&quot;</span> <span class="tk-attr">size</span>=<span class="tk-string">&quot;content&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayImageCrop</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop&quot;</span> <span class="tk-attr">shape</span>=<span class="tk-string">&quot;circle&quot;</span> <span class="tk-attr">zoom-control</span> <span class="tk-attr">output-size</span>=<span class="tk-string">&quot;320&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Profile photo&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">variant</span>=<span class="tk-string">&quot;default&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-cancel&quot;</span><span class="tk-punctuation">&gt;</span>Cancel<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayButton</span> <span class="tk-attr">slot</span>=<span class="tk-string">&quot;footer&quot;</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-use&quot;</span><span class="tk-punctuation">&gt;</span>Use photo<span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayButton</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">RayDrawer</span><span class="tk-punctuation">&gt;</span>
+
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-caption&quot;</span><span class="tk-punctuation">&gt;</span>A cover in 16:9, with the framing read back<span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;</span><span class="tk-tag">div</span> <span class="tk-attr">class</span>=<span class="tk-string">&quot;demo-crop-cover&quot;</span><span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">RayImageCrop</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-wide&quot;</span> <span class="tk-attr">aspect</span>=<span class="tk-string">&quot;16/9&quot;</span> <span class="tk-attr">zoom-control</span> <span class="tk-attr">:max-zoom</span>=<span class="tk-string">&quot;3&quot;</span> <span class="tk-attr">output-size</span>=<span class="tk-string">&quot;1280x720&quot;</span> <span class="tk-attr">type</span>=<span class="tk-string">&quot;image/webp&quot;</span> <span class="tk-attr">label</span>=<span class="tk-string">&quot;Cover image&quot;</span> /<span class="tk-punctuation">&gt;</span>
+    <span class="tk-punctuation">&lt;</span><span class="tk-tag">code</span> <span class="tk-attr">id</span>=<span class="tk-string">&quot;demo-crop-rect&quot;</span><span class="tk-punctuation">&gt;</span>—<span class="tk-punctuation">&lt;/</span><span class="tk-tag">code</span><span class="tk-punctuation">&gt;</span>
+  <span class="tk-punctuation">&lt;/</span><span class="tk-tag">div</span><span class="tk-punctuation">&gt;</span>
+<span class="tk-punctuation">&lt;/</span><span class="tk-tag">template</span><span class="tk-punctuation">&gt;</span></code></pre>

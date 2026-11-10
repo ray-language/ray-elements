@@ -4387,6 +4387,405 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/image-crop/image-crop.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayImageCrop",
+          "tagName": "ray-image-crop",
+          "customElement": true,
+          "description": "The image always covers the frame: at zoom 1 it fits the frame's short side, and it cannot be moved so far that a gap shows. The framing is read and set as crop, a rectangle in pixels of the original, so it can be saved, reopened or applied elsewhere. The image is decoded once into a reduced working copy (as many pixels as the output, or the stage on screen, need at max-zoom) and the full-size decode is released; toBlob and toDataURL draw from that copy. EXIF orientation is applied, as in an <img>. Styling: --ray-image-crop-inset (the dimmed margin around the frame, default --ray-space-4), --ray-image-crop-dim (its color) and --ray-image-crop-max-height (default 70vh).",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "src",
+              "type": {
+                "text": "string | Blob | null"
+              },
+              "description": "The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL.",
+              "fieldName": "src"
+            },
+            {
+              "name": "aspect",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width / height of the frame and of the output: \"1\", \"16/9\", \"4:3\", \"1.5\".",
+              "fieldName": "aspect",
+              "default": "1"
+            },
+            {
+              "name": "shape",
+              "type": {
+                "text": "\"rect\" | \"circle\""
+              },
+              "description": "The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round.",
+              "fieldName": "shape",
+              "default": "rect"
+            },
+            {
+              "name": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it.",
+              "fieldName": "zoom",
+              "default": "1"
+            },
+            {
+              "name": "min-zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The least zoom (1 or more: the image always covers the frame).",
+              "fieldName": "minZoom",
+              "default": "1"
+            },
+            {
+              "name": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The most zoom. It also sets how many pixels the working copy keeps.",
+              "fieldName": "maxZoom",
+              "default": "4"
+            },
+            {
+              "name": "zoom-control",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A zoom slider under the image (the wheel, pinch and + / - zoom in any case).",
+              "fieldName": "zoomControl"
+            },
+            {
+              "name": "output-size",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Size of the exported image: a width (\"320\", the height from the aspect) or \"640x360\".",
+              "fieldName": "outputSize",
+              "default": "512"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"image/jpeg\" | \"image/png\" | \"image/webp\" | (string & {})"
+              },
+              "description": "Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).",
+              "fieldName": "type",
+              "default": "image/jpeg"
+            },
+            {
+              "name": "quality",
+              "type": {
+                "text": "number"
+              },
+              "description": "0…1, for image/jpeg and image/webp.",
+              "fieldName": "quality",
+              "default": "0.85"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the image area.",
+              "fieldName": "label",
+              "default": "Crop image"
+            },
+            {
+              "name": "zoom-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the zoom slider, and the word of the announced zoom (\"Zoom 150%\").",
+              "fieldName": "zoomLabel",
+              "default": "Zoom"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No moving nor zooming.",
+              "fieldName": "disabled"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "src",
+              "type": {
+                "text": "string | Blob | null"
+              },
+              "description": "The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL.",
+              "attribute": "src",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "aspect",
+              "type": {
+                "text": "string"
+              },
+              "description": "Width / height of the frame and of the output: \"1\", \"16/9\", \"4:3\", \"1.5\".",
+              "attribute": "aspect",
+              "reflects": true,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "shape",
+              "type": {
+                "text": "\"rect\" | \"circle\""
+              },
+              "description": "The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round.",
+              "attribute": "shape",
+              "reflects": true,
+              "default": "rect"
+            },
+            {
+              "kind": "field",
+              "name": "zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it.",
+              "attribute": "zoom",
+              "reflects": false,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "minZoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The least zoom (1 or more: the image always covers the frame).",
+              "attribute": "min-zoom",
+              "reflects": false,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The most zoom. It also sets how many pixels the working copy keeps.",
+              "attribute": "max-zoom",
+              "reflects": false,
+              "default": "4"
+            },
+            {
+              "kind": "field",
+              "name": "zoomControl",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A zoom slider under the image (the wheel, pinch and + / - zoom in any case).",
+              "attribute": "zoom-control",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "outputSize",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Size of the exported image: a width (\"320\", the height from the aspect) or \"640x360\".",
+              "attribute": "output-size",
+              "reflects": false,
+              "default": "512"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"image/jpeg\" | \"image/png\" | \"image/webp\" | (string & {})"
+              },
+              "description": "Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).",
+              "attribute": "type",
+              "reflects": false,
+              "default": "image/jpeg"
+            },
+            {
+              "kind": "field",
+              "name": "quality",
+              "type": {
+                "text": "number"
+              },
+              "description": "0…1, for image/jpeg and image/webp.",
+              "attribute": "quality",
+              "reflects": false,
+              "default": "0.85"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the image area.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Crop image"
+            },
+            {
+              "kind": "field",
+              "name": "zoomLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the zoom slider, and the word of the announced zoom (\"Zoom 150%\").",
+              "attribute": "zoom-label",
+              "reflects": false,
+              "default": "Zoom"
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No moving nor zooming.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "crop",
+              "description": "The framed part in pixels of the original (null without an image). Assign it, even before the image loads, to frame a rectangle: the zoom that shows all of it, centered on it."
+            },
+            {
+              "kind": "field",
+              "name": "ready",
+              "description": "Resolves when the current src has loaded (true) or failed (false)."
+            },
+            {
+              "kind": "field",
+              "name": "loaded",
+              "description": "An image is shown."
+            },
+            {
+              "kind": "field",
+              "name": "naturalWidth",
+              "description": "Width of the original (0 without an image)."
+            },
+            {
+              "kind": "field",
+              "name": "naturalHeight",
+              "description": "Height of the original (0 without an image)."
+            },
+            {
+              "kind": "method",
+              "name": "toBlob",
+              "description": "The framed part at the output size and format (null without an image)."
+            },
+            {
+              "kind": "method",
+              "name": "toDataURL",
+              "description": "The same as a data URL (\"\" without an image)."
+            },
+            {
+              "kind": "method",
+              "name": "toCanvas",
+              "description": "The framed part drawn on a new canvas of the output size."
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Back to the least zoom, centered (no events)."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The framing moved (every step of a drag, pinch, wheel or the slider)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The framing settled: pointer released, a key pressed, the slider released or the wheel stopped (read crop, zoom)."
+            },
+            {
+              "name": "ray-load",
+              "type": {
+                "text": "CustomEvent<{ width: number; height: number }>"
+              },
+              "description": "The image loaded (its original size)."
+            },
+            {
+              "name": "ray-error",
+              "type": {
+                "text": "CustomEvent<{ error: Error }>"
+              },
+              "description": "The image could not be loaded or decoded."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "stage",
+              "description": "The image area (focusable; role slider for the zoom)."
+            },
+            {
+              "name": "image",
+              "description": "The image (a canvas of the working copy)."
+            },
+            {
+              "name": "frame",
+              "description": "The frame; what lies outside it is dimmed."
+            },
+            {
+              "name": "zoom",
+              "description": "The zoom ray-slider (with zoom-control)."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "parseAspect",
+          "description": "A ratio from \"16/9\", \"4:3\", \"1.5\" or a number (1 when it is none of them)."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayImageCrop",
+          "declaration": {
+            "name": "RayImageCrop",
+            "module": "components/image-crop/image-crop.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-image-crop",
+          "declaration": {
+            "name": "RayImageCrop",
+            "module": "components/image-crop/image-crop.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "parseAspect",
+          "declaration": {
+            "name": "parseAspect",
+            "module": "components/image-crop/image-crop.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/input/input.js",
       "declarations": [
         {
