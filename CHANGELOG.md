@@ -7,6 +7,20 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-notification`: each action takes a `variant` (a button variant,
+  default `default`; `filled` marks the main answer), a `color` and a `name`.
+  Each action button also has the parts `action-<index>` and, with a name,
+  `action-<name>`, so `::part(action-1)` styles one alone (`::part(action)`
+  still styles them all). `notify({ action })` takes the same fields.
+
+### Fixed
+
+- `updateNotification(id, { message })` replaced every child of the
+  notification, slotted action and icon nodes included; it now replaces only
+  the message.
+
 ## [0.15.0] - 2026-11-10
 
 ### Added

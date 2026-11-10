@@ -2311,8 +2311,8 @@ export declare class RayEmptyState extends RayElement {
 }
 
 // --- Notification (notification)
-/** An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes). */
-export type NotifyAction = { label: string; icon?: string | Node; onClick?: () => void };
+/** An action button of notify(): its text, an icon name or a node before it, its variant (default "default"; "filled" for the main answer) and color, a name (the part action-<name>), and what pressing it runs (the notification closes). */
+export type NotifyAction = { label: string; icon?: string | Node; variant?: "default" | "filled" | "light" | "outline" | "subtle" | "transparent"; color?: string; name?: string; onClick?: () => void };
 /** Options of notify() and updateNotification(). */
 export type NotifyOptions = { id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void };
 /** Shows a notification; returns its id. */
@@ -2343,8 +2343,8 @@ export declare class RayNotification extends RayElement {
   actionLabel: string | undefined;
   /** Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings). */
   actionIcon: string | Node | undefined;
-  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index. */
-  actions: { label: string; icon?: string | Node }[] | undefined;
+  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Each takes a button variant (default "default"; "filled" marks the main answer), a color (default the notification's) and a name (adds the part action-<name>). Pressing one fires ray-action with its index. */
+  actions: { label: string; icon?: string | Node; variant?: "default" | "filled" | "light" | "outline" | "subtle" | "transparent"; color?: string; name?: string }[] | undefined;
   addEventListener<K extends keyof RayNotificationEventMap>(type: K, listener: (this: RayNotification, ev: RayNotificationEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
   removeEventListener<K extends keyof RayNotificationEventMap>(type: K, listener: (this: RayNotification, ev: RayNotificationEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;

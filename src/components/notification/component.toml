@@ -56,8 +56,8 @@ description = "Before the action's text: an icon name, or a node (a <ray-pulse> 
 [ray-notification.properties.actions]
 attribute = false
 type = "object"
-ts = "{ label: string; icon?: string | Node }[] | undefined"
-description = "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Pressing one fires ray-action with its index."
+ts = "{ label: string; icon?: string | Node; variant?: \"default\" | \"filled\" | \"light\" | \"outline\" | \"subtle\" | \"transparent\"; color?: string; name?: string }[] | undefined"
+description = "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Each takes a button variant (default \"default\"; \"filled\" marks the main answer), a color (default the notification's) and a name (adds the part action-<name>). Pressing one fires ray-action with its index."
 
 [ray-notification.events.ray-close]
 description = "The close button was pressed."
@@ -75,7 +75,7 @@ description = "Your own action controls (ray-button…), beside the close button
 description = "The row of action buttons and the action slot."
 
 [ray-notification.parts.action]
-description = "Each action button."
+description = "Each action button. Each also has the part action-<index> (action-0, action-1…) and, with a name, action-<name>, to style one alone."
 
 [ray-notification.slots.icon]
 description = "Your own icon, in a colored circle (replaces the status icon)."
@@ -125,8 +125,8 @@ ts = "raise(): void"
 description = "Brings the stack above everything else in the top layer."
 
 [component.types.NotifyAction]
-ts = "{ label: string; icon?: string | Node; onClick?: () => void }"
-description = "An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes)."
+ts = "{ label: string; icon?: string | Node; variant?: \"default\" | \"filled\" | \"light\" | \"outline\" | \"subtle\" | \"transparent\"; color?: string; name?: string; onClick?: () => void }"
+description = "An action button of notify(): its text, an icon name or a node before it, its variant (default \"default\"; \"filled\" for the main answer) and color, a name (the part action-<name>), and what pressing it runs (the notification closes)."
 
 [component.types.NotifyOptions]
 ts = "{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }"

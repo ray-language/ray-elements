@@ -18112,9 +18112,9 @@
               "kind": "field",
               "name": "actions",
               "type": {
-                "text": "{ label: string; icon?: string | Node }[] | undefined"
+                "text": "{ label: string; icon?: string | Node; variant?: \"default\" | \"filled\" | \"light\" | \"outline\" | \"subtle\" | \"transparent\"; color?: string; name?: string }[] | undefined"
               },
-              "description": "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Pressing one fires ray-action with its index."
+              "description": "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Each takes a button variant (default \"default\"; \"filled\" marks the main answer), a color (default the notification's) and a name (adds the part action-<name>). Pressing one fires ray-action with its index."
             }
           ],
           "events": [
@@ -18154,7 +18154,7 @@
             },
             {
               "name": "action",
-              "description": "Each action button."
+              "description": "Each action button. Each also has the part action-<index> (action-0, action-1…) and, with a name, action-<name>, to style one alone."
             },
             {
               "name": "status-icon",

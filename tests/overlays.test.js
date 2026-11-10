@@ -818,20 +818,20 @@ T.test("notify: actions with an icon or a node, several actions, the action slot
   ] });
   await T.settle();
   const el = document.querySelector(`[data-notification-id="${id}"]`);
-  const buttons = [...el.shadowRoot.querySelectorAll('[part="action"]')];
+  const buttons = [...el.shadowRoot.querySelectorAll('[part~="action"]')];
   T.eq(buttons.map((b) => b.textContent).join(), "Taken,Snooze");
   T.ok(buttons[0].querySelector(".my-pulse") === pulse, "a node goes in as is");
   T.ok(buttons[1].querySelector("[data-ray-icon='info'] svg"), "a name is painted");
   el.label = "Still time for your pill";
   await T.settle();
-  T.ok(el.shadowRoot.querySelector('[part="action"]') === buttons[0], "other changes keep the buttons (a pulse keeps running)");
+  T.ok(el.shadowRoot.querySelector('[part~="action"]') === buttons[0], "other changes keep the buttons (a pulse keeps running)");
   buttons[1].click();
   await T.settle();
   T.eq(ran.join(), "snooze", "the second runs its own onClick");
   T.eq(document.querySelector(`[data-notification-id="${id}"]`), null, "and closes it");
   const one = notify({ title: "Saved", autoClose: false, action: { label: "Undo", icon: "check" } });
   await T.settle();
-  const single = document.querySelector(`[data-notification-id="${one}"]`).shadowRoot.querySelectorAll('[part="action"]');
+  const single = document.querySelector(`[data-notification-id="${one}"]`).shadowRoot.querySelectorAll('[part~="action"]');
   T.eq(single.length, 1);
   T.ok(single[0].querySelector("[data-ray-icon='check']"), "action.icon");
   clearNotifications();
@@ -842,6 +842,44 @@ T.test("notify: actions with an icon or a node, several actions, the action slot
   await T.settle();
   T.ok(card.shadowRoot.querySelector(".card").hasAttribute("data-actions"), "the action slot shows the actions row");
   card.remove();
+});
+
+T.test("notify: per-action variant, color and parts; message keeps slotted actions", async (T) => {
+  clearNotifications();
+  await T.settle();
+  const id = notify({ title: "Time for your pill", autoClose: false, actions: [
+    { label: "Taken", variant: "filled", name: "taken" },
+    { label: "Snooze", variant: "light", color: "red" },
+    { label: "Later" },
+  ] });
+  await T.settle();
+  const el = document.querySelector(`[data-notification-id="${id}"]`);
+  const [a, b, c] = el.shadowRoot.querySelectorAll("button.action");
+  T.eq(a.getAttribute("part"), "action action-0 action-taken");
+  T.eq(b.getAttribute("part"), "action action-1");
+  T.eq([a, b, c].map((x) => x.dataset.variant).join(), "filled,light,default");
+  T.ok(getComputedStyle(a).backgroundColor !== getComputedStyle(c).backgroundColor, "filled differs from default");
+  T.ok(/--ray-red/.test(b.style.getPropertyValue("--_light")), "an action's own color");
+  const style = document.createElement("style");
+  style.textContent = "ray-notification::part(action-1) { outline: 3px solid rgb(1, 2, 3); }";
+  document.head.append(style);
+  T.eq(getComputedStyle(b).outlineColor, "rgb(1, 2, 3)", "::part(action-1) styles one alone");
+  T.ok(getComputedStyle(a).outlineColor !== "rgb(1, 2, 3)");
+  style.remove();
+  const mine = document.createElement("button");
+  mine.slot = "action";
+  mine.textContent = "Mine";
+  el.append(mine);
+  updateNotification(id, { message: "Ten minutes late" });
+  await T.settle();
+  T.ok(mine.isConnected && mine.parentNode === el, "message keeps the action slot's nodes");
+  T.ok(el.textContent.startsWith("Ten minutes late"));
+  updateNotification(id, { message: "" });
+  T.eq([...el.childNodes].filter((n) => n.nodeType === 3).length, 0, "an empty message leaves no text");
+  const one = notify({ title: "Saved", autoClose: false, action: { label: "Undo", variant: "subtle" } });
+  await T.settle();
+  T.eq(document.querySelector(`[data-notification-id="${one}"]`).shadowRoot.querySelector("button.action").dataset.variant, "subtle", "action takes a variant too");
+  clearNotifications();
 });
 
 T.test("toasts: stacked, expand on hover/focus/tap, action, swipe to dismiss", async (T) => {
@@ -878,13 +916,13 @@ T.test("toasts: stacked, expand on hover/focus/tap, action, swipe to dismiss", a
   front.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true, pointerType: "touch" }));
   T.eq(t.expanded, true, "a tap expands");
   const click = new MouseEvent("click", { bubbles: true, composed: true, cancelable: true });
-  inner(front, '[part="action"]').dispatchEvent(click);
+  inner(front, '[part~="action"]').dispatchEvent(click);
   T.eq(undone, 0, "the expanding tap does not press the action");
   document.body.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, composed: true, pointerType: "touch" }));
   T.eq(t.expanded, false, "a tap outside collapses");
 
   // The action runs and closes the toast.
-  inner(front, '[part="action"]').click();
+  inner(front, '[part~="action"]').click();
   await T.settle();
   T.eq(undone, 1, "action ran");
   T.eq(document.querySelector(`[data-notification-id="${c}"]`), null, "and the toast closed");
