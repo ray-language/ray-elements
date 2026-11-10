@@ -78,7 +78,11 @@ T.test("number-input: keys and buttons step, clamp, decimals, prefix/suffix, ARI
   const form = box.querySelector("form");
   const n = form.firstElementChild;
   const input = n.control;
-  T.eq(input.value, "$9.50", "prefix and decimals");
+  T.eq(input.value, "9.50", "decimals; the prefix is beside the field");
+  T.eq(n.$(".prefix").textContent, "$");
+  T.eq(n.$(".prefix").hidden, false);
+  T.eq(n.$(".suffix").hidden, true);
+  T.eq(n.$(".sizer").dataset.text, "9.50", "the field hugs its text");
   T.eq(input.getAttribute("role"), "spinbutton");
   T.eq(input.getAttribute("aria-valuenow"), "9.5");
   T.eq(input.getAttribute("aria-valuetext"), "$9.50");
@@ -105,10 +109,34 @@ T.test("number-input: keys and buttons step, clamp, decimals, prefix/suffix, ARI
   input.dispatchEvent(new Event("blur"));
   await T.settle();
   T.eq(n.value, 10, "clamped on blur");
-  T.eq(input.value, "$10.00");
+  T.eq(input.value, "10.00");
   await type(input, "");
   T.eq(n.value, undefined, "empty");
   T.eq(new FormData(form).get("n"), null);
+  box.remove();
+});
+
+T.test("number-input: a suffix hugs the number; the field is just the digits", async (T) => {
+  const box = await mount(`<ray-number-input label="Every" value="10" suffix=" min" min="1"></ray-number-input><ray-number-input value="72.5" decimals="1"></ray-number-input>`);
+  const [a, b] = box.children;
+  await T.settle();
+  T.eq(a.control.value, "10");
+  T.eq(a.$(".suffix").textContent, " min");
+  T.eq(a.control.getAttribute("aria-valuetext"), "10 min", "the unit is still read out");
+  const field = a.$(".sizer").getBoundingClientRect();
+  const suffix = a.$(".suffix").getBoundingClientRect();
+  T.ok(suffix.left - field.right < 2, "the suffix sits right after the digits");
+  T.ok(field.width < a.$(".box").getBoundingClientRect().width / 2, "the field shrinks to its text");
+  await type(a.control, "15");
+  T.eq(a.value, 15);
+  T.eq(a.$(".sizer").dataset.text, "15", "grows as typed");
+  a.min = 20;
+  a.control.dispatchEvent(new Event("blur"));
+  await T.settle();
+  T.eq(a.value, 20, "clamped");
+  T.eq(a.control.value, "20");
+  T.eq(b.$(".sizer").dataset.text, undefined, "no affix: the field fills the box");
+  T.eq(b.$(".prefix").hidden, true);
   box.remove();
 });
 

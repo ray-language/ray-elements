@@ -1940,11 +1940,11 @@
         },
         {
           "name": "prefix",
-          "description": "Shown before the number (\"$\")."
+          "description": "Shown before the number (\"$\"), beside the editable text: the field holds the digits only. Still in aria-valuetext and in the min/max messages."
         },
         {
           "name": "suffix",
-          "description": "Shown after the number (\" kg\", \"%\")."
+          "description": "Shown after the number (\" kg\", \"%\"), hugging it on the other side of the caret: the field holds the digits only."
         },
         {
           "name": "thousands-separator",

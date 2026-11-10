@@ -1,7 +1,8 @@
 // <ray-number-input>: a number field (Mantine's NumberInput): + and −
 // buttons (hold to repeat), the arrow keys (Shift: ×10), min/max/step,
-// a fixed number of decimals, a prefix and a suffix ("$", " kg") and a
-// thousands separator in the shown text. The value is a number (or empty);
+// a fixed number of decimals, a prefix and a suffix ("$", " kg") drawn
+// beside the editable number (never inside it: a phone's number pad has no
+// letters to fix) and a thousands separator in the shown text. The value is a number (or empty);
 // the form gets its plain digits. format="duration": the value is seconds,
 // shown and typed as m:ss (h:mm:ss from an hour).
 //
@@ -13,6 +14,41 @@ import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/
 
 const styles = css`
   .control { font-variant-numeric: tabular-nums; }
+  /* The text field grows with its text (a hidden mirror in the same grid cell)
+     so a prefix or suffix hugs the number; without one it fills the box. */
+  .sizer {
+    display: inline-grid;
+    flex: 1;
+    align-self: stretch;
+    min-width: 0;
+    padding: 0 calc(var(--_px) * 0.66);
+    font-size: var(--_fs);
+    font-variant-numeric: tabular-nums;
+  }
+  .sizer::after {
+    grid-area: 1 / 1;
+    content: attr(data-text) " ";
+    visibility: hidden;
+    white-space: pre;
+    overflow: hidden;
+    height: 0;
+  }
+  .sizer[data-text] { flex: none; max-width: 100%; }
+  .sizer > .control { grid-area: 1 / 1; width: 100%; min-width: 1ch; padding: 0; }
+  .affix {
+    flex: none;
+    align-self: center;
+    color: var(--ray-muted-foreground);
+    font-size: var(--_fs);
+    white-space: pre;
+    cursor: text;
+  }
+  .affix[hidden] { display: none; }
+  .prefix { padding-inline-start: calc(var(--_px) * 0.66); }
+  .suffix { padding-inline-end: calc(var(--_px) * 0.66); }
+  .section[data-filled] + .prefix, .section[data-filled] + .sizer, .prefix:not([hidden]) + .sizer { padding-inline-start: 0; }
+  .sizer:has(+ .suffix:not([hidden])) { padding-inline-end: 0; }
+  .fill { flex: 1; align-self: stretch; cursor: text; }
   .steppers {
     display: flex;
     flex-direction: column;
@@ -114,7 +150,9 @@ export class RayNumberInput extends FieldControl {
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
   static template = fieldTemplate(
-    `<input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false">` +
+    `<span class="affix prefix" part="prefix" hidden></span>` +
+      `<span class="sizer"><input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false"></span>` +
+      `<span class="affix suffix" part="suffix" hidden></span><span class="fill"></span>` +
       `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1" aria-label="Increment"><span data-ray-icon="ui.increment"></span></button><button type="button" class="step down" part="decrement" tabindex="-1" aria-label="Decrement"><span data-ray-icon="ui.decrement"></span></button></span>`,
   );
 
@@ -124,8 +162,17 @@ export class RayNumberInput extends FieldControl {
   wire() {
     this._default = this.getAttribute("value") !== null ? Number(this.getAttribute("value")) : undefined;
     const c = this.control;
+    // The adornments and the slack beside them act as the field's own text.
+    for (const el of this.shadowRoot.querySelectorAll(".affix, .fill")) {
+      el.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        c.focus();
+        c.setSelectionRange(c.value.length, c.value.length);
+      });
+    }
     c.addEventListener("input", () => {
       this.#typing = true;
+      this._size();
       const n = this._parse(c.value);
       this.commitProperty("value", Number.isFinite(n) ? (this.clamp === "strict" ? this._clamp(n) : n) : undefined);
       this._commit();
@@ -170,7 +217,14 @@ export class RayNumberInput extends FieldControl {
     // The number pad has no ":".
     c.inputMode = this._duration ? "text" : "decimal";
     if (this.placeholder !== undefined) c.placeholder = this.placeholder;
+    for (const name of ["prefix", "suffix"]) {
+      const el = this.$(`.${name}`);
+      const text = this._duration ? "" : this[name] ?? "";
+      el.textContent = text;
+      el.hidden = !text;
+    }
     if (!this.#typing) this._paint();
+    this._size();
     this.syncField();
     this._aria();
     this._commit();
@@ -223,17 +277,29 @@ export class RayNumberInput extends FieldControl {
     }
   }
 
-  // The shown text: prefix, separators, decimals, suffix; or m:ss.
+  // The text in the field: separators and decimals, or m:ss. The prefix and
+  // suffix are drawn beside it (and stay in messages and aria-valuetext).
   _text() {
-    return this._show(this.value);
+    return this._show(this.value, true);
   }
 
-  _show(n) {
+  get _affixed() {
+    return !this._duration && Boolean(this.prefix || this.suffix);
+  }
+
+  /** Sizes the text field to its text when a prefix or suffix hugs it. */
+  _size() {
+    const sizer = this.$(".sizer");
+    if (this._affixed) sizer.dataset.text = this.control.value || this.control.placeholder || "";
+    else delete sizer.dataset.text;
+  }
+
+  _show(n, bare = false) {
     if (n === undefined || n === null || !Number.isFinite(n)) return "";
     // h:mm:ss when the range reaches an hour, so the width does not jump.
     if (this._duration) return formatDuration(n, { hours: Math.abs(this.max ?? 0) >= 3600 || Math.abs(this.min ?? 0) >= 3600 });
     const num = formatNumber(n, { decimals: this.decimals, thousands: this.thousandsSeparator || "", decimal: this.decimalSeparator || "." });
-    return `${this.prefix ?? ""}${num}${this.suffix ?? ""}`;
+    return bare ? num : `${this.prefix ?? ""}${num}${this.suffix ?? ""}`;
   }
 
   _paint() {
@@ -252,7 +318,7 @@ export class RayNumberInput extends FieldControl {
     set("aria-valuemin", this.min);
     set("aria-valuemax", this.max);
     if (this._duration) set("aria-valuetext", Number.isFinite(this.value) ? durationText(this.value, this.closest("[lang]")?.lang || undefined) : undefined);
-    else if (this.prefix || this.suffix || this.thousandsSeparator) set("aria-valuetext", this._text() || undefined);
+    else if (this.prefix || this.suffix || this.thousandsSeparator) set("aria-valuetext", this._show(this.value) || undefined);
     else c.removeAttribute("aria-valuetext");
   }
 

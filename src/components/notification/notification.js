@@ -200,8 +200,9 @@ const toasterStyles = css`
     transition: height var(--ray-duration-base) var(--ray-easing-standard);
   }
   :host(:not(:popover-open)) { display: none; }
-  :host([position^="top"]) { top: 0; }
-  :host([position^="bottom"]), :host(:not([position])) { bottom: 0; }
+  /* Clear of the notch and the home indicator (safe-area insets). */
+  :host([position^="top"]) { top: env(safe-area-inset-top, 0px); }
+  :host([position^="bottom"]), :host(:not([position])) { bottom: env(safe-area-inset-bottom, 0px); }
   /* -start/-end follow the writing direction; -left/-right are sides of the screen. */
   :host([position$="-end"]), :host(:not([position])) { inset-inline-end: 0; }
   :host([position$="-start"]) { inset-inline-start: 0; }
@@ -228,8 +229,8 @@ const toasterStyles = css`
     :host { width: auto; inset-inline: 0; transform: none; padding: var(--ray-space-3); }
     /* Same specificity as the -center rule above, which would keep left: 50%. */
     :host([position$="center"]) { left: 0; right: 0; transform: none; } /* physical */
-    :host([position^="top"]) { top: 0; bottom: auto; }
-    :host(:not([position^="top"])) { bottom: 0; top: auto; }
+    :host([position^="top"]) { top: env(safe-area-inset-top, 0px); bottom: auto; }
+    :host(:not([position^="top"])) { bottom: env(safe-area-inset-bottom, 0px); top: auto; }
     ::slotted(*) { inset-inline: var(--ray-space-3); }
     :host(:not([position^="top"])) ::slotted(*) { bottom: var(--ray-space-3); }
     :host([position^="top"]) ::slotted(*) { top: var(--ray-space-3); }

@@ -5468,7 +5468,7 @@
               "type": {
                 "text": "string | null"
               },
-              "description": "Shown before the number (\"$\").",
+              "description": "Shown before the number (\"$\"), beside the editable text: the field holds the digits only. Still in aria-valuetext and in the min/max messages.",
               "fieldName": "prefix"
             },
             {
@@ -5476,7 +5476,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Shown after the number (\" kg\", \"%\").",
+              "description": "Shown after the number (\" kg\", \"%\"), hugging it on the other side of the caret: the field holds the digits only.",
               "fieldName": "suffix"
             },
             {
@@ -5680,7 +5680,7 @@
               "type": {
                 "text": "string | null"
               },
-              "description": "Shown before the number (\"$\").",
+              "description": "Shown before the number (\"$\"), beside the editable text: the field holds the digits only. Still in aria-valuetext and in the min/max messages.",
               "attribute": "prefix",
               "reflects": false
             },
@@ -5690,7 +5690,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "Shown after the number (\" kg\", \"%\").",
+              "description": "Shown after the number (\" kg\", \"%\"), hugging it on the other side of the caret: the field holds the digits only.",
               "attribute": "suffix",
               "reflects": false
             },
@@ -5906,6 +5906,14 @@
             {
               "name": "input",
               "description": "The text field."
+            },
+            {
+              "name": "prefix",
+              "description": "The prefix beside the text field."
+            },
+            {
+              "name": "suffix",
+              "description": "The suffix beside the text field."
             },
             {
               "name": "controls",
