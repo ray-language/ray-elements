@@ -1135,6 +1135,8 @@ export declare class RaySelect extends FieldControl {
   placeholder: string | undefined;
   /** The dropdown is shown. */
   open: boolean | undefined;
+  /** Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either. */
+  native: "auto" | "always" | "never";
   /** Form field name. */
   name: string | undefined;
   /** Visible label. */
@@ -2118,7 +2120,7 @@ export declare class RayIcon extends RayElement {
   filled: boolean | undefined;
   /** Mirrored in a right-to-left context (dir="rtl"), for an icon that points along the text: back, forward, send, undo. The roles that do (ui.next, ui.previous, ui.first, ui.last, ui.disclosure, ui.separator) mirror by themselves. */
   mirror: boolean | undefined;
-  /** xs…xl or any CSS length. Default: 1em. */
+  /** xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font). */
   size: string | undefined;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */
   label: string | undefined;
@@ -2309,8 +2311,10 @@ export declare class RayEmptyState extends RayElement {
 }
 
 // --- Notification (notification)
+/** An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes). */
+export type NotifyAction = { label: string; icon?: string | Node; onClick?: () => void };
 /** Options of notify() and updateNotification(). */
-export type NotifyOptions = { id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void };
+export type NotifyOptions = { id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void };
 /** Shows a notification; returns its id. */
 export declare function notify(options?: NotifyOptions): string;
 /** Changes a shown notification and restarts its auto-close. */
@@ -2337,6 +2341,10 @@ export declare class RayNotification extends RayElement {
   withBorder: boolean | undefined;
   /** Text of an action button (e.g. "Undo"); pressing it fires ray-action. */
   actionLabel: string | undefined;
+  /** Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings). */
+  actionIcon: string | Node | undefined;
+  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index. */
+  actions: { label: string; icon?: string | Node }[] | undefined;
   addEventListener<K extends keyof RayNotificationEventMap>(type: K, listener: (this: RayNotification, ev: RayNotificationEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
   removeEventListener<K extends keyof RayNotificationEventMap>(type: K, listener: (this: RayNotification, ev: RayNotificationEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
@@ -2345,7 +2353,7 @@ export declare class RayNotification extends RayElement {
 export interface RayNotificationEventMap extends HTMLElementEventMap {
   /** The close button was pressed. */
   "ray-close": CustomEvent<unknown>;
-  /** The action button was pressed (notify() runs action.onClick and closes it). */
+  /** An action button was pressed; detail.index says which (notify() runs its onClick and closes it). */
   "ray-action": CustomEvent<unknown>;
 }
 /** <ray-toaster> Created by notify() when missing; add one yourself to choose its position. A stack (newest in front, older ones peeking behind) that spreads into a list on hover or keyboard focus; on touch screens a tap expands it, a tap outside collapses it, and a sideways swipe dismisses a toast. Auto-close pauses while expanded. Full width on phones. */

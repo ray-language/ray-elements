@@ -4,7 +4,7 @@ import "@raylang/elements/select";
 import { createComponent } from "../create.js";
 
 export const RaySelect = /*#__PURE__*/ createComponent("RaySelect", "ray-select", {
-  properties: ["value", "data", "placeholder", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "variant", "radius"],
+  properties: ["value", "data", "placeholder", "open", "native", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "variant", "radius"],
   booleans: ["open", "required", "disabled"],
   model: { prop: "value", events: ["change"] },
 });

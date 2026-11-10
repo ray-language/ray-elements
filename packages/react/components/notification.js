@@ -5,7 +5,7 @@ import { createComponent } from "../create.js";
 
 export const RayNotification = /*#__PURE__*/ createComponent("ray-notification", {
   displayName: "RayNotification",
-  properties: ["label", "color", "icon", "loading", "hideClose", "withBorder", "actionLabel"],
+  properties: ["label", "color", "icon", "loading", "hideClose", "withBorder", "actionLabel", "actionIcon", "actions"],
   events: { onRayClose: "ray-close", onRayAction: "ray-action" },
 });
 export const RayToaster = /*#__PURE__*/ createComponent("ray-toaster", {

@@ -8207,6 +8207,15 @@
               "fieldName": "open"
             },
             {
+              "name": "native",
+              "type": {
+                "text": "\"auto\" | \"always\" | \"never\""
+              },
+              "description": "Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either.",
+              "fieldName": "native",
+              "default": "auto"
+            },
+            {
               "name": "name",
               "type": {
                 "text": "string"
@@ -8328,6 +8337,17 @@
               "description": "The dropdown is shown.",
               "attribute": "open",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "native",
+              "type": {
+                "text": "\"auto\" | \"always\" | \"never\""
+              },
+              "description": "Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either.",
+              "attribute": "native",
+              "reflects": true,
+              "default": "auto"
             },
             {
               "kind": "field",
@@ -16330,7 +16350,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "xs…xl or any CSS length. Default: 1em.",
+              "description": "xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font).",
               "fieldName": "size"
             },
             {
@@ -16395,7 +16415,7 @@
               "type": {
                 "text": "string"
               },
-              "description": "xs…xl or any CSS length. Default: 1em.",
+              "description": "xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font).",
               "attribute": "size",
               "reflects": true
             },
@@ -18079,6 +18099,22 @@
               "description": "Text of an action button (e.g. \"Undo\"); pressing it fires ray-action.",
               "attribute": "action-label",
               "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "actionIcon",
+              "type": {
+                "text": "string | Node | undefined"
+              },
+              "description": "Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings)."
+            },
+            {
+              "kind": "field",
+              "name": "actions",
+              "type": {
+                "text": "{ label: string; icon?: string | Node }[] | undefined"
+              },
+              "description": "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Pressing one fires ray-action with its index."
             }
           ],
           "events": [
@@ -18094,7 +18130,7 @@
               "type": {
                 "text": "CustomEvent<unknown>"
               },
-              "description": "The action button was pressed (notify() runs action.onClick and closes it)."
+              "description": "An action button was pressed; detail.index says which (notify() runs its onClick and closes it)."
             }
           ],
           "slots": [
@@ -18103,11 +18139,23 @@
               "description": "Message."
             },
             {
+              "name": "action",
+              "description": "Your own action controls (ray-button…), beside the close button, after the action buttons."
+            },
+            {
               "name": "icon",
               "description": "Your own icon, in a colored circle (replaces the status icon)."
             }
           ],
           "cssParts": [
+            {
+              "name": "actions",
+              "description": "The row of action buttons and the action slot."
+            },
+            {
+              "name": "action",
+              "description": "Each action button."
+            },
             {
               "name": "status-icon",
               "description": "The status icon."

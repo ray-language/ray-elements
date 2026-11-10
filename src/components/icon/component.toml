@@ -33,7 +33,7 @@ description = "Mirrored in a right-to-left context (dir=\"rtl\"), for an icon th
 [ray-icon.properties.size]
 type = "string"
 reflect = true
-description = "xs…xl or any CSS length. Default: 1em."
+description = "xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font)."
 
 [ray-icon.properties.label]
 type = "string"

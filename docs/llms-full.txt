@@ -1326,6 +1326,7 @@ Properties:
 - `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean }>`. Options as strings or { value, label, disabled } (instead of child options).
 - `placeholder`: string. Shown while nothing is selected (with required, blocks submit).
 - `open`: boolean, reflects. The dropdown is shown.
+- `native`: `auto` | `always` | `never`, default `auto`, reflects. Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either.
 - `name`: string. Form field name.
 - `label`: string. Visible label.
 - `description`: string. Help text.
@@ -2682,7 +2683,7 @@ Properties:
 - `name`: `IconName`, reflects. Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check).
 - `filled`: boolean, reflects. The filled version, for a state (active, selected, favorite, unread); the outline icon when there is none. Built in: user, info, circle-check, alert-triangle, circle-x, folder, bell, star, settings, home, message-circle.
 - `mirror`: boolean, reflects. Mirrored in a right-to-left context (dir="rtl"), for an icon that points along the text: back, forward, send, undo. The roles that do (ui.next, ui.previous, ui.first, ui.last, ui.disclosure, ui.separator) mirror by themselves.
-- `size`: string, reflects. xs…xl or any CSS length. Default: 1em.
+- `size`: string, reflects. xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font).
 - `label`: string. Accessible name; without it the icon is decorative (hidden from screen readers).
 - `color`: string, reflects. A palette color or any CSS color. Default: the text color.
 - `stroke`: number. Stroke width for stroke icons (default: --ray-icon-stroke, 2).
@@ -2947,19 +2948,24 @@ Properties:
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button.
 - `withBorder` (attribute `with-border`): boolean, reflects. Draws a border.
 - `actionLabel` (attribute `action-label`): string. Text of an action button (e.g. "Undo"); pressing it fires ray-action.
+- `actionIcon` (property only): `string | Node | undefined`. Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings).
+- `actions` (property only): `{ label: string; icon?: string | Node }[] | undefined`. Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index.
 
 Events:
 
 - `ray-close`: The close button was pressed.
-- `ray-action`: The action button was pressed (notify() runs action.onClick and closes it).
+- `ray-action`: An action button was pressed; detail.index says which (notify() runs its onClick and closes it).
 
 Slots:
 
 - (default): Message.
+- `action`: Your own action controls (ray-button…), beside the close button, after the action buttons.
 - `icon`: Your own icon, in a colored circle (replaces the status icon).
 
 Parts (`::part()`):
 
+- `actions`: The row of action buttons and the action slot.
+- `action`: Each action button.
 - `status-icon`: The status icon.
 
 #### `<ray-toaster>` (RayToaster, extends RayElement)
@@ -2990,7 +2996,8 @@ Exports (from `@raylang/elements/notification` and `@raylang/elements`):
 
 Types:
 
-- `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void }`: Options of notify() and updateNotification().
+- `{ label: string; icon?: string | Node; onClick?: () => void }`: An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes).
+- `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }`: Options of notify() and updateNotification().
 
 ### Progress
 

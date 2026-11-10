@@ -11,8 +11,9 @@ const SIZES = { xs: "0.75rem", sm: "0.875rem", md: "1rem", lg: "1.25rem", xl: "1
 const styles = css`
   /* --_size is set here, not only read: private custom properties inherit
      through shadow roots, and an ancestor's own --_size (ray-split's pane
-     size) must not reach the icon. size= overrides it inline. */
-  :host { --_size: 1em; display: inline-flex; vertical-align: -0.125em; line-height: 1; }
+     size) must not reach the icon. --ray-icon-size sizes it like the
+     components' icons; size= overrides both inline. */
+  :host { --_size: var(--ray-icon-size, 1em); display: inline-flex; vertical-align: -0.125em; line-height: 1; }
   .icon svg { width: var(--_size); height: var(--_size); }
   :host([mirror]) .icon:dir(rtl) > svg { transform: scaleX(-1); }
 `;

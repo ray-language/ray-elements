@@ -12,6 +12,7 @@ Properties:
 - `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean }>`. Options as strings or { value, label, disabled } (instead of child options).
 - `placeholder`: string. Shown while nothing is selected (with required, blocks submit).
 - `open`: boolean, reflects. The dropdown is shown.
+- `native`: `auto` | `always` | `never`, default `auto`, reflects. Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either.
 - `name`: string. Form field name.
 - `label`: string. Visible label.
 - `description`: string. Help text.

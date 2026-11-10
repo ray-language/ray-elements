@@ -4,7 +4,7 @@ import "@raylang/elements/notification";
 import { createComponent } from "../create.js";
 
 export const RayNotification = /*#__PURE__*/ createComponent("RayNotification", "ray-notification", {
-  properties: ["label", "color", "icon", "loading", "hideClose", "withBorder", "actionLabel"],
+  properties: ["label", "color", "icon", "loading", "hideClose", "withBorder", "actionLabel", "actionIcon", "actions"],
   booleans: ["loading", "hideClose", "withBorder"],
 });
 export const RayToaster = /*#__PURE__*/ createComponent("RayToaster", "ray-toaster", {

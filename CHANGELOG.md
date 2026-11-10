@@ -7,8 +7,24 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-select`: `native="auto|always|never"`, as in `ray-date-picker`. On a
+  touch screen (`auto`) the native select takes the tap and the system's
+  picker is the dropdown; the value, events and shown text follow it.
+- `ray-notification` and `notify()`: an action can carry an icon
+  (`action: { label, icon }`, `actionIcon`), a name or a node such as a
+  `<ray-pulse>`; `actions: [...]` gives several buttons (`ray-action`'s
+  `detail.index` says which); the `action` slot takes your own controls.
+  Part `actions` wraps them.
+
 ### Fixed
 
+- `ray-select`: on iOS a tap opened the component's list and the system's
+  picker at once: the host's delegated focus reached the hidden native
+  select. Outside `native` mode the model is now inert.
+- `ray-icon`: follows `--ray-icon-size`, as the documentation says and as the
+  components' own icons do (it always measured 1em); `size` still wins.
 - `ray-toaster`: after a modal dialog or drawer opened, a tap outside no
   longer collapsed the expanded stack on a touch screen (moving into the
   overlay and back dropped the document listener). It also leaves any

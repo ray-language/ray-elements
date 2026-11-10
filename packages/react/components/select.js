@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RaySelect = /*#__PURE__*/ createComponent("ray-select", {
   displayName: "RaySelect",
-  properties: ["value", "data", "placeholder", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "variant", "radius"],
+  properties: ["value", "data", "placeholder", "open", "native", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "variant", "radius"],
   events: { onInput: "input", onChange: "change", onRayOpen: "ray-open", onRayClose: "ray-close" },
 });
