@@ -8,7 +8,7 @@
 
 import { RayElement, css, define } from "../../core/core.js";
 import { motionAllowed, play } from "../../core/motion.js";
-import { applyColor } from "../../core/styles.js";
+import { applyColor, variantStyles } from "../../core/styles.js";
 
 const notificationStyles = css`
   :host { display: block; }
@@ -117,13 +117,9 @@ const notificationStyles = css`
     font: inherit;
     font-size: var(--ray-font-size-xs);
     font-weight: var(--ray-font-weight-medium);
-    color: var(--ray-foreground);
-    background: var(--ray-default);
-    border: 1px solid var(--ray-border);
     border-radius: var(--ray-radius-default);
     cursor: pointer;
   }
-  .action:hover { background: var(--ray-default-hover); }
   .action-icon { display: inline-flex; --ray-icon-size: 1rem; }
   .card[data-actions] .close { align-self: center; }
   .close svg { width: 1rem; height: 1rem; }
@@ -150,7 +146,7 @@ export class RayNotification extends RayElement {
     actions: { attribute: false },
     icon: { type: String },
   };
-  static styles = [notificationStyles];
+  static styles = [variantStyles, notificationStyles];
   static template = `
     <div class="card" part="card">
       <span class="icon" part="icon"><slot name="icon"></slot></span>
@@ -196,7 +192,11 @@ export class RayNotification extends RayElement {
     this._paintActions();
   }
 
-  /** The action buttons: `actions`, else one from actionLabel and actionIcon. */
+  /**
+   * The action buttons: `actions`, else one from actionLabel and actionIcon.
+   * Each is part "action action-<index>" (and "action-<name>" with a name),
+   * in its variant (default "default") and color (default the card's).
+   */
   _renderActions() {
     const list = Array.isArray(this.actions) ? this.actions : this.actionLabel ? [{ label: this.actionLabel, icon: this.actionIcon }] : [];
     const box = this.$(".actions");
@@ -206,8 +206,12 @@ export class RayNotification extends RayElement {
       const b = document.createElement("button");
       b.type = "button";
       b.className = "action focus-ring";
-      b.part = "action";
+      const name = typeof a?.name === "string" && /^[\w-]+$/.test(a.name) ? ` action-${a.name}` : "";
+      b.setAttribute("part", `action action-${i}${name}`);
       b.dataset.index = String(i);
+      b.dataset.variant = a?.variant || "default";
+      b.toggleAttribute("data-interactive", true);
+      if (a?.color) applyColor(b, a.color);
       const icon = a?.icon;
       if (icon) {
         const span = document.createElement("span");
@@ -539,8 +543,7 @@ function find(id) {
 
 function apply(el, o) {
   if ("action" in o) {
-    el.actionLabel = o.action?.label ?? "";
-    el.actionIcon = o.action?.icon;
+    el.actions = o.action ? [o.action] : undefined;
     el._onActions = o.action ? [o.action] : [];
   }
   if ("actions" in o) {
@@ -548,12 +551,18 @@ function apply(el, o) {
     el._onActions = o.actions ?? [];
   }
   if ("title" in o) el.label = o.title ?? "";
-  if ("message" in o) el.textContent = o.message ?? "";
+  if ("message" in o) setMessage(el, o.message);
   if ("color" in o) el.color = o.color || undefined;
   if ("icon" in o) el.icon = o.icon || undefined;
   if ("loading" in o) el.loading = Boolean(o.loading);
   if ("closable" in o) el.hideClose = o.closable === false;
   if ("withBorder" in o) el.withBorder = Boolean(o.withBorder);
+}
+
+/** The message: replaces the default slot's content, keeps slotted icon and action nodes. */
+function setMessage(el, text) {
+  for (const n of [...el.childNodes]) if (!(n instanceof Element && n.hasAttribute("slot"))) n.remove();
+  if (text) el.prepend(String(text));
 }
 
 function schedule(id, ms) {
@@ -586,7 +595,9 @@ function pauseAll(t, pause) {
  *           autoClose?: number | false, closable?: boolean, withBorder?: boolean,
  *           action?: NotifyAction, actions?: NotifyAction[], onClose?: () => void }} options
  *   autoClose: ms (default 4000; false = stays). action: a button (e.g. "Undo") that runs onClick and closes it;
- *   actions: several. A NotifyAction is { label, icon?, onClick? }; icon: a name or a node (a <ray-pulse>).
+ *   actions: several. A NotifyAction is { label, icon?, variant?, color?, name?, onClick? }; icon: a name or a
+ *   node (a <ray-pulse>); variant: a button variant (default "default"), e.g. "filled" for the main answer;
+ *   name: adds the part "action-<name>". message replaces the text only: slotted icon and action nodes stay.
  */
 export function notify(options = {}) {
   const id = options.id ?? `n${++counter}`;

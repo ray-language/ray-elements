@@ -2114,8 +2114,8 @@ export interface RayNotificationOwnProps {
   actionLabel?: string;
   /** Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings). */
   actionIcon?: string | Node | undefined;
-  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index. */
-  actions?: { label: string; icon?: string | Node }[] | undefined;
+  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Each takes a button variant (default "default"; "filled" marks the main answer), a color (default the notification's) and a name (adds the part action-<name>). Pressing one fires ray-action with its index. */
+  actions?: { label: string; icon?: string | Node; variant?: "default" | "filled" | "light" | "outline" | "subtle" | "transparent"; color?: string; name?: string }[] | undefined;
   /** The close button was pressed. */
   onRayClose?: (event: CustomEvent<unknown>) => void;
   /** An action button was pressed; detail.index says which (notify() runs its onClick and closes it). */
