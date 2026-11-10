@@ -1467,7 +1467,7 @@
         },
         {
           "name": "type",
-          "description": "Input type.",
+          "description": "Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: \"HH:MM\", \"YYYY-MM-DD\", \"YYYY-MM-DDTHH:MM\".",
           "values": [
             {
               "name": "text"
@@ -1489,6 +1489,15 @@
             },
             {
               "name": "tel"
+            },
+            {
+              "name": "time"
+            },
+            {
+              "name": "date"
+            },
+            {
+              "name": "datetime-local"
             }
           ]
         },
@@ -1699,7 +1708,7 @@
         },
         {
           "name": "type",
-          "description": "Input type.",
+          "description": "Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: \"HH:MM\", \"YYYY-MM-DD\", \"YYYY-MM-DDTHH:MM\".",
           "values": [
             {
               "name": "text"
@@ -1721,6 +1730,15 @@
             },
             {
               "name": "tel"
+            },
+            {
+              "name": "time"
+            },
+            {
+              "name": "date"
+            },
+            {
+              "name": "datetime-local"
             }
           ]
         },
@@ -2085,7 +2103,7 @@
         },
         {
           "name": "type",
-          "description": "Input type.",
+          "description": "Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: \"HH:MM\", \"YYYY-MM-DD\", \"YYYY-MM-DDTHH:MM\".",
           "values": [
             {
               "name": "text"
@@ -2107,6 +2125,15 @@
             },
             {
               "name": "tel"
+            },
+            {
+              "name": "time"
+            },
+            {
+              "name": "date"
+            },
+            {
+              "name": "datetime-local"
             }
           ]
         },
@@ -2304,7 +2331,7 @@
         },
         {
           "name": "type",
-          "description": "Input type.",
+          "description": "Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: \"HH:MM\", \"YYYY-MM-DD\", \"YYYY-MM-DDTHH:MM\".",
           "values": [
             {
               "name": "text"
@@ -2326,6 +2353,15 @@
             },
             {
               "name": "tel"
+            },
+            {
+              "name": "time"
+            },
+            {
+              "name": "date"
+            },
+            {
+              "name": "datetime-local"
             }
           ]
         },
@@ -4464,7 +4500,7 @@
         },
         {
           "name": "size",
-          "description": "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.",
+          "description": "Width (left/right) or height (top/bottom): xs…xl, full, content (as big as what it holds, up to the viewport: a bottom sheet) or any CSS length.",
           "values": [
             {
               "name": "xs"
@@ -4483,6 +4519,9 @@
             },
             {
               "name": "full"
+            },
+            {
+              "name": "content"
             }
           ]
         },

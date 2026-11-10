@@ -11,7 +11,7 @@ Also forwards placeholder, autocomplete, inputmode, pattern, min, max, step, min
 Properties:
 
 - `value`: string. Current value. The value attribute is the initial value (restored on form reset).
-- `type`: `text` | `email` | `password` | `search` | `number` | `url` | `tel`, default `text`, reflects. Input type.
+- `type`: `text` | `email` | `password` | `search` | `number` | `url` | `tel` | `time` | `date` | `datetime-local`, default `text`, reflects. Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: "HH:MM", "YYYY-MM-DD", "YYYY-MM-DDTHH:MM".
 - `name`: string, reflects. Form field name.
 - `label`: string. Visible label (also the accessible name).
 - `description`: string. Help text under the label.

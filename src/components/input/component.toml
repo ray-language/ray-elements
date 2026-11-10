@@ -29,10 +29,10 @@ description = "Current value. The value attribute is the initial value (restored
 
 [ray-input.properties.type]
 type = "string"
-values = ["text", "email", "password", "search", "number", "url", "tel"]
+values = ["text", "email", "password", "search", "number", "url", "tel", "time", "date", "datetime-local"]
 default = "text"
 reflect = true
-description = "Input type."
+description = "Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: \"HH:MM\", \"YYYY-MM-DD\", \"YYYY-MM-DDTHH:MM\"."
 
 [ray-input.properties.name]
 type = "string"

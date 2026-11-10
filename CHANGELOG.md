@@ -7,6 +7,27 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-input` `type="time"`, `"date"` and `"datetime-local"`: the browser's
+  pickers (the native ones on phones) in a field with label, description,
+  error and form value.
+- `ray-calendar` `dayState(date)`: a function that marks days with a state;
+  the day gets `data-state` and the part `day-<state>`, styleable from
+  outside (`::part(day-missed)::after` for a dot), and `refresh()` renders
+  the month again. The day buttons' `data-date` is now documented.
+- `ray-drawer` `size="content"`: as big as what it holds, up to the
+  viewport, with the body scrolling past that: a bottom sheet.
+- `ray-elements check` finds the icons of `setIcons(ICONS)` when `ICONS` is
+  an object literal of the file or imported from a local module, not only
+  those written inline in the call.
+
+### Fixed
+
+- `ray-toaster` with `position="top-center"` or `"bottom-center"` took half
+  the width on a phone: the `-center` rule's `left: 50%` outlived the phone
+  layout's full width.
+
 ## [0.12.0] - 2026-11-08
 
 ### Added

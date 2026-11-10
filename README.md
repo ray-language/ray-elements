@@ -161,7 +161,9 @@ components too. Without a bundler (a raylang app's page), copy the SVG from
 `lucide-static/icons/<name>.svg` or lucide.dev into the `setIcons` call.
 Lucide has no filled versions; for one, register `"<name>:filled"` from a
 family that has them (Phosphor's fill weight, Material Symbols' filled).
-`ray-elements check` finds the names you register in `setIcons({ … })`.
+`ray-elements check` finds the names you register in `setIcons({ … })`, and in
+`setIcons(ICONS)` when `ICONS` is an object literal of that file or one it
+imports from a local module (`import { ICONS } from "./icons.js"`).
 
 ### Right to left
 

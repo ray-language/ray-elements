@@ -10,6 +10,10 @@ import { syncComplete, completeStyles } from "../../core/complete.js";
 const styles = css`
   .control[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
   .control[type="number"] { font-variant-numeric: tabular-nums; }
+  /* Pickers: the field's own height and font, not the browser's. */
+  .control[type="time"], .control[type="date"], .control[type="datetime-local"] { font-variant-numeric: tabular-nums; }
+  .control::-webkit-date-and-time-value { text-align: start; min-height: 1lh; }
+  .control::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.6; }
 `;
 
 // Attributes copied as-is to the inner <input>.

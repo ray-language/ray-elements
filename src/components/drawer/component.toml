@@ -38,8 +38,8 @@ description = "The edge it slides from: start/end follow the writing direction; 
 type = "string"
 default = "md"
 reflect = true
-ts = '"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})'
-description = "Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length."
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | "full" | "content" | (string & {})'
+description = "Width (left/right) or height (top/bottom): xs…xl, full, content (as big as what it holds, up to the viewport: a bottom sheet) or any CSS length."
 
 [ray-drawer.properties.modeless]
 type = "boolean"

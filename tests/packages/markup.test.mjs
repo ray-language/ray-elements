@@ -132,7 +132,16 @@ test("the command: files, setIcons, JSON and the exit status", () => {
     const out = JSON.parse(bad.stdout);
     assert.equal(out.errors, 1);
     assert.equal(out.diagnostics[0].rule, "invalid-value");
-    const ignored = spawnSync(process.execPath, [cli, "check", dir, "--ignore", "invalid-value"], { encoding: "utf8" });
+    // setIcons(X): X an object of the file, or imported from a local module (named or default).
+    rmSync(join(dir, "bad.html"));
+    writeFileSync(join(dir, "index.html"), `<ray-icon name="pill"></ray-icon><ray-icon name="tablets"></ray-icon><ray-icon name="syringe"></ray-icon><ray-icon name="nope"></ray-icon>\n`);
+    writeFileSync(join(dir, "main.js"), `import { ICONS as I } from "./icons.js";\nimport more from "./more.js";\nconst LOCAL = { syringe: "<svg/>" };\nsetIcons(I);\nsetIcons(more);\nsetIcons(LOCAL);\n`);
+    writeFileSync(join(dir, "icons.js"), `export const ICONS = {\n  pill: '<svg viewBox="0 0 24 24"></svg>',\n  "pill:filled": "<svg/>",\n};\n`);
+    writeFileSync(join(dir, "more.js"), `export default { tablets: "<svg/>" };\n`);
+    const followed = spawnSync(process.execPath, [cli, "check", dir, "--format", "json"], { encoding: "utf8" });
+    const names = JSON.parse(followed.stdout).diagnostics.map((d) => d.message.match(/no icon named "(\w+)"/)?.[1]);
+    assert.deepEqual(names, ["nope"], followed.stdout);
+    const ignored = spawnSync(process.execPath, [cli, "check", dir, "--ignore", "unknown-icon"], { encoding: "utf8" });
     assert.equal(ignored.status, 0);
     assert.equal(spawnSync(process.execPath, [cli, "check", "--ignore", "nope"], { encoding: "utf8" }).status, 2);
   } finally {

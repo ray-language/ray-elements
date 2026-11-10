@@ -951,3 +951,32 @@ T.test("popover: anchor places the panel against a rect, a function or an elemen
   await T.settle();
   box.remove();
 });
+
+T.test("drawer: size=content fits a bottom sheet to its content, up to the viewport", async (T) => {
+  await customElements.whenDefined("ray-drawer");
+  const box = await mount(`<ray-drawer label="Go to a date" position="bottom" size="content"><div style="height: 120px"></div></ray-drawer>
+    <ray-drawer label="Tall" position="bottom" size="content"><div style="height: 5000px"></div></ray-drawer>
+    <ray-drawer label="Side" size="content"><div style="width: 180px"></div></ray-drawer>`);
+  const [short, tall, side] = box.querySelectorAll("ray-drawer");
+  short.show();
+  await T.settle();
+  const h = short.dialog.getBoundingClientRect().height;
+  T.ok(h > 120 && h < 400, `the sheet is the content's height plus its chrome (${h})`);
+  T.eq(short.style.getPropertyValue("--_size"), "", "no size length set");
+  short.open = false;
+  await T.settle();
+  tall.show();
+  await T.settle();
+  const th = tall.dialog.getBoundingClientRect().height;
+  T.ok(th <= window.innerHeight && th > window.innerHeight / 2, `capped at the viewport (${th} of ${window.innerHeight})`);
+  T.ok(tall.dialog.querySelector(".body").scrollHeight > tall.dialog.querySelector(".body").clientHeight, "the body scrolls");
+  tall.open = false;
+  await T.settle();
+  side.show();
+  await T.settle();
+  const w = side.dialog.getBoundingClientRect().width;
+  T.ok(w > 180 && w < 440, `a side drawer is as wide as its content (${w})`);
+  side.open = false;
+  await T.settle();
+  box.remove();
+});
