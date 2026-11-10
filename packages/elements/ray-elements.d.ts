@@ -656,7 +656,7 @@ export interface RayComboboxEventMap extends HTMLElementEventMap {
 }
 
 // --- Date picker (date-picker)
-/** <ray-date-picker> Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. */
+/** <ray-date-picker> Values are ISO dates ("2026-10-06"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. On a touch screen the trigger opens the system's picker instead (native). */
 export declare class RayDatePicker extends FieldControl {
   /** The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset). */
   value: string | undefined;
@@ -676,6 +676,8 @@ export declare class RayDatePicker extends FieldControl {
   clearable: boolean | undefined;
   /** The calendar dropdown is shown. */
   open: boolean | undefined;
+  /** Which picker the trigger opens: the system's (the native date input's, the usual one on a phone) or the calendar dropdown. auto: the system's on a touch screen (pointer: coarse), else the calendar. A date picked in the system's picker is the value like one picked in the calendar. */
+  native: "auto" | "always" | "never";
   /** Form field name. */
   name: string | undefined;
   /** Visible label (also the accessible name). */

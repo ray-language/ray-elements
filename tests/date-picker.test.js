@@ -198,3 +198,36 @@ T.test("calendar: dayState marks days with data-state and a day-<state> part; re
   T.eq(day("2026-11-04").getAttribute("part"), "day");
   box.remove();
 });
+
+T.test("date picker: the native input's pick is the value; native chooses the system's picker", async (T) => {
+  const box = await mount(`<form><ray-date-picker name="d" label="When" value="2026-10-06" native="never"></ray-date-picker></form>`);
+  const el = box.querySelector("ray-date-picker");
+  const panel = el.shadowRoot.querySelector('[part="dropdown"]');
+  const trigger = el.shadowRoot.querySelector('[part="trigger"]');
+  const events = [];
+  el.addEventListener("input", () => events.push("input"));
+  el.addEventListener("change", () => events.push("change:" + el.value));
+  T.eq(el.control.inert, true, "calendar mode: the native input is out of the focus order");
+  // What the system's picker does: sets the control's value and fires input + change.
+  el.control.value = "2026-12-24";
+  el.control.dispatchEvent(new Event("input", { bubbles: true }));
+  el.control.dispatchEvent(new Event("change", { bubbles: true }));
+  await T.settle();
+  T.eq(el.value, "2026-12-24", "the model follows the native input");
+  T.eq(new FormData(box.querySelector("form")).get("d"), "2026-12-24", "and the form value");
+  T.eq(events.join(), "input,change:2026-12-24", "reported as the field's own events");
+  T.eq(el.shadowRoot.querySelector(".value").textContent.includes("2026"), true, "displayed");
+  el.native = "always";
+  await T.settle();
+  T.eq(el.control.inert, false, "native mode: reachable");
+  trigger.click();
+  await T.settle();
+  T.eq(Boolean(el.open), false, "the trigger does not open the calendar");
+  T.eq(panel.matches(":popover-open"), false);
+  el.open = true;
+  await T.settle();
+  T.eq(panel.matches(":popover-open"), true, "open = true still shows the calendar");
+  el.open = false;
+  await T.settle();
+  box.remove();
+});

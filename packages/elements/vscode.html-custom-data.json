@@ -1151,7 +1151,7 @@
     },
     {
       "name": "ray-date-picker",
-      "description": "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it.",
+      "description": "Values are ISO dates (\"2026-10-06\"), submitted as such. ArrowDown on the field opens the calendar; Escape closes it. On a touch screen the trigger opens the system's picker instead (native).",
       "attributes": [
         {
           "name": "value",
@@ -1204,6 +1204,21 @@
           "name": "open",
           "description": "The calendar dropdown is shown.",
           "valueSet": "v"
+        },
+        {
+          "name": "native",
+          "description": "Which picker the trigger opens: the system's (the native date input's, the usual one on a phone) or the calendar dropdown. auto: the system's on a touch screen (pointer: coarse), else the calendar. A date picked in the system's picker is the value like one picked in the calendar.",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "always"
+            },
+            {
+              "name": "never"
+            }
+          ]
         },
         {
           "name": "name",

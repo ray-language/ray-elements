@@ -4,7 +4,7 @@ import "@raylang/elements/date-picker";
 import { createComponent } from "../create.js";
 
 export const RayDatePicker = /*#__PURE__*/ createComponent("RayDatePicker", "ray-date-picker", {
-  properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
+  properties: ["value", "min", "max", "placeholder", "format", "locale", "firstDay", "clearable", "open", "native", "name", "label", "description", "descriptionPosition", "error", "required", "disabled", "size", "radius", "variant"],
   booleans: ["clearable", "open", "required", "disabled"],
   model: { prop: "value", events: ["change"] },
 });
