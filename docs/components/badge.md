@@ -23,7 +23,7 @@ Parts (`::part()`):
 
 - `badge`: The badge box.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.14.2.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.15.0.
 
 ## Example
 
