@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.14.1] - 2026-11-10
+
 ### Fixed
 
 - `ray-number-input`: with a `prefix` or `suffix` the text field kept its
