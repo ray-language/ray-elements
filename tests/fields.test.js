@@ -123,11 +123,18 @@ T.test("number-input: a suffix hugs the number; the field is just the digits", a
   T.eq(a.control.value, "10");
   T.eq(a.$(".suffix").textContent, " min");
   T.eq(a.control.getAttribute("aria-valuetext"), "10 min", "the unit is still read out");
-  const field = a.$(".sizer").getBoundingClientRect();
+  const sizer = a.$(".sizer").getBoundingClientRect();
+  const field = a.control.getBoundingClientRect();
   const suffix = a.$(".suffix").getBoundingClientRect();
-  T.ok(suffix.left - field.right < 2, "the suffix sits right after the digits");
+  T.ok(Math.abs(field.width - sizer.width) < 1 && field.width > sizer.width / 2, "the field is the whole box");
+  const text = parseFloat(getComputedStyle(a.$(".sizer"), "::before").width);
+  T.ok(Math.abs(suffix.left - (sizer.left + text)) < 2, `the suffix sits right after the digits (${suffix.left - sizer.left} vs ${text})`);
   const ch = parseFloat(getComputedStyle(a.control).fontSize);
-  T.ok(field.width < 3.5 * ch, `the field shrinks to its text (${field.width}px for "10")`);
+  T.ok(text < 3.5 * ch, `the mirror is as wide as "10" (${text}px)`);
+  const hit = a.shadowRoot.elementFromPoint(suffix.left + suffix.width / 2, suffix.top + suffix.height / 2);
+  T.eq(hit, a.control, "a tap on the suffix lands on the field");
+  const slack = a.shadowRoot.elementFromPoint(sizer.right - 4, sizer.top + sizer.height / 2);
+  T.eq(slack, a.control, "a tap on the slack beside it lands on the field");
   await type(a.control, "15");
   T.eq(a.value, 15);
   T.eq(a.$(".sizer").dataset.text, "15", "grows as typed");
@@ -139,6 +146,12 @@ T.test("number-input: a suffix hugs the number; the field is just the digits", a
   T.eq(b.$(".sizer").dataset.text, undefined, "no affix: the field fills the box");
   T.eq(b.$(".prefix").hidden, true);
   box.remove();
+  const box2 = await mount(`<ray-number-input value="5" prefix="$"></ray-number-input>`);
+  const p = box2.firstElementChild;
+  T.eq(p.$(".prefix").tagName, "LABEL");
+  T.eq(p.$(".prefix").htmlFor, "control", "the prefix is a label for the field: a tap focuses it natively");
+  T.eq(p.$(".prefix").hidden, false);
+  box2.remove();
 });
 
 T.test("number-input: shift ×10, thousands, strict clamp, required", async (T) => {
