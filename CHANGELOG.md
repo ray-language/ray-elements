@@ -7,6 +7,12 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-number-input`: with a `prefix` or `suffix` the text field kept its
+  intrinsic width (about 20 characters), so in a wide field the suffix
+  floated mid-way instead of hugging the number.
+
 ## [0.14.0] - 2026-11-10
 
 ### Changed

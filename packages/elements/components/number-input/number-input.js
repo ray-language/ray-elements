@@ -34,7 +34,8 @@ const styles = css`
     height: 0;
   }
   .sizer[data-text] { flex: none; max-width: 100%; }
-  .sizer > .control { grid-area: 1 / 1; width: 100%; min-width: 1ch; padding: 0; }
+  /* width: 0 keeps the input's intrinsic ~20ch out of the track's size; min-width: 100% then stretches it to the mirror. */
+  .sizer > .control { grid-area: 1 / 1; width: 0; min-width: 100%; padding: 0; }
   .affix {
     flex: none;
     align-self: center;

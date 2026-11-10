@@ -126,7 +126,8 @@ T.test("number-input: a suffix hugs the number; the field is just the digits", a
   const field = a.$(".sizer").getBoundingClientRect();
   const suffix = a.$(".suffix").getBoundingClientRect();
   T.ok(suffix.left - field.right < 2, "the suffix sits right after the digits");
-  T.ok(field.width < a.$(".box").getBoundingClientRect().width / 2, "the field shrinks to its text");
+  const ch = parseFloat(getComputedStyle(a.control).fontSize);
+  T.ok(field.width < 3.5 * ch, `the field shrinks to its text (${field.width}px for "10")`);
   await type(a.control, "15");
   T.eq(a.value, 15);
   T.eq(a.$(".sizer").dataset.text, "15", "grows as typed");
