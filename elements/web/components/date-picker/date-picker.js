@@ -32,6 +32,13 @@ function parse(iso) {
 }
 
 /** A UTC Date -> "2026-10-06". */
+/** A dayState() result as a part token, or "" (letters, digits, - and _). */
+function stateToken(v) {
+  if (v === null || v === undefined || v === false || v === "") return "";
+  const s = String(v).trim();
+  return /^[A-Za-z][\w-]*$/.test(s) ? s : "";
+}
+
 function iso(d) {
   return d.toISOString().slice(0, 10);
 }
@@ -141,6 +148,7 @@ export class RayCalendar extends RayElement {
     locale: { type: String },
     firstDay: { type: Number },
     size: { type: String, reflect: true, default: "sm" },
+    dayState: { attribute: false },
   };
   static styles = [sizeStyles, calendarStyles];
   static template = `
@@ -153,6 +161,11 @@ export class RayCalendar extends RayElement {
 
   /** The day the keyboard focus is on (roving tabindex). */
   #focus = null;
+
+  /** Renders the month again (what dayState marks changed). */
+  refresh() {
+    this._render();
+  }
 
   constructor() {
     super();
@@ -228,6 +241,7 @@ export class RayCalendar extends RayElement {
     const selected = this.value && parse(this.value) ? this.value : "";
     const now = iso(today());
     const focusIso = iso(focus);
+    const state = typeof this.dayState === "function" ? this.dayState : null;
     const body = this.$("tbody");
     body.replaceChildren();
     for (let w = 0; w < 6; w++) {
@@ -251,6 +265,13 @@ export class RayCalendar extends RayElement {
         td.setAttribute("aria-selected", String(sel));
         b.toggleAttribute("data-selected", sel);
         if (this._disabled(day)) b.setAttribute("aria-disabled", "true");
+        // An app's mark on the day (adherence, events…): data-state and a
+        // part token, day-<state>, for ::part(day-<state>) from outside.
+        const s = state ? stateToken(state(id)) : "";
+        if (s) {
+          b.dataset.state = s;
+          b.setAttribute("part", `day day-${s}`);
+        }
         td.append(b);
         tr.append(td);
         day = addDays(day, 1);

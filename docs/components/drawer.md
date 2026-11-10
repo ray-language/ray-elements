@@ -14,7 +14,7 @@ Properties:
 - `label`: string. Heading (also the accessible name).
 - `description`: string. A line under the title (the drawer's accessible description).
 - `position`: `end` | `start` | `right` | `left` | `top` | `bottom`, default `end`, reflects. The edge it slides from: start/end follow the writing direction; left/right are sides of the screen.
-- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | "full" | "content" | (string & {})`, default `md`, reflects. Width (left/right) or height (top/bottom): xs…xl, full, content (as big as what it holds, up to the viewport: a bottom sheet) or any CSS length.
 - `modeless`: boolean, reflects. No backdrop nor scroll lock: the page stays interactive (a side panel).
 - `floating`: boolean, reflects. Detached from the edge, with rounded corners.
 - `persistent`: boolean, reflects. Escape and backdrop clicks do not close it.

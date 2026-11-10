@@ -6,7 +6,7 @@
 //   node node_modules/@raylang/elements/check/cli.js check index.html   (no npm: a raylang app)
 
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { checkMarkup, customValues, RULES } from "./check.js";
 import { iconNames, iconAliases } from "../core/icons.js";
 
@@ -23,7 +23,8 @@ JSX and TSX files against @raylang/elements ${version()}. A directory is walked
 
 Options:
   --format json        the diagnostics as JSON
-  --icons a,b          icon names your app registers (setIcons calls are found by themselves)
+  --icons a,b          icon names your app registers (setIcons({ … }) and setIcons(X), X an
+                       object of the file or imported from a local module, are found by themselves)
   --allow attr=v,…     more values of an attribute: your own variant=brand (selectors such as
                        [variant="brand"] in your CSS and extendStyles are found by themselves)
   --manifest FILE      another custom-elements.json (your own components)
@@ -92,7 +93,7 @@ function main(argv) {
   const filledIcons = new Set(iconNames({ filled: true }));
   for (const f of scripts) {
     const src = readFileSync(f, "utf8");
-    for (const name of registeredIcons(src)) {
+    for (const name of registeredIcons(src, f)) {
       if (name.endsWith(":filled")) filledIcons.add(name.slice(0, -":filled".length));
       else icons.add(name);
     }
@@ -132,13 +133,57 @@ function collect(path, files, scripts, explicit) {
   if (SCRIPTS.has(ext)) scripts.push(path);
 }
 
-// The keys of setIcons({ inbox: '<svg…>', "file-text": …, "star:filled": …, "ui.remove": … }) calls.
-function registeredIcons(src) {
+// The keys of setIcons({ inbox: '<svg…>', "file-text": …, "star:filled": …, "ui.remove": … }) calls,
+// and of setIcons(ICONS) where ICONS is an object literal of the same file
+// (const ICONS = { … }) or one it imports from a local module
+// (import { ICONS } from "./icons.js" → export const ICONS = { … }, or a
+// default import → export default { … }).
+function registeredIcons(src, file) {
   const out = [];
-  for (const call of src.matchAll(/setIcons\(\s*\{([\s\S]*?)\}\s*\)/g)) {
-    for (const key of call[1].matchAll(/(?:^|[,{\s])(?:(["'])([A-Za-z][\w.-]*(?::filled)?)\1|([A-Za-z][\w-]*))\s*:/g)) out.push(key[2] ?? key[3]);
+  for (const call of src.matchAll(/setIcons\(\s*\{([\s\S]*?)\}\s*\)/g)) out.push(...objectKeys(call[1]));
+  for (const call of src.matchAll(/setIcons\(\s*([A-Za-z_$][\w$]*)\s*\)/g)) {
+    const body = objectNamed(src, call[1], file, new Set());
+    if (body !== null) out.push(...objectKeys(body));
   }
   return out;
+}
+
+function objectKeys(body) {
+  const out = [];
+  for (const key of body.matchAll(/(?:^|[,{\s])(?:(["'])([A-Za-z][\w.-]*(?::filled)?)\1|([A-Za-z][\w-]*))\s*:/g)) out.push(key[2] ?? key[3]);
+  return out;
+}
+
+const id = (name) => name.replace(/[$]/g, "\\$&");
+
+// The body of the object literal bound to `name` in `src` (a const/let/var,
+// or an export of a local module it imports it from), or null.
+function objectNamed(src, name, file, seen) {
+  const local = src.match(new RegExp(`(?:^|[\\s;])(?:export\\s+)?(?:const|let|var)\\s+${id(name)}\\s*=\\s*\\{([\\s\\S]*?)\\}\\s*(?:;|\\n|$)`));
+  if (local) return local[1];
+  const named = src.match(new RegExp(`import\\s*\\{([^}]*)\\}\\s*from\\s*(["'])(\\.[^"']*)\\2`, "g")) ?? [];
+  for (const m of named) {
+    const [, names, , from] = m.match(/import\s*\{([^}]*)\}\s*from\s*(["'])(\.[^"']*)\2/);
+    const spec = names.split(",").map((s) => s.trim().split(/\s+as\s+/)).find((s) => (s[1] ?? s[0]) === name);
+    if (spec) return exportedObject(file, from, spec[0], seen);
+  }
+  const def = src.match(new RegExp(`import\\s+${id(name)}\\s+from\\s*(["'])(\\.[^"']*)\\1`));
+  if (def) return exportedObject(file, def[2], "default", seen);
+  return null;
+}
+
+function exportedObject(file, from, name, seen) {
+  let target;
+  try {
+    target = resolve(dirname(file), from);
+    if (seen.has(target)) return null;
+    seen.add(target);
+    const src = readFileSync(target, "utf8");
+    if (name === "default") return src.match(/export\s+default\s*\{([\s\S]*?)\}\s*(?:;|\n|$)/)?.[1] ?? null;
+    return objectNamed(src, name, target, seen);
+  } catch {
+    return null;
+  }
 }
 
 try {

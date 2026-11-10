@@ -610,3 +610,19 @@ T.test("separator, spinner, badge: roles and parts", async (T) => {
   T.ok(getComputedStyle(inner(badge, ".dot")).display !== "none", "dot visible");
   box.remove();
 });
+
+T.test("input: time, date and datetime-local pickers keep the field's height and form value", async (T) => {
+  const box = await mount(`<form><ray-input name="t" type="time" value="08:30" label="Time"></ray-input><ray-input name="d" type="date" label="Date"></ray-input><ray-input name="x" type="text" label="Text"></ray-input></form>`);
+  const [time, date, text] = box.querySelectorAll("ray-input");
+  T.eq(time.control.type, "time", "forwarded to the control");
+  T.eq(date.control.type, "date");
+  T.eq(time.control.value, "08:30");
+  T.eq(new FormData(box.querySelector("form")).get("t"), "08:30", "form value");
+  const h = (el) => Math.round(el.control.getBoundingClientRect().height);
+  T.eq(h(time), h(text), `a time field is as tall as a text one (${h(time)} vs ${h(text)})`);
+  T.eq(h(date), h(text), "a date field too");
+  time.value = "21:05";
+  await T.settle();
+  T.eq(time.control.value, "21:05");
+  box.remove();
+});

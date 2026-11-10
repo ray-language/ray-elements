@@ -178,3 +178,23 @@ T.test("date picker: open, pick, Escape, clear", async (T) => {
   T.eq(el.open, false, "disabled does not open");
   box.remove();
 });
+
+T.test("calendar: dayState marks days with data-state and a day-<state> part; refresh re-reads it", async (T) => {
+  const box = await mount(`<ray-calendar value="2026-11-10"></ray-calendar>`);
+  const cal = box.firstElementChild;
+  let marks = { "2026-11-03": "taken", "2026-11-04": "missed", "2026-11-05": "bad state!", "2026-11-06": null };
+  cal.dayState = (d) => marks[d];
+  await T.settle();
+  const day = (d) => cal.shadowRoot.querySelector(`.day[data-date="${d}"]`);
+  T.eq(day("2026-11-03").dataset.state, "taken");
+  T.eq(day("2026-11-03").getAttribute("part"), "day day-taken", "a part token for the state");
+  T.eq(day("2026-11-04").getAttribute("part"), "day day-missed");
+  T.eq(day("2026-11-05").getAttribute("part"), "day", "a name that is not a token is ignored");
+  T.eq(day("2026-11-06").dataset.state, undefined, "null: unmarked");
+  T.eq(day("2026-11-10").getAttribute("part"), "day", "the selected day, unmarked, keeps its part");
+  marks = { "2026-11-03": "missed" };
+  cal.refresh();
+  T.eq(day("2026-11-03").getAttribute("part"), "day day-missed", "refresh: marks read again");
+  T.eq(day("2026-11-04").getAttribute("part"), "day");
+  box.remove();
+});

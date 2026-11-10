@@ -78,6 +78,13 @@ const styles = css`
     border-top-width: 1px;
     --_from: translateY(100%);
   }
+  /* size="content": as big as what it holds, up to the viewport; the body scrolls past that. */
+  :host([size="content"]) dialog { width: max-content; max-width: calc(100vw - 2 * var(--_inset)); }
+  :host([size="content"][position="top"]) dialog, :host([size="content"][position="bottom"]) dialog {
+    width: calc(100vw - 2 * var(--_inset));
+    height: auto;
+    max-height: calc(100dvh - 2 * var(--_inset));
+  }
   :host([floating]) dialog { border-width: 1px; }
   /* A modeless dialog is not in the top layer: stack it above sticky headers
      and dropdowns (an ancestor with transform/filter would still clip it). */
@@ -147,9 +154,10 @@ export class RayDrawer extends RayDialog {
   }
 
   update(changed) {
-    // xs…xl, full, or any CSS length.
-    const size = SIZES[this.size] ?? this.size;
+    // xs…xl, full, content (CSS above), or any CSS length.
+    const size = this.size === "content" ? "" : SIZES[this.size] ?? this.size;
     if (size) this.style.setProperty("--_size", size);
+    else this.style.removeProperty("--_size");
     super.update(changed);
   }
 }

@@ -226,6 +226,8 @@ const toasterStyles = css`
   /* Phones: full width at the bottom (or top), wherever the desktop position is. */
   @media (max-width: 40em) {
     :host { width: auto; inset-inline: 0; transform: none; padding: var(--ray-space-3); }
+    /* Same specificity as the -center rule above, which would keep left: 50%. */
+    :host([position$="center"]) { left: 0; right: 0; transform: none; } /* physical */
     :host([position^="top"]) { top: 0; bottom: auto; }
     :host(:not([position^="top"])) { bottom: 0; top: auto; }
     ::slotted(*) { inset-inline: var(--ray-space-3); }

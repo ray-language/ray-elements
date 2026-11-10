@@ -444,6 +444,8 @@ export interface RayCalendarProps {
   firstDay?: number;
   /** Day cell size and font size. */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not. */
+  dayState?: ((date: string) => string | null | undefined) | null;
   /** v-model: the element's `value`. */
   modelValue?: string;
   "onUpdate:modelValue"?: (value: string) => void;
@@ -505,8 +507,8 @@ export declare const RayFileUpload: DefineComponent<RayFileUploadProps>;
 export interface RayInputProps {
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value?: string;
-  /** Input type. */
-  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: "HH:MM", "YYYY-MM-DD", "YYYY-MM-DDTHH:MM". */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel" | "time" | "date" | "datetime-local";
   /** Form field name. */
   name?: string;
   /** Visible label (also the accessible name). */
@@ -589,8 +591,8 @@ export interface RayModeInputProps {
   nativeMenu?: boolean;
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value?: string;
-  /** Input type. */
-  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: "HH:MM", "YYYY-MM-DD", "YYYY-MM-DDTHH:MM". */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel" | "time" | "date" | "datetime-local";
   /** Form field name. */
   name?: string;
   /** Visible label (also the accessible name). */
@@ -726,8 +728,8 @@ export interface RayPasswordInputProps {
   hideLabel?: string;
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value?: string;
-  /** Input type. */
-  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: "HH:MM", "YYYY-MM-DD", "YYYY-MM-DDTHH:MM". */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel" | "time" | "date" | "datetime-local";
   /** Form field name. */
   name?: string;
   /** Visible label (also the accessible name). */
@@ -805,8 +807,8 @@ export interface RayPathInputProps {
   dialogTitle?: string;
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value?: string;
-  /** Input type. */
-  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel";
+  /** Input type. time, date and datetime-local show the browser's picker (the native one on phones); value is what the input gives: "HH:MM", "YYYY-MM-DD", "YYYY-MM-DDTHH:MM". */
+  type?: "text" | "email" | "password" | "search" | "number" | "url" | "tel" | "time" | "date" | "datetime-local";
   /** Form field name. */
   name?: string;
   /** Visible label (also the accessible name). */
@@ -1602,8 +1604,8 @@ export interface RayDrawerProps {
   description?: string;
   /** The edge it slides from: start/end follow the writing direction; left/right are sides of the screen. */
   position?: "end" | "start" | "right" | "left" | "top" | "bottom";
-  /** Width (left/right) or height (top/bottom): xs…xl, full, or any CSS length. */
-  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full" | (string & {});
+  /** Width (left/right) or height (top/bottom): xs…xl, full, content (as big as what it holds, up to the viewport: a bottom sheet) or any CSS length. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "full" | "content" | (string & {});
   /** No backdrop nor scroll lock: the page stays interactive (a side panel). */
   modeless?: boolean;
   /** Detached from the edge, with rounded corners. */
