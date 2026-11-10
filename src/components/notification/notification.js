@@ -3,7 +3,7 @@
 // the top layer (Popover API), so toasts stay visible above dialogs.
 //
 // API (Mantine's notifications):
-//   const id = notify({ title, message, color, icon, loading, autoClose, closable, action: { label, onClick }, id })
+//   const id = notify({ title, message, color, icon, loading, autoClose, closable, action: { label, icon, onClick }, actions: [...], id })
 //   updateNotification(id, { … })   hideNotification(id)   clearNotifications()
 
 import { RayElement, css, define } from "../../core/core.js";
@@ -105,9 +105,13 @@ const notificationStyles = css`
     cursor: pointer;
   }
   .close:hover { background: var(--ray-accent); color: var(--ray-foreground); }
+  .actions { display: flex; flex: none; flex-wrap: wrap; gap: var(--ray-space-2); align-self: center; justify-content: flex-end; }
+  .card:not([data-actions]) .actions { display: none; }
   .action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ray-space-1);
     flex: none;
-    align-self: center;
     height: 1.75rem;
     padding: 0 var(--ray-space-3);
     font: inherit;
@@ -120,7 +124,8 @@ const notificationStyles = css`
     cursor: pointer;
   }
   .action:hover { background: var(--ray-default-hover); }
-  .card:has(.action:not([hidden])) .close { align-self: center; }
+  .action-icon { display: inline-flex; --ray-icon-size: 1rem; }
+  .card[data-actions] .close { align-self: center; }
   .close svg { width: 1rem; height: 1rem; }
   [hidden] { display: none !important; }
 `;
@@ -140,7 +145,9 @@ export class RayNotification extends RayElement {
     loading: { type: Boolean, reflect: true },
     hideClose: { type: Boolean, reflect: true },
     withBorder: { type: Boolean, reflect: true },
-    actionLabel: { type: String },
+    actionLabel: { type: String, attribute: "action-label" },
+    actionIcon: { attribute: false },
+    actions: { attribute: false },
     icon: { type: String },
   };
   static styles = [notificationStyles];
@@ -153,19 +160,25 @@ export class RayNotification extends RayElement {
         <p class="title" part="title"></p>
         <div class="message" part="message"><slot></slot></div>
       </div>
-      <button class="action focus-ring" part="action" type="button" hidden></button>
+      <span class="actions" part="actions"><slot name="action"></slot></span>
       <button class="close focus-ring" part="close" type="button" aria-label="Close notification"><span data-ray-icon="ui.close" aria-hidden="true"></span></button>
     </div>`;
 
   constructor() {
     super();
     this.$(".close").addEventListener("click", () => this.emit("ray-close"));
-    this.$(".action").addEventListener("click", () => this.emit("ray-action"));
+    // Buttons are rebuilt only when the actions change: a pulse inside keeps running.
+    this.$(".actions").addEventListener("click", (e) => {
+      const b = e.target.closest?.("button.action");
+      if (b && this.$(".actions").contains(b)) this.emit("ray-action", { index: Number(b.dataset.index) });
+    });
+    const own = this.$('slot[name="action"]');
+    own.addEventListener("slotchange", () => this._paintActions());
     const icon = this.$('slot[name="icon"]');
     icon.addEventListener("slotchange", () => this.$(".card").toggleAttribute("data-icon", icon.assignedNodes().length > 0));
   }
 
-  update() {
+  update(changed) {
     const card = this.$(".card");
     applyColor(card, this.color);
     card.toggleAttribute("data-loading", Boolean(this.loading));
@@ -179,9 +192,41 @@ export class RayNotification extends RayElement {
     }
     this.$(".title").textContent = this.label ?? "";
     this.$(".close").hidden = Boolean(this.hideClose);
-    const action = this.$(".action");
-    action.hidden = !this.actionLabel;
-    action.textContent = this.actionLabel ?? "";
+    if (changed.has("actions") || changed.has("actionLabel") || changed.has("actionIcon")) this._renderActions();
+    this._paintActions();
+  }
+
+  /** The action buttons: `actions`, else one from actionLabel and actionIcon. */
+  _renderActions() {
+    const list = Array.isArray(this.actions) ? this.actions : this.actionLabel ? [{ label: this.actionLabel, icon: this.actionIcon }] : [];
+    const box = this.$(".actions");
+    for (const b of box.querySelectorAll("button.action")) b.remove();
+    const slot = box.querySelector("slot");
+    list.forEach((a, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "action focus-ring";
+      b.part = "action";
+      b.dataset.index = String(i);
+      const icon = a?.icon;
+      if (icon) {
+        const span = document.createElement("span");
+        span.className = "action-icon";
+        span.setAttribute("aria-hidden", "true");
+        if (icon instanceof Node) span.append(icon);
+        else span.setAttribute("data-ray-icon", String(icon));
+        b.append(span);
+      }
+      b.append(a?.label ?? "");
+      box.insertBefore(b, slot);
+    });
+    this.paintIcons(box);
+  }
+
+  _paintActions() {
+    const box = this.$(".actions");
+    const own = box.querySelector("slot").assignedElements().length > 0;
+    this.$(".card").toggleAttribute("data-actions", own || Boolean(box.querySelector("button.action")));
   }
 }
 
@@ -495,7 +540,12 @@ function find(id) {
 function apply(el, o) {
   if ("action" in o) {
     el.actionLabel = o.action?.label ?? "";
-    el._onAction = o.action?.onClick;
+    el.actionIcon = o.action?.icon;
+    el._onActions = o.action ? [o.action] : [];
+  }
+  if ("actions" in o) {
+    el.actions = o.actions ?? undefined;
+    el._onActions = o.actions ?? [];
   }
   if ("title" in o) el.label = o.title ?? "";
   if ("message" in o) el.textContent = o.message ?? "";
@@ -534,8 +584,9 @@ function pauseAll(t, pause) {
  * Shows a notification. Returns its id.
  * @param {{ id?: string, title?: string, message?: string, color?: string, loading?: boolean,
  *           autoClose?: number | false, closable?: boolean, withBorder?: boolean,
- *           action?: { label: string, onClick?: () => void }, onClose?: () => void }} options
- *   autoClose: ms (default 4000; false = stays). action: a button (e.g. "Undo") that runs onClick and closes it.
+ *           action?: NotifyAction, actions?: NotifyAction[], onClose?: () => void }} options
+ *   autoClose: ms (default 4000; false = stays). action: a button (e.g. "Undo") that runs onClick and closes it;
+ *   actions: several. A NotifyAction is { label, icon?, onClick? }; icon: a name or a node (a <ray-pulse>).
  */
 export function notify(options = {}) {
   const id = options.id ?? `n${++counter}`;
@@ -548,8 +599,8 @@ export function notify(options = {}) {
   el.dataset.notificationId = id;
   apply(el, { closable: true, withBorder: true, ...options });
   el.addEventListener("ray-close", () => hideNotification(id));
-  el.addEventListener("ray-action", () => {
-    el._onAction?.();
+  el.addEventListener("ray-action", (e) => {
+    el._onActions?.[e.detail?.index ?? 0]?.onClick?.();
     hideNotification(id);
   });
   el._onClose = options.onClose;

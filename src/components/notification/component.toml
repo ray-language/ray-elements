@@ -47,14 +47,35 @@ attribute = "action-label"
 type = "string"
 description = "Text of an action button (e.g. \"Undo\"); pressing it fires ray-action."
 
+[ray-notification.properties.actionIcon]
+attribute = false
+type = "object"
+ts = "string | Node | undefined"
+description = "Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings)."
+
+[ray-notification.properties.actions]
+attribute = false
+type = "object"
+ts = "{ label: string; icon?: string | Node }[] | undefined"
+description = "Several action buttons (e.g. \"Taken\" and \"Snooze\"); replaces actionLabel. Pressing one fires ray-action with its index."
+
 [ray-notification.events.ray-close]
 description = "The close button was pressed."
 
 [ray-notification.events.ray-action]
-description = "The action button was pressed (notify() runs action.onClick and closes it)."
+description = "An action button was pressed; detail.index says which (notify() runs its onClick and closes it)."
 
 [ray-notification.slots.default]
 description = "Message."
+
+[ray-notification.slots.action]
+description = "Your own action controls (ray-button…), beside the close button, after the action buttons."
+
+[ray-notification.parts.actions]
+description = "The row of action buttons and the action slot."
+
+[ray-notification.parts.action]
+description = "Each action button."
 
 [ray-notification.slots.icon]
 description = "Your own icon, in a colored circle (replaces the status icon)."
@@ -103,8 +124,12 @@ description = "Places the toasts again (done automatically on changes)."
 ts = "raise(): void"
 description = "Brings the stack above everything else in the top layer."
 
+[component.types.NotifyAction]
+ts = "{ label: string; icon?: string | Node; onClick?: () => void }"
+description = "An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes)."
+
 [component.types.NotifyOptions]
-ts = "{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void }"
+ts = "{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }"
 description = "Options of notify() and updateNotification()."
 
 [component.exports.notify]

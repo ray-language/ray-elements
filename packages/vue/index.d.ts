@@ -1036,6 +1036,8 @@ export interface RaySelectProps {
   placeholder?: string;
   /** The dropdown is shown. */
   open?: boolean;
+  /** Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either. */
+  native?: "auto" | "always" | "never";
   /** Form field name. */
   name?: string;
   /** Visible label. */
@@ -1936,7 +1938,7 @@ export interface RayIconProps {
   filled?: boolean;
   /** Mirrored in a right-to-left context (dir="rtl"), for an icon that points along the text: back, forward, send, undo. The roles that do (ui.next, ui.previous, ui.first, ui.last, ui.disclosure, ui.separator) mirror by themselves. */
   mirror?: boolean;
-  /** xs…xl or any CSS length. Default: 1em. */
+  /** xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font). */
   size?: string;
   /** Accessible name; without it the icon is decorative (hidden from screen readers). */
   label?: string;
@@ -2125,9 +2127,13 @@ export interface RayNotificationProps {
   withBorder?: boolean;
   /** Text of an action button (e.g. "Undo"); pressing it fires ray-action. */
   actionLabel?: string;
+  /** Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings). */
+  actionIcon?: string | Node | undefined;
+  /** Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index. */
+  actions?: { label: string; icon?: string | Node }[] | undefined;
   /** The close button was pressed. */
   onRayClose?: (event: CustomEvent<unknown>) => void;
-  /** The action button was pressed (notify() runs action.onClick and closes it). */
+  /** An action button was pressed; detail.index says which (notify() runs its onClick and closes it). */
   onRayAction?: (event: CustomEvent<unknown>) => void;
 }
 /** <ray-notification> as a Vue component. */

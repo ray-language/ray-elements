@@ -34,6 +34,17 @@ T.test("icons: default set, ray-icon, accessibility", async (T) => {
   box.remove();
 });
 
+T.test("icons: ray-icon follows --ray-icon-size; size= wins; an ancestor's --_size does not reach it", async (T) => {
+  const box = await mount(`<div style="--ray-icon-size: 48px; --_size: 7px; font-size: 10px"><ray-icon name="check"></ray-icon><ray-icon name="check" size="20px"></ray-icon></div><div style="font-size: 10px"><ray-icon name="check"></ray-icon></div>`);
+  const [a, b] = box.firstElementChild.children;
+  const c = box.lastElementChild.firstElementChild;
+  const w = (el) => el.shadowRoot.querySelector("svg").getBoundingClientRect().width;
+  T.eq(w(a), 48, "--ray-icon-size");
+  T.eq(w(b), 20, "size= wins");
+  T.eq(w(c), 10, "else 1em");
+  box.remove();
+});
+
 T.test("icons: setIcons repaints live components and adds names", async (T) => {
   const saved = { close: core.getIcon("close"), "chevron-down": core.getIcon("chevron-down"), check: core.getIcon("check") };
   const box = await mount(`<ray-dialog label="X"></ray-dialog><ray-select><option>a</option></ray-select><ray-checkbox checked label="c"></ray-checkbox><ray-icon name="brand-logo"></ray-icon>`);

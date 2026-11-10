@@ -239,6 +239,37 @@ T.test("textarea: initial text content and FormData", async (T) => {
   box.remove();
 });
 
+T.test("select: native picks the system's picker on touch; otherwise the model is inert", async (T) => {
+  const box = await mount(`<ray-select native="never" value="a"><option value="a">A</option><option value="b">B</option></ray-select>`);
+  const el = box.firstElementChild;
+  const c = el.control;
+  T.eq(c.inert, true, "list mode: the model cannot take the delegated focus");
+  T.eq(c.hasAttribute("data-picker"), false);
+  el.focus();
+  T.eq(el.shadowRoot.activeElement, el.trigger, "focus lands on the button");
+  el.native = "always";
+  await T.settle();
+  T.eq(c.inert, false, "native: the model is reachable");
+  T.eq(c.hasAttribute("data-picker"), true);
+  const r = el.trigger.getBoundingClientRect();
+  T.eq(el.shadowRoot.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2), c, "a tap lands on the native select");
+  T.ok(parseFloat(getComputedStyle(c).fontSize) >= 16, "16px or more: iOS does not zoom");
+  el.open = true;
+  await T.settle();
+  T.eq(el.listbox.matches(":popover-open"), false, "the own list stays closed");
+  T.eq(Boolean(el.open), false);
+  const seen = [];
+  el.addEventListener("change", () => seen.push(el.value));
+  c.value = "b";
+  c.dispatchEvent(new Event("change", { bubbles: true }));
+  T.eq(seen.join(), "b", "the system's pick is the value");
+  T.eq(el.$(".value").textContent, "B", "and the shown text");
+  el.native = "auto";
+  await T.settle();
+  T.eq(c.inert, !matchMedia("(pointer: coarse)").matches, "auto follows pointer: coarse");
+  box.remove();
+});
+
 T.test("select: child options, data, placeholder and required", async (T) => {
   const box = await mount(`<form><ray-select name="fw" placeholder="Pick" required><option value="a">A</option><option value="b">B</option></ray-select></form>`);
   const form = box.querySelector("form");

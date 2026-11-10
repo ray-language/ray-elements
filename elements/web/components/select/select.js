@@ -7,7 +7,8 @@
 // user sees and operates is a combobox button and a listbox in a [popover]
 // (top layer: above dialogs, never clipped), following the WAI-ARIA
 // select-only combobox pattern: focus stays on the button, the active option
-// is aria-activedescendant.
+// is aria-activedescendant. On a touch screen (native="auto") the native
+// <select> takes the tap itself and the system's picker is the dropdown.
 
 import { css, define } from "../../core/core.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
@@ -25,6 +26,9 @@ const styles = css`
     opacity: 0;
     pointer-events: none;
   }
+  /* The system's picker: the model takes the tap. 16px keeps iOS from zooming. */
+  .native[data-picker] { z-index: 1; pointer-events: auto; font-size: max(16px, 1em); cursor: pointer; }
+  .native[data-picker]:disabled { cursor: not-allowed; }
   .trigger {
     display: flex;
     align-items: center;
@@ -110,6 +114,7 @@ export class RaySelect extends FieldControl {
     placeholder: { type: String },
     data: { attribute: false },
     open: { type: Boolean, reflect: true },
+    native: { type: String, reflect: true, default: "auto" },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
   static template = fieldTemplate(
@@ -178,10 +183,24 @@ export class RaySelect extends FieldControl {
     if (changed.has("data") || changed.has("placeholder")) this._renderOptions();
     const c = this.control;
     if (this.value !== undefined && c.value !== this.value) c.value = this.value;
+    // The system's picker takes the tap on the model; otherwise the model is
+    // inert, so a tap the host's delegated focus would hand to its first
+    // focusable element (the model) cannot open the system's picker too.
+    const native = this._useNative();
+    c.toggleAttribute("data-picker", native);
+    c.inert = !native;
+    if (native && this.open) this.commitProperty("open", false);
     this.syncField();
     this._commit();
     this._paintValue();
-    if (changed.has("open")) this._setOpen(Boolean(this.open));
+    if (changed.has("open") || native) this._setOpen(Boolean(this.open));
+  }
+
+  /** Whether the system's picker is the dropdown. */
+  _useNative() {
+    if (this.native === "always") return true;
+    if (this.native === "never") return false;
+    return typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
   }
 
   /** Label, description, error and ARIA go to the button the user operates. */
@@ -423,6 +442,15 @@ export class RaySelect extends FieldControl {
   /** Opens or closes the dropdown. */
   toggle(force) {
     if (this.trigger.disabled) return;
+    if (this._useNative() && force !== false) {
+      // A screen reader activates the button: open the system's picker.
+      try {
+        this.control.showPicker();
+      } catch {
+        this.control.focus();
+      }
+      return;
+    }
     this.open = force ?? !this.open;
   }
 

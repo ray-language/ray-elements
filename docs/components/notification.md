@@ -17,19 +17,24 @@ Properties:
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button.
 - `withBorder` (attribute `with-border`): boolean, reflects. Draws a border.
 - `actionLabel` (attribute `action-label`): string. Text of an action button (e.g. "Undo"); pressing it fires ray-action.
+- `actionIcon` (property only): `string | Node | undefined`. Before the action's text: an icon name, or a node (a <ray-pulse> while an alarm rings).
+- `actions` (property only): `{ label: string; icon?: string | Node }[] | undefined`. Several action buttons (e.g. "Taken" and "Snooze"); replaces actionLabel. Pressing one fires ray-action with its index.
 
 Events:
 
 - `ray-close`: The close button was pressed.
-- `ray-action`: The action button was pressed (notify() runs action.onClick and closes it).
+- `ray-action`: An action button was pressed; detail.index says which (notify() runs its onClick and closes it).
 
 Slots:
 
 - (default): Message.
+- `action`: Your own action controls (ray-button…), beside the close button, after the action buttons.
 - `icon`: Your own icon, in a colored circle (replaces the status icon).
 
 Parts (`::part()`):
 
+- `actions`: The row of action buttons and the action slot.
+- `action`: Each action button.
 - `status-icon`: The status icon.
 
 ## `<ray-toaster>` (RayToaster, extends RayElement)
@@ -60,7 +65,8 @@ Exports (from `@raylang/elements/notification` and `@raylang/elements`):
 
 Types:
 
-- `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: { label: string; onClick?: () => void }; onClose?: () => void }`: Options of notify() and updateNotification().
+- `{ label: string; icon?: string | Node; onClick?: () => void }`: An action button of notify(): its text, an icon name or a node before it, and what pressing it runs (the notification closes).
+- `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }`: Options of notify() and updateNotification().
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.14.2.
 

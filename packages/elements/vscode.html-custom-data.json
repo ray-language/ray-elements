@@ -2992,6 +2992,21 @@
           "valueSet": "v"
         },
         {
+          "name": "native",
+          "description": "Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either.",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "always"
+            },
+            {
+              "name": "never"
+            }
+          ]
+        },
+        {
           "name": "name",
           "description": "Form field name."
         },
@@ -5677,7 +5692,7 @@
         },
         {
           "name": "size",
-          "description": "xs…xl or any CSS length. Default: 1em."
+          "description": "xs…xl or any CSS length. Default: --ray-icon-size, else 1em (the font)."
         },
         {
           "name": "label",

@@ -29,6 +29,13 @@ type = "boolean"
 reflect = true
 description = "The dropdown is shown."
 
+[ray-select.properties.native]
+type = "string"
+values = ["auto", "always", "never"]
+default = "auto"
+reflect = true
+description = "Which dropdown a tap opens: the system's picker (the native select's, the usual one on a phone) or the component's list. auto: the system's on a touch screen (pointer: coarse), else the list. The value, events and shown text follow either."
+
 [ray-select.properties.name]
 type = "string"
 description = "Form field name."

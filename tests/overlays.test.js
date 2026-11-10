@@ -806,6 +806,44 @@ T.test("motion: off with zero durations (the test window), play resolves at once
 
 // --- stacked notifications --------------------------------------------------
 
+T.test("notify: actions with an icon or a node, several actions, the action slot", async (T) => {
+  clearNotifications();
+  await T.settle();
+  const ran = [];
+  const pulse = document.createElement("span");
+  pulse.className = "my-pulse";
+  const id = notify({ title: "Time for your pill", autoClose: false, actions: [
+    { label: "Taken", icon: pulse, onClick: () => ran.push("taken") },
+    { label: "Snooze", icon: "info", onClick: () => ran.push("snooze") },
+  ] });
+  await T.settle();
+  const el = document.querySelector(`[data-notification-id="${id}"]`);
+  const buttons = [...el.shadowRoot.querySelectorAll('[part="action"]')];
+  T.eq(buttons.map((b) => b.textContent).join(), "Taken,Snooze");
+  T.ok(buttons[0].querySelector(".my-pulse") === pulse, "a node goes in as is");
+  T.ok(buttons[1].querySelector("[data-ray-icon='info'] svg"), "a name is painted");
+  el.label = "Still time for your pill";
+  await T.settle();
+  T.ok(el.shadowRoot.querySelector('[part="action"]') === buttons[0], "other changes keep the buttons (a pulse keeps running)");
+  buttons[1].click();
+  await T.settle();
+  T.eq(ran.join(), "snooze", "the second runs its own onClick");
+  T.eq(document.querySelector(`[data-notification-id="${id}"]`), null, "and closes it");
+  const one = notify({ title: "Saved", autoClose: false, action: { label: "Undo", icon: "check" } });
+  await T.settle();
+  const single = document.querySelector(`[data-notification-id="${one}"]`).shadowRoot.querySelectorAll('[part="action"]');
+  T.eq(single.length, 1);
+  T.ok(single[0].querySelector("[data-ray-icon='check']"), "action.icon");
+  clearNotifications();
+  const card = document.createElement("ray-notification");
+  card.label = "Own";
+  card.innerHTML = `<button slot="action">Mine</button>`;
+  document.body.append(card);
+  await T.settle();
+  T.ok(card.shadowRoot.querySelector(".card").hasAttribute("data-actions"), "the action slot shows the actions row");
+  card.remove();
+});
+
 T.test("toasts: stacked, expand on hover/focus/tap, action, swipe to dismiss", async (T) => {
   const inner = (el, sel) => el.shadowRoot.querySelector(sel);
   clearNotifications();
