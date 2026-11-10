@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-number-input`: on iOS, a tap on the suffix or on the slack beside the
+  number closed the keyboard as it opened (the focus was moved by script and
+  the touch's compatibility events took it away). The text field is now the
+  whole box, the suffix is drawn over it after the digits and takes no
+  pointer events, and the prefix is a label for the field, so a tap anywhere
+  focuses it natively.
+
 ## [0.14.1] - 2026-11-10
 
 ### Fixed

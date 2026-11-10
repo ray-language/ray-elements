@@ -14,42 +14,40 @@ import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/
 
 const styles = css`
   .control { font-variant-numeric: tabular-nums; }
-  /* The text field grows with its text (a hidden mirror in the same grid cell)
-     so a prefix or suffix hugs the number; without one it fills the box. */
+  /* The text field is the whole box (a tap anywhere focuses it natively).
+     A hidden mirror of its text sits under it; the suffix is drawn right
+     after the mirror, on top of the field, and takes no pointer events. The
+     prefix is a label for the field, before it. */
   .sizer {
-    display: inline-grid;
+    position: relative;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
     flex: 1;
     align-self: stretch;
     min-width: 0;
-    padding: 0 calc(var(--_px) * 0.66);
+    overflow: hidden;
     font-size: var(--_fs);
     font-variant-numeric: tabular-nums;
+    --_ps: calc(var(--_px) * 0.66);
   }
-  .sizer::after {
-    grid-area: 1 / 1;
-    content: attr(data-text) " ";
+  .sizer::before {
+    content: attr(data-text);
     visibility: hidden;
     white-space: pre;
-    overflow: hidden;
-    height: 0;
+    padding-inline-start: var(--_ps);
   }
-  .sizer[data-text] { flex: none; max-width: 100%; }
-  /* width: 0 keeps the input's intrinsic ~20ch out of the track's size; min-width: 100% then stretches it to the mirror. */
-  .sizer > .control { grid-area: 1 / 1; width: 0; min-width: 100%; padding: 0; }
+  .sizer > .control { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; padding-inline-start: var(--_ps); }
   .affix {
-    flex: none;
-    align-self: center;
     color: var(--ray-muted-foreground);
     font-size: var(--_fs);
     white-space: pre;
-    cursor: text;
   }
   .affix[hidden] { display: none; }
-  .prefix { padding-inline-start: calc(var(--_px) * 0.66); }
-  .suffix { padding-inline-end: calc(var(--_px) * 0.66); }
-  .section[data-filled] + .prefix, .section[data-filled] + .sizer, .prefix:not([hidden]) + .sizer { padding-inline-start: 0; }
-  .sizer:has(+ .suffix:not([hidden])) { padding-inline-end: 0; }
-  .fill { flex: 1; align-self: stretch; cursor: text; }
+  .suffix { position: relative; pointer-events: none; justify-self: start; }
+  .prefix { flex: none; align-self: center; padding-inline-start: calc(var(--_px) * 0.66); cursor: text; }
+  .section[data-filled] + .prefix { padding-inline-start: 0; }
+  .section[data-filled] + .sizer, .prefix:not([hidden]) + .sizer { --_ps: 0px; }
   .steppers {
     display: flex;
     flex-direction: column;
@@ -151,9 +149,8 @@ export class RayNumberInput extends FieldControl {
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
   static template = fieldTemplate(
-    `<span class="affix prefix" part="prefix" hidden></span>` +
-      `<span class="sizer"><input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false"></span>` +
-      `<span class="affix suffix" part="suffix" hidden></span><span class="fill"></span>` +
+    `<label class="affix prefix" part="prefix" for="control" hidden></label>` +
+      `<span class="sizer"><input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false"><span class="affix suffix" part="suffix" hidden></span></span>` +
       `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1" aria-label="Increment"><span data-ray-icon="ui.increment"></span></button><button type="button" class="step down" part="decrement" tabindex="-1" aria-label="Decrement"><span data-ray-icon="ui.decrement"></span></button></span>`,
   );
 
@@ -163,14 +160,6 @@ export class RayNumberInput extends FieldControl {
   wire() {
     this._default = this.getAttribute("value") !== null ? Number(this.getAttribute("value")) : undefined;
     const c = this.control;
-    // The adornments and the slack beside them act as the field's own text.
-    for (const el of this.shadowRoot.querySelectorAll(".affix, .fill")) {
-      el.addEventListener("pointerdown", (e) => {
-        e.preventDefault();
-        c.focus();
-        c.setSelectionRange(c.value.length, c.value.length);
-      });
-    }
     c.addEventListener("input", () => {
       this.#typing = true;
       this._size();
@@ -288,7 +277,7 @@ export class RayNumberInput extends FieldControl {
     return !this._duration && Boolean(this.prefix || this.suffix);
   }
 
-  /** Sizes the text field to its text when a prefix or suffix hugs it. */
+  /** Mirrors the field's text so the suffix sits right after it. */
   _size() {
     const sizer = this.$(".sizer");
     if (this._affixed) sizer.dataset.text = this.control.value || this.control.placeholder || "";
