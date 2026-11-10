@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-11-10
+
 ### Added
 
 - `ray-select`: `native="auto|always|never"`, as in `ray-date-picker`. On a
