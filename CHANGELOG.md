@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-11-10
+
 ### Changed
 
 - `ray-number-input`: `prefix` and `suffix` are drawn beside the editable
