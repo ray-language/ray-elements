@@ -7,6 +7,19 @@ change the API.
 
 ## [Unreleased]
 
+### Changed
+
+- `ray-number-input`: `prefix` and `suffix` are drawn beside the editable
+  number (parts `prefix` and `suffix`), hugging it, instead of inside the text
+  field: on a phone the number pad could not edit "10 min" and the unit read
+  as part of the value. The field holds the digits only; `aria-valuetext`,
+  the min/max messages and typed text with the affix are as before.
+
+### Fixed
+
+- `ray-toaster`: the stack starts clear of the notch and the home indicator
+  (`env(safe-area-inset-top/bottom)`), like `ray-app-bar` and `ray-bottom-nav`.
+
 ## [0.13.0] - 2026-11-09
 
 ### Added

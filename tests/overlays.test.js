@@ -424,6 +424,9 @@ T.test("notify: shows in a live region, updates, hides, auto-closes", async (T) 
   T.ok(toaster, "toaster created");
   T.eq(toaster.getAttribute("aria-live"), "polite");
   T.eq(toaster.matches(":popover-open"), true, "in the top layer");
+  const sheet = toaster.shadowRoot.adoptedStyleSheets.map((s) => [...s.cssRules].map((r) => r.cssText).join("\n")).join("\n");
+  T.ok(/position\^="top"[^}]*top: env\(safe-area-inset-top, 0px\)/.test(sheet), "clear of the notch");
+  T.ok(/position\^="bottom"[^}]*bottom: env\(safe-area-inset-bottom, 0px\)/.test(sheet), "clear of the home indicator");
   const el = toaster.querySelector(`[data-notification-id="${id}"]`);
   T.eq(el.label, "Saved");
   T.eq(el.textContent, "On disk");

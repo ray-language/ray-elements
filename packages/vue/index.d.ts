@@ -672,9 +672,9 @@ export interface RayNumberInputProps {
   step?: number;
   /** Fixed decimals (2: 3 shows as 3.00). */
   decimals?: number;
-  /** Shown before the number ("$"). */
+  /** Shown before the number ("$"), beside the editable text: the field holds the digits only. Still in aria-valuetext and in the min/max messages. */
   prefix?: string | null;
-  /** Shown after the number (" kg", "%"). */
+  /** Shown after the number (" kg", "%"), hugging it on the other side of the caret: the field holds the digits only. */
   suffix?: string;
   /** Groups thousands in the shown text (",", ".", " "). */
   thousandsSeparator?: string;

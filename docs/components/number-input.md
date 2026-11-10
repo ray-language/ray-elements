@@ -15,8 +15,8 @@ Properties:
 - `max`: number. Maximum.
 - `step`: number, default `1`. What + and − add.
 - `decimals`: number. Fixed decimals (2: 3 shows as 3.00).
-- `prefix`: `string | null`. Shown before the number ("$").
-- `suffix`: string. Shown after the number (" kg", "%").
+- `prefix`: `string | null`. Shown before the number ("$"), beside the editable text: the field holds the digits only. Still in aria-valuetext and in the min/max messages.
+- `suffix`: string. Shown after the number (" kg", "%"), hugging it on the other side of the caret: the field holds the digits only.
 - `thousandsSeparator` (attribute `thousands-separator`): string. Groups thousands in the shown text (",", ".", " ").
 - `decimalSeparator` (attribute `decimal-separator`): string, default `.`. The decimal mark shown and typed ("," in many locales).
 - `clamp`: `blur` | `strict` | `none`, default `blur`. When out-of-range input is clamped: on blur, while typing, or never (then it is invalid).
@@ -40,6 +40,8 @@ Slots:
 Parts (`::part()`):
 
 - `input`: The text field.
+- `prefix`: The prefix beside the text field.
+- `suffix`: The suffix beside the text field.
 - `controls`: The + and − column.
 - `increment`: The + button.
 - `decrement`: The − button.
