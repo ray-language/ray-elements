@@ -80,6 +80,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/file-upload/file-upload.js"
     },
+    "./image-crop": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/image-crop/image-crop.js"
+    },
     "./input": {
       "types": "./ray-elements.d.ts",
       "default": "./components/input/input.js"

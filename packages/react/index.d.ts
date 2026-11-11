@@ -495,6 +495,46 @@ export type RayFileUploadProps = RayFileUploadOwnProps & Omit<React.HTMLAttribut
 /** <ray-file-upload> as a React component. */
 export declare const RayFileUpload: React.ForwardRefExoticComponent<RayFileUploadProps & React.RefAttributes<Ray.RayFileUpload>>;
 
+export interface RayImageCropOwnProps {
+  /** The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL. */
+  src?: string | Blob | null;
+  /** Width / height of the frame and of the output: "1", "16/9", "4:3", "1.5". */
+  aspect?: string;
+  /** The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round. */
+  shape?: "rect" | "circle";
+  /** 1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it. */
+  zoom?: number;
+  /** The least zoom (1 or more: the image always covers the frame). */
+  minZoom?: number;
+  /** The most zoom. It also sets how many pixels the working copy keeps. */
+  maxZoom?: number;
+  /** A zoom slider under the image (the wheel, pinch and + / - zoom in any case). */
+  zoomControl?: boolean;
+  /** Size of the exported image: a width ("320", the height from the aspect) or "640x360". */
+  outputSize?: string | number;
+  /** Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder). */
+  type?: "image/jpeg" | "image/png" | "image/webp" | (string & {});
+  /** 0…1, for image/jpeg and image/webp. */
+  quality?: number;
+  /** Accessible name of the image area. */
+  label?: string;
+  /** Name of the zoom slider, and the word of the announced zoom ("Zoom 150%"). */
+  zoomLabel?: string;
+  /** No moving nor zooming. */
+  disabled?: boolean;
+  /** The framing moved (every step of a drag, pinch, wheel or the slider). */
+  onInput?: (event: Event) => void;
+  /** The framing settled: pointer released, a key pressed, the slider released or the wheel stopped (read crop, zoom). */
+  onChange?: (event: Event) => void;
+  /** The image loaded (its original size). */
+  onRayLoad?: (event: CustomEvent<{ width: number; height: number }>) => void;
+  /** The image could not be loaded or decoded. */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+}
+export type RayImageCropProps = RayImageCropOwnProps & Omit<React.HTMLAttributes<Ray.RayImageCrop>, keyof RayImageCropOwnProps> & { children?: React.ReactNode };
+/** <ray-image-crop> as a React component. */
+export declare const RayImageCrop: React.ForwardRefExoticComponent<RayImageCropProps & React.RefAttributes<Ray.RayImageCrop>>;
+
 export interface RayInputOwnProps {
   /** Current value. The value attribute is the initial value (restored on form reset). */
   value?: string;

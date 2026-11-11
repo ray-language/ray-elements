@@ -15,6 +15,7 @@ export { RayColorPicker, RayColorInput } from "./components/color-picker.js";
 export { RayCombobox } from "./components/combobox.js";
 export { RayDatePicker, RayCalendar } from "./components/date-picker.js";
 export { RayFileUpload } from "./components/file-upload.js";
+export { RayImageCrop } from "./components/image-crop.js";
 export { RayInput } from "./components/input.js";
 export { RayModeInput } from "./components/mode-input.js";
 export { RayNumberInput } from "./components/number-input.js";
