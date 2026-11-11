@@ -99,6 +99,8 @@ export class RaySegmentedControl extends FormControl {
   connectedCallback() {
     super.connectedCallback();
     this._ro?.observe(this.root);
+    // The options too: a new font size moves them while the row keeps its width.
+    for (const b of this._buttons ?? []) this._ro?.observe(b);
     // orientation="auto" compares the row with the room the parent gives it.
     this._parent = this.parentElement ?? this.getRootNode().host ?? null;
     if (this._parent) this._ro?.observe(this._parent);
@@ -192,7 +194,10 @@ export class RaySegmentedControl extends FormControl {
   }
 
   _render() {
-    for (const b of this._buttons ?? []) b.remove();
+    for (const b of this._buttons ?? []) {
+      this._ro?.unobserve(b);
+      b.remove();
+    }
     this._buttons = this.items.map((item) => {
       const b = document.createElement("button");
       b.type = "button";
@@ -207,6 +212,7 @@ export class RaySegmentedControl extends FormControl {
       label.textContent = item.label;
       b.append(label);
       this.root.append(b);
+      if (this.isConnected) this._ro?.observe(b);
       return b;
     });
     if (this.isConnected) this.requestUpdate();
