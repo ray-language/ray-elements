@@ -739,7 +739,7 @@ Parts (`::part()`):
 - `trigger`: The button showing the date.
 - `clear`: The clear button.
 - `dropdown`: The calendar panel (a popover in the top layer).
-- `calendar`: The <ray-calendar> in the dropdown (its day, caption, nav and grid parts are exported).
+- `calendar`: The <ray-calendar> in the dropdown (its day, day-selected, day-today, day-outside, day-disabled, caption, nav and grid parts are exported).
 - `input`: The hidden native <input type=date> that holds the value (the model).
 - `wrapper`: The box.
 
@@ -762,7 +762,8 @@ Properties:
 - `locale`: string. Locale for month and weekday names. Default: the nearest lang attribute, else the browser's.
 - `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Day cell size and font size.
-- `dayState` (property only): `((date: string) => string | null | undefined) | null`. Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not.
+- `fullWidth` (attribute `full-width`): boolean, reflects. Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower.
+- `dayState` (property only): `((date: string) => string | null | undefined) | null`. Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _; not selected, today, outside nor disabled, the calendar's own parts) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not.
 
 Events:
 
@@ -774,7 +775,11 @@ Parts (`::part()`):
 - `caption`: The month and year.
 - `nav`: The previous/next month buttons.
 - `grid`: The day grid (role=grid).
-- `day`: Each day button (data-date="YYYY-MM-DD", [data-selected], [aria-current=date], [aria-disabled], [data-outside], and with dayState data-state plus the part day-<state>).
+- `day`: Each day button (data-date="YYYY-MM-DD", [data-selected], [aria-current=date], [aria-disabled], [data-outside], and with dayState data-state plus the part day-<state>). ::part() takes no attribute selector, so what the day is comes as part tokens too: day-selected, day-today, day-outside, day-disabled, combinable with day-<state> (::part(day-taken day-selected)).
+- `day-selected`: The selected day (also part day).
+- `day-today`: Today (also part day).
+- `day-outside`: A day of the month before or after (also part day).
+- `day-disabled`: A day out of min/max (also part day).
 
 Methods and properties:
 
@@ -874,6 +879,69 @@ upload.addEventListener("change", () => {
 ```
 
 The form submits those paths under `name`. Dropped and pasted files are still `File` objects (`upload.files` holds both; a chosen one is a `HostFile` with a `path`). Without the bridge, or in a browser, `native` changes nothing.
+
+### Image crop
+
+Frame an image in a rectangle or a circle of a fixed aspect, by dragging, pinching, the wheel or the keyboard, and export the framed part at a chosen size as a Blob or a data URL. The piece between ray-file-upload (or an <input type=file>) and ray-avatar.
+
+Import: `import "@raylang/elements/image-crop";` · Category: Inputs
+
+#### `<ray-image-crop>` (RayImageCrop, extends RayElement)
+
+The image always covers the frame: at zoom 1 it fits the frame's short side, and it cannot be moved so far that a gap shows. The framing is read and set as crop, a rectangle in pixels of the original, so it can be saved, reopened or applied elsewhere. The image is decoded once into a reduced working copy (as many pixels as the output, or the stage on screen, need at max-zoom) and the full-size decode is released; toBlob and toDataURL draw from that copy. EXIF orientation is applied, as in an <img>. Styling: --ray-image-crop-inset (the dimmed margin around the frame, default --ray-space-4), --ray-image-crop-dim (its color) and --ray-image-crop-max-height (default 70vh).
+
+Properties:
+
+- `src`: `string | Blob | null`. The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL.
+- `aspect`: string, default `1`, reflects. Width / height of the frame and of the output: "1", "16/9", "4:3", "1.5".
+- `shape`: `rect` | `circle`, default `rect`, reflects. The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round.
+- `zoom`: number, default `1`. 1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it.
+- `minZoom` (attribute `min-zoom`): number, default `1`. The least zoom (1 or more: the image always covers the frame).
+- `maxZoom` (attribute `max-zoom`): number, default `4`. The most zoom. It also sets how many pixels the working copy keeps.
+- `zoomControl` (attribute `zoom-control`): boolean, reflects. A zoom slider under the image (the wheel, pinch and + / - zoom in any case).
+- `outputSize` (attribute `output-size`): `string | number`, default `512`. Size of the exported image: a width ("320", the height from the aspect) or "640x360".
+- `type`: `"image/jpeg" | "image/png" | "image/webp" | (string & {})`, default `image/jpeg`. Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).
+- `quality`: number, default `0.85`. 0…1, for image/jpeg and image/webp.
+- `label`: string, default `Crop image`. Accessible name of the image area.
+- `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider, and the word of the announced zoom ("Zoom 150%").
+- `disabled`: boolean, reflects. No moving nor zooming.
+
+Events:
+
+- `input`: The framing moved (every step of a drag, pinch, wheel or the slider).
+- `change`: The framing settled: pointer released, a key pressed, the slider released or the wheel stopped (read crop, zoom).
+- `ray-load` (detail `{ width: number; height: number }`): The image loaded (its original size).
+- `ray-error` (detail `{ error: Error }`): The image could not be loaded or decoded.
+
+Parts (`::part()`):
+
+- `stage`: The image area (focusable; role slider for the zoom).
+- `image`: The image (a canvas of the working copy).
+- `frame`: The frame; what lies outside it is dimmed.
+- `zoom`: The zoom ray-slider (with zoom-control).
+
+Methods and properties:
+
+- `crop: CropRect | null`: The framed part in pixels of the original (null without an image). Assign it, even before the image loads, to frame a rectangle: the zoom that shows all of it, centered on it.
+- `readonly ready: Promise<boolean>`: Resolves when the current src has loaded (true) or failed (false).
+- `readonly loaded: boolean`: An image is shown.
+- `readonly naturalWidth: number`: Width of the original (0 without an image).
+- `readonly naturalHeight: number`: Height of the original (0 without an image).
+- `toBlob(options?: CropOutputOptions): Promise<Blob | null>`: The framed part at the output size and format (null without an image).
+- `toDataURL(options?: CropOutputOptions): string`: The same as a data URL ("" without an image).
+- `toCanvas(options?: CropOutputOptions): HTMLCanvasElement | null`: The framed part drawn on a new canvas of the output size.
+- `reset(): void`: Back to the least zoom, centered (no events).
+
+Vue `v-model`: `zoom` (updated on input).
+
+Exports (from `@raylang/elements/image-crop` and `@raylang/elements`):
+
+- `function parseAspect(value: string | number | null | undefined): number`: A ratio from "16/9", "4:3", "1.5" or a number (1 when it is none of them).
+
+Types:
+
+- `{ x: number; y: number; width: number; height: number }`: A rectangle in pixels of the original image.
+- `{ size?: string | number; width?: number; height?: number; type?: string; quality?: number }`: Overrides output-size (size, or width and height), type and quality for one export.
 
 ### Input
 

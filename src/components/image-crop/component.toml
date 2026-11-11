@@ -1,0 +1,165 @@
+[component]
+name = "Image crop"
+category = "Inputs"
+summary = "Frame an image in a rectangle or a circle of a fixed aspect, by dragging, pinching, the wheel or the keyboard, and export the framed part at a chosen size as a Blob or a data URL. The piece between ray-file-upload (or an <input type=file>) and ray-avatar."
+files = ["image-crop.js"]
+requires = ["slider"]
+tags = ["ray-image-crop"]
+
+[ray-image-crop]
+class = "RayImageCrop"
+extends = "RayElement"
+summary = "The image always covers the frame: at zoom 1 it fits the frame's short side, and it cannot be moved so far that a gap shows. The framing is read and set as crop, a rectangle in pixels of the original, so it can be saved, reopened or applied elsewhere. The image is decoded once into a reduced working copy (as many pixels as the output, or the stage on screen, need at max-zoom) and the full-size decode is released; toBlob and toDataURL draw from that copy. EXIF orientation is applied, as in an <img>. Styling: --ray-image-crop-inset (the dimmed margin around the frame, default --ray-space-4), --ray-image-crop-dim (its color) and --ray-image-crop-max-height (default 70vh)."
+
+[ray-image-crop.properties.src]
+type = "string"
+ts = "string | Blob | null"
+description = "The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL."
+
+[ray-image-crop.properties.aspect]
+type = "string"
+default = "1"
+reflect = true
+description = "Width / height of the frame and of the output: \"1\", \"16/9\", \"4:3\", \"1.5\"."
+
+[ray-image-crop.properties.shape]
+type = "string"
+values = ["rect", "circle"]
+default = "rect"
+reflect = true
+description = "The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round."
+
+[ray-image-crop.properties.zoom]
+type = "number"
+default = "1"
+description = "1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it."
+
+[ray-image-crop.properties.minZoom]
+attribute = "min-zoom"
+type = "number"
+default = "1"
+description = "The least zoom (1 or more: the image always covers the frame)."
+
+[ray-image-crop.properties.maxZoom]
+attribute = "max-zoom"
+type = "number"
+default = "4"
+description = "The most zoom. It also sets how many pixels the working copy keeps."
+
+[ray-image-crop.properties.zoomControl]
+attribute = "zoom-control"
+type = "boolean"
+reflect = true
+description = "A zoom slider under the image (the wheel, pinch and + / - zoom in any case)."
+
+[ray-image-crop.properties.outputSize]
+attribute = "output-size"
+type = "string"
+ts = "string | number"
+default = "512"
+description = "Size of the exported image: a width (\"320\", the height from the aspect) or \"640x360\"."
+
+[ray-image-crop.properties.type]
+type = "string"
+default = "image/jpeg"
+ts = "\"image/jpeg\" | \"image/png\" | \"image/webp\" | (string & {})"
+description = "Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder)."
+
+[ray-image-crop.properties.quality]
+type = "number"
+default = "0.85"
+description = "0…1, for image/jpeg and image/webp."
+
+[ray-image-crop.properties.label]
+type = "string"
+default = "Crop image"
+description = "Accessible name of the image area."
+
+[ray-image-crop.properties.zoomLabel]
+attribute = "zoom-label"
+type = "string"
+default = "Zoom"
+description = "Name of the zoom slider, and the word of the announced zoom (\"Zoom 150%\")."
+
+[ray-image-crop.properties.disabled]
+type = "boolean"
+reflect = true
+description = "No moving nor zooming."
+
+[ray-image-crop.members.crop]
+ts = "crop: CropRect | null"
+description = "The framed part in pixels of the original (null without an image). Assign it, even before the image loads, to frame a rectangle: the zoom that shows all of it, centered on it."
+
+[ray-image-crop.members.ready]
+ts = "readonly ready: Promise<boolean>"
+description = "Resolves when the current src has loaded (true) or failed (false)."
+
+[ray-image-crop.members.loaded]
+ts = "readonly loaded: boolean"
+description = "An image is shown."
+
+[ray-image-crop.members.naturalWidth]
+ts = "readonly naturalWidth: number"
+description = "Width of the original (0 without an image)."
+
+[ray-image-crop.members.naturalHeight]
+ts = "readonly naturalHeight: number"
+description = "Height of the original (0 without an image)."
+
+[ray-image-crop.members.toBlob]
+ts = "toBlob(options?: CropOutputOptions): Promise<Blob | null>"
+description = "The framed part at the output size and format (null without an image)."
+
+[ray-image-crop.members.toDataURL]
+ts = "toDataURL(options?: CropOutputOptions): string"
+description = "The same as a data URL (\"\" without an image)."
+
+[ray-image-crop.members.toCanvas]
+ts = "toCanvas(options?: CropOutputOptions): HTMLCanvasElement | null"
+description = "The framed part drawn on a new canvas of the output size."
+
+[ray-image-crop.members.reset]
+ts = "reset(): void"
+description = "Back to the least zoom, centered (no events)."
+
+[ray-image-crop.events.input]
+description = "The framing moved (every step of a drag, pinch, wheel or the slider)."
+
+[ray-image-crop.events.change]
+description = "The framing settled: pointer released, a key pressed, the slider released or the wheel stopped (read crop, zoom)."
+
+[ray-image-crop.events.ray-load]
+detail = "{ width: number; height: number }"
+description = "The image loaded (its original size)."
+
+[ray-image-crop.events.ray-error]
+detail = "{ error: Error }"
+description = "The image could not be loaded or decoded."
+
+[ray-image-crop.parts.stage]
+description = "The image area (focusable; role slider for the zoom)."
+
+[ray-image-crop.parts.image]
+description = "The image (a canvas of the working copy)."
+
+[ray-image-crop.parts.frame]
+description = "The frame; what lies outside it is dimmed."
+
+[ray-image-crop.parts.zoom]
+description = "The zoom ray-slider (with zoom-control)."
+
+[ray-image-crop.model]
+property = "zoom"
+events = ["input"]
+
+[component.types.CropRect]
+ts = "{ x: number; y: number; width: number; height: number }"
+description = "A rectangle in pixels of the original image."
+
+[component.types.CropOutputOptions]
+ts = "{ size?: string | number; width?: number; height?: number; type?: string; quality?: number }"
+description = "Overrides output-size (size, or width and height), type and quality for one export."
+
+[component.exports.parseAspect]
+ts = "function parseAspect(value: string | number | null | undefined): number"
+description = "A ratio from \"16/9\", \"4:3\", \"1.5\" or a number (1 when it is none of them)."

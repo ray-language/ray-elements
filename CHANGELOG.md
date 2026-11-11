@@ -9,6 +9,24 @@ change the API.
 
 ### Added
 
+- `ray-image-crop`: frames an image (a URL, `File` or `Blob`) in a rectangle
+  or a circle of any `aspect`, by dragging, pinching, the wheel (a trackpad
+  pinch too) or the keyboard (arrows move, `+`/`-`, PageUp/PageDown, Home/End
+  zoom, `0` resets), with an optional zoom slider (`zoom-control`). The image
+  always covers the frame. `crop` reads or sets the framing as a rectangle in
+  pixels of the original; `toBlob()`, `toDataURL()` and `toCanvas()` export
+  it at `output-size` in `type` and `quality`. The image is kept as a reduced
+  working copy, not decoded at full size for the life of the element.
+  Events: `input`, `change`, `ray-load`, `ray-error`.
+- `ray-calendar`: `full-width` fills the container. The seven columns share
+  its width and the days grow square, up to `--ray-calendar-max-cell`
+  (default 1.5 times the size's cell); past that they get wider than tall.
+- `ray-calendar`: each day also carries the parts `day-selected`,
+  `day-today`, `day-outside` and `day-disabled`. `::part()` takes no
+  attribute selector, so before this a `dayState` mark could not leave the
+  selected day alone; now `::part(day-taken day-selected)` styles a marked
+  day that is selected. The date picker's dropdown exports them. `selected`,
+  `today`, `outside` and `disabled` are no longer valid `dayState` names.
 - `ray-segmented-control`: `orientation="auto"`, a row that stacks when its
   options at their natural width do not fit in the room its parent gives it,
   and goes back to a row when they fit again. Each option's text is the part
@@ -19,6 +37,12 @@ change the API.
 
 ### Fixed
 
+- `ray-calendar` had a fixed width (seven cells of its size) and overflowed
+  a narrower container, a phone column with `size="lg"` or `"xl"` for
+  example. It now shrinks with the container, in a grid or flex parent too:
+  the columns narrow, the days keep their height, and a long month name is
+  cut with an ellipsis. In a container that sizes to its content, such as the
+  date picker's dropdown, it keeps its width.
 - `ray-segmented-control` and `ray-button` overflowed a container narrower
   than their labels (a 320 px phone, a large text size). Both now stay inside
   it. The segmented control's options shrink and their labels end in an

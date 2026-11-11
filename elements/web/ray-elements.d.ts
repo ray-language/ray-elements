@@ -729,7 +729,9 @@ export declare class RayCalendar extends RayElement {
   firstDay: number | undefined;
   /** Day cell size and font size. */
   size: "xs" | "sm" | "md" | "lg" | "xl";
-  /** Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not. */
+  /** Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower. */
+  fullWidth: boolean | undefined;
+  /** Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _; not selected, today, outside nor disabled, the calendar's own parts) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not. */
   dayState: ((date: string) => string | null | undefined) | null;
   /** Renders the month again: when what dayState marks changed but the text did not. */
   refresh(): void;
@@ -815,6 +817,71 @@ export interface RayFileUploadEventMap extends HTMLElementEventMap {
   /** Some files were refused (type, size or count). */
   "ray-reject": CustomEvent<{ rejected: FileRejection[] }>;
   /** The native dialog failed (with `native`). */
+  "ray-error": CustomEvent<{ error: Error }>;
+}
+
+// --- Image crop (image-crop)
+/** A rectangle in pixels of the original image. */
+export type CropRect = { x: number; y: number; width: number; height: number };
+/** Overrides output-size (size, or width and height), type and quality for one export. */
+export type CropOutputOptions = { size?: string | number; width?: number; height?: number; type?: string; quality?: number };
+/** A ratio from "16/9", "4:3", "1.5" or a number (1 when it is none of them). */
+export declare function parseAspect(value: string | number | null | undefined): number;
+/** <ray-image-crop> The image always covers the frame: at zoom 1 it fits the frame's short side, and it cannot be moved so far that a gap shows. The framing is read and set as crop, a rectangle in pixels of the original, so it can be saved, reopened or applied elsewhere. The image is decoded once into a reduced working copy (as many pixels as the output, or the stage on screen, need at max-zoom) and the full-size decode is released; toBlob and toDataURL draw from that copy. EXIF orientation is applied, as in an <img>. Styling: --ray-image-crop-inset (the dimmed margin around the frame, default --ray-space-4), --ray-image-crop-dim (its color) and --ray-image-crop-max-height (default 70vh). */
+export declare class RayImageCrop extends RayElement {
+  /** The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL. */
+  src: string | Blob | null;
+  /** Width / height of the frame and of the output: "1", "16/9", "4:3", "1.5". */
+  aspect: string;
+  /** The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round. */
+  shape: "rect" | "circle";
+  /** 1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it. */
+  zoom: number;
+  /** The least zoom (1 or more: the image always covers the frame). */
+  minZoom: number;
+  /** The most zoom. It also sets how many pixels the working copy keeps. */
+  maxZoom: number;
+  /** A zoom slider under the image (the wheel, pinch and + / - zoom in any case). */
+  zoomControl: boolean | undefined;
+  /** Size of the exported image: a width ("320", the height from the aspect) or "640x360". */
+  outputSize: string | number;
+  /** Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder). */
+  type: "image/jpeg" | "image/png" | "image/webp" | (string & {});
+  /** 0…1, for image/jpeg and image/webp. */
+  quality: number;
+  /** Accessible name of the image area. */
+  label: string;
+  /** Name of the zoom slider, and the word of the announced zoom ("Zoom 150%"). */
+  zoomLabel: string;
+  /** No moving nor zooming. */
+  disabled: boolean | undefined;
+  /** The framed part in pixels of the original (null without an image). Assign it, even before the image loads, to frame a rectangle: the zoom that shows all of it, centered on it. */
+  crop: CropRect | null;
+  /** Resolves when the current src has loaded (true) or failed (false). */
+  readonly ready: Promise<boolean>;
+  /** An image is shown. */
+  readonly loaded: boolean;
+  /** Width of the original (0 without an image). */
+  readonly naturalWidth: number;
+  /** Height of the original (0 without an image). */
+  readonly naturalHeight: number;
+  /** The framed part at the output size and format (null without an image). */
+  toBlob(options?: CropOutputOptions): Promise<Blob | null>;
+  /** The same as a data URL ("" without an image). */
+  toDataURL(options?: CropOutputOptions): string;
+  /** The framed part drawn on a new canvas of the output size. */
+  toCanvas(options?: CropOutputOptions): HTMLCanvasElement | null;
+  /** Back to the least zoom, centered (no events). */
+  reset(): void;
+  addEventListener<K extends keyof RayImageCropEventMap>(type: K, listener: (this: RayImageCrop, ev: RayImageCropEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayImageCropEventMap>(type: K, listener: (this: RayImageCrop, ev: RayImageCropEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayImageCropEventMap extends HTMLElementEventMap {
+  /** The image loaded (its original size). */
+  "ray-load": CustomEvent<{ width: number; height: number }>;
+  /** The image could not be loaded or decoded. */
   "ray-error": CustomEvent<{ error: Error }>;
 }
 
@@ -2760,6 +2827,7 @@ declare global {
     "ray-date-picker": RayDatePicker;
     "ray-calendar": RayCalendar;
     "ray-file-upload": RayFileUpload;
+    "ray-image-crop": RayImageCrop;
     "ray-input": RayInput;
     "ray-mode-input": RayModeInput;
     "ray-number-input": RayNumberInput;

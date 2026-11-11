@@ -6,6 +6,8 @@
   <ray-calendar id="demo-calendar" value="2026-10-15" min="2026-10-05"></ray-calendar>
   <span id="demo-calendar-out" style="color: var(--ray-muted-foreground); font-size: var(--ray-font-size-sm)">Pick a day.</span>
 </div>
+<div class="demo-caption" style="margin-top: 1.5rem">Full width: the days share the width of the container</div>
+<ray-calendar full-width size="md" value="2026-10-15" class="demo-calendar-wide"></ray-calendar>
 <script type="module">
   document.getElementById("demo-calendar").addEventListener("change", (e) => {
     document.getElementById("demo-calendar-out").textContent = `change: ${e.currentTarget.value}`;

@@ -15,6 +15,7 @@ export { RayColorPicker, RayColorInput, parseColorValue, formatColor } from "./c
 export { RayCombobox } from "./components/combobox/combobox.js";
 export { RayDatePicker, RayCalendar } from "./components/date-picker/date-picker.js";
 export { RayFileUpload, parseSize, matchesAccept, describeAccept } from "./components/file-upload/file-upload.js";
+export { RayImageCrop, parseAspect } from "./components/image-crop/image-crop.js";
 export { RayInput } from "./components/input/input.js";
 export { RayModeInput } from "./components/mode-input/mode-input.js";
 export { RayNumberInput, parseNumber, formatNumber } from "./components/number-input/number-input.js";

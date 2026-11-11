@@ -1379,6 +1379,11 @@
               "name": "xl"
             }
           ]
+        },
+        {
+          "name": "full-width",
+          "description": "Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower.",
+          "valueSet": "v"
         }
       ]
     },
@@ -1484,6 +1489,85 @@
         {
           "name": "color",
           "description": "Accent of hover, drag and the browse link (default: primary)."
+        }
+      ]
+    },
+    {
+      "name": "ray-image-crop",
+      "description": "The image always covers the frame: at zoom 1 it fits the frame's short side, and it cannot be moved so far that a gap shows. The framing is read and set as crop, a rectangle in pixels of the original, so it can be saved, reopened or applied elsewhere. The image is decoded once into a reduced working copy (as many pixels as the output, or the stage on screen, need at max-zoom) and the full-size decode is released; toBlob and toDataURL draw from that copy. EXIF orientation is applied, as in an <img>. Styling: --ray-image-crop-inset (the dimmed margin around the frame, default --ray-space-4), --ray-image-crop-dim (its color) and --ray-image-crop-max-height (default 70vh).",
+      "attributes": [
+        {
+          "name": "src",
+          "description": "The image: a URL, or (as a property) a File or Blob, such as the one an <input type=file> gives. A cross-origin URL needs CORS to be exportable. A HostFile (the paths of ray-file-upload native) has no bytes: read it in the program and pass a URL."
+        },
+        {
+          "name": "aspect",
+          "description": "Width / height of the frame and of the output: \"1\", \"16/9\", \"4:3\", \"1.5\"."
+        },
+        {
+          "name": "shape",
+          "description": "The frame's mask. circle (an ellipse when the aspect is not 1) only masks: the output is still the rectangle, for ray-avatar to round.",
+          "values": [
+            {
+              "name": "rect"
+            },
+            {
+              "name": "circle"
+            }
+          ]
+        },
+        {
+          "name": "zoom",
+          "description": "1: the image covers the frame; 2: twice as close. Kept between min-zoom and max-zoom; the user changes it."
+        },
+        {
+          "name": "min-zoom",
+          "description": "The least zoom (1 or more: the image always covers the frame)."
+        },
+        {
+          "name": "max-zoom",
+          "description": "The most zoom. It also sets how many pixels the working copy keeps."
+        },
+        {
+          "name": "zoom-control",
+          "description": "A zoom slider under the image (the wheel, pinch and + / - zoom in any case).",
+          "valueSet": "v"
+        },
+        {
+          "name": "output-size",
+          "description": "Size of the exported image: a width (\"320\", the height from the aspect) or \"640x360\"."
+        },
+        {
+          "name": "type",
+          "description": "Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).",
+          "values": [
+            {
+              "name": "image/jpeg"
+            },
+            {
+              "name": "image/png"
+            },
+            {
+              "name": "image/webp"
+            }
+          ]
+        },
+        {
+          "name": "quality",
+          "description": "0…1, for image/jpeg and image/webp."
+        },
+        {
+          "name": "label",
+          "description": "Accessible name of the image area."
+        },
+        {
+          "name": "zoom-label",
+          "description": "Name of the zoom slider, and the word of the announced zoom (\"Zoom 150%\")."
+        },
+        {
+          "name": "disabled",
+          "description": "No moving nor zooming.",
+          "valueSet": "v"
         }
       ]
     },
