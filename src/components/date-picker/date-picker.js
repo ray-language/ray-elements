@@ -33,10 +33,13 @@ function parse(iso) {
 
 /** A UTC Date -> "2026-10-06". */
 /** A dayState() result as a part token, or "" (letters, digits, - and _). */
+/** The calendar's own part tokens (day-selected…): not a dayState name. */
+const RESERVED_STATES = new Set(["selected", "today", "outside", "disabled"]);
+
 function stateToken(v) {
   if (v === null || v === undefined || v === false || v === "") return "";
   const s = String(v).trim();
-  return /^[A-Za-z][\w-]*$/.test(s) ? s : "";
+  return /^[A-Za-z][\w-]*$/.test(s) && !RESERVED_STATES.has(s) ? s : "";
 }
 
 function iso(d) {
@@ -83,13 +86,22 @@ function firstDayOf(locale) {
 const calendarStyles = css`
   :host {
     display: inline-block;
-    width: fit-content;
+    /* Seven columns of a cell and their 1px gaps, or less in a narrower
+       container: the columns shrink with it and the days keep their height.
+       The width depends on the container, so a grid or flex parent can
+       shrink it; the grid's box carries the seven cells, so a shrink-to-fit
+       parent (the date picker's dropdown) still sizes to them. */
+    --_width: calc((var(--_cell) + 2px) * 7);
+    width: min(100%, var(--_width));
+    min-width: 0;
     --_cell: var(--_h);
     font-size: var(--_fs);
     color: var(--ray-foreground);
   }
+  /* full-width: the grid fills its container; the days grow square up to --ray-calendar-max-cell. */
+  :host([full-width]) { display: block; width: auto; }
   .header { display: flex; align-items: center; justify-content: space-between; gap: var(--ray-space-2); margin-bottom: var(--ray-space-2); }
-  .caption { flex: 1; text-align: center; font-weight: var(--ray-font-weight-medium); white-space: nowrap; }
+  .caption { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; text-align: center; font-weight: var(--ray-font-weight-medium); white-space: nowrap; }
   .nav {
     display: inline-flex;
     align-items: center;
@@ -105,9 +117,15 @@ const calendarStyles = css`
   }
   .nav:hover { color: var(--ray-foreground); background: var(--ray-default-hover); }
   .nav svg { width: 1em; height: 1em; }
-  table { border-collapse: collapse; }
+  /* The box carries the seven cells, or less in a narrower host (WebKit
+     ignores max-width on a table); the table fills it. A definite box also
+     keeps the percentage-wide table from widening a shrink-to-fit parent
+     to all the room it has. */
+  .days { width: var(--_width); max-width: 100%; }
+  :host([full-width]) .days { width: auto; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
   th {
-    width: var(--_cell);
+    overflow: hidden;
     height: calc(var(--_cell) * 0.8);
     padding: 0;
     font-size: var(--ray-font-size-xs);
@@ -116,7 +134,8 @@ const calendarStyles = css`
   }
   td { padding: 1px; text-align: center; }
   .day {
-    width: var(--_cell);
+    width: 100%;
+    min-width: 0;
     height: var(--_cell);
     padding: 0;
     font: inherit;
@@ -136,6 +155,12 @@ const calendarStyles = css`
     background: var(--ray-primary);
     font-weight: var(--ray-font-weight-semibold);
   }
+  :host([full-width]) .day {
+    height: auto;
+    aspect-ratio: 1;
+    min-height: var(--_cell);
+    max-height: var(--ray-calendar-max-cell, calc(var(--_cell) * 1.5));
+  }
   .day[aria-disabled="true"] { opacity: 0.35; cursor: not-allowed; }
   .day:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 1px; }
 `;
@@ -148,6 +173,7 @@ export class RayCalendar extends RayElement {
     locale: { type: String },
     firstDay: { type: Number },
     size: { type: String, reflect: true, default: "sm" },
+    fullWidth: { type: Boolean, reflect: true },
     dayState: { attribute: false },
   };
   static styles = [sizeStyles, calendarStyles];
@@ -157,7 +183,7 @@ export class RayCalendar extends RayElement {
       <div class="caption" part="caption" id="caption" aria-live="polite"></div>
       <button class="nav next focus-ring" part="nav" type="button" data-ray-icon="ui.next"></button>
     </div>
-    <table role="grid" aria-labelledby="caption" part="grid"><thead><tr></tr></thead><tbody></tbody></table>`;
+    <div class="days"><table role="grid" aria-labelledby="caption" part="grid"><thead><tr></tr></thead><tbody></tbody></table></div>`;
 
   /** The day the keyboard focus is on (roving tabindex). */
   #focus = null;
@@ -253,7 +279,6 @@ export class RayCalendar extends RayElement {
         const b = document.createElement("button");
         b.type = "button";
         b.className = "day";
-        b.setAttribute("part", "day");
         b.dataset.date = id;
         b.textContent = String(day.getUTCDate());
         b.setAttribute("aria-label", label.format(day));
@@ -264,14 +289,24 @@ export class RayCalendar extends RayElement {
         // aria-selected belongs to the gridcell (a button cannot have it).
         td.setAttribute("aria-selected", String(sel));
         b.toggleAttribute("data-selected", sel);
-        if (this._disabled(day)) b.setAttribute("aria-disabled", "true");
+        const disabled = this._disabled(day);
+        if (disabled) b.setAttribute("aria-disabled", "true");
+        // ::part() takes no attribute selector: what the day is (selected,
+        // today, outside the month, disabled) is a part token too, so
+        // ::part(day-taken day-selected) styles a marked day that is selected.
+        const parts = ["day"];
+        if (sel) parts.push("day-selected");
+        if (id === now) parts.push("day-today");
+        if (day.getUTCMonth() !== month) parts.push("day-outside");
+        if (disabled) parts.push("day-disabled");
         // An app's mark on the day (adherence, events…): data-state and a
         // part token, day-<state>, for ::part(day-<state>) from outside.
         const s = state ? stateToken(state(id)) : "";
         if (s) {
           b.dataset.state = s;
-          b.setAttribute("part", `day day-${s}`);
+          parts.push(`day-${s}`);
         }
+        b.setAttribute("part", parts.join(" "));
         td.append(b);
         tr.append(td);
         day = addDays(day, 1);
@@ -409,7 +444,7 @@ export class RayDatePicker extends FieldControl {
       `<span class="icon" aria-hidden="true" data-ray-icon="ui.calendar"></span><span class="value" id="value"></span></button>` +
       `<button type="button" class="clear focus-ring" part="clear" aria-label="Clear date" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>`,
     { sections: false },
-  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a date"><ray-calendar part="calendar" exportparts="day, caption, nav, grid"></ray-calendar></div>`;
+  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a date"><ray-calendar part="calendar" exportparts="day, day-selected, day-today, day-outside, day-disabled, caption, nav, grid"></ray-calendar></div>`;
 
   #undismiss = null;
   #exit = null;

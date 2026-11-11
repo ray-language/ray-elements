@@ -179,6 +179,57 @@ T.test("date picker: open, pick, Escape, clear", async (T) => {
   box.remove();
 });
 
+T.test("calendar: its size's width; it shrinks in a narrow container; full-width fills it", async (T) => {
+  const box = await mount(`<div style="width: 600px"><ray-calendar value="2026-10-06" size="md"></ray-calendar></div>`);
+  const holder = box.firstElementChild;
+  const cal = holder.firstElementChild;
+  const cell = days(cal)[0].getBoundingClientRect().height;
+  const width = () => Math.round(cal.getBoundingClientRect().width);
+  T.eq(width(), Math.round((cell + 2) * 7), "seven cells and their gaps");
+  T.eq(Math.round(days(cal)[0].getBoundingClientRect().width), Math.round(cell), "square days");
+  holder.style.width = "180px";
+  await T.settle();
+  T.eq(width(), 180, "shrinks with the container");
+  T.ok(cal.shadowRoot.querySelector("table").getBoundingClientRect().width <= 180, `the grid does not overflow: ${cal.shadowRoot.querySelector("table").getBoundingClientRect().width} host ${width()}`);
+  T.eq(Math.round(days(cal)[0].getBoundingClientRect().height), Math.round(cell), "the days keep their height");
+  // A grid or flex parent can shrink it (its width depends on the container).
+  holder.style.display = "grid";
+  await T.settle();
+  T.eq(width(), 180, "in a grid track too");
+  holder.style.display = "flex";
+  await T.settle();
+  T.eq(width(), 180, "and as a flex item");
+  // A shrink-to-fit parent (a dropdown, an absolute box) still sizes to the seven cells.
+  holder.style.display = "";
+  holder.style.width = "600px";
+  holder.style.position = "relative";
+  const fit = document.createElement("div");
+  fit.style.position = "absolute";
+  holder.append(fit);
+  fit.append(cal);
+  await T.settle();
+  T.eq(Math.round(fit.getBoundingClientRect().width), Math.round((cell + 2) * 7), "a shrink-to-fit parent is not widened");
+  holder.append(cal);
+  fit.remove();
+  cal.fullWidth = true;
+  holder.style.width = "600px";
+  await T.settle();
+  T.eq(cal.getAttribute("full-width"), "", "reflected");
+  T.eq(width(), 600, "full-width fills the container");
+  const day = days(cal)[0].getBoundingClientRect();
+  T.ok(Math.abs(day.width - (600 / 7 - 2)) < 1, `the columns share it: ${day.width}`);
+  T.eq(Math.round(day.height), Math.round(cell * 1.5), "taller days, up to 1.5 cells");
+  holder.style.width = "420px";
+  await T.settle();
+  const mid = days(cal)[0].getBoundingClientRect();
+  T.ok(Math.abs(mid.width - mid.height) < 1, `square in between: ${mid.width}x${mid.height}`);
+  holder.style.setProperty("--ray-calendar-max-cell", "100px");
+  holder.style.width = "600px";
+  await T.settle();
+  T.ok(Math.abs(days(cal)[0].getBoundingClientRect().height - (600 / 7 - 2)) < 1, "--ray-calendar-max-cell raises the cap");
+  box.remove();
+});
+
 T.test("calendar: dayState marks days with data-state and a day-<state> part; refresh re-reads it", async (T) => {
   const box = await mount(`<ray-calendar value="2026-11-10"></ray-calendar>`);
   const cal = box.firstElementChild;
@@ -191,11 +242,50 @@ T.test("calendar: dayState marks days with data-state and a day-<state> part; re
   T.eq(day("2026-11-04").getAttribute("part"), "day day-missed");
   T.eq(day("2026-11-05").getAttribute("part"), "day", "a name that is not a token is ignored");
   T.eq(day("2026-11-06").dataset.state, undefined, "null: unmarked");
-  T.eq(day("2026-11-10").getAttribute("part"), "day", "the selected day, unmarked, keeps its part");
+  T.eq(day("2026-11-10").getAttribute("part"), "day day-selected", "the selected day, unmarked: its own part only");
   marks = { "2026-11-03": "missed" };
   cal.refresh();
   T.eq(day("2026-11-03").getAttribute("part"), "day day-missed", "refresh: marks read again");
   T.eq(day("2026-11-04").getAttribute("part"), "day");
+  box.remove();
+});
+
+T.test("calendar: day-selected, day-today, day-outside and day-disabled parts combine with day-<state>", async (T) => {
+  const now = new Date();
+  const todayIso = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())).toISOString().slice(0, 10);
+  const box = await mount(`<style>.marked::part(day-x) { background-color: rgb(1, 2, 3); }</style>` +
+    `<ray-calendar class="marked" locale="en-US" first-day="1" value="2026-10-06" min="2026-10-05"></ray-calendar>`);
+  const cal = box.querySelector("ray-calendar");
+  cal.dayState = (d) => ({ "2026-10-06": "x", "2026-10-07": "x", "2026-10-08": "selected", "2026-10-09": "today" })[d];
+  await T.settle();
+  const day = (d) => cal.shadowRoot.querySelector(`.day[data-date="${d}"]`);
+  const parts = (d) => day(d).getAttribute("part");
+  T.eq(parts("2026-10-06"), "day day-selected day-x", "selected and marked");
+  T.eq(parts("2026-10-07"), "day day-x");
+  T.eq(parts("2026-09-29"), "day day-outside day-disabled", "the month before, under min");
+  T.eq(parts("2026-10-08"), "day", "selected is not a state name");
+  T.eq(parts("2026-10-09"), "day", "nor today");
+  // ::part(day-x day-selected) matches only the selected marked day.
+  const bg = (d) => getComputedStyle(day(d)).backgroundColor;
+  T.eq(bg("2026-10-07"), "rgb(1, 2, 3)", "the mark paints the day");
+  const style = box.querySelector("style");
+  style.textContent += ".marked::part(day-x day-selected) { background-color: rgb(9, 9, 9); }";
+  await T.settle();
+  T.eq(bg("2026-10-06"), "rgb(9, 9, 9)", "both tokens: the selected marked day");
+  T.eq(bg("2026-10-07"), "rgb(1, 2, 3)", "a marked day that is not selected keeps the mark");
+  cal.value = todayIso;
+  await T.settle();
+  T.ok(parts(todayIso).split(" ").includes("day-today"), `today: ${parts(todayIso)}`);
+  box.remove();
+});
+
+T.test("date picker: the dropdown exports the calendar's state parts", async (T) => {
+  const box = await mount(`<ray-date-picker value="2026-10-06" native="never"></ray-date-picker>`);
+  const el = box.firstElementChild;
+  const cal = el.shadowRoot.querySelector("ray-calendar");
+  for (const p of ["day-selected", "day-today", "day-outside", "day-disabled"]) {
+    T.ok(cal.getAttribute("exportparts").includes(p), p);
+  }
   box.remove();
 });
 

@@ -7,6 +7,27 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-calendar`: `full-width` fills the container. The seven columns share
+  its width and the days grow square, up to `--ray-calendar-max-cell`
+  (default 1.5 times the size's cell); past that they get wider than tall.
+- `ray-calendar`: each day also carries the parts `day-selected`,
+  `day-today`, `day-outside` and `day-disabled`. `::part()` takes no
+  attribute selector, so before this a `dayState` mark could not leave the
+  selected day alone; now `::part(day-taken day-selected)` styles a marked
+  day that is selected. The date picker's dropdown exports them. `selected`,
+  `today`, `outside` and `disabled` are no longer valid `dayState` names.
+
+### Fixed
+
+- `ray-calendar` had a fixed width (seven cells of its size) and overflowed
+  a narrower container, a phone column with `size="lg"` or `"xl"` for
+  example. It now shrinks with the container, in a grid or flex parent too:
+  the columns narrow, the days keep their height, and a long month name is
+  cut with an ellipsis. In a container that sizes to its content, such as the
+  date picker's dropdown, it keeps its width.
+
 ## [0.16.0] - 2026-11-10
 
 ### Added

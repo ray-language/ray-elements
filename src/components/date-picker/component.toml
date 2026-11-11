@@ -134,7 +134,7 @@ description = "The clear button."
 description = "The calendar panel (a popover in the top layer)."
 
 [ray-date-picker.parts.calendar]
-description = "The <ray-calendar> in the dropdown (its day, caption, nav and grid parts are exported)."
+description = "The <ray-calendar> in the dropdown (its day, day-selected, day-today, day-outside, day-disabled, caption, nav and grid parts are exported)."
 
 [ray-date-picker.parts.input]
 description = "The hidden native <input type=date> that holds the value (the model)."
@@ -187,11 +187,17 @@ default = "sm"
 reflect = true
 description = "Day cell size and font size."
 
+[ray-calendar.properties.fullWidth]
+attribute = "full-width"
+type = "boolean"
+reflect = true
+description = "Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower."
+
 [ray-calendar.properties.dayState]
 attribute = false
 type = "function"
 ts = "((date: string) => string | null | undefined) | null"
-description = "Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not."
+description = "Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _; not selected, today, outside nor disabled, the calendar's own parts) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not."
 
 [ray-calendar.events.change]
 description = "A day was selected (read `value`)."
@@ -209,7 +215,19 @@ description = "The previous/next month buttons."
 description = "The day grid (role=grid)."
 
 [ray-calendar.parts.day]
-description = "Each day button (data-date=\"YYYY-MM-DD\", [data-selected], [aria-current=date], [aria-disabled], [data-outside], and with dayState data-state plus the part day-<state>)."
+description = "Each day button (data-date=\"YYYY-MM-DD\", [data-selected], [aria-current=date], [aria-disabled], [data-outside], and with dayState data-state plus the part day-<state>). ::part() takes no attribute selector, so what the day is comes as part tokens too: day-selected, day-today, day-outside, day-disabled, combinable with day-<state> (::part(day-taken day-selected))."
+
+[ray-calendar.parts.day-selected]
+description = "The selected day (also part day)."
+
+[ray-calendar.parts.day-today]
+description = "Today (also part day)."
+
+[ray-calendar.parts.day-outside]
+description = "A day of the month before or after (also part day)."
+
+[ray-calendar.parts.day-disabled]
+description = "A day out of min/max (also part day)."
 
 [ray-calendar.model]
 property = "value"

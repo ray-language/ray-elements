@@ -10,6 +10,6 @@ export const RayDatePicker = /*#__PURE__*/ createComponent("ray-date-picker", {
 });
 export const RayCalendar = /*#__PURE__*/ createComponent("ray-calendar", {
   displayName: "RayCalendar",
-  properties: ["value", "min", "max", "locale", "firstDay", "size", "dayState"],
+  properties: ["value", "min", "max", "locale", "firstDay", "size", "fullWidth", "dayState"],
   events: { onChange: "change" },
 });

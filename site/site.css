@@ -1083,6 +1083,7 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .demo-ship ray-icon { flex: none; margin-top: 0.1rem; }
 .demo-unstyled .demo-muted { white-space: nowrap; }
 
+.demo-calendar-wide { max-width: 34rem; }
 .demo-photo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap: var(--ray-space-6); align-items: center; }
 .demo-photo-frame { position: relative; aspect-ratio: 4 / 3; max-width: 100%; overflow: hidden; border-radius: var(--ray-radius-lg); background: linear-gradient(#ffb36b, #ff7e8a 45%, #7a5cff); }
 .demo-photo-frame span { position: absolute; display: block; }

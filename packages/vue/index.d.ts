@@ -446,7 +446,9 @@ export interface RayCalendarProps {
   firstDay?: number;
   /** Day cell size and font size. */
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  /** Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not. */
+  /** Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower. */
+  fullWidth?: boolean;
+  /** Marks days: called with each day's ISO date on every render, it returns a state name (letters, digits, - and _; not selected, today, outside nor disabled, the calendar's own parts) or nothing. The day button gets data-state and the part day-<state>, so ::part(day-taken) (or ::part(day-missed)::after for a dot) styles it from outside. Call refresh() when what it marks changed but the month did not. */
   dayState?: ((date: string) => string | null | undefined) | null;
   /** v-model: the element's `value`. */
   modelValue?: string;

@@ -9,7 +9,7 @@ export const RayDatePicker = /*#__PURE__*/ createComponent("RayDatePicker", "ray
   model: { prop: "value", events: ["change"] },
 });
 export const RayCalendar = /*#__PURE__*/ createComponent("RayCalendar", "ray-calendar", {
-  properties: ["value", "min", "max", "locale", "firstDay", "size", "dayState"],
-  booleans: [],
+  properties: ["value", "min", "max", "locale", "firstDay", "size", "fullWidth", "dayState"],
+  booleans: ["fullWidth"],
   model: { prop: "value", events: ["change"] },
 });

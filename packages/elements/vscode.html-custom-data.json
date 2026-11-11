@@ -1364,6 +1364,11 @@
               "name": "xl"
             }
           ]
+        },
+        {
+          "name": "full-width",
+          "description": "Fills the width of its container: the columns share it and the days grow square, up to --ray-calendar-max-cell (default 1.5 times the size's cell), then wider than tall. Without it the calendar takes its size's width and shrinks when its container is narrower.",
+          "valueSet": "v"
         }
       ]
     },
