@@ -125,6 +125,17 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Image crop",
+    "group": "Components · Inputs",
+    "description": "Frame an image in a rectangle or a circle of a fixed aspect, by dragging, pinching, the wheel or the keyboard, and export the framed part at a chosen size as a Blob or a data URL. The piece between ray-file-upload (or an <input type=file>) and ray-avatar.",
+    "href": "components/image-crop.html",
+    "keywords": [
+      "image-crop",
+      "ray-image-crop"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Input",
     "group": "Components · Inputs",
     "description": "A text field with label, description and error (Mantine's TextInput). Form-associated.",

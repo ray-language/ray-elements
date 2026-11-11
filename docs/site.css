@@ -900,6 +900,8 @@ pre.code code, .prose pre code { font-size: inherit; }
 .thumb .t-cal i.on { background: var(--ray-primary); }
 .thumb .t-drop { display: grid; justify-items: center; gap: 0.4rem; padding: 0.7rem 1.4rem; color: var(--ray-primary-light-color); border: 1.5px dashed color-mix(in srgb, var(--ray-primary) 45%, var(--ray-border)); border-radius: var(--ray-radius-md); background: color-mix(in srgb, var(--ray-primary-light) 50%, transparent); }
 .thumb .t-drop svg { width: 1.2rem; height: 1.2rem; }
+.thumb .t-crop { position: relative; display: grid; place-items: center; width: 5rem; height: 3.4rem; overflow: hidden; border-radius: 0.3rem; background: linear-gradient(160deg, #7dd3fc, #fde68a 55%, #6d28d9 56%, #0e7490); }
+.thumb .t-crop > i { width: 2.6rem; height: 2.6rem; border-radius: 50%; box-shadow: 0 0 0 5rem rgb(0 0 0 / 0.5); outline: 1px solid rgb(255 255 255 / 0.85); }
 .thumb .t-seg { display: flex; gap: 0.15rem; padding: 0.2rem; background: color-mix(in srgb, var(--ray-foreground) 7%, transparent); border-radius: var(--ray-radius-sm); }
 .thumb .t-seg > i { display: grid; place-items: center; height: 1.2rem; padding: 0 0.5rem; border-radius: 0.25rem; }
 .thumb .t-seg > i.on { background: var(--ray-background); box-shadow: var(--ray-shadow-xs); }
@@ -1084,6 +1086,12 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .demo-unstyled .demo-muted { white-space: nowrap; }
 
 .demo-calendar-wide { max-width: 34rem; }
+.demo-crop-profile { display: flex; align-items: center; gap: var(--ray-space-4); }
+.demo-crop-profile-text { display: grid; gap: var(--ray-space-2); }
+.demo-crop-actions { display: flex; flex-wrap: wrap; gap: var(--ray-space-2); }
+#demo-crop { max-width: 22rem; margin-inline: auto; }
+.demo-crop-cover { display: grid; gap: var(--ray-space-3); max-width: 36rem; }
+.demo-crop-cover code { font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
 .demo-photo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap: var(--ray-space-6); align-items: center; }
 .demo-photo-frame { position: relative; aspect-ratio: 4 / 3; max-width: 100%; overflow: hidden; border-radius: var(--ray-radius-lg); background: linear-gradient(#ffb36b, #ff7e8a 45%, #7a5cff); }
 .demo-photo-frame span { position: absolute; display: block; }

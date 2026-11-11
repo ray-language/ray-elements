@@ -1,0 +1,101 @@
+<div class="demo-caption">A profile photo</div>
+<div class="demo-crop-profile">
+  <ray-avatar id="demo-crop-avatar" name="Ada Lovelace" size="xl"></ray-avatar>
+  <div class="demo-crop-profile-text">
+    <strong>Ada Lovelace</strong>
+    <div class="demo-crop-actions">
+      <ray-button size="sm" variant="default" id="demo-crop-choose">Choose photo</ray-button>
+      <ray-button size="sm" variant="subtle" id="demo-crop-sample">Use a sample</ray-button>
+      <ray-button size="sm" variant="subtle" color="red" id="demo-crop-remove" hidden>Remove photo</ray-button>
+    </div>
+  </div>
+  <input type="file" accept="image/*" id="demo-crop-file" hidden>
+</div>
+
+<ray-drawer id="demo-crop-sheet" label="Adjust the photo" description="Drag to move it, pinch or scroll to zoom." position="bottom" size="content">
+  <ray-image-crop id="demo-crop" shape="circle" zoom-control output-size="320" label="Profile photo"></ray-image-crop>
+  <ray-button slot="footer" variant="default" id="demo-crop-cancel">Cancel</ray-button>
+  <ray-button slot="footer" id="demo-crop-use">Use photo</ray-button>
+</ray-drawer>
+
+<div class="demo-caption">A cover in 16:9, with the framing read back</div>
+<div class="demo-crop-cover">
+  <ray-image-crop id="demo-crop-wide" aspect="16/9" zoom-control max-zoom="3" output-size="1280x720" type="image/webp" label="Cover image"></ray-image-crop>
+  <code id="demo-crop-rect">—</code>
+</div>
+
+<script type="module">
+  // A picture to crop without a download: a landscape drawn on a canvas.
+  function sample(width = 1600, height = 1200) {
+    const c = document.createElement("canvas");
+    c.width = width;
+    c.height = height;
+    const g = c.getContext("2d");
+    const sky = g.createLinearGradient(0, 0, 0, height);
+    sky.addColorStop(0, "#7dd3fc");
+    sky.addColorStop(1, "#fde68a");
+    g.fillStyle = sky;
+    g.fillRect(0, 0, width, height);
+    g.fillStyle = "#f97316";
+    g.beginPath();
+    g.arc(width * 0.68, height * 0.36, height * 0.12, 0, Math.PI * 2);
+    g.fill();
+    g.fillStyle = "#6d28d9";
+    g.beginPath();
+    g.moveTo(0, height * 0.75);
+    g.lineTo(width * 0.3, height * 0.42);
+    g.lineTo(width * 0.55, height * 0.7);
+    g.lineTo(width * 0.8, height * 0.5);
+    g.lineTo(width, height * 0.72);
+    g.lineTo(width, height);
+    g.lineTo(0, height);
+    g.fill();
+    g.fillStyle = "#0e7490";
+    g.fillRect(0, height * 0.82, width, height * 0.18);
+    return new Promise((resolve) => c.toBlob(resolve, "image/png"));
+  }
+
+  const avatar = document.getElementById("demo-crop-avatar");
+  const sheet = document.getElementById("demo-crop-sheet");
+  const crop = document.getElementById("demo-crop");
+  const file = document.getElementById("demo-crop-file");
+  const remove = document.getElementById("demo-crop-remove");
+  const choose = document.getElementById("demo-crop-choose");
+
+  const edit = (blob) => {
+    crop.src = blob;
+    sheet.open = true;
+  };
+  choose.addEventListener("click", () => file.click());
+  file.addEventListener("change", () => {
+    if (file.files[0]) edit(file.files[0]);
+    file.value = "";
+  });
+  document.getElementById("demo-crop-sample").addEventListener("click", async () => edit(await sample()));
+  document.getElementById("demo-crop-cancel").addEventListener("click", () => (sheet.open = false));
+  document.getElementById("demo-crop-use").addEventListener("click", () => {
+    avatar.src = crop.toDataURL();
+    remove.hidden = false;
+    choose.textContent = "Change photo";
+    sheet.open = false;
+  });
+  remove.addEventListener("click", () => {
+    avatar.src = "";
+    remove.hidden = true;
+    choose.textContent = "Choose photo";
+  });
+
+  // The framing is a rectangle of the original: save it, set it back later.
+  const wide = document.getElementById("demo-crop-wide");
+  const rect = document.getElementById("demo-crop-rect");
+  const show = () => {
+    const r = wide.crop;
+    rect.textContent = r ? `crop = { x: ${Math.round(r.x)}, y: ${Math.round(r.y)}, width: ${Math.round(r.width)}, height: ${Math.round(r.height)} }` : "—";
+  };
+  wide.addEventListener("input", show);
+  wide.addEventListener("ray-load", show);
+  sample(2400, 1600).then((blob) => {
+    wide.crop = { x: 1200, y: 300, width: 1000, height: 562 };
+    wide.src = blob;
+  });
+</script>
