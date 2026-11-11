@@ -57,6 +57,11 @@ attribute = "full-width"
 type = "boolean"
 description = "Takes the whole width of its container."
 
+[ray-button.properties.wrap]
+type = "boolean"
+reflect = true
+description = "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis."
+
 [ray-button.properties.href]
 type = "string"
 description = "Renders a link instead of a button."

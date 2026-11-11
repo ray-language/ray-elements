@@ -48,10 +48,10 @@ description = "Takes the whole width."
 
 [ray-segmented-control.properties.orientation]
 type = "string"
-values = ["horizontal", "vertical"]
+values = ["horizontal", "vertical", "auto"]
 default = "horizontal"
 reflect = true
-description = "Direction."
+description = "Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again."
 
 [ray-segmented-control.properties.disabled]
 type = "boolean"
@@ -73,7 +73,13 @@ description = "The row."
 description = "The sliding highlight."
 
 [ray-segmented-control.parts.control]
-description = "Each option button."
+description = "Each option button. In a narrow container the options shrink and their labels end in an ellipsis."
+
+[ray-segmented-control.parts.control-selected]
+description = "The chosen option (also part control): ::part() takes no attribute selector."
+
+[ray-segmented-control.parts.label]
+description = "The text of each option."
 
 [ray-segmented-control.model]
 property = "value"

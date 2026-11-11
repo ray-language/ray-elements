@@ -92,6 +92,14 @@
               "fieldName": "fullWidth"
             },
             {
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "fieldName": "wrap"
+            },
+            {
               "name": "href",
               "type": {
                 "text": "string"
@@ -217,6 +225,16 @@
               "description": "Takes the whole width of its container.",
               "attribute": "full-width",
               "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "attribute": "wrap",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -510,6 +528,14 @@
               "fieldName": "fullWidth"
             },
             {
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "fieldName": "wrap"
+            },
+            {
               "name": "href",
               "type": {
                 "text": "string"
@@ -645,6 +671,16 @@
               "description": "Takes the whole width of its container.",
               "attribute": "full-width",
               "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "attribute": "wrap",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -835,6 +871,14 @@
               "fieldName": "fullWidth"
             },
             {
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "fieldName": "wrap"
+            },
+            {
               "name": "href",
               "type": {
                 "text": "string"
@@ -990,6 +1034,16 @@
               "description": "Takes the whole width of its container.",
               "attribute": "full-width",
               "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "wrap",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+              "attribute": "wrap",
+              "reflects": true
             },
             {
               "kind": "field",
@@ -7999,9 +8053,9 @@
             {
               "name": "orientation",
               "type": {
-                "text": "\"horizontal\" | \"vertical\""
+                "text": "\"horizontal\" | \"vertical\" | \"auto\""
               },
-              "description": "Direction.",
+              "description": "Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again.",
               "fieldName": "orientation",
               "default": "horizontal"
             },
@@ -8088,9 +8142,9 @@
               "kind": "field",
               "name": "orientation",
               "type": {
-                "text": "\"horizontal\" | \"vertical\""
+                "text": "\"horizontal\" | \"vertical\" | \"auto\""
               },
-              "description": "Direction.",
+              "description": "Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again.",
               "attribute": "orientation",
               "reflects": true,
               "default": "horizontal"
@@ -8144,7 +8198,15 @@
             },
             {
               "name": "control",
-              "description": "Each option button."
+              "description": "Each option button. In a narrow container the options shrink and their labels end in an ellipsis."
+            },
+            {
+              "name": "control-selected",
+              "description": "The chosen option (also part control): ::part() takes no attribute selector."
+            },
+            {
+              "name": "label",
+              "description": "The text of each option."
             }
           ]
         }

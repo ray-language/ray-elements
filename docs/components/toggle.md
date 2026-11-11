@@ -15,7 +15,7 @@ Properties:
 - `square`: boolean, reflects. Square, for an icon alone (give it a label).
 - `label`: string, reflects. Accessible name and tooltip, for icon-only toggles.
 
-Also the properties of RayButton (`<ray-button>`): `gradient`, `color`, `size`, `radius`, `type`, `disabled`, `loading`, `fullWidth`, `href`, `target`, `name`, `value`.
+Also the properties of RayButton (`<ray-button>`): `gradient`, `color`, `size`, `radius`, `type`, `disabled`, `loading`, `fullWidth`, `wrap`, `href`, `target`, `name`, `value`.
 
 Events:
 

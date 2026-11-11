@@ -31,6 +31,8 @@ export interface RayButtonProps {
   loading?: boolean;
   /** Takes the whole width of its container. */
   fullWidth?: boolean;
+  /** A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis. */
+  wrap?: boolean;
   /** Renders a link instead of a button. */
   href?: string;
   /** Link target, with href. */
@@ -75,6 +77,8 @@ export interface RayIconButtonProps {
   type?: "button" | "submit" | "reset";
   /** Takes the whole width of its container. */
   fullWidth?: boolean;
+  /** A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis. */
+  wrap?: boolean;
   /** Renders a link instead of a button. */
   href?: string;
   /** Link target, with href. */
@@ -112,6 +116,8 @@ export interface RayToggleProps {
   loading?: boolean;
   /** Takes the whole width of its container. */
   fullWidth?: boolean;
+  /** A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis. */
+  wrap?: boolean;
   /** Renders a link instead of a button. */
   href?: string;
   /** Link target, with href. */
@@ -1012,8 +1018,8 @@ export interface RaySegmentedControlProps {
   radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
   /** Takes the whole width. */
   fullWidth?: boolean;
-  /** Direction. */
-  orientation?: "horizontal" | "vertical";
+  /** Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again. */
+  orientation?: "horizontal" | "vertical" | "auto";
   /** Not interactive nor submitted. */
   disabled?: boolean;
   /** v-model: the element's `value`. */

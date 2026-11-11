@@ -7,6 +7,24 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-segmented-control`: `orientation="auto"`, a row that stacks when its
+  options at their natural width do not fit in the room its parent gives it,
+  and goes back to a row when they fit again. Each option's text is the part
+  `label`, and the chosen option also carries the part `control-selected`
+  (`::part()` takes no attribute selector).
+- `ray-button`: `wrap` breaks a long label into lines and lets the button
+  grow from its height.
+
+### Fixed
+
+- `ray-segmented-control` and `ray-button` overflowed a container narrower
+  than their labels (a 320 px phone, a large text size). Both now stay inside
+  it. The segmented control's options shrink and their labels end in an
+  ellipsis. The button's label ends in an ellipsis too: it was declared, but
+  never applied.
+
 ## [0.16.0] - 2026-11-10
 
 ### Added

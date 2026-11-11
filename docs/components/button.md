@@ -17,6 +17,7 @@ Properties:
 - `disabled`: boolean. Not interactive (also when inside a disabled fieldset).
 - `loading`: boolean. Shows a spinner over the content and blocks clicks.
 - `fullWidth` (attribute `full-width`): boolean. Takes the whole width of its container.
+- `wrap`: boolean, reflects. A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.
 - `href`: string. Renders a link instead of a button.
 - `target`: string. Link target, with href.
 - `name`: string. With type=submit: submitted as name=value.
@@ -94,4 +95,11 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-button href="#button" variant="subtle">Link<ray-icon slot="right" name="arrow-up-right"></ray-icon></ray-button>
 </div>
 <ray-button full-width variant="raised" color="teal">Full width</ray-button>
+
+<div class="demo-caption">Long labels in narrow containers: drag the corner of the box</div>
+<div class="demo-resize demo-stack">
+  <ray-button full-width variant="default">Another schedule (e.g. a different dose at weekends)</ray-button>
+  <ray-button full-width variant="light" wrap>Another schedule (e.g. a different dose at weekends)</ray-button>
+</div>
+<p class="demo-muted">A label longer than the room ends in an ellipsis; with <code>wrap</code> it breaks into lines.</p>
 ```
