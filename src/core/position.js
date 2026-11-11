@@ -3,6 +3,11 @@
 // The floating element is position: fixed (it lives in the top layer via the
 // Popover API), placed next to an anchor rectangle, flipped to the opposite
 // side when it does not fit, and shifted to stay inside the viewport.
+// "The viewport" is the part of the page the user sees: the visual viewport
+// (smaller than the window while a phone's on-screen keyboard is up) minus
+// the safe areas (the notch, the status bar, the home indicator). When
+// neither side has room, the floating element takes the roomier one and its
+// height is capped to that room (it scrolls).
 // Done in JS rather than CSS anchor positioning, which not every webview
 // ships yet (WebKitGTK, older WKWebView).
 //
@@ -24,6 +29,56 @@ const OPPOSITE = { top: "bottom", bottom: "top", left: "right", right: "left" };
  * @property {boolean} [matchWidth] at least as wide as the anchor
  */
 
+let insetProbe = null;
+
+/** The safe-area insets of the screen, in px (env(safe-area-inset-*)). */
+function safeAreaInsets() {
+  if (!document.body) return { top: 0, right: 0, bottom: 0, left: 0 };
+  if (!insetProbe || !insetProbe.isConnected) {
+    insetProbe = document.createElement("div");
+    insetProbe.setAttribute("aria-hidden", "true");
+    insetProbe.style.cssText =
+      "position: fixed; top: 0; left: 0; width: 0; height: 0; visibility: hidden; pointer-events: none;" +
+      "padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);";
+    document.body.append(insetProbe);
+  }
+  const cs = getComputedStyle(insetProbe);
+  return {
+    top: parseFloat(cs.paddingTop) || 0,
+    right: parseFloat(cs.paddingRight) || 0, /* physical */
+    bottom: parseFloat(cs.paddingBottom) || 0,
+    left: parseFloat(cs.paddingLeft) || 0, /* physical */
+  };
+}
+
+/**
+ * The visible area, in the coordinates of position: fixed (the layout
+ * viewport): the visual viewport where there is one, minus the safe areas.
+ * @returns {{ left: number, top: number, right: number, bottom: number }}
+ */
+export function visibleArea() {
+  const layoutWidth = document.documentElement.clientWidth;
+  const layoutHeight = window.innerHeight;
+  const vv = window.visualViewport;
+  let left = 0;
+  let top = 0;
+  let right = layoutWidth;
+  let bottom = layoutHeight;
+  if (vv && vv.width > 0 && vv.height > 0) {
+    left = vv.offsetLeft;
+    top = vv.offsetTop;
+    right = Math.min(layoutWidth, vv.offsetLeft + vv.width);
+    bottom = Math.min(layoutHeight, vv.offsetTop + vv.height);
+  }
+  const inset = safeAreaInsets();
+  return {
+    left: Math.max(left, inset.left),
+    top: Math.max(top, inset.top),
+    right: Math.min(right, layoutWidth - inset.right),
+    bottom: Math.min(bottom, layoutHeight - inset.bottom),
+  };
+}
+
 /**
  * Places `floating` next to `anchor` (a DOMRect-like {left, top, right, bottom, width, height}).
  * The floating element must be rendered (open) so it can be measured.
@@ -31,22 +86,48 @@ const OPPOSITE = { top: "bottom", bottom: "top", left: "right", right: "left" };
  * @returns {string} the final placement, e.g. "top-start"
  */
 export function place(anchor, floating, { placement = "bottom", offset = 8, padding = 8, flip = true, matchWidth = false } = {}) {
-  const vw = document.documentElement.clientWidth;
-  const vh = window.innerHeight;
+  const area = visibleArea();
+  const minX = area.left + padding;
+  const maxX = area.right - padding;
+  const minY = area.top + padding;
+  const maxY = area.bottom - padding;
   floating.style.position = "fixed";
   floating.style.inset = "auto";
   floating.style.margin = "0";
   if (matchWidth) floating.style.minWidth = `${anchor.width}px`;
-  const f = floating.getBoundingClientRect();
+  // Measure at the height its own CSS gives it (drop a cap from a previous place()).
+  // (data-capped keeps the inline values it replaced, restored here.)
+  if (floating.dataset.capped !== undefined) {
+    const [maxHeight = "", overflowY = ""] = JSON.parse(floating.dataset.capped || "[]");
+    floating.style.maxHeight = maxHeight;
+    floating.style.overflowY = overflowY;
+    delete floating.dataset.capped;
+  }
+  let f = floating.getBoundingClientRect();
   let [side, align = "center"] = placement.split("-");
 
-  const fits = (s) => {
-    if (s === "bottom") return anchor.bottom + offset + f.height <= vh - padding;
-    if (s === "top") return anchor.top - offset - f.height >= padding;
-    if (s === "right") return anchor.right + offset + f.width <= vw - padding;
-    return anchor.left - offset - f.width >= padding;
+  /** The room on a side of the anchor, inside the visible area. */
+  const room = (s) => {
+    if (s === "bottom") return maxY - (anchor.bottom + offset);
+    if (s === "top") return anchor.top - offset - minY;
+    if (s === "right") return maxX - (anchor.right + offset);
+    return anchor.left - offset - minX;
   };
-  if (flip && !fits(side) && fits(OPPOSITE[side])) side = OPPOSITE[side];
+  const need = (s) => (s === "top" || s === "bottom" ? f.height : f.width);
+  const fits = (s) => need(s) <= room(s);
+  if (flip && !fits(side)) {
+    const other = OPPOSITE[side];
+    // The other side if it fits, or (neither does) the roomier one.
+    if (fits(other) || room(other) > room(side)) side = other;
+  }
+  // Above or below without room enough: as tall as the room, scrolling.
+  if ((side === "top" || side === "bottom") && !fits(side)) {
+    const cap = Math.max(0, Math.floor(room(side)));
+    floating.dataset.capped = JSON.stringify([floating.style.maxHeight, floating.style.overflowY]);
+    floating.style.maxHeight = `${cap}px`;
+    floating.style.overflowY = "auto";
+    f = floating.getBoundingClientRect();
+  }
 
   let x;
   let y;
@@ -62,9 +143,9 @@ export function place(anchor, floating, { placement = "bottom", offset = 8, padd
       : align === "end" ? anchor.bottom - f.height
       : anchor.top + anchor.height / 2 - f.height / 2;
   }
-  // Shift into the viewport.
-  x = Math.max(padding, Math.min(x, vw - f.width - padding));
-  y = Math.max(padding, Math.min(y, vh - f.height - padding));
+  // Shift into the visible area.
+  x = Math.max(minX, Math.min(x, maxX - f.width));
+  y = Math.max(minY, Math.min(y, maxY - f.height));
   floating.style.left = `${Math.round(x)}px`;
   floating.style.top = `${Math.round(y)}px`;
   const final = `${side}-${align}`;
@@ -86,6 +167,10 @@ export function autoUpdate(anchor, floating, update) {
   const onChange = () => update();
   window.addEventListener("scroll", onChange, { capture: true, passive: true });
   window.addEventListener("resize", onChange);
+  // An on-screen keyboard resizes and scrolls the visual viewport, not the window.
+  const vv = window.visualViewport;
+  vv?.addEventListener("resize", onChange);
+  vv?.addEventListener("scroll", onChange);
   const ro = typeof ResizeObserver === "function" ? new ResizeObserver(onChange) : null;
   if (ro) {
     if (anchor instanceof Element) ro.observe(anchor);
@@ -94,6 +179,8 @@ export function autoUpdate(anchor, floating, update) {
   return () => {
     window.removeEventListener("scroll", onChange, { capture: true });
     window.removeEventListener("resize", onChange);
+    vv?.removeEventListener("resize", onChange);
+    vv?.removeEventListener("scroll", onChange);
     ro?.disconnect();
   };
 }
