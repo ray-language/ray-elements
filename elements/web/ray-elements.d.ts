@@ -380,6 +380,8 @@ export declare class RayButton extends RayElement {
   loading: boolean | undefined;
   /** Takes the whole width of its container. */
   fullWidth: boolean | undefined;
+  /** A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis. */
+  wrap: boolean | undefined;
   /** Renders a link instead of a button. */
   href: string | undefined;
   /** Link target, with href. */
@@ -1183,8 +1185,8 @@ export declare class RaySegmentedControl extends FormControl {
   radius: "xs" | "sm" | "md" | "lg" | "xl" | "full" | undefined;
   /** Takes the whole width. */
   fullWidth: boolean | undefined;
-  /** Direction. */
-  orientation: "horizontal" | "vertical";
+  /** Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again. */
+  orientation: "horizontal" | "vertical" | "auto";
   /** Not interactive nor submitted. */
   disabled: boolean | undefined;
   /** The options, from data or the child options. */

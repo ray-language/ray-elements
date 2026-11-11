@@ -4,6 +4,6 @@ import "@raylang/elements/button";
 import { createComponent } from "../create.js";
 
 export const RayButton = /*#__PURE__*/ createComponent("RayButton", "ray-button", {
-  properties: ["variant", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "href", "target", "name", "value"],
-  booleans: ["disabled", "loading", "fullWidth"],
+  properties: ["variant", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "wrap", "href", "target", "name", "value"],
+  booleans: ["disabled", "loading", "fullWidth", "wrap"],
 });

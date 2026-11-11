@@ -18,7 +18,7 @@ Properties:
 - `disabled`: boolean. Not interactive.
 - `loading`: boolean. Shows a spinner instead of the icon.
 
-Also the properties of RayButton (`<ray-button>`): `radius`, `type`, `fullWidth`, `href`, `target`, `name`, `value`.
+Also the properties of RayButton (`<ray-button>`): `radius`, `type`, `fullWidth`, `wrap`, `href`, `target`, `name`, `value`.
 
 Slots:
 

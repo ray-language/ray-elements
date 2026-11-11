@@ -15,7 +15,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
 - `fullWidth` (attribute `full-width`): boolean. Takes the whole width.
-- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction.
+- `orientation`: `horizontal` | `vertical` | `auto`, default `horizontal`, reflects. Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again.
 - `disabled`: boolean. Not interactive nor submitted.
 
 Events:
@@ -31,7 +31,9 @@ Parts (`::part()`):
 
 - `root`: The row.
 - `indicator`: The sliding highlight.
-- `control`: Each option button.
+- `control`: Each option button. In a narrow container the options shrink and their labels end in an ellipsis.
+- `control-selected`: The chosen option (also part control): ::part() takes no attribute selector.
+- `label`: The text of each option.
 
 Methods and properties:
 
@@ -103,6 +105,14 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     <ray-segmented-control id="demo-seg-data" full-width aria-label="Status"></ray-segmented-control>
   </div>
 </div>
+
+<div class="demo-caption">Narrow containers: drag the corner of the box</div>
+<div class="demo-resize">
+  <ray-segmented-control orientation="auto" full-width size="md" value="normal" aria-label="Text size">
+    <option value="normal">Normal</option><option value="large">Large</option><option value="larger">Very large</option>
+  </ray-segmented-control>
+</div>
+<p class="demo-muted"><code>orientation="auto"</code> stacks the options when they do not fit in a row. In a box narrower than even the stack, the labels end in an ellipsis.</p>
 
 <script type="module">
   // Billing: the prices follow the period.

@@ -27,6 +27,13 @@ change the API.
   selected day alone; now `::part(day-taken day-selected)` styles a marked
   day that is selected. The date picker's dropdown exports them. `selected`,
   `today`, `outside` and `disabled` are no longer valid `dayState` names.
+- `ray-segmented-control`: `orientation="auto"`, a row that stacks when its
+  options at their natural width do not fit in the room its parent gives it,
+  and goes back to a row when they fit again. Each option's text is the part
+  `label`, and the chosen option also carries the part `control-selected`
+  (`::part()` takes no attribute selector).
+- `ray-button`: `wrap` breaks a long label into lines and lets the button
+  grow from its height.
 
 ### Fixed
 
@@ -36,6 +43,11 @@ change the API.
   the columns narrow, the days keep their height, and a long month name is
   cut with an ellipsis. In a container that sizes to its content, such as the
   date picker's dropdown, it keeps its width.
+- `ray-segmented-control` and `ray-button` overflowed a container narrower
+  than their labels (a 320 px phone, a large text size). Both now stay inside
+  it. The segmented control's options shrink and their labels end in an
+  ellipsis. The button's label ends in an ellipsis too: it was declared, but
+  never applied.
 
 ## [0.16.0] - 2026-11-10
 

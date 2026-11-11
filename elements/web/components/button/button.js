@@ -12,6 +12,10 @@ const styles = css`
   :host {
     display: inline-flex;
     vertical-align: middle;
+    /* In a narrower container (a block, grid or flex parent) the label ends
+       in an ellipsis, or wraps with wrap. */
+    max-width: 100%;
+    min-width: 0;
   }
   :host([full-width]) { display: flex; width: 100%; }
   .button {
@@ -21,6 +25,7 @@ const styles = css`
     align-items: center;
     justify-content: center;
     gap: var(--_gap);
+    min-width: 0;
     height: var(--_h);
     padding: 0 var(--_px);
     font: inherit;
@@ -80,9 +85,22 @@ const styles = css`
     border-color: var(--ray-border);
     box-shadow: none;
   }
-  .section { display: inline-flex; align-items: center; }
+  .section { display: inline-flex; flex: none; align-items: center; }
   .section:not([data-filled]) { display: none; }
-  .label { display: inline-flex; align-items: center; overflow: hidden; text-overflow: ellipsis; }
+  /* A flex container cannot end its text in an ellipsis: the slot is the
+     block that does, and slotted elements (an icon, a badge) sit on its middle. */
+  .label { display: inline-flex; align-items: center; min-width: 0; overflow: hidden; }
+  .label > slot { display: block; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .label ::slotted(*) { vertical-align: middle; }
+  /* wrap: a long label breaks into lines; the button grows from its height. */
+  :host([wrap]) .button {
+    height: auto;
+    min-height: var(--_h);
+    padding-block: calc(var(--_h) * 0.16);
+    line-height: 1.25;
+    white-space: normal;
+  }
+  :host([wrap]) .label > slot { overflow: visible; text-align: center; overflow-wrap: break-word; }
   .overlay {
     position: absolute;
     inset: 0;
@@ -131,6 +149,7 @@ export class RayButton extends RayElement {
     disabled: { type: Boolean, reflect: true },
     loading: { type: Boolean, reflect: true },
     fullWidth: { type: Boolean, reflect: true },
+    wrap: { type: Boolean, reflect: true },
     href: { type: String, reflect: true },
     target: { type: String, reflect: true },
     name: { type: String, reflect: true },

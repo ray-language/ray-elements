@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayToggle = /*#__PURE__*/ createComponent("ray-toggle", {
   displayName: "RayToggle",
-  properties: ["pressed", "variant", "square", "label", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "href", "target", "name", "value"],
+  properties: ["pressed", "variant", "square", "label", "gradient", "color", "size", "radius", "type", "disabled", "loading", "fullWidth", "wrap", "href", "target", "name", "value"],
   events: { onChange: "change" },
 });

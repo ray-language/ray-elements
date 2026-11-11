@@ -119,6 +119,11 @@
           "valueSet": "v"
         },
         {
+          "name": "wrap",
+          "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+          "valueSet": "v"
+        },
+        {
           "name": "href",
           "description": "Renders a link instead of a button."
         },
@@ -285,6 +290,11 @@
           "valueSet": "v"
         },
         {
+          "name": "wrap",
+          "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
+          "valueSet": "v"
+        },
+        {
           "name": "href",
           "description": "Renders a link instead of a button."
         },
@@ -422,6 +432,11 @@
         {
           "name": "full-width",
           "description": "Takes the whole width of its container.",
+          "valueSet": "v"
+        },
+        {
+          "name": "wrap",
+          "description": "A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.",
           "valueSet": "v"
         },
         {
@@ -3041,13 +3056,16 @@
         },
         {
           "name": "orientation",
-          "description": "Direction.",
+          "description": "Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again.",
           "values": [
             {
               "name": "horizontal"
             },
             {
               "name": "vertical"
+            },
+            {
+              "name": "auto"
             }
           ]
         },

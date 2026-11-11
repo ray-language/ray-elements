@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayIconButton = /*#__PURE__*/ createComponent("ray-icon-button", {
   displayName: "RayIconButton",
-  properties: ["label", "variant", "gradient", "color", "size", "disabled", "loading", "radius", "type", "fullWidth", "href", "target", "name", "value"],
+  properties: ["label", "variant", "gradient", "color", "size", "disabled", "loading", "radius", "type", "fullWidth", "wrap", "href", "target", "name", "value"],
   events: {  },
 });

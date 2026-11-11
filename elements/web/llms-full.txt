@@ -325,6 +325,7 @@ Properties:
 - `disabled`: boolean. Not interactive (also when inside a disabled fieldset).
 - `loading`: boolean. Shows a spinner over the content and blocks clicks.
 - `fullWidth` (attribute `full-width`): boolean. Takes the whole width of its container.
+- `wrap`: boolean, reflects. A long label breaks into lines and the button grows from its height (min-height: the size's height). Without it, a label longer than the room ends in an ellipsis.
 - `href`: string. Renders a link instead of a button.
 - `target`: string. Link target, with href.
 - `name`: string. With type=submit: submitted as name=value.
@@ -385,7 +386,7 @@ Properties:
 - `disabled`: boolean. Not interactive.
 - `loading`: boolean. Shows a spinner instead of the icon.
 
-Also the properties of RayButton (`<ray-button>`): `radius`, `type`, `fullWidth`, `href`, `target`, `name`, `value`.
+Also the properties of RayButton (`<ray-button>`): `radius`, `type`, `fullWidth`, `wrap`, `href`, `target`, `name`, `value`.
 
 Slots:
 
@@ -412,7 +413,7 @@ Properties:
 - `square`: boolean, reflects. Square, for an icon alone (give it a label).
 - `label`: string, reflects. Accessible name and tooltip, for icon-only toggles.
 
-Also the properties of RayButton (`<ray-button>`): `gradient`, `color`, `size`, `radius`, `type`, `disabled`, `loading`, `fullWidth`, `href`, `target`, `name`, `value`.
+Also the properties of RayButton (`<ray-button>`): `gradient`, `color`, `size`, `radius`, `type`, `disabled`, `loading`, `fullWidth`, `wrap`, `href`, `target`, `name`, `value`.
 
 Events:
 
@@ -1356,7 +1357,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Height and font size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius.
 - `fullWidth` (attribute `full-width`): boolean. Takes the whole width.
-- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. Direction.
+- `orientation`: `horizontal` | `vertical` | `auto`, default `horizontal`, reflects. Direction. auto: a row that stacks (data-stacked, aria-orientation vertical) when its options at their natural width do not fit in the room its parent gives it, and goes back to a row when they fit again.
 - `disabled`: boolean. Not interactive nor submitted.
 
 Events:
@@ -1372,7 +1373,9 @@ Parts (`::part()`):
 
 - `root`: The row.
 - `indicator`: The sliding highlight.
-- `control`: Each option button.
+- `control`: Each option button. In a narrow container the options shrink and their labels end in an ellipsis.
+- `control-selected`: The chosen option (also part control): ::part() takes no attribute selector.
+- `label`: The text of each option.
 
 Methods and properties:
 
