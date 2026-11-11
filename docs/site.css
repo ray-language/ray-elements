@@ -1085,6 +1085,7 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .demo-ship ray-icon { flex: none; margin-top: 0.1rem; }
 .demo-unstyled .demo-muted { white-space: nowrap; }
 
+.demo-calendar-wide { max-width: 34rem; }
 .demo-crop-profile { display: flex; align-items: center; gap: var(--ray-space-4); }
 .demo-crop-profile-text { display: grid; gap: var(--ray-space-2); }
 .demo-crop-actions { display: flex; flex-wrap: wrap; gap: var(--ray-space-2); }
