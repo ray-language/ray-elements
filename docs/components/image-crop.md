@@ -61,7 +61,7 @@ Types:
 - `{ x: number; y: number; width: number; height: number }`: A rectangle in pixels of the original image.
 - `{ size?: string | number; width?: number; height?: number; type?: string; quality?: number }`: Overrides output-size (size, or width and height), type and quality for one export.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.16.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.17.0.
 
 ## Example
 
