@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-11-11
+
 ### Added
 
 - `ray-image-crop`: frames an image (a URL, `File` or `Blob`) in a rectangle
