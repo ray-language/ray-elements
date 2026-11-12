@@ -9,6 +9,16 @@ change the API.
 
 ### Fixed
 
+- Dropdowns, menus, popovers and tooltips are placed inside the part of the
+  page the user can see. On a phone with the on-screen keyboard up, that is
+  the visual viewport, which is smaller than the window and may be scrolled:
+  a `ray-combobox` list used to open over its own field and under the status
+  bar. The safe areas (notch, status bar, home indicator) are kept clear.
+  When neither side has room, the panel takes the roomier side and its
+  height is capped to that room, with scrolling. It is placed again when
+  the keyboard opens or closes, and when the page scrolls under it.
+- `ray-combobox` shows no expand arrow when it has no options to pick from
+  (a `creatable` tag field).
 - `ray-segmented-control`: after a font size change, the highlight could
   keep the old size and position, outside the control. A `full-width` row
   keeps its width while its options resize, so the resize observer, which

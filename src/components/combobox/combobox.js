@@ -228,6 +228,8 @@ export class RayCombobox extends FieldControl {
     this._renderChips();
     if (!this.#filtering && document.activeElement !== this) this._settleText();
     this.$(".clear").hidden = !this.clearable || !this.values.length || this.effectivelyDisabled;
+    // Nothing to pick from (a creatable tag field): no expand arrow.
+    this.$(".chevron").hidden = !this.#options.length;
     this._commit();
     if (changed.has("open")) this._setOpen(Boolean(this.open));
     if (this.open) this._renderList();
