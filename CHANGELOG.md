@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.17.1] - 2026-11-12
+
 ### Fixed
 
 - Dropdowns, menus, popovers and tooltips are placed inside the part of the
