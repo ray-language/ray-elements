@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-segmented-control`: after a font size change, the highlight could
+  keep the old size and position, outside the control. A `full-width` row
+  keeps its width while its options resize, so the resize observer, which
+  watched only the row, did not fire. It now also watches the options.
+
 ## [0.17.0] - 2026-11-11
 
 ### Added

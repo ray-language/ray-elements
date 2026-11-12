@@ -135,3 +135,38 @@ T.test("grid and flex parents shrink them too (min-width: 0)", async (T) => {
     box.remove();
   }
 });
+
+T.test("segmented: the indicator follows its option when the font size changes (the row keeps its width)", async (T) => {
+  const observed = new Set();
+  const observe = ResizeObserver.prototype.observe;
+  ResizeObserver.prototype.observe = function (el, ...rest) {
+    observed.add(el);
+    return observe.call(this, el, ...rest);
+  };
+  let box;
+  try {
+    box = await mount(`<ray-segmented-control full-width value="b"><option value="a">Sound</option><option value="b">Alarm</option><option value="c">Silent</option></ray-segmented-control>`, 300);
+  } finally {
+    ResizeObserver.prototype.observe = observe;
+  }
+  const sc = box.firstElementChild;
+  const buttons = [...sc.shadowRoot.querySelectorAll("button")];
+  T.ok(buttons.every((b) => observed.has(b)), "every option is observed, not only the row");
+  const ind = sc.shadowRoot.querySelector(".indicator");
+  const chosen = buttons[1];
+  const matches = () => {
+    const a = ind.getBoundingClientRect();
+    const b = chosen.getBoundingClientRect();
+    return Math.abs(a.left - b.left) < 1 && Math.abs(a.width - b.width) < 1 && Math.abs(a.height - b.height) < 1;
+  };
+  T.ok(matches(), "on the chosen option");
+  const rowWidth = sc.shadowRoot.querySelector(".root").getBoundingClientRect().width;
+  box.style.fontSize = "28px";
+  sc.style.setProperty("--_fs", "28px");
+  await T.settle();
+  T.eq(Math.round(sc.shadowRoot.querySelector(".root").getBoundingClientRect().width), Math.round(rowWidth), "the row keeps its width");
+  sc._layout();   // what the observer of the options does (no frames in a hidden window)
+  await T.settle();
+  T.ok(matches(), "still on the chosen option at the new size");
+  box.remove();
+});
