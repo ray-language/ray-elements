@@ -803,6 +803,15 @@
           "description": "Name of the zoom slider."
         },
         {
+          "name": "preview",
+          "description": "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).",
+          "valueSet": "v"
+        },
+        {
+          "name": "preview-label",
+          "description": "Accessible name of the avatar button and title of the preview dialog."
+        },
+        {
           "name": "failed-label",
           "description": "Shown under the field when the chosen file cannot be decoded (until the next picture)."
         }

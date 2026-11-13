@@ -39,12 +39,15 @@ Properties:
 - `cancelLabel` (attribute `cancel-label`): string, default `Cancel`. The sheet's button that leaves the value as it was.
 - `cropLabel` (attribute `crop-label`): string, default `Photo framing`. Accessible name of the crop area.
 - `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider.
+- `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).
+- `previewLabel` (attribute `preview-label`): string, default `View photo`. Accessible name of the avatar button and title of the preview dialog.
 - `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded (until the next picture).
 
 Events:
 
 - `input`: The value changed (with change; for v-model).
 - `change`: A picture was kept (Use photo) or removed. Read value.
+- `ray-preview` (detail `{ value: string | Blob }`): The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer).
 - `ray-error` (detail `{ error: Error }`): The chosen file could not be decoded; the value is unchanged.
 
 Parts (`::part()`):
@@ -52,6 +55,7 @@ Parts (`::part()`):
 - `label`: The label.
 - `description`: The description.
 - `row`: The avatar and the buttons (role group, named by the label).
+- `view`: Around the avatar; a button with preview and a picture.
 - `avatar`: The ray-avatar.
 - `actions`: The buttons' column (or row).
 - `pick`: The Choose photo / Change photo ray-button.
@@ -59,6 +63,8 @@ Parts (`::part()`):
 - `error`: The error message.
 - `sheet`: The ray-drawer or ray-dialog of the crop.
 - `crop`: The ray-image-crop.
+- `preview`: The ray-dialog of the preview.
+- `preview-image`: The picture in the preview dialog.
 - `cancel`: The sheet's Cancel ray-button.
 - `use`: The sheet's Use photo ray-button.
 
@@ -66,6 +72,7 @@ Methods and properties:
 
 - `pick(): void`: Opens the system picker (what Choose photo does).
 - `edit(src: Blob | string): void`: Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value.
+- `showPreview(): void`: Shows the picture large in a dialog (nothing without one).
 - `clear(): void`: Removes the picture (fires input and change when there was one).
 - `toBlob(): Promise<Blob | null>`: The value as a Blob whatever output is (null without a picture).
 
@@ -80,8 +87,8 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 ```html
 <div class="demo-caption">Choose a picture, frame it in the circle, use it: the value is a small square JPEG</div>
 <div class="demo-grid">
-  <ray-avatar-picker id="demo-avatar-picker" label="Profile picture" display-name="Ada Lovelace" color="teal" variant="filled" description="Drag to frame it; pinch, the wheel or the slider to zoom."></ray-avatar-picker>
-  <ray-avatar-picker label="Team logo" display-name="Ray Labs" size="lg" layout="inline" output="blob" output-size="256" type="image/png" pick-label="Upload logo" change-label="Replace" remove-label="Remove" sheet="dialog"></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker" label="Profile picture" display-name="Ada Lovelace" color="teal" variant="filled" preview description="Drag to frame it; pinch, the wheel or the slider to zoom. preview: click the picture to see it large."></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker-logo" label="Team logo" display-name="Ray Labs" preview size="lg" layout="inline" output="blob" output-size="256" type="image/png" pick-label="Upload logo" change-label="Replace" remove-label="Remove" sheet="dialog"></ray-avatar-picker>
 </div>
 <p class="demo-muted" id="demo-avatar-picker-out">Choose a picture: its size shows here.</p>
 
@@ -102,6 +109,12 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
         : `${picker.label}: a ${v.type} Blob of ${Math.round(v.size / 1024)} KB`;
     });
   }
+
+  // An app's own action instead of the preview dialog.
+  document.getElementById("demo-avatar-picker-logo").addEventListener("ray-preview", (e) => {
+    e.preventDefault();
+    out.textContent = "Team logo: ray-preview, handled by the page (preventDefault): no dialog";
+  });
 
   const form = document.getElementById("demo-avatar-picker-form");
   form.addEventListener("submit", (e) => {

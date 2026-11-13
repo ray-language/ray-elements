@@ -176,6 +176,17 @@ type = "string"
 default = "Zoom"
 description = "Name of the zoom slider."
 
+[ray-avatar-picker.properties.preview]
+type = "boolean"
+reflect = true
+description = "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows)."
+
+[ray-avatar-picker.properties.previewLabel]
+attribute = "preview-label"
+type = "string"
+default = "View photo"
+description = "Accessible name of the avatar button and title of the preview dialog."
+
 [ray-avatar-picker.properties.failedLabel]
 attribute = "failed-label"
 type = "string"
@@ -189,6 +200,10 @@ description = "Opens the system picker (what Choose photo does)."
 [ray-avatar-picker.members.edit]
 ts = "edit(src: Blob | string): void"
 description = "Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value."
+
+[ray-avatar-picker.members.showPreview]
+ts = "showPreview(): void"
+description = "Shows the picture large in a dialog (nothing without one)."
 
 [ray-avatar-picker.members.clear]
 ts = "clear(): void"
@@ -204,6 +219,10 @@ description = "The value changed (with change; for v-model)."
 [ray-avatar-picker.events.change]
 description = "A picture was kept (Use photo) or removed. Read value."
 
+[ray-avatar-picker.events.ray-preview]
+detail = "{ value: string | Blob }"
+description = "The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer)."
+
 [ray-avatar-picker.events.ray-error]
 detail = "{ error: Error }"
 description = "The chosen file could not be decoded; the value is unchanged."
@@ -216,6 +235,9 @@ description = "The description."
 
 [ray-avatar-picker.parts.row]
 description = "The avatar and the buttons (role group, named by the label)."
+
+[ray-avatar-picker.parts.view]
+description = "Around the avatar; a button with preview and a picture."
 
 [ray-avatar-picker.parts.avatar]
 description = "The ray-avatar."
@@ -237,6 +259,12 @@ description = "The ray-drawer or ray-dialog of the crop."
 
 [ray-avatar-picker.parts.crop]
 description = "The ray-image-crop."
+
+[ray-avatar-picker.parts.preview]
+description = "The ray-dialog of the preview."
+
+[ray-avatar-picker.parts.preview-image]
+description = "The picture in the preview dialog."
 
 [ray-avatar-picker.parts.cancel]
 description = "The sheet's Cancel ray-button."

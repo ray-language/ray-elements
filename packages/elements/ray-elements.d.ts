@@ -529,12 +529,18 @@ export declare class RayAvatarPicker extends FormControl {
   cropLabel: string;
   /** Name of the zoom slider. */
   zoomLabel: string;
+  /** With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows). */
+  preview: boolean | undefined;
+  /** Accessible name of the avatar button and title of the preview dialog. */
+  previewLabel: string;
   /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
   failedLabel: string;
   /** Opens the system picker (what Choose photo does). */
   pick(): void;
   /** Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value. */
   edit(src: Blob | string): void;
+  /** Shows the picture large in a dialog (nothing without one). */
+  showPreview(): void;
   /** Removes the picture (fires input and change when there was one). */
   clear(): void;
   /** The value as a Blob whatever output is (null without a picture). */
@@ -545,6 +551,8 @@ export declare class RayAvatarPicker extends FormControl {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RayAvatarPickerEventMap extends HTMLElementEventMap {
+  /** The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer). */
+  "ray-preview": CustomEvent<{ value: string | Blob }>;
   /** The chosen file could not be decoded; the value is unchanged. */
   "ray-error": CustomEvent<{ error: Error }>;
 }

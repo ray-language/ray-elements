@@ -1709,6 +1709,23 @@
               "default": "Zoom"
             },
             {
+              "name": "preview",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).",
+              "fieldName": "preview"
+            },
+            {
+              "name": "preview-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the avatar button and title of the preview dialog.",
+              "fieldName": "previewLabel",
+              "default": "View photo"
+            },
+            {
               "name": "failed-label",
               "type": {
                 "text": "string"
@@ -2030,6 +2047,27 @@
             },
             {
               "kind": "field",
+              "name": "preview",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).",
+              "attribute": "preview",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "previewLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the avatar button and title of the preview dialog.",
+              "attribute": "preview-label",
+              "reflects": false,
+              "default": "View photo"
+            },
+            {
+              "kind": "field",
               "name": "failedLabel",
               "type": {
                 "text": "string"
@@ -2048,6 +2086,11 @@
               "kind": "method",
               "name": "edit",
               "description": "Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value."
+            },
+            {
+              "kind": "method",
+              "name": "showPreview",
+              "description": "Shows the picture large in a dialog (nothing without one)."
             },
             {
               "kind": "method",
@@ -2076,6 +2119,13 @@
               "description": "A picture was kept (Use photo) or removed. Read value."
             },
             {
+              "name": "ray-preview",
+              "type": {
+                "text": "CustomEvent<{ value: string | Blob }>"
+              },
+              "description": "The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer)."
+            },
+            {
               "name": "ray-error",
               "type": {
                 "text": "CustomEvent<{ error: Error }>"
@@ -2096,6 +2146,10 @@
             {
               "name": "row",
               "description": "The avatar and the buttons (role group, named by the label)."
+            },
+            {
+              "name": "view",
+              "description": "Around the avatar; a button with preview and a picture."
             },
             {
               "name": "avatar",
@@ -2124,6 +2178,14 @@
             {
               "name": "crop",
               "description": "The ray-image-crop."
+            },
+            {
+              "name": "preview",
+              "description": "The ray-dialog of the preview."
+            },
+            {
+              "name": "preview-image",
+              "description": "The picture in the preview dialog."
             },
             {
               "name": "cancel",

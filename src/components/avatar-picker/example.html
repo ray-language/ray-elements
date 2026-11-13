@@ -1,7 +1,7 @@
 <div class="demo-caption">Choose a picture, frame it in the circle, use it: the value is a small square JPEG</div>
 <div class="demo-grid">
-  <ray-avatar-picker id="demo-avatar-picker" label="Profile picture" display-name="Ada Lovelace" color="teal" variant="filled" description="Drag to frame it; pinch, the wheel or the slider to zoom."></ray-avatar-picker>
-  <ray-avatar-picker label="Team logo" display-name="Ray Labs" size="lg" layout="inline" output="blob" output-size="256" type="image/png" pick-label="Upload logo" change-label="Replace" remove-label="Remove" sheet="dialog"></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker" label="Profile picture" display-name="Ada Lovelace" color="teal" variant="filled" preview description="Drag to frame it; pinch, the wheel or the slider to zoom. preview: click the picture to see it large."></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker-logo" label="Team logo" display-name="Ray Labs" preview size="lg" layout="inline" output="blob" output-size="256" type="image/png" pick-label="Upload logo" change-label="Replace" remove-label="Remove" sheet="dialog"></ray-avatar-picker>
 </div>
 <p class="demo-muted" id="demo-avatar-picker-out">Choose a picture: its size shows here.</p>
 
@@ -22,6 +22,12 @@
         : `${picker.label}: a ${v.type} Blob of ${Math.round(v.size / 1024)} KB`;
     });
   }
+
+  // An app's own action instead of the preview dialog.
+  document.getElementById("demo-avatar-picker-logo").addEventListener("ray-preview", (e) => {
+    e.preventDefault();
+    out.textContent = "Team logo: ray-preview, handled by the page (preventDefault): no dialog";
+  });
 
   const form = document.getElementById("demo-avatar-picker-form");
   form.addEventListener("submit", (e) => {

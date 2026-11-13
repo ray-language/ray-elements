@@ -226,6 +226,10 @@ export interface RayAvatarPickerProps {
   cropLabel?: string;
   /** Name of the zoom slider. */
   zoomLabel?: string;
+  /** With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows). */
+  preview?: boolean;
+  /** Accessible name of the avatar button and title of the preview dialog. */
+  previewLabel?: string;
   /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
   failedLabel?: string;
   /** v-model: the element's `value`. */
@@ -235,6 +239,8 @@ export interface RayAvatarPickerProps {
   onInput?: (event: Event) => void;
   /** A picture was kept (Use photo) or removed. Read value. */
   onChange?: (event: Event) => void;
+  /** The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer). */
+  onRayPreview?: (event: CustomEvent<{ value: string | Blob }>) => void;
   /** The chosen file could not be decoded; the value is unchanged. */
   onRayError?: (event: CustomEvent<{ error: Error }>) => void;
 }

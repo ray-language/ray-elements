@@ -21,8 +21,10 @@ change the API.
   and fires `ray-error`. It takes part in a form under `name` (the data
   URL, or a file `<name>.jpg`), with `required` and reset to the `value`
   attribute. Every text is a property. `edit(file)` opens the sheet on an
-  image from elsewhere; `pick()`, `clear()`, `toBlob()`. Events: `input`,
-  `change`.
+  image from elsewhere; `pick()`, `clear()`, `toBlob()`. With `preview`,
+  the avatar of a picture is a button that fires a cancelable `ray-preview`
+  and, unless the app takes it (`preventDefault()`), shows the picture large
+  in a dialog (`showPreview()`). Events: `input`, `change`, `ray-preview`.
 - Icons `camera` and `trash`, and the roles `ui.photo` (`camera`),
   `ui.delete` (`trash`) and `ui.confirm` (`check`): the buttons of
   `ray-avatar-picker`.

@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayAvatarPicker = /*#__PURE__*/ createComponent("ray-avatar-picker", {
   displayName: "RayAvatarPicker",
-  properties: ["name", "value", "output", "label", "description", "error", "required", "disabled", "displayName", "accept", "size", "color", "variant", "radius", "buttonSize", "layout", "sheet", "outputSize", "type", "quality", "maxZoom", "pickLabel", "changeLabel", "removeLabel", "sheetLabel", "useLabel", "cancelLabel", "cropLabel", "zoomLabel", "failedLabel"],
-  events: { onInput: "input", onChange: "change", onRayError: "ray-error" },
+  properties: ["name", "value", "output", "label", "description", "error", "required", "disabled", "displayName", "accept", "size", "color", "variant", "radius", "buttonSize", "layout", "sheet", "outputSize", "type", "quality", "maxZoom", "pickLabel", "changeLabel", "removeLabel", "sheetLabel", "useLabel", "cancelLabel", "cropLabel", "zoomLabel", "preview", "previewLabel", "failedLabel"],
+  events: { onInput: "input", onChange: "change", onRayPreview: "ray-preview", onRayError: "ray-error" },
 });

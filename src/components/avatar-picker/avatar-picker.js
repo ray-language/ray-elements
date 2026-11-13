@@ -6,7 +6,9 @@
 //
 // The value is the framed picture: a data URL (the default, easy to keep in
 // JSON) or, with output="blob", a Blob (to upload). It takes part in a <form>
-// under `name`.
+// under `name`. With `preview`, the avatar of a picture is a button: it fires
+// a cancelable ray-preview and, unless the app takes it, shows the picture
+// large in a dialog.
 
 import { css, define } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
@@ -30,6 +32,17 @@ const styles = css`
     gap: var(--ray-space-2);
   }
   :host([layout="inline"]) .actions { flex-direction: row; flex-wrap: wrap; }
+  .view { display: inline-flex; flex: none; border-radius: 50%; }
+  .view[role="button"] { cursor: zoom-in; transition: filter var(--ray-duration-fast) var(--ray-easing-standard); }
+  .view[role="button"]:hover { filter: brightness(0.92); }
+  .view[role="button"]:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 2px; }
+  .preview-image {
+    display: block;
+    width: 100%;
+    max-height: 75dvh;
+    object-fit: contain;
+    border-radius: var(--ray-radius-md);
+  }
   .crop { width: 100%; max-width: 28rem; margin-inline: auto; --ray-image-crop-inset: var(--ray-space-3); }
   .footer { display: contents; }
 `;
@@ -71,6 +84,8 @@ export class RayAvatarPicker extends FormControl {
     cancelLabel: { type: String, attribute: "cancel-label", default: "Cancel" },
     cropLabel: { type: String, attribute: "crop-label", default: "Photo framing" },
     zoomLabel: { type: String, attribute: "zoom-label", default: "Zoom" },
+    preview: { type: Boolean, reflect: true },
+    previewLabel: { type: String, attribute: "preview-label", default: "View photo" },
     failedLabel: { type: String, attribute: "failed-label", default: "That image could not be opened." },
   };
   static styles = [fieldStyles, styles];
@@ -78,7 +93,7 @@ export class RayAvatarPicker extends FormControl {
     <span class="label" part="label" id="label" hidden><span class="label-text"></span><span class="required" aria-hidden="true" hidden> *</span></span>
     <div class="description" part="description" id="description" hidden></div>
     <div class="row" part="row" role="group" aria-labelledby="label" aria-describedby="description error">
-      <ray-avatar class="avatar" part="avatar"></ray-avatar>
+      <span class="view" part="view"><ray-avatar class="avatar" part="avatar"></ray-avatar></span>
       <div class="actions" part="actions">
         <ray-button class="pick" part="pick" variant="light"><span slot="left" data-ray-icon="ui.photo" aria-hidden="true"></span><span class="pick-text"></span></ray-button>
         <ray-button class="remove" part="remove" variant="subtle" color="red" hidden><span slot="left" data-ray-icon="ui.delete" aria-hidden="true"></span><span class="remove-text"></span></ray-button>
@@ -92,6 +107,7 @@ export class RayAvatarPicker extends FormControl {
   #failed = "";
   #sheet = null;
   #crop = null;
+  #preview = null;
 
   constructor() {
     super();
@@ -100,6 +116,13 @@ export class RayAvatarPicker extends FormControl {
     this.$(".remove").addEventListener("click", () => {
       this.clear();
       this.$(".pick").focus();
+    });
+    const view = this.$(".view");
+    view.addEventListener("click", () => this.#viewRequested());
+    view.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      this.#viewRequested();
     });
     this.input.addEventListener("change", () => {
       const file = this.input.files?.[0];
@@ -134,6 +157,40 @@ export class RayAvatarPicker extends FormControl {
     crop.src = src;
     this.requestUpdate();
     sheet.show();
+  }
+
+  /** Shows the picture large in a dialog (nothing without one). */
+  showPreview() {
+    const src = this.#src();
+    if (!src) return;
+    let dialog = this.#preview;
+    if (!dialog) {
+      dialog = document.createElement("ray-dialog");
+      dialog.className = "preview";
+      dialog.setAttribute("part", "preview");
+      dialog.size = "sm";
+      const img = document.createElement("img");
+      img.className = "preview-image";
+      img.setAttribute("part", "preview-image");
+      dialog.append(img);
+      for (const type of ["ray-open", "ray-close", "ray-request-close"]) {
+        dialog.addEventListener(type, (e) => e.stopPropagation());
+      }
+      this.shadowRoot.append(dialog);
+      this.#preview = dialog;
+    }
+    dialog.label = this.previewLabel;
+    const img = dialog.querySelector("img");
+    img.src = src;
+    img.alt = this.displayName ?? "";
+    dialog.show();
+  }
+
+  // The avatar pressed: ray-preview, then the dialog unless the app took it.
+  #viewRequested() {
+    if (!this.preview || !this.value) return;
+    const go = this.emit("ray-preview", { value: this.value }, { cancelable: true });
+    if (go) this.showPreview();
   }
 
   /** Removes the picture (fires change when there was one). */
@@ -176,6 +233,17 @@ export class RayAvatarPicker extends FormControl {
     const described = [this.description ? "description" : "", message ? "error" : ""].filter(Boolean).join(" ");
     if (described) row.setAttribute("aria-describedby", described);
     else row.removeAttribute("aria-describedby");
+
+    const view = this.$(".view");
+    if (this.preview && has) {
+      view.setAttribute("role", "button");
+      view.tabIndex = 0;
+      view.setAttribute("aria-label", this.previewLabel);
+    } else {
+      view.removeAttribute("role");
+      view.removeAttribute("tabindex");
+      view.removeAttribute("aria-label");
+    }
 
     const avatar = this.$(".avatar");
     avatar.name = this.displayName ?? "";
