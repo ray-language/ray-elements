@@ -12,7 +12,7 @@
 // text field, the active option is aria-activedescendant.
 
 import { css, define, uid } from "../../core/core.js";
-import { sizeStyles, radiusStyles } from "../../core/styles.js";
+import { sizeStyles, radiusStyles, chipStyles } from "../../core/styles.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
@@ -22,30 +22,10 @@ const styles = css`
   :host([multiple]) .box[data-has-chips] { padding-block: 0.25rem; }
   .control { padding-inline: 0.25rem; min-width: 4rem; }
   :host([multiple]) .box[data-has-chips] .control { min-height: calc(var(--_h) - 0.5rem - 2px); }
-  .chips { display: contents; }
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.125rem;
-    max-width: 100%;
-    height: calc(var(--_h) - 0.75rem);
-    min-height: 1.375rem;
-    padding-block: 0;
-    padding-inline: 0.5rem 0.125rem;
-    font-size: calc(var(--_fs) - 0.0625rem);
-    color: var(--ray-foreground);
-    background: var(--ray-muted);
-    border: 1px solid var(--ray-border);
-    border-radius: var(--ray-radius-sm);
-    box-sizing: border-box;
-  }
-  .chip .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .chip button, .clear {
+  .clear {
     display: inline-grid;
     place-items: center;
     flex: none;
-    width: 1.125rem;
-    height: 1.125rem;
     margin: 0;
     padding: 0;
     color: var(--ray-muted-foreground);
@@ -55,8 +35,8 @@ const styles = css`
     cursor: pointer;
     --ray-icon-size: 0.75rem;
   }
-  .chip button:hover, .clear:hover { color: var(--ray-foreground); background: var(--ray-default-hover); }
-  .chip button:focus-visible, .clear:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 1px; }
+  .clear:hover { color: var(--ray-foreground); background: var(--ray-default-hover); }
+  .clear:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 1px; }
   .tail { display: inline-flex; align-items: center; gap: 0.125rem; margin-inline-start: auto; padding-inline-end: calc(var(--_px) * 0.5); align-self: stretch; }
   .clear { width: 1.375rem; height: 1.375rem; }
   .clear[hidden] { display: none; }
@@ -118,7 +98,7 @@ export class RayCombobox extends FieldControl {
     nothingFound: { type: String, attribute: "nothing-found", default: "No matches" },
     open: { type: Boolean, reflect: true },
   };
-  static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, styles];
+  static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, chipStyles, styles];
   static template = fieldTemplate(
     `<span class="chips" part="chips"></span><input id="control" class="control" part="input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="listbox" autocomplete="off" spellcheck="false">` +
       `<span class="tail"><button type="button" class="clear" part="clear" aria-label="Clear" hidden tabindex="-1"><span data-ray-icon="ui.clear"></span></button><span class="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span></span>`,

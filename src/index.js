@@ -23,6 +23,7 @@ import "./components/segmented-control/segmented-control.js";
 import "./components/select/select.js";
 import "./components/slider/slider.js";
 import "./components/switch/switch.js";
+import "./components/tags-input/tags-input.js";
 import "./components/textarea/textarea.js";
 import "./components/bottom-nav/bottom-nav.js";
 import "./components/breadcrumbs/breadcrumbs.js";

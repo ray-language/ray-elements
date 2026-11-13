@@ -1211,6 +1211,52 @@ export interface RaySwitchProps {
 /** <ray-switch> as a Vue component. */
 export declare const RaySwitch: DefineComponent<RaySwitchProps>;
 
+export interface RayTagsInputProps {
+  /** The tags. The value attribute: "a,b". A string "a,b" assigned to the property is read as a list too. */
+  value?: string[];
+  /** Suggestions instead of child <option> elements. */
+  data?: Array<string | { value: string; label?: string; disabled?: boolean }>;
+  /** Shown while there are no tags. */
+  placeholder?: string;
+  /** At most this many tags; when reached, nothing more is added and the suggestions hide. */
+  max?: number;
+  /** At most this many suggestions shown (keep typing for the rest); 0 shows them all. */
+  suggestionsLimit?: number;
+  /** The accessible name of the group of suggestions. */
+  suggestionsLabel?: string;
+  /** Characters that end a tag as they are typed or pasted (",;" for both); "" for none (Enter and leaving the field still add). */
+  separators?: string;
+  /** Form field name. */
+  name?: string;
+  /** Visible label (also the accessible name). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text; marks the field invalid. */
+  error?: string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** Size. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** v-model: the element's `value`. */
+  modelValue?: string[];
+  "onUpdate:modelValue"?: (value: string[]) => void;
+  /** A tag was added or removed (read value). */
+  onChange?: (event: Event) => void;
+  /** Same moment as change. */
+  onInput?: (event: Event) => void;
+}
+/** <ray-tags-input> as a Vue component. */
+export declare const RayTagsInput: DefineComponent<RayTagsInputProps>;
+
 export interface RayTextareaProps {
   /** Current value. */
   value?: string;
@@ -2551,6 +2597,7 @@ export declare const components: {
   RaySelect: typeof RaySelect;
   RaySlider: typeof RaySlider;
   RaySwitch: typeof RaySwitch;
+  RayTagsInput: typeof RayTagsInput;
   RayTextarea: typeof RayTextarea;
   RayBottomNav: typeof RayBottomNav;
   RayBottomNavItem: typeof RayBottomNavItem;
@@ -2651,6 +2698,7 @@ declare module "vue" {
     RaySelect: typeof RaySelect;
     RaySlider: typeof RaySlider;
     RaySwitch: typeof RaySwitch;
+    RayTagsInput: typeof RayTagsInput;
     RayTextarea: typeof RayTextarea;
     RayBottomNav: typeof RayBottomNav;
     RayBottomNavItem: typeof RayBottomNavItem;

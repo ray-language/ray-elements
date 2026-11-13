@@ -1516,6 +1516,56 @@ Parts (`::part()`):
 
 Vue `v-model`: `checked` (updated on change).
 
+### Tags input (also Tag input, Chips input)
+
+Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.
+
+Import: `import "@raylang/elements/tags-input";` · Category: Inputs
+
+#### `<ray-tags-input>` (RayTagsInput, extends FieldControl)
+
+A text field that keeps tags as chips, and its suggestions (child <option> elements or data) as buttons under it. Typing filters them, case and accents aside ("diabe" finds "Diabetes"); the ones already chosen are left out. Pressing a suggestion while typing keeps the focus in the field, so the phone's keyboard stays up. Enter, a separator (a pasted "a, b, c" adds three) or leaving the field adds what was typed, anything at all; no two tags are the same, case and accents aside. Backspace in an empty field removes the last tag, Escape clears the text. The form gets one entry per tag. For a fixed list to pick from, use ray-combobox multiple.
+
+Properties:
+
+- `value` (attribute `value`: the initial value only): `string[]`. The tags. The value attribute: "a,b". A string "a,b" assigned to the property is read as a list too.
+- `data` (property only): `Array<string | { value: string; label?: string; disabled?: boolean }>`. Suggestions instead of child <option> elements.
+- `placeholder`: string. Shown while there are no tags.
+- `max`: number. At most this many tags; when reached, nothing more is added and the suggestions hide.
+- `suggestionsLimit` (attribute `suggestions-limit`): number, default `6`. At most this many suggestions shown (keep typing for the rest); 0 shows them all.
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. The accessible name of the group of suggestions.
+- `separators`: string, default `,`. Characters that end a tag as they are typed or pasted (",;" for both); "" for none (Enter and leaving the field still add).
+
+Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
+
+Events:
+
+- `change`: A tag was added or removed (read value).
+- `input`: Same moment as change.
+
+Slots:
+
+- (default): <option> elements: the suggestions (the text is the tag; value, if different, is what the tag stores).
+
+Parts (`::part()`):
+
+- `input`: The text field.
+- `tags`: The tags container.
+- `tag`: A tag.
+- `tag-remove`: A tag's remove button.
+- `suggestions`: The group of suggestions under the field.
+- `suggestion`: A suggestion button.
+
+Methods and properties:
+
+- `readonly tags: string[]`: The value as an array.
+- `readonly suggestions: string[]`: The values of the suggestions shown now.
+- `addTag(tag: string): boolean`: Adds a tag (trimmed; not when empty, already there or past max). Fires input and change. True if added.
+- `removeTag(tag: string): boolean`: Removes a tag (case and accents aside). Fires input and change. True if it was there.
+- `commitText(): void`: Adds what is typed in the field now, as Enter does.
+
+Vue `v-model`: `value` (updated on change).
+
 ### Textarea
 
 A multi-line text field that can grow with its content. Form-associated.
@@ -3853,7 +3903,7 @@ The names `<ray-icon name>` and `setIcons()` know (more with `setIcons`):
 
 With a filled version (`<ray-icon name="star" filled>`; the others draw their outline): `user`, `info`, `circle-check`, `alert-triangle`, `circle-x`, `folder`, `bell`, `star`, `settings`, `home`, `message-circle`
 
-The roles the components draw, each with its default glyph; `setIcons({ "ui.remove": … })` changes one role only, `setIcons({ close: … })` every role that uses the glyph: `ui.close` (close), `ui.clear` (close), `ui.remove` (close), `ui.expand` (chevron-down), `ui.disclosure` (chevron-right), `ui.previous` (chevron-left), `ui.next` (chevron-right), `ui.first` (chevrons-left), `ui.last` (chevrons-right), `ui.separator` (chevron-right), `ui.increment` (chevron-up), `ui.decrement` (chevron-down), `ui.sort` (chevron-up), `ui.checked` (check), `ui.indeterminate` (minus), `ui.copy` (copy), `ui.copied` (check), `ui.show-password` (eye), `ui.hide-password` (eye-off), `ui.play` (play), `ui.pause` (pause), `ui.search` (search), `ui.calendar` (calendar), `ui.eyedropper` (pipette), `ui.upload` (upload), `ui.avatar` (user), `ui.theme-light` (sun), `ui.theme-dark` (moon), `ui.theme-system` (monitor), `ui.trend-up` (arrow-up-right), `ui.trend-down` (arrow-down-right), `ui.trend-flat` (minus)
+The roles the components draw, each with its default glyph; `setIcons({ "ui.remove": … })` changes one role only, `setIcons({ close: … })` every role that uses the glyph: `ui.close` (close), `ui.clear` (close), `ui.remove` (close), `ui.add` (plus), `ui.expand` (chevron-down), `ui.disclosure` (chevron-right), `ui.previous` (chevron-left), `ui.next` (chevron-right), `ui.first` (chevrons-left), `ui.last` (chevrons-right), `ui.separator` (chevron-right), `ui.increment` (chevron-up), `ui.decrement` (chevron-down), `ui.sort` (chevron-up), `ui.checked` (check), `ui.indeterminate` (minus), `ui.copy` (copy), `ui.copied` (check), `ui.show-password` (eye), `ui.hide-password` (eye-off), `ui.play` (play), `ui.pause` (pause), `ui.search` (search), `ui.calendar` (calendar), `ui.eyedropper` (pipette), `ui.upload` (upload), `ui.avatar` (user), `ui.theme-light` (sun), `ui.theme-dark` (moon), `ui.theme-system` (monitor), `ui.trend-up` (arrow-up-right), `ui.trend-down` (arrow-down-right), `ui.trend-flat` (minus)
 
 ## Core API
 

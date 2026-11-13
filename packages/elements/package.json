@@ -128,6 +128,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/switch/switch.js"
     },
+    "./tags-input": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/tags-input/tags-input.js"
+    },
     "./textarea": {
       "types": "./ray-elements.d.ts",
       "default": "./components/textarea/textarea.js"

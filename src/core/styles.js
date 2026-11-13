@@ -164,6 +164,48 @@ export const loaderStyles = css`
   }
 `;
 
+/**
+ * The removable chips of a field (ray-combobox `multiple`, ray-tags-input):
+ * `.chips > .chip > .t + button`, sized by the field's --_h and --_fs.
+ */
+export const chipStyles = css`
+  .chips { display: contents; }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+    max-width: 100%;
+    height: calc(var(--_h) - 0.75rem);
+    min-height: 1.375rem;
+    padding-block: 0;
+    padding-inline: 0.5rem 0.125rem;
+    font-size: calc(var(--_fs) - 0.0625rem);
+    color: var(--ray-foreground);
+    background: var(--ray-muted);
+    border: 1px solid var(--ray-border);
+    border-radius: var(--ray-radius-sm);
+    box-sizing: border-box;
+  }
+  .chip .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip button {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    padding: 0;
+    color: var(--ray-muted-foreground);
+    background: none;
+    border: 0;
+    border-radius: var(--ray-radius-xs);
+    cursor: pointer;
+    --ray-icon-size: 0.75rem;
+  }
+  .chip button:hover { color: var(--ray-foreground); background: var(--ray-default-hover); }
+  .chip button:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: 1px; }
+`;
+
 /** Visually hidden but available to assistive technology. */
 export const srOnlyStyles = css`
   .sr-only {

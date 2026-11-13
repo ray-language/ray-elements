@@ -1402,6 +1402,8 @@ html[data-ray-loading] main.components-page :not(:defined) { visibility: hidden;
 .thumb .t-tl > i.on:not(:last-child)::after { border-color: var(--ray-primary); }
 .thumb .t-in .t-chip { display: flex; align-items: center; gap: 0.2rem; height: 0.95rem; padding: 0 0.3rem; background: var(--ray-muted); border: 1px solid var(--ray-border); border-radius: 0.2rem; }
 .thumb .t-in .t-chip svg { width: 0.45rem; height: 0.45rem; }
+.thumb .t-row > .t-chip { display: flex; align-items: center; gap: 0.2rem; height: 1.05rem; padding: 0 0.35rem; background: var(--ray-muted); border-radius: 0.25rem; }
+.thumb .t-row > .t-chip svg { width: 0.5rem; height: 0.5rem; }
 .thumb .t-num { display: flex; align-items: stretch; width: 7.5rem; height: 1.6rem; padding-left: 0.5rem; box-sizing: border-box; background: var(--ray-background); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-sm); overflow: hidden; }
 .thumb .t-num .v { flex: 1; display: flex; align-items: center; font-size: 0.65rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ray-foreground); }
 .thumb .t-num .s { display: grid; width: 1.2rem; border-left: 1px solid var(--ray-border); color: var(--ray-muted-foreground); }

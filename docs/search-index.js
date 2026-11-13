@@ -261,6 +261,19 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Tags input (Tag input, Chips input)",
+    "group": "Components · Inputs",
+    "description": "Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.",
+    "href": "components/tags-input.html",
+    "keywords": [
+      "tags-input",
+      "tag input",
+      "chips input",
+      "ray-tags-input"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Textarea",
     "group": "Components · Inputs",
     "description": "A multi-line text field that can grow with its content. Form-associated.",

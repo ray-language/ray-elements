@@ -3479,6 +3479,134 @@
       ]
     },
     {
+      "name": "ray-tags-input",
+      "description": "A text field that keeps tags as chips, and its suggestions (child <option> elements or data) as buttons under it. Typing filters them, case and accents aside (\"diabe\" finds \"Diabetes\"); the ones already chosen are left out. Pressing a suggestion while typing keeps the focus in the field, so the phone's keyboard stays up. Enter, a separator (a pasted \"a, b, c\" adds three) or leaving the field adds what was typed, anything at all; no two tags are the same, case and accents aside. Backspace in an empty field removes the last tag, Escape clears the text. The form gets one entry per tag. For a fixed list to pick from, use ray-combobox multiple.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The tags. The value attribute: \"a,b\". A string \"a,b\" assigned to the property is read as a list too."
+        },
+        {
+          "name": "placeholder",
+          "description": "Shown while there are no tags."
+        },
+        {
+          "name": "max",
+          "description": "At most this many tags; when reached, nothing more is added and the suggestions hide."
+        },
+        {
+          "name": "suggestions-limit",
+          "description": "At most this many suggestions shown (keep typing for the rest); 0 shows them all."
+        },
+        {
+          "name": "suggestions-label",
+          "description": "The accessible name of the group of suggestions."
+        },
+        {
+          "name": "separators",
+          "description": "Characters that end a tag as they are typed or pasted (\",;\" for both); \"\" for none (Enter and leaving the field still add)."
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label (also the accessible name)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "size",
+          "description": "Size.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "ray-textarea",
       "description": "Also forwards placeholder, autocomplete, minlength, maxlength, spellcheck and wrap. Initial value: the value attribute or the element's text.",
       "attributes": [

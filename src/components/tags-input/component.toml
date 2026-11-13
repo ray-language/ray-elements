@@ -1,0 +1,102 @@
+[component]
+name = "Tags input"
+category = "Inputs"
+summary = "Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up."
+files = ["tags-input.js"]
+requires = []
+tags = ["ray-tags-input"]
+aliases = ["Tag input", "Chips input"]
+
+[ray-tags-input]
+class = "RayTagsInput"
+extends = "FieldControl"
+summary = "A text field that keeps tags as chips, and its suggestions (child <option> elements or data) as buttons under it. Typing filters them, case and accents aside (\"diabe\" finds \"Diabetes\"); the ones already chosen are left out. Pressing a suggestion while typing keeps the focus in the field, so the phone's keyboard stays up. Enter, a separator (a pasted \"a, b, c\" adds three) or leaving the field adds what was typed, anything at all; no two tags are the same, case and accents aside. Backspace in an empty field removes the last tag, Escape clears the text. The form gets one entry per tag. For a fixed list to pick from, use ray-combobox multiple."
+
+[ray-tags-input.properties.value]
+attribute = false
+initial = true
+type = "array"
+ts = "string[]"
+description = "The tags. The value attribute: \"a,b\". A string \"a,b\" assigned to the property is read as a list too."
+
+[ray-tags-input.properties.data]
+attribute = false
+type = "array"
+ts = "Array<string | { value: string; label?: string; disabled?: boolean }>"
+description = "Suggestions instead of child <option> elements."
+
+[ray-tags-input.properties.placeholder]
+type = "string"
+description = "Shown while there are no tags."
+
+[ray-tags-input.properties.max]
+type = "number"
+description = "At most this many tags; when reached, nothing more is added and the suggestions hide."
+
+[ray-tags-input.properties.suggestionsLimit]
+attribute = "suggestions-limit"
+type = "number"
+default = "6"
+description = "At most this many suggestions shown (keep typing for the rest); 0 shows them all."
+
+[ray-tags-input.properties.suggestionsLabel]
+attribute = "suggestions-label"
+type = "string"
+default = "Suggestions"
+description = "The accessible name of the group of suggestions."
+
+[ray-tags-input.properties.separators]
+type = "string"
+default = ","
+description = "Characters that end a tag as they are typed or pasted (\",;\" for both); \"\" for none (Enter and leaving the field still add)."
+
+[ray-tags-input.members.tags]
+ts = "readonly tags: string[]"
+description = "The value as an array."
+
+[ray-tags-input.members.suggestions]
+ts = "readonly suggestions: string[]"
+description = "The values of the suggestions shown now."
+
+[ray-tags-input.members.addTag]
+ts = "addTag(tag: string): boolean"
+description = "Adds a tag (trimmed; not when empty, already there or past max). Fires input and change. True if added."
+
+[ray-tags-input.members.removeTag]
+ts = "removeTag(tag: string): boolean"
+description = "Removes a tag (case and accents aside). Fires input and change. True if it was there."
+
+[ray-tags-input.members.commitText]
+ts = "commitText(): void"
+description = "Adds what is typed in the field now, as Enter does."
+
+[ray-tags-input.events.change]
+description = "A tag was added or removed (read value)."
+
+[ray-tags-input.events.input]
+description = "Same moment as change."
+
+[ray-tags-input.slots.default]
+description = "<option> elements: the suggestions (the text is the tag; value, if different, is what the tag stores)."
+
+[ray-tags-input.parts.input]
+description = "The text field."
+
+[ray-tags-input.parts.tags]
+description = "The tags container."
+
+[ray-tags-input.parts.tag]
+description = "A tag."
+
+[ray-tags-input.parts.tag-remove]
+description = "A tag's remove button."
+
+[ray-tags-input.parts.suggestions]
+description = "The group of suggestions under the field."
+
+[ray-tags-input.parts.suggestion]
+description = "A suggestion button."
+
+[ray-tags-input.model]
+property = "value"
+events = ["change"]
