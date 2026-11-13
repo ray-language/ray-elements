@@ -69,6 +69,7 @@ fn thumbs() -> [(string, string)] {
         ("select", col(inp("8rem", ln("3.5rem") + "<i class=\"t-grow\"></i><i class=\"t-gl\">" + svg(I_DOWN) + "</i>") + sf("list", "<i>" + ln("3rem") + "</i><i class=\"on\">" + lp("4rem") + "</i><i>" + ln("2.5rem") + "</i>"))),
         ("slider", col("<i class=\"t-sl\" style=\"--v:62%\"></i><i class=\"t-sl\" style=\"--v:30%\"></i>")),
         ("switch", col(row(sw(true) + ln("3.5rem")) + row(sw(false) + ln("2.75rem")))),
+        ("tags-input", col(inp("10rem", "<i class=\"t-chip\">" + ln("1.75rem") + svg(I_X) + "</i><i class=\"t-chip\">" + ln("1.25rem") + svg(I_X) + "</i>") + row("<i class=\"t-chip\">" + svg(I_PLUS) + ln("1.5rem") + "</i><i class=\"t-chip\">" + svg(I_PLUS) + ln("2rem") + "</i>"))),
         ("textarea", col(ln("3rem") + "<i class=\"t-in tall\" style=\"--w:10rem\">" + ln("8rem") + ln("7rem") + ln("4rem") + "</i>")),
         // Navigation
         ("doc-tabs", col("<i class=\"t-doctabs\"><i class=\"on\">" + lp("2.5rem") + txt("x", "×") + "</i><i>" + ln("2rem") + dot("blue") + "</i><i>" + ln("1.75rem") + "</i></i>" + ln("8rem") + ln("6rem"))),

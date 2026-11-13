@@ -1,0 +1,54 @@
+<div class="demo-caption">Suggestions under the field: type to filter, click to add, or type anything and press Enter</div>
+<div class="demo-grid">
+  <ray-tags-input id="demo-tags-conditions" label="Health conditions" placeholder="Type or pick" value="Hypertension,Lupus">
+    <option>Hypertension</option>
+    <option>Type 1 diabetes</option>
+    <option>Type 2 diabetes</option>
+    <option>High cholesterol</option>
+    <option>Hypothyroidism</option>
+    <option>Hyperthyroidism</option>
+    <option>Asthma</option>
+    <option>COPD</option>
+    <option>Heart failure</option>
+    <option>Atrial fibrillation</option>
+    <option>Chronic kidney disease</option>
+    <option>Osteoarthritis</option>
+    <option>Migraine</option>
+    <option>Glaucoma</option>
+  </ray-tags-input>
+  <ray-tags-input id="demo-tags-labels" label="Labels" placeholder="bug, docs…" separators=",; " max="5" suggestions-limit="0" description="max=&quot;5&quot;; a comma, a semicolon or a space ends a tag; every suggestion shown." size="xs" variant="filled">
+    <option>bug</option>
+    <option>docs</option>
+    <option>good-first-issue</option>
+    <option>help-wanted</option>
+  </ray-tags-input>
+</div>
+<p class="demo-muted" id="demo-tags-out">Add or remove tags: the value shows here.</p>
+
+<div class="demo-caption">In a form, sizes and states</div>
+<form class="demo-grid" id="demo-tags-form" novalidate>
+  <ray-tags-input name="allergies" label="Allergies" required placeholder="Required" size="lg" description="Paste “penicillin, latex, pollen”: three tags."></ray-tags-input>
+  <ray-tags-input label="Disabled" disabled value="read-only,tags"><option>more</option></ray-tags-input>
+  <div class="demo-actions"><ray-button type="submit" size="sm">Submit</ray-button><span class="demo-muted" id="demo-tags-form-out"></span></div>
+</form>
+
+<script type="module">
+  const conditions = document.getElementById("demo-tags-conditions");
+  const labels = document.getElementById("demo-tags-labels");
+  const show = (el) => { document.getElementById("demo-tags-out").textContent = `${el.label} = [${el.value.join(", ")}]`; };
+  conditions.addEventListener("change", () => show(conditions));
+  labels.addEventListener("change", () => show(labels));
+
+  // Suggestions from data.
+  document.querySelector('#demo-tags-form [name="allergies"]').data = ["Penicillin", "Amoxicillin", "Aspirin", "Ibuprofen", "Latex", "Peanuts", "Tree nuts", "Shellfish", "Eggs", "Milk", "Gluten", "Pollen", "Dust mites", "Bee stings"];
+
+  // Submit: the form data, one entry per tag.
+  const form = document.getElementById("demo-tags-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const allergies = form.querySelector('[name="allergies"]');
+    allergies.error = allergies.value.length ? "" : "Add at least one allergy, or “None”.";
+    if (!allergies.value.length) return;
+    document.getElementById("demo-tags-form-out").textContent = `allergies=${new FormData(form).getAll("allergies").join(" | ")}`;
+  });
+</script>

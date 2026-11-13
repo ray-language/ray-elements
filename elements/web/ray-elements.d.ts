@@ -1300,6 +1300,35 @@ export declare class RaySwitch extends RayCheckbox {
   disabled: boolean | undefined;
 }
 
+// --- Tags input (tags-input)
+/** <ray-tags-input> A text field that keeps tags as chips, and its suggestions (child <option> elements or data) as buttons under it. Typing filters them, case and accents aside ("diabe" finds "Diabetes"); the ones already chosen are left out. Pressing a suggestion while typing keeps the focus in the field, so the phone's keyboard stays up. Enter, a separator (a pasted "a, b, c" adds three) or leaving the field adds what was typed, anything at all; no two tags are the same, case and accents aside. Backspace in an empty field removes the last tag, Escape clears the text. The form gets one entry per tag. For a fixed list to pick from, use ray-combobox multiple. */
+export declare class RayTagsInput extends FieldControl {
+  /** The tags. The value attribute: "a,b". A string "a,b" assigned to the property is read as a list too. */
+  value: string[] | undefined;
+  /** Suggestions instead of child <option> elements. */
+  data: Array<string | { value: string; label?: string; disabled?: boolean }> | undefined;
+  /** Shown while there are no tags. */
+  placeholder: string | undefined;
+  /** At most this many tags; when reached, nothing more is added and the suggestions hide. */
+  max: number | undefined;
+  /** At most this many suggestions shown (keep typing for the rest); 0 shows them all. */
+  suggestionsLimit: number;
+  /** The accessible name of the group of suggestions. */
+  suggestionsLabel: string;
+  /** Characters that end a tag as they are typed or pasted (",;" for both); "" for none (Enter and leaving the field still add). */
+  separators: string;
+  /** The value as an array. */
+  readonly tags: string[];
+  /** The values of the suggestions shown now. */
+  readonly suggestions: string[];
+  /** Adds a tag (trimmed; not when empty, already there or past max). Fires input and change. True if added. */
+  addTag(tag: string): boolean;
+  /** Removes a tag (case and accents aside). Fires input and change. True if it was there. */
+  removeTag(tag: string): boolean;
+  /** Adds what is typed in the field now, as Enter does. */
+  commitText(): void;
+}
+
 // --- Textarea (textarea)
 /** <ray-textarea> Also forwards placeholder, autocomplete, minlength, maxlength, spellcheck and wrap. Initial value: the value attribute or the element's text. */
 export declare class RayTextarea extends FieldControl {
@@ -2841,6 +2870,7 @@ declare global {
     "ray-select": RaySelect;
     "ray-slider": RaySlider;
     "ray-switch": RaySwitch;
+    "ray-tags-input": RayTagsInput;
     "ray-textarea": RayTextarea;
     "ray-bottom-nav": RayBottomNav;
     "ray-bottom-nav-item": RayBottomNavItem;

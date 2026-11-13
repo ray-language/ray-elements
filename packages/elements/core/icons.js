@@ -104,6 +104,7 @@ const ALIASES = {
   "ui.close": "close",
   "ui.clear": "close",
   "ui.remove": "close",
+  "ui.add": "plus",
   "ui.expand": "chevron-down",
   "ui.disclosure": "chevron-right",
   "ui.previous": "chevron-left",

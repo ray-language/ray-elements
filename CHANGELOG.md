@@ -7,6 +7,23 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-tags-input`: free-form tags with the suggestions in view. What is
+  typed becomes a tag on Enter, on a separator (`separators`, a comma by
+  default; a pasted "a, b, c" adds three) or when the field is left, so a
+  Save button tapped before Enter still gets it. The suggestions (child
+  `<option>` elements or `data`) are buttons under the field, filtered as
+  you type with case and accents aside, the chosen ones left out, at most
+  `suggestions-limit` (6). There is no dropdown: on a phone nothing opens
+  over the field when the keyboard comes up, and pressing a suggestion
+  while typing keeps the focus in the field, so the keyboard stays up. No
+  two tags are the same, case and accents aside; `max` caps them. The value
+  is an array, one form entry per tag; `addTag()`, `removeTag()`,
+  `commitText()`. Events: `input`, `change` (only when the tags change, not
+  while typing).
+- Icon role `ui.add` (`plus`): the suggestions of `ray-tags-input`.
+
 ## [0.17.1] - 2026-11-12
 
 ### Fixed

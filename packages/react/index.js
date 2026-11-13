@@ -27,6 +27,7 @@ export { RaySegmentedControl } from "./components/segmented-control.js";
 export { RaySelect } from "./components/select.js";
 export { RaySlider } from "./components/slider.js";
 export { RaySwitch } from "./components/switch.js";
+export { RayTagsInput } from "./components/tags-input.js";
 export { RayTextarea } from "./components/textarea.js";
 export { RayBottomNav, RayBottomNavItem } from "./components/bottom-nav.js";
 export { RayBreadcrumbs, RayBreadcrumb } from "./components/breadcrumbs.js";

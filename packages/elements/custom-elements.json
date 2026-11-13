@@ -9766,6 +9766,422 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/tags-input/tags-input.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayTagsInput",
+          "tagName": "ray-tags-input",
+          "customElement": true,
+          "description": "A text field that keeps tags as chips, and its suggestions (child <option> elements or data) as buttons under it. Typing filters them, case and accents aside (\"diabe\" finds \"Diabetes\"); the ones already chosen are left out. Pressing a suggestion while typing keeps the focus in the field, so the phone's keyboard stays up. Enter, a separator (a pasted \"a, b, c\" adds three) or leaving the field adds what was typed, anything at all; no two tags are the same, case and accents aside. Backspace in an empty field removes the last tag, Escape clears the text. The form gets one entry per tag. For a fixed list to pick from, use ray-combobox multiple.",
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The initial value of value. The tags. The value attribute: \"a,b\". A string \"a,b\" assigned to the property is read as a list too."
+            },
+            {
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while there are no tags.",
+              "fieldName": "placeholder"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many tags; when reached, nothing more is added and the suggestions hide.",
+              "fieldName": "max"
+            },
+            {
+              "name": "suggestions-limit",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many suggestions shown (keep typing for the rest); 0 shows them all.",
+              "fieldName": "suggestionsLimit",
+              "default": "6"
+            },
+            {
+              "name": "suggestions-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The accessible name of the group of suggestions.",
+              "fieldName": "suggestionsLabel",
+              "default": "Suggestions"
+            },
+            {
+              "name": "separators",
+              "type": {
+                "text": "string"
+              },
+              "description": "Characters that end a tag as they are typed or pasted (\",;\" for both); \"\" for none (Enter and leaving the field still add).",
+              "fieldName": "separators",
+              "default": ","
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string[]"
+              },
+              "description": "The tags. The value attribute: \"a,b\". A string \"a,b\" assigned to the property is read as a list too."
+            },
+            {
+              "kind": "field",
+              "name": "data",
+              "type": {
+                "text": "Array<string | { value: string; label?: string; disabled?: boolean }>"
+              },
+              "description": "Suggestions instead of child <option> elements."
+            },
+            {
+              "kind": "field",
+              "name": "placeholder",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown while there are no tags.",
+              "attribute": "placeholder",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many tags; when reached, nothing more is added and the suggestions hide.",
+              "attribute": "max",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "suggestionsLimit",
+              "type": {
+                "text": "number"
+              },
+              "description": "At most this many suggestions shown (keep typing for the rest); 0 shows them all.",
+              "attribute": "suggestions-limit",
+              "reflects": false,
+              "default": "6"
+            },
+            {
+              "kind": "field",
+              "name": "suggestionsLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The accessible name of the group of suggestions.",
+              "attribute": "suggestions-label",
+              "reflects": false,
+              "default": "Suggestions"
+            },
+            {
+              "kind": "field",
+              "name": "separators",
+              "type": {
+                "text": "string"
+              },
+              "description": "Characters that end a tag as they are typed or pasted (\",;\" for both); \"\" for none (Enter and leaving the field still add).",
+              "attribute": "separators",
+              "reflects": false,
+              "default": ","
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label (also the accessible name).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "tags",
+              "description": "The value as an array."
+            },
+            {
+              "kind": "field",
+              "name": "suggestions",
+              "description": "The values of the suggestions shown now."
+            },
+            {
+              "kind": "method",
+              "name": "addTag",
+              "description": "Adds a tag (trimmed; not when empty, already there or past max). Fires input and change. True if added."
+            },
+            {
+              "kind": "method",
+              "name": "removeTag",
+              "description": "Removes a tag (case and accents aside). Fires input and change. True if it was there."
+            },
+            {
+              "kind": "method",
+              "name": "commitText",
+              "description": "Adds what is typed in the field now, as Enter does."
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "A tag was added or removed (read value)."
+            },
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "Same moment as change."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "<option> elements: the suggestions (the text is the tag; value, if different, is what the tag stores)."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "input",
+              "description": "The text field."
+            },
+            {
+              "name": "tags",
+              "description": "The tags container."
+            },
+            {
+              "name": "tag",
+              "description": "A tag."
+            },
+            {
+              "name": "tag-remove",
+              "description": "A tag's remove button."
+            },
+            {
+              "name": "suggestions",
+              "description": "The group of suggestions under the field."
+            },
+            {
+              "name": "suggestion",
+              "description": "A suggestion button."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayTagsInput",
+          "declaration": {
+            "name": "RayTagsInput",
+            "module": "components/tags-input/tags-input.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-tags-input",
+          "declaration": {
+            "name": "RayTagsInput",
+            "module": "components/tags-input/tags-input.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/textarea/textarea.js",
       "declarations": [
         {
