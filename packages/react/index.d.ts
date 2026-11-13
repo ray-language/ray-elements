@@ -184,8 +184,10 @@ export interface RayAvatarPickerOwnProps {
   error?: string;
   /** A picture is required to submit the form. */
   required?: boolean;
-  /** No choosing nor removing. */
+  /** No choosing, removing nor preview (also inside a disabled <fieldset>). */
   disabled?: boolean;
+  /** The picture cannot be changed: the buttons are hidden, the preview still works. Not validated (required does not apply), as a native readonly field. */
+  readonly?: boolean;
   /** The person's name: the avatar shows its initials without a picture (name is the form field). */
   displayName?: string;
   /** File types the picker offers. */
@@ -228,7 +230,7 @@ export interface RayAvatarPickerOwnProps {
   cropLabel?: string;
   /** Name of the zoom slider. */
   zoomLabel?: string;
-  /** With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows). */
+  /** With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled. */
   preview?: boolean;
   /** Accessible name of the avatar button and title of the preview dialog. */
   previewLabel?: string;

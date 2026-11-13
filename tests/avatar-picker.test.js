@@ -221,7 +221,14 @@ T.test("avatar-picker: preview — the avatar of a picture is a button; ray-prev
   el.value = url;
   el.disabled = true;
   await T.settle();
-  T.eq(view.getAttribute("role"), "button");
+  T.eq(view.getAttribute("role"), null, "disabled: not a button");
+  view.click();
+  await T.settle();
+  T.eq(inner(el, ".preview"), null, "disabled: no preview");
+  el.disabled = false;
+  el.readonly = true;
+  await T.settle();
+  T.eq(view.getAttribute("role"), "button", "readonly: still a button");
   T.eq(view.tabIndex, 0);
   T.eq(view.getAttribute("aria-label"), "View photo");
   const seen = [];
@@ -231,7 +238,7 @@ T.test("avatar-picker: preview — the avatar of a picture is a button; ray-prev
   await T.settle();
   const dialog = inner(el, ".preview");
   T.eq(JSON.stringify(seen), "[true]", "ray-preview with the value; the dialog's events stay inside");
-  T.eq(dialog?.open, true, "the preview opens (disabled too)");
+  T.eq(dialog?.open, true, "the preview opens (readonly too)");
   T.eq(dialog.label, "View photo");
   T.eq(dialog.querySelector("img").src, url);
   T.eq(dialog.querySelector("img").alt, "Ada");
@@ -334,5 +341,27 @@ T.test("avatar-picker: required-label, a late aria-label, Space on keyup, the fi
   T.eq(previews, 1, "Space: on keyup");
   k("keydown", "Enter");
   T.eq(previews, 2, "Enter: on keydown");
+  box.remove();
+});
+
+T.test("avatar-picker: readonly hides the buttons, opens no sheet and is not validated; a disabled fieldset turns preview off", async (T) => {
+  const box = await mount(`<form><fieldset><ray-avatar-picker name="photo" required readonly preview></ray-avatar-picker></fieldset></form>`);
+  const el = box.querySelector("ray-avatar-picker");
+  T.eq(getComputedStyle(inner(el, ".actions")).display, "none", "no buttons");
+  T.eq(el.validity.valid, true, "readonly: required does not apply");
+  el.edit(await picture());
+  await T.settle();
+  T.eq(sheetOf(el), null, "edit does nothing");
+  el.value = "data:image/png;base64,iVBORw0KGgo=";
+  await T.settle();
+  T.eq(inner(el, ".view").getAttribute("role"), "button");
+  box.querySelector("fieldset").disabled = true;
+  await T.settle();
+  T.eq(inner(el, ".view").getAttribute("role"), null, "disabled fieldset: no preview");
+  el.readonly = false;
+  el.value = null;
+  box.querySelector("fieldset").disabled = false;
+  await T.settle();
+  T.eq(el.validity.valueMissing, true, "not readonly: required again");
   box.remove();
 });

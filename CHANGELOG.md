@@ -24,7 +24,9 @@ change the API.
   image from elsewhere; `pick()`, `clear()`, `toBlob()`. With `preview`,
   the avatar of a picture is a button that fires a cancelable `ray-preview`
   and, unless the app takes it (`preventDefault()`), shows the picture large
-  in a dialog (`showPreview()`). Events: `input`, `change`, `ray-preview`.
+  in a dialog (`showPreview()`). `readonly` hides the buttons and keeps the
+  preview; `disabled` turns the preview off too. Events: `input`, `change`,
+  `ray-preview`.
 - Icons `camera` and `trash`, and the roles `ui.photo` (`camera`),
   `ui.delete` (`trash`) and `ui.confirm` (`check`): the buttons of
   `ray-avatar-picker`.

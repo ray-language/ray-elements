@@ -17,7 +17,8 @@ Properties:
 - `description`: string. Help text under the label.
 - `error`: string. Error message; marks the field invalid.
 - `required`: boolean, reflects. A picture is required to submit the form.
-- `disabled`: boolean, reflects. No choosing nor removing.
+- `disabled`: boolean, reflects. No choosing, removing nor preview (also inside a disabled <fieldset>).
+- `readonly`: boolean, reflects. The picture cannot be changed: the buttons are hidden, the preview still works. Not validated (required does not apply), as a native readonly field.
 - `displayName` (attribute `display-name`): string. The person's name: the avatar shows its initials without a picture (name is the form field).
 - `accept`: string, default `image/*`. File types the picker offers.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `xl`, reflects. Size of the avatar.
@@ -39,7 +40,7 @@ Properties:
 - `cancelLabel` (attribute `cancel-label`): string, default `Cancel`. The sheet's button that leaves the value as it was.
 - `cropLabel` (attribute `crop-label`): string, default `Photo framing`. Accessible name of the crop area.
 - `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider.
-- `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).
+- `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled.
 - `previewLabel` (attribute `preview-label`): string, default `View photo`. Accessible name of the avatar button and title of the preview dialog.
 - `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.`. Validation message of required without a picture.
 - `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
@@ -97,6 +98,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 <form class="demo-grid" id="demo-avatar-picker-form" novalidate>
   <ray-avatar-picker name="photo" label="Photo" required display-name="Grace Hopper" size="md" button-size="xs"></ray-avatar-picker>
   <ray-avatar-picker label="Disabled" disabled display-name="Alan Turing" size="md" button-size="xs"></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker-readonly" label="Read-only" readonly preview display-name="Alan Turing" size="md"></ray-avatar-picker>
   <div class="demo-actions"><ray-button type="submit" size="sm">Submit</ray-button><ray-button type="reset" size="sm" variant="default">Reset</ray-button><span class="demo-muted" id="demo-avatar-picker-form-out"></span></div>
 </form>
 
@@ -116,6 +118,19 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     e.preventDefault();
     out.textContent = "Team logo: ray-preview, handled by the page (preventDefault): no dialog";
   });
+
+  // A picture to look at: readonly keeps the preview.
+  {
+    const c = document.createElement("canvas");
+    c.width = c.height = 160;
+    const g = c.getContext("2d");
+    const gr = g.createLinearGradient(0, 0, 160, 160);
+    gr.addColorStop(0, "#f59e0b");
+    gr.addColorStop(1, "#0ea5e9");
+    g.fillStyle = gr;
+    g.fillRect(0, 0, 160, 160);
+    document.getElementById("demo-avatar-picker-readonly").value = c.toDataURL("image/jpeg", 0.85);
+  }
 
   const form = document.getElementById("demo-avatar-picker-form");
   form.addEventListener("submit", (e) => {

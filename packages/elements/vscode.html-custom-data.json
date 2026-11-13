@@ -617,7 +617,12 @@
         },
         {
           "name": "disabled",
-          "description": "No choosing nor removing.",
+          "description": "No choosing, removing nor preview (also inside a disabled <fieldset>).",
+          "valueSet": "v"
+        },
+        {
+          "name": "readonly",
+          "description": "The picture cannot be changed: the buttons are hidden, the preview still works. Not validated (required does not apply), as a native readonly field.",
           "valueSet": "v"
         },
         {
@@ -804,7 +809,7 @@
         },
         {
           "name": "preview",
-          "description": "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).",
+          "description": "With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled.",
           "valueSet": "v"
         },
         {

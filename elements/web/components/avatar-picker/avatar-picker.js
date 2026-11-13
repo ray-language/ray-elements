@@ -8,7 +8,8 @@
 // JSON) or, with output="blob", a Blob (to upload). It takes part in a <form>
 // under `name`. With `preview`, the avatar of a picture is a button: it fires
 // a cancelable ray-preview and, unless the app takes it, shows the picture
-// large in a dialog.
+// large in a dialog. `readonly` hides the buttons and keeps the preview;
+// `disabled` turns everything off.
 
 import { css, define } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
@@ -32,6 +33,7 @@ const styles = css`
     align-items: flex-start;
     gap: var(--ray-space-2);
   }
+  :host([readonly]) .actions { display: none; }
   :host([layout="inline"]) .actions { flex-direction: row; flex-wrap: wrap; }
   .view { display: inline-flex; flex: none; border-radius: 50%; }
   .view[role="button"] { cursor: zoom-in; transition: filter var(--ray-duration-fast) var(--ray-easing-standard); }
@@ -64,6 +66,7 @@ export class RayAvatarPicker extends FormControl {
     error: { type: String },
     required: { type: Boolean, reflect: true },
     disabled: { type: Boolean, reflect: true },
+    readonly: { type: Boolean, reflect: true },
     displayName: { type: String, attribute: "display-name" },
     accept: { type: String, default: "image/*" },
     size: { type: String, reflect: true, default: "xl" },
@@ -158,7 +161,7 @@ export class RayAvatarPicker extends FormControl {
 
   /** Opens the system picker for a new picture (then the crop sheet). */
   pick() {
-    if (this.effectivelyDisabled) return;
+    if (this.effectivelyDisabled || this.readonly) return;
     // The same file chosen twice still fires change.
     this.input.value = "";
     this.input.click();
@@ -169,7 +172,7 @@ export class RayAvatarPicker extends FormControl {
    * pasted or taken some other way. "Use photo" makes it the value.
    */
   edit(src) {
-    if (this.effectivelyDisabled || !src) return;
+    if (this.effectivelyDisabled || this.readonly || !src) return;
     this.#failed = "";
     const sheet = this.#ensureSheet();
     const crop = this.#crop;
@@ -208,7 +211,7 @@ export class RayAvatarPicker extends FormControl {
 
   // The avatar pressed: ray-preview, then the dialog unless the app took it.
   #viewRequested() {
-    if (!this.preview || !this.value) return;
+    if (!this.preview || !this.value || this.effectivelyDisabled) return;
     const go = this.emit("ray-preview", { value: this.value }, { cancelable: true });
     if (go) this.showPreview();
   }
@@ -255,7 +258,7 @@ export class RayAvatarPicker extends FormControl {
     else row.removeAttribute("aria-describedby");
 
     const view = this.$(".view");
-    if (this.preview && has) {
+    if (this.preview && has && !disabled) {
       view.setAttribute("role", "button");
       view.tabIndex = 0;
       view.setAttribute("aria-label", this.previewLabel);
@@ -449,8 +452,8 @@ export class RayAvatarPicker extends FormControl {
   #commit() {
     const v = this.value;
     const c = this.#committed;
-    if (c && c.value === v && c.name === this.name && c.required === this.required && c.message === this.requiredLabel) return;
-    this.#committed = { value: v, name: this.name, required: this.required, message: this.requiredLabel };
+    if (c && c.value === v && c.name === this.name && c.required === this.required && c.readonly === this.readonly && c.message === this.requiredLabel) return;
+    this.#committed = { value: v, name: this.name, required: this.required, readonly: this.readonly, message: this.requiredLabel };
     if (!this.name || !v) this.internals.setFormValue(null);
     else if (typeof v === "string") this.internals.setFormValue(v);
     else {
@@ -460,7 +463,8 @@ export class RayAvatarPicker extends FormControl {
       data.append(this.name, file);
       this.internals.setFormValue(data);
     }
-    if (this.required && !v) this.internals.setValidity({ valueMissing: true }, this.requiredLabel, this.$(".pick"));
+    // As a native readonly field, it is not validated.
+    if (this.required && !this.readonly && !v) this.internals.setValidity({ valueMissing: true }, this.requiredLabel, this.$(".pick"));
     else this.internals.setValidity({});
   }
 

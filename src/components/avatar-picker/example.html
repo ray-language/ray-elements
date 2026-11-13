@@ -9,6 +9,7 @@
 <form class="demo-grid" id="demo-avatar-picker-form" novalidate>
   <ray-avatar-picker name="photo" label="Photo" required display-name="Grace Hopper" size="md" button-size="xs"></ray-avatar-picker>
   <ray-avatar-picker label="Disabled" disabled display-name="Alan Turing" size="md" button-size="xs"></ray-avatar-picker>
+  <ray-avatar-picker id="demo-avatar-picker-readonly" label="Read-only" readonly preview display-name="Alan Turing" size="md"></ray-avatar-picker>
   <div class="demo-actions"><ray-button type="submit" size="sm">Submit</ray-button><ray-button type="reset" size="sm" variant="default">Reset</ray-button><span class="demo-muted" id="demo-avatar-picker-form-out"></span></div>
 </form>
 
@@ -28,6 +29,19 @@
     e.preventDefault();
     out.textContent = "Team logo: ray-preview, handled by the page (preventDefault): no dialog";
   });
+
+  // A picture to look at: readonly keeps the preview.
+  {
+    const c = document.createElement("canvas");
+    c.width = c.height = 160;
+    const g = c.getContext("2d");
+    const gr = g.createLinearGradient(0, 0, 160, 160);
+    gr.addColorStop(0, "#f59e0b");
+    gr.addColorStop(1, "#0ea5e9");
+    g.fillStyle = gr;
+    g.fillRect(0, 0, 160, 160);
+    document.getElementById("demo-avatar-picker-readonly").value = c.toDataURL("image/jpeg", 0.85);
+  }
 
   const form = document.getElementById("demo-avatar-picker-form");
   form.addEventListener("submit", (e) => {
