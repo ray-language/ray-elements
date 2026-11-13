@@ -24,7 +24,7 @@ Parts (`::part()`):
 - `dots`: The row.
 - `dot`: Each dot ([data-state] done, current or todo).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.17.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.18.0.
 
 ## Example
 

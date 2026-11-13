@@ -20,7 +20,7 @@ or, pinning the tag without the index:
 
 ```toml
 [dependencies]
-elements = "git+https://github.com/ray-language/elements@v0.17.1"
+elements = "git+https://github.com/ray-language/elements@v0.18.0"
 ```
 
 ## Use

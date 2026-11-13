@@ -58,7 +58,7 @@ Parts (`::part()`):
 - `close`: The × (pointer only: it is not focusable).
 - `dot`: The unsaved mark.
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.17.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.18.0.
 
 ## Example
 
