@@ -187,11 +187,17 @@ type = "string"
 default = "View photo"
 description = "Accessible name of the avatar button and title of the preview dialog."
 
+[ray-avatar-picker.properties.requiredLabel]
+attribute = "required-label"
+type = "string"
+default = "Please choose a photo."
+description = "Validation message of required without a picture."
+
 [ray-avatar-picker.properties.failedLabel]
 attribute = "failed-label"
 type = "string"
 default = "That image could not be opened."
-description = "Shown under the field when the chosen file cannot be decoded (until the next picture)."
+description = "Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture)."
 
 [ray-avatar-picker.members.pick]
 ts = "pick(): void"
@@ -225,7 +231,7 @@ description = "The avatar was pressed (with preview and a picture). Cancelable: 
 
 [ray-avatar-picker.events.ray-error]
 detail = "{ error: Error }"
-description = "The chosen file could not be decoded; the value is unchanged."
+description = "The chosen file could not be decoded, or the framed picture encoded; the value is unchanged."
 
 [ray-avatar-picker.parts.label]
 description = "The label."

@@ -1726,11 +1726,20 @@
               "default": "View photo"
             },
             {
+              "name": "required-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Validation message of required without a picture.",
+              "fieldName": "requiredLabel",
+              "default": "Please choose a photo."
+            },
+            {
               "name": "failed-label",
               "type": {
                 "text": "string"
               },
-              "description": "Shown under the field when the chosen file cannot be decoded (until the next picture).",
+              "description": "Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).",
               "fieldName": "failedLabel",
               "default": "That image could not be opened."
             }
@@ -2068,11 +2077,22 @@
             },
             {
               "kind": "field",
+              "name": "requiredLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Validation message of required without a picture.",
+              "attribute": "required-label",
+              "reflects": false,
+              "default": "Please choose a photo."
+            },
+            {
+              "kind": "field",
               "name": "failedLabel",
               "type": {
                 "text": "string"
               },
-              "description": "Shown under the field when the chosen file cannot be decoded (until the next picture).",
+              "description": "Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).",
               "attribute": "failed-label",
               "reflects": false,
               "default": "That image could not be opened."
@@ -2130,7 +2150,7 @@
               "type": {
                 "text": "CustomEvent<{ error: Error }>"
               },
-              "description": "The chosen file could not be decoded; the value is unchanged."
+              "description": "The chosen file could not be decoded, or the framed picture encoded; the value is unchanged."
             }
           ],
           "slots": [],

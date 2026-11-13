@@ -41,14 +41,15 @@ Properties:
 - `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider.
 - `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also while disabled (it only shows).
 - `previewLabel` (attribute `preview-label`): string, default `View photo`. Accessible name of the avatar button and title of the preview dialog.
-- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded (until the next picture).
+- `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.`. Validation message of required without a picture.
+- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
 
 Events:
 
 - `input`: The value changed (with change; for v-model).
 - `change`: A picture was kept (Use photo) or removed. Read value.
 - `ray-preview` (detail `{ value: string | Blob }`): The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer).
-- `ray-error` (detail `{ error: Error }`): The chosen file could not be decoded; the value is unchanged.
+- `ray-error` (detail `{ error: Error }`): The chosen file could not be decoded, or the framed picture encoded; the value is unchanged.
 
 Parts (`::part()`):
 

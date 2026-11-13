@@ -812,8 +812,12 @@
           "description": "Accessible name of the avatar button and title of the preview dialog."
         },
         {
+          "name": "required-label",
+          "description": "Validation message of required without a picture."
+        },
+        {
           "name": "failed-label",
-          "description": "Shown under the field when the chosen file cannot be decoded (until the next picture)."
+          "description": "Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture)."
         }
       ]
     },

@@ -232,7 +232,9 @@ export interface RayAvatarPickerOwnProps {
   preview?: boolean;
   /** Accessible name of the avatar button and title of the preview dialog. */
   previewLabel?: string;
-  /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
+  /** Validation message of required without a picture. */
+  requiredLabel?: string;
+  /** Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture). */
   failedLabel?: string;
   /** The value changed (with change; for v-model). */
   onInput?: (event: Event) => void;
@@ -240,7 +242,7 @@ export interface RayAvatarPickerOwnProps {
   onChange?: (event: Event) => void;
   /** The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer). */
   onRayPreview?: (event: CustomEvent<{ value: string | Blob }>) => void;
-  /** The chosen file could not be decoded; the value is unchanged. */
+  /** The chosen file could not be decoded, or the framed picture encoded; the value is unchanged. */
   onRayError?: (event: CustomEvent<{ error: Error }>) => void;
 }
 export type RayAvatarPickerProps = RayAvatarPickerOwnProps & Omit<React.HTMLAttributes<Ray.RayAvatarPicker>, keyof RayAvatarPickerOwnProps> & { children?: React.ReactNode };

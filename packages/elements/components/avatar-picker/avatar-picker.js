@@ -12,6 +12,7 @@
 
 import { css, define } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
+import { extensionsOfType } from "../../core/host.js";
 import "../avatar/avatar.js";
 import "../button/button.js";
 import "../image-crop/image-crop.js";
@@ -51,7 +52,7 @@ const styles = css`
 const NARROW = "(max-width: 40em)";
 
 /** The extension of a picture's MIME type, for the file name in a form. */
-const extension = (type) => ({ "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" })[type] ?? "img";
+const extension = (type) => extensionsOfType(type)[0] ?? "img";
 
 export class RayAvatarPicker extends FormControl {
   static properties = {
@@ -86,6 +87,7 @@ export class RayAvatarPicker extends FormControl {
     zoomLabel: { type: String, attribute: "zoom-label", default: "Zoom" },
     preview: { type: Boolean, reflect: true },
     previewLabel: { type: String, attribute: "preview-label", default: "View photo" },
+    requiredLabel: { type: String, attribute: "required-label", default: "Please choose a photo." },
     failedLabel: { type: String, attribute: "failed-label", default: "That image could not be opened." },
   };
   static styles = [fieldStyles, styles];
@@ -101,6 +103,18 @@ export class RayAvatarPicker extends FormControl {
     </div>
     <input type="file" tabindex="-1" aria-hidden="true" hidden>
     <div class="error" part="error" id="error" aria-live="polite" hidden></div>`;
+
+  static get observedAttributes() {
+    return [...super.observedAttributes, "aria-label"];
+  }
+
+  attributeChangedCallback(attr, old, value) {
+    if (attr === "aria-label") {
+      this.requestUpdate();
+      return;
+    }
+    super.attributeChangedCallback(attr, old, value);
+  }
 
   #objectUrl = "";
   #objectFor = null;
@@ -119,8 +133,14 @@ export class RayAvatarPicker extends FormControl {
     });
     const view = this.$(".view");
     view.addEventListener("click", () => this.#viewRequested());
+    // As a native button: Enter on keydown, Space on keyup.
     view.addEventListener("keydown", (e) => {
       if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      if (e.key === "Enter" && !e.repeat) this.#viewRequested();
+    });
+    view.addEventListener("keyup", (e) => {
+      if (e.key !== " ") return;
       e.preventDefault();
       this.#viewRequested();
     });
@@ -308,7 +328,8 @@ export class RayAvatarPicker extends FormControl {
   // The sheet is made the first time it is needed: a drawer from the bottom
   // on a narrow screen (or sheet="drawer"), else a dialog.
   #ensureSheet() {
-    const tag = this.sheet === "drawer" || (this.sheet !== "dialog" && matchMedia(NARROW).matches)
+    const narrow = typeof matchMedia === "function" && matchMedia(NARROW).matches;
+    const tag = this.sheet === "drawer" || (this.sheet !== "dialog" && narrow)
       ? "ray-drawer" : "ray-dialog";
     if (this.#sheet?.localName === tag) return this.#sheet;
     const crop = this.#crop ?? this.#makeCrop();
@@ -343,7 +364,11 @@ export class RayAvatarPicker extends FormControl {
     }
     // Closed: release the working copy (unless it was reopened during the exit).
     sheet.addEventListener("ray-close", () => {
-      if (!sheet.open) this.#crop.src = null;
+      if (sheet.open) return;
+      this.#crop.src = null;
+      // The sheet gives the focus back to the host, whose first focusable
+      // may be the avatar (preview): the picture button is what opened it.
+      if (this.matches(":focus-within")) this.$(".pick").focus();
     });
     this.shadowRoot.append(sheet);
     this.#sheet = sheet;
@@ -385,19 +410,47 @@ export class RayAvatarPicker extends FormControl {
     sheet.querySelector(".use-text").textContent = this.useLabel;
   }
 
+  #using = false;
+
   async #use() {
+    if (this.#using) return;
     const crop = this.#crop;
-    if (!(await crop.ready) || !crop.loaded) return;
-    const value = this.output === "blob" ? await crop.toBlob() : crop.toDataURL();
-    if (!value) return;
+    const sheet = this.#sheet;
+    const use = sheet.querySelector(".use");
+    const src = crop.src;
+    this.#using = true;
+    use.loading = true;
+    let value = null;
+    try {
+      if (!(await crop.ready) || !crop.loaded) return;
+      value = this.output === "blob" ? await crop.toBlob() : crop.toDataURL();
+    } catch (error) {
+      // Not encoded (an unsupported type, no memory for the output size).
+      if (sheet.open) {
+        this.#failed = this.failedLabel;
+        this.requestUpdate();
+        sheet.close("error");
+      }
+      this.emit("ray-error", { error });
+      return;
+    } finally {
+      this.#using = false;
+      use.loading = false;
+    }
+    // Canceled (or another picture opened) while it was being encoded.
+    if (!value || !sheet.open || crop.src !== src) return;
     this.#failed = "";
-    this.#sheet.close("use");
+    sheet.close("use");
     this.#setValue(value);
-    this.$(".pick").focus();
   }
+
+  #committed = null;
 
   #commit() {
     const v = this.value;
+    const c = this.#committed;
+    if (c && c.value === v && c.name === this.name && c.required === this.required && c.message === this.requiredLabel) return;
+    this.#committed = { value: v, name: this.name, required: this.required, message: this.requiredLabel };
     if (!this.name || !v) this.internals.setFormValue(null);
     else if (typeof v === "string") this.internals.setFormValue(v);
     else {
@@ -407,7 +460,7 @@ export class RayAvatarPicker extends FormControl {
       data.append(this.name, file);
       this.internals.setFormValue(data);
     }
-    if (this.required && !v) this.internals.setValidity({ valueMissing: true }, "Please choose a photo.", this.$(".pick"));
+    if (this.required && !v) this.internals.setValidity({ valueMissing: true }, this.requiredLabel, this.$(".pick"));
     else this.internals.setValidity({});
   }
 

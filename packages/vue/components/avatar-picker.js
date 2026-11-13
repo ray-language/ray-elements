@@ -4,7 +4,7 @@ import "@raylang/elements/avatar-picker";
 import { createComponent } from "../create.js";
 
 export const RayAvatarPicker = /*#__PURE__*/ createComponent("RayAvatarPicker", "ray-avatar-picker", {
-  properties: ["name", "value", "output", "label", "description", "error", "required", "disabled", "displayName", "accept", "size", "color", "variant", "radius", "buttonSize", "layout", "sheet", "outputSize", "type", "quality", "maxZoom", "pickLabel", "changeLabel", "removeLabel", "sheetLabel", "useLabel", "cancelLabel", "cropLabel", "zoomLabel", "preview", "previewLabel", "failedLabel"],
+  properties: ["name", "value", "output", "label", "description", "error", "required", "disabled", "displayName", "accept", "size", "color", "variant", "radius", "buttonSize", "layout", "sheet", "outputSize", "type", "quality", "maxZoom", "pickLabel", "changeLabel", "removeLabel", "sheetLabel", "useLabel", "cancelLabel", "cropLabel", "zoomLabel", "preview", "previewLabel", "requiredLabel", "failedLabel"],
   booleans: ["required", "disabled", "preview"],
   model: { prop: "value", events: ["change"] },
 });

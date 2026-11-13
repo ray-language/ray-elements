@@ -533,7 +533,9 @@ export declare class RayAvatarPicker extends FormControl {
   preview: boolean | undefined;
   /** Accessible name of the avatar button and title of the preview dialog. */
   previewLabel: string;
-  /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
+  /** Validation message of required without a picture. */
+  requiredLabel: string;
+  /** Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture). */
   failedLabel: string;
   /** Opens the system picker (what Choose photo does). */
   pick(): void;
@@ -553,7 +555,7 @@ export declare class RayAvatarPicker extends FormControl {
 export interface RayAvatarPickerEventMap extends HTMLElementEventMap {
   /** The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer). */
   "ray-preview": CustomEvent<{ value: string | Blob }>;
-  /** The chosen file could not be decoded; the value is unchanged. */
+  /** The chosen file could not be decoded, or the framed picture encoded; the value is unchanged. */
   "ray-error": CustomEvent<{ error: Error }>;
 }
 

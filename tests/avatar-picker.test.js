@@ -243,9 +243,96 @@ T.test("avatar-picker: preview — the avatar of a picture is a button; ray-prev
   await T.settle();
   T.eq(seen.length, 2, "Enter fires ray-preview");
   T.eq(dialog.open, false, "canceled: no dialog");
-  view.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true }));
+  view.dispatchEvent(new KeyboardEvent("keyup", { key: " ", bubbles: true, cancelable: true }));
   await T.settle();
   T.eq(dialog.open, true, "Space opens it");
   dialog.close();
+  box.remove();
+});
+
+T.test("avatar-picker: after Use photo the focus is on Change photo, even with preview", async (T) => {
+  const box = await mount(`<ray-avatar-picker preview sheet="dialog" output-size="16"></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  inner(el, ".pick").focus();
+  await open(el);
+  const sheet = sheetOf(el);
+  inner(el, ".use").click();
+  T.ok(await until(() => Boolean(el.value)), "a value");
+  T.ok(await closed(sheet), "closed");
+  await T.settle();
+  T.eq(inner(el, ".view").getAttribute("role"), "button", "the avatar is a button now");
+  T.eq(el.shadowRoot.activeElement, inner(el, ".pick"), "focus on Change photo, not the avatar");
+  box.remove();
+});
+
+T.test("avatar-picker: Use photo twice commits once; canceled while encoding commits nothing", async (T) => {
+  const box = await mount(`<ray-avatar-picker sheet="dialog" output="blob" output-size="16"></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  let changes = 0;
+  el.addEventListener("change", () => changes++);
+  await open(el);
+  const use = inner(el, ".use");
+  use.click();
+  use.click();
+  T.ok(await until(() => Boolean(el.value)), "a value");
+  await closed(sheetOf(el));
+  T.eq(changes, 1, "one change for a double click");
+
+  // Encoding that waits: cancel before it ends.
+  await open(el);
+  const crop = cropOf(el);
+  let finish;
+  crop.toBlob = () => new Promise((resolve) => { finish = resolve; });
+  const before = el.value;
+  use.click();
+  T.ok(await until(() => typeof finish === "function"), "encoding started");
+  T.eq(use.loading, true, "Use photo shows it is busy");
+  sheetOf(el).close("cancel");
+  finish(new Blob(["x"], { type: "image/jpeg" }));
+  await closed(sheetOf(el));
+  T.eq(el.value, before, "canceled: the value is unchanged");
+  T.eq(changes, 1, "no change");
+  T.eq(use.loading, false);
+  delete crop.toBlob;
+  box.remove();
+});
+
+T.test("avatar-picker: an encoding error shows failed-label and fires ray-error", async (T) => {
+  const box = await mount(`<ray-avatar-picker sheet="dialog"></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  const errors = [];
+  box.addEventListener("ray-error", (e) => errors.push(e.detail.error?.message));
+  await open(el);
+  cropOf(el).toDataURL = () => { throw new Error("the image could not be encoded"); };
+  inner(el, ".use").click();
+  T.ok(await until(() => errors.length > 0), "ray-error");
+  T.eq(errors.join(), "the image could not be encoded");
+  T.ok(await closed(sheetOf(el)), "the sheet closed");
+  T.eq(inner(el, "#error").textContent, "That image could not be opened.");
+  T.eq(el.value ?? null, null);
+  delete cropOf(el).toDataURL;
+  box.remove();
+});
+
+T.test("avatar-picker: required-label, a late aria-label, Space on keyup, the file extension", async (T) => {
+  const box = await mount(`<form><ray-avatar-picker name="photo" required required-label="Elige una foto." preview></ray-avatar-picker></form>`);
+  const el = box.querySelector("ray-avatar-picker");
+  T.eq(el.validationMessage, "Elige una foto.");
+  el.setAttribute("aria-label", "Foto de perfil");
+  await T.settle();
+  T.eq(inner(el, ".row").getAttribute("aria-label"), "Foto de perfil", "aria-label set after the first render");
+  el.value = new Blob(["x"], { type: "image/webp" });
+  await T.settle();
+  T.eq(new FormData(box.querySelector("form")).get("photo").name, "photo.webp");
+  const view = inner(el, ".view");
+  const k = (type, key) => view.dispatchEvent(new KeyboardEvent(type, { key, bubbles: true, cancelable: true }));
+  let previews = 0;
+  el.addEventListener("ray-preview", (e) => { previews++; e.preventDefault(); });
+  k("keydown", " ");
+  T.eq(previews, 0, "Space: nothing on keydown");
+  k("keyup", " ");
+  T.eq(previews, 1, "Space: on keyup");
+  k("keydown", "Enter");
+  T.eq(previews, 2, "Enter: on keydown");
   box.remove();
 });
