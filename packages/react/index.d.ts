@@ -238,7 +238,7 @@ export interface RayAvatarPickerOwnProps {
   requiredLabel?: string;
   /** Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture). */
   failedLabel?: string;
-  /** The value changed (with change; for v-model). */
+  /** The value changed (fired with change). */
   onInput?: (event: Event) => void;
   /** A picture was kept (Use photo) or removed. Read value. */
   onChange?: (event: Event) => void;

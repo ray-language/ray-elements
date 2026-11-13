@@ -136,17 +136,23 @@ export class RayAvatarPicker extends FormControl {
     });
     const view = this.$(".view");
     view.addEventListener("click", () => this.#viewRequested());
-    // As a native button: Enter on keydown, Space on keyup.
+    // As a native button: Enter on keydown; Space on keyup, when it was
+    // pressed here too.
+    let spaceDown = false;
     view.addEventListener("keydown", (e) => {
       if (e.key !== "Enter" && e.key !== " ") return;
       e.preventDefault();
-      if (e.key === "Enter" && !e.repeat) this.#viewRequested();
+      if (e.key === " ") spaceDown = true;
+      else if (!e.repeat) this.#viewRequested();
     });
     view.addEventListener("keyup", (e) => {
       if (e.key !== " ") return;
       e.preventDefault();
+      if (!spaceDown) return;
+      spaceDown = false;
       this.#viewRequested();
     });
+    view.addEventListener("blur", () => { spaceDown = false; });
     this.input.addEventListener("change", () => {
       const file = this.input.files?.[0];
       this.input.value = "";
@@ -182,8 +188,9 @@ export class RayAvatarPicker extends FormControl {
     sheet.show();
   }
 
-  /** Shows the picture large in a dialog (nothing without one). */
+  /** Shows the picture large in a dialog (nothing without one, while disabled or detached). */
   showPreview() {
+    if (!this.isConnected || this.effectivelyDisabled) return;
     const src = this.#src();
     if (!src) return;
     let dialog = this.#preview;
@@ -234,11 +241,15 @@ export class RayAvatarPicker extends FormControl {
     super.update?.(changed);
     const has = Boolean(this.value);
     const disabled = this.effectivelyDisabled;
+    // A new value (removed, or set by the app) replaces a failed attempt.
+    if (changed.has("value")) this.#failed = "";
+    // Made disabled or read-only while framing: the sheet goes.
+    if ((disabled || this.readonly) && this.#sheet?.open) this.#sheet.close("cancel");
 
     const label = this.$(".label");
     label.hidden = !this.label;
     this.$(".label-text").textContent = this.label ?? "";
-    this.$(".required").hidden = !this.required;
+    this.$(".required").hidden = !this.required || Boolean(this.readonly);
     const desc = this.$("#description");
     desc.hidden = !this.description;
     desc.textContent = this.description ?? "";
@@ -288,7 +299,7 @@ export class RayAvatarPicker extends FormControl {
     for (const b of [pick, remove]) {
       b.size = this.buttonSize;
       b.disabled = disabled;
-      if (this.error) b.setAttribute("aria-invalid", "true");
+      if (message) b.setAttribute("aria-invalid", "true");
       else b.removeAttribute("aria-invalid");
     }
     this.input.accept = this.accept ?? "";
@@ -334,7 +345,8 @@ export class RayAvatarPicker extends FormControl {
     const narrow = typeof matchMedia === "function" && matchMedia(NARROW).matches;
     const tag = this.sheet === "drawer" || (this.sheet !== "dialog" && narrow)
       ? "ray-drawer" : "ray-dialog";
-    if (this.#sheet?.localName === tag) return this.#sheet;
+    // The open one stays, even if the screen width crossed the breakpoint.
+    if (this.#sheet?.open || this.#sheet?.localName === tag) return this.#sheet;
     const crop = this.#crop ?? this.#makeCrop();
     this.#sheet?.remove();
     const sheet = document.createElement(tag);
@@ -440,8 +452,9 @@ export class RayAvatarPicker extends FormControl {
       this.#using = false;
       use.loading = false;
     }
-    // Canceled (or another picture opened) while it was being encoded.
-    if (!value || !sheet.open || crop.src !== src) return;
+    // Canceled, made disabled or read-only, or another picture opened while
+    // it was being encoded.
+    if (!value || !sheet.open || crop.src !== src || this.effectivelyDisabled || this.readonly) return;
     this.#failed = "";
     sheet.close("use");
     this.#setValue(value);

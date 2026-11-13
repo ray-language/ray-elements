@@ -239,7 +239,7 @@ export interface RayAvatarPickerProps {
   /** v-model: the element's `value`. */
   modelValue?: string | Blob | null;
   "onUpdate:modelValue"?: (value: string | Blob | null) => void;
-  /** The value changed (with change; for v-model). */
+  /** The value changed (fired with change). */
   onInput?: (event: Event) => void;
   /** A picture was kept (Use photo) or removed. Read value. */
   onChange?: (event: Event) => void;

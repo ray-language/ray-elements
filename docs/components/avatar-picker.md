@@ -47,7 +47,7 @@ Properties:
 
 Events:
 
-- `input`: The value changed (with change; for v-model).
+- `input`: The value changed (fired with change).
 - `change`: A picture was kept (Use photo) or removed. Read value.
 - `ray-preview` (detail `{ value: string | Blob }`): The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer).
 - `ray-error` (detail `{ error: Error }`): The chosen file could not be decoded, or the framed picture encoded; the value is unchanged.
@@ -74,9 +74,9 @@ Methods and properties:
 
 - `pick(): void`: Opens the system picker (what Choose photo does).
 - `edit(src: Blob | string): void`: Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value.
-- `showPreview(): void`: Shows the picture large in a dialog (nothing without one).
+- `showPreview(): void`: Shows the picture large in a dialog (nothing without one, or while disabled).
 - `clear(): void`: Removes the picture (fires input and change when there was one).
-- `toBlob(): Promise<Blob | null>`: The value as a Blob whatever output is (null without a picture).
+- `toBlob(): Promise<Blob | null>`: The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:.
 
 Vue `v-model`: `value` (updated on change).
 

@@ -2128,7 +2128,7 @@
             {
               "kind": "method",
               "name": "showPreview",
-              "description": "Shows the picture large in a dialog (nothing without one)."
+              "description": "Shows the picture large in a dialog (nothing without one, or while disabled)."
             },
             {
               "kind": "method",
@@ -2138,7 +2138,7 @@
             {
               "kind": "method",
               "name": "toBlob",
-              "description": "The value as a Blob whatever output is (null without a picture)."
+              "description": "The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:."
             }
           ],
           "events": [
@@ -2147,7 +2147,7 @@
               "type": {
                 "text": "Event"
               },
-              "description": "The value changed (with change; for v-model)."
+              "description": "The value changed (fired with change)."
             },
             {
               "name": "change",

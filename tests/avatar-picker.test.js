@@ -250,6 +250,7 @@ T.test("avatar-picker: preview — the avatar of a picture is a button; ray-prev
   await T.settle();
   T.eq(seen.length, 2, "Enter fires ray-preview");
   T.eq(dialog.open, false, "canceled: no dialog");
+  view.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true, cancelable: true }));
   view.dispatchEvent(new KeyboardEvent("keyup", { key: " ", bubbles: true, cancelable: true }));
   await T.settle();
   T.eq(dialog.open, true, "Space opens it");
@@ -363,5 +364,81 @@ T.test("avatar-picker: readonly hides the buttons, opens no sheet and is not val
   box.querySelector("fieldset").disabled = false;
   await T.settle();
   T.eq(el.validity.valueMissing, true, "not readonly: required again");
+  box.remove();
+});
+
+T.test("avatar-picker: made disabled or readonly while framing: the sheet closes, nothing is kept", async (T) => {
+  for (const state of ["disabled", "readonly"]) {
+    const box = await mount(`<ray-avatar-picker sheet="dialog" output-size="16"></ray-avatar-picker>`);
+    const el = box.firstElementChild;
+    let changes = 0;
+    el.addEventListener("change", () => changes++);
+    await open(el);
+    const sheet = sheetOf(el);
+    el[state] = true;
+    await T.settle();
+    T.ok(await closed(sheet), `${state}: the sheet closed`);
+    inner(el, ".use").click();
+    await new Promise((r) => setTimeout(r, 100));
+    T.eq(changes, 0, `${state}: no change`);
+    T.eq(el.value ?? null, null);
+    box.remove();
+  }
+});
+
+T.test("avatar-picker: a new value clears failed-label; aria-invalid with it; readonly hides the asterisk", async (T) => {
+  const box = await mount(`<ray-avatar-picker sheet="dialog" label="Photo" required></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  el.edit(new Blob(["not a picture"], { type: "image/png" }));
+  T.ok(await until(() => !inner(el, "#error").hidden), "failed-label shown");
+  await closed(sheetOf(el));
+  T.eq(inner(el, ".pick").getAttribute("aria-invalid"), "true", "the button is marked invalid");
+  el.value = "data:image/png;base64,iVBORw0KGgo=";
+  await T.settle();
+  T.eq(inner(el, "#error").hidden, true, "a new value clears it");
+  T.eq(inner(el, ".pick").hasAttribute("aria-invalid"), false);
+  T.eq(inner(el, ".required").hidden, false, "the asterisk");
+  el.readonly = true;
+  await T.settle();
+  T.eq(inner(el, ".required").hidden, true, "readonly: no asterisk");
+  box.remove();
+});
+
+T.test("avatar-picker: showPreview does nothing while disabled or detached; Space must be pressed on the avatar", async (T) => {
+  const url = "data:image/png;base64,iVBORw0KGgo=";
+  const box = await mount(`<ray-avatar-picker preview disabled></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  el.value = url;
+  await T.settle();
+  el.showPreview();
+  await T.settle();
+  T.eq(inner(el, ".preview"), null, "disabled: no preview");
+  el.disabled = false;
+  await T.settle();
+  let previews = 0;
+  el.addEventListener("ray-preview", (e) => { previews++; e.preventDefault(); });
+  const view = inner(el, ".view");
+  view.dispatchEvent(new KeyboardEvent("keyup", { key: " ", bubbles: true, cancelable: true }));
+  T.eq(previews, 0, "a keyup without its keydown here does nothing");
+  box.remove();
+  el.showPreview();
+  T.eq(inner(el, ".preview"), null, "detached: no preview");
+});
+
+T.test("avatar-picker: the open sheet is kept when the screen crosses the breakpoint", async (T) => {
+  const box = await mount(`<ray-avatar-picker sheet="dialog"></ray-avatar-picker>`);
+  const el = box.firstElementChild;
+  await open(el);
+  const first = sheetOf(el);
+  el.sheet = "drawer";
+  await T.settle();
+  await open(el);
+  T.eq(sheetOf(el), first, "the same, still open sheet");
+  T.eq(first.open, true);
+  first.close();
+  await closed(first);
+  await open(el);
+  T.eq(sheetOf(el).localName, "ray-drawer", "the next one follows sheet");
+  sheetOf(el).close();
   box.remove();
 });

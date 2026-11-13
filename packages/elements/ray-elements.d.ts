@@ -543,11 +543,11 @@ export declare class RayAvatarPicker extends FormControl {
   pick(): void;
   /** Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value. */
   edit(src: Blob | string): void;
-  /** Shows the picture large in a dialog (nothing without one). */
+  /** Shows the picture large in a dialog (nothing without one, or while disabled). */
   showPreview(): void;
   /** Removes the picture (fires input and change when there was one). */
   clear(): void;
-  /** The value as a Blob whatever output is (null without a picture). */
+  /** The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:. */
   toBlob(): Promise<Blob | null>;
   addEventListener<K extends keyof RayAvatarPickerEventMap>(type: K, listener: (this: RayAvatarPicker, ev: RayAvatarPickerEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;

@@ -214,7 +214,7 @@ description = "Opens the crop sheet on an image (a File, Blob or URL); Use photo
 
 [ray-avatar-picker.members.showPreview]
 ts = "showPreview(): void"
-description = "Shows the picture large in a dialog (nothing without one)."
+description = "Shows the picture large in a dialog (nothing without one, or while disabled)."
 
 [ray-avatar-picker.members.clear]
 ts = "clear(): void"
@@ -222,10 +222,10 @@ description = "Removes the picture (fires input and change when there was one)."
 
 [ray-avatar-picker.members.toBlob]
 ts = "toBlob(): Promise<Blob | null>"
-description = "The value as a Blob whatever output is (null without a picture)."
+description = "The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:."
 
 [ray-avatar-picker.events.input]
-description = "The value changed (with change; for v-model)."
+description = "The value changed (fired with change)."
 
 [ray-avatar-picker.events.change]
 description = "A picture was kept (Use photo) or removed. Read value."
