@@ -45,7 +45,7 @@ test("unknown elements, attributes, values and slots", () => {
     `<ray-button variant="primary" size="medium"></ray-button>`,
     `<ray-button disabled="false"></ray-button>`,
     `<ray-button><ray-icon slot="start" name="plus"></ray-icon></ray-button>`,
-    `<ray-icon name="trash"></ray-icon>`,
+    `<ray-icon name="rocket"></ray-icon>`,
     `<ray-icon-button><ray-icon name="settings"></ray-icon></ray-icon-button>`,
     `<ray-table columns="a,b"></ray-table>`,
     `<div style="color: #333"></div>`,
@@ -69,7 +69,7 @@ test("unknown elements, attributes, values and slots", () => {
   const [typo] = checkMarkup(`<ray-buton></ray-buton>`, { manifest });
   assert.match(typo.message, /did you mean "ray-button"/);
   assert.equal(typo.severity, "error");
-  assert.equal(checkMarkup(`<ray-icon name="trash"></ray-icon>`, { manifest, icons })[0].severity, "warning");
+  assert.equal(checkMarkup(`<ray-icon name="rocket"></ray-icon>`, { manifest, icons })[0].severity, "warning");
 });
 
 test("Vue: wrappers, bindings, events and named slots", () => {

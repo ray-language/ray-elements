@@ -9,6 +9,7 @@ export { RayButtonGroup } from "./components/button-group.js";
 export { RayIconButton } from "./components/icon-button.js";
 export { RayToggle } from "./components/toggle.js";
 export { RayToggleGroup } from "./components/toggle-group.js";
+export { RayAvatarPicker } from "./components/avatar-picker.js";
 export { RayCheckbox } from "./components/checkbox.js";
 export { RayCheckboxGroup } from "./components/checkbox-group.js";
 export { RayColorPicker, RayColorInput } from "./components/color-picker.js";

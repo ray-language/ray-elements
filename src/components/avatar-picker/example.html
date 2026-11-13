@@ -1,0 +1,38 @@
+<div class="demo-caption">Choose a picture, frame it in the circle, use it: the value is a small square JPEG</div>
+<div class="demo-grid">
+  <ray-avatar-picker id="demo-avatar-picker" label="Profile picture" display-name="Ada Lovelace" color="teal" variant="filled" description="Drag to frame it; pinch, the wheel or the slider to zoom."></ray-avatar-picker>
+  <ray-avatar-picker label="Team logo" display-name="Ray Labs" size="lg" layout="inline" output="blob" output-size="256" type="image/png" pick-label="Upload logo" change-label="Replace" remove-label="Remove" sheet="dialog"></ray-avatar-picker>
+</div>
+<p class="demo-muted" id="demo-avatar-picker-out">Choose a picture: its size shows here.</p>
+
+<div class="demo-caption">In a form, and disabled</div>
+<form class="demo-grid" id="demo-avatar-picker-form" novalidate>
+  <ray-avatar-picker name="photo" label="Photo" required display-name="Grace Hopper" size="md" button-size="xs"></ray-avatar-picker>
+  <ray-avatar-picker label="Disabled" disabled display-name="Alan Turing" size="md" button-size="xs"></ray-avatar-picker>
+  <div class="demo-actions"><ray-button type="submit" size="sm">Submit</ray-button><ray-button type="reset" size="sm" variant="default">Reset</ray-button><span class="demo-muted" id="demo-avatar-picker-form-out"></span></div>
+</form>
+
+<script type="module">
+  const out = document.getElementById("demo-avatar-picker-out");
+  for (const picker of document.querySelectorAll("ray-avatar-picker")) {
+    picker.addEventListener("change", () => {
+      const v = picker.value;
+      out.textContent = !v ? `${picker.label}: removed`
+        : typeof v === "string" ? `${picker.label}: a data URL of ${Math.round(v.length / 1024)} KB`
+        : `${picker.label}: a ${v.type} Blob of ${Math.round(v.size / 1024)} KB`;
+    });
+  }
+
+  const form = document.getElementById("demo-avatar-picker-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const photo = form.querySelector('[name="photo"]');
+    photo.error = photo.value ? "" : "Choose a photo.";
+    if (!photo.value) return;
+    const v = new FormData(form).get("photo");
+    document.getElementById("demo-avatar-picker-form-out").textContent = `photo=${String(v).slice(0, 32)}…`;
+  });
+  form.addEventListener("reset", () => {
+    form.querySelector('[name="photo"]').error = "";
+  });
+</script>

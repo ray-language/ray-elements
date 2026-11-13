@@ -1445,6 +1445,718 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/avatar-picker/avatar-picker.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayAvatarPicker",
+          "tagName": "ray-avatar-picker",
+          "customElement": true,
+          "description": "Choose photo opens the system picker (on a phone, the camera or the photo library); the chosen image opens in the sheet, framed in a circle, and Use photo makes the framed part, at output-size, the value. Cancel or a picture that cannot be decoded leaves the value as it was (the latter shows failed-label and fires ray-error). edit(file) opens the sheet on an image from elsewhere (a drop, a paste). Styling: the parts, and ::part(crop) for --ray-image-crop-* .",
+          "superclass": {
+            "name": "FormControl"
+          },
+          "attributes": [
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name. The value is submitted as a string (data URL) or, with output=\"blob\", as a file named <name>.jpg (.png, .webp).",
+              "fieldName": "name"
+            },
+            {
+              "name": "value",
+              "type": {
+                "text": "string | Blob | null"
+              },
+              "description": "The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one.",
+              "fieldName": "value"
+            },
+            {
+              "name": "output",
+              "type": {
+                "text": "\"dataurl\" | \"blob\""
+              },
+              "description": "What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload).",
+              "fieldName": "output",
+              "default": "dataurl"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label above the avatar and the buttons.",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error message; marks the field invalid.",
+              "fieldName": "error"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A picture is required to submit the form.",
+              "fieldName": "required"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No choosing nor removing.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "display-name",
+              "type": {
+                "text": "string"
+              },
+              "description": "The person's name: the avatar shows its initials without a picture (name is the form field).",
+              "fieldName": "displayName"
+            },
+            {
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "description": "File types the picker offers.",
+              "fieldName": "accept",
+              "default": "image/*"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the avatar.",
+              "fieldName": "size",
+              "default": "xl"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Color of the avatar's initials (a palette color or any CSS color).",
+              "fieldName": "color"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"light\" | \"filled\" | \"outline\" | \"default\""
+              },
+              "description": "Style of the avatar's initials.",
+              "fieldName": "variant",
+              "default": "light"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square).",
+              "fieldName": "radius"
+            },
+            {
+              "name": "button-size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the buttons.",
+              "fieldName": "buttonSize",
+              "default": "sm"
+            },
+            {
+              "name": "layout",
+              "type": {
+                "text": "\"stack\" | \"inline\""
+              },
+              "description": "The buttons one under the other, beside the avatar, or in a row.",
+              "fieldName": "layout",
+              "default": "stack"
+            },
+            {
+              "name": "sheet",
+              "type": {
+                "text": "\"auto\" | \"drawer\" | \"dialog\""
+              },
+              "description": "Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise.",
+              "fieldName": "sheet",
+              "default": "auto"
+            },
+            {
+              "name": "output-size",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Side of the square picture kept, in pixels.",
+              "fieldName": "outputSize",
+              "default": "320"
+            },
+            {
+              "name": "type",
+              "type": {
+                "text": "\"image/jpeg\" | \"image/png\" | \"image/webp\" | (string & {})"
+              },
+              "description": "Format of the picture kept (PNG where the browser cannot encode it).",
+              "fieldName": "type",
+              "default": "image/jpeg"
+            },
+            {
+              "name": "quality",
+              "type": {
+                "text": "number"
+              },
+              "description": "0…1, for image/jpeg and image/webp.",
+              "fieldName": "quality",
+              "default": "0.85"
+            },
+            {
+              "name": "max-zoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The most zoom of the crop.",
+              "fieldName": "maxZoom",
+              "default": "4"
+            },
+            {
+              "name": "pick-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The button without a picture.",
+              "fieldName": "pickLabel",
+              "default": "Choose photo"
+            },
+            {
+              "name": "change-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The same button with a picture.",
+              "fieldName": "changeLabel",
+              "default": "Change photo"
+            },
+            {
+              "name": "remove-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The button that removes the picture.",
+              "fieldName": "removeLabel",
+              "default": "Remove photo"
+            },
+            {
+              "name": "sheet-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Title of the crop sheet.",
+              "fieldName": "sheetLabel",
+              "default": "Adjust the photo"
+            },
+            {
+              "name": "use-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The sheet's button that keeps the framed picture.",
+              "fieldName": "useLabel",
+              "default": "Use photo"
+            },
+            {
+              "name": "cancel-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The sheet's button that leaves the value as it was.",
+              "fieldName": "cancelLabel",
+              "default": "Cancel"
+            },
+            {
+              "name": "crop-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the crop area.",
+              "fieldName": "cropLabel",
+              "default": "Photo framing"
+            },
+            {
+              "name": "zoom-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the zoom slider.",
+              "fieldName": "zoomLabel",
+              "default": "Zoom"
+            },
+            {
+              "name": "failed-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown under the field when the chosen file cannot be decoded (until the next picture).",
+              "fieldName": "failedLabel",
+              "default": "That image could not be opened."
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name. The value is submitted as a string (data URL) or, with output=\"blob\", as a file named <name>.jpg (.png, .webp).",
+              "attribute": "name",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string | Blob | null"
+              },
+              "description": "The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one.",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "output",
+              "type": {
+                "text": "\"dataurl\" | \"blob\""
+              },
+              "description": "What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload).",
+              "attribute": "output",
+              "reflects": true,
+              "default": "dataurl"
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Label above the avatar and the buttons.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text under the label.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error message; marks the field invalid.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "A picture is required to submit the form.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "No choosing nor removing.",
+              "attribute": "disabled",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "displayName",
+              "type": {
+                "text": "string"
+              },
+              "description": "The person's name: the avatar shows its initials without a picture (name is the form field).",
+              "attribute": "display-name",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "accept",
+              "type": {
+                "text": "string"
+              },
+              "description": "File types the picker offers.",
+              "attribute": "accept",
+              "reflects": false,
+              "default": "image/*"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the avatar.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "xl"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "Color of the avatar's initials (a palette color or any CSS color).",
+              "attribute": "color",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"light\" | \"filled\" | \"outline\" | \"default\""
+              },
+              "description": "Style of the avatar's initials.",
+              "attribute": "variant",
+              "reflects": false,
+              "default": "light"
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square).",
+              "attribute": "radius",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "buttonSize",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "Size of the buttons.",
+              "attribute": "button-size",
+              "reflects": false,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "layout",
+              "type": {
+                "text": "\"stack\" | \"inline\""
+              },
+              "description": "The buttons one under the other, beside the avatar, or in a row.",
+              "attribute": "layout",
+              "reflects": true,
+              "default": "stack"
+            },
+            {
+              "kind": "field",
+              "name": "sheet",
+              "type": {
+                "text": "\"auto\" | \"drawer\" | \"dialog\""
+              },
+              "description": "Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise.",
+              "attribute": "sheet",
+              "reflects": true,
+              "default": "auto"
+            },
+            {
+              "kind": "field",
+              "name": "outputSize",
+              "type": {
+                "text": "string | number"
+              },
+              "description": "Side of the square picture kept, in pixels.",
+              "attribute": "output-size",
+              "reflects": false,
+              "default": "320"
+            },
+            {
+              "kind": "field",
+              "name": "type",
+              "type": {
+                "text": "\"image/jpeg\" | \"image/png\" | \"image/webp\" | (string & {})"
+              },
+              "description": "Format of the picture kept (PNG where the browser cannot encode it).",
+              "attribute": "type",
+              "reflects": false,
+              "default": "image/jpeg"
+            },
+            {
+              "kind": "field",
+              "name": "quality",
+              "type": {
+                "text": "number"
+              },
+              "description": "0…1, for image/jpeg and image/webp.",
+              "attribute": "quality",
+              "reflects": false,
+              "default": "0.85"
+            },
+            {
+              "kind": "field",
+              "name": "maxZoom",
+              "type": {
+                "text": "number"
+              },
+              "description": "The most zoom of the crop.",
+              "attribute": "max-zoom",
+              "reflects": false,
+              "default": "4"
+            },
+            {
+              "kind": "field",
+              "name": "pickLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The button without a picture.",
+              "attribute": "pick-label",
+              "reflects": false,
+              "default": "Choose photo"
+            },
+            {
+              "kind": "field",
+              "name": "changeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The same button with a picture.",
+              "attribute": "change-label",
+              "reflects": false,
+              "default": "Change photo"
+            },
+            {
+              "kind": "field",
+              "name": "removeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The button that removes the picture.",
+              "attribute": "remove-label",
+              "reflects": false,
+              "default": "Remove photo"
+            },
+            {
+              "kind": "field",
+              "name": "sheetLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Title of the crop sheet.",
+              "attribute": "sheet-label",
+              "reflects": false,
+              "default": "Adjust the photo"
+            },
+            {
+              "kind": "field",
+              "name": "useLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The sheet's button that keeps the framed picture.",
+              "attribute": "use-label",
+              "reflects": false,
+              "default": "Use photo"
+            },
+            {
+              "kind": "field",
+              "name": "cancelLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The sheet's button that leaves the value as it was.",
+              "attribute": "cancel-label",
+              "reflects": false,
+              "default": "Cancel"
+            },
+            {
+              "kind": "field",
+              "name": "cropLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Accessible name of the crop area.",
+              "attribute": "crop-label",
+              "reflects": false,
+              "default": "Photo framing"
+            },
+            {
+              "kind": "field",
+              "name": "zoomLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Name of the zoom slider.",
+              "attribute": "zoom-label",
+              "reflects": false,
+              "default": "Zoom"
+            },
+            {
+              "kind": "field",
+              "name": "failedLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "Shown under the field when the chosen file cannot be decoded (until the next picture).",
+              "attribute": "failed-label",
+              "reflects": false,
+              "default": "That image could not be opened."
+            },
+            {
+              "kind": "method",
+              "name": "pick",
+              "description": "Opens the system picker (what Choose photo does)."
+            },
+            {
+              "kind": "method",
+              "name": "edit",
+              "description": "Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value."
+            },
+            {
+              "kind": "method",
+              "name": "clear",
+              "description": "Removes the picture (fires input and change when there was one)."
+            },
+            {
+              "kind": "method",
+              "name": "toBlob",
+              "description": "The value as a Blob whatever output is (null without a picture)."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "The value changed (with change; for v-model)."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "A picture was kept (Use photo) or removed. Read value."
+            },
+            {
+              "name": "ray-error",
+              "type": {
+                "text": "CustomEvent<{ error: Error }>"
+              },
+              "description": "The chosen file could not be decoded; the value is unchanged."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "label",
+              "description": "The label."
+            },
+            {
+              "name": "description",
+              "description": "The description."
+            },
+            {
+              "name": "row",
+              "description": "The avatar and the buttons (role group, named by the label)."
+            },
+            {
+              "name": "avatar",
+              "description": "The ray-avatar."
+            },
+            {
+              "name": "actions",
+              "description": "The buttons' column (or row)."
+            },
+            {
+              "name": "pick",
+              "description": "The Choose photo / Change photo ray-button."
+            },
+            {
+              "name": "remove",
+              "description": "The Remove photo ray-button."
+            },
+            {
+              "name": "error",
+              "description": "The error message."
+            },
+            {
+              "name": "sheet",
+              "description": "The ray-drawer or ray-dialog of the crop."
+            },
+            {
+              "name": "crop",
+              "description": "The ray-image-crop."
+            },
+            {
+              "name": "cancel",
+              "description": "The sheet's Cancel ray-button."
+            },
+            {
+              "name": "use",
+              "description": "The sheet's Use photo ray-button."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayAvatarPicker",
+          "declaration": {
+            "name": "RayAvatarPicker",
+            "module": "components/avatar-picker/avatar-picker.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-avatar-picker",
+          "declaration": {
+            "name": "RayAvatarPicker",
+            "module": "components/avatar-picker/avatar-picker.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/checkbox/checkbox.js",
       "declarations": [
         {

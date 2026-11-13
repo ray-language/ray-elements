@@ -468,6 +468,87 @@ export declare class RayToggleGroup extends RayButtonGroup {
   readonly toggles: RayToggle[];
 }
 
+// --- Avatar picker (avatar-picker)
+/** <ray-avatar-picker> Choose photo opens the system picker (on a phone, the camera or the photo library); the chosen image opens in the sheet, framed in a circle, and Use photo makes the framed part, at output-size, the value. Cancel or a picture that cannot be decoded leaves the value as it was (the latter shows failed-label and fires ray-error). edit(file) opens the sheet on an image from elsewhere (a drop, a paste). Styling: the parts, and ::part(crop) for --ray-image-crop-* . */
+export declare class RayAvatarPicker extends FormControl {
+  /** Form field name. The value is submitted as a string (data URL) or, with output="blob", as a file named <name>.jpg (.png, .webp). */
+  name: string | undefined;
+  /** The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one. */
+  value: string | Blob | null;
+  /** What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload). */
+  output: "dataurl" | "blob";
+  /** Label above the avatar and the buttons. */
+  label: string | undefined;
+  /** Help text under the label. */
+  description: string | undefined;
+  /** Error message; marks the field invalid. */
+  error: string | undefined;
+  /** A picture is required to submit the form. */
+  required: boolean | undefined;
+  /** No choosing nor removing. */
+  disabled: boolean | undefined;
+  /** The person's name: the avatar shows its initials without a picture (name is the form field). */
+  displayName: string | undefined;
+  /** File types the picker offers. */
+  accept: string;
+  /** Size of the avatar. */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Color of the avatar's initials (a palette color or any CSS color). */
+  color: string | undefined;
+  /** Style of the avatar's initials. */
+  variant: "light" | "filled" | "outline" | "default";
+  /** Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square). */
+  radius: "xs" | "sm" | "md" | "lg" | "xl" | "full" | undefined;
+  /** Size of the buttons. */
+  buttonSize: "xs" | "sm" | "md" | "lg" | "xl";
+  /** The buttons one under the other, beside the avatar, or in a row. */
+  layout: "stack" | "inline";
+  /** Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise. */
+  sheet: "auto" | "drawer" | "dialog";
+  /** Side of the square picture kept, in pixels. */
+  outputSize: string | number;
+  /** Format of the picture kept (PNG where the browser cannot encode it). */
+  type: "image/jpeg" | "image/png" | "image/webp" | (string & {});
+  /** 0…1, for image/jpeg and image/webp. */
+  quality: number;
+  /** The most zoom of the crop. */
+  maxZoom: number;
+  /** The button without a picture. */
+  pickLabel: string;
+  /** The same button with a picture. */
+  changeLabel: string;
+  /** The button that removes the picture. */
+  removeLabel: string;
+  /** Title of the crop sheet. */
+  sheetLabel: string;
+  /** The sheet's button that keeps the framed picture. */
+  useLabel: string;
+  /** The sheet's button that leaves the value as it was. */
+  cancelLabel: string;
+  /** Accessible name of the crop area. */
+  cropLabel: string;
+  /** Name of the zoom slider. */
+  zoomLabel: string;
+  /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
+  failedLabel: string;
+  /** Opens the system picker (what Choose photo does). */
+  pick(): void;
+  /** Opens the crop sheet on an image (a File, Blob or URL); Use photo makes it the value. */
+  edit(src: Blob | string): void;
+  /** Removes the picture (fires input and change when there was one). */
+  clear(): void;
+  /** The value as a Blob whatever output is (null without a picture). */
+  toBlob(): Promise<Blob | null>;
+  addEventListener<K extends keyof RayAvatarPickerEventMap>(type: K, listener: (this: RayAvatarPicker, ev: RayAvatarPickerEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayAvatarPickerEventMap>(type: K, listener: (this: RayAvatarPicker, ev: RayAvatarPickerEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayAvatarPickerEventMap extends HTMLElementEventMap {
+  /** The chosen file could not be decoded; the value is unchanged. */
+  "ray-error": CustomEvent<{ error: Error }>;
+}
+
 // --- Checkbox (checkbox)
 /** <ray-checkbox> A checkbox with label, description and error. Submits value when checked. */
 export declare class RayCheckbox extends FieldControl {
@@ -2209,7 +2290,7 @@ export interface RayCodeEventMap extends HTMLElementEventMap {
 
 // --- Icon (icon)
 /** An icon name: one of the default set, or any name an app registers with setIcons(). */
-export type IconName = "close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {});
+export type IconName = "close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "camera" | "trash" | "none" | (string & {});
 /** <ray-icon> setIcons({ name: '<svg…>' }) replaces or adds icons (SVG markup or an SVGElement, drawn with currentColor); iconNames() lists them. An icon may have a filled version for a state (filled; "<name>:filled" in setIcons; iconNames({ filled: true }) lists them). The components draw roles ("ui.close", "ui.remove", "ui.expand"…; iconAliases()), each its glyph until the app registers the role: setIcons({ "ui.remove": … }) changes only the chips' ×. Sizes follow the font unless size; --ray-icon-size and --ray-icon-stroke tune the whole system. */
 export declare class RayIcon extends RayElement {
   /** Registered icon name (iconNames()); "none" draws nothing, a blank that keeps the alignment (a menu item without its check). */
@@ -2848,6 +2929,7 @@ declare global {
     "ray-icon-button": RayIconButton;
     "ray-toggle": RayToggle;
     "ray-toggle-group": RayToggleGroup;
+    "ray-avatar-picker": RayAvatarPicker;
     "ray-checkbox": RayCheckbox;
     "ray-checkbox-group": RayCheckboxGroup;
     "ray-color-picker": RayColorPicker;

@@ -169,6 +169,78 @@ export type RayToggleGroupProps = RayToggleGroupOwnProps & Omit<React.HTMLAttrib
 /** <ray-toggle-group> as a React component. */
 export declare const RayToggleGroup: React.ForwardRefExoticComponent<RayToggleGroupProps & React.RefAttributes<Ray.RayToggleGroup>>;
 
+export interface RayAvatarPickerOwnProps {
+  /** Form field name. The value is submitted as a string (data URL) or, with output="blob", as a file named <name>.jpg (.png, .webp). */
+  name?: string;
+  /** The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one. */
+  value?: string | Blob | null;
+  /** What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload). */
+  output?: "dataurl" | "blob";
+  /** Label above the avatar and the buttons. */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** Error message; marks the field invalid. */
+  error?: string;
+  /** A picture is required to submit the form. */
+  required?: boolean;
+  /** No choosing nor removing. */
+  disabled?: boolean;
+  /** The person's name: the avatar shows its initials without a picture (name is the form field). */
+  displayName?: string;
+  /** File types the picker offers. */
+  accept?: string;
+  /** Size of the avatar. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Color of the avatar's initials (a palette color or any CSS color). */
+  color?: string;
+  /** Style of the avatar's initials. */
+  variant?: "light" | "filled" | "outline" | "default";
+  /** Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square). */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Size of the buttons. */
+  buttonSize?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** The buttons one under the other, beside the avatar, or in a row. */
+  layout?: "stack" | "inline";
+  /** Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise. */
+  sheet?: "auto" | "drawer" | "dialog";
+  /** Side of the square picture kept, in pixels. */
+  outputSize?: string | number;
+  /** Format of the picture kept (PNG where the browser cannot encode it). */
+  type?: "image/jpeg" | "image/png" | "image/webp" | (string & {});
+  /** 0…1, for image/jpeg and image/webp. */
+  quality?: number;
+  /** The most zoom of the crop. */
+  maxZoom?: number;
+  /** The button without a picture. */
+  pickLabel?: string;
+  /** The same button with a picture. */
+  changeLabel?: string;
+  /** The button that removes the picture. */
+  removeLabel?: string;
+  /** Title of the crop sheet. */
+  sheetLabel?: string;
+  /** The sheet's button that keeps the framed picture. */
+  useLabel?: string;
+  /** The sheet's button that leaves the value as it was. */
+  cancelLabel?: string;
+  /** Accessible name of the crop area. */
+  cropLabel?: string;
+  /** Name of the zoom slider. */
+  zoomLabel?: string;
+  /** Shown under the field when the chosen file cannot be decoded (until the next picture). */
+  failedLabel?: string;
+  /** The value changed (with change; for v-model). */
+  onInput?: (event: Event) => void;
+  /** A picture was kept (Use photo) or removed. Read value. */
+  onChange?: (event: Event) => void;
+  /** The chosen file could not be decoded; the value is unchanged. */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+}
+export type RayAvatarPickerProps = RayAvatarPickerOwnProps & Omit<React.HTMLAttributes<Ray.RayAvatarPicker>, keyof RayAvatarPickerOwnProps> & { children?: React.ReactNode };
+/** <ray-avatar-picker> as a React component. */
+export declare const RayAvatarPicker: React.ForwardRefExoticComponent<RayAvatarPickerProps & React.RefAttributes<Ray.RayAvatarPicker>>;
+
 export interface RayCheckboxOwnProps {
   /** Current state. The checked attribute is the initial state (restored on reset). */
   checked?: boolean;

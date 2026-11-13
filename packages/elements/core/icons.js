@@ -74,6 +74,8 @@ const DEFAULTS = {
   "home": svg(`<path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/>`),
   "arrow-left": svg(`<path d="M19 12H5M11 6l-6 6 6 6"/>`),
   "message-circle": svg(`<path d="M20 11.5a8 8 0 0 1-11.6 7.2L4 20l1.3-4.2A8 8 0 1 1 20 11.5z"/>`),
+  "camera": svg(`<path d="M14.5 4h-5L7.5 6.5H4a2 2 0 0 0-2 2V18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8.5a2 2 0 0 0-2-2h-3.5z"/><circle cx="12" cy="13" r="3.5"/>`),
+  "trash": svg(`<path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>`),
 };
 
 // The filled versions: the outline's shapes filled (same silhouette: the
@@ -127,6 +129,9 @@ const ALIASES = {
   "ui.calendar": "calendar",
   "ui.eyedropper": "pipette",
   "ui.upload": "upload",
+  "ui.photo": "camera",
+  "ui.delete": "trash",
+  "ui.confirm": "check",
   "ui.avatar": "user",
   "ui.theme-light": "sun",
   "ui.theme-dark": "moon",

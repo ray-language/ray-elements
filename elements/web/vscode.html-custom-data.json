@@ -575,6 +575,240 @@
       ]
     },
     {
+      "name": "ray-avatar-picker",
+      "description": "Choose photo opens the system picker (on a phone, the camera or the photo library); the chosen image opens in the sheet, framed in a circle, and Use photo makes the framed part, at output-size, the value. Cancel or a picture that cannot be decoded leaves the value as it was (the latter shows failed-label and fires ray-error). edit(file) opens the sheet on an image from elsewhere (a drop, a paste). Styling: the parts, and ::part(crop) for --ray-image-crop-* .",
+      "attributes": [
+        {
+          "name": "name",
+          "description": "Form field name. The value is submitted as a string (data URL) or, with output=\"blob\", as a file named <name>.jpg (.png, .webp)."
+        },
+        {
+          "name": "value",
+          "description": "The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one."
+        },
+        {
+          "name": "output",
+          "description": "What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload).",
+          "values": [
+            {
+              "name": "dataurl"
+            },
+            {
+              "name": "blob"
+            }
+          ]
+        },
+        {
+          "name": "label",
+          "description": "Label above the avatar and the buttons."
+        },
+        {
+          "name": "description",
+          "description": "Help text under the label."
+        },
+        {
+          "name": "error",
+          "description": "Error message; marks the field invalid."
+        },
+        {
+          "name": "required",
+          "description": "A picture is required to submit the form.",
+          "valueSet": "v"
+        },
+        {
+          "name": "disabled",
+          "description": "No choosing nor removing.",
+          "valueSet": "v"
+        },
+        {
+          "name": "display-name",
+          "description": "The person's name: the avatar shows its initials without a picture (name is the form field)."
+        },
+        {
+          "name": "accept",
+          "description": "File types the picker offers."
+        },
+        {
+          "name": "size",
+          "description": "Size of the avatar.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "color",
+          "description": "Color of the avatar's initials (a palette color or any CSS color)."
+        },
+        {
+          "name": "variant",
+          "description": "Style of the avatar's initials.",
+          "values": [
+            {
+              "name": "light"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "outline"
+            },
+            {
+              "name": "default"
+            }
+          ]
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "button-size",
+          "description": "Size of the buttons.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "layout",
+          "description": "The buttons one under the other, beside the avatar, or in a row.",
+          "values": [
+            {
+              "name": "stack"
+            },
+            {
+              "name": "inline"
+            }
+          ]
+        },
+        {
+          "name": "sheet",
+          "description": "Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise.",
+          "values": [
+            {
+              "name": "auto"
+            },
+            {
+              "name": "drawer"
+            },
+            {
+              "name": "dialog"
+            }
+          ]
+        },
+        {
+          "name": "output-size",
+          "description": "Side of the square picture kept, in pixels."
+        },
+        {
+          "name": "type",
+          "description": "Format of the picture kept (PNG where the browser cannot encode it).",
+          "values": [
+            {
+              "name": "image/jpeg"
+            },
+            {
+              "name": "image/png"
+            },
+            {
+              "name": "image/webp"
+            }
+          ]
+        },
+        {
+          "name": "quality",
+          "description": "0…1, for image/jpeg and image/webp."
+        },
+        {
+          "name": "max-zoom",
+          "description": "The most zoom of the crop."
+        },
+        {
+          "name": "pick-label",
+          "description": "The button without a picture."
+        },
+        {
+          "name": "change-label",
+          "description": "The same button with a picture."
+        },
+        {
+          "name": "remove-label",
+          "description": "The button that removes the picture."
+        },
+        {
+          "name": "sheet-label",
+          "description": "Title of the crop sheet."
+        },
+        {
+          "name": "use-label",
+          "description": "The sheet's button that keeps the framed picture."
+        },
+        {
+          "name": "cancel-label",
+          "description": "The sheet's button that leaves the value as it was."
+        },
+        {
+          "name": "crop-label",
+          "description": "Accessible name of the crop area."
+        },
+        {
+          "name": "zoom-label",
+          "description": "Name of the zoom slider."
+        },
+        {
+          "name": "failed-label",
+          "description": "Shown under the field when the chosen file cannot be decoded (until the next picture)."
+        }
+      ]
+    },
+    {
       "name": "ray-checkbox",
       "description": "A checkbox with label, description and error. Submits value when checked.",
       "attributes": [
@@ -3982,6 +4216,12 @@
               "name": "message-circle"
             },
             {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
+            },
+            {
               "name": "none"
             }
           ]
@@ -5584,6 +5824,12 @@
               "name": "message-circle"
             },
             {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
+            },
+            {
               "name": "none"
             }
           ]
@@ -5904,6 +6150,12 @@
             },
             {
               "name": "message-circle"
+            },
+            {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
             },
             {
               "name": "none"
@@ -6372,6 +6624,12 @@
               "name": "message-circle"
             },
             {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
+            },
+            {
               "name": "none"
             }
           ]
@@ -6591,6 +6849,12 @@
               "name": "message-circle"
             },
             {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
+            },
+            {
               "name": "none"
             }
           ]
@@ -6776,6 +7040,12 @@
             },
             {
               "name": "message-circle"
+            },
+            {
+              "name": "camera"
+            },
+            {
+              "name": "trash"
             },
             {
               "name": "none"

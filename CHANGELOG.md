@@ -7,6 +7,26 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-avatar-picker`: a profile picture field, the composition of
+  `ray-avatar`, `ray-image-crop` and a sheet. "Choose photo" opens the system
+  picker (the camera or the photo library on a phone); the image opens
+  framed in a circle, in a bottom drawer on a narrow screen and a dialog
+  otherwise (`sheet`), and "Use photo" makes the framed part, at
+  `output-size` (320), the value: a data URL, or a Blob with
+  `output="blob"`. Without a picture the avatar shows the initials of
+  `display-name`; with one, "Change photo" and "Remove photo". Cancel leaves
+  the value as it was; a file that cannot be decoded shows `failed-label`
+  and fires `ray-error`. It takes part in a form under `name` (the data
+  URL, or a file `<name>.jpg`), with `required` and reset to the `value`
+  attribute. Every text is a property. `edit(file)` opens the sheet on an
+  image from elsewhere; `pick()`, `clear()`, `toBlob()`. Events: `input`,
+  `change`.
+- Icons `camera` and `trash`, and the roles `ui.photo` (`camera`),
+  `ui.delete` (`trash`) and `ui.confirm` (`check`): the buttons of
+  `ray-avatar-picker`.
+
 ## [0.18.0] - 2026-11-13
 
 ### Added

@@ -5,6 +5,7 @@ import "./components/button-group/button-group.js";
 import "./components/icon-button/icon-button.js";
 import "./components/toggle/toggle.js";
 import "./components/toggle-group/toggle-group.js";
+import "./components/avatar-picker/avatar-picker.js";
 import "./components/checkbox/checkbox.js";
 import "./components/checkbox-group/checkbox-group.js";
 import "./components/color-picker/color-picker.js";
