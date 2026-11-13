@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-11-13
+
 ### Added
 
 - `ray-tags-input`: free-form tags with the suggestions in view. What is
