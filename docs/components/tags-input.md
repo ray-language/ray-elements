@@ -1,6 +1,6 @@
-# Tags input (also Tag input, Chips input)
+# Tags input (also Tag input, Chips input, TagsInput)
 
-Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.
+Free-form tags with the suggestions in view (Mantine's TagsInput; to pick from a fixed list, ray-combobox): what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.
 
 Import: `import "@raylang/elements/tags-input";` · Category: Inputs
 

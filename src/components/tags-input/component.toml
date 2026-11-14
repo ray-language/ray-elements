@@ -1,11 +1,11 @@
 [component]
 name = "Tags input"
 category = "Inputs"
-summary = "Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up."
+summary = "Free-form tags with the suggestions in view (Mantine's TagsInput; to pick from a fixed list, ray-combobox): what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up."
 files = ["tags-input.js"]
 requires = []
 tags = ["ray-tags-input"]
-aliases = ["Tag input", "Chips input"]
+aliases = ["Tag input", "Chips input", "TagsInput"]
 
 [ray-tags-input]
 class = "RayTagsInput"

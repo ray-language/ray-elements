@@ -1,12 +1,12 @@
 # Combobox (also Multi select)
 
-A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.
+A select you can type in, an autocomplete (Mantine's searchable Select and MultiSelect; for free-form tags, ray-tags-input): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.
 
 Import: `import "@raylang/elements/combobox";` · Category: Inputs
 
 ## `<ray-combobox>` (RayCombobox, extends FieldControl)
 
-The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value.
+The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value. On a touch screen the list opens under the field while the keyboard is up, and little room is left for it: for free-form tags with suggestions (multiple creatable), ray-tags-input keeps them in view with no popup.
 
 Properties:
 

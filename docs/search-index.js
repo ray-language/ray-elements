@@ -105,7 +105,7 @@ export default [
   {
     "label": "Combobox (Multi select)",
     "group": "Components · Inputs",
-    "description": "A select you can type in, an autocomplete (Mantine's searchable Select, MultiSelect and TagsInput): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.",
+    "description": "A select you can type in, an autocomplete (Mantine's searchable Select and MultiSelect; for free-form tags, ray-tags-input): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.",
     "href": "components/combobox.html",
     "keywords": [
       "combobox",
@@ -274,14 +274,15 @@ export default [
     "icon": "layers"
   },
   {
-    "label": "Tags input (Tag input, Chips input)",
+    "label": "Tags input (Tag input, Chips input, TagsInput)",
     "group": "Components · Inputs",
-    "description": "Free-form tags with the suggestions in view: what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.",
+    "description": "Free-form tags with the suggestions in view (Mantine's TagsInput; to pick from a fixed list, ray-combobox): what is typed becomes a tag on Enter, a comma or leaving the field; the suggestions are buttons under the field, filtered as you type, one click adds one. No dropdown, so on a phone nothing opens over the field when the keyboard comes up.",
     "href": "components/tags-input.html",
     "keywords": [
       "tags-input",
       "tag input",
       "chips input",
+      "tagsinput",
       "ray-tags-input"
     ],
     "icon": "layers"
