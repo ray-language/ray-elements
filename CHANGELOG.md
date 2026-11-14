@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.20.1] - 2026-11-14
+
 ### Fixed
 
 - `ray-segmented-control` shows an option's new text, value or `disabled`
