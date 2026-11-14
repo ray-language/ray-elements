@@ -106,7 +106,7 @@ Texts (`setStrings`; English):
 - `color-picker.eyedropper`: Pick a color from the screen
 - `color-picker.dropdown`: Choose a color
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.0.
 
 ## Example
 

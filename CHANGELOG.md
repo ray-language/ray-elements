@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.20.0] - 2026-11-14
+
 ### Added
 
 - Languages: what the components write themselves (button names, screen
