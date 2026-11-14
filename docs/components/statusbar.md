@@ -32,7 +32,7 @@ Texts (`setStrings`; English):
 
 - `statusbar.label`: Status bar
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.0.
 
 ## Example
 
