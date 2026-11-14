@@ -13,9 +13,17 @@
 // pins it to the bottom of the window. Clear of the home indicator
 // (safe-area inset).
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor } from "../../core/styles.js";
 import { scrollerOf, watchScroll } from "../../core/scroll.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "bottom-nav.label": "Main",
+  "bottom-nav.badge": "{label}, {badge}",
+  "bottom-nav.dot": "{label}, new",
+};
+defineStrings(STRINGS);
 
 // An item's value: its own, else its href, else its label.
 const valueOf = (item) => item.value ?? item.href ?? item.label;
@@ -203,8 +211,8 @@ export class RayBottomNavItem extends RayElement {
     badge.textContent = this.dot ? "" : (this.badge ?? "");
     badge.toggleAttribute("data-dot", Boolean(this.dot));
     // The badge is read with the label ("Messages, 3").
-    if (this.badge && !this.dot) item.setAttribute("aria-label", `${this.label ?? ""}, ${this.badge}`);
-    else if (this.dot) item.setAttribute("aria-label", `${this.label ?? ""}, new`);
+    if (this.badge && !this.dot) item.setAttribute("aria-label", this.t("bottom-nav.badge", { label: this.label ?? "", badge: this.badge }));
+    else if (this.dot) item.setAttribute("aria-label", this.t("bottom-nav.dot", { label: this.label ?? "" }));
     else item.removeAttribute("aria-label");
   }
 }
@@ -212,7 +220,7 @@ export class RayBottomNavItem extends RayElement {
 export class RayBottomNav extends RayElement {
   static properties = {
     value: { type: String, reflect: true },
-    label: { type: String, default: "Main" },
+    label: { type: String, string: "bottom-nav.label" },
     labels: { type: String, reflect: true, default: "always" },
     indicator: { type: String, reflect: true, default: "pill" },
     color: { type: String, reflect: true },
@@ -263,7 +271,7 @@ export class RayBottomNav extends RayElement {
   }
 
   update(changed) {
-    this.$("nav").setAttribute("aria-label", this.label || "Main");
+    this.$("nav").setAttribute("aria-label", this.label || this.t("bottom-nav.label"));
     this._sync();
     if (changed.has("hideOnScroll") || changed.has("scrollTarget") || changed.has("fixed")) this._watch();
   }

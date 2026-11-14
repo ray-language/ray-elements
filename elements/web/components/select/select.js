@@ -10,12 +10,18 @@
 // is aria-activedescendant. On a touch screen (native="auto") the native
 // <select> takes the tap itself and the system's picker is the dropdown.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
 import { play, POP_OUT } from "../../core/motion.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "select.empty": "No options",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .native {
@@ -181,6 +187,9 @@ export class RaySelect extends FieldControl {
 
   update(changed) {
     if (changed.has("data") || changed.has("placeholder")) this._renderOptions();
+    // The texts changed (setStrings, lang): the empty list's text.
+    const empty = this.$(".empty");
+    if (empty) empty.textContent = this.t("select.empty");
     const c = this.control;
     if (this.value !== undefined && c.value !== this.value) c.value = this.value;
     // The system's picker takes the tap on the model; otherwise the model is
@@ -304,7 +313,7 @@ export class RaySelect extends FieldControl {
     if (!this.#items.length) {
       const empty = document.createElement("div");
       empty.className = "empty";
-      empty.textContent = "No options";
+      empty.textContent = this.t("select.empty");
       lb.append(empty);
     }
     this.paintIcons(lb);

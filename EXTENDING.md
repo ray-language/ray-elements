@@ -43,7 +43,7 @@ One rule for every component, so nobody has to guess what to listen to:
 
 | Member | |
 |---|---|
-| `static properties` | `{ name: { type, reflect, attribute, default } }` → accessors, observed attributes, reflection |
+| `static properties` | `{ name: { type, reflect, attribute, default, string } }` → accessors, observed attributes, reflection; `string: "<key>"` makes a text of the catalog the default, in the element's language |
 | `static styles` / `static template` | constructable sheets / shadow markup (cloned per instance) |
 | `static delegatesFocus` | focus goes to the first focusable inside |
 | `static extendStyles(...sheets)` | adds CSS to the component and its subclasses, live instances included |
@@ -53,6 +53,7 @@ One rule for every component, so nobody has to guess what to listen to:
 | `requestUpdate()` | schedule `update` |
 | `emit(type, detail, { cancelable })` | bubbling, composed CustomEvent |
 | `$(selector)` | `shadowRoot.querySelector` |
+| `t(key, values)` | **protected**: a text of the catalog (`setStrings`) in the element's language, `{name}` filled from `values`. Declare your component's texts once, in English, with `defineStrings({ "my-chart.empty": "No data yet" })` (keys `<component>.<text>`); an app translates them like the built-in ones |
 | `paintIcons(root)` | **protected**: fill `[data-ray-icon="name"]` placeholders from the icon registry (`data-ray-icon-filled` for the filled version); for your chrome, use a role (`ui.close`, `ui.expand`… — `iconAliases()`) so it follows the app's icons, and `ui.next`/`ui.previous`… mirror under `dir="rtl"` |
 
 Call `super.connectedCallback()` / `super.disconnectedCallback()` when you

@@ -11,11 +11,21 @@
 // The WAI-ARIA combobox pattern with a listbox popup: focus stays in the
 // text field, the active option is aria-activedescendant.
 
-import { css, define, uid } from "../../core/core.js";
+import { css, define, uid, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles, chipStyles } from "../../core/styles.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "combobox.clear": "Clear",
+  "combobox.remove": "Remove {label}",
+  "combobox.create": "+ Create “{query}”",
+  "combobox.more": "{count} more: keep typing",
+  "combobox.nothing-found": "No matches",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .box { flex-wrap: wrap; gap: 0.25rem; padding-inline-start: calc(var(--_px) * 0.66 - 0.25rem); cursor: text; }
@@ -95,13 +105,13 @@ export class RayCombobox extends FieldControl {
     clearable: { type: Boolean },
     maxValues: { type: Number, attribute: "max-values" },
     limit: { type: Number },
-    nothingFound: { type: String, attribute: "nothing-found", default: "No matches" },
+    nothingFound: { type: String, attribute: "nothing-found", string: "combobox.nothing-found" },
     open: { type: Boolean, reflect: true },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, chipStyles, styles];
   static template = fieldTemplate(
     `<span class="chips" part="chips"></span><input id="control" class="control" part="input" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="listbox" autocomplete="off" spellcheck="false">` +
-      `<span class="tail"><button type="button" class="clear" part="clear" aria-label="Clear" hidden tabindex="-1"><span data-ray-icon="ui.clear"></span></button><span class="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span></span>`,
+      `<span class="tail"><button type="button" class="clear" part="clear" hidden tabindex="-1"><span data-ray-icon="ui.clear"></span></button><span class="chevron" aria-hidden="true" data-ray-icon="ui.expand"></span></span>`,
     { sections: false },
   ) + `<div class="listbox" id="listbox" part="dropdown" role="listbox" popover="manual" tabindex="-1"></div><div class="options"><slot></slot></div>`;
 
@@ -201,6 +211,7 @@ export class RayCombobox extends FieldControl {
     const c = this.control;
     c.placeholder = this.multiple && this.values.length ? "" : (this.placeholder ?? "");
     c.readOnly = false;
+    this.$(".clear").setAttribute("aria-label", this.t("combobox.clear"));
     this.syncField();
     c.setAttribute("aria-expanded", String(Boolean(this.open)));
     this.listbox.toggleAttribute("aria-multiselectable", Boolean(this.multiple));
@@ -281,7 +292,7 @@ export class RayCombobox extends FieldControl {
       b.type = "button";
       b.tabIndex = -1;
       b.dataset.value = v;
-      b.setAttribute("aria-label", `Remove ${this._labelOf(v)}`);
+      b.setAttribute("aria-label", this.t("combobox.remove", { label: this._labelOf(v) }));
       b.innerHTML = `<span data-ray-icon="ui.remove"></span>`;
       chip.append(t, b);
       box.append(chip);
@@ -358,20 +369,20 @@ export class RayCombobox extends FieldControl {
       el.id = `${this.#id}-create`;
       el.setAttribute("role", "option");
       el.setAttribute("aria-selected", "false");
-      el.textContent = `+ Create “${q}”`;
+      el.textContent = this.t("combobox.create", { query: q });
       lb.append(el);
       this.#items.push({ el, value: q, disabled: false, create: true });
     }
     if (all.length > shown.length) {
       const more = document.createElement("div");
       more.className = "more";
-      more.textContent = `${all.length - shown.length} more: keep typing`;
+      more.textContent = this.t("combobox.more", { count: all.length - shown.length });
       lb.append(more);
     }
     if (!this.#items.length) {
       const empty = document.createElement("div");
       empty.className = "empty";
-      empty.textContent = this.nothingFound ?? "No matches";
+      empty.textContent = this.nothingFound || this.t("combobox.nothing-found");
       lb.append(empty);
     }
     this.paintIcons(lb);

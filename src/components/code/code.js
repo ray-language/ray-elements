@@ -19,7 +19,18 @@
 // classes are painted with the --ray-code-* tokens, so the palette stays
 // ray-elements's.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "code.copy": "Copy code",
+  "code.copied": "Copied",
+  "code.region": "Code",
+  "code.region-language": "{language} code",
+  "code.show-all": "Show all {count} lines",
+  "code.show-less": "Show less",
+};
+defineStrings(STRINGS);
 
 // --- the built-in highlighter -------------------------------------------------
 
@@ -407,8 +418,8 @@ export class RayCode extends RayElement {
     hideHeader: { type: Boolean, reflect: true },
     size: { type: String, reflect: true, default: "sm" },
     radius: { type: String, reflect: true },
-    copyLabel: { type: String, default: "Copy code" },
-    copiedLabel: { type: String, default: "Copied" },
+    copyLabel: { type: String, string: "code.copy" },
+    copiedLabel: { type: String, string: "code.copied" },
   };
   static styles = [styles];
   static template = `
@@ -490,7 +501,7 @@ export class RayCode extends RayElement {
     this.paintIcons(b);
     // The scroll box: a named region, its height and the "show more" button.
     const scroller = this.$(".scroller");
-    scroller.setAttribute("aria-label", this.filename || (label ? `${label} code` : "Code"));
+    scroller.setAttribute("aria-label", this.filename || (label ? this.t("code.region-language", { language: label }) : this.t("code.region")));
     const max = this.maxHeight;
     if (max) this.style.setProperty("--_max", /^\d+(\.\d+)?$/.test(max) ? `${max}px` : max);
     else this.style.removeProperty("--_max");
@@ -541,7 +552,7 @@ export class RayCode extends RayElement {
     const scroller = this.$(".scroller");
     const cut = Boolean(this.maxHeight) && (this.expanded || scroller.scrollHeight > scroller.clientHeight + 1);
     more.hidden = !cut;
-    more.firstElementChild.textContent = this.expanded ? "Show less" : `Show all ${lines.length} lines`;
+    more.firstElementChild.textContent = this.expanded ? this.t("code.show-less") : this.t("code.show-all", { count: lines.length });
     more.firstElementChild.setAttribute("aria-expanded", String(Boolean(this.expanded)));
   }
 

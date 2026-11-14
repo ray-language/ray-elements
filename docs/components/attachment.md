@@ -19,7 +19,7 @@ Properties:
 - `status`: `uploading` | `done` | `error`, reflects. Explicit state. Default: "uploading" while progress is set, else "done".
 - `error`: string. Error text shown with status="error" (default "Upload failed").
 - `removable`: boolean, reflects. Shows a remove (×) button.
-- `removeLabel` (attribute `remove-label`): string, default `Remove {name}`. Accessible label of the remove button; {name} is replaced by the file name.
+- `removeLabel` (attribute `remove-label`): string, default `Remove {name}` (text `attachment.remove`). Accessible label of the remove button; {name} is replaced by the file name.
 - `variant`: `row` | `card`, default `row`, reflects. row: a compact chip; card: the thumbnail on top.
 - `disabled`: boolean, reflects. Dimmed, not removable, the name is not a link.
 
@@ -49,6 +49,14 @@ A wrapping row of ray-attachment elements.
 Slots:
 
 - (default): ray-attachment elements.
+
+Texts (`setStrings`; English):
+
+- `attachment.remove`: Remove {name}
+- `attachment.uploading`: Uploading…
+- `attachment.uploading-percent`: Uploading… {percent}%
+- `attachment.progress`: Uploading {name}
+- `attachment.failed`: Upload failed
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

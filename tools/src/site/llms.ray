@@ -132,6 +132,10 @@ fn component(c: Component, els: [Element], h: string) -> string {
         out.push("Types:\n");
         out.push(decls(c.types));
     }
+    if (c.texts.len() > 0) {
+        out.push("Texts (`setStrings`; English):\n");
+        out.push(join(c.texts.map(fn(t: (string, string)) -> string { "- `${t.0}`: ${t.1}" }), "\n") + "\n");
+    }
     if (c.raylang != "") {
         out.push("${sub} In a raylang app\n");
         out.push(absolute_links(c.raylang.trim()) + "\n");
@@ -184,7 +188,13 @@ fn prop_line(p: Prop) -> string {
     } else {
         p.kind
     };
-    let def = if (p.default_value == "") { "" } else { ", default `${p.default_value}`" };
+    let def = if (p.string_key != "") {
+        ", default `${p.default_value}` (text `${p.string_key}`)"
+    } else if (p.default_value == "") {
+        ""
+    } else {
+        ", default `${p.default_value}`"
+    };
     let reflect = if (p.reflect) { ", reflects" } else { "" };
     let desc = if (p.description == "") { "" } else { ". ${p.description}" };
     "- `${p.name}`${attr}: ${kind}${def}${reflect}${desc}"
@@ -341,6 +351,7 @@ fn describes_a_property() {
         reflect: true,
         initial: "",
         ts: "",
+        string_key: "",
         description: "Takes the whole width."
     };
     assert_eq(prop_line(p), "- `fullWidth` (attribute `full-width`): boolean, reflects. Takes the whole width.");
@@ -367,7 +378,8 @@ fn imports_by_the_package_name() {
         exports: [],
         types: [],
         example: "",
-        raylang: ""
+        raylang: "",
+        texts: []
     };
     assert_eq(
         package_imports("import { confirmDialog } from \"../src/components/dialog/dialog.js\"; import { setIcons } from \"../src/core/core.js\";", [c]),

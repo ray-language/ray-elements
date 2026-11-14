@@ -4970,6 +4970,10 @@
           "valueSet": "v"
         },
         {
+          "name": "close-label",
+          "description": "The close button's name, for screen readers."
+        },
+        {
           "name": "overlay-blur",
           "description": "Blur of the page behind: px (\"8\"), a CSS length or \"none\". Default: --ray-overlay-blur ([overlay] blur in tokens.toml)."
         }
@@ -5062,6 +5066,10 @@
           "name": "hide-close",
           "description": "No close button in the header.",
           "valueSet": "v"
+        },
+        {
+          "name": "close-label",
+          "description": "The close button's name, for screen readers."
         },
         {
           "name": "overlay-blur",

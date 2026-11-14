@@ -60,6 +60,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
@@ -390,6 +391,9 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>input</code></td><td>When the selection changes.</td></tr><tr><td><code>change</code></td><td>When the selection changes.</td></tr><tr><td><code>ray-open</code></td><td>The dropdown opened.</td></tr><tr><td><code>ray-close</code></td><td>The dropdown closed.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>&lt;option&gt; and &lt;optgroup&gt; elements.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>trigger</code></td><td>The combobox button showing the selected option.</td></tr><tr><td><code>dropdown</code></td><td>The listbox panel (a popover in the top layer).</td></tr><tr><td><code>option</code></td><td>Each option in the dropdown ([aria-selected], [data-active], [aria-disabled]).</td></tr><tr><td><code>select</code></td><td>The hidden native &lt;select&gt; that holds the value (the model).</td></tr><tr><td><code>wrapper</code></td><td>The box.</td></tr></tbody></table></div>
+<h3 id="select-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>select.empty</code></td><td>No options</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="segmented-control.html"><small>Previous</small>Segmented control</a><a class="pager-next" href="slider.html"><small>Next</small>Slider</a></nav>
 </main>

@@ -61,6 +61,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/icon/icon.js"; import "../../src/components/notification/notification.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
@@ -355,6 +356,9 @@ if (location.protocol === "file:") window.__rayServeHint();
 
 
 
+<h3 id="notification-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>notification.close</code></td><td>Close notification</td></tr><tr><td><code>notification.region</code></td><td>Notifications</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="empty-state.html"><small>Previous</small>Empty state</a><a class="pager-next" href="progress.html"><small>Next</small>Progress</a></nav>
 </main>

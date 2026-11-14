@@ -5,7 +5,14 @@
 // separator: any text ("/", "›", "·") or "chevron" (an icon). max-items
 // collapses the middle of a long path into a "…" button that expands it.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "breadcrumbs.label": "Breadcrumb",
+  "breadcrumbs.more": "Show the whole path",
+};
+defineStrings(STRINGS);
 
 const trailStyles = css`
   :host { display: block; min-width: 0; }
@@ -63,7 +70,7 @@ export class RayBreadcrumbs extends RayElement {
   static properties = {
     separator: { type: String, default: "/" },
     maxItems: { type: Number, attribute: "max-items" },
-    label: { type: String, default: "Breadcrumb" },
+    label: { type: String, string: "breadcrumbs.label" },
     size: { type: String, reflect: true, default: "sm" },
   };
   static styles = [trailStyles];
@@ -94,7 +101,7 @@ export class RayBreadcrumbs extends RayElement {
   }
 
   update() {
-    this.$("nav").setAttribute("aria-label", this.label || "Breadcrumb");
+    this.$("nav").setAttribute("aria-label", this.label || this.t("breadcrumbs.label"));
     const sizes = { xs: "var(--ray-font-size-xs)", sm: "var(--ray-font-size-sm)", md: "var(--ray-font-size-md)", lg: "var(--ray-font-size-lg)" };
     this.style.setProperty("--_fs", sizes[this.size] ?? sizes.sm);
     const items = this.items;
@@ -120,7 +127,7 @@ export class RayBreadcrumb extends RayElement {
   };
   static styles = [itemStyles];
   static delegatesFocus = true;
-  static template = `<span class="sep before" part="separator" aria-hidden="true"></span><button class="more" type="button" part="more" aria-label="Show the whole path">…</button><span class="sep after" aria-hidden="true"></span><span class="slot-host"></span>`;
+  static template = `<span class="sep before" part="separator" aria-hidden="true"></span><button class="more" type="button" part="more">…</button><span class="sep after" aria-hidden="true"></span><span class="slot-host"></span>`;
 
   #tag = "";
   #sep = "";
@@ -157,6 +164,7 @@ export class RayBreadcrumb extends RayElement {
   }
 
   update() {
+    this.$(".more").setAttribute("aria-label", this.t("breadcrumbs.more"));
     const current = this.hasAttribute("data-current");
     // The current page and a crumb without href are text, the others links.
     const tag = this.href && !current ? "a" : "span";

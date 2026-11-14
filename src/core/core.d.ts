@@ -61,6 +61,27 @@ export declare function iconNames(options?: { filled?: boolean }): string[];
 /** The roles the components draw ("ui.close", "ui.remove", "ui.expand"…) and the glyph each one uses unless the app registers the role. */
 export declare function iconAliases(): Record<string, string>;
 
+// --- texts -------------------------------------------------------------------
+
+/** A text of the catalog: a string with "{name}" values, or plural forms chosen by `count`. */
+export type StringValue = string | ({ other: string } & Partial<Record<"zero" | "one" | "two" | "few" | "many", string>>);
+/**
+ * Adds or replaces the texts the components write (stringKeys() lists them),
+ * for one language (`lang` matches the nearest lang attribute, "es" also
+ * "es-AR") or, without it, for any. Elements on the page update at once.
+ *   import es from "@raylang/elements/strings/es"; setStrings(es);
+ */
+export declare function setStrings(lang: string, strings: Record<string, StringValue>): void;
+export declare function setStrings(strings: Record<string, StringValue>): void;
+/** A text in the language of `el` (the page's without one), "{name}" filled from `values`. */
+export declare function getString(key: string, el?: Element | null, values?: Record<string, unknown>): string;
+/** The key and English text of every text declared so far (the components loaded). */
+export declare function stringKeys(): Record<string, StringValue>;
+/** Declares texts and their English, keyed "<component>.<text>" (a component module declares its own). */
+export declare function defineStrings(texts: Record<string, StringValue>): void;
+/** The language of an element: its nearest lang attribute, across shadow roots ("" without one). */
+export declare function langOf(el: Element): string;
+
 // --- base classes ------------------------------------------------------------
 
 export interface PropertyOptions {
@@ -68,6 +89,8 @@ export interface PropertyOptions {
   reflect?: boolean;
   attribute?: string | false;
   default?: unknown;
+  /** A text of the catalog (setStrings) as the default, in the element's language. */
+  string?: string;
 }
 
 /**
@@ -96,6 +119,8 @@ export declare class RayElement extends HTMLElement {
   paintIcons(root?: ParentNode): void;
   /** Dispatches a bubbling, composed CustomEvent; false if a listener canceled it. */
   emit<T = unknown>(type: string, detail?: T, options?: { cancelable?: boolean }): boolean;
+  /** Protected: a text of the catalog in this element's language, "{name}" filled from `values`. */
+  protected t(key: string, values?: Record<string, unknown>): string;
   /** querySelector inside the shadow root. */
   $<E extends Element = HTMLElement>(selector: string): E | null;
 }

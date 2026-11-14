@@ -19,10 +19,16 @@
 // cancelling it keeps the previous mode. Alt+ArrowDown in the field opens
 // the menu. The menu is a ray-menu of radio items, native with native-menu.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { fieldTemplate } from "../../core/form.js";
 import { RayInput } from "../input/input.js";
 import "../menu/menu.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "mode-input.menu": "Mode",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .mode-menu { display: contents; }
@@ -80,7 +86,7 @@ export class RayModeInput extends RayInput {
     options: { attribute: false },
     display: { type: String, reflect: true },
     position: { type: String, reflect: true, default: "start" },
-    menuLabel: { type: String, default: "Mode" },
+    menuLabel: { type: String, string: "mode-input.menu" },
     nativeMenu: { type: Boolean, reflect: true },
   };
   static styles = [...RayInput.styles, styles];
@@ -184,7 +190,8 @@ export class RayModeInput extends RayInput {
       else delete icon.dataset.rayIcon;
     }
     // The trigger is named with the current mode: "Mode: File".
-    const name = option ? `${this.menuLabel ?? "Mode"}: ${option.label}` : this.menuLabel ?? "Mode";
+    const modeLabel = this.menuLabel || this.t("mode-input.menu");
+    const name = option ? `${modeLabel}: ${option.label}` : modeLabel;
     trigger.setAttribute("aria-label", name);
     trigger.title = name;
     trigger.disabled = this.effectivelyDisabled || Boolean(this.readonly);

@@ -55,7 +55,7 @@ description = "Height of the figure (the dots variant is wider)."
 
 [ray-pulse.properties.label]
 type = "string"
-default = "Loading"
+string = "pulse.label"
 description = "Text read by screen readers."
 
 [ray-pulse.parts.pulse]

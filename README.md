@@ -192,10 +192,43 @@ applies at once:
   bottom left.
 
 What stays left to right: `ray-code` (code is left to right in any language)
-and the color picker (a color space is a picture, not text). The translated
-texts (`label`, `close-label`, the command palette's hint words, the
-calendar's `locale`) are yours to give.
+and the color picker (a color space is a picture, not text).
 To see it, the site's **RTL** button shows every example right to left.
+
+### Languages
+
+What the components write themselves (a close button's name, "No matches",
+"Page 3 of 10", "The minimum is 5.") comes from a catalog of texts, English
+by default. Set another one once and every element follows, the ones
+already on the page too:
+
+```js
+import { setStrings } from "@raylang/elements/core";
+import es from "@raylang/elements/strings/es";
+
+setStrings(es);          // every element, whatever its lang
+setStrings("es", es);    // or only where lang="es" (also "es-AR", "es-MX")
+```
+
+- An element reads its nearest `lang` attribute (through shadow roots), so
+  one page can mix languages; `<html lang="…">` sets the page's. A `lang`
+  changed later applies at once.
+- The lookup: the catalog of the element's language, then its language
+  without the region, then the catalog set for any language, then English.
+- An attribute still wins for one element: `<ray-dialog close-label="…">`,
+  `<ray-avatar-picker pick-label="…">`. The properties read the catalog
+  when unset (`dialog.closeLabel` is "Cerrar" under `lang="es"`).
+- Ships with Spanish (`strings/es`). For another language, give the keys
+  you need: `setStrings("fr", { "dialog.close": "Fermer" })`; the rest stay
+  English. Each component's page lists its keys ("Texts"), and
+  `stringKeys()` those of the components loaded, with their English. A
+  catalog set before a component loads applies to it too. A text with a number has plural
+  forms, chosen by `Intl.PluralRules`:
+  `{ one: "{count} file", other: "{count} files" }`.
+- Dates and numbers already follow `lang` (`Intl`): the calendar's months
+  and first day of the week, `ray-number-input`'s spoken durations,
+  `ray-step-dots`. The texts you write (`label`, `placeholder`,
+  `description`, `error`) are yours to translate with your app's i18n.
 
 ## Commands
 

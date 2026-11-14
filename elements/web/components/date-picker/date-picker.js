@@ -11,13 +11,23 @@
 // Dates are ISO strings ("2026-10-06") handled as plain calendar days (UTC
 // arithmetic), so no time zone shifts a day.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { inlineKey } from "../../core/direction.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
 import { play, POP_OUT } from "../../core/motion.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "date-picker.placeholder": "Pick a date",
+  "date-picker.clear": "Clear date",
+  "date-picker.dropdown": "Choose a date",
+  "date-picker.previous-month": "Previous month, {month}",
+  "date-picker.next-month": "Next month, {month}",
+};
+defineStrings(STRINGS);
 
 // --- plain calendar days ------------------------------------------------------
 
@@ -242,8 +252,8 @@ export class RayCalendar extends RayElement {
     const first = this.firstDay ?? firstDayOf(locale);
     this.$(".caption").textContent = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(focus);
     const monthName = new Intl.DateTimeFormat(locale, { month: "long", timeZone: "UTC" });
-    this.$(".prev").setAttribute("aria-label", `Previous month, ${monthName.format(addMonths(focus, -1))}`);
-    this.$(".next").setAttribute("aria-label", `Next month, ${monthName.format(addMonths(focus, 1))}`);
+    this.$(".prev").setAttribute("aria-label", this.t("date-picker.previous-month", { month: monthName.format(addMonths(focus, -1)) }));
+    this.$(".next").setAttribute("aria-label", this.t("date-picker.next-month", { month: monthName.format(addMonths(focus, 1)) }));
 
     // Weekday headers: 2023-01-01 was a Sunday.
     const short = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
@@ -429,7 +439,7 @@ export class RayDatePicker extends FieldControl {
     value: { type: String },
     min: { type: String },
     max: { type: String },
-    placeholder: { type: String, default: "Pick a date" },
+    placeholder: { type: String, string: "date-picker.placeholder" },
     format: { type: String, default: "medium" },
     locale: { type: String },
     firstDay: { type: Number },
@@ -442,9 +452,9 @@ export class RayDatePicker extends FieldControl {
     `<input id="control" class="native" part="input" type="date" tabindex="-1" aria-hidden="true">` +
       `<button type="button" id="trigger" class="control trigger" part="trigger" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
       `<span class="icon" aria-hidden="true" data-ray-icon="ui.calendar"></span><span class="value" id="value"></span></button>` +
-      `<button type="button" class="clear focus-ring" part="clear" aria-label="Clear date" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>`,
+      `<button type="button" class="clear focus-ring" part="clear" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>`,
     { sections: false },
-  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a date"><ray-calendar part="calendar" exportparts="day, day-selected, day-today, day-outside, day-disabled, caption, nav, grid"></ray-calendar></div>`;
+  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog"><ray-calendar part="calendar" exportparts="day, day-selected, day-today, day-outside, day-disabled, caption, nav, grid"></ray-calendar></div>`;
 
   #undismiss = null;
   #exit = null;
@@ -507,6 +517,8 @@ export class RayDatePicker extends FieldControl {
 
   update(changed) {
     const c = this.control;
+    this.$(".clear").setAttribute("aria-label", this.t("date-picker.clear"));
+    this.$("#panel").setAttribute("aria-label", this.t("date-picker.dropdown"));
     c.min = this.min ?? "";
     c.max = this.max ?? "";
     const v = this.value ?? "";

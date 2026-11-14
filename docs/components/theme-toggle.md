@@ -18,6 +18,16 @@ Parts (`::part()`):
 
 - `button`: The inner button.
 
+Texts (`setStrings`; English):
+
+- `theme-toggle.system`: System theme
+- `theme-toggle.light`: Light theme
+- `theme-toggle.dark`: Dark theme
+- `theme-toggle.switch`: {theme} (switch to {next})
+- `theme-toggle.to-system`: system
+- `theme-toggle.to-light`: light
+- `theme-toggle.to-dark`: dark
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

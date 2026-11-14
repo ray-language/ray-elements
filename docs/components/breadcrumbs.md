@@ -12,7 +12,7 @@ Properties:
 
 - `separator`: string, default `/`. Text between crumbs ("/", "›", "·") or "chevron" (an icon).
 - `maxItems` (attribute `max-items`): number. Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1.
-- `label`: string, default `Breadcrumb`. Accessible name of the nav.
+- `label`: string, default `Breadcrumb` (text `breadcrumbs.label`). Accessible name of the nav.
 - `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Font size.
 
 Slots:
@@ -48,6 +48,11 @@ Parts (`::part()`):
 - `link`: The link (or the text of the current page).
 - `separator`: The separator before it.
 - `more`: The "…" button of a collapsed path.
+
+Texts (`setStrings`; English):
+
+- `breadcrumbs.label`: Breadcrumb
+- `breadcrumbs.more`: Show the whole path
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

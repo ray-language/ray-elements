@@ -42,7 +42,7 @@ description = "At most this many suggestions shown (keep typing for the rest); 0
 [ray-tags-input.properties.suggestionsLabel]
 attribute = "suggestions-label"
 type = "string"
-default = "Suggestions"
+string = "tags-input.suggestions"
 description = "The accessible name of the group of suggestions."
 
 [ray-tags-input.properties.separators]

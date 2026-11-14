@@ -26,13 +26,13 @@ description = "Accessible name of the tab list (\"Open requests\")."
 [ray-doc-tabs.properties.closeLabel]
 attribute = "close-label"
 type = "string"
-default = "Close"
+string = "doc-tabs.close"
 description = "Tooltip of the ×."
 
 [ray-doc-tabs.properties.dirtyLabel]
 attribute = "dirty-label"
 type = "string"
-default = "Unsaved changes"
+string = "doc-tabs.dirty"
 description = "What assistive technology hears after the name of a dirty tab."
 
 [ray-doc-tabs.events.change]

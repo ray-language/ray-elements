@@ -5,9 +5,15 @@
 // and toasts slot. `modeless` makes it a side panel that leaves the page
 // interactive (no backdrop, no scroll lock; Escape still closes it).
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { RayDialog } from "../dialog/dialog.js";
 import { overlayStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "drawer.close": "Close",
+};
+defineStrings(STRINGS);
 
 const SIZES = { xs: "20rem", sm: "23.75rem", md: "27.5rem", lg: "38.75rem", xl: "48.75rem", full: "100%" };
 
@@ -126,6 +132,7 @@ const styles = css`
 export class RayDrawer extends RayDialog {
   static properties = {
     ...RayDialog.properties,
+    closeLabel: { type: String, attribute: "close-label", string: "drawer.close" },
     position: { type: String, reflect: true, default: "end" },
     size: { type: String, reflect: true, default: "md" },
     modeless: { type: Boolean, reflect: true },
@@ -136,7 +143,7 @@ export class RayDrawer extends RayDialog {
     <dialog part="drawer" aria-labelledby="title">
       <header class="header" part="header">
         <div class="heading"><h2 class="title" id="title" part="title"></h2><p class="description" id="description" part="description" hidden></p></div>
-        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="ui.close" aria-hidden="true"></span></button></div>
+        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button"><span data-ray-icon="ui.close" aria-hidden="true"></span></button></div>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <footer class="footer" part="footer"><slot name="footer"></slot></footer>

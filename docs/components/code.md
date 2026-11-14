@@ -23,8 +23,8 @@ Properties:
 - `hideHeader` (attribute `hide-header`): boolean, reflects. No header bar (the copy button floats in the corner).
 - `size`: `xs` | `sm` | `md`, default `sm`, reflects. Font size.
 - `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: md.
-- `copyLabel` (attribute `copy-label`): string, default `Copy code`. Accessible name of the copy button.
-- `copiedLabel` (attribute `copied-label`): string, default `Copied`. Shown and announced after copying.
+- `copyLabel` (attribute `copy-label`): string, default `Copy code` (text `code.copy`). Accessible name of the copy button.
+- `copiedLabel` (attribute `copied-label`): string, default `Copied` (text `code.copied`). Shown and announced after copying.
 
 Events:
 
@@ -51,6 +51,15 @@ Exports (from `@raylang/elements/code` and `@raylang/elements`):
 
 - `function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void`: Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one.
 - `function tokenize(code: string, lang?: string): [type: string, text: string][]`: The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text.
+
+Texts (`setStrings`; English):
+
+- `code.copy`: Copy code
+- `code.copied`: Copied
+- `code.region`: Code
+- `code.region-language`: {language} code
+- `code.show-all`: Show all {count} lines
+- `code.show-less`: Show less
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

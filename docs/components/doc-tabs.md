@@ -13,8 +13,8 @@ Properties:
 - `value`: string. Value of the selected tab (default: the first).
 - `panel`: string. The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls.
 - `label`: string. Accessible name of the tab list ("Open requests").
-- `closeLabel` (attribute `close-label`): string, default `Close`. Tooltip of the ×.
-- `dirtyLabel` (attribute `dirty-label`): string, default `Unsaved changes`. What assistive technology hears after the name of a dirty tab.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `doc-tabs.close`). Tooltip of the ×.
+- `dirtyLabel` (attribute `dirty-label`): string, default `Unsaved changes` (text `doc-tabs.dirty`). What assistive technology hears after the name of a dirty tab.
 
 Events:
 
@@ -57,6 +57,11 @@ Parts (`::part()`):
 - `left-section`: The left slot's box.
 - `close`: The × (pointer only: it is not focusable).
 - `dot`: The unsaved mark.
+
+Texts (`setStrings`; English):
+
+- `doc-tabs.close`: Close
+- `doc-tabs.dirty`: Unsaved changes
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

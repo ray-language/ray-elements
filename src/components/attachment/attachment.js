@@ -5,7 +5,17 @@
 //
 //   el.file = input.files[0];   // fills name, size, type and an image thumbnail
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "attachment.remove": "Remove {name}",
+  "attachment.uploading": "Uploading…",
+  "attachment.uploading-percent": "Uploading… {percent}%",
+  "attachment.progress": "Uploading {name}",
+  "attachment.failed": "Upload failed",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -181,7 +191,7 @@ export class RayAttachment extends RayElement {
     status: { type: String, reflect: true },
     error: { type: String },
     removable: { type: Boolean, reflect: true },
-    removeLabel: { type: String },
+    removeLabel: { type: String, string: "attachment.remove" },
     variant: { type: String, reflect: true, default: "row" },
     disabled: { type: Boolean, reflect: true },
   };
@@ -291,8 +301,8 @@ export class RayAttachment extends RayElement {
     // Meta line: size, upload state or error.
     const pct = Math.max(0, Math.min(100, Math.round(Number(this.progress) || 0)));
     let meta = size;
-    if (state === "uploading") meta = this.progress === undefined || this.progress === null ? "Uploading…" : `Uploading… ${pct}%`;
-    else if (state === "error") meta = this.error || "Upload failed";
+    if (state === "uploading") meta = this.progress === undefined || this.progress === null ? this.t("attachment.uploading") : this.t("attachment.uploading-percent", { percent: pct });
+    else if (state === "error") meta = this.error || this.t("attachment.failed");
     this.$(".meta").textContent = meta;
 
     const bar = this.$(".bar");
@@ -301,13 +311,13 @@ export class RayAttachment extends RayElement {
     if (uploading) {
       bar.style.setProperty("--_pct", `${pct}%`);
       bar.setAttribute("aria-valuenow", String(pct));
-      bar.setAttribute("aria-label", `Uploading ${name}`);
+      bar.setAttribute("aria-label", this.t("attachment.progress", { name }));
     }
 
     const remove = this.$(".remove");
     remove.hidden = !this.removable;
     remove.disabled = Boolean(this.disabled);
-    remove.setAttribute("aria-label", (this.removeLabel || "Remove {name}").replace("{name}", name));
+    remove.setAttribute("aria-label", (this.removeLabel || this.t("attachment.remove")).replaceAll("{name}", name));
 
     const item = this.$(".item");
     item.setAttribute("aria-label", [name, size].filter(Boolean).join(", "));

@@ -11,12 +11,21 @@
 // slot="overlay" renders inside the modal <dialog>, so it is not made inert:
 // <ray-toaster> moves itself there while a dialog is open.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, getString, defineStrings } from "../../core/core.js";
 import { focusFirst } from "../../core/focus.js";
 import { getHost, hostCan } from "../../core/host.js";
 import { overlayStyles, applyOverlayBlur } from "../../core/styles.js";
 import { play, playAll } from "../../core/motion.js";
 import "../button/button.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "dialog.close": "Close",
+  "dialog.confirm-label": "Are you sure?",
+  "dialog.confirm": "Confirm",
+  "dialog.cancel": "Cancel",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host { display: contents; --_w: 27.5rem; }
@@ -96,6 +105,7 @@ export class RayDialog extends RayElement {
     position: { type: String, reflect: true, default: "center" },
     persistent: { type: Boolean, reflect: true },
     hideClose: { type: Boolean, reflect: true },
+    closeLabel: { type: String, attribute: "close-label", string: "dialog.close" },
     overlayBlur: { type: String },
     description: { type: String },
     height: { type: String, reflect: true },
@@ -106,7 +116,7 @@ export class RayDialog extends RayElement {
     <dialog part="dialog" aria-labelledby="title">
       <header class="header" part="header">
         <div class="heading"><h2 class="title" id="title" part="title"></h2><p class="description" id="description" part="description" hidden></p></div>
-        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button" aria-label="Close"><span data-ray-icon="ui.close" aria-hidden="true"></span></button></div>
+        <div class="actions"><slot name="header"></slot><button class="close focus-ring" part="close" type="button"><span data-ray-icon="ui.close" aria-hidden="true"></span></button></div>
       </header>
       <div class="body" part="body"><slot></slot></div>
       <footer class="footer" part="footer"><slot name="footer"></slot></footer>
@@ -169,6 +179,7 @@ export class RayDialog extends RayElement {
     }
     this._dimensions();
     this.$(".close").hidden = Boolean(this.hideClose);
+    this.$(".close").setAttribute("aria-label", this.closeLabel);
     this.$(".header").toggleAttribute("data-empty", !this.label && this.hideClose && !this.querySelector('[slot="header"]'));
     if (this.label) this.dialog.setAttribute("aria-labelledby", "title");
     else this.dialog.removeAttribute("aria-labelledby");
@@ -291,7 +302,14 @@ define("ray-dialog", RayDialog);
  * @param {{ label?: string, message?: string, confirmLabel?: string, cancelLabel?: string, color?: string }} options
  * @returns {Promise<boolean>}
  */
-export function confirmDialog({ label = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", color = "", native = true } = {}) {
+export function confirmDialog({
+  label = getString("dialog.confirm-label"),
+  message = "",
+  confirmLabel = getString("dialog.confirm"),
+  cancelLabel = getString("dialog.cancel"),
+  color = "",
+  native = true,
+} = {}) {
   // With a native host (core/host.js), the system's modal asks instead; a
   // red confirmation (a destructive action) gets the warning style.
   if (native && hostCan("confirm")) {

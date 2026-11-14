@@ -4,7 +4,7 @@ import "@raylang/elements/dialog";
 import { createComponent } from "../create.js";
 
 export const RayDialog = /*#__PURE__*/ createComponent("RayDialog", "ray-dialog", {
-  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "closeLabel", "overlayBlur"],
   booleans: ["open", "persistent", "hideClose"],
   model: { prop: "open", events: ["ray-open", "ray-close"] },
 });

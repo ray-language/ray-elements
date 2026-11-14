@@ -8,9 +8,19 @@
 //
 // An ARIA spinbutton: aria-valuenow/min/max/valuetext on the text field.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "number-input.increment": "Increment",
+  "number-input.decrement": "Decrement",
+  "number-input.required": "Please enter a number.",
+  "number-input.min": "The minimum is {min}.",
+  "number-input.max": "The maximum is {max}.",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .control { font-variant-numeric: tabular-nums; }
@@ -151,7 +161,7 @@ export class RayNumberInput extends FieldControl {
   static template = fieldTemplate(
     `<label class="affix prefix" part="prefix" for="control" hidden></label>` +
       `<span class="sizer"><input id="control" class="control" part="input" role="spinbutton" inputmode="decimal" autocomplete="off" spellcheck="false"><span class="affix suffix" part="suffix" hidden></span></span>` +
-      `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1" aria-label="Increment"><span data-ray-icon="ui.increment"></span></button><button type="button" class="step down" part="decrement" tabindex="-1" aria-label="Decrement"><span data-ray-icon="ui.decrement"></span></button></span>`,
+      `<span class="steppers" part="controls"><button type="button" class="step up" part="increment" tabindex="-1"><span data-ray-icon="ui.increment"></span></button><button type="button" class="step down" part="decrement" tabindex="-1"><span data-ray-icon="ui.decrement"></span></button></span>`,
   );
 
   #typing = false;
@@ -203,6 +213,8 @@ export class RayNumberInput extends FieldControl {
 
   update() {
     const c = this.control;
+    this.$(".up").setAttribute("aria-label", this.t("number-input.increment"));
+    this.$(".down").setAttribute("aria-label", this.t("number-input.decrement"));
     c.readOnly = Boolean(this.readonly);
     // The number pad has no ":".
     c.inputMode = this._duration ? "text" : "decimal";
@@ -326,9 +338,9 @@ export class RayNumberInput extends FieldControl {
     this.internals.setFormValue(this.value === undefined || this.value === null || !Number.isFinite(this.value) ? null : String(this.value));
     const c = this.control;
     let msg = "";
-    if (this.required && (this.value === undefined || this.value === null)) msg = "Please enter a number.";
-    else if (this.value !== undefined && this.min !== undefined && this.value < this.min) msg = `The minimum is ${this._show(this.min)}.`;
-    else if (this.value !== undefined && this.max !== undefined && this.value > this.max) msg = `The maximum is ${this._show(this.max)}.`;
+    if (this.required && (this.value === undefined || this.value === null)) msg = this.t("number-input.required");
+    else if (this.value !== undefined && this.min !== undefined && this.value < this.min) msg = this.t("number-input.min", { min: this._show(this.min) });
+    else if (this.value !== undefined && this.max !== undefined && this.value > this.max) msg = this.t("number-input.max", { max: this._show(this.max) });
     if (msg) this.internals.setValidity(this.value === undefined ? { valueMissing: true } : this.value < (this.min ?? -Infinity) ? { rangeUnderflow: true } : { rangeOverflow: true }, msg, c);
     else this.internals.setValidity({});
   }

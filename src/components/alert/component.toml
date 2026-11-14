@@ -46,7 +46,7 @@ description = "A close button; closing hides the alert (cancel ray-close to keep
 [ray-alert.properties.closeLabel]
 attribute = "close-label"
 type = "string"
-default = "Dismiss"
+string = "alert.close"
 description = "Accessible name of the close button."
 
 [ray-alert.events.ray-close]

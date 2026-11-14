@@ -10,9 +10,16 @@
 //
 // Too many tabs for the width: the bar scrolls sideways like ray-tabs.
 
-import { RayElement, css, define, uid } from "../../core/core.js";
+import { RayElement, css, define, uid, defineStrings } from "../../core/core.js";
 import { inlineKey } from "../../core/direction.js";
 import { SideScroller, sideScrollerStyles } from "../../core/scroll.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "doc-tabs.close": "Close",
+  "doc-tabs.dirty": "Unsaved changes",
+};
+defineStrings(STRINGS);
 
 const barStyles = css`
   :host { display: flex; align-items: center; gap: var(--ray-space-1); min-width: 0; }
@@ -28,8 +35,8 @@ export class RayDocTabs extends RayElement {
     value: { type: String },
     panel: { type: String },
     label: { type: String },
-    closeLabel: { type: String, default: "Close" },
-    dirtyLabel: { type: String, default: "Unsaved changes" },
+    closeLabel: { type: String, string: "doc-tabs.close" },
+    dirtyLabel: { type: String, string: "doc-tabs.dirty" },
   };
   static styles = [sideScrollerStyles, barStyles];
   static template = `<div class="list" part="list" role="tablist"><slot></slot></div><span class="end" part="end"><slot name="end"></slot></span>`;
@@ -242,9 +249,9 @@ export class RayDocTab extends RayElement {
 
   update(changed) {
     const bar = this.closest("ray-doc-tabs");
-    this.$(".close").title = bar?.closeLabel ?? "Close";
+    this.$(".close").title = bar?.closeLabel || this.t("doc-tabs.close");
     // The unsaved mark is part of the tab's name for assistive technology.
-    this.$(".sr").textContent = this.dirty ? `, ${bar?.dirtyLabel ?? "Unsaved changes"}` : "";
+    this.$(".sr").textContent = this.dirty ? `, ${bar?.dirtyLabel || this.t("doc-tabs.dirty")}` : "";
     if (this.hideClose) this.removeAttribute("aria-keyshortcuts");
     else this.setAttribute("aria-keyshortcuts", "Delete");
     if (changed.has("value")) bar?.requestUpdate();

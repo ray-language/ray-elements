@@ -66,6 +66,9 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     let el = "${base}/elements";
     fresh(el)?;
     copy_tree(root, "src/core", "${el}/core", ".js")?;
+    // The catalogs of texts in other languages (setStrings): "./strings/es".
+    copy_tree(root, "src/strings", "${el}/strings", ".js")?;
+    copy_tree(root, "src/strings", "${el}/strings", ".d.ts")?;
     for c in cs {
         for f in c.files {
             put(
@@ -208,6 +211,10 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
     "./check": {
       "types": "./check/check.d.ts",
       "default": "./check/check.js"
+    },
+    "./strings/*": {
+      "types": "./strings/strings.d.ts",
+      "default": "./strings/*.js"
     },
 ${join(entries, "\n")}
     "./tokens.css": "./tokens.css",

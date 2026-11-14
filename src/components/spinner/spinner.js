@@ -1,7 +1,13 @@
 // <ray-spinner>: an indeterminate loading indicator (Mantine's Loader).
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor, loaderStyles, srOnlyStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "spinner.label": "Loading",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -20,7 +26,7 @@ export class RaySpinner extends RayElement {
   static properties = {
     color: { type: String, reflect: true },
     size: { type: String, reflect: true, default: "md" },
-    label: { type: String, default: "Loading" },
+    label: { type: String, string: "spinner.label" },
   };
   static styles = [loaderStyles, srOnlyStyles, styles];
   static template = `<span class="loader" part="spinner"></span><span class="sr-only"></span>`;

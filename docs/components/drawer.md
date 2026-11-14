@@ -19,6 +19,7 @@ Properties:
 - `floating`: boolean, reflects. Detached from the edge, with rounded corners.
 - `persistent`: boolean, reflects. Escape and backdrop clicks do not close it.
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `drawer.close`). The close button's name, for screen readers.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
 Events:
@@ -45,6 +46,10 @@ Methods and properties:
 - `returnValue: string`: The value it was closed with.
 
 Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+Texts (`setStrings`; English):
+
+- `drawer.close`: Close
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

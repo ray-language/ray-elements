@@ -163,6 +163,22 @@ green a check, red an error, yellow a warning, others info).
 - App-wide defaults for a component: `configure({ defaults: { "ray-button":
   { variant: "light" } } })`.
 
+## Languages
+
+- What a component writes itself (a close button's name, "No matches",
+  "Page 3", validation messages) is English until the app sets a catalog:
+  `import es from "@raylang/elements/strings/es"; setStrings(es);` (every
+  element) or `setStrings("es", es)` (only under `lang="es"`/`"es-AR"`).
+  An element reads its nearest `lang`; set `<html lang>` to the page's
+  language. Other languages: `setStrings("fr", { "dialog.close": "Fermer", … })`,
+  the keys in each component's reference ("Texts").
+- An attribute still wins for one element (`close-label`, `pick-label`…).
+  Do not repeat the same `*-label` on every instance to translate: that is
+  what `setStrings` is for.
+- Labels, placeholders and descriptions you write (`label="Name"`) are your
+  text: translate them with your app's i18n. Dates and numbers follow
+  `lang` (`ray-date-picker`, `ray-number-input`, `ray-step-dots`).
+
 ## Right to left
 
 - `dir="rtl"` on `<html>` (with its `lang`) or a subtree mirrors the

@@ -11,7 +11,7 @@ Escape clears it (when it has text); Enter fires ray-search at once. JS: clear()
 Properties:
 
 - `value`: string. Current text.
-- `placeholder`: string, default `Search…`. Placeholder text.
+- `placeholder`: string, default `Search…` (text `search.placeholder`). Placeholder text.
 - `shortcut`: string. Keyboard shortcut that focuses it ("mod+k", "/"; mod = ⌘ on macOS, Ctrl elsewhere). Shown as a hint while empty.
 - `debounce`: number, default `200`. Milliseconds of quiet typing before ray-search fires (0: on every keystroke).
 - `name`: string, reflects. Form field name.
@@ -41,6 +41,11 @@ Methods and properties:
 - `clear(): void`: Empties the box (fires input and ray-search).
 
 Vue `v-model`: `value` (updated on input).
+
+Texts (`setStrings`; English):
+
+- `search.placeholder`: Search…
+- `search.clear`: Clear search
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

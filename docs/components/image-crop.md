@@ -20,8 +20,8 @@ Properties:
 - `outputSize` (attribute `output-size`): `string | number`, default `512`. Size of the exported image: a width ("320", the height from the aspect) or "640x360".
 - `type`: `"image/jpeg" | "image/png" | "image/webp" | (string & {})`, default `image/jpeg`. Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).
 - `quality`: number, default `0.85`. 0…1, for image/jpeg and image/webp.
-- `label`: string, default `Crop image`. Accessible name of the image area.
-- `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider, and the word of the announced zoom ("Zoom 150%").
+- `label`: string, default `Crop image` (text `image-crop.label`). Accessible name of the image area.
+- `zoomLabel` (attribute `zoom-label`): string, default `Zoom` (text `image-crop.zoom`). Name of the zoom slider, and the word of the announced zoom ("Zoom 150%").
 - `disabled`: boolean, reflects. No moving nor zooming.
 
 Events:
@@ -60,6 +60,11 @@ Types:
 
 - `{ x: number; y: number; width: number; height: number }`: A rectangle in pixels of the original image.
 - `{ size?: string | number; width?: number; height?: number; type?: string; quality?: number }`: Overrides output-size (size, or width and height), type and quality for one export.
+
+Texts (`setStrings`; English):
+
+- `image-crop.label`: Crop image
+- `image-crop.zoom`: Zoom
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

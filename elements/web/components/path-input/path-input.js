@@ -9,10 +9,16 @@
 // and change. Without one (a browser), it is a plain text field: a page
 // cannot read paths from a browser's file picker.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { fieldTemplate } from "../../core/form.js";
 import { getHost, hostCan, onHostChange, acceptFilters } from "../../core/host.js";
 import { RayInput } from "../input/input.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "path-input.browse": "Browse…",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .control { font-variant-ligatures: none; }
@@ -59,7 +65,7 @@ export class RayPathInput extends RayInput {
     ...RayInput.properties,
     mode: { type: String, reflect: true, default: "open" },
     accept: { type: String, reflect: true },
-    browseLabel: { type: String, attribute: "browse-label", default: "Browse…" },
+    browseLabel: { type: String, attribute: "browse-label", string: "path-input.browse" },
     dialogTitle: { type: String, attribute: "dialog-title" },
   };
   static styles = [...RayInput.styles, styles];

@@ -109,7 +109,7 @@ description = "Inline suggestions: called as the user types (and on Ctrl+Space) 
 [ray-input.properties.suggestionsLabel]
 attribute = "suggestions-label"
 type = "string"
-default = "Suggestions"
+string = "input.suggestions"
 description = "Accessible name of the suggestion list."
 
 [ray-input.events.ray-complete]

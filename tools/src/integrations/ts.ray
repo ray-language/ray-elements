@@ -97,6 +97,7 @@ fn types_of_properties() {
         reflect: true,
         initial: "",
         ts: "",
+        string_key: "",
         description: ""
     };
     assert_eq(prop_type(p), "\"xs\" | \"sm\"");

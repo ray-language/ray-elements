@@ -198,6 +198,11 @@ fn component(c: Component, els: [Element], source: string) -> string {
     for el in c.elements {
         api.push(element(el, c.elements.len() > 1));
     }
+    if (c.texts.len() > 0) {
+        let rows = c.texts.map(fn(t: (string, string)) -> string { "<tr><td><code>${t.0}</code></td><td>${escape(t.1)}</td></tr>" });
+        api.push("<h3 id=\"${c.dir}-texts\">Texts</h3>\n<p class=\"note\">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>");
+        api.push(table(["Key", "English"], rows));
+    }
     // The example's code (HTML, React, Vue) is most of the page's weight and
     // rarely opened: it lives in docs/code/<dir>.html (code_file) and
     // site.js fetches it when the details opens.
@@ -276,7 +281,13 @@ fn prop_row(p: Prop) -> string {
     } else {
         "&mdash;"
     };
-    let def = if (p.default_value == "") { "" } else { "<code>${escape(p.default_value)}</code>" };
+    let def = if (p.string_key != "") {
+        "<code>${escape(p.default_value)}</code> <span class=\"text-key\">(text <code>${p.string_key}</code>)</span>"
+    } else if (p.default_value == "") {
+        ""
+    } else {
+        "<code>${escape(p.default_value)}</code>"
+    };
     let reflect = if (p.reflect) { " <span class=\"reflects\">reflects</span>" } else { "" };
     "<tr><td><code>${p.name}</code></td><td>${attr}${reflect}</td><td>${kind}</td><td>${def}</td><td>${escape(p.description)}</td></tr>"
 }

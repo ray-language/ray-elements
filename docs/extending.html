@@ -57,6 +57,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/form.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/color.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/direction.js" fetchpriority="low">
 <script type="module" blocking="render">import "../src/components/icon-button/icon-button.js"; import "../src/components/select/select.js"; import "../src/components/icon/icon.js"; import "../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
@@ -200,7 +201,7 @@ sees the changes of the controls slotted in it, so check <code>e.target</code>.<
 <tbody>
 <tr>
 <td><code>static properties</code></td>
-<td><code>{ name: { type, reflect, attribute, default } }</code> → accessors, observed attributes, reflection</td>
+<td><code>{ name: { type, reflect, attribute, default, string } }</code> → accessors, observed attributes, reflection; <code>string: &quot;&lt;key&gt;&quot;</code> makes a text of the catalog the default, in the element's language</td>
 </tr>
 <tr>
 <td><code>static styles</code> / <code>static template</code></td>
@@ -237,6 +238,10 @@ sees the changes of the controls slotted in it, so check <code>e.target</code>.<
 <tr>
 <td><code>$(selector)</code></td>
 <td><code>shadowRoot.querySelector</code></td>
+</tr>
+<tr>
+<td><code>t(key, values)</code></td>
+<td><strong>protected</strong>: a text of the catalog (<code>setStrings</code>) in the element's language, <code>{name}</code> filled from <code>values</code>. Declare your component's texts once, in English, with <code>defineStrings({ &quot;my-chart.empty&quot;: &quot;No data yet&quot; })</code> (keys <code>&lt;component&gt;.&lt;text&gt;</code>); an app translates them like the built-in ones</td>
 </tr>
 <tr>
 <td><code>paintIcons(root)</code></td>

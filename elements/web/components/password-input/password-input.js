@@ -5,9 +5,16 @@
 // The toggle keeps the caret and the focus in the field, says what it does
 // (aria-label, aria-pressed) and fires ray-visibility-change.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { fieldTemplate } from "../../core/form.js";
 import { RayInput } from "../input/input.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "password-input.show": "Show password",
+  "password-input.hide": "Hide password",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .toggle {
@@ -37,8 +44,8 @@ export class RayPasswordInput extends RayInput {
     ...RayInput.properties,
     type: { type: String, reflect: false, default: "password" },
     visible: { type: Boolean, reflect: true },
-    showLabel: { type: String, default: "Show password" },
-    hideLabel: { type: String, default: "Hide password" },
+    showLabel: { type: String, string: "password-input.show" },
+    hideLabel: { type: String, string: "password-input.hide" },
   };
   static styles = [...RayInput.styles, styles];
   static template = fieldTemplate(

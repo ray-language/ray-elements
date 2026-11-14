@@ -60,6 +60,13 @@ type = "boolean"
 reflect = true
 description = "No close button in the header."
 
+
+[ray-dialog.properties.closeLabel]
+attribute = "close-label"
+type = "string"
+string = "dialog.close"
+description = "The close button's name, for screen readers."
+
 [ray-dialog.properties.overlayBlur]
 attribute = "overlay-blur"
 type = "string"

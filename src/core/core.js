@@ -3,9 +3,11 @@
 // ray://app in a std/ui window).
 
 import { getIcon, mirrorsInRtl, onIconsChange } from "./icons.js";
+import { getString, onStringsChange } from "./strings.js";
 import { parseColor, shades, contrastRatio, toHex, toOklch } from "./color.js";
 
 export { setIcons, getIcon, iconNames, iconAliases } from "./icons.js";
+export { setStrings, getString, stringKeys, langOf, defineStrings } from "./strings.js";
 
 export const PREFIX = "ray";
 
@@ -80,6 +82,7 @@ export const hostStyles = css`
  * @property {boolean} [reflect]   write the property back to its attribute
  * @property {string | false} [attribute]  attribute name (kebab-case of the property by default); false = property only
  * @property {unknown} [default]
+ * @property {string} [string]  a text of the catalog (setStrings) as the default, in the element's language
  */
 
 // Per-class data kept outside the classes, so subclasses cannot clash with it.
@@ -145,6 +148,13 @@ export class RayElement extends HTMLElement {
     for (const el of live) {
       if (el instanceof this) el.#adoptStyles();
     }
+  }
+
+  // setStrings() and a change of lang update every connected element.
+  static {
+    onStringsChange(() => {
+      for (const el of live) el.#textsChanged();
+    });
   }
 
   #values = new Map();
@@ -223,7 +233,17 @@ export class RayElement extends HTMLElement {
   #get(name) {
     const v = this.#values.get(name);
     if (v !== undefined) return v;
-    return /** @type {typeof RayElement} */ (this.constructor).properties[name].default;
+    const opts = /** @type {typeof RayElement} */ (this.constructor).properties[name];
+    return opts.string ? getString(opts.string, this) : opts.default;
+  }
+
+  /** The texts changed (setStrings, a lang attribute): update with the catalog's properties as changed. */
+  #textsChanged() {
+    const ctor = /** @type {typeof RayElement} */ (this.constructor);
+    for (const [name, opts] of Object.entries(ctor.properties)) {
+      if (opts.string && !this.hasValue(name) && !this.#changed.has(name)) this.#changed.set(name, undefined);
+    }
+    this.requestUpdate();
   }
 
   #set(name, value) {
@@ -304,6 +324,15 @@ export class RayElement extends HTMLElement {
    */
   emit(type, detail = undefined, { cancelable = false } = {}) {
     return this.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true, cancelable }));
+  }
+
+  /**
+   * Protected. A text of the catalog in this element's language (setStrings),
+   * "{name}" filled from `values`.
+   *   this.t("pagination.page", { page: 3 })
+   */
+  t(key, values = undefined) {
+    return getString(key, this, values);
   }
 
   /** querySelector inside the shadow root. */

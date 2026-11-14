@@ -45,6 +45,9 @@ pub struct Prop {
     initial: string,
     ts: string,
     description: string,
+    // A text of the catalog (src/core/strings.js) as the default: its key;
+    // default_value is then its English text.
+    string_key: string,
 }
 
 pub struct Named {
@@ -90,6 +93,9 @@ pub struct Component {
     example: string,
     // raylang.md: what the component does in a raylang app (Markdown).
     raylang: string,
+    // Its texts of the catalog (src/core/strings.js, keys "<dir>.…"): key
+    // and English text.
+    texts: [(string, string)],
 }
 
 // Every component under <root>/src/components, by category then name.
@@ -102,6 +108,44 @@ pub fn load_all(root: string) -> Result<[Component], string> {
         for t in c.types {
             if (t.name == "IconName") {
                 t.ts = join(names.map(fn(n: string) -> string { "\"${n}\"" }), " | ") + " | \"none\" | (string & {})";
+            }
+        }
+    }
+    // Each component's texts (its STRINGS), keyed "<dir>.…".
+    let texts: [(string, string)] = [];
+    for c in out {
+        for f in c.files {
+            for t in string_entries(fs.read_file("${root}/src/components/${c.dir}/${f}")?) {
+                if (!t.0.starts_with("${c.dir}.")) {
+                    return Result.Err("${c.dir}/${f}: the text '${t.0}' must start with '${c.dir}.'");
+                }
+                c.texts.push(t);
+                texts.push(t);
+            }
+        }
+    }
+    // The Spanish catalog has every text, with the same {values}.
+    let es = string_entries(fs.read_file("${root}/src/strings/es.js")?);
+    for (key, english) in texts {
+        let found = text_of(es, key).ok_or("src/strings/es.js: no text '${key}'")?;
+        if (placeholders(found) != placeholders(english)) {
+            return Result.Err("src/strings/es.js: '${key}' has ${placeholders(found)}, English ${placeholders(english)}");
+        }
+    }
+    for (key, _) in es {
+        if (text_of(texts, key).is_none()) {
+            return Result.Err("src/strings/es.js: '${key}' is no component's text");
+        }
+    }
+    // A property whose default is a text of the catalog: its English text.
+    for c in out {
+        for el in c.elements {
+            for p in el.props {
+                if (p.string_key != "") {
+                    p.default_value = text_of(texts, p.string_key).ok_or(
+                        "${c.dir}: ${el.tag}.${p.name}: no text '${p.string_key}' in any component's STRINGS"
+                    )?;
+                }
             }
         }
     }
@@ -239,7 +283,8 @@ fn base_prop(
         reflect: reflect,
         initial: "",
         ts: "",
-        description: description
+        description: description,
+        string_key: ""
     }
 }
 
@@ -257,7 +302,8 @@ pub fn parse(dir: string, src: string) -> Result<Component, string> {
         exports: [],
         types: [],
         example: "",
-        raylang: ""
+        raylang: "",
+        texts: []
     };
     for e in entries {
         let parts = e.key.split(".");
@@ -362,6 +408,8 @@ fn apply(el: Element, parts: [string], e: TomlEntry) -> Result<int, string> {
             p.values = strs_of(e)?;
         } else if (field == "default") {
             p.default_value = str_of(e)?;
+        } else if (field == "string") {
+            p.string_key = str_of(e)?;
         } else if (field == "reflect") {
             p.reflect = bool_of(e)?;
         } else if (field == "initial") {
@@ -418,7 +466,8 @@ fn prop(el: Element, name: string) -> Prop {
         reflect: false,
         initial: "",
         ts: "",
-        description: ""
+        description: "",
+        string_key: ""
     };
     el.props.push(p);
     p
@@ -453,6 +502,57 @@ pub fn icon_aliases(src: string) -> [(string, string)] {
         out.push((key, value.replace("\"", "").replace(",", "").trim()));
     }
     out
+}
+
+// The texts of a module's `const STRINGS = { … };` (a component's English,
+// or a catalog of src/strings/): each key and its text; a plural one as its
+// forms ({ one: "…", other: "…" }).
+pub fn string_entries(src: string) -> [(string, string)] {
+    let out: [(string, string)] = [];
+    for (key, raw) in object_entries(src, "STRINGS") {
+        var v = raw.trim();
+        if (v.ends_with(",")) {
+            v = v.substring(0, v.len() - 1);
+        }
+        if (v.starts_with("\"") && v.ends_with("\"")) {
+            v = v.substring(1, v.len() - 1);
+        }
+        out.push((key, v));
+    }
+    out
+}
+
+// The "{name}" values a text uses, sorted ("{count},{name}").
+fn placeholders(text: string) -> string {
+    let found: [string] = [];
+    var rest = text;
+    while (true) {
+        let open = rest.index_of("{");
+        if (open.is_none()) {
+            break;
+        }
+        let after = rest.substring(open.unwrap(), rest.len());
+        let close = after.index_of("}");
+        if (close.is_none()) {
+            break;
+        }
+        let name = after.substring(0, close.unwrap() + 1);
+        // Plural forms are an object too: only {word} counts.
+        if (!name.contains(" ") && !name.contains(":") && !found.contains(name)) {
+            found.push(name);
+        }
+        rest = after.substring(close.unwrap() + 1, after.len());
+    }
+    join(sort(found), ",")
+}
+
+fn text_of(texts: [(string, string)], key: string) -> Option<string> {
+    for (k, v) in texts {
+        if (k == key) {
+            return Option.Some(v);
+        }
+    }
+    Option.None
 }
 
 // The keys (2-space indented) of `const <name> = { … };` in a JS module.
@@ -732,6 +832,13 @@ fn reads_the_icon_names() {
     let src = "const svg = 1;\nconst DEFAULTS = {\n  \"close\": svg(`<path/>`),\n  eye: svg(\"a:b\"),\n  \"chevron-down\":\n    svg(`x`),\n};\nconst FILLED = {\n  eye: solid(`x`),\n};\nconst other = { a: 1 };\n";
     assert_eq(join(icon_names(src), ","), "close,eye,chevron-down");
     assert_eq(join(filled_icon_names(src), ","), "eye");
+    let texts = string_entries("const STRINGS = {\n  \"dialog.close\": \"Close\",\n  \"file-upload.max\": { one: \"{count} file\", other: \"{count} files\" },\n};\n");
+    assert_eq(texts.len(), 2);
+    assert_eq(texts[0].1, "Close");
+    assert_eq(texts[1].0, "file-upload.max");
+    assert_eq(texts[1].1, "{ one: \"{count} file\", other: \"{count} files\" }");
+    assert_eq(placeholders(texts[1].1), "{count}");
+    assert_eq(placeholders("{label} {step} of {count}"), "{count},{label},{step}");
     let aliases = icon_aliases("const ALIASES = {\n  \"ui.close\": \"close\",\n  \"ui.next\": \"chevron-right\",\n};\n");
     assert_eq(aliases.len(), 2);
     assert_eq(aliases[1].0, "ui.next");

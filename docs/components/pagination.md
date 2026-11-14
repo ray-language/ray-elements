@@ -20,7 +20,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Item size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius of the items.
 - `disabled`: boolean, reflects. Not interactive.
-- `label`: string, default `Pagination`. Accessible name of the navigation landmark.
+- `label`: string, default `Pagination` (text `pagination.label`). Accessible name of the navigation landmark.
 
 Events:
 
@@ -49,6 +49,13 @@ Vue `v-model`: `value` (updated on change).
 Exports (from `@raylang/elements/pagination` and `@raylang/elements`):
 
 - `function paginationRange(total: number, value: number, siblings?: number, boundaries?: number): Array<number | "dots">`: The items a pagination shows for a page (numbers and "dots").
+
+Texts (`setStrings`; English):
+
+- `pagination.label`: Pagination
+- `pagination.previous`: Previous page
+- `pagination.next`: Next page
+- `pagination.page`: Page {page}
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

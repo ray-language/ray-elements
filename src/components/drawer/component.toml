@@ -62,6 +62,13 @@ type = "boolean"
 reflect = true
 description = "No close button in the header."
 
+
+[ray-drawer.properties.closeLabel]
+attribute = "close-label"
+type = "string"
+string = "drawer.close"
+description = "The close button's name, for screen readers."
+
 [ray-drawer.properties.overlayBlur]
 attribute = "overlay-blur"
 type = "string"

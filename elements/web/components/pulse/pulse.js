@@ -2,8 +2,14 @@
 // five circles, concentric or in a row, breathing or expanding from a point.
 // Four presets (variant); count, shape, fade and direction override them.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor, srOnlyStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "pulse.label": "Loading",
+};
+defineStrings(STRINGS);
 
 export const MAX_COUNT = 5;
 
@@ -82,7 +88,7 @@ export class RayPulse extends RayElement {
     direction: { type: String, reflect: true },
     color: { type: String, reflect: true },
     size: { type: String, reflect: true, default: "md" },
-    label: { type: String, default: "Loading" },
+    label: { type: String, string: "pulse.label" },
   };
   static styles = [srOnlyStyles, styles];
   static template = `<span class="pulse" part="pulse" aria-hidden="true"></span><span class="sr-only"></span>`;

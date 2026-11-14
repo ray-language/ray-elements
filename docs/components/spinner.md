@@ -10,11 +10,15 @@ Properties:
 
 - `color`: string. A palette color or any CSS color. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Diameter.
-- `label`: string, default `Loading`. Text read by screen readers.
+- `label`: string, default `Loading` (text `spinner.label`). Text read by screen readers.
 
 Parts (`::part()`):
 
 - `spinner`: The ring.
+
+Texts (`setStrings`; English):
+
+- `spinner.label`: Loading
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

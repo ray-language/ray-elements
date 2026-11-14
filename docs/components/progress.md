@@ -24,6 +24,10 @@ Parts (`::part()`):
 - `bar`: The filled bar.
 - `value`: The percentage beside the bar (show-value on xs, sm, md).
 
+Texts (`setStrings`; English):
+
+- `progress.label`: Progress
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

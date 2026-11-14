@@ -1,9 +1,20 @@
 // <ray-theme-toggle>: cycles the document theme system -> light -> dark.
 
-import { RayElement, css, define, getTheme, setTheme, onThemeChange } from "../../core/core.js";
+import { RayElement, css, define, getTheme, setTheme, onThemeChange, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "theme-toggle.system": "System theme",
+  "theme-toggle.light": "Light theme",
+  "theme-toggle.dark": "Dark theme",
+  "theme-toggle.switch": "{theme} (switch to {next})",
+  "theme-toggle.to-system": "system",
+  "theme-toggle.to-light": "light",
+  "theme-toggle.to-dark": "dark",
+};
+defineStrings(STRINGS);
 
 const ORDER = ["system", "light", "dark"];
-const LABEL = { system: "System theme", light: "Light theme", dark: "Dark theme" };
 
 // Icon of each theme (from the icon registry).
 const ICONS = { system: "ui.theme-system", light: "ui.theme-light", dark: "ui.theme-dark" };
@@ -70,8 +81,9 @@ export class RayThemeToggle extends RayElement {
     const next = ORDER[(ORDER.indexOf(theme) + 1) % ORDER.length];
     this.$(".icon").setAttribute("data-ray-icon", ICONS[theme]);
     this.paintIcons(this._button);
-    this._button.setAttribute("aria-label", `${LABEL[theme]} (switch to ${next})`);
-    this._button.title = LABEL[theme];
+    const label = this.t(`theme-toggle.${theme}`);
+    this._button.setAttribute("aria-label", this.t("theme-toggle.switch", { theme: label, next: this.t(`theme-toggle.to-${next}`) }));
+    this._button.title = label;
   }
 }
 

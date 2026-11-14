@@ -72,13 +72,13 @@ description = "0…1, for image/jpeg and image/webp."
 
 [ray-image-crop.properties.label]
 type = "string"
-default = "Crop image"
+string = "image-crop.label"
 description = "Accessible name of the image area."
 
 [ray-image-crop.properties.zoomLabel]
 attribute = "zoom-label"
 type = "string"
-default = "Zoom"
+string = "image-crop.zoom"
 description = "Name of the zoom slider, and the word of the announced zoom (\"Zoom 150%\")."
 
 [ray-image-crop.properties.disabled]

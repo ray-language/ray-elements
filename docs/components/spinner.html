@@ -61,6 +61,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/icon/icon.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
@@ -321,11 +322,14 @@ if (location.protocol === "file:") window.__rayServeHint();
 <h2 class="api-title">API</h2>
 <p class="api-markdown">For AI agents: <a href="spinner.md">this API as Markdown</a>, or every component in <a href="../llms-full.txt">llms-full.txt</a>.</p>
 <p class="tag"><code>&lt;ray-spinner&gt;</code> &middot; <code>RaySpinner</code></p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>color</code></td><td><code>color</code></td><td>string</td><td></td><td>A palette color or any CSS color. Default: the primary color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>md</code></td><td>Diameter.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Loading</code></td><td>Text read by screen readers.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>color</code></td><td><code>color</code></td><td>string</td><td></td><td>A palette color or any CSS color. Default: the primary color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>md</code></td><td>Diameter.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Loading</code> <span class="text-key">(text <code>spinner.label</code>)</span></td><td>Text read by screen readers.</td></tr></tbody></table></div>
 
 
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>spinner</code></td><td>The ring.</td></tr></tbody></table></div>
+<h3 id="spinner-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>spinner.label</code></td><td>Loading</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="skeleton.html"><small>Previous</small>Skeleton</a><a class="pager-next" href="step-dots.html"><small>Next</small>Step dots</a></nav>
 </main>

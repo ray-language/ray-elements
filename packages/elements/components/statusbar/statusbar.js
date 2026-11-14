@@ -2,8 +2,14 @@
 // window (ray-sublime): items on the left, items on the right (slot="right").
 // An item with `action` is a button; the others are plain text.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "statusbar.label": "Status bar",
+};
+defineStrings(STRINGS);
 
 const barStyles = css`
   :host {
@@ -37,13 +43,20 @@ export class RayStatusbar extends RayElement {
   static styles = [barStyles];
   static template = `<div class="side" part="left"><slot></slot></div><div class="side" part="right"><slot name="right"></slot></div>`;
 
+  #name = null;
+
   constructor() {
     super();
     this.attachInternals().role = "group";
   }
 
   update() {
-    if (!this.hasAttribute("aria-label")) this.setAttribute("aria-label", "Status bar");
+    // A default name, in the page's language; an aria-label of the app's stays.
+    const own = this.getAttribute("aria-label");
+    if (own === null || own === this.#name) {
+      this.#name = this.t("statusbar.label");
+      if (own !== this.#name) this.setAttribute("aria-label", this.#name);
+    }
   }
 }
 

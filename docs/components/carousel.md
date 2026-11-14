@@ -11,7 +11,7 @@ Any child is a slide. With several slides in view, positions are the snap points
 Properties:
 
 - `index`: number, default `0`. Current position (0-based). Setting it scrolls there.
-- `label`: string, default `Carousel`. Accessible name of the carousel region.
+- `label`: string, default `Carousel` (text `carousel.label`). Accessible name of the carousel region.
 - `slideSize` (attribute `slide-size`): string. Size of each slide along the scroll axis ("100%" by default; "50%", "18rem"…).
 - `slideGap` (attribute `slide-gap`): string. Space between slides (default var(--ray-space-4)).
 - `align`: `start` | `center`, default `start`, reflects. Where a slide snaps in the viewport.
@@ -45,6 +45,17 @@ Methods and properties:
 - `goTo(index: number, options?: { instant?: boolean }): void`: Scrolls to a position (smoothly unless instant or reduced motion).
 - `readonly count: number`: Number of positions.
 - `readonly slides: Element[]`: The slide elements.
+
+Texts (`setStrings`; English):
+
+- `carousel.label`: Carousel
+- `carousel.slide`: slide
+- `carousel.position`: {index} of {count}
+- `carousel.previous`: Previous slide
+- `carousel.next`: Next slide
+- `carousel.go-to`: Go to slide {index}
+- `carousel.play`: Start autoplay
+- `carousel.pause`: Pause autoplay
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

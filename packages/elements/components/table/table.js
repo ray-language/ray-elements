@@ -12,7 +12,15 @@
 // With `selectable`, rows get checkboxes and `selection` holds their keys.
 // For plain server-rendered tables there is the .ray-table class in base.css.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "table.empty": "No data",
+  "table.select-all": "Select all rows",
+  "table.select-row": "Select row {index}",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -86,7 +94,7 @@ export class RayTable extends RayElement {
     noHover: { type: Boolean, reflect: true },
     density: { type: String, reflect: true, default: "sm" },
     label: { type: String },
-    emptyLabel: { type: String, default: "No data" },
+    emptyLabel: { type: String, string: "table.empty" },
   };
   static styles = [styles];
   static template = `<div class="scroll" part="scroll"><table part="table"><caption hidden></caption><thead part="head"></thead><tbody part="body"></tbody></table></div><slot name="empty" hidden></slot>`;
@@ -140,7 +148,7 @@ export class RayTable extends RayElement {
       all.type = "checkbox";
       all.className = "focus-ring";
       all.dataset.role = "all";
-      all.setAttribute("aria-label", "Select all rows");
+      all.setAttribute("aria-label", this.t("table.select-all"));
       const keys = rows.map((r, i) => this._key(r, i));
       const picked = keys.filter((k) => selection.has(k)).length;
       all.checked = keys.length > 0 && picked === keys.length;
@@ -188,7 +196,7 @@ export class RayTable extends RayElement {
         box.type = "checkbox";
         box.className = "focus-ring";
         box.checked = selection.has(key);
-        box.setAttribute("aria-label", `Select row ${index + 1}`);
+        box.setAttribute("aria-label", this.t("table.select-row", { index: index + 1 }));
         td.append(box);
         tr.append(td);
       }
@@ -217,7 +225,7 @@ export class RayTable extends RayElement {
         slot.hidden = false;
         td.append(slot);
       } else {
-        td.textContent = this.emptyLabel ?? "No data";
+        td.textContent = this.emptyLabel || this.t("table.empty");
       }
       tr.append(td);
       out.push(tr);
