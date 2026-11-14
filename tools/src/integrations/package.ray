@@ -98,7 +98,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     for name in ["check.js", "check.d.ts", "cli.js"] {
         put(written, "${el}/check/${name}", fs.read_file("${root}/src/integrations/check/${name}")?)?;
     }
-    put(written, "${el}/package.json", elements_package(i, cs))?;
+    put(written, "${el}/package.json", elements_package(i, cs, catalogs(root)?))?;
     put(written, "${el}/README.md", readme(i, "elements"))?;
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${el}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
@@ -175,11 +175,31 @@ fn copy_tree(root: string, from_dir: string, to: string, ext: string) -> Result<
     Result.Ok(0)
 }
 
+// The languages of the catalogs of texts: "es" for src/strings/es.js.
+fn catalogs(root: string) -> Result<[string], string> {
+    var langs: [string] = [];
+    for f in sort(fs.list_dir("${root}/src/strings")?) {
+        if (f.ends_with(".js")) {
+            langs.push(f.substring(0, f.len() - 3));
+        }
+    }
+    Result.Ok(langs)
+}
+
 // The entries: "." registers everything; "./core" is the API alone; one per
 // component ("./button") registers it and what it uses, so a bundler takes
 // only those (the components are side effects: importing one defines it).
-fn elements_package(i: Info, cs: [Component]) -> string {
+// A catalog has an entry of its own ("./strings/es"), not only the
+// "./strings/*.js" pattern: an import map (raylang's ui.import_map, say) maps
+// the exact entries and not the patterns.
+fn elements_package(i: Info, cs: [Component], langs: [string]) -> string {
     var entries: [string] = [];
+    for lang in langs {
+        entries.push(`    "./strings/${lang}": {
+      "types": "./strings/strings.d.ts",
+      "default": "./strings/${lang}.js"
+    },`);
+    }
     for c in cs {
         entries.push(`    "./${c.dir}": {
       "types": "./ray-elements.d.ts",
@@ -212,7 +232,7 @@ ${source(i, "elements", ["web-components", "custom-elements", "design-system", "
       "types": "./check/check.d.ts",
       "default": "./check/check.js"
     },
-    "./strings/*": {
+    "./strings/*.js": {
       "types": "./strings/strings.d.ts",
       "default": "./strings/*.js"
     },
@@ -326,6 +346,7 @@ fn packages_name_their_source() {
     assert(p.contains("\"homepage\": \"https://o.github.io/r/\""));
     assert(p.contains("\"access\": \"public\""));
     let none: [Component] = [];
-    assert(elements_package(i, none).contains("\"directory\": \"packages/elements\""));
+    assert(elements_package(i, none, ["es"]).contains("\"directory\": \"packages/elements\""));
+    assert(elements_package(i, none, ["es"]).contains("\"./strings/es\": {\n      \"types\": \"./strings/strings.d.ts\",\n      \"default\": \"./strings/es.js\""));
     assert(readme(i, "react").contains("[ray-elements](https://github.com/o/r) (its `packages/react`"));
 }

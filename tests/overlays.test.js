@@ -555,6 +555,28 @@ T.test("segmented control: form value, arrows, data, reset", async (T) => {
   box.remove();
 });
 
+T.test("segmented control and select: an option's new text shows (a change of language)", async (T) => {
+  const box = await mount(`<ray-segmented-control value="a"><option value="a">Uno</option><option value="b">Dos</option></ray-segmented-control>
+    <ray-select value="a"><option value="a">Uno</option><option value="b">Dos</option></ray-select>`);
+  const sc = box.querySelector("ray-segmented-control");
+  const sel = box.querySelector("ray-select");
+  const before = [...sc.shadowRoot.querySelectorAll("button")];
+  sc.querySelector("option").textContent = "One";
+  sel.querySelector("option").textContent = "One";
+  await T.settle();
+  const after = [...sc.shadowRoot.querySelectorAll("button")];
+  T.eq(after.map((b) => b.textContent).join(), "One,Dos");
+  T.eq(after[0], before[0], "the same buttons: focus and the indicator stay");
+  T.eq(sel.shadowRoot.querySelector(".value").textContent, "One", "the select shows its chosen option's new text");
+  sc.querySelectorAll("option")[1].disabled = true;
+  await T.settle();
+  T.ok(after[1].disabled, "disabled follows the option");
+  sc.querySelector("option").value = "z";
+  await T.settle();
+  T.eq([...sc.shadowRoot.querySelectorAll("button")].map((b) => b.dataset.value).join(), "z,b", "a new value: a new row");
+  box.remove();
+});
+
 // --- accordion --------------------------------------------------------------
 
 T.test("accordion: description under the label, content spaced from the header", async (T) => {

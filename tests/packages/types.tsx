@@ -6,8 +6,15 @@ import "@raylang/elements/button";
 import { RayButton, RayMenu, RayMenuItem } from "@raylang/react";
 import RayElements, { RaySwitch } from "@raylang/vue";
 import { checkMarkup, RULES, type Diagnostic } from "@raylang/elements/check";
+import { setStrings } from "@raylang/elements/core";
+import es from "@raylang/elements/strings/es";
+import esFile from "@raylang/elements/strings/es.js";
 
 setIcons({});
+
+// The catalogs of texts: an entry of their own, and the file by its name.
+setStrings(es);
+setStrings("es", esFile);
 
 // Icon names: the default set completes, an app's own names still type-check.
 const icons: IconName[] = ["star", "chevron-down", "none", "my-own-icon"];
