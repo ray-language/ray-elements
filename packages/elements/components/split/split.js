@@ -7,8 +7,14 @@
 // pane. With `autosave="key"` the size and the collapsed state survive
 // reloads (localStorage).
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { isRtl, inlineKey } from "../../core/direction.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "split.resize": "Resize",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -137,7 +143,7 @@ export class RaySplit extends RayElement {
     const vertical = this._vertical();
     // The separator line is perpendicular to the split direction.
     this.divider.setAttribute("aria-orientation", vertical ? "horizontal" : "vertical");
-    this.divider.setAttribute("aria-label", this.getAttribute("aria-label") ?? "Resize");
+    this.divider.setAttribute("aria-label", this.getAttribute("aria-label") ?? this.t("split.resize"));
     this.divider.tabIndex = this.disabled ? -1 : 0;
     if (this.disabled) this.divider.setAttribute("aria-disabled", "true");
     else this.divider.removeAttribute("aria-disabled");

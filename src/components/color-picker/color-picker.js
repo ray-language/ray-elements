@@ -12,13 +12,26 @@
 // `value` is a string in `format`: hex (#7c3aed), hexa (#7c3aedcc), rgb,
 // rgba, hsl or hsla.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { FormControl, FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { parseColor } from "../../core/color.js";
 import { place, autoUpdate } from "../../core/position.js";
 import { dismissable } from "../../core/dismiss.js";
 import { play, POP_OUT } from "../../core/motion.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "color-picker.saturation": "Saturation and brightness",
+  "color-picker.saturation-value": "Saturation {saturation}%, brightness {brightness}%",
+  "color-picker.hue": "Hue",
+  "color-picker.hue-value": "{hue} degrees",
+  "color-picker.opacity": "Opacity",
+  "color-picker.swatches": "Swatches",
+  "color-picker.eyedropper": "Pick a color from the screen",
+  "color-picker.dropdown": "Choose a color",
+};
+defineStrings(STRINGS);
 
 // --- color model ----------------------------------------------------------------
 
@@ -273,15 +286,15 @@ export class RayColorPicker extends FormControl {
   static styles = [pickerStyles];
   static template = `
     <div class="picker" part="picker">
-      <div class="area" part="saturation" tabindex="0" role="slider" aria-label="Saturation and brightness"><div class="area-thumb"></div></div>
+      <div class="area" part="saturation" tabindex="0" role="slider"><div class="area-thumb"></div></div>
       <div class="row">
         <div class="sliders">
-          <div class="slider hue" part="hue" tabindex="0" role="slider" aria-label="Hue" aria-valuemin="0" aria-valuemax="360"><div class="slider-thumb"></div></div>
-          <div class="slider alpha" part="alpha" tabindex="0" role="slider" aria-label="Opacity" aria-valuemin="0" aria-valuemax="100"><div class="slider-thumb"></div></div>
+          <div class="slider hue" part="hue" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="360"><div class="slider-thumb"></div></div>
+          <div class="slider alpha" part="alpha" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100"><div class="slider-thumb"></div></div>
         </div>
         <div class="preview" part="preview" aria-hidden="true"></div>
       </div>
-      <div class="swatches" part="swatches" role="group" aria-label="Swatches"></div>
+      <div class="swatches" part="swatches" role="group"></div>
     </div>`;
 
   /** h 0…360, s/v/a 0…1: kept apart from value so hue survives grays. */
@@ -343,6 +356,10 @@ export class RayColorPicker extends FormControl {
       this.#shown = this.value;
     }
     if (changed.has("format") && this.value) this.#write();
+    this.area.setAttribute("aria-label", this.t("color-picker.saturation"));
+    this.hue.setAttribute("aria-label", this.t("color-picker.hue"));
+    this.alpha.setAttribute("aria-label", this.t("color-picker.opacity"));
+    this.$(".swatches").setAttribute("aria-label", this.t("color-picker.swatches"));
     this.#paint();
     this.#swatches();
     this.style.setProperty("--_per-row", String(this.swatchesPerRow || 7));
@@ -383,10 +400,10 @@ export class RayColorPicker extends FormControl {
     st.setProperty("--_alpha", `${a * 100}%`);
     st.setProperty("--_solid", solid);
     st.setProperty("--_color", formatColor({ ...rgb, a }, "rgba"));
-    this.area.setAttribute("aria-valuetext", `Saturation ${Math.round(s * 100)}%, brightness ${Math.round(v * 100)}%`);
+    this.area.setAttribute("aria-valuetext", this.t("color-picker.saturation-value", { saturation: Math.round(s * 100), brightness: Math.round(v * 100) }));
     this.area.setAttribute("aria-valuenow", String(Math.round(s * 100)));
     this.hue.setAttribute("aria-valuenow", String(Math.round(h)));
-    this.hue.setAttribute("aria-valuetext", `${Math.round(h)} degrees`);
+    this.hue.setAttribute("aria-valuetext", this.t("color-picker.hue-value", { hue: Math.round(h) }));
     this.alpha.setAttribute("aria-valuenow", String(Math.round(a * 100)));
     this.alpha.setAttribute("aria-valuetext", `${Math.round(a * 100)}%`);
     const current = (this.value ?? "").toLowerCase();
@@ -540,9 +557,9 @@ export class RayColorInput extends FieldControl {
   static template = fieldTemplate(
     `<button type="button" class="preview" part="preview" tabindex="-1" aria-hidden="true"></button>` +
       `<input id="control" class="control" part="input" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="none" aria-haspopup="dialog" aria-expanded="false" aria-controls="panel">` +
-      `<button type="button" class="dropper focus-ring" part="eyedropper" aria-label="Pick a color from the screen" hidden><span data-ray-icon="ui.eyedropper" aria-hidden="true"></span></button>`,
+      `<button type="button" class="dropper focus-ring" part="eyedropper" hidden><span data-ray-icon="ui.eyedropper" aria-hidden="true"></span></button>`,
     { sections: false },
-  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog" aria-label="Choose a color"><ray-color-picker part="picker"></ray-color-picker></div>`;
+  ) + `<div class="panel" id="panel" part="dropdown" popover="manual" role="dialog"><ray-color-picker part="picker"></ray-color-picker></div>`;
 
   #undismiss = null;
   #exit = null;
@@ -631,6 +648,8 @@ export class RayColorInput extends FieldControl {
   update(changed) {
     const c = this.control;
     c.placeholder = this.placeholder ?? "";
+    this.$(".dropper").setAttribute("aria-label", this.t("color-picker.eyedropper"));
+    this.$("#panel").setAttribute("aria-label", this.t("color-picker.dropdown"));
     // A value from outside, in the field's format.
     if (changed.has("value") || changed.has("format")) {
       const rgba = parseColorValue(this.value);

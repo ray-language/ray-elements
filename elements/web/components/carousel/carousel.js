@@ -7,9 +7,22 @@
 // "50%", "18rem"…) the positions are the distinct snap points the viewport
 // can reach: `index`, the indicators and next()/prev() count those.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { motionAllowed } from "../../core/motion.js";
 import { isRtl, inlineKey } from "../../core/direction.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "carousel.label": "Carousel",
+  "carousel.slide": "slide",
+  "carousel.position": "{index} of {count}",
+  "carousel.previous": "Previous slide",
+  "carousel.next": "Next slide",
+  "carousel.go-to": "Go to slide {index}",
+  "carousel.play": "Start autoplay",
+  "carousel.pause": "Pause autoplay",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -138,7 +151,7 @@ const reduced = typeof matchMedia === "function" ? matchMedia("(prefers-reduced-
 export class RayCarousel extends RayElement {
   static properties = {
     index: { type: Number, default: 0 },
-    label: { type: String, default: "Carousel" },
+    label: { type: String, string: "carousel.label" },
     slideSize: { type: String, attribute: "slide-size" },
     slideGap: { type: String, attribute: "slide-gap" },
     align: { type: String, reflect: true, default: "start" },
@@ -153,8 +166,8 @@ export class RayCarousel extends RayElement {
     <div class="root" part="root" role="region" aria-roledescription="carousel">
       <div class="stage">
         <div class="viewport" part="viewport" tabindex="0" aria-live="polite"><slot></slot></div>
-        <button class="control prev" part="previous" type="button" aria-label="Previous slide"><span data-ray-icon="ui.previous" aria-hidden="true"></span></button>
-        <button class="control next" part="next" type="button" aria-label="Next slide"><span data-ray-icon="ui.next" aria-hidden="true"></span></button>
+        <button class="control prev" part="previous" type="button"><span data-ray-icon="ui.previous" aria-hidden="true"></span></button>
+        <button class="control next" part="next" type="button"><span data-ray-icon="ui.next" aria-hidden="true"></span></button>
       </div>
       <div class="footer" part="footer">
         <button class="play" part="play" type="button" hidden></button>
@@ -236,12 +249,15 @@ export class RayCarousel extends RayElement {
 
   update(changed) {
     const root = this.$(".root");
-    root.setAttribute("aria-label", this.label || "Carousel");
+    root.setAttribute("aria-label", this.label || this.t("carousel.label"));
+    this.$(".prev").setAttribute("aria-label", this.t("carousel.previous"));
+    this.$(".next").setAttribute("aria-label", this.t("carousel.next"));
     if (this.slideSize) this.style.setProperty("--_size", this.slideSize);
     else this.style.removeProperty("--_size");
     if (this.slideGap) this.style.setProperty("--_gap", this.slideGap);
     else this.style.removeProperty("--_gap");
-    if (changed.has("slideSize") || changed.has("slideGap") || changed.has("align") || changed.has("orientation")) {
+    // label: also when the texts change (setStrings, lang), for the slides' and dots' names.
+    if (changed.has("slideSize") || changed.has("slideGap") || changed.has("align") || changed.has("orientation") || changed.has("label")) {
       queueMicrotask(() => this._measure());
     }
     if (changed.has("index") && !this._tracking) this._go(this.index, false);
@@ -296,9 +312,9 @@ export class RayCarousel extends RayElement {
     const total = slides.length;
     slides.forEach((s, i) => {
       if (!s.hasAttribute("role")) s.setAttribute("role", "group");
-      s.setAttribute("aria-roledescription", "slide");
+      s.setAttribute("aria-roledescription", this.t("carousel.slide"));
       if (!s.hasAttribute("aria-label") || s.dataset.rayAutoLabel !== undefined) {
-        s.setAttribute("aria-label", `${i + 1} of ${total}`);
+        s.setAttribute("aria-label", this.t("carousel.position", { index: i + 1, count: total }));
         s.dataset.rayAutoLabel = "";
       }
     });
@@ -335,7 +351,7 @@ export class RayCarousel extends RayElement {
           b.className = "dot";
           b.setAttribute("part", "indicator");
           b.dataset.index = String(i);
-          b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+          b.setAttribute("aria-label", this.t("carousel.go-to", { index: i + 1 }));
           return b;
         }),
       );
@@ -416,7 +432,7 @@ export class RayCarousel extends RayElement {
       play.dataset.state = paused ? "paused" : "playing";
       play.innerHTML = paused ? `<span data-ray-icon="ui.play" aria-hidden="true"></span>` : PAUSE_ICON;
       this.paintIcons(play);
-      play.setAttribute("aria-label", paused ? "Start autoplay" : "Pause autoplay");
+      play.setAttribute("aria-label", this.t(paused ? "carousel.play" : "carousel.pause"));
     }
     this.viewport.setAttribute("aria-live", auto && this._running() ? "off" : "polite");
   }

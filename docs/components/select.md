@@ -51,6 +51,10 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on change).
 
+Texts (`setStrings`; English):
+
+- `select.empty`: No options
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

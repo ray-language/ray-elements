@@ -60,6 +60,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <script type="module" blocking="render">import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/icon/icon.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
@@ -323,6 +324,9 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-theme-change</code></td><td>Fired on the document root by setTheme(); detail: { theme, resolved, primary }.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>button</code></td><td>The inner button.</td></tr></tbody></table></div>
+<h3 id="theme-toggle-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>theme-toggle.system</code></td><td>System theme</td></tr><tr><td><code>theme-toggle.light</code></td><td>Light theme</td></tr><tr><td><code>theme-toggle.dark</code></td><td>Dark theme</td></tr><tr><td><code>theme-toggle.switch</code></td><td>{theme} (switch to {next})</td></tr><tr><td><code>theme-toggle.to-system</code></td><td>system</td></tr><tr><td><code>theme-toggle.to-light</code></td><td>light</td></tr><tr><td><code>theme-toggle.to-dark</code></td><td>dark</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="statusbar.html"><small>Previous</small>Status bar</a><span></span></nav>
 </main>

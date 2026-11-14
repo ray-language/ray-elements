@@ -1732,6 +1732,8 @@ export interface RayDialogOwnProps {
   persistent?: boolean;
   /** No close button in the header. */
   hideClose?: boolean;
+  /** The close button's name, for screen readers. */
+  closeLabel?: string;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur?: string;
   /** After it opened. */
@@ -1764,6 +1766,8 @@ export interface RayDrawerOwnProps {
   persistent?: boolean;
   /** No close button in the header. */
   hideClose?: boolean;
+  /** The close button's name, for screen readers. */
+  closeLabel?: string;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur?: string;
   /** After it opened. */

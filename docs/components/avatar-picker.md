@@ -32,18 +32,18 @@ Properties:
 - `type`: `"image/jpeg" | "image/png" | "image/webp" | (string & {})`, default `image/jpeg`. Format of the picture kept (PNG where the browser cannot encode it).
 - `quality`: number, default `0.85`. 0…1, for image/jpeg and image/webp.
 - `maxZoom` (attribute `max-zoom`): number, default `4`. The most zoom of the crop.
-- `pickLabel` (attribute `pick-label`): string, default `Choose photo`. The button without a picture.
-- `changeLabel` (attribute `change-label`): string, default `Change photo`. The same button with a picture.
-- `removeLabel` (attribute `remove-label`): string, default `Remove photo`. The button that removes the picture.
-- `sheetLabel` (attribute `sheet-label`): string, default `Adjust the photo`. Title of the crop sheet.
-- `useLabel` (attribute `use-label`): string, default `Use photo`. The sheet's button that keeps the framed picture.
-- `cancelLabel` (attribute `cancel-label`): string, default `Cancel`. The sheet's button that leaves the value as it was.
-- `cropLabel` (attribute `crop-label`): string, default `Photo framing`. Accessible name of the crop area.
-- `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider.
+- `pickLabel` (attribute `pick-label`): string, default `Choose photo` (text `avatar-picker.pick`). The button without a picture.
+- `changeLabel` (attribute `change-label`): string, default `Change photo` (text `avatar-picker.change`). The same button with a picture.
+- `removeLabel` (attribute `remove-label`): string, default `Remove photo` (text `avatar-picker.remove`). The button that removes the picture.
+- `sheetLabel` (attribute `sheet-label`): string, default `Adjust the photo` (text `avatar-picker.sheet`). Title of the crop sheet.
+- `useLabel` (attribute `use-label`): string, default `Use photo` (text `avatar-picker.use`). The sheet's button that keeps the framed picture.
+- `cancelLabel` (attribute `cancel-label`): string, default `Cancel` (text `avatar-picker.cancel`). The sheet's button that leaves the value as it was.
+- `cropLabel` (attribute `crop-label`): string, default `Photo framing` (text `avatar-picker.crop`). Accessible name of the crop area.
+- `zoomLabel` (attribute `zoom-label`): string, default `Zoom` (text `avatar-picker.zoom`). Name of the zoom slider.
 - `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled.
-- `previewLabel` (attribute `preview-label`): string, default `View photo`. Accessible name of the avatar button and title of the preview dialog.
-- `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.`. Validation message of required without a picture.
-- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
+- `previewLabel` (attribute `preview-label`): string, default `View photo` (text `avatar-picker.preview`). Accessible name of the avatar button and title of the preview dialog.
+- `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.` (text `avatar-picker.required`). Validation message of required without a picture.
+- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.` (text `avatar-picker.failed`). Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
 
 Events:
 
@@ -79,6 +79,20 @@ Methods and properties:
 - `toBlob(): Promise<Blob | null>`: The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:.
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `avatar-picker.pick`: Choose photo
+- `avatar-picker.change`: Change photo
+- `avatar-picker.remove`: Remove photo
+- `avatar-picker.sheet`: Adjust the photo
+- `avatar-picker.use`: Use photo
+- `avatar-picker.cancel`: Cancel
+- `avatar-picker.crop`: Photo framing
+- `avatar-picker.zoom`: Zoom
+- `avatar-picker.preview`: View photo
+- `avatar-picker.required`: Please choose a photo.
+- `avatar-picker.failed`: That image could not be opened.
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

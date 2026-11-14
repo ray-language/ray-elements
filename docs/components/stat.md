@@ -21,6 +21,12 @@ Slots:
 - `icon`: Icon next to the label.
 - (default): Extra content (e.g. a ray-progress).
 
+Texts (`setStrings`; English):
+
+- `stat.up`: Up {value}
+- `stat.down`: Down {value}
+- `stat.flat`: No change {value}
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

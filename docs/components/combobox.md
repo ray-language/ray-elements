@@ -18,7 +18,7 @@ Properties:
 - `clearable`: boolean. A button that clears the value.
 - `maxValues` (attribute `max-values`): number. With multiple: at most this many.
 - `limit`: number. At most this many options shown (large lists: keep typing).
-- `nothingFound` (attribute `nothing-found`): string, default `No matches`. Shown when nothing matches.
+- `nothingFound` (attribute `nothing-found`): string, default `No matches` (text `combobox.nothing-found`). Shown when nothing matches.
 - `open`: boolean, reflects. The dropdown is shown.
 
 Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
@@ -50,6 +50,14 @@ Methods and properties:
 - `toggle(force?: boolean): void`: Opens or closes the dropdown.
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `combobox.clear`: Clear
+- `combobox.remove`: Remove {label}
+- `combobox.create`: + Create “{query}”
+- `combobox.more`: {count} more: keep typing
+- `combobox.nothing-found`: No matches
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

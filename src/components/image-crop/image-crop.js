@@ -7,8 +7,15 @@
 // The picture is decoded once into a reduced working copy (what the output
 // and the stage need at max-zoom), and the full-size decode is released.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import "../slider/slider.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "image-crop.label": "Crop image",
+  "image-crop.zoom": "Zoom",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -120,8 +127,8 @@ export class RayImageCrop extends RayElement {
     outputSize: { type: String, attribute: "output-size", default: "512" },
     type: { type: String, default: "image/jpeg" },
     quality: { type: Number, default: 0.85 },
-    label: { type: String, default: "Crop image" },
-    zoomLabel: { type: String, attribute: "zoom-label", default: "Zoom" },
+    label: { type: String, string: "image-crop.label" },
+    zoomLabel: { type: String, attribute: "zoom-label", string: "image-crop.zoom" },
     disabled: { type: Boolean, reflect: true },
   };
   static styles = [styles];
@@ -278,11 +285,11 @@ export class RayImageCrop extends RayElement {
     if (zoom !== this.zoom) this.commitProperty("zoom", zoom);
     const off = this.disabled;
     this.stage.tabIndex = off ? -1 : 0;
-    this.stage.setAttribute("aria-label", this.label ?? "Crop image");
+    this.stage.setAttribute("aria-label", this.label || this.t("image-crop.label"));
     this.stage.setAttribute("aria-valuemin", String(Math.round(this.#minZoom() * 100)));
     this.stage.setAttribute("aria-valuemax", String(Math.round(this.#maxZoom() * 100)));
     this.stage.setAttribute("aria-valuenow", String(Math.round(zoom * 100)));
-    this.stage.setAttribute("aria-valuetext", `${this.zoomLabel ?? "Zoom"} ${Math.round(zoom * 100)}%`);
+    this.stage.setAttribute("aria-valuetext", `${this.zoomLabel || this.t("image-crop.zoom")} ${Math.round(zoom * 100)}%`);
     this.stage.toggleAttribute("aria-disabled", !!off);
     const s = this.slider;
     s.hidden = !this.zoomControl;
@@ -290,7 +297,7 @@ export class RayImageCrop extends RayElement {
     s.max = this.#maxZoom();
     s.value = zoom;
     s.disabled = !!off || !this.#work;
-    s.setAttribute("aria-label", this.zoomLabel ?? "Zoom");
+    s.setAttribute("aria-label", this.zoomLabel || this.t("image-crop.zoom"));
     this.#paint();
   }
 

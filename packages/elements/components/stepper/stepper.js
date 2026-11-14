@@ -8,8 +8,16 @@
 // to any with `linear` off): change fires. A step can be loading, in error
 // or skippable (an optional label).
 
-import { RayElement, css, define, uid } from "../../core/core.js";
+import { RayElement, css, define, uid, defineStrings } from "../../core/core.js";
 import { applyColor } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "stepper.label": "Progress",
+  "stepper.step": "Step {index}",
+  "stepper.position": "Step {index} of {count}: ",
+};
+defineStrings(STRINGS);
 
 const stepperStyles = css`
   :host { display: block; --_icon: 2.25rem; }
@@ -96,7 +104,7 @@ export class RayStepper extends RayElement {
     linear: { type: Boolean, default: true },
     size: { type: String, reflect: true, default: "md" },
     color: { type: String, reflect: true },
-    label: { type: String, default: "Progress" },
+    label: { type: String, string: "stepper.label" },
   };
   static styles = [stepperStyles];
   static template = `<ol class="steps" part="steps"></ol><div class="content" part="content"><slot></slot><div class="completed" part="completed"><slot name="completed"></slot></div></div>`;
@@ -149,7 +157,7 @@ export class RayStepper extends RayElement {
     const steps = this.steps;
     const active = Math.max(0, Math.min(this.active ?? 0, steps.length));
     const list = this.$(".steps");
-    list.setAttribute("aria-label", this.label || "Progress");
+    list.setAttribute("aria-label", this.label || this.t("stepper.label"));
     // The steps are redrawn: keep the focus on the same step.
     const focused = this.shadowRoot.activeElement?.closest?.(".head")?.dataset.index;
     list.replaceChildren();
@@ -180,7 +188,7 @@ export class RayStepper extends RayElement {
       const label = document.createElement("span");
       label.className = "label";
       label.setAttribute("part", "label");
-      label.textContent = step.label ?? `Step ${i + 1}`;
+      label.textContent = step.label ?? this.t("stepper.step", { index: i + 1 });
       const desc = document.createElement("span");
       desc.className = "description";
       desc.setAttribute("part", "description");
@@ -189,7 +197,7 @@ export class RayStepper extends RayElement {
       const sr = document.createElement("span");
       sr.className = "sr";
       sr.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap";
-      sr.textContent = `Step ${i + 1} of ${steps.length}: `;
+      sr.textContent = this.t("stepper.position", { index: i + 1, count: steps.length });
       const status = document.createElement("span");
       status.style.cssText = sr.style.cssText;
       status.textContent = step.error ? ", error" : state === "done" ? ", completed" : state === "active" ? ", current" : "";

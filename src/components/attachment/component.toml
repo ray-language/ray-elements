@@ -56,7 +56,7 @@ description = "Shows a remove (×) button."
 [ray-attachment.properties.removeLabel]
 attribute = "remove-label"
 type = "string"
-default = "Remove {name}"
+string = "attachment.remove"
 description = "Accessible label of the remove button; {name} is replaced by the file name."
 
 [ray-attachment.properties.variant]

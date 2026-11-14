@@ -3,10 +3,17 @@
 // a clear button, an optional keyboard shortcut that focuses it (shown as a
 // hint while empty) and a debounced ray-search event.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { RayInput } from "../input/input.js";
 import { fieldTemplate } from "../../core/form.js";
 import { matchesHotkey, formatHotkey, isTyping } from "../../core/hotkey.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "search.placeholder": "Search…",
+  "search.clear": "Clear search",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .box { gap: 0; }
@@ -56,7 +63,7 @@ export class RaySearch extends RayInput {
     ...RayInput.properties,
     type: { type: String, reflect: true, default: "search" },
     variant: { type: String, reflect: true, default: "filled" },
-    placeholder: { type: String, default: "Search…" },
+    placeholder: { type: String, string: "search.placeholder" },
     shortcut: { type: String },
     debounce: { type: Number, default: 200 },
   };
@@ -64,7 +71,7 @@ export class RaySearch extends RayInput {
   static template = fieldTemplate(
     `<span class="lead" part="icon" aria-hidden="true" data-ray-icon="ui.search"></span>` +
       `<input id="control" class="control" part="input" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false">` +
-      `<span class="tail"><button class="clear focus-ring" part="clear" type="button" aria-label="Clear search" tabindex="-1" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>` +
+      `<span class="tail"><button class="clear focus-ring" part="clear" type="button" tabindex="-1" hidden><span data-ray-icon="ui.clear" aria-hidden="true"></span></button>` +
       `<kbd class="shortcut" part="shortcut" aria-hidden="true" hidden></kbd></span>`,
   );
 
@@ -115,6 +122,7 @@ export class RaySearch extends RayInput {
 
   update(changed) {
     super.update(changed);
+    this.$(".clear").setAttribute("aria-label", this.t("search.clear"));
     // The placeholder attribute (forwarded by RayInput) wins over the default.
     const ph = this.getAttribute("placeholder") ?? this.placeholder ?? "";
     if (this.control.placeholder !== ph) this.control.placeholder = ph;

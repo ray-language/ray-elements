@@ -136,49 +136,49 @@ description = "The most zoom of the crop."
 [ray-avatar-picker.properties.pickLabel]
 attribute = "pick-label"
 type = "string"
-default = "Choose photo"
+string = "avatar-picker.pick"
 description = "The button without a picture."
 
 [ray-avatar-picker.properties.changeLabel]
 attribute = "change-label"
 type = "string"
-default = "Change photo"
+string = "avatar-picker.change"
 description = "The same button with a picture."
 
 [ray-avatar-picker.properties.removeLabel]
 attribute = "remove-label"
 type = "string"
-default = "Remove photo"
+string = "avatar-picker.remove"
 description = "The button that removes the picture."
 
 [ray-avatar-picker.properties.sheetLabel]
 attribute = "sheet-label"
 type = "string"
-default = "Adjust the photo"
+string = "avatar-picker.sheet"
 description = "Title of the crop sheet."
 
 [ray-avatar-picker.properties.useLabel]
 attribute = "use-label"
 type = "string"
-default = "Use photo"
+string = "avatar-picker.use"
 description = "The sheet's button that keeps the framed picture."
 
 [ray-avatar-picker.properties.cancelLabel]
 attribute = "cancel-label"
 type = "string"
-default = "Cancel"
+string = "avatar-picker.cancel"
 description = "The sheet's button that leaves the value as it was."
 
 [ray-avatar-picker.properties.cropLabel]
 attribute = "crop-label"
 type = "string"
-default = "Photo framing"
+string = "avatar-picker.crop"
 description = "Accessible name of the crop area."
 
 [ray-avatar-picker.properties.zoomLabel]
 attribute = "zoom-label"
 type = "string"
-default = "Zoom"
+string = "avatar-picker.zoom"
 description = "Name of the zoom slider."
 
 [ray-avatar-picker.properties.preview]
@@ -189,19 +189,19 @@ description = "With a picture, the avatar is a button (click, Enter, Space): it 
 [ray-avatar-picker.properties.previewLabel]
 attribute = "preview-label"
 type = "string"
-default = "View photo"
+string = "avatar-picker.preview"
 description = "Accessible name of the avatar button and title of the preview dialog."
 
 [ray-avatar-picker.properties.requiredLabel]
 attribute = "required-label"
 type = "string"
-default = "Please choose a photo."
+string = "avatar-picker.required"
 description = "Validation message of required without a picture."
 
 [ray-avatar-picker.properties.failedLabel]
 attribute = "failed-label"
 type = "string"
-default = "That image could not be opened."
+string = "avatar-picker.failed"
 description = "Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture)."
 
 [ray-avatar-picker.members.pick]

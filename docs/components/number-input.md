@@ -57,6 +57,14 @@ Exports (from `@raylang/elements/number-input` and `@raylang/elements`):
 - `function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number`: The number in a text with separators, prefix or suffix (NaN if none).
 - `function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string`: A number as text with fixed decimals and separators.
 
+Texts (`setStrings`; English):
+
+- `number-input.increment`: Increment
+- `number-input.decrement`: Decrement
+- `number-input.required`: Please enter a number.
+- `number-input.min`: The minimum is {min}.
+- `number-input.max`: The maximum is {max}.
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

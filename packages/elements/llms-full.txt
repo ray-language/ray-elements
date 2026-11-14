@@ -167,6 +167,22 @@ green a check, red an error, yellow a warning, others info).
 - App-wide defaults for a component: `configure({ defaults: { "ray-button":
   { variant: "light" } } })`.
 
+## Languages
+
+- What a component writes itself (a close button's name, "No matches",
+  "Page 3", validation messages) is English until the app sets a catalog:
+  `import es from "@raylang/elements/strings/es"; setStrings(es);` (every
+  element) or `setStrings("es", es)` (only under `lang="es"`/`"es-AR"`).
+  An element reads its nearest `lang`; set `<html lang>` to the page's
+  language. Other languages: `setStrings("fr", { "dialog.close": "Fermer", … })`,
+  the keys in each component's reference ("Texts").
+- An attribute still wins for one element (`close-label`, `pick-label`…).
+  Do not repeat the same `*-label` on every instance to translate: that is
+  what `setStrings` is for.
+- Labels, placeholders and descriptions you write (`label="Name"`) are your
+  text: translate them with your app's i18n. Dates and numbers follow
+  `lang` (`ray-date-picker`, `ray-number-input`, `ray-step-dots`).
+
 ## Right to left
 
 - `dir="rtl"` on `<html>` (with its `lang`) or a subtree mirrors the
@@ -496,18 +512,18 @@ Properties:
 - `type`: `"image/jpeg" | "image/png" | "image/webp" | (string & {})`, default `image/jpeg`. Format of the picture kept (PNG where the browser cannot encode it).
 - `quality`: number, default `0.85`. 0…1, for image/jpeg and image/webp.
 - `maxZoom` (attribute `max-zoom`): number, default `4`. The most zoom of the crop.
-- `pickLabel` (attribute `pick-label`): string, default `Choose photo`. The button without a picture.
-- `changeLabel` (attribute `change-label`): string, default `Change photo`. The same button with a picture.
-- `removeLabel` (attribute `remove-label`): string, default `Remove photo`. The button that removes the picture.
-- `sheetLabel` (attribute `sheet-label`): string, default `Adjust the photo`. Title of the crop sheet.
-- `useLabel` (attribute `use-label`): string, default `Use photo`. The sheet's button that keeps the framed picture.
-- `cancelLabel` (attribute `cancel-label`): string, default `Cancel`. The sheet's button that leaves the value as it was.
-- `cropLabel` (attribute `crop-label`): string, default `Photo framing`. Accessible name of the crop area.
-- `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider.
+- `pickLabel` (attribute `pick-label`): string, default `Choose photo` (text `avatar-picker.pick`). The button without a picture.
+- `changeLabel` (attribute `change-label`): string, default `Change photo` (text `avatar-picker.change`). The same button with a picture.
+- `removeLabel` (attribute `remove-label`): string, default `Remove photo` (text `avatar-picker.remove`). The button that removes the picture.
+- `sheetLabel` (attribute `sheet-label`): string, default `Adjust the photo` (text `avatar-picker.sheet`). Title of the crop sheet.
+- `useLabel` (attribute `use-label`): string, default `Use photo` (text `avatar-picker.use`). The sheet's button that keeps the framed picture.
+- `cancelLabel` (attribute `cancel-label`): string, default `Cancel` (text `avatar-picker.cancel`). The sheet's button that leaves the value as it was.
+- `cropLabel` (attribute `crop-label`): string, default `Photo framing` (text `avatar-picker.crop`). Accessible name of the crop area.
+- `zoomLabel` (attribute `zoom-label`): string, default `Zoom` (text `avatar-picker.zoom`). Name of the zoom slider.
 - `preview`: boolean, reflects. With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled.
-- `previewLabel` (attribute `preview-label`): string, default `View photo`. Accessible name of the avatar button and title of the preview dialog.
-- `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.`. Validation message of required without a picture.
-- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.`. Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
+- `previewLabel` (attribute `preview-label`): string, default `View photo` (text `avatar-picker.preview`). Accessible name of the avatar button and title of the preview dialog.
+- `requiredLabel` (attribute `required-label`): string, default `Please choose a photo.` (text `avatar-picker.required`). Validation message of required without a picture.
+- `failedLabel` (attribute `failed-label`): string, default `That image could not be opened.` (text `avatar-picker.failed`). Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture).
 
 Events:
 
@@ -543,6 +559,20 @@ Methods and properties:
 - `toBlob(): Promise<Blob | null>`: The value as a Blob whatever output is (null without a picture). A URL value is fetched: a cross-origin one needs CORS, and a data URL needs a Content-Security-Policy whose connect-src allows data:.
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `avatar-picker.pick`: Choose photo
+- `avatar-picker.change`: Change photo
+- `avatar-picker.remove`: Remove photo
+- `avatar-picker.sheet`: Adjust the photo
+- `avatar-picker.use`: Use photo
+- `avatar-picker.cancel`: Cancel
+- `avatar-picker.crop`: Photo framing
+- `avatar-picker.zoom`: Zoom
+- `avatar-picker.preview`: View photo
+- `avatar-picker.required`: Please choose a photo.
+- `avatar-picker.failed`: That image could not be opened.
 
 ### Checkbox
 
@@ -723,6 +753,17 @@ Types:
 - `"hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla"`: How a color value is written.
 - `{ r: number; g: number; b: number; a: number }`: sRGB channels and alpha, all 0…1.
 
+Texts (`setStrings`; English):
+
+- `color-picker.saturation`: Saturation and brightness
+- `color-picker.saturation-value`: Saturation {saturation}%, brightness {brightness}%
+- `color-picker.hue`: Hue
+- `color-picker.hue-value`: {hue} degrees
+- `color-picker.opacity`: Opacity
+- `color-picker.swatches`: Swatches
+- `color-picker.eyedropper`: Pick a color from the screen
+- `color-picker.dropdown`: Choose a color
+
 ### Combobox (also Multi select)
 
 A select you can type in, an autocomplete (Mantine's searchable Select and MultiSelect; for free-form tags, ray-tags-input): typing filters the options; multiple keeps chips; creatable adds new values; clearable, max-values, groups, a result limit.
@@ -743,7 +784,7 @@ Properties:
 - `clearable`: boolean. A button that clears the value.
 - `maxValues` (attribute `max-values`): number. With multiple: at most this many.
 - `limit`: number. At most this many options shown (large lists: keep typing).
-- `nothingFound` (attribute `nothing-found`): string, default `No matches`. Shown when nothing matches.
+- `nothingFound` (attribute `nothing-found`): string, default `No matches` (text `combobox.nothing-found`). Shown when nothing matches.
 - `open`: boolean, reflects. The dropdown is shown.
 
 Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
@@ -776,6 +817,14 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on change).
 
+Texts (`setStrings`; English):
+
+- `combobox.clear`: Clear
+- `combobox.remove`: Remove {label}
+- `combobox.create`: + Create “{query}”
+- `combobox.more`: {count} more: keep typing
+- `combobox.nothing-found`: No matches
+
 ### Date picker
 
 A date field with a calendar dropdown, and the calendar on its own. Keyboard grid navigation, min/max, locale-aware. Form-associated.
@@ -791,7 +840,7 @@ Properties:
 - `value`: string. The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset).
 - `min`: string. Earliest selectable date (ISO). Earlier days are disabled; an earlier value is invalid (rangeUnderflow).
 - `max`: string. Latest selectable date (ISO).
-- `placeholder`: string, default `Pick a date`. Shown while no date is chosen.
+- `placeholder`: string, default `Pick a date` (text `date-picker.placeholder`). Shown while no date is chosen.
 - `format`: `short` | `medium` | `long` | `full`, default `medium`. How the date is displayed (Intl dateStyle).
 - `locale`: string. Locale for names and formats. Default: the nearest lang attribute, else the browser's.
 - `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
@@ -871,6 +920,14 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on change).
 
+Texts (`setStrings`; English):
+
+- `date-picker.placeholder`: Pick a date
+- `date-picker.clear`: Clear date
+- `date-picker.dropdown`: Choose a date
+- `date-picker.previous-month`: Previous month, {month}
+- `date-picker.next-month`: Next month, {month}
+
 ### File upload
 
 A drop zone to pick files: drag, click, keyboard or paste. Checks type, size and count as files arrive, lists them as ray-attachment rows (thumbnails, remove) and submits them with its form.
@@ -894,10 +951,10 @@ Properties:
 - `maxSize` (attribute `max-size`): `string | number`. Largest file: bytes or a size like "10 MB", "512 KB".
 - `maxFiles` (attribute `max-files`): number. With multiple: the most files kept.
 - `hint`: string. Small text in the zone. Default: from accept, max-size and max-files ("PNG or PDF · up to 10 MB each · max. 5 files").
-- `dropLabel` (attribute `drop-label`): string, default `Drag files here`. Title of the zone, before "or browse".
-- `browseLabel` (attribute `browse-label`): string, default `browse`. The link-styled word (the button text in compact).
-- `activeLabel` (attribute `active-label`): string, default `Drop to add files`. Title while files are dragged over it.
-- `tapLabel` (attribute `tap-label`): string, default `Choose files`. Title on touch screens (no hover), where dragging files is rare.
+- `dropLabel` (attribute `drop-label`): string, default `Drag files here` (text `file-upload.drop`). Title of the zone, before "or browse".
+- `browseLabel` (attribute `browse-label`): string, default `browse` (text `file-upload.browse`). The link-styled word (the button text in compact).
+- `activeLabel` (attribute `active-label`): string, default `Drop to add files` (text `file-upload.active`). Title while files are dragged over it.
+- `tapLabel` (attribute `tap-label`): string, default `Choose files` (text `file-upload.tap`). Title on touch screens (no hover), where dragging files is rare.
 - `variant`: `default` | `compact`, default `default`, reflects. default: a tall centered zone; compact: one row with a Browse button.
 - `list`: `rows` | `cards` | `none`, default `rows`, reflects. How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.
@@ -944,6 +1001,28 @@ Types:
 - `{ added: (File | HostFile)[]; removed: (File | HostFile)[] }`: The files a change added and removed.
 - `{ file: File; reason: "type" | "size" | "count"; message: string }`: A refused file and why.
 
+Texts (`setStrings`; English):
+
+- `file-upload.drop`: Drag files here
+- `file-upload.browse`: browse
+- `file-upload.active`: Drop to add files
+- `file-upload.tap`: Choose files
+- `file-upload.images`: Images
+- `file-upload.videos`: Videos
+- `file-upload.audio`: Audio
+- `file-upload.text`: Text files
+- `file-upload.types`: {list} or {last}
+- `file-upload.too-large`: {name} is larger than {size}.
+- `file-upload.only-one`: Only one file can be added.
+- `file-upload.max`: { one: "Up to {count} file can be added.", other: "Up to {count} files can be added." }
+- `file-upload.full`: No more files can be added
+- `file-upload.room`: { one: "Only {count} more file", other: "Only {count} more files" }
+- `file-upload.refused`: File type not allowed
+- `file-upload.required`: Select at least one file.
+- `file-upload.hint-size`: up to {size}
+- `file-upload.hint-size-each`: up to {size} each
+- `file-upload.hint-max`: { one: "max. {count} file", other: "max. {count} files" }
+
 #### In a raylang app
 
 In a `std/ui` window with [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), `native` makes browsing open the system's file dialog, with the `accept` types as its filter. The files it gives are paths on the user's disk, not bytes: they list like any other file (name, size, type) and the program reads them.
@@ -984,8 +1063,8 @@ Properties:
 - `outputSize` (attribute `output-size`): `string | number`, default `512`. Size of the exported image: a width ("320", the height from the aspect) or "640x360".
 - `type`: `"image/jpeg" | "image/png" | "image/webp" | (string & {})`, default `image/jpeg`. Format of toBlob/toDataURL. A browser that cannot encode it gives PNG (Safari has no WebP encoder).
 - `quality`: number, default `0.85`. 0…1, for image/jpeg and image/webp.
-- `label`: string, default `Crop image`. Accessible name of the image area.
-- `zoomLabel` (attribute `zoom-label`): string, default `Zoom`. Name of the zoom slider, and the word of the announced zoom ("Zoom 150%").
+- `label`: string, default `Crop image` (text `image-crop.label`). Accessible name of the image area.
+- `zoomLabel` (attribute `zoom-label`): string, default `Zoom` (text `image-crop.zoom`). Name of the zoom slider, and the word of the announced zoom ("Zoom 150%").
 - `disabled`: boolean, reflects. No moving nor zooming.
 
 Events:
@@ -1025,6 +1104,11 @@ Types:
 - `{ x: number; y: number; width: number; height: number }`: A rectangle in pixels of the original image.
 - `{ size?: string | number; width?: number; height?: number; type?: string; quality?: number }`: Overrides output-size (size, or width and height), type and quality for one export.
 
+Texts (`setStrings`; English):
+
+- `image-crop.label`: Crop image
+- `image-crop.zoom`: Zoom
+
 ### Input
 
 A text field with label, description and error (Mantine's TextInput). Form-associated.
@@ -1053,7 +1137,7 @@ Properties:
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
 - `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 - `complete` (property only): `((text: string, caret: number) => CompletionResult | null | Promise<CompletionResult | null>) | null`. Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant).
-- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. Accessible name of the suggestion list.
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions` (text `input.suggestions`). Accessible name of the suggestion list.
 
 Attributes (forwarded to the inner element):
 
@@ -1110,6 +1194,10 @@ Types:
 - `{ value: string; label?: string; detail?: string; description?: string }`: A suggestion of a field's complete(): value is inserted; label (default: value) and detail are shown, description under them.
 - `{ from: number; to: number; items: CompletionItem[] }`: What complete() returns: the part of the text (offsets, to excluded) a suggestion replaces, and the suggestions.
 
+Texts (`setStrings`; English):
+
+- `input.suggestions`: Suggestions
+
 ### Mode input
 
 A text field with a menu of modes on one side: choosing a mode applies its attributes to the field (type, placeholder, inputmode, pattern…), so one control says what a value is and the value — a file path or text, an amount in € or $, a search by name or ID. Everything else is ray-input.
@@ -1126,7 +1214,7 @@ Properties:
 - `options` (property only): `ModeOption[]`. The modes; when not set, the <option> children.
 - `display`: `label` | `icon` | `both`, reflects. What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.
 - `position`: `start` | `end`, default `start`, reflects. The side of the field the trigger sits on.
-- `menuLabel` (attribute `menu-label`): string, default `Mode`. The trigger's accessible name, read with the current mode ("Mode: File").
+- `menuLabel` (attribute `menu-label`): string, default `Mode` (text `mode-input.menu`). The trigger's accessible name, read with the current mode ("Mode: File").
 - `nativeMenu` (attribute `native-menu`): boolean, reflects. With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
@@ -1151,6 +1239,10 @@ Methods and properties:
 Types:
 
 - `{ value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> }`: A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field.
+
+Texts (`setStrings`; English):
+
+- `mode-input.menu`: Mode
 
 ### Number input
 
@@ -1211,6 +1303,14 @@ Exports (from `@raylang/elements/number-input` and `@raylang/elements`):
 - `function parseNumber(text: string, options?: { decimal?: string; thousands?: string }): number`: The number in a text with separators, prefix or suffix (NaN if none).
 - `function formatNumber(n: number, options?: { decimals?: number; thousands?: string; decimal?: string }): string`: A number as text with fixed decimals and separators.
 
+Texts (`setStrings`; English):
+
+- `number-input.increment`: Increment
+- `number-input.decrement`: Decrement
+- `number-input.required`: Please enter a number.
+- `number-input.min`: The minimum is {min}.
+- `number-input.max`: The maximum is {max}.
+
 ### Password input
 
 A password field with a button that shows or hides what was typed (Mantine's PasswordInput). Everything else is ray-input: label, description, error, sizes, validation, forms.
@@ -1224,8 +1324,8 @@ autocomplete defaults to current-password: use new-password on sign-up and chang
 Properties:
 
 - `visible`: boolean, reflects. The password is shown as text.
-- `showLabel` (attribute `show-label`): string, default `Show password`. Accessible name of the toggle while hidden.
-- `hideLabel` (attribute `hide-label`): string, default `Hide password`. Accessible name of the toggle while shown.
+- `showLabel` (attribute `show-label`): string, default `Show password` (text `password-input.show`). Accessible name of the toggle while hidden.
+- `hideLabel` (attribute `hide-label`): string, default `Hide password` (text `password-input.hide`). Accessible name of the toggle while shown.
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
 
@@ -1236,6 +1336,11 @@ Events:
 Parts (`::part()`):
 
 - `toggle`: The show/hide button.
+
+Texts (`setStrings`; English):
+
+- `password-input.show`: Show password
+- `password-input.hide`: Hide password
 
 ### Path input (also File path, Folder picker)
 
@@ -1251,7 +1356,7 @@ Properties:
 
 - `mode`: `open` | `folder` | `save`, default `open`, reflects. What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).
 - `accept`: string, reflects. File types the dialog offers, as in <input type=file>: ".json,.toml", "image/*" (ignored for folders).
-- `browseLabel` (attribute `browse-label`): string, default `Browse…`. Text of the button.
+- `browseLabel` (attribute `browse-label`): string, default `Browse…` (text `path-input.browse`). Text of the button.
 - `dialogTitle` (attribute `dialog-title`): string. Title of the system dialog (default: the label).
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
@@ -1274,6 +1379,10 @@ Exports (from `@raylang/elements/path-input` and `@raylang/elements`):
 
 - `function dirName(path: string): string`: The folder part of a path ("" when it has none), with / or \ separators.
 - `function baseName(path: string): string`: The last part of a path.
+
+Texts (`setStrings`; English):
+
+- `path-input.browse`: Browse…
 
 #### In a raylang app
 
@@ -1391,7 +1500,7 @@ Escape clears it (when it has text); Enter fires ray-search at once. JS: clear()
 Properties:
 
 - `value`: string. Current text.
-- `placeholder`: string, default `Search…`. Placeholder text.
+- `placeholder`: string, default `Search…` (text `search.placeholder`). Placeholder text.
 - `shortcut`: string. Keyboard shortcut that focuses it ("mod+k", "/"; mod = ⌘ on macOS, Ctrl elsewhere). Shown as a hint while empty.
 - `debounce`: number, default `200`. Milliseconds of quiet typing before ray-search fires (0: on every keystroke).
 - `name`: string, reflects. Form field name.
@@ -1421,6 +1530,11 @@ Methods and properties:
 - `clear(): void`: Empties the box (fires input and ray-search).
 
 Vue `v-model`: `value` (updated on input).
+
+Texts (`setStrings`; English):
+
+- `search.placeholder`: Search…
+- `search.clear`: Clear search
 
 ### Segmented control
 
@@ -1517,6 +1631,10 @@ Methods and properties:
 - `toggle(force?: boolean): void`: Opens or closes the dropdown.
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `select.empty`: No options
 
 ### Slider
 
@@ -1615,7 +1733,7 @@ Properties:
 - `placeholder`: string. Shown while there are no tags.
 - `max`: number. At most this many tags; when reached, nothing more is added and the suggestions hide.
 - `suggestionsLimit` (attribute `suggestions-limit`): number, default `6`. At most this many suggestions shown (keep typing for the rest); 0 shows them all.
-- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. The accessible name of the group of suggestions.
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions` (text `tags-input.suggestions`). The accessible name of the group of suggestions.
 - `separators`: string, default `,`. Characters that end a tag as they are typed or pasted (",;" for both); "" for none (Enter and leaving the field still add).
 
 Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
@@ -1648,6 +1766,11 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on change).
 
+Texts (`setStrings`; English):
+
+- `tags-input.remove`: Remove {label}
+- `tags-input.suggestions`: Suggestions
+
 ### Textarea
 
 A multi-line text field that can grow with its content. Form-associated.
@@ -1676,7 +1799,7 @@ Properties:
 - `variant`: `default` | `filled` | `unstyled`, default `default`, reflects. Box style.
 - `highlight` (property only): `((text: string) => HighlightRange[]) | null`. Marks ranges of the text, painted behind it: called with the text on every change (typed or set), it returns { start, end, kind?, title? } offsets. kind "error" is red with a wavy underline; any other kind is styled with ::part(highlight-<kind>); title is the tooltip over the range. Ranges must not overlap.
 - `complete` (property only): `((text: string, caret: number) => CompletionResult | null | Promise<CompletionResult | null>) | null`. Inline suggestions: called as the user types (and on Ctrl+Space) with the text and the caret, it returns the part of the text a suggestion would replace and the suggestions ({ from, to, items }), or null for none. A list opens under that part (ArrowUp/Down, Enter or Tab to accept, Escape to close); the chosen item's value replaces from–to as an undoable edit, then ray-complete fires. The field becomes a combobox (aria-autocomplete, aria-expanded, aria-activedescendant).
-- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. Accessible name of the suggestion list.
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions` (text `textarea.suggestions`). Accessible name of the suggestion list.
 
 Also the properties of FieldControl: `radius`.
 
@@ -1714,6 +1837,10 @@ Methods and properties:
 
 Vue `v-model`: `value` (updated on input).
 
+Texts (`setStrings`; English):
+
+- `textarea.suggestions`: Suggestions
+
 ### Bottom nav
 
 The bottom navigation of a phone app (Material's navigation bar, the iOS tab bar): three to five destinations with an icon, a label and a badge, the current one marked by a pill. Links or a value; an action button in the middle; hides on scroll.
@@ -1727,7 +1854,7 @@ With href items it marks the link to this page (aria-current="page"); without, i
 Properties:
 
 - `value`: string, reflects. The current destination (an item's value, else its href, else its label).
-- `label`: string, default `Main`. Accessible name of the navigation.
+- `label`: string, default `Main` (text `bottom-nav.label`). Accessible name of the navigation.
 - `labels`: `always` | `active` | `never`, default `always`, reflects. Which labels show (the others stay for assistive technology).
 - `indicator`: `pill` | `line` | `none`, default `pill`, reflects. How the current destination is marked besides its color.
 - `color`: string, reflects. A palette color or any CSS color for the current item and the action (default: primary).
@@ -1782,6 +1909,12 @@ Parts (`::part()`):
 - `badge`: The badge.
 - `label`: The label.
 
+Texts (`setStrings`; English):
+
+- `bottom-nav.label`: Main
+- `bottom-nav.badge`: {label}, {badge}
+- `bottom-nav.dot`: {label}, new
+
 ### Breadcrumbs
 
 Where a page sits (Mantine's Breadcrumbs, the WAI-ARIA breadcrumb pattern): links in a labelled nav, the last one the current page. Any separator or a chevron; a long path collapses into an expandable "…".
@@ -1796,7 +1929,7 @@ Properties:
 
 - `separator`: string, default `/`. Text between crumbs ("/", "›", "·") or "chevron" (an icon).
 - `maxItems` (attribute `max-items`): number. Longer paths show the first crumb, "…" (a button that expands them) and the last max-items − 1.
-- `label`: string, default `Breadcrumb`. Accessible name of the nav.
+- `label`: string, default `Breadcrumb` (text `breadcrumbs.label`). Accessible name of the nav.
 - `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Font size.
 
 Slots:
@@ -1833,6 +1966,11 @@ Parts (`::part()`):
 - `separator`: The separator before it.
 - `more`: The "…" button of a collapsed path.
 
+Texts (`setStrings`; English):
+
+- `breadcrumbs.label`: Breadcrumb
+- `breadcrumbs.more`: Show the whole path
+
 ### Document tabs
 
 The tabs of open documents (an editor's, a browser's): closable, with an unsaved mark, all over one shared panel; WAI-ARIA tabs with arrows, Home/End and Delete to close. The app closes them: ray-request-close asks.
@@ -1848,8 +1986,8 @@ Properties:
 - `value`: string. Value of the selected tab (default: the first).
 - `panel`: string. The id of the shared panel: it gets role=tabpanel and aria-labelledby the selected tab; the tabs get aria-controls.
 - `label`: string. Accessible name of the tab list ("Open requests").
-- `closeLabel` (attribute `close-label`): string, default `Close`. Tooltip of the ×.
-- `dirtyLabel` (attribute `dirty-label`): string, default `Unsaved changes`. What assistive technology hears after the name of a dirty tab.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `doc-tabs.close`). Tooltip of the ×.
+- `dirtyLabel` (attribute `dirty-label`): string, default `Unsaved changes` (text `doc-tabs.dirty`). What assistive technology hears after the name of a dirty tab.
 
 Events:
 
@@ -1892,6 +2030,11 @@ Parts (`::part()`):
 - `left-section`: The left slot's box.
 - `close`: The × (pointer only: it is not focusable).
 - `dot`: The unsaved mark.
+
+Texts (`setStrings`; English):
+
+- `doc-tabs.close`: Close
+- `doc-tabs.dirty`: Unsaved changes
 
 ### Nav link
 
@@ -1958,7 +2101,7 @@ Properties:
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `sm`, reflects. Item size.
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl` | `full`. Corner radius of the items.
 - `disabled`: boolean, reflects. Not interactive.
-- `label`: string, default `Pagination`. Accessible name of the navigation landmark.
+- `label`: string, default `Pagination` (text `pagination.label`). Accessible name of the navigation landmark.
 
 Events:
 
@@ -1988,6 +2131,13 @@ Exports (from `@raylang/elements/pagination` and `@raylang/elements`):
 
 - `function paginationRange(total: number, value: number, siblings?: number, boundaries?: number): Array<number | "dots">`: The items a pagination shows for a page (numbers and "dots").
 
+Texts (`setStrings`; English):
+
+- `pagination.label`: Pagination
+- `pagination.previous`: Previous page
+- `pagination.next`: Next page
+- `pagination.page`: Page {page}
+
 ### Sidebar
 
 The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed).
@@ -2008,12 +2158,12 @@ Properties:
 - `width`: string. Width when expanded (CSS length). Default 16rem.
 - `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.
 - `breakpoint`: string, default `48em`. At this viewport width and below, it becomes a drawer.
-- `label`: string, default `Sidebar`. Accessible name of its navigation.
+- `label`: string, default `Sidebar` (text `sidebar.label`). Accessible name of its navigation.
 - `resizable`: boolean, reflects. Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.
 - `minWidth` (attribute `min-width`): number, default `192`. Narrowest width when resizing, in px.
 - `maxWidth` (attribute `max-width`): number, default `480`. Widest width when resizing, in px.
 - `autosave`: string. A key: the resized width is saved in localStorage and restored. A later change of width wins.
-- `resizeLabel` (attribute `resize-label`): string, default `Resize sidebar`. Accessible name of the resize edge.
+- `resizeLabel` (attribute `resize-label`): string, default `Resize sidebar` (text `sidebar.resize`). Accessible name of the resize edge.
 
 Events:
 
@@ -2059,6 +2209,11 @@ Parts (`::part()`):
 - `label`: The title.
 - `items`: The links container.
 
+Texts (`setStrings`; English):
+
+- `sidebar.label`: Sidebar
+- `sidebar.resize`: Resize sidebar
+
 ### Stepper
 
 A task in steps (Mantine's Stepper): a wizard, a checkout, an onboarding. Numbers or icons, labels, connectors, the content of the active step; loading and error states; completed steps can be revisited.
@@ -2078,7 +2233,7 @@ Properties:
 - `linear`: boolean, default `true`. With allow-step-select off, false lets the user jump to any step.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Size of the numbers.
 - `color`: string, reflects. A palette color or any CSS color for active and completed steps (default: primary).
-- `label`: string, default `Progress`. Accessible name of the list of steps.
+- `label`: string, default `Progress` (text `stepper.label`). Accessible name of the list of steps.
 
 Events:
 
@@ -2124,6 +2279,12 @@ Properties:
 Slots:
 
 - (default): The content shown while it is active.
+
+Texts (`setStrings`; English):
+
+- `stepper.label`: Progress
+- `stepper.step`: Step {index}
+- `stepper.position`: Step {index} of {count}: 
 
 ### Tabs
 
@@ -2203,15 +2364,15 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `actions` (property only): `CommandAction[]`. The actions.
 - `query`: string. The search text.
-- `placeholder`: string, default `Search commands…`. Placeholder of the search field.
+- `placeholder`: string, default `Search commands…` (text `command-palette.placeholder`). Placeholder of the search field.
 - `hotkey`: string, default `mod+k`. Toggle shortcut (mod = ⌘ on macOS, Ctrl elsewhere); empty to disable.
 - `limit`: number, default `50`. Maximum results.
-- `emptyLabel` (attribute `empty-label`): string, default `Nothing found`. Text without results.
-- `label`: string, default `Command palette`. Accessible name.
+- `emptyLabel` (attribute `empty-label`): string, default `Nothing found` (text `command-palette.empty`). Text without results.
+- `label`: string, default `Command palette` (text `command-palette.label`). Accessible name.
 - `hideHint` (attribute `hide-hint`): boolean, reflects. No keyboard hint at the bottom.
-- `navigateLabel` (attribute `navigate-label`): string, default `navigate`. The keyboard hint's word for ↑↓.
-- `runLabel` (attribute `run-label`): string, default `run`. The keyboard hint's word for ↵.
-- `closeLabel` (attribute `close-label`): string, default `close`. The keyboard hint's word for esc.
+- `navigateLabel` (attribute `navigate-label`): string, default `navigate` (text `command-palette.navigate`). The keyboard hint's word for ↑↓.
+- `runLabel` (attribute `run-label`): string, default `run` (text `command-palette.run`). The keyboard hint's word for ↵.
+- `closeLabel` (attribute `close-label`): string, default `close` (text `command-palette.close`). The keyboard hint's word for esc.
 - `nativeMenus` (attribute `native-menus`): boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
@@ -2243,6 +2404,16 @@ Exports (from `@raylang/elements/command-palette` and `@raylang/elements`):
 Types:
 
 - `{ id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; prefix?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void }`: An action of ray-command-palette. icon is a 1.25rem square (a registered icon name, text or a Node); prefix is content of any width before the label (text or a Node, e.g. a ray-badge with an HTTP method), not searched.
+
+Texts (`setStrings`; English):
+
+- `command-palette.label`: Command palette
+- `command-palette.placeholder`: Search commands…
+- `command-palette.empty`: Nothing found
+- `command-palette.navigate`: navigate
+- `command-palette.run`: run
+- `command-palette.close`: close
+- `command-palette.shortcut`: Shortcut {shortcut}
 
 #### In a raylang app
 
@@ -2289,6 +2460,7 @@ Properties:
 - `position`: `center` | `top`, default `center`, reflects. Vertical placement.
 - `persistent`: boolean, reflects. Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `dialog.close`). The close button's name, for screen readers.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
 Events:
@@ -2329,6 +2501,13 @@ Types:
 
 - `{ label?: string; message?: string; confirmLabel?: string; cancelLabel?: string; color?: string; native?: boolean }`: Options of confirmDialog().
 
+Texts (`setStrings`; English):
+
+- `dialog.close`: Close
+- `dialog.confirm-label`: Are you sure?
+- `dialog.confirm`: Confirm
+- `dialog.cancel`: Cancel
+
 #### In a raylang app
 
 With [the native bridge](https://elements.raylang.dev/raylang.html#using-the-bridge), `confirmDialog()` asks with the system's modal dialog instead of a `ray-dialog`, with the same answer. A red confirmation (a destructive action) gets the warning style. `native: false` keeps the page's dialog, for a question that needs more than a sentence.
@@ -2362,6 +2541,7 @@ Properties:
 - `floating`: boolean, reflects. Detached from the edge, with rounded corners.
 - `persistent`: boolean, reflects. Escape and backdrop clicks do not close it.
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `drawer.close`). The close button's name, for screen readers.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
 Events:
@@ -2388,6 +2568,10 @@ Methods and properties:
 - `returnValue: string`: The value it was closed with.
 
 Vue `v-model`: `open` (updated on ray-open, ray-close).
+
+Texts (`setStrings`; English):
+
+- `drawer.close`: Close
 
 ### Menu
 
@@ -2648,7 +2832,7 @@ Properties:
 - `status`: `uploading` | `done` | `error`, reflects. Explicit state. Default: "uploading" while progress is set, else "done".
 - `error`: string. Error text shown with status="error" (default "Upload failed").
 - `removable`: boolean, reflects. Shows a remove (×) button.
-- `removeLabel` (attribute `remove-label`): string, default `Remove {name}`. Accessible label of the remove button; {name} is replaced by the file name.
+- `removeLabel` (attribute `remove-label`): string, default `Remove {name}` (text `attachment.remove`). Accessible label of the remove button; {name} is replaced by the file name.
 - `variant`: `row` | `card`, default `row`, reflects. row: a compact chip; card: the thumbnail on top.
 - `disabled`: boolean, reflects. Dimmed, not removable, the name is not a link.
 
@@ -2678,6 +2862,14 @@ A wrapping row of ray-attachment elements.
 Slots:
 
 - (default): ray-attachment elements.
+
+Texts (`setStrings`; English):
+
+- `attachment.remove`: Remove {name}
+- `attachment.uploading`: Uploading…
+- `attachment.uploading-percent`: Uploading… {percent}%
+- `attachment.progress`: Uploading {name}
+- `attachment.failed`: Upload failed
 
 ### Avatar
 
@@ -2782,7 +2974,7 @@ Any child is a slide. With several slides in view, positions are the snap points
 Properties:
 
 - `index`: number, default `0`. Current position (0-based). Setting it scrolls there.
-- `label`: string, default `Carousel`. Accessible name of the carousel region.
+- `label`: string, default `Carousel` (text `carousel.label`). Accessible name of the carousel region.
 - `slideSize` (attribute `slide-size`): string. Size of each slide along the scroll axis ("100%" by default; "50%", "18rem"…).
 - `slideGap` (attribute `slide-gap`): string. Space between slides (default var(--ray-space-4)).
 - `align`: `start` | `center`, default `start`, reflects. Where a slide snaps in the viewport.
@@ -2817,6 +3009,17 @@ Methods and properties:
 - `readonly count: number`: Number of positions.
 - `readonly slides: Element[]`: The slide elements.
 
+Texts (`setStrings`; English):
+
+- `carousel.label`: Carousel
+- `carousel.slide`: slide
+- `carousel.position`: {index} of {count}
+- `carousel.previous`: Previous slide
+- `carousel.next`: Next slide
+- `carousel.go-to`: Go to slide {index}
+- `carousel.play`: Start autoplay
+- `carousel.pause`: Pause autoplay
+
 ### Code
 
 A block of source code: header with file name and language, copy button, line numbers, highlighted lines, diff lines, wrapping and a "show more" height. A small built-in highlighter, or any library through setHighlighter(), painted with the --ray-code-* tokens.
@@ -2842,8 +3045,8 @@ Properties:
 - `hideHeader` (attribute `hide-header`): boolean, reflects. No header bar (the copy button floats in the corner).
 - `size`: `xs` | `sm` | `md`, default `sm`, reflects. Font size.
 - `radius`: string, reflects. Corner radius: xs…xl, none, or a CSS length. Default: md.
-- `copyLabel` (attribute `copy-label`): string, default `Copy code`. Accessible name of the copy button.
-- `copiedLabel` (attribute `copied-label`): string, default `Copied`. Shown and announced after copying.
+- `copyLabel` (attribute `copy-label`): string, default `Copy code` (text `code.copy`). Accessible name of the copy button.
+- `copiedLabel` (attribute `copied-label`): string, default `Copied` (text `code.copied`). Shown and announced after copying.
 
 Events:
 
@@ -2870,6 +3073,15 @@ Exports (from `@raylang/elements/code` and `@raylang/elements`):
 
 - `function setHighlighter(fn: ((code: string, lang: string) => string | Node | null | undefined | Promise<string | Node | null | undefined>) | null): void`: Hands every ray-code to a highlighter that returns HTML (Prism, highlight.js, Shiki…); null/undefined falls back to the built-in one. The HTML is inserted as is: pass only a trusted highlighter. null restores the built-in one.
 - `function tokenize(code: string, lang?: string): [type: string, text: string][]`: The built-in highlighter: tokens of type keyword, string, number, comment, function, type, tag, attr, punctuation or text.
+
+Texts (`setStrings`; English):
+
+- `code.copy`: Copy code
+- `code.copied`: Copied
+- `code.region`: Code
+- `code.region-language`: {language} code
+- `code.show-all`: Show all {count} lines
+- `code.show-less`: Show less
 
 ### Icon
 
@@ -2975,6 +3187,12 @@ Slots:
 - `icon`: Icon next to the label.
 - (default): Extra content (e.g. a ray-progress).
 
+Texts (`setStrings`; English):
+
+- `stat.up`: Up {value}
+- `stat.down`: Down {value}
+- `stat.flat`: No change {value}
+
 ### Table
 
 A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state. Plain HTML tables: the .ray-table class of base.css.
@@ -3002,7 +3220,7 @@ Properties:
 - `noHover` (attribute `no-hover`): boolean, reflects. No row highlight on hover.
 - `density`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Cell padding.
 - `label`: string. Caption (also the table's accessible name).
-- `emptyLabel` (attribute `empty-label`): string, default `No data`. Text without rows (or put a ray-empty-state in slot=empty).
+- `emptyLabel` (attribute `empty-label`): string, default `No data` (text `table.empty`). Text without rows (or put a ray-empty-state in slot=empty).
 
 Events:
 
@@ -3027,6 +3245,12 @@ Types:
 
 - `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
 - `{ key: string; direction: "asc" | "desc" }`: The sort state of ray-table.
+
+Texts (`setStrings`; English):
+
+- `table.empty`: No data
+- `table.select-all`: Select all rows
+- `table.select-row`: Select row {index}
 
 ### Timeline
 
@@ -3096,7 +3320,7 @@ Properties:
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius.
 - `icon`: `IconName`, reflects. A registered icon name, or none.
 - `closable`: boolean, reflects. A close button; closing hides the alert (cancel ray-close to keep it).
-- `closeLabel` (attribute `close-label`): string, default `Dismiss`. Accessible name of the close button.
+- `closeLabel` (attribute `close-label`): string, default `Dismiss` (text `alert.close`). Accessible name of the close button.
 
 Events:
 
@@ -3111,6 +3335,10 @@ Parts (`::part()`):
 
 - `alert`: The box.
 - `close`: The close button.
+
+Texts (`setStrings`; English):
+
+- `alert.close`: Dismiss
 
 ### Empty state
 
@@ -3202,6 +3430,11 @@ Types:
 - `{ label: string; icon?: string | Node; variant?: "default" | "filled" | "light" | "outline" | "subtle" | "transparent"; color?: string; name?: string; onClick?: () => void }`: An action button of notify(): its text, an icon name or a node before it, its variant (default "default"; "filled" for the main answer) and color, a name (the part action-<name>), and what pressing it runs (the notification closes).
 - `{ id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void }`: Options of notify() and updateNotification().
 
+Texts (`setStrings`; English):
+
+- `notification.close`: Close notification
+- `notification.region`: Notifications
+
 ### Progress
 
 A determinate or (without value) indeterminate progress bar, announced as a progressbar.
@@ -3228,6 +3461,10 @@ Parts (`::part()`):
 - `bar`: The filled bar.
 - `value`: The percentage beside the bar (show-value on xs, sm, md).
 
+Texts (`setStrings`; English):
+
+- `progress.label`: Progress
+
 ### Pulse
 
 An indeterminate wait indicator softer than the spinner: circles that breathe or ripple, announced as a status.
@@ -3247,12 +3484,16 @@ Properties:
 - `direction`: `alternate` | `normal`, reflects. alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's.
 - `color`: string, reflects. A palette color or any CSS color. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Height of the figure (the dots variant is wider).
-- `label`: string, default `Loading`. Text read by screen readers.
+- `label`: string, default `Loading` (text `pulse.label`). Text read by screen readers.
 
 Parts (`::part()`):
 
 - `pulse`: The box holding the circles.
 - `dot`: Each circle (the static center of ripple is also part core).
+
+Texts (`setStrings`; English):
+
+- `pulse.label`: Loading
 
 ### Ring progress
 
@@ -3284,6 +3525,10 @@ Parts (`::part()`):
 - `track`: The background circle.
 - `bar`: The arc.
 - `center`: The middle, around the default slot.
+
+Texts (`setStrings`; English):
+
+- `ring-progress.label`: Progress
 
 ### Skeleton
 
@@ -3326,11 +3571,15 @@ Properties:
 
 - `color`: string. A palette color or any CSS color. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Diameter.
-- `label`: string, default `Loading`. Text read by screen readers.
+- `label`: string, default `Loading` (text `spinner.label`). Text read by screen readers.
 
 Parts (`::part()`):
 
 - `spinner`: The ring.
+
+Texts (`setStrings`; English):
+
+- `spinner.label`: Loading
 
 ### Step dots
 
@@ -3357,6 +3606,13 @@ Parts (`::part()`):
 
 - `dots`: The row.
 - `dot`: Each dot ([data-state] done, current or todo).
+
+Texts (`setStrings`; English):
+
+- `step-dots.label`: Steps
+- `step-dots.value`: {label} {step} of {count}
+- `step-dots.step`: Step
+- `step-dots.done`: {count} of {count}, done
 
 ### App bar
 
@@ -3699,6 +3955,10 @@ Methods and properties:
 - `readonly size: number`: The start pane's size in px.
 - `toggle(): void`: Collapses or restores the start pane.
 
+Texts (`setStrings`; English):
+
+- `split.resize`: Resize
+
 ### Stack
 
 Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked.
@@ -3753,6 +4013,10 @@ Slots:
 - (default): Text.
 - `icon`: Icon.
 
+Texts (`setStrings`; English):
+
+- `statusbar.label`: Status bar
+
 ### Theme toggle
 
 Icon button that cycles the document theme: system, light, dark.
@@ -3772,6 +4036,16 @@ Events:
 Parts (`::part()`):
 
 - `button`: The inner button.
+
+Texts (`setStrings`; English):
+
+- `theme-toggle.system`: System theme
+- `theme-toggle.light`: Light theme
+- `theme-toggle.dark`: Dark theme
+- `theme-toggle.switch`: {theme} (switch to {next})
+- `theme-toggle.to-system`: system
+- `theme-toggle.to-light`: light
+- `theme-toggle.to-dark`: dark
 
 ## Tokens
 
@@ -4055,6 +4329,27 @@ export declare function iconNames(options?: { filled?: boolean }): string[];
 /** The roles the components draw ("ui.close", "ui.remove", "ui.expand"…) and the glyph each one uses unless the app registers the role. */
 export declare function iconAliases(): Record<string, string>;
 
+// --- texts -------------------------------------------------------------------
+
+/** A text of the catalog: a string with "{name}" values, or plural forms chosen by `count`. */
+export type StringValue = string | ({ other: string } & Partial<Record<"zero" | "one" | "two" | "few" | "many", string>>);
+/**
+ * Adds or replaces the texts the components write (stringKeys() lists them),
+ * for one language (`lang` matches the nearest lang attribute, "es" also
+ * "es-AR") or, without it, for any. Elements on the page update at once.
+ *   import es from "@raylang/elements/strings/es"; setStrings(es);
+ */
+export declare function setStrings(lang: string, strings: Record<string, StringValue>): void;
+export declare function setStrings(strings: Record<string, StringValue>): void;
+/** A text in the language of `el` (the page's without one), "{name}" filled from `values`. */
+export declare function getString(key: string, el?: Element | null, values?: Record<string, unknown>): string;
+/** The key and English text of every text declared so far (the components loaded). */
+export declare function stringKeys(): Record<string, StringValue>;
+/** Declares texts and their English, keyed "<component>.<text>" (a component module declares its own). */
+export declare function defineStrings(texts: Record<string, StringValue>): void;
+/** The language of an element: its nearest lang attribute, across shadow roots ("" without one). */
+export declare function langOf(el: Element): string;
+
 // --- base classes ------------------------------------------------------------
 
 export interface PropertyOptions {
@@ -4062,6 +4357,8 @@ export interface PropertyOptions {
   reflect?: boolean;
   attribute?: string | false;
   default?: unknown;
+  /** A text of the catalog (setStrings) as the default, in the element's language. */
+  string?: string;
 }
 
 /**
@@ -4090,6 +4387,8 @@ export declare class RayElement extends HTMLElement {
   paintIcons(root?: ParentNode): void;
   /** Dispatches a bubbling, composed CustomEvent; false if a listener canceled it. */
   emit<T = unknown>(type: string, detail?: T, options?: { cancelable?: boolean }): boolean;
+  /** Protected: a text of the catalog in this element's language, "{name}" filled from `values`. */
+  protected t(key: string, values?: Record<string, unknown>): string;
   /** querySelector inside the shadow root. */
   $<E extends Element = HTMLElement>(selector: string): E | null;
 }

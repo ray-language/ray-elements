@@ -15,7 +15,7 @@ Properties:
 - `placeholder`: string. Shown while there are no tags.
 - `max`: number. At most this many tags; when reached, nothing more is added and the suggestions hide.
 - `suggestionsLimit` (attribute `suggestions-limit`): number, default `6`. At most this many suggestions shown (keep typing for the rest); 0 shows them all.
-- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions`. The accessible name of the group of suggestions.
+- `suggestionsLabel` (attribute `suggestions-label`): string, default `Suggestions` (text `tags-input.suggestions`). The accessible name of the group of suggestions.
 - `separators`: string, default `,`. Characters that end a tag as they are typed or pasted (",;" for both); "" for none (Enter and leaving the field still add).
 
 Also the properties of FieldControl: `name`, `label`, `description`, `error`, `required`, `disabled`, `size`, `radius`, `variant`, `descriptionPosition`.
@@ -47,6 +47,11 @@ Methods and properties:
 - `commitText(): void`: Adds what is typed in the field now, as Enter does.
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `tags-input.remove`: Remove {label}
+- `tags-input.suggestions`: Suggestions
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

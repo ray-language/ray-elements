@@ -54,7 +54,7 @@ description = "At most this many options shown (large lists: keep typing)."
 [ray-combobox.properties.nothingFound]
 attribute = "nothing-found"
 type = "string"
-default = "No matches"
+string = "combobox.nothing-found"
 description = "Shown when nothing matches."
 
 [ray-combobox.properties.open]

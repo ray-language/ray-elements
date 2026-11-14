@@ -17,12 +17,16 @@ Properties:
 - `direction`: `alternate` | `normal`, reflects. alternate goes there and back; normal goes one way and restarts (with fade: the ripple). Default: the variant's.
 - `color`: string, reflects. A palette color or any CSS color. Default: the primary color.
 - `size`: `xs` | `sm` | `md` | `lg` | `xl`, default `md`, reflects. Height of the figure (the dots variant is wider).
-- `label`: string, default `Loading`. Text read by screen readers.
+- `label`: string, default `Loading` (text `pulse.label`). Text read by screen readers.
 
 Parts (`::part()`):
 
 - `pulse`: The box holding the circles.
 - `dot`: Each circle (the static center of ripple is also part core).
+
+Texts (`setStrings`; English):
+
+- `pulse.label`: Loading
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

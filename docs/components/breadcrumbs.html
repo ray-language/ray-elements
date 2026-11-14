@@ -63,6 +63,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/dismiss.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/icon/icon.js"; import "../../src/components/group/group.js"; import "../../src/components/stack/stack.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
@@ -353,7 +354,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="api-markdown">For AI agents: <a href="breadcrumbs.md">this API as Markdown</a>, or every component in <a href="../llms-full.txt">llms-full.txt</a>.</p>
 <h3><code>&lt;ray-breadcrumbs&gt;</code></h3>
 <p class="note">A &lt;nav aria-label=&quot;Breadcrumb&quot;&gt; around a list. The last crumb is the current page (aria-current=&quot;page&quot;) unless one says current.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>separator</code></td><td><code>separator</code></td><td>string</td><td><code>/</code></td><td>Text between crumbs (&quot;/&quot;, &quot;›&quot;, &quot;·&quot;) or &quot;chevron&quot; (an icon).</td></tr><tr><td><code>maxItems</code></td><td><code>max-items</code></td><td>number</td><td></td><td>Longer paths show the first crumb, &quot;…&quot; (a button that expands them) and the last max-items − 1.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Breadcrumb</code></td><td>Accessible name of the nav.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code></td><td><code>sm</code></td><td>Font size.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>separator</code></td><td><code>separator</code></td><td>string</td><td><code>/</code></td><td>Text between crumbs (&quot;/&quot;, &quot;›&quot;, &quot;·&quot;) or &quot;chevron&quot; (an icon).</td></tr><tr><td><code>maxItems</code></td><td><code>max-items</code></td><td>number</td><td></td><td>Longer paths show the first crumb, &quot;…&quot; (a button that expands them) and the last max-items − 1.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Breadcrumb</code> <span class="text-key">(text <code>breadcrumbs.label</code>)</span></td><td>Accessible name of the nav.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code></td><td><code>sm</code></td><td>Font size.</td></tr></tbody></table></div>
 
 
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>ray-breadcrumb elements.</td></tr></tbody></table></div>
@@ -365,6 +366,9 @@ if (location.protocol === "file:") window.__rayServeHint();
 
 <div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>The text.</td></tr><tr><td><code>icon</code></td><td>An icon before the text.</td></tr></tbody></table></div>
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>link</code></td><td>The link (or the text of the current page).</td></tr><tr><td><code>separator</code></td><td>The separator before it.</td></tr><tr><td><code>more</code></td><td>The &quot;…&quot; button of a collapsed path.</td></tr></tbody></table></div>
+<h3 id="breadcrumbs-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>breadcrumbs.label</code></td><td>Breadcrumb</td></tr><tr><td><code>breadcrumbs.more</code></td><td>Show the whole path</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="bottom-nav.html"><small>Previous</small>Bottom nav</a><a class="pager-next" href="doc-tabs.html"><small>Next</small>Document tabs</a></nav>
 </main>

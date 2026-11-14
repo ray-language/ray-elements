@@ -14,7 +14,7 @@ Properties:
 - `options` (property only): `ModeOption[]`. The modes; when not set, the <option> children.
 - `display`: `label` | `icon` | `both`, reflects. What the trigger shows: the mode's hint or label, its icon, or both. Default: the icon when the mode has one, else the label.
 - `position`: `start` | `end`, default `start`, reflects. The side of the field the trigger sits on.
-- `menuLabel` (attribute `menu-label`): string, default `Mode`. The trigger's accessible name, read with the current mode ("Mode: File").
+- `menuLabel` (attribute `menu-label`): string, default `Mode` (text `mode-input.menu`). The trigger's accessible name, read with the current mode ("Mode: File").
 - `nativeMenu` (attribute `native-menu`): boolean, reflects. With a native host (a std/ui window with the bridge), the system's menu (no descriptions there).
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
@@ -39,6 +39,10 @@ Methods and properties:
 Types:
 
 - `{ value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> }`: A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field.
+
+Texts (`setStrings`; English):
+
+- `mode-input.menu`: Mode
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

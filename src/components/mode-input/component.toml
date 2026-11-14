@@ -42,7 +42,7 @@ description = "The side of the field the trigger sits on."
 [ray-mode-input.properties.menuLabel]
 attribute = "menu-label"
 type = "string"
-default = "Mode"
+string = "mode-input.menu"
 description = "The trigger's accessible name, read with the current mode (\"Mode: File\")."
 
 [ray-mode-input.properties.nativeMenu]

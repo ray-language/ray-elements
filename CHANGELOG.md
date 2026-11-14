@@ -7,6 +7,33 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- Languages: what the components write themselves (button names, screen
+  reader labels, "No matches", "Page 3", validation and file messages, about
+  140 texts) comes from a catalog, English by default. `setStrings(es)` sets
+  one for every element, `setStrings("es", es)` for those under `lang="es"`
+  (and "es-AR"…): an element reads its nearest `lang`, across shadow roots,
+  and the elements on the page update at once, also when a `lang` changes.
+  Ships with Spanish: `@raylang/elements/strings/es`. Plural forms by
+  `Intl.PluralRules`. Each component declares its own texts, so a bundle
+  carries only those of what it imports, and its reference lists them.
+  Also `getString()`, `stringKeys()`, `langOf()`; for your own components,
+  `defineStrings()`, the property option `string: "<key>"` and `this.t()`.
+- `ray-dialog` and `ray-drawer`: `close-label`, the close button's name.
+
+### Changed
+
+- The `*-label` properties (`pick-label`, `close-label`, `empty-label`,
+  `placeholder` of the search and the date picker…) take their default from
+  the catalog, so it follows the language; an attribute or a value set still
+  wins. About 60 texts that could not be changed before (the dialogs' ×,
+  "Clear", "Increment", "Previous month", "Remove {label}", "Select all
+  rows", "No options"…) can now.
+- `describeAccept(accept, el)` takes an element for its language.
+- `ray-statusbar` and `ray-toaster` keep an `aria-label` the app set; the
+  default one follows the language.
+
 ## [0.19.1] - 2026-11-13
 
 ### Changed

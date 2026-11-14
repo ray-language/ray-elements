@@ -14,6 +14,14 @@
 import { setHost, HostFile } from "./host.js";
 import { chartTheme, onChartThemeChange } from "./charts.js";
 import { getTheme } from "./core.js";
+import { getString, defineStrings } from "./strings.js";
+
+// The native confirmation's defaults (also ray-dialog's confirmDialog texts).
+defineStrings({
+  "dialog.confirm-label": "Are you sure?",
+  "dialog.confirm": "Confirm",
+  "dialog.cancel": "Cancel",
+});
 import { parseColor, toHex } from "./color.js";
 
 /** The version of the protocol this page speaks. */
@@ -95,7 +103,7 @@ async function connect(ray, timeout, windowColors) {
     setWindowColors({ background = "", titlebar } = {}) {
       return call("window_colors", titlebar === undefined ? { background } : { background, titlebar });
     },
-    async confirm({ title = "Are you sure?", message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", style = "" } = {}) {
+    async confirm({ title = getString("dialog.confirm-label"), message = "", confirmLabel = getString("dialog.confirm"), cancelLabel = getString("dialog.cancel"), style = "" } = {}) {
       return Boolean(await call("confirm", { title, message, confirmLabel, cancelLabel, style }));
     },
   };

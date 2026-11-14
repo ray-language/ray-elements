@@ -18,7 +18,7 @@ description = "Current position (0-based). Setting it scrolls there."
 
 [ray-carousel.properties.label]
 type = "string"
-default = "Carousel"
+string = "carousel.label"
 description = "Accessible name of the carousel region."
 
 [ray-carousel.properties.slideSize]

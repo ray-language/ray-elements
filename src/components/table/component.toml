@@ -108,7 +108,7 @@ description = "Caption (also the table's accessible name)."
 [ray-table.properties.emptyLabel]
 attribute = "empty-label"
 type = "string"
-default = "No data"
+string = "table.empty"
 description = "Text without rows (or put a ray-empty-state in slot=empty)."
 
 [ray-table.events.ray-sort]

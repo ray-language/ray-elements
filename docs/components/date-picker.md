@@ -13,7 +13,7 @@ Properties:
 - `value`: string. The chosen date, ISO "YYYY-MM-DD" ("" for none). The value attribute is the initial value (restored on form reset).
 - `min`: string. Earliest selectable date (ISO). Earlier days are disabled; an earlier value is invalid (rangeUnderflow).
 - `max`: string. Latest selectable date (ISO).
-- `placeholder`: string, default `Pick a date`. Shown while no date is chosen.
+- `placeholder`: string, default `Pick a date` (text `date-picker.placeholder`). Shown while no date is chosen.
 - `format`: `short` | `medium` | `long` | `full`, default `medium`. How the date is displayed (Intl dateStyle).
 - `locale`: string. Locale for names and formats. Default: the nearest lang attribute, else the browser's.
 - `firstDay` (attribute `first-day`): number. First day of the week, 0 (Sunday) to 6. Default: the locale's.
@@ -92,6 +92,14 @@ Methods and properties:
 - `readonly focusedDate: string`: The day the keyboard is on (ISO).
 
 Vue `v-model`: `value` (updated on change).
+
+Texts (`setStrings`; English):
+
+- `date-picker.placeholder`: Pick a date
+- `date-picker.clear`: Clear date
+- `date-picker.dropdown`: Choose a date
+- `date-picker.previous-month`: Previous month, {month}
+- `date-picker.next-month`: Next month, {month}
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

@@ -1,7 +1,15 @@
 // <ray-stat>: a metric tile — label, big value, change against a previous
 // period and a note (the tiles of rayauth's dashboard).
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "stat.up": "Up {value}",
+  "stat.down": "Down {value}",
+  "stat.flat": "No change {value}",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host { display: block; }
@@ -68,7 +76,7 @@ export class RayStat extends RayElement {
       diff.innerHTML = `<span data-ray-icon="${ARROWS[trend]}" aria-hidden="true"></span>`;
       this.paintIcons(diff);
       diff.append(`${sign}${this.diff}${this.diffUnit ?? ""}`);
-      diff.setAttribute("aria-label", `${trend === "up" ? "Up" : trend === "down" ? "Down" : "No change"} ${Math.abs(this.diff)}${this.diffUnit ?? ""}`);
+      diff.setAttribute("aria-label", this.t(trend === "up" ? "stat.up" : trend === "down" ? "stat.down" : "stat.flat", { value: `${Math.abs(this.diff)}${this.diffUnit ?? ""}` }));
     }
     const note = this.$(".note");
     note.hidden = !this.note;

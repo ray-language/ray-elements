@@ -23,7 +23,7 @@ description = "Longer paths show the first crumb, \"…\" (a button that expands
 
 [ray-breadcrumbs.properties.label]
 type = "string"
-default = "Breadcrumb"
+string = "breadcrumbs.label"
 description = "Accessible name of the nav."
 
 [ray-breadcrumbs.properties.size]

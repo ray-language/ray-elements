@@ -18,7 +18,7 @@ description = "The current destination (an item's value, else its href, else its
 
 [ray-bottom-nav.properties.label]
 type = "string"
-default = "Main"
+string = "bottom-nav.label"
 description = "Accessible name of the navigation."
 
 [ray-bottom-nav.properties.labels]

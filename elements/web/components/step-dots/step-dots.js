@@ -3,8 +3,17 @@
 // onboarding pages or a quiz. Not interactive: the carousel's dots are
 // buttons, these are a progressbar.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "step-dots.label": "Steps",
+  "step-dots.value": "{label} {step} of {count}",
+  "step-dots.step": "Step",
+  "step-dots.done": "{count} of {count}, done",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -81,10 +90,10 @@ export class RayStepDots extends RayElement {
     const fill = (tpl) => tpl.replaceAll("{step}", n(Math.min(value + 1, count))).replaceAll("{count}", n(count));
     const done = count > 0 && value >= count;
     const text = done
-      ? fill(this.doneText ?? this.valueText ?? "{count} of {count}, done")
-      : fill(this.valueText ?? `${this.label || "Step"} {step} of {count}`);
+      ? fill(this.doneText ?? this.valueText ?? this.t("step-dots.done"))
+      : fill(this.valueText ?? this.t("step-dots.value", { label: this.label || this.t("step-dots.step") }));
     const i = this.internals;
-    i.ariaLabel = this.label || this.getAttribute("aria-label") || "Steps";
+    i.ariaLabel = this.label || this.getAttribute("aria-label") || this.t("step-dots.label");
     i.ariaValueMin = "0";
     i.ariaValueMax = String(count);
     i.ariaValueNow = String(value);

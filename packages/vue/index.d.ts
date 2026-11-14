@@ -1764,6 +1764,8 @@ export interface RayDialogProps {
   persistent?: boolean;
   /** No close button in the header. */
   hideClose?: boolean;
+  /** The close button's name, for screen readers. */
+  closeLabel?: string;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur?: string;
   /** v-model: the element's `open`. */
@@ -1798,6 +1800,8 @@ export interface RayDrawerProps {
   persistent?: boolean;
   /** No close button in the header. */
   hideClose?: boolean;
+  /** The close button's name, for screen readers. */
+  closeLabel?: string;
   /** Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml). */
   overlayBlur?: string;
   /** v-model: the element's `open`. */

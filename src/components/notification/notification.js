@@ -6,9 +6,16 @@
 //   const id = notify({ title, message, color, icon, loading, autoClose, closable, action: { label, icon, onClick }, actions: [...], id })
 //   updateNotification(id, { … })   hideNotification(id)   clearNotifications()
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { motionAllowed, play } from "../../core/motion.js";
 import { applyColor, variantStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "notification.close": "Close notification",
+  "notification.region": "Notifications",
+};
+defineStrings(STRINGS);
 
 const notificationStyles = css`
   :host { display: block; }
@@ -157,7 +164,7 @@ export class RayNotification extends RayElement {
         <div class="message" part="message"><slot></slot></div>
       </div>
       <span class="actions" part="actions"><slot name="action"></slot></span>
-      <button class="close focus-ring" part="close" type="button" aria-label="Close notification"><span data-ray-icon="ui.close" aria-hidden="true"></span></button>
+      <button class="close focus-ring" part="close" type="button"><span data-ray-icon="ui.close" aria-hidden="true"></span></button>
     </div>`;
 
   constructor() {
@@ -175,6 +182,7 @@ export class RayNotification extends RayElement {
   }
 
   update(changed) {
+    this.$(".close").setAttribute("aria-label", this.t("notification.close"));
     const card = this.$(".card");
     applyColor(card, this.color);
     card.toggleAttribute("data-loading", Boolean(this.loading));
@@ -345,6 +353,7 @@ export class RayToaster extends RayElement {
   static styles = [toasterStyles];
   static template = `<slot></slot>`;
 
+  #name = null;
   #expanded = false;
   #ro = null;
   #swipe = null;
@@ -353,7 +362,6 @@ export class RayToaster extends RayElement {
     super.connectedCallback();
     this.setAttribute("popover", "manual");
     this.setAttribute("role", "region");
-    this.setAttribute("aria-label", this.getAttribute("aria-label") ?? "Notifications");
     this.setAttribute("aria-live", "polite");
     // Every time: moving into an overlay and back disconnects and reconnects it.
     this._outside ??= (e) => {
@@ -418,6 +426,12 @@ export class RayToaster extends RayElement {
   }
 
   update() {
+    // A default name, in the page's language; an aria-label of the app's stays.
+    const own = this.getAttribute("aria-label");
+    if (own === null || own === this.#name) {
+      this.#name = this.t("notification.region");
+      if (own !== this.#name) this.setAttribute("aria-label", this.#name);
+    }
     this.layout();
   }
 

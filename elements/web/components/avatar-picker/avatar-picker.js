@@ -11,7 +11,7 @@
 // large in a dialog. `readonly` hides the buttons and keeps the preview;
 // `disabled` turns everything off.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
 import { extensionsOfType } from "../../core/host.js";
 import "../avatar/avatar.js";
@@ -19,6 +19,22 @@ import "../button/button.js";
 import "../image-crop/image-crop.js";
 import "../drawer/drawer.js";
 import "../dialog/dialog.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "avatar-picker.pick": "Choose photo",
+  "avatar-picker.change": "Change photo",
+  "avatar-picker.remove": "Remove photo",
+  "avatar-picker.sheet": "Adjust the photo",
+  "avatar-picker.use": "Use photo",
+  "avatar-picker.cancel": "Cancel",
+  "avatar-picker.crop": "Photo framing",
+  "avatar-picker.zoom": "Zoom",
+  "avatar-picker.preview": "View photo",
+  "avatar-picker.required": "Please choose a photo.",
+  "avatar-picker.failed": "That image could not be opened.",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host { display: flex; flex-direction: column; }
@@ -80,18 +96,18 @@ export class RayAvatarPicker extends FormControl {
     type: { type: String, default: "image/jpeg" },
     quality: { type: Number, default: 0.85 },
     maxZoom: { type: Number, attribute: "max-zoom", default: 4 },
-    pickLabel: { type: String, attribute: "pick-label", default: "Choose photo" },
-    changeLabel: { type: String, attribute: "change-label", default: "Change photo" },
-    removeLabel: { type: String, attribute: "remove-label", default: "Remove photo" },
-    sheetLabel: { type: String, attribute: "sheet-label", default: "Adjust the photo" },
-    useLabel: { type: String, attribute: "use-label", default: "Use photo" },
-    cancelLabel: { type: String, attribute: "cancel-label", default: "Cancel" },
-    cropLabel: { type: String, attribute: "crop-label", default: "Photo framing" },
-    zoomLabel: { type: String, attribute: "zoom-label", default: "Zoom" },
+    pickLabel: { type: String, attribute: "pick-label", string: "avatar-picker.pick" },
+    changeLabel: { type: String, attribute: "change-label", string: "avatar-picker.change" },
+    removeLabel: { type: String, attribute: "remove-label", string: "avatar-picker.remove" },
+    sheetLabel: { type: String, attribute: "sheet-label", string: "avatar-picker.sheet" },
+    useLabel: { type: String, attribute: "use-label", string: "avatar-picker.use" },
+    cancelLabel: { type: String, attribute: "cancel-label", string: "avatar-picker.cancel" },
+    cropLabel: { type: String, attribute: "crop-label", string: "avatar-picker.crop" },
+    zoomLabel: { type: String, attribute: "zoom-label", string: "avatar-picker.zoom" },
     preview: { type: Boolean, reflect: true },
-    previewLabel: { type: String, attribute: "preview-label", default: "View photo" },
-    requiredLabel: { type: String, attribute: "required-label", default: "Please choose a photo." },
-    failedLabel: { type: String, attribute: "failed-label", default: "That image could not be opened." },
+    previewLabel: { type: String, attribute: "preview-label", string: "avatar-picker.preview" },
+    requiredLabel: { type: String, attribute: "required-label", string: "avatar-picker.required" },
+    failedLabel: { type: String, attribute: "failed-label", string: "avatar-picker.failed" },
   };
   static styles = [fieldStyles, styles];
   static template = `

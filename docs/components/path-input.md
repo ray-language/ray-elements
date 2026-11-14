@@ -12,7 +12,7 @@ Properties:
 
 - `mode`: `open` | `folder` | `save`, default `open`, reflects. What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).
 - `accept`: string, reflects. File types the dialog offers, as in <input type=file>: ".json,.toml", "image/*" (ignored for folders).
-- `browseLabel` (attribute `browse-label`): string, default `Browse…`. Text of the button.
+- `browseLabel` (attribute `browse-label`): string, default `Browse…` (text `path-input.browse`). Text of the button.
 - `dialogTitle` (attribute `dialog-title`): string. Title of the system dialog (default: the label).
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
@@ -35,6 +35,10 @@ Exports (from `@raylang/elements/path-input` and `@raylang/elements`):
 
 - `function dirName(path: string): string`: The folder part of a path ("" when it has none), with / or \ separators.
 - `function baseName(path: string): string`: The last part of a path.
+
+Texts (`setStrings`; English):
+
+- `path-input.browse`: Browse…
 
 ## In a raylang app
 

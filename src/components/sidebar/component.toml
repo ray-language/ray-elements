@@ -58,7 +58,7 @@ description = "At this viewport width and below, it becomes a drawer."
 
 [ray-sidebar.properties.label]
 type = "string"
-default = "Sidebar"
+string = "sidebar.label"
 description = "Accessible name of its navigation."
 
 [ray-sidebar.properties.resizable]
@@ -85,7 +85,7 @@ description = "A key: the resized width is saved in localStorage and restored. A
 [ray-sidebar.properties.resizeLabel]
 attribute = "resize-label"
 type = "string"
-default = "Resize sidebar"
+string = "sidebar.resize"
 description = "Accessible name of the resize edge."
 
 [ray-sidebar.events.ray-resize]

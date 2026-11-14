@@ -16,11 +16,23 @@
 // menu, with their shortcuts; running one gives the program the same event
 // as the menu (action.native is true, action.id is "menu:<tag>").
 
-import { RayElement, css, define, getIcon } from "../../core/core.js";
+import { RayElement, css, define, getIcon, defineStrings } from "../../core/core.js";
 import { matchesHotkey, formatHotkey } from "../../core/hotkey.js";
 import { getHost, hostCan } from "../../core/host.js";
 import { play, playAll } from "../../core/motion.js";
 import { overlayStyles, applyOverlayBlur } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "command-palette.label": "Command palette",
+  "command-palette.placeholder": "Search commands…",
+  "command-palette.empty": "Nothing found",
+  "command-palette.navigate": "navigate",
+  "command-palette.run": "run",
+  "command-palette.close": "close",
+  "command-palette.shortcut": "Shortcut {shortcut}",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host { display: contents; }
@@ -182,15 +194,15 @@ export class RayCommandPalette extends RayElement {
     open: { type: Boolean, reflect: true },
     actions: { attribute: false },
     query: { type: String, default: "" },
-    placeholder: { type: String, default: "Search commands…" },
+    placeholder: { type: String, string: "command-palette.placeholder" },
     hotkey: { type: String, default: "mod+k" },
     limit: { type: Number, default: 50 },
-    emptyLabel: { type: String, default: "Nothing found" },
-    label: { type: String, default: "Command palette" },
+    emptyLabel: { type: String, string: "command-palette.empty" },
+    label: { type: String, string: "command-palette.label" },
     hideHint: { type: Boolean, reflect: true },
-    navigateLabel: { type: String, default: "navigate" },
-    runLabel: { type: String, default: "run" },
-    closeLabel: { type: String, default: "close" },
+    navigateLabel: { type: String, string: "command-palette.navigate" },
+    runLabel: { type: String, string: "command-palette.run" },
+    closeLabel: { type: String, string: "command-palette.close" },
     overlayBlur: { type: String },
     nativeMenus: { type: Boolean, attribute: "native-menus", reflect: true },
   };
@@ -281,8 +293,9 @@ export class RayCommandPalette extends RayElement {
   update(changed) {
     if (changed.has("overlayBlur")) applyOverlayBlur(this, this.overlayBlur);
     this.input.placeholder = this.placeholder ?? "";
-    this.input.setAttribute("aria-label", this.label ?? "Command palette");
-    this.dialog.setAttribute("aria-label", this.label ?? "Command palette");
+    const label = this.label || this.t("command-palette.label");
+    this.input.setAttribute("aria-label", label);
+    this.dialog.setAttribute("aria-label", label);
     if (this.input.value !== (this.query ?? "")) this.input.value = this.query ?? "";
     this.$(".hint").hidden = Boolean(this.hideHint);
     this.$("#hint-navigate").textContent = this.navigateLabel ?? "";
@@ -384,7 +397,7 @@ export class RayCommandPalette extends RayElement {
     this.list.replaceChildren(frag);
     const empty = this.$(".empty");
     empty.hidden = results.length > 0;
-    empty.textContent = this.emptyLabel ?? "Nothing found";
+    empty.textContent = this.emptyLabel || this.t("command-palette.empty");
     this._paintActive();
   }
 
@@ -430,7 +443,7 @@ export class RayCommandPalette extends RayElement {
     if (a.shortcut) {
       const sc = document.createElement("span");
       sc.className = "shortcut";
-      sc.setAttribute("aria-label", `Shortcut ${a.shortcut}`);
+      sc.setAttribute("aria-label", this.t("command-palette.shortcut", { shortcut: a.shortcut }));
       for (const k of String(a.shortcut).split(/\s*\+\s*|\s+/).filter(Boolean)) {
         const key = document.createElement("span");
         key.textContent = k;

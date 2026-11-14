@@ -11,8 +11,8 @@ autocomplete defaults to current-password: use new-password on sign-up and chang
 Properties:
 
 - `visible`: boolean, reflects. The password is shown as text.
-- `showLabel` (attribute `show-label`): string, default `Show password`. Accessible name of the toggle while hidden.
-- `hideLabel` (attribute `hide-label`): string, default `Hide password`. Accessible name of the toggle while shown.
+- `showLabel` (attribute `show-label`): string, default `Show password` (text `password-input.show`). Accessible name of the toggle while hidden.
+- `hideLabel` (attribute `hide-label`): string, default `Hide password` (text `password-input.hide`). Accessible name of the toggle while shown.
 
 Also the properties of RayInput (`<ray-input>`): `value`, `type`, `name`, `label`, `description`, `descriptionPosition`, `error`, `placeholder`, `required`, `disabled`, `readonly`, `size`, `radius`, `variant`, `highlight`, `complete`, `suggestionsLabel`.
 
@@ -23,6 +23,11 @@ Events:
 Parts (`::part()`):
 
 - `toggle`: The show/hide button.
+
+Texts (`setStrings`; English):
+
+- `password-input.show`: Show password
+- `password-input.hide`: Hide password
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

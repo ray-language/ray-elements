@@ -23,7 +23,7 @@ description = "Diameter."
 
 [ray-spinner.properties.label]
 type = "string"
-default = "Loading"
+string = "spinner.label"
 description = "Text read by screen readers."
 
 [ray-spinner.parts.spinner]

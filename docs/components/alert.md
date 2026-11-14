@@ -16,7 +16,7 @@ Properties:
 - `radius`: `xs` | `sm` | `md` | `lg` | `xl`. Corner radius.
 - `icon`: `IconName`, reflects. A registered icon name, or none.
 - `closable`: boolean, reflects. A close button; closing hides the alert (cancel ray-close to keep it).
-- `closeLabel` (attribute `close-label`): string, default `Dismiss`. Accessible name of the close button.
+- `closeLabel` (attribute `close-label`): string, default `Dismiss` (text `alert.close`). Accessible name of the close button.
 
 Events:
 
@@ -31,6 +31,10 @@ Parts (`::part()`):
 
 - `alert`: The box.
 - `close`: The close button.
+
+Texts (`setStrings`; English):
+
+- `alert.close`: Dismiss
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

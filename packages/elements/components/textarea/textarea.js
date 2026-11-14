@@ -1,10 +1,16 @@
 // <ray-textarea>: a multi-line text field, optionally growing with its content.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
 import { syncHighlight, textLayerStyles } from "../../core/textlayer.js";
 import { syncComplete, completeStyles } from "../../core/complete.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "textarea.suggestions": "Suggestions",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .box { align-items: stretch; }
@@ -30,7 +36,7 @@ export class RayTextarea extends FieldControl {
     readonly: { type: Boolean, reflect: true },
     highlight: { attribute: false },
     complete: { attribute: false },
-    suggestionsLabel: { type: String, default: "Suggestions" },
+    suggestionsLabel: { type: String, string: "textarea.suggestions" },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, textLayerStyles, completeStyles, styles];
   static template = fieldTemplate(`<textarea id="control" class="control" part="textarea"></textarea>`, { sections: false });

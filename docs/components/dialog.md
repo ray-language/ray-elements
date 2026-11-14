@@ -19,6 +19,7 @@ Properties:
 - `position`: `center` | `top`, default `center`, reflects. Vertical placement.
 - `persistent`: boolean, reflects. Escape and backdrop clicks do not close it (the × still does; hide it with hide-close). To allow only one of them, cancel ray-request-close by its source.
 - `hideClose` (attribute `hide-close`): boolean, reflects. No close button in the header.
+- `closeLabel` (attribute `close-label`): string, default `Close` (text `dialog.close`). The close button's name, for screen readers.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
 Events:
@@ -58,6 +59,13 @@ Exports (from `@raylang/elements/dialog` and `@raylang/elements`):
 Types:
 
 - `{ label?: string; message?: string; confirmLabel?: string; cancelLabel?: string; color?: string; native?: boolean }`: Options of confirmDialog().
+
+Texts (`setStrings`; English):
+
+- `dialog.close`: Close
+- `dialog.confirm-label`: Are you sure?
+- `dialog.confirm`: Confirm
+- `dialog.cancel`: Cancel
 
 ## In a raylang app
 

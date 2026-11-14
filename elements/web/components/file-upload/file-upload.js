@@ -20,12 +20,36 @@
 // of bytes: those files are HostFile objects, listed in `paths` and submitted
 // as their path, for the program to read. Drop and paste keep giving Files.
 
-import { css, define } from "../../core/core.js";
+import { css, define, getString, defineStrings } from "../../core/core.js";
 import { FormControl, fieldStyles } from "../../core/form.js";
 import { applyColor } from "../../core/styles.js";
 import { collapseOut } from "../../core/motion.js";
 import { formatBytes } from "../attachment/attachment.js";
 import { getHost, hostCan, acceptFilters, HostFile } from "../../core/host.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "file-upload.drop": "Drag files here",
+  "file-upload.browse": "browse",
+  "file-upload.active": "Drop to add files",
+  "file-upload.tap": "Choose files",
+  "file-upload.images": "Images",
+  "file-upload.videos": "Videos",
+  "file-upload.audio": "Audio",
+  "file-upload.text": "Text files",
+  "file-upload.types": "{list} or {last}",
+  "file-upload.too-large": "{name} is larger than {size}.",
+  "file-upload.only-one": "Only one file can be added.",
+  "file-upload.max": { one: "Up to {count} file can be added.", other: "Up to {count} files can be added." },
+  "file-upload.full": "No more files can be added",
+  "file-upload.room": { one: "Only {count} more file", other: "Only {count} more files" },
+  "file-upload.refused": "File type not allowed",
+  "file-upload.required": "Select at least one file.",
+  "file-upload.hint-size": "up to {size}",
+  "file-upload.hint-size-each": "up to {size} each",
+  "file-upload.hint-max": { one: "max. {count} file", other: "max. {count} files" },
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -188,22 +212,27 @@ export function matchesAccept(file, accept) {
 }
 
 
-const KINDS = { image: "Images", video: "Videos", audio: "Audio", text: "Text files" };
+const KINDS = { image: "file-upload.images", video: "file-upload.videos", audio: "file-upload.audio", text: "file-upload.text" };
 
-/** A short human list of an `accept` value: "PNG, JPG or PDF", "Images". */
-export function describeAccept(accept) {
+/**
+ * A short human list of an `accept` value: "PNG, JPG or PDF", "Images"; in
+ * the language of `el` when given (setStrings), else the page's.
+ */
+export function describeAccept(accept, el = null) {
   const names = [];
+  const kinds = new Set();
   for (const a of acceptList(accept)) {
     let n;
     if (a.startsWith(".")) n = a.slice(1).toUpperCase();
-    else if (a.endsWith("/*")) n = KINDS[a.slice(0, -2)] ?? a;
+    else if (a.endsWith("/*") && KINDS[a.slice(0, -2)]) { n = getString(KINDS[a.slice(0, -2)], el); kinds.add(n); }
+    else if (a.endsWith("/*")) n = a;
     else n = a.split("/")[1]?.replace(/^x-/, "").split(/[+.]/).pop()?.toUpperCase() ?? a;
     if (!names.includes(n)) names.push(n);
   }
   if (names.length < 2) return names[0] ?? "";
   // "PNG or images", not "PNG or Images".
-  for (const [i, n] of names.entries()) if (Object.values(KINDS).includes(n)) names[i] = n.toLowerCase();
-  return `${names.slice(0, -1).join(", ")} or ${names.at(-1)}`;
+  for (const [i, n] of names.entries()) if (kinds.has(n)) names[i] = n.toLocaleLowerCase();
+  return getString("file-upload.types", el, { list: names.slice(0, -1).join(", "), last: names.at(-1) });
 }
 
 export class RayFileUpload extends FormControl {
@@ -220,10 +249,10 @@ export class RayFileUpload extends FormControl {
     maxSize: { type: String, attribute: "max-size" },
     maxFiles: { type: Number, attribute: "max-files" },
     hint: { type: String },
-    dropLabel: { type: String, attribute: "drop-label", default: "Drag files here" },
-    browseLabel: { type: String, attribute: "browse-label", default: "browse" },
-    activeLabel: { type: String, attribute: "active-label", default: "Drop to add files" },
-    tapLabel: { type: String, attribute: "tap-label", default: "Choose files" },
+    dropLabel: { type: String, attribute: "drop-label", string: "file-upload.drop" },
+    browseLabel: { type: String, attribute: "browse-label", string: "file-upload.browse" },
+    activeLabel: { type: String, attribute: "active-label", string: "file-upload.active" },
+    tapLabel: { type: String, attribute: "tap-label", string: "file-upload.tap" },
     variant: { type: String, reflect: true, default: "default" },
     list: { type: String, reflect: true, default: "rows" },
     color: { type: String, reflect: true },
@@ -331,7 +360,7 @@ export class RayFileUpload extends FormControl {
       const files = await getHost().pickFiles({
         title: this.label ?? "",
         multiple: Boolean(this.multiple),
-        filters: acceptFilters(this.accept, describeAccept(this.accept)),
+        filters: acceptFilters(this.accept, describeAccept(this.accept, this)),
       });
       if (files.length) this.#take(files);
     } catch (e) {
@@ -393,7 +422,7 @@ export class RayFileUpload extends FormControl {
       if (!matchesAccept(file, this.accept)) {
         rejected.push({ file, reason: "type", message: `${file.name} isn't an accepted file type.` });
       } else if (max > 0 && file.size > max) {
-        rejected.push({ file, reason: "size", message: `${file.name} is larger than ${formatBytes(max)}.` });
+        rejected.push({ file, reason: "size", message: this.t("file-upload.too-large", { name: file.name, size: formatBytes(max) }) });
       } else {
         accepted.push(file);
       }
@@ -402,14 +431,14 @@ export class RayFileUpload extends FormControl {
     if (!this.multiple) {
       // One file: the newest valid one replaces what was there.
       accepted.splice(0, accepted.length - 1).forEach((file) =>
-        rejected.push({ file, reason: "count", message: "Only one file can be added." }));
+        rejected.push({ file, reason: "count", message: this.t("file-upload.only-one") }));
       if (accepted.length) removed.push(...this.#files);
     } else {
       const room = this.#limit - this.#files.length;
       if (accepted.length > room) {
         const n = this.#limit;
         for (const file of accepted.splice(Math.max(0, room))) {
-          rejected.push({ file, reason: "count", message: `Up to ${n} ${n === 1 ? "file" : "files"} can be added.` });
+          rejected.push({ file, reason: "count", message: this.t("file-upload.max", { count: n }) });
         }
       }
     }
@@ -489,21 +518,21 @@ export class RayFileUpload extends FormControl {
     if (items.length === 0) return "";
     if (this.multiple && items.length > this.#limit - this.#files.length) {
       const room = Math.max(0, this.#limit - this.#files.length);
-      return room === 0 ? "No more files can be added" : `Only ${room} more ${room === 1 ? "file" : "files"}`;
+      return room === 0 ? this.t("file-upload.full") : this.t("file-upload.room", { count: room });
     }
     const list = acceptList(this.accept);
     if (list.length === 0 || list.some((a) => a.startsWith("."))) return "";
     const refused = items.every((i) => i.type && !list.some((a) => matchesType(i.type.toLowerCase(), a)));
-    return refused ? "File type not allowed" : "";
+    return refused ? this.t("file-upload.refused") : "";
   }
 
   #autoHint() {
     const parts = [];
-    const types = describeAccept(this.accept);
+    const types = describeAccept(this.accept, this);
     if (types) parts.push(types);
     const max = parseSize(this.maxSize);
-    if (max > 0) parts.push(`up to ${formatBytes(max)}${this.multiple ? " each" : ""}`);
-    if (this.multiple && this.maxFiles > 0) parts.push(`max. ${Math.floor(this.maxFiles)} files`);
+    if (max > 0) parts.push(this.t(this.multiple ? "file-upload.hint-size-each" : "file-upload.hint-size", { size: formatBytes(max) }));
+    if (this.multiple && this.maxFiles > 0) parts.push(this.t("file-upload.hint-max", { count: Math.floor(this.maxFiles) }));
     return parts.join(" · ");
   }
 
@@ -522,7 +551,7 @@ export class RayFileUpload extends FormControl {
     const dragging = this.hasAttribute("data-dragging");
     const refused = dragging && this.hasAttribute("data-reject");
     if (refused) {
-      title.textContent = this.#refusal || "File type not allowed";
+      title.textContent = this.#refusal || this.t("file-upload.refused");
     } else if (dragging) {
       title.textContent = this.activeLabel;
     } else {
@@ -542,7 +571,7 @@ export class RayFileUpload extends FormControl {
       title.replaceChildren(drop, or, tap);
     }
     this.$(".hint").textContent = this.hint ?? this.#autoHint();
-    const word = this.browseLabel ?? "browse";
+    const word = this.browseLabel || this.t("file-upload.browse");
     this.$(".button").textContent = word.charAt(0).toUpperCase() + word.slice(1);
 
     const input = this.input;
@@ -579,7 +608,7 @@ export class RayFileUpload extends FormControl {
       this.internals.setFormValue(null);
     }
     if (this.required && this.#files.length === 0) {
-      this.internals.setValidity({ valueMissing: true }, "Select at least one file.", this.zone);
+      this.internals.setValidity({ valueMissing: true }, this.t("file-upload.required"), this.zone);
     } else {
       this.internals.setValidity({});
     }

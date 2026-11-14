@@ -36,6 +36,10 @@
       "types": "./check/check.d.ts",
       "default": "./check/check.js"
     },
+    "./strings/*": {
+      "types": "./strings/strings.d.ts",
+      "default": "./strings/*.js"
+    },
     "./button": {
       "types": "./ray-elements.d.ts",
       "default": "./components/button/button.js"

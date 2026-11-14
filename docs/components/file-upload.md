@@ -21,10 +21,10 @@ Properties:
 - `maxSize` (attribute `max-size`): `string | number`. Largest file: bytes or a size like "10 MB", "512 KB".
 - `maxFiles` (attribute `max-files`): number. With multiple: the most files kept.
 - `hint`: string. Small text in the zone. Default: from accept, max-size and max-files ("PNG or PDF · up to 10 MB each · max. 5 files").
-- `dropLabel` (attribute `drop-label`): string, default `Drag files here`. Title of the zone, before "or browse".
-- `browseLabel` (attribute `browse-label`): string, default `browse`. The link-styled word (the button text in compact).
-- `activeLabel` (attribute `active-label`): string, default `Drop to add files`. Title while files are dragged over it.
-- `tapLabel` (attribute `tap-label`): string, default `Choose files`. Title on touch screens (no hover), where dragging files is rare.
+- `dropLabel` (attribute `drop-label`): string, default `Drag files here` (text `file-upload.drop`). Title of the zone, before "or browse".
+- `browseLabel` (attribute `browse-label`): string, default `browse` (text `file-upload.browse`). The link-styled word (the button text in compact).
+- `activeLabel` (attribute `active-label`): string, default `Drop to add files` (text `file-upload.active`). Title while files are dragged over it.
+- `tapLabel` (attribute `tap-label`): string, default `Choose files` (text `file-upload.tap`). Title on touch screens (no hover), where dragging files is rare.
 - `variant`: `default` | `compact`, default `default`, reflects. default: a tall centered zone; compact: one row with a Browse button.
 - `list`: `rows` | `cards` | `none`, default `rows`, reflects. How chosen files show: full-width rows, thumbnail cards, or not at all (render your own on change).
 - `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), browsing opens the system dialog and gives paths (see `paths`); drop and paste still give Files.
@@ -70,6 +70,28 @@ Types:
 
 - `{ added: (File | HostFile)[]; removed: (File | HostFile)[] }`: The files a change added and removed.
 - `{ file: File; reason: "type" | "size" | "count"; message: string }`: A refused file and why.
+
+Texts (`setStrings`; English):
+
+- `file-upload.drop`: Drag files here
+- `file-upload.browse`: browse
+- `file-upload.active`: Drop to add files
+- `file-upload.tap`: Choose files
+- `file-upload.images`: Images
+- `file-upload.videos`: Videos
+- `file-upload.audio`: Audio
+- `file-upload.text`: Text files
+- `file-upload.types`: {list} or {last}
+- `file-upload.too-large`: {name} is larger than {size}.
+- `file-upload.only-one`: Only one file can be added.
+- `file-upload.max`: { one: "Up to {count} file can be added.", other: "Up to {count} files can be added." }
+- `file-upload.full`: No more files can be added
+- `file-upload.room`: { one: "Only {count} more file", other: "Only {count} more files" }
+- `file-upload.refused`: File type not allowed
+- `file-upload.required`: Select at least one file.
+- `file-upload.hint-size`: up to {size}
+- `file-upload.hint-size-each`: up to {size} each
+- `file-upload.hint-max`: { one: "max. {count} file", other: "max. {count} files" }
 
 ## In a raylang app
 

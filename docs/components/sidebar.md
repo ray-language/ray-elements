@@ -18,12 +18,12 @@ Properties:
 - `width`: string. Width when expanded (CSS length). Default 16rem.
 - `collapsedWidth` (attribute `collapsed-width`): string. Width of the icon rail. Default 3.5rem.
 - `breakpoint`: string, default `48em`. At this viewport width and below, it becomes a drawer.
-- `label`: string, default `Sidebar`. Accessible name of its navigation.
+- `label`: string, default `Sidebar` (text `sidebar.label`). Accessible name of its navigation.
 - `resizable`: boolean, reflects. Wide screens, expanded: its inner edge drags (or, focused, arrow-keys; Shift is faster, Home/End go to the limits) the width between min-width and max-width.
 - `minWidth` (attribute `min-width`): number, default `192`. Narrowest width when resizing, in px.
 - `maxWidth` (attribute `max-width`): number, default `480`. Widest width when resizing, in px.
 - `autosave`: string. A key: the resized width is saved in localStorage and restored. A later change of width wins.
-- `resizeLabel` (attribute `resize-label`): string, default `Resize sidebar`. Accessible name of the resize edge.
+- `resizeLabel` (attribute `resize-label`): string, default `Resize sidebar` (text `sidebar.resize`). Accessible name of the resize edge.
 
 Events:
 
@@ -68,6 +68,11 @@ Parts (`::part()`):
 
 - `label`: The title.
 - `items`: The links container.
+
+Texts (`setStrings`; English):
+
+- `sidebar.label`: Sidebar
+- `sidebar.resize`: Resize sidebar
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

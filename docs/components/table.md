@@ -25,7 +25,7 @@ Properties:
 - `noHover` (attribute `no-hover`): boolean, reflects. No row highlight on hover.
 - `density`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. Cell padding.
 - `label`: string. Caption (also the table's accessible name).
-- `emptyLabel` (attribute `empty-label`): string, default `No data`. Text without rows (or put a ray-empty-state in slot=empty).
+- `emptyLabel` (attribute `empty-label`): string, default `No data` (text `table.empty`). Text without rows (or put a ray-empty-state in slot=empty).
 
 Events:
 
@@ -50,6 +50,12 @@ Types:
 
 - `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
 - `{ key: string; direction: "asc" | "desc" }`: The sort state of ray-table.
+
+Texts (`setStrings`; English):
+
+- `table.empty`: No data
+- `table.select-all`: Select all rows
+- `table.select-row`: Select row {index}
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

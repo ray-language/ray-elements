@@ -13,15 +13,15 @@ Properties:
 - `open`: boolean, reflects. Shown.
 - `actions` (property only): `CommandAction[]`. The actions.
 - `query`: string. The search text.
-- `placeholder`: string, default `Search commands…`. Placeholder of the search field.
+- `placeholder`: string, default `Search commands…` (text `command-palette.placeholder`). Placeholder of the search field.
 - `hotkey`: string, default `mod+k`. Toggle shortcut (mod = ⌘ on macOS, Ctrl elsewhere); empty to disable.
 - `limit`: number, default `50`. Maximum results.
-- `emptyLabel` (attribute `empty-label`): string, default `Nothing found`. Text without results.
-- `label`: string, default `Command palette`. Accessible name.
+- `emptyLabel` (attribute `empty-label`): string, default `Nothing found` (text `command-palette.empty`). Text without results.
+- `label`: string, default `Command palette` (text `command-palette.label`). Accessible name.
 - `hideHint` (attribute `hide-hint`): boolean, reflects. No keyboard hint at the bottom.
-- `navigateLabel` (attribute `navigate-label`): string, default `navigate`. The keyboard hint's word for ↑↓.
-- `runLabel` (attribute `run-label`): string, default `run`. The keyboard hint's word for ↵.
-- `closeLabel` (attribute `close-label`): string, default `close`. The keyboard hint's word for esc.
+- `navigateLabel` (attribute `navigate-label`): string, default `navigate` (text `command-palette.navigate`). The keyboard hint's word for ↑↓.
+- `runLabel` (attribute `run-label`): string, default `run` (text `command-palette.run`). The keyboard hint's word for ↵.
+- `closeLabel` (attribute `close-label`): string, default `close` (text `command-palette.close`). The keyboard hint's word for esc.
 - `nativeMenus` (attribute `native-menus`): boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
@@ -53,6 +53,16 @@ Exports (from `@raylang/elements/command-palette` and `@raylang/elements`):
 Types:
 
 - `{ id?: string; label: string; description?: string; group?: string; keywords?: string | string[]; shortcut?: string; icon?: string | Node; prefix?: string | Node; disabled?: boolean; native?: boolean; tag?: string; onSelect?: (action: CommandAction) => void }`: An action of ray-command-palette. icon is a 1.25rem square (a registered icon name, text or a Node); prefix is content of any width before the label (text or a Node, e.g. a ray-badge with an HTTP method), not searched.
+
+Texts (`setStrings`; English):
+
+- `command-palette.label`: Command palette
+- `command-palette.placeholder`: Search commands…
+- `command-palette.empty`: Nothing found
+- `command-palette.navigate`: navigate
+- `command-palette.run`: run
+- `command-palette.close`: close
+- `command-palette.shortcut`: Shortcut {shortcut}
 
 ## In a raylang app
 

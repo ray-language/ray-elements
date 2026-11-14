@@ -25,7 +25,7 @@ description = "Latest selectable date (ISO)."
 
 [ray-date-picker.properties.placeholder]
 type = "string"
-default = "Pick a date"
+string = "date-picker.placeholder"
 description = "Shown while no date is chosen."
 
 [ray-date-picker.properties.format]

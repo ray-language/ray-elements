@@ -95,6 +95,17 @@ Types:
 - `"hex" | "hexa" | "rgb" | "rgba" | "hsl" | "hsla"`: How a color value is written.
 - `{ r: number; g: number; b: number; a: number }`: sRGB channels and alpha, all 0…1.
 
+Texts (`setStrings`; English):
+
+- `color-picker.saturation`: Saturation and brightness
+- `color-picker.saturation-value`: Saturation {saturation}%, brightness {brightness}%
+- `color-picker.hue`: Hue
+- `color-picker.hue-value`: {hue} degrees
+- `color-picker.opacity`: Opacity
+- `color-picker.swatches`: Swatches
+- `color-picker.eyedropper`: Pick a color from the screen
+- `color-picker.dropdown`: Choose a color
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

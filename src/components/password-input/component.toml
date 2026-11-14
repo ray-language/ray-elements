@@ -19,13 +19,13 @@ description = "The password is shown as text."
 [ray-password-input.properties.showLabel]
 attribute = "show-label"
 type = "string"
-default = "Show password"
+string = "password-input.show"
 description = "Accessible name of the toggle while hidden."
 
 [ray-password-input.properties.hideLabel]
 attribute = "hide-label"
 type = "string"
-default = "Hide password"
+string = "password-input.hide"
 description = "Accessible name of the toggle while shown."
 
 [ray-password-input.events.ray-visibility-change]

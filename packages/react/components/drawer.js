@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayDrawer = /*#__PURE__*/ createComponent("ray-drawer", {
   displayName: "RayDrawer",
-  properties: ["open", "label", "description", "position", "size", "modeless", "floating", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "position", "size", "modeless", "floating", "persistent", "hideClose", "closeLabel", "overlayBlur"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close", onRayRequestClose: "ray-request-close" },
 });

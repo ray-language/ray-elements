@@ -1,9 +1,15 @@
 // <ray-alert>: an inline message (Mantine's Alert) — title, text, an icon
 // from the registry, the color variants, and an optional close button.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { motionAllowed, collapseOut } from "../../core/motion.js";
 import { applyColor, radiusStyles, variantStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "alert.close": "Dismiss",
+};
+defineStrings(STRINGS);
 
 // The icon a color gets when `icon` is not set (any registered name works).
 const ICON_BY_COLOR = { blue: "info", cyan: "info", indigo: "info", green: "circle-check", teal: "circle-check", yellow: "alert-triangle", orange: "alert-triangle", red: "circle-x", pink: "circle-x" };
@@ -57,7 +63,7 @@ export class RayAlert extends RayElement {
     radius: { type: String, reflect: true },
     icon: { type: String, reflect: true },
     closable: { type: Boolean, reflect: true },
-    closeLabel: { type: String, default: "Dismiss" },
+    closeLabel: { type: String, string: "alert.close" },
   };
   static styles = [radiusStyles, variantStyles, styles];
   static template = `
@@ -105,7 +111,7 @@ export class RayAlert extends RayElement {
     this.$(".icon").hidden = this.icon === "none" && !slotted;
     const close = this.$(".close");
     close.hidden = !this.closable;
-    close.setAttribute("aria-label", this.closeLabel ?? "Dismiss");
+    close.setAttribute("aria-label", this.closeLabel || this.t("alert.close"));
     this.internals.ariaLabel = this.label || null;
   }
 }

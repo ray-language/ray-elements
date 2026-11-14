@@ -2,8 +2,17 @@
 // optional first/last, page numbers with ellipses. The number of items stays
 // the same while moving through the pages, so the control does not jump.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor, sizeStyles, radiusStyles, variantStyles } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "pagination.label": "Pagination",
+  "pagination.previous": "Previous page",
+  "pagination.next": "Next page",
+  "pagination.page": "Page {page}",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host { display: block; }
@@ -89,7 +98,7 @@ export class RayPagination extends RayElement {
     disabled: { type: Boolean, reflect: true },
     withEdges: { type: Boolean, reflect: true },
     hideControls: { type: Boolean, reflect: true },
-    label: { type: String, default: "Pagination" },
+    label: { type: String, string: "pagination.label" },
   };
   static styles = [sizeStyles, radiusStyles, variantStyles, styles];
   static template = `<nav part="root"><ul class="list" part="list"></ul></nav>`;
@@ -131,7 +140,7 @@ export class RayPagination extends RayElement {
   }
 
   update() {
-    this.$("nav").setAttribute("aria-label", this.label || "Pagination");
+    this.$("nav").setAttribute("aria-label", this.label || this.t("pagination.label"));
     const total = Math.max(0, this.total || 0);
     const page = this.page;
     const list = this.$(".list");
@@ -140,13 +149,13 @@ export class RayPagination extends RayElement {
     const control = (role, target, icon, label, off) => ({ kind: "control", role, target, icon, label, off });
     if (!this.hideControls) {
       if (this.withEdges) items.push(control("first", 1, "ui.first", "First page", page <= 1));
-      items.push(control("previous", page - 1, "ui.previous", "Previous page", page <= 1));
+      items.push(control("previous", page - 1, "ui.previous", this.t("pagination.previous"), page <= 1));
     }
     for (const it of paginationRange(total, page, this.siblings ?? 1, this.boundaries ?? 1)) {
       items.push(it === "dots" ? { kind: "dots" } : { kind: "page", target: it });
     }
     if (!this.hideControls) {
-      items.push(control("next", page + 1, "ui.next", "Next page", page >= total));
+      items.push(control("next", page + 1, "ui.next", this.t("pagination.next"), page >= total));
       if (this.withEdges) items.push(control("last", total, "ui.last", "Last page", page >= total));
     }
     list.replaceChildren(...items.map((it) => this._item(it, page)));
@@ -172,7 +181,7 @@ export class RayPagination extends RayElement {
       b.setAttribute("part", active ? "item active" : "item");
       b.dataset.variant = active ? "filled" : "default";
       b.textContent = String(it.target);
-      b.setAttribute("aria-label", `Page ${it.target}`);
+      b.setAttribute("aria-label", this.t("pagination.page", { page: it.target }));
       if (active) b.setAttribute("aria-current", "page");
       b.disabled = Boolean(this.disabled);
       if (!(active && b.disabled)) b.setAttribute("data-interactive", "");

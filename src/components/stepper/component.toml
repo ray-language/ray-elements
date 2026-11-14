@@ -57,7 +57,7 @@ description = "A palette color or any CSS color for active and completed steps (
 
 [ray-stepper.properties.label]
 type = "string"
-default = "Progress"
+string = "stepper.label"
 description = "Accessible name of the list of steps."
 
 [ray-stepper.events.change]

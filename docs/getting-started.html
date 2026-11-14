@@ -57,6 +57,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/form.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/color.js" fetchpriority="low">
 <link rel="modulepreload" href="../src/core/direction.js" fetchpriority="low">
 <script type="module" blocking="render">import "../src/components/icon-button/icon-button.js"; import "../src/components/select/select.js"; import "../src/components/icon/icon.js"; import "../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
@@ -398,10 +399,41 @@ bottom left.</li>
 </ul>
 
 <p>What stays left to right: <code>ray-code</code> (code is left to right in any language)
-and the color picker (a color space is a picture, not text). The translated
-texts (<code>label</code>, <code>close-label</code>, the command palette's hint words, the
-calendar's <code>locale</code>) are yours to give.
+and the color picker (a color space is a picture, not text).
 To see it, the site's <strong>RTL</strong> button shows every example right to left.</p>
+
+<h3 id="languages">Languages</h3>
+<p>What the components write themselves (a close button's name, &quot;No matches&quot;,
+&quot;Page 3 of 10&quot;, &quot;The minimum is 5.&quot;) comes from a catalog of texts, English
+by default. Set another one once and every element follows, the ones
+already on the page too:</p>
+
+<pre class="code"><code><span class="tk-keyword">import</span> { setStrings } <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements/core&quot;</span>;
+<span class="tk-keyword">import</span> es <span class="tk-keyword">from</span> <span class="tk-string">&quot;@raylang/elements/strings/es&quot;</span>;
+
+setStrings(es);          <span class="tk-comment">// every element, whatever its lang</span>
+setStrings(<span class="tk-string">&quot;es&quot;</span>, es);    <span class="tk-comment">// or only where lang=&quot;es&quot; (also &quot;es-AR&quot;, &quot;es-MX&quot;)</span></code></pre>
+<ul>
+<li>An element reads its nearest <code>lang</code> attribute (through shadow roots), so
+one page can mix languages; <code>&lt;html lang=&quot;…&quot;&gt;</code> sets the page's. A <code>lang</code>
+changed later applies at once.</li>
+<li>The lookup: the catalog of the element's language, then its language
+without the region, then the catalog set for any language, then English.</li>
+<li>An attribute still wins for one element: <code>&lt;ray-dialog close-label=&quot;…&quot;&gt;</code>,
+<code>&lt;ray-avatar-picker pick-label=&quot;…&quot;&gt;</code>. The properties read the catalog
+when unset (<code>dialog.closeLabel</code> is &quot;Cerrar&quot; under <code>lang=&quot;es&quot;</code>).</li>
+<li>Ships with Spanish (<code>strings/es</code>). For another language, give the keys
+you need: <code>setStrings(&quot;fr&quot;, { &quot;dialog.close&quot;: &quot;Fermer&quot; })</code>; the rest stay
+English. Each component's page lists its keys (&quot;Texts&quot;), and
+<code>stringKeys()</code> those of the components loaded, with their English. A
+catalog set before a component loads applies to it too. A text with a number has plural
+forms, chosen by <code>Intl.PluralRules</code>:
+<code>{ one: &quot;{count} file&quot;, other: &quot;{count} files&quot; }</code>.</li>
+<li>Dates and numbers already follow <code>lang</code> (<code>Intl</code>): the calendar's months
+and first day of the week, <code>ray-number-input</code>'s spoken durations,
+<code>ray-step-dots</code>. The texts you write (<code>label</code>, <code>placeholder</code>,
+<code>description</code>, <code>error</code>) are yours to translate with your app's i18n.</li>
+</ul>
 
 <h2 id="commands">Commands</h2>
 <p>From anywhere (<code>tools/run.sh</code> runs them from <code>tools/</code>; paths stay yours):</p>

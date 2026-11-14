@@ -65,6 +65,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/motion.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/checkbox/checkbox.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/color.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/textlayer.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/complete.js" fetchpriority="low">
@@ -390,11 +391,14 @@ if (location.protocol === "file:") window.__rayServeHint();
 <p class="api-markdown">For AI agents: <a href="path-input.md">this API as Markdown</a>, or every component in <a href="../llms-full.txt">llms-full.txt</a>.</p>
 <p class="tag"><code>&lt;ray-path-input&gt;</code> &middot; <code>RayPathInput</code></p>
 <p class="note">Browse… shows only with a native host that offers pick_path (see core/host.js); the dialog starts in the folder of the current path. The path can always be typed or pasted.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>mode</code></td><td><code>mode</code> <span class="reflects">reflects</span></td><td><code>open</code> | <code>folder</code> | <code>save</code></td><td><code>open</code></td><td>What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).</td></tr><tr><td><code>accept</code></td><td><code>accept</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>File types the dialog offers, as in &lt;input type=file&gt;: &quot;.json,.toml&quot;, &quot;image/*&quot; (ignored for folders).</td></tr><tr><td><code>browseLabel</code></td><td><code>browse-label</code></td><td>string</td><td><code>Browse…</code></td><td>Text of the button.</td></tr><tr><td><code>dialogTitle</code></td><td><code>dialog-title</code></td><td>string</td><td></td><td>Title of the system dialog (default: the label).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>mode</code></td><td><code>mode</code> <span class="reflects">reflects</span></td><td><code>open</code> | <code>folder</code> | <code>save</code></td><td><code>open</code></td><td>What the dialog chooses: an existing file, a folder, or a file to save (the current name is suggested).</td></tr><tr><td><code>accept</code></td><td><code>accept</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>File types the dialog offers, as in &lt;input type=file&gt;: &quot;.json,.toml&quot;, &quot;image/*&quot; (ignored for folders).</td></tr><tr><td><code>browseLabel</code></td><td><code>browse-label</code></td><td>string</td><td><code>Browse…</code> <span class="text-key">(text <code>path-input.browse</code>)</span></td><td>Text of the button.</td></tr><tr><td><code>dialogTitle</code></td><td><code>dialog-title</code></td><td>string</td><td></td><td>Title of the system dialog (default: the label).</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>change</code></td><td>The path changed: typed and committed, or chosen in the dialog.</td></tr><tr><td><code>ray-error</code></td><td>The system dialog failed.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>browse</code></td><td>The Browse… button.</td></tr></tbody></table></div>
+<h3 id="path-input-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>path-input.browse</code></td><td>Browse…</td></tr></tbody></table></div>
 </section>
 <nav class="pager" aria-label="Components"><a class="pager-prev" href="password-input.html"><small>Previous</small>Password input</a><a class="pager-next" href="radio.html"><small>Next</small>Radio group</a></nav>
 </main>

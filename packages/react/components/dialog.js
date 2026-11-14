@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RayDialog = /*#__PURE__*/ createComponent("ray-dialog", {
   displayName: "RayDialog",
-  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "overlayBlur"],
+  properties: ["open", "label", "description", "size", "height", "radius", "position", "persistent", "hideClose", "closeLabel", "overlayBlur"],
   events: { onRayOpen: "ray-open", onRayClose: "ray-close", onRayRequestClose: "ray-request-close" },
 });

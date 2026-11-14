@@ -17,7 +17,7 @@ Properties:
 - `linear`: boolean, default `true`. With allow-step-select off, false lets the user jump to any step.
 - `size`: `sm` | `md` | `lg`, default `md`, reflects. Size of the numbers.
 - `color`: string, reflects. A palette color or any CSS color for active and completed steps (default: primary).
-- `label`: string, default `Progress`. Accessible name of the list of steps.
+- `label`: string, default `Progress` (text `stepper.label`). Accessible name of the list of steps.
 
 Events:
 
@@ -63,6 +63,12 @@ Properties:
 Slots:
 
 - (default): The content shown while it is active.
+
+Texts (`setStrings`; English):
+
+- `stepper.label`: Progress
+- `stepper.step`: Step {index}
+- `stepper.position`: Step {index} of {count}: 
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

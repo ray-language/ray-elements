@@ -1,11 +1,17 @@
 // <ray-input>: a text field with label, description and error (Mantine's
 // TextInput). Takes part in <form> under `name`.
 
-import { css, define } from "../../core/core.js";
+import { css, define, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles } from "../../core/styles.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
 import { syncHighlight, textLayerStyles } from "../../core/textlayer.js";
 import { syncComplete, completeStyles } from "../../core/complete.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "input.suggestions": "Suggestions",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .control[type="search"]::-webkit-search-cancel-button { cursor: pointer; }
@@ -31,7 +37,7 @@ export class RayInput extends FieldControl {
     autofocus: { type: Boolean },
     highlight: { attribute: false },
     complete: { attribute: false },
-    suggestionsLabel: { type: String, default: "Suggestions" },
+    suggestionsLabel: { type: String, string: "input.suggestions" },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, textLayerStyles, completeStyles, styles];
   static template = fieldTemplate(`<input id="control" class="control" part="input">`);

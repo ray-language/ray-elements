@@ -15,10 +15,17 @@
 // <ray-sidebar-group label="Projects">: a titled section of nav links; the
 // title hides when the sidebar collapses.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { overlayStyles } from "../../core/styles.js";
 import { isRtl } from "../../core/direction.js";
 import { play, playAll } from "../../core/motion.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "sidebar.label": "Sidebar",
+  "sidebar.resize": "Resize sidebar",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   :host {
@@ -121,12 +128,12 @@ export class RaySidebar extends RayElement {
     width: { type: String },
     collapsedWidth: { type: String },
     breakpoint: { type: String, default: "48em" },
-    label: { type: String, default: "Sidebar" },
+    label: { type: String, string: "sidebar.label" },
     resizable: { type: Boolean, reflect: true },
     minWidth: { type: Number, default: 192 },
     maxWidth: { type: Number, default: 480 },
     autosave: { type: String },
-    resizeLabel: { type: String, default: "Resize sidebar" },
+    resizeLabel: { type: String, string: "sidebar.resize" },
   };
   static styles = [overlayStyles, styles];
   static template = `
@@ -238,13 +245,13 @@ export class RaySidebar extends RayElement {
     if (this._px !== null) this.style.setProperty("--_w", `${this._clamp(this._px)}px`);
     else if (this.width) this.style.setProperty("--_w", this.width);
     else this.style.removeProperty("--_w");
-    this.resizer.setAttribute("aria-label", this.resizeLabel ?? "Resize sidebar");
+    this.resizer.setAttribute("aria-label", this.resizeLabel || this.t("sidebar.resize"));
     this.resizer.setAttribute("aria-valuemin", String(this.minWidth ?? 0));
     this.resizer.setAttribute("aria-valuemax", String(this.maxWidth ?? 0));
     queueMicrotask(() => this.resizer.setAttribute("aria-valuenow", String(Math.round(this._width()))));
     if (this.collapsedWidth) this.style.setProperty("--_rail", this.collapsedWidth);
     else this.style.removeProperty("--_rail");
-    this.$(".content").setAttribute("aria-label", this.label ?? "Sidebar");
+    this.$(".content").setAttribute("aria-label", this.label || this.t("sidebar.label"));
     if (changed.has("breakpoint") && this.isConnected) this._watch();
     if (changed.has("collapsed") || changed.has("collapse")) this._syncCollapsed();
     if (changed.has("open") && this.mobile) {

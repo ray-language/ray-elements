@@ -9,9 +9,16 @@
 // The value is an array of strings (the attribute: "a,b"); the form gets one
 // entry per tag. No two tags are the same, case and accents aside.
 
-import { css, define, uid } from "../../core/core.js";
+import { css, define, uid, defineStrings } from "../../core/core.js";
 import { sizeStyles, radiusStyles, chipStyles } from "../../core/styles.js";
 import { FieldControl, fieldStyles, boxStyles, fieldTemplate } from "../../core/form.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "tags-input.remove": "Remove {label}",
+  "tags-input.suggestions": "Suggestions",
+};
+defineStrings(STRINGS);
 
 const styles = css`
   .box { flex-wrap: wrap; gap: 0.25rem; padding-inline: calc(var(--_px) * 0.66 - 0.25rem); cursor: text; }
@@ -73,7 +80,7 @@ export class RayTagsInput extends FieldControl {
     placeholder: { type: String },
     max: { type: Number },
     suggestionsLimit: { type: Number, attribute: "suggestions-limit", default: 6 },
-    suggestionsLabel: { type: String, attribute: "suggestions-label", default: "Suggestions" },
+    suggestionsLabel: { type: String, attribute: "suggestions-label", string: "tags-input.suggestions" },
     separators: { type: String, default: "," },
   };
   static styles = [sizeStyles, radiusStyles, fieldStyles, boxStyles, chipStyles, styles];
@@ -255,7 +262,7 @@ export class RayTagsInput extends FieldControl {
       b.tabIndex = -1;
       b.dataset.value = v;
       b.setAttribute("part", "tag-remove");
-      b.setAttribute("aria-label", `Remove ${this._labelOf(v)}`);
+      b.setAttribute("aria-label", this.t("tags-input.remove", { label: this._labelOf(v) }));
       b.disabled = this.effectivelyDisabled;
       b.innerHTML = `<span data-ray-icon="ui.remove"></span>`;
       chip.append(t, b);
@@ -277,7 +284,7 @@ export class RayTagsInput extends FieldControl {
   _renderSuggestions() {
     const list = this.$(".suggestions");
     const values = this.suggestions;
-    list.setAttribute("aria-label", this.suggestionsLabel ?? "Suggestions");
+    list.setAttribute("aria-label", this.suggestionsLabel || this.t("tags-input.suggestions"));
     // The focused suggestion keeps the focus if it is still there after the
     // change; else the focus moves to the next one (a keyboard user adding several).
     const focused = this.shadowRoot.activeElement?.closest?.(".suggestion");

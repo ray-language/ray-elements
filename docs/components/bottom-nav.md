@@ -11,7 +11,7 @@ With href items it marks the link to this page (aria-current="page"); without, i
 Properties:
 
 - `value`: string, reflects. The current destination (an item's value, else its href, else its label).
-- `label`: string, default `Main`. Accessible name of the navigation.
+- `label`: string, default `Main` (text `bottom-nav.label`). Accessible name of the navigation.
 - `labels`: `always` | `active` | `never`, default `always`, reflects. Which labels show (the others stay for assistive technology).
 - `indicator`: `pill` | `line` | `none`, default `pill`, reflects. How the current destination is marked besides its color.
 - `color`: string, reflects. A palette color or any CSS color for the current item and the action (default: primary).
@@ -65,6 +65,12 @@ Parts (`::part()`):
 - `indicator`: The pill behind the icon.
 - `badge`: The badge.
 - `label`: The label.
+
+Texts (`setStrings`; English):
+
+- `bottom-nav.label`: Main
+- `bottom-nav.badge`: {label}, {badge}
+- `bottom-nav.dot`: {label}, new
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 

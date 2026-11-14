@@ -37,7 +37,7 @@ description = "The search text."
 
 [ray-command-palette.properties.placeholder]
 type = "string"
-default = "Search commands…"
+string = "command-palette.placeholder"
 description = "Placeholder of the search field."
 
 [ray-command-palette.properties.hotkey]
@@ -53,12 +53,12 @@ description = "Maximum results."
 [ray-command-palette.properties.emptyLabel]
 attribute = "empty-label"
 type = "string"
-default = "Nothing found"
+string = "command-palette.empty"
 description = "Text without results."
 
 [ray-command-palette.properties.label]
 type = "string"
-default = "Command palette"
+string = "command-palette.label"
 description = "Accessible name."
 
 [ray-command-palette.properties.hideHint]
@@ -70,19 +70,19 @@ description = "No keyboard hint at the bottom."
 [ray-command-palette.properties.navigateLabel]
 attribute = "navigate-label"
 type = "string"
-default = "navigate"
+string = "command-palette.navigate"
 description = "The keyboard hint's word for ↑↓."
 
 [ray-command-palette.properties.runLabel]
 attribute = "run-label"
 type = "string"
-default = "run"
+string = "command-palette.run"
 description = "The keyboard hint's word for ↵."
 
 [ray-command-palette.properties.closeLabel]
 attribute = "close-label"
 type = "string"
-default = "close"
+string = "command-palette.close"
 description = "The keyboard hint's word for esc."
 
 [ray-command-palette.properties.nativeMenus]

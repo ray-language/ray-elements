@@ -66,25 +66,25 @@ description = "Small text in the zone. Default: from accept, max-size and max-fi
 [ray-file-upload.properties.dropLabel]
 attribute = "drop-label"
 type = "string"
-default = "Drag files here"
+string = "file-upload.drop"
 description = "Title of the zone, before \"or browse\"."
 
 [ray-file-upload.properties.browseLabel]
 attribute = "browse-label"
 type = "string"
-default = "browse"
+string = "file-upload.browse"
 description = "The link-styled word (the button text in compact)."
 
 [ray-file-upload.properties.activeLabel]
 attribute = "active-label"
 type = "string"
-default = "Drop to add files"
+string = "file-upload.active"
 description = "Title while files are dragged over it."
 
 [ray-file-upload.properties.tapLabel]
 attribute = "tap-label"
 type = "string"
-default = "Choose files"
+string = "file-upload.tap"
 description = "Title on touch screens (no hover), where dragging files is rare."
 
 [ray-file-upload.properties.variant]

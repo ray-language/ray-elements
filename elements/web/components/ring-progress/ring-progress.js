@@ -5,8 +5,14 @@
 // 12 o'clock clockwise; r is a CSS length (half the box minus half the
 // stroke), so any size and thickness need no viewBox arithmetic.
 
-import { RayElement, css, define } from "../../core/core.js";
+import { RayElement, css, define, defineStrings } from "../../core/core.js";
 import { applyColor } from "../../core/styles.js";
+
+// The texts it writes, in English (setStrings translates them; one per line: the tools read them).
+const STRINGS = {
+  "ring-progress.label": "Progress",
+};
+defineStrings(STRINGS);
 
 const SIZES = { xs: "3rem", sm: "5rem", md: "7.5rem", lg: "10rem", xl: "12.5rem" };
 
@@ -112,7 +118,7 @@ export class RayRingProgress extends RayElement {
     i.ariaValueMax = String(max);
     i.ariaValueNow = indeterminate ? null : String(this.value);
     i.ariaValueText = indeterminate ? null : `${Math.round(pct)}%`;
-    i.ariaLabel = this.label || this.getAttribute("aria-label") || "Progress";
+    i.ariaLabel = this.label || this.getAttribute("aria-label") || this.t("ring-progress.label");
   }
 
   connectedCallback() {

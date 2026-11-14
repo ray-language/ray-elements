@@ -27,7 +27,7 @@ description = "File types the dialog offers, as in <input type=file>: \".json,.t
 [ray-path-input.properties.browseLabel]
 attribute = "browse-label"
 type = "string"
-default = "Browse…"
+string = "path-input.browse"
 description = "Text of the button."
 
 [ray-path-input.properties.dialogTitle]

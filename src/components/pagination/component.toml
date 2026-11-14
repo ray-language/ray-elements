@@ -67,7 +67,7 @@ description = "Not interactive."
 
 [ray-pagination.properties.label]
 type = "string"
-default = "Pagination"
+string = "pagination.label"
 description = "Accessible name of the navigation landmark."
 
 [ray-pagination.events.change]

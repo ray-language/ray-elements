@@ -24,6 +24,13 @@ Parts (`::part()`):
 - `dots`: The row.
 - `dot`: Each dot ([data-state] done, current or todo).
 
+Texts (`setStrings`; English):
+
+- `step-dots.label`: Steps
+- `step-dots.value`: {label} {step} of {count}
+- `step-dots.step`: Step
+- `step-dots.done`: {count} of {count}, done
+
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.19.1.
 
 ## Example

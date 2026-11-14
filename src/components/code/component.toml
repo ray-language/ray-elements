@@ -90,13 +90,13 @@ description = "Corner radius: xs…xl, none, or a CSS length. Default: md."
 [ray-code.properties.copyLabel]
 attribute = "copy-label"
 type = "string"
-default = "Copy code"
+string = "code.copy"
 description = "Accessible name of the copy button."
 
 [ray-code.properties.copiedLabel]
 attribute = "copied-label"
 type = "string"
-default = "Copied"
+string = "code.copied"
 description = "Shown and announced after copying."
 
 [ray-code.events.ray-copy]

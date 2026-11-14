@@ -14696,6 +14696,15 @@
               "fieldName": "hideClose"
             },
             {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The close button's name, for screen readers.",
+              "fieldName": "closeLabel",
+              "default": "Close"
+            },
+            {
               "name": "overlay-blur",
               "type": {
                 "text": "string"
@@ -14796,6 +14805,17 @@
               "description": "No close button in the header.",
               "attribute": "hide-close",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The close button's name, for screen readers.",
+              "attribute": "close-label",
+              "reflects": false,
+              "default": "Close"
             },
             {
               "kind": "field",
@@ -15013,6 +15033,15 @@
               "fieldName": "hideClose"
             },
             {
+              "name": "close-label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The close button's name, for screen readers.",
+              "fieldName": "closeLabel",
+              "default": "Close"
+            },
+            {
               "name": "overlay-blur",
               "type": {
                 "text": "string"
@@ -15113,6 +15142,17 @@
               "description": "No close button in the header.",
               "attribute": "hide-close",
               "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "closeLabel",
+              "type": {
+                "text": "string"
+              },
+              "description": "The close button's name, for screen readers.",
+              "attribute": "close-label",
+              "reflects": false,
+              "default": "Close"
             },
             {
               "kind": "field",

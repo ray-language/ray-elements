@@ -17,7 +17,7 @@ description = "Current text."
 
 [ray-search.properties.placeholder]
 type = "string"
-default = "Search…"
+string = "search.placeholder"
 description = "Placeholder text."
 
 [ray-search.properties.shortcut]
