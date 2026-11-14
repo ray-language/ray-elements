@@ -7,6 +7,14 @@ change the API.
 
 ## [Unreleased]
 
+### Changed
+
+- Docs: `ray-combobox` no longer presents itself as Mantine's TagsInput; it
+  points to `ray-tags-input` for free-form tags with suggestions and says why
+  on a touch screen (the list has little room above the keyboard).
+  `ray-tags-input` takes the "TagsInput" alias and points back to
+  `ray-combobox` for a fixed list.
+
 ## [0.19.0] - 2026-11-13
 
 ### Added

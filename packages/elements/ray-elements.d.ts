@@ -710,7 +710,7 @@ export interface RayColorInputEventMap extends HTMLElementEventMap {
 }
 
 // --- Combobox (combobox)
-/** <ray-combobox> The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value. */
+/** <ray-combobox> The WAI-ARIA combobox pattern (a text field with a listbox popup; the active option is aria-activedescendant). Arrows move, Enter picks, Escape closes (then clears with clearable), Backspace in an empty field removes the last chip. The form gets one entry per value. On a touch screen the list opens under the field while the keyboard is up, and little room is left for it: for free-form tags with suggestions (multiple creatable), ray-tags-input keeps them in view with no popup. */
 export declare class RayCombobox extends FieldControl {
   /** The chosen value; an array with multiple. The value attribute: "a,b" with multiple. */
   value: string | string[] | undefined;
