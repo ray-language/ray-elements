@@ -56,6 +56,19 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Avatar picker (Profile picture, Photo picker)",
+    "group": "Components · Inputs",
+    "description": "A profile picture field: a ray-avatar (the initials of display-name without a picture), Choose photo / Change photo and Remove photo, and a sheet with a ray-image-crop to frame the chosen image in a circle before it is kept. A bottom drawer on a narrow screen, a dialog otherwise. The value is the framed picture as a data URL, or a Blob with output=\"blob\"; it takes part in a <form>.",
+    "href": "components/avatar-picker.html",
+    "keywords": [
+      "avatar-picker",
+      "profile picture",
+      "photo picker",
+      "ray-avatar-picker"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Checkbox",
     "group": "Components · Inputs",
     "description": "A checkbox with label, description and error. Submits value when checked.",

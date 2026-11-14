@@ -58,6 +58,7 @@ fn thumbs() -> [(string, string)] {
         ("color-picker", sf("pad", "<i class=\"t-sat\"></i><i class=\"t-hue\"></i>" + row(dot("red") + dot("orange") + dot("green") + dot("teal") + dot("violet")))),
         ("date-picker", sf("pad", row(ln("2.5rem") + "<i class=\"t-grow\"></i>" + ln("1rem")) + "<i class=\"t-cal\">" + "<i></i>".repeat(10) + "<i class=\"on\"></i>" + "<i></i>".repeat(10) + "</i>")),
         ("file-upload", "<i class=\"t-drop\">" + svg(I_UP) + ln("4.5rem") + "</i>"),
+        ("avatar-picker", row("<i class=\"t-av\" style=\"--c:var(--ray-teal-light);--cc:var(--ray-teal-light-color);width:2.5rem;height:2.5rem\"></i>" + col(btn("l", "3.5rem") + btn("o", "2.75rem")))),
         ("image-crop", col("<i class=\"t-crop\"><i></i></i>" + "<i class=\"t-sl\" style=\"--v:35%;width:5rem\"></i>")),
         ("input", col(ln("2.5rem") + inp("9rem", ln("4rem")))),
         ("path-input", col(ln("3rem") + inp("10rem", "<i class=\"t-gl\">" + svg(I_FOLDER) + "</i>" + ln("3.5rem") + "<i class=\"t-grow\"></i>" + btn("l", "1.6rem")))),

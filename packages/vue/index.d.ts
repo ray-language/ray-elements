@@ -167,6 +167,90 @@ export interface RayToggleGroupProps {
 /** <ray-toggle-group> as a Vue component. */
 export declare const RayToggleGroup: DefineComponent<RayToggleGroupProps>;
 
+export interface RayAvatarPickerProps {
+  /** Form field name. The value is submitted as a string (data URL) or, with output="blob", as a file named <name>.jpg (.png, .webp). */
+  name?: string;
+  /** The picture: a URL or data URL (the value attribute: the initial picture, and what a form reset goes back to), or a Blob. null without one. */
+  value?: string | Blob | null;
+  /** What Use photo makes the value: a data URL (easy to keep in JSON) or a Blob (to upload). */
+  output?: "dataurl" | "blob";
+  /** Label above the avatar and the buttons. */
+  label?: string;
+  /** Help text under the label. */
+  description?: string;
+  /** Error message; marks the field invalid. */
+  error?: string;
+  /** A picture is required to submit the form. */
+  required?: boolean;
+  /** No choosing, removing nor preview (also inside a disabled <fieldset>). */
+  disabled?: boolean;
+  /** The picture cannot be changed: the buttons are hidden, the preview still works. Not validated (required does not apply), as a native readonly field. */
+  readonly?: boolean;
+  /** The person's name: the avatar shows its initials without a picture (name is the form field). */
+  displayName?: string;
+  /** File types the picker offers. */
+  accept?: string;
+  /** Size of the avatar. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Color of the avatar's initials (a palette color or any CSS color). */
+  color?: string;
+  /** Style of the avatar's initials. */
+  variant?: "light" | "filled" | "outline" | "default";
+  /** Corner radius of the avatar. Default: full (the crop frames a circle either way; the picture is square). */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Size of the buttons. */
+  buttonSize?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** The buttons one under the other, beside the avatar, or in a row. */
+  layout?: "stack" | "inline";
+  /** Where the crop opens: auto is a bottom drawer on a narrow screen (up to 40em) and a dialog otherwise. */
+  sheet?: "auto" | "drawer" | "dialog";
+  /** Side of the square picture kept, in pixels. */
+  outputSize?: string | number;
+  /** Format of the picture kept (PNG where the browser cannot encode it). */
+  type?: "image/jpeg" | "image/png" | "image/webp" | (string & {});
+  /** 0…1, for image/jpeg and image/webp. */
+  quality?: number;
+  /** The most zoom of the crop. */
+  maxZoom?: number;
+  /** The button without a picture. */
+  pickLabel?: string;
+  /** The same button with a picture. */
+  changeLabel?: string;
+  /** The button that removes the picture. */
+  removeLabel?: string;
+  /** Title of the crop sheet. */
+  sheetLabel?: string;
+  /** The sheet's button that keeps the framed picture. */
+  useLabel?: string;
+  /** The sheet's button that leaves the value as it was. */
+  cancelLabel?: string;
+  /** Accessible name of the crop area. */
+  cropLabel?: string;
+  /** Name of the zoom slider. */
+  zoomLabel?: string;
+  /** With a picture, the avatar is a button (click, Enter, Space): it fires ray-preview and, unless that is canceled, shows the picture large in a dialog. Also with readonly; not while disabled. */
+  preview?: boolean;
+  /** Accessible name of the avatar button and title of the preview dialog. */
+  previewLabel?: string;
+  /** Validation message of required without a picture. */
+  requiredLabel?: string;
+  /** Shown under the field when the chosen file cannot be decoded, or the framed picture encoded (until the next picture). */
+  failedLabel?: string;
+  /** v-model: the element's `value`. */
+  modelValue?: string | Blob | null;
+  "onUpdate:modelValue"?: (value: string | Blob | null) => void;
+  /** The value changed (fired with change). */
+  onInput?: (event: Event) => void;
+  /** A picture was kept (Use photo) or removed. Read value. */
+  onChange?: (event: Event) => void;
+  /** The avatar was pressed (with preview and a picture). Cancelable: preventDefault() to do something else than the preview dialog (a menu, an app's own viewer). */
+  onRayPreview?: (event: CustomEvent<{ value: string | Blob }>) => void;
+  /** The chosen file could not be decoded, or the framed picture encoded; the value is unchanged. */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+}
+/** <ray-avatar-picker> as a Vue component. */
+export declare const RayAvatarPicker: DefineComponent<RayAvatarPickerProps>;
+
 export interface RayCheckboxProps {
   /** Current state. The checked attribute is the initial state (restored on reset). */
   checked?: boolean;
@@ -2575,6 +2659,7 @@ export declare const components: {
   RayIconButton: typeof RayIconButton;
   RayToggle: typeof RayToggle;
   RayToggleGroup: typeof RayToggleGroup;
+  RayAvatarPicker: typeof RayAvatarPicker;
   RayCheckbox: typeof RayCheckbox;
   RayCheckboxGroup: typeof RayCheckboxGroup;
   RayColorPicker: typeof RayColorPicker;
@@ -2676,6 +2761,7 @@ declare module "vue" {
     RayIconButton: typeof RayIconButton;
     RayToggle: typeof RayToggle;
     RayToggleGroup: typeof RayToggleGroup;
+    RayAvatarPicker: typeof RayAvatarPicker;
     RayCheckbox: typeof RayCheckbox;
     RayCheckboxGroup: typeof RayCheckboxGroup;
     RayColorPicker: typeof RayColorPicker;

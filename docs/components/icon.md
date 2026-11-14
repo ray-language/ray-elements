@@ -24,7 +24,7 @@ Parts (`::part()`):
 
 Types:
 
-- `"close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "none" | (string & {})`: An icon name: one of the default set, or any name an app registers with setIcons().
+- `"close" | "check" | "minus" | "plus" | "chevron-down" | "chevron-up" | "chevron-right" | "chevron-left" | "chevrons-left" | "chevrons-right" | "search" | "arrow-up-right" | "arrow-down-right" | "sun" | "moon" | "monitor" | "user" | "info" | "circle-check" | "alert-triangle" | "circle-x" | "menu" | "more-horizontal" | "file" | "folder" | "pause" | "play" | "terminal" | "calendar" | "image" | "download" | "eye" | "eye-off" | "bell" | "copy" | "quote" | "pipette" | "star" | "upload" | "paperclip" | "panel-left" | "settings" | "home" | "arrow-left" | "message-circle" | "camera" | "trash" | "none" | (string & {})`: An icon name: one of the default set, or any name an app registers with setIcons().
 
 Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.18.0.
 
@@ -116,6 +116,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     "star": "favorite bookmark rating like", "upload": "import send share", "paperclip": "attachment attach clip",
     "panel-left": "sidebar layout drawer", "settings": "preferences options sliders adjust filter", "home": "house start dashboard",
     "arrow-left": "back previous return", "message-circle": "chat comment conversation bubble",
+    "camera": "photo picture capture snapshot", "trash": "delete remove bin discard",
   };
   for (const name of names) {
     const tile = document.createElement("button");
