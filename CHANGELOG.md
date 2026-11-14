@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-11-13
+
 ### Added
 
 - `ray-avatar-picker`: a profile picture field, the composition of
