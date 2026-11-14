@@ -7,6 +7,18 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-segmented-control` shows an option's new text, value or `disabled`
+  when its `<option>` changes (a page that switches language rewrites them),
+  as `ray-select` already did; the buttons are kept when the values stay the
+  same, so focus and the indicator do not move.
+- The Spanish catalog has an entry of its own, `@raylang/elements/strings/es`:
+  import maps that map only a package's exact entries (raylang's
+  `ui.import_map`) did not resolve it from the `./strings/*` pattern and the
+  page's module failed to load. The file name works too
+  (`@raylang/elements/strings/es.js`, now also with a bundler).
+
 ## [0.20.0] - 2026-11-14
 
 ### Added

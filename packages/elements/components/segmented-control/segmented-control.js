@@ -88,6 +88,11 @@ export class RaySegmentedControl extends FormControl {
     super();
     this.root = this.$(".root");
     this.$("slot").addEventListener("slotchange", () => this._render());
+    // An option's text, value or disabled changing (a new language, say):
+    // like a native <select>, the control shows it.
+    new MutationObserver((records) => {
+      if (records.some((r) => r.target !== this)) this._sync();
+    }).observe(this, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ["value", "label", "disabled"] });
     this.root.addEventListener("click", (e) => {
       const b = e.target.closest("button");
       if (b && !b.disabled) this._choose(b.dataset.value, true);
@@ -191,6 +196,18 @@ export class RaySegmentedControl extends FormControl {
     if (!p) return this.getBoundingClientRect().width;
     const ps = getComputedStyle(p);
     return p.clientWidth - parseFloat(ps.paddingInlineStart) - parseFloat(ps.paddingInlineEnd);
+  }
+
+  /** The options changed: their labels in place when the values are the same, else a new row. */
+  _sync() {
+    const items = this.items;
+    const buttons = this._buttons ?? [];
+    if (items.length !== buttons.length || items.some((item, i) => buttons[i].dataset.value !== item.value)) return this._render();
+    items.forEach((item, i) => {
+      buttons[i].dataset.disabled = String(item.disabled);
+      buttons[i].querySelector(".label").textContent = item.label;
+    });
+    this.requestUpdate();
   }
 
   _render() {
