@@ -79,7 +79,7 @@ const STRINGS = {
   "file-upload.active": "Suelta para añadir los archivos",
   "file-upload.tap": "Elegir archivos",
   "file-upload.images": "Imágenes",
-  "file-upload.videos": "Vídeos",
+  "file-upload.videos": "Videos",
   "file-upload.audio": "Audio",
   "file-upload.text": "Archivos de texto",
   "file-upload.types": "{list} o {last}",
