@@ -63,7 +63,7 @@ Texts (`setStrings`; English):
 - `doc-tabs.close`: Close
 - `doc-tabs.dirty`: Unsaved changes
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.1.
 
 ## Example
 

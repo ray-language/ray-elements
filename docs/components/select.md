@@ -55,7 +55,7 @@ Texts (`setStrings`; English):
 
 - `select.empty`: No options
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.20.1.
 
 ## Example
 
