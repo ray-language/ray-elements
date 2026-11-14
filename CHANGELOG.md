@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.19.1] - 2026-11-13
+
 ### Changed
 
 - Docs: `ray-combobox` no longer presents itself as Mantine's TagsInput; it
