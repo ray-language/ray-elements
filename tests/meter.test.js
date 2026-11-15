@@ -1,7 +1,7 @@
 // page: docs/components/all.html
 //
 // ray-meter in the real webview: levels as CSS variables (no render), zones,
-// falloff, peak hold, clip light, the meter role, horizontal and rtl.
+// falloff, peak hold, the clip mark, the meter role, horizontal and rtl, inset.
 
 const T = window.__rayTest;
 await customElements.whenDefined("ray-meter");
@@ -39,7 +39,7 @@ T.test("meter: channels, levels in dB as percentages, zones, the meter role", as
   box.remove();
 });
 
-T.test("meter: falloff, hold, clip light", async (T) => {
+T.test("meter: falloff, hold, clip mark", async (T) => {
   const box = await mount(`<ray-meter min="-60" max="6" falloff="20" hold="10000"></ray-meter>`);
   const m = box.firstElementChild;
   const [t] = tracks(m);
@@ -58,10 +58,12 @@ T.test("meter: falloff, hold, clip light", async (T) => {
   m.setLevels(1);
   m.setLevels(2);
   T.eq(m.clipped, true);
-  T.eq(clips, 1, "one event until the light is cleared");
+  T.eq(clips, 1, "one event until the mark is cleared");
   T.ok(m.hasAttribute("data-clipped"));
-  m.shadowRoot.querySelector(".led").click();
-  T.eq(m.clipped, false, "a click on the light clears it");
+  T.ok(m.shadowRoot.querySelector(".channel").hasAttribute("data-clipped"));
+  T.eq(getComputedStyle(m.shadowRoot.querySelector(".track"), "::after").backgroundColor !== "rgba(0, 0, 0, 0)", true, "a band at the top of the bar");
+  m.shadowRoot.querySelector(".track").click();
+  T.eq(m.clipped, false, "a click on the bar clears it");
   T.ok(!m.shadowRoot.querySelector(".channel").hasAttribute("data-clipped"));
   box.remove();
 });
@@ -85,9 +87,22 @@ T.test("meter: scale, marks, horizontal and rtl", async (T) => {
   for (const m of [h, rtl]) m.setLevels(-27);
   T.eq(v(tracks(h)[0], "--_r"), "50%", "horizontal: -27 of -60..6 is half the bar");
   T.eq(v(tracks(rtl)[0], "--_r"), "50%");
-  const hl = h.shadowRoot.querySelector(".led").getBoundingClientRect();
-  const rl = rtl.shadowRoot.querySelector(".led").getBoundingClientRect();
-  T.ok(hl.left > tracks(h)[0].getBoundingClientRect().left, "ltr: the clip light at the right end");
-  T.ok(rl.right <= tracks(rtl)[0].getBoundingClientRect().left + 1, "rtl: at the left end");
+  box.remove();
+});
+
+T.test("meter: --ray-meter-inset lines it up with a vertical slider of the same height", async (T) => {
+  const box = await mount(`<div style="display: flex; align-items: flex-end; --ray-slider-length: 200px">
+    <ray-slider orientation="vertical" thumb="cap" aria-label="Fader" min="-60" max="6" style="height: 200px"></ray-slider>
+    <ray-meter min="-60" max="6" style="height: 200px; --ray-meter-inset: 0.4375rem"></ray-meter></div>`);
+  const slider = box.querySelector("ray-slider");
+  slider.marks = [0, -60];
+  await T.settle();
+  const [zero, bottom] = slider.shadowRoot.querySelectorAll(".mark");
+  const m = box.querySelector("ray-meter");
+  const t = tracks(m)[0].getBoundingClientRect();
+  const mid = (r) => (r.top + r.bottom) / 2;
+  T.ok(Math.abs(mid(bottom.getBoundingClientRect()) - t.bottom) < 1.5, `-60 at the bar's bottom (${mid(bottom.getBoundingClientRect())} / ${t.bottom})`);
+  const at0 = t.bottom - (60 / 66) * t.height;
+  T.ok(Math.abs(mid(zero.getBoundingClientRect()) - at0) < 1.5, `0 dB level with the meter's 0 dB (${mid(zero.getBoundingClientRect())} / ${at0})`);
   box.remove();
 });

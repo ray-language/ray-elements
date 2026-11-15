@@ -1359,7 +1359,7 @@ export interface RaySelectEventMap extends HTMLElementEventMap {
 }
 
 // --- Slider (slider)
-/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated. */
+/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated. */
 export declare class RaySlider extends FieldControl {
   /** Current value. The value attribute is the initial one (restored on reset). */
   value: number | undefined;
@@ -1393,6 +1393,8 @@ export declare class RaySlider extends FieldControl {
   marks: Array<number | { value: number; label?: string }> | undefined;
   /** vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
   orientation: "horizontal" | "vertical";
+  /** The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables. */
+  thumb: "round" | "cap";
 }
 
 // --- Switch (switch)
@@ -2389,7 +2391,7 @@ export declare class RayKbd extends RayElement {
 }
 
 // --- Meter (meter)
-/** <ray-meter> Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. For a fader beside it: ray-slider orientation="vertical". */
+/** <ray-meter> Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation="vertical"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb="cap", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off. */
 export declare class RayMeter extends RayElement {
   /** The dB at the bottom: lower levels show nothing. */
   min: number;
@@ -2399,7 +2401,7 @@ export declare class RayMeter extends RayElement {
   warn: number;
   /** Where the red zone starts (dB). */
   danger: number;
-  /** A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light. */
+  /** A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar. */
   clip: number;
   /** The bars: 1 (mono), 2 (stereo)… */
   channels: number;
@@ -2411,7 +2413,7 @@ export declare class RayMeter extends RayElement {
   hold: number;
   /** How fast a lower level falls (dB per second); 0: at once. */
   falloff: number;
-  /** Shows the dB scale (6, 0, -6, -12, -24, -36, -48, -60 within min and max). */
+  /** Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead. */
   scale: boolean | undefined;
   /** Your own scale, in dB (replaces the one of scale). */
   marks: Array<number | { value: number; label?: string }> | undefined;
@@ -2419,9 +2421,9 @@ export declare class RayMeter extends RayElement {
   label: string;
   /** The levels now in dB, a number or one per channel; without rms, one solid bar. */
   setLevels(peak: number | number[], rms?: number | number[]): void;
-  /** Clears the levels, the hold lines and the clip lights. */
+  /** Clears the levels, the hold lines and the clip marks. */
   reset(): void;
-  /** Clears the clip lights. */
+  /** Clears the clip marks. */
   resetClip(): void;
   /** A channel reached clip since the last reset. */
   readonly clipped: boolean;
@@ -2431,7 +2433,7 @@ export declare class RayMeter extends RayElement {
   removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
 }
 export interface RayMeterEventMap extends HTMLElementEventMap {
-  /** A channel's peak reached clip (once until its light is cleared). */
+  /** A channel's peak reached clip (once until its mark is cleared). */
   "ray-clip": CustomEvent<{ channel: number }>;
 }
 

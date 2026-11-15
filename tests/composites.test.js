@@ -58,6 +58,20 @@ T.test("slider vertical: stands up, the minimum at the bottom, marks on its left
   box.remove();
 });
 
+T.test("slider thumbs: cap, the --ray-slider-thumb-* variables, no head without a label", async (T) => {
+  const box = await mount(`<ray-slider orientation="vertical" thumb="cap" aria-label="Fader" style="height: 200px"></ray-slider>
+    <ray-slider label="Own" style="--ray-slider-thumb-size: 30px; --ray-slider-thumb-length: 10px; width: 200px"></ray-slider>`);
+  const [cap, own] = box.querySelectorAll("ray-slider");
+  const input = cap.shadowRoot.querySelector("input");
+  T.eq(Math.round(input.getBoundingClientRect().width), 24, "the cap is 1.5rem across the track");
+  T.eq(cap.shadowRoot.querySelector(".head").hidden, true, "no label, no shown value: no head");
+  T.ok(Math.abs(input.getBoundingClientRect().top - cap.getBoundingClientRect().top) < 1, "the track starts at the top");
+  T.eq(input.getAttribute("aria-label"), "Fader");
+  T.eq(Math.round(own.shadowRoot.querySelector("input").getBoundingClientRect().height), 30, "--ray-slider-thumb-size sets the room across the track");
+  T.eq(own.shadowRoot.querySelector(".head").hidden, false);
+  box.remove();
+});
+
 T.test("slider: value, FormData, unit, marks, reset", async (T) => {
   const box = await mount(`<form><ray-slider name="vol" value="40" min="0" max="80" unit="%" show-value label="Volume"></ray-slider></form>`);
   const form = box.querySelector("form");

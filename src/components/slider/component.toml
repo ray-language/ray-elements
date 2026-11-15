@@ -1,7 +1,8 @@
 [component]
 name = "Slider"
 category = "Inputs"
-summary = "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated."
+summary = "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated."
+aliases = ["Range", "Fader"]
 files = ["slider.js"]
 requires = []
 tags = ["ray-slider"]
@@ -91,6 +92,13 @@ values = ["horizontal", "vertical"]
 default = "horizontal"
 reflect = true
 description = "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it)."
+
+[ray-slider.properties.thumb]
+type = "string"
+values = ["round", "cap"]
+default = "round"
+reflect = true
+description = "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables."
 
 [ray-slider.events.input]
 description = "While dragging."

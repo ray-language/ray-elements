@@ -9858,7 +9858,7 @@
           "name": "RaySlider",
           "tagName": "ray-slider",
           "customElement": true,
-          "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+          "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
           "superclass": {
             "name": "FieldControl"
           },
@@ -9988,6 +9988,15 @@
               "description": "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
               "fieldName": "orientation",
               "default": "horizontal"
+            },
+            {
+              "name": "thumb",
+              "type": {
+                "text": "\"round\" | \"cap\""
+              },
+              "description": "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.",
+              "fieldName": "thumb",
+              "default": "round"
             },
             {
               "name": "required",
@@ -10179,6 +10188,17 @@
               "attribute": "orientation",
               "reflects": true,
               "default": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "thumb",
+              "type": {
+                "text": "\"round\" | \"cap\""
+              },
+              "description": "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.",
+              "attribute": "thumb",
+              "reflects": true,
+              "default": "round"
             },
             {
               "kind": "field",
@@ -18613,7 +18633,7 @@
           "name": "RayMeter",
           "tagName": "ray-meter",
           "customElement": true,
-          "description": "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. For a fader beside it: ray-slider orientation=\"vertical\".",
+          "description": "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off.",
           "superclass": {
             "name": "RayElement"
           },
@@ -18659,7 +18679,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.",
+              "description": "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.",
               "fieldName": "clip",
               "default": "0"
             },
@@ -18713,7 +18733,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Shows the dB scale (6, 0, -6, -12, -24, -36, -48, -60 within min and max).",
+              "description": "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.",
               "fieldName": "scale"
             },
             {
@@ -18777,7 +18797,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.",
+              "description": "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.",
               "attribute": "clip",
               "reflects": false,
               "default": "0"
@@ -18843,7 +18863,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "Shows the dB scale (6, 0, -6, -12, -24, -36, -48, -60 within min and max).",
+              "description": "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.",
               "attribute": "scale",
               "reflects": true
             },
@@ -18874,12 +18894,12 @@
             {
               "kind": "method",
               "name": "reset",
-              "description": "Clears the levels, the hold lines and the clip lights."
+              "description": "Clears the levels, the hold lines and the clip marks."
             },
             {
               "kind": "method",
               "name": "resetClip",
-              "description": "Clears the clip lights."
+              "description": "Clears the clip marks."
             },
             {
               "kind": "field",
@@ -18893,7 +18913,7 @@
               "type": {
                 "text": "CustomEvent<{ channel: number }>"
               },
-              "description": "A channel's peak reached clip (once until its light is cleared)."
+              "description": "A channel's peak reached clip (once until its mark is cleared)."
             }
           ],
           "slots": [],
@@ -18904,7 +18924,7 @@
             },
             {
               "name": "channel",
-              "description": "One channel: its clip light and track."
+              "description": "One channel (data-clipped when clipped)."
             },
             {
               "name": "track",
@@ -18921,10 +18941,6 @@
             {
               "name": "hold",
               "description": "The peak hold line."
-            },
-            {
-              "name": "clip",
-              "description": "The clip light (data-clipped on its channel and on the host)."
             },
             {
               "name": "scale",

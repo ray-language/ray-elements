@@ -1,6 +1,6 @@
 // <ray-meter>: an audio level meter (a mixer's channel strip): peak and RMS
-// in dB, colored by zone, a peak hold line and a clip light, one bar per
-// channel. Fed by setLevels() on every animation frame: it writes a few CSS
+// in dB, colored by zone, a peak hold line and a clip mark at the top of the
+// bar, one bar per channel. Fed by setLevels() on every animation frame: it writes a few CSS
 // variables and nothing else, so 60 updates a second cost no render.
 //
 //   const meter = document.querySelector("ray-meter");
@@ -35,13 +35,12 @@ const styles = css`
   :host([size="md"]) { --_w: 0.5rem; }
   :host([size="lg"]) { --_w: 0.75rem; }
   :host([orientation="horizontal"]) { display: flex; flex-direction: column; width: 100%; height: auto; }
-  .channels { display: flex; gap: 2px; min-height: 0; }
-  :host([orientation="horizontal"]) .channels { flex-direction: column; }
-  .channel { display: flex; flex-direction: column; gap: 2px; width: var(--_w); }
-  :host([orientation="horizontal"]) .channel { flex-direction: row-reverse; width: auto; height: var(--_w); }
-  .led { flex: none; height: var(--_w); border-radius: 1px; background: var(--ray-muted); cursor: pointer; }
-  :host([orientation="horizontal"]) .led { width: var(--_w); height: auto; }
-  .channel[data-clipped] .led { background: var(--_high); }
+  /* --ray-meter-inset: room at both ends of the bars, so a meter as tall as a
+     vertical ray-slider lines up with its marks (half the slider's thumb). */
+  .channels { display: flex; gap: 2px; min-height: 0; padding-block: var(--ray-meter-inset, 0); }
+  :host([orientation="horizontal"]) .channels { flex-direction: column; padding-block: 0; padding-inline: var(--ray-meter-inset, 0); }
+  .channel { display: flex; width: var(--_w); }
+  :host([orientation="horizontal"]) .channel { width: auto; height: var(--_w); }
   .track {
     position: relative;
     flex: 1;
@@ -59,15 +58,19 @@ const styles = css`
   :host([orientation="horizontal"]) .rms { clip-path: inset(0 calc(100% - var(--_r, 0%)) 0 0); } /* physical */
   :host([orientation="horizontal"]:dir(rtl)) .peak { clip-path: inset(0 0 0 calc(100% - var(--_p, 0%))); } /* physical */
   :host([orientation="horizontal"]:dir(rtl)) .rms { clip-path: inset(0 0 0 calc(100% - var(--_r, 0%))); } /* physical */
+  /* Clipped: a red band at the loud end of the bar, until a click on it or resetClip(). */
+  .channel[data-clipped] { cursor: pointer; }
+  .channel[data-clipped] .track::after { content: ""; position: absolute; inset-inline: 0; top: 0; height: 3px; background: var(--_high); } /* physical */
+  :host([orientation="horizontal"]) .channel[data-clipped] .track::after { inset-inline: auto; inset-block: 0; inset-inline-end: 0; width: 3px; height: auto; }
   .hold { position: absolute; inset-inline: 0; bottom: var(--_h, 0%); height: 2px; background: var(--ray-foreground); opacity: 0.8; } /* physical */
   .hold[hidden] { display: none; }
   :host([orientation="horizontal"]) .hold { inset-inline: auto; inset-block: 0; bottom: 0; inset-inline-start: var(--_h, 0%); width: 2px; height: auto; } /* physical */
   .scale { position: relative; min-width: 1.75rem; font-size: 0.625rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ray-muted-foreground); }
   .scale:empty { display: none; }
   /* Vertical: the labels sit before the bars (on the left), aligned against
-     them so the numbers line up, level with the track (below the clip light). */
-  :host(:not([orientation="horizontal"])) .scale { order: -1; margin-top: calc(var(--_w) + 2px); }
-  :host([orientation="horizontal"]) .scale { min-width: 0; height: 0.875rem; margin-inline-end: calc(var(--_w) + 2px); }
+     them so the numbers line up, level with the bars. */
+  :host(:not([orientation="horizontal"])) .scale { order: -1; margin-block: var(--ray-meter-inset, 0); }
+  :host([orientation="horizontal"]) .scale { min-width: 0; height: 0.875rem; margin-inline: var(--ray-meter-inset, 0); }
   .tick { position: absolute; inset-inline-end: 0; bottom: var(--_at); transform: translateY(50%); direction: ltr; unicode-bidi: isolate; white-space: nowrap; } /* physical */
   :host([orientation="horizontal"]) .tick { bottom: auto; top: 0; inset-inline-end: auto; inset-inline-start: var(--_at); transform: translateX(-50%); }
   :host([orientation="horizontal"]:dir(rtl)) .tick { transform: translateX(50%); }
@@ -106,9 +109,9 @@ export class RayMeter extends RayElement {
 
   constructor() {
     super();
-    // The clip light: a click clears it (reset() from script or a key binding).
+    // A clipped bar: a click clears its mark (resetClip() from script or a key).
     this.shadowRoot.addEventListener("click", (e) => {
-      if (e.target.closest?.(".led")) this.resetClip();
+      if (e.target.closest?.(".channel[data-clipped]")) this.resetClip();
     });
   }
 
@@ -155,7 +158,7 @@ export class RayMeter extends RayElement {
     }
   }
 
-  /** Clears the levels, the hold lines and the clip lights. */
+  /** Clears the levels, the hold lines and the clip marks. */
   reset() {
     this.#peak = [];
     this.#rms = [];
@@ -167,7 +170,7 @@ export class RayMeter extends RayElement {
     this.#speak();
   }
 
-  /** Clears the clip lights. */
+  /** Clears the clip marks. */
   resetClip() {
     this.#clipped = [];
     this.removeAttribute("data-clipped");
@@ -204,7 +207,7 @@ export class RayMeter extends RayElement {
       const channel = document.createElement("div");
       channel.className = "channel";
       channel.setAttribute("part", "channel");
-      channel.innerHTML = `<span class="led" part="clip"></span><div class="track" part="track"><div class="peak" part="peak"></div><div class="rms" part="rms"></div><div class="hold" part="hold" hidden></div></div>`;
+      channel.innerHTML = `<div class="track" part="track"><div class="peak" part="peak"></div><div class="rms" part="rms"></div><div class="hold" part="hold" hidden></div></div>`;
       box.append(channel);
       this.#bars.push({ channel, track: channel.querySelector(".track"), hold: channel.querySelector(".hold") });
     }

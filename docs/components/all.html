@@ -198,7 +198,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Search" href="#search"></ray-nav-link>
 <ray-nav-link label="Segmented control" href="#segmented-control"></ray-nav-link>
 <ray-nav-link label="Select" href="#select"></ray-nav-link>
-<ray-nav-link label="Slider" href="#slider"></ray-nav-link>
+<ray-nav-link label="Slider (Range, Fader)" href="#slider"></ray-nav-link>
 <ray-nav-link label="Switch" href="#switch"></ray-nav-link>
 <ray-nav-link label="Tags input (Tag input, Chips input, TagsInput)" href="#tags-input"></ray-nav-link>
 <ray-nav-link label="Textarea" href="#textarea"></ray-nav-link>
@@ -295,7 +295,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#search">Search</a>
 <a class="side-link" href="#segmented-control">Segmented control</a>
 <a class="side-link" href="#select">Select</a>
-<a class="side-link" href="#slider">Slider</a>
+<a class="side-link" href="#slider">Slider (Range, Fader)</a>
 <a class="side-link" href="#switch">Switch</a>
 <a class="side-link" href="#tags-input">Tags input (Tag input, Chips input, TagsInput)</a>
 <a class="side-link" href="#textarea">Textarea</a>
@@ -2025,8 +2025,8 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>select.empty</code></td><td>No options</td></tr></tbody></table></div>
 </section>
 <section id="slider" class="component">
-<h2>Slider</h2>
-<p class="summary">A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.</p>
+<h2>Slider <span class="aka">also Range, Fader</span></h2>
+<p class="summary">A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.</p>
 <div class="example"><div class="demo-caption">Adjust a photo</div>
 <div class="demo-photo">
   <div class="demo-photo-frame" id="demo-photo" role="img" aria-label="A landscape: sun, mountains and a lake"><span class="sun"></span><span class="far"></span><span class="near"></span><span class="lake"></span></div>
@@ -2059,10 +2059,41 @@ if (location.protocol === "file:") window.__rayServeHint();
   </div>
 </div>
 
-<div class="demo-caption">Vertical: a fader</div>
-<div style="display: flex; gap: var(--ray-space-6); align-items: flex-end">
-  <ray-slider id="demo-fader" orientation="vertical" label="Volume" min="-60" max="6" value="-6" show-value unit=" dB" style="height: 15rem"></ray-slider>
-  <ray-slider orientation="vertical" label="Pan" min="-50" max="50" value="0" color="teal" style="height: 9rem"></ray-slider>
+<style>
+  .demo-eq { display: flex; flex-wrap: wrap; gap: var(--ray-space-3); align-items: flex-end; --ray-slider-length: 10rem; }
+  .demo-console { display: flex; flex-wrap: wrap; gap: var(--ray-space-2); }
+  .demo-console-strip { display: grid; justify-items: center; gap: var(--ray-space-2); padding: var(--ray-space-3) var(--ray-space-2); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); background: var(--ray-card); }
+  .demo-console-strip output { font-size: var(--ray-font-size-xs); font-variant-numeric: tabular-nums; color: var(--ray-muted-foreground); }
+  .demo-console-strip span { font-size: var(--ray-font-size-sm); font-weight: var(--ray-font-weight-medium); }
+  .demo-thumbs { display: flex; flex-wrap: wrap; gap: var(--ray-space-6); align-items: flex-end; --ray-slider-length: 9rem; }
+  .demo-thumb-square { --ray-slider-thumb-radius: 4px; --ray-slider-thumb-size: 1.25rem; --ray-slider-thumb-length: 1.25rem; }
+  .demo-thumb-pill { --ray-slider-thumb-size: 1.75rem; --ray-slider-thumb-length: 0.75rem; --ray-slider-thumb-radius: 999px; --ray-slider-thumb-background: var(--ray-teal-filled); --ray-slider-thumb-border: 2px solid var(--ray-white); }
+</style>
+<div class="demo-caption">Vertical: a graphic equalizer (-12 to +12 dB a band)</div>
+<div class="demo-eq" id="demo-eq">
+  <ray-slider orientation="vertical" label="60" min="-12" max="12" value="4" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="150" min="-12" max="12" value="2" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="400" min="-12" max="12" value="-1" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="1k" min="-12" max="12" value="-3" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="2.4k" min="-12" max="12" value="0" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="6k" min="-12" max="12" value="3" size="xs" color="teal"></ray-slider>
+  <ray-slider orientation="vertical" label="15k" min="-12" max="12" value="5" size="xs" color="teal"></ray-slider>
+  <ray-button size="xs" variant="default" id="demo-eq-flat">Flat</ray-button>
+</div>
+
+<div class="demo-caption">A console: fader caps (thumb="cap"), the scale on the first fader</div>
+<div class="demo-console" id="demo-console">
+  <div class="demo-console-strip"><output>0.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Vocals" min="-60" max="6" step="0.5" value="0" style="height: 13rem"></ray-slider><span>Vocals</span></div>
+  <div class="demo-console-strip"><output>-4.5 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Guitar" min="-60" max="6" step="0.5" value="-4.5" style="height: 13rem"></ray-slider><span>Guitar</span></div>
+  <div class="demo-console-strip"><output>-9.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Bass" min="-60" max="6" step="0.5" value="-9" style="height: 13rem"></ray-slider><span>Bass</span></div>
+  <div class="demo-console-strip"><output>-2.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Drums" min="-60" max="6" step="0.5" value="-2" style="height: 13rem"></ray-slider><span>Drums</span></div>
+</div>
+
+<div class="demo-caption">Your own thumb: the --ray-slider-thumb-* variables</div>
+<div class="demo-thumbs">
+  <ray-slider orientation="vertical" label="Square" value="60" class="demo-thumb-square"></ray-slider>
+  <ray-slider orientation="vertical" label="Pill" value="35" class="demo-thumb-pill" color="teal"></ray-slider>
+  <ray-slider label="Cap, horizontal" thumb="cap" value="70" style="width: 14rem"></ray-slider>
 </div>
 
 <script type="module">
@@ -2079,7 +2110,19 @@ if (location.protocol === "file:") window.__rayServeHint();
   });
 
   // Marks: numbers, or { value, label }.
-  document.getElementById("demo-fader").marks = [6, 0, -12, -24, -36, -48, -60].map((v) => ({ value: v, label: String(v) }));
+  // Vertical: the equalizer's 0 dB line, the console's scale on its first fader.
+  const eq = [...document.querySelectorAll("#demo-eq ray-slider")];
+  eq[0].marks = [12, 6, 0, -6, -12].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
+  document.getElementById("demo-eq-flat").addEventListener("click", () => {
+    for (const s of eq) s.value = 0;
+  });
+  const faders = [...document.querySelectorAll("#demo-console ray-slider")];
+  faders[0].marks = [6, 0, -6, -12, -24, -36, -60].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
+  for (const f of faders) {
+    f.addEventListener("input", () => {
+      f.closest(".demo-console-strip").querySelector("output").textContent = `${f.value.toFixed(1)} dB`;
+    });
+  }
   document.getElementById("demo-tempo").marks = [60, 90, 120, 150, 180];
   document.getElementById("demo-quality").marks = [
     { value: 0, label: "Draft" }, { value: 25, label: "Low" }, { value: 50, label: "Medium" }, { value: 75, label: "High" }, { value: 100, label: "Max" },
@@ -2090,7 +2133,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/slider.html">Open the code</a></p></div></details>
 <p class="tag"><code>&lt;ray-slider&gt;</code> &middot; <code>RaySlider</code></p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>number</td><td></td><td>Current value. The value attribute is the initial one (restored on reset).</td></tr><tr><td><code>min</code></td><td><code>min</code></td><td>number</td><td><code>0</code></td><td>Minimum.</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>number</td><td><code>100</code></td><td>Maximum.</td></tr><tr><td><code>step</code></td><td><code>step</code></td><td>number</td><td><code>1</code></td><td>Step.</td></tr><tr><td><code>name</code></td><td><code>name</code></td><td>string</td><td></td><td>Form field name.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Visible label.</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>Help text.</td></tr><tr><td><code>descriptionPosition</code></td><td><code>description-position</code> <span class="reflects">reflects</span></td><td><code>above</code> | <code>below</code></td><td><code>above</code></td><td>The description before the control (help first) or after it, with the error (fields in a row stay aligned).</td></tr><tr><td><code>error</code></td><td><code>error</code></td><td>string</td><td></td><td>Error text.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code></td><td>boolean</td><td></td><td>Not interactive nor submitted.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Track and thumb color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Track and thumb size.</td></tr><tr><td><code>showValue</code></td><td><code>show-value</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows the value next to the label.</td></tr><tr><td><code>unit</code></td><td><code>unit</code></td><td>string</td><td></td><td>Appended to the shown value and its spoken text (%, px, ms…).</td></tr><tr><td><code>marks</code></td><td>&mdash;</td><td>array</td><td></td><td>Labeled ticks under the track.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>horizontal</code> | <code>vertical</code></td><td><code>horizontal</code></td><td>vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>number</td><td></td><td>Current value. The value attribute is the initial one (restored on reset).</td></tr><tr><td><code>min</code></td><td><code>min</code></td><td>number</td><td><code>0</code></td><td>Minimum.</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>number</td><td><code>100</code></td><td>Maximum.</td></tr><tr><td><code>step</code></td><td><code>step</code></td><td>number</td><td><code>1</code></td><td>Step.</td></tr><tr><td><code>name</code></td><td><code>name</code></td><td>string</td><td></td><td>Form field name.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Visible label.</td></tr><tr><td><code>description</code></td><td><code>description</code></td><td>string</td><td></td><td>Help text.</td></tr><tr><td><code>descriptionPosition</code></td><td><code>description-position</code> <span class="reflects">reflects</span></td><td><code>above</code> | <code>below</code></td><td><code>above</code></td><td>The description before the control (help first) or after it, with the error (fields in a row stay aligned).</td></tr><tr><td><code>error</code></td><td><code>error</code></td><td>string</td><td></td><td>Error text.</td></tr><tr><td><code>disabled</code></td><td><code>disabled</code></td><td>boolean</td><td></td><td>Not interactive nor submitted.</td></tr><tr><td><code>color</code></td><td><code>color</code> <span class="reflects">reflects</span></td><td>string</td><td></td><td>Track and thumb color.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code> | <code>xl</code></td><td><code>sm</code></td><td>Track and thumb size.</td></tr><tr><td><code>showValue</code></td><td><code>show-value</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows the value next to the label.</td></tr><tr><td><code>unit</code></td><td><code>unit</code></td><td>string</td><td></td><td>Appended to the shown value and its spoken text (%, px, ms…).</td></tr><tr><td><code>marks</code></td><td>&mdash;</td><td>array</td><td></td><td>Labeled ticks under the track.</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>horizontal</code> | <code>vertical</code></td><td><code>horizontal</code></td><td>vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).</td></tr><tr><td><code>thumb</code></td><td><code>thumb</code> <span class="reflects">reflects</span></td><td><code>round</code> | <code>cap</code></td><td><code>round</code></td><td>The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.</td></tr></tbody></table></div>
 
 <div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>input</code></td><td>While dragging.</td></tr><tr><td><code>change</code></td><td>When released.</td></tr></tbody></table></div>
 
@@ -4679,28 +4722,49 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 </section>
 <section id="meter" class="component">
 <h2>Meter <span class="aka">also Level meter, VU meter, Peak meter</span></h2>
-<p class="summary">An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip light, one bar per channel; setLevels() on every animation frame costs no render.</p>
+<p class="summary">An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip mark, one bar per channel; setLevels() on every animation frame costs no render.</p>
 <div class="example"><style>
-  .demo-mixer { display: flex; flex-wrap: wrap; gap: var(--ray-space-5); align-items: flex-end; }
-  .demo-strip { display: flex; align-items: flex-end; gap: var(--ray-space-2); padding: var(--ray-space-3); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); --ray-slider-length: 13rem; --ray-meter-length: 11.5rem; }
+  .demo-mixer { display: flex; flex-wrap: wrap; gap: var(--ray-space-2); }
+  .demo-strip { display: grid; justify-items: center; gap: var(--ray-space-2); padding: var(--ray-space-3) var(--ray-space-2); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); background: var(--ray-card); }
+  /* The fader and its meter: the same height; the meter's inset is half the cap (0.875rem), so its bars line up with the fader's marks. */
+  .demo-strip-pair { display: flex; align-items: flex-end; gap: var(--ray-space-1); height: 13rem; }
+  .demo-strip-pair > * { height: 100%; }
+  .demo-strip-pair ray-meter { --ray-meter-inset: 0.4375rem; }
+  .demo-strip span { font-size: var(--ray-font-size-sm); font-weight: var(--ray-font-weight-medium); }
+  .demo-strip output { font-size: var(--ray-font-size-xs); font-variant-numeric: tabular-nums; color: var(--ray-muted-foreground); }
 </style>
-<div class="demo-caption">A mixer: a fader and a stereo meter per track (a test signal, no audio)</div>
+<div class="demo-caption">A mixer: a fader with its scale and a stereo meter per track (a test signal, no audio)</div>
 <div class="demo-mixer" id="demo-mixer">
-  <div class="demo-strip"><ray-slider orientation="vertical" label="Drums" min="-60" max="6" value="0" show-value unit=" dB"></ray-slider><ray-meter channels="2" label="Drums level"></ray-meter></div>
-  <div class="demo-strip"><ray-slider orientation="vertical" label="Bass" min="-60" max="6" value="-6" show-value unit=" dB" color="violet"></ray-slider><ray-meter channels="2" label="Bass level"></ray-meter></div>
-  <div class="demo-strip"><ray-slider orientation="vertical" label="Keys" min="-60" max="6" value="-12" show-value unit=" dB" color="teal"></ray-slider><ray-meter channels="2" label="Keys level"></ray-meter></div>
-  <div class="demo-strip"><ray-slider orientation="vertical" label="Master" min="-60" max="6" value="4" show-value unit=" dB" color="orange"></ray-slider><ray-meter channels="2" size="md" scale label="Master level"></ray-meter></div>
+  <div class="demo-strip"><output>0.0 dB</output><div class="demo-strip-pair"><ray-slider orientation="vertical" thumb="cap" aria-label="Drums" min="-60" max="6" step="0.5" value="0"></ray-slider><ray-meter channels="2" label="Drums level"></ray-meter></div><span>Drums</span></div>
+  <div class="demo-strip"><output>-6.0 dB</output><div class="demo-strip-pair"><ray-slider orientation="vertical" thumb="cap" aria-label="Bass" min="-60" max="6" step="0.5" value="-6"></ray-slider><ray-meter channels="2" label="Bass level"></ray-meter></div><span>Bass</span></div>
+  <div class="demo-strip"><output>-12.0 dB</output><div class="demo-strip-pair"><ray-slider orientation="vertical" thumb="cap" aria-label="Keys" min="-60" max="6" step="0.5" value="-12"></ray-slider><ray-meter channels="2" label="Keys level"></ray-meter></div><span>Keys</span></div>
+  <div class="demo-strip"><output>4.0 dB</output><div class="demo-strip-pair"><ray-slider orientation="vertical" thumb="cap" aria-label="Master" min="-60" max="6" step="0.5" value="4"></ray-slider><ray-meter channels="2" size="md" label="Master level"></ray-meter></div><span>Master</span></div>
+</div>
+
+<div class="demo-caption">The meter's own scale (scale), when there is no fader</div>
+<div style="display: flex; gap: var(--ray-space-6); align-items: flex-end">
+  <ray-meter id="demo-solo" channels="2" scale label="Output level"></ray-meter>
 </div>
 
 <div class="demo-caption">Horizontal, with its own scale</div>
 <div class="demo-stack" style="max-width: 24rem">
   <ray-meter id="demo-input" orientation="horizontal" channels="2" label="Input level"></ray-meter>
-  <ray-button size="xs" variant="default" id="demo-meter-reset">Reset the clip lights</ray-button>
+  <ray-button size="xs" variant="default" id="demo-meter-reset">Clear the clip marks</ray-button>
 </div>
 
 <script type="module">
   // A test signal: a beat and a wobble per track, scaled by its fader.
   const strips = [...document.querySelectorAll("#demo-mixer .demo-strip")];
+  // The numbers live on the faders (their marks, on the left); the meters beside them have none.
+  const scale = [6, 0, -6, -12, -24, -36, -60].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
+  for (const strip of strips) {
+    const fader = strip.querySelector("ray-slider");
+    fader.marks = scale;
+    fader.addEventListener("input", () => {
+      strip.querySelector("output").textContent = `${fader.value.toFixed(1)} dB`;
+    });
+  }
+  const solo = document.getElementById("demo-solo");
   const input = document.getElementById("demo-input");
   input.marks = [-48, -24, -12, -6, 0, 6];
   const db = (a) => (a > 0 ? 20 * Math.log10(a) : -Infinity);
@@ -4713,6 +4777,8 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
       const peaks = [0, 1].map((ch) => db(0.25 + 0.55 * beat + 0.1 * Math.sin(s * 7 + ch + i)) + gain);
       strip.querySelector("ray-meter").setLevels(peaks, peaks.map((p) => p - 9));
     });
+    const out = db(0.35 + 0.25 * Math.abs(Math.sin(s * 2.1)));
+    solo.setLevels([out, out - 1.5], [out - 9, out - 10]);
     const level = db(0.3 + 0.3 * Math.abs(Math.sin(s * 1.3)));
     input.setLevels([level, level - 2], [level - 8, level - 10]);
     if (!still) requestAnimationFrame(frame);
@@ -4727,12 +4793,12 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 <div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
 <div class="source-body"><p class="source-status"><a href="../code/meter.html">Open the code</a></p></div></details>
 <p class="tag"><code>&lt;ray-meter&gt;</code> &middot; <code>RayMeter</code></p>
-<p class="note">Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. For a fader beside it: ray-slider orientation=&quot;vertical&quot;.</p>
-<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>min</code></td><td><code>min</code></td><td>number</td><td><code>-60</code></td><td>The dB at the bottom: lower levels show nothing.</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>number</td><td><code>6</code></td><td>The dB at the top.</td></tr><tr><td><code>warn</code></td><td><code>warn</code></td><td>number</td><td><code>-12</code></td><td>Where the yellow zone starts (dB).</td></tr><tr><td><code>danger</code></td><td><code>danger</code></td><td>number</td><td><code>-3</code></td><td>Where the red zone starts (dB).</td></tr><tr><td><code>clip</code></td><td><code>clip</code></td><td>number</td><td><code>0</code></td><td>A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.</td></tr><tr><td><code>channels</code></td><td><code>channels</code></td><td>number</td><td><code>1</code></td><td>The bars: 1 (mono), 2 (stereo)…</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>vertical</code> | <code>horizontal</code></td><td><code>vertical</code></td><td>vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code></td><td><code>sm</code></td><td>The thickness of each bar.</td></tr><tr><td><code>hold</code></td><td><code>hold</code></td><td>number</td><td><code>1500</code></td><td>How long the peak hold line stays (ms); 0: no line.</td></tr><tr><td><code>falloff</code></td><td><code>falloff</code></td><td>number</td><td><code>24</code></td><td>How fast a lower level falls (dB per second); 0: at once.</td></tr><tr><td><code>scale</code></td><td><code>scale</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows the dB scale (6, 0, -6, -12, -24, -36, -48, -60 within min and max).</td></tr><tr><td><code>marks</code></td><td>&mdash;</td><td>array</td><td></td><td>Your own scale, in dB (replaces the one of scale).</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Level</code> <span class="text-key">(text <code>meter.label</code>)</span></td><td>The accessible name.</td></tr></tbody></table></div>
+<p class="note">Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=&quot;vertical&quot;), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=&quot;cap&quot;, 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off.</p>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>min</code></td><td><code>min</code></td><td>number</td><td><code>-60</code></td><td>The dB at the bottom: lower levels show nothing.</td></tr><tr><td><code>max</code></td><td><code>max</code></td><td>number</td><td><code>6</code></td><td>The dB at the top.</td></tr><tr><td><code>warn</code></td><td><code>warn</code></td><td>number</td><td><code>-12</code></td><td>Where the yellow zone starts (dB).</td></tr><tr><td><code>danger</code></td><td><code>danger</code></td><td>number</td><td><code>-3</code></td><td>Where the red zone starts (dB).</td></tr><tr><td><code>clip</code></td><td><code>clip</code></td><td>number</td><td><code>0</code></td><td>A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.</td></tr><tr><td><code>channels</code></td><td><code>channels</code></td><td>number</td><td><code>1</code></td><td>The bars: 1 (mono), 2 (stereo)…</td></tr><tr><td><code>orientation</code></td><td><code>orientation</code> <span class="reflects">reflects</span></td><td><code>vertical</code> | <code>horizontal</code></td><td><code>vertical</code></td><td>vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td><code>xs</code> | <code>sm</code> | <code>md</code> | <code>lg</code></td><td><code>sm</code></td><td>The thickness of each bar.</td></tr><tr><td><code>hold</code></td><td><code>hold</code></td><td>number</td><td><code>1500</code></td><td>How long the peak hold line stays (ms); 0: no line.</td></tr><tr><td><code>falloff</code></td><td><code>falloff</code></td><td>number</td><td><code>24</code></td><td>How fast a lower level falls (dB per second); 0: at once.</td></tr><tr><td><code>scale</code></td><td><code>scale</code> <span class="reflects">reflects</span></td><td>boolean</td><td></td><td>Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.</td></tr><tr><td><code>marks</code></td><td>&mdash;</td><td>array</td><td></td><td>Your own scale, in dB (replaces the one of scale).</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td><code>Level</code> <span class="text-key">(text <code>meter.label</code>)</span></td><td>The accessible name.</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-clip</code></td><td>A channel's peak reached clip (once until its light is cleared).</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-clip</code></td><td>A channel's peak reached clip (once until its mark is cleared).</td></tr></tbody></table></div>
 
-<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>channels</code></td><td>The bars (role=meter).</td></tr><tr><td><code>channel</code></td><td>One channel: its clip light and track.</td></tr><tr><td><code>track</code></td><td>A bar's track.</td></tr><tr><td><code>peak</code></td><td>The peak level (translucent).</td></tr><tr><td><code>rms</code></td><td>The RMS level (solid).</td></tr><tr><td><code>hold</code></td><td>The peak hold line.</td></tr><tr><td><code>clip</code></td><td>The clip light (data-clipped on its channel and on the host).</td></tr><tr><td><code>scale</code></td><td>The dB scale.</td></tr><tr><td><code>tick</code></td><td>A label of the scale.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>channels</code></td><td>The bars (role=meter).</td></tr><tr><td><code>channel</code></td><td>One channel (data-clipped when clipped).</td></tr><tr><td><code>track</code></td><td>A bar's track.</td></tr><tr><td><code>peak</code></td><td>The peak level (translucent).</td></tr><tr><td><code>rms</code></td><td>The RMS level (solid).</td></tr><tr><td><code>hold</code></td><td>The peak hold line.</td></tr><tr><td><code>scale</code></td><td>The dB scale.</td></tr><tr><td><code>tick</code></td><td>A label of the scale.</td></tr></tbody></table></div>
 <h3 id="meter-texts">Texts</h3>
 <p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
 <div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>meter.label</code></td><td>Level</td></tr><tr><td><code>meter.value</code></td><td>{value} dB</td></tr><tr><td><code>meter.silent</code></td><td>Silence</td></tr></tbody></table></div>

@@ -252,12 +252,14 @@ export default [
     "icon": "layers"
   },
   {
-    "label": "Slider",
+    "label": "Slider (Range, Fader)",
     "group": "Components · Inputs",
-    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
     "href": "components/slider.html",
     "keywords": [
       "slider",
+      "range",
+      "fader",
       "ray-slider"
     ],
     "icon": "layers"
@@ -578,7 +580,7 @@ export default [
   {
     "label": "Meter (Level meter, VU meter, Peak meter)",
     "group": "Components · Data display",
-    "description": "An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip light, one bar per channel; setLevels() on every animation frame costs no render.",
+    "description": "An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip mark, one bar per channel; setLevels() on every animation frame costs no render.",
     "href": "components/meter.html",
     "keywords": [
       "meter",

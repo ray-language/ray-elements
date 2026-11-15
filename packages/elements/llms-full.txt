@@ -1636,9 +1636,9 @@ Texts (`setStrings`; English):
 
 - `select.empty`: No options
 
-### Slider
+### Slider (also Range, Fader)
 
-A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.
+A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.
 
 Import: `import "@raylang/elements/slider";` · Category: Inputs
 
@@ -1662,6 +1662,7 @@ Properties:
 - `unit`: string. Appended to the shown value and its spoken text (%, px, ms…).
 - `marks` (property only): `Array<number | { value: number; label?: string }>`. Labeled ticks under the track.
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
+- `thumb`: `round` | `cap`, default `round`, reflects. The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.
 
 Also the properties of FieldControl: `required`, `radius`, `variant`.
 
@@ -3167,13 +3168,13 @@ Parts (`::part()`):
 
 ### Meter (also Level meter, VU meter, Peak meter)
 
-An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip light, one bar per channel; setLevels() on every animation frame costs no render.
+An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip mark, one bar per channel; setLevels() on every animation frame costs no render.
 
 Import: `import "@raylang/elements/meter";` · Category: Data display
 
 #### `<ray-meter>` (RayMeter, extends RayElement)
 
-Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. For a fader beside it: ray-slider orientation="vertical".
+Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation="vertical"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb="cap", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off.
 
 Properties:
 
@@ -3181,37 +3182,36 @@ Properties:
 - `max`: number, default `6`. The dB at the top.
 - `warn`: number, default `-12`. Where the yellow zone starts (dB).
 - `danger`: number, default `-3`. Where the red zone starts (dB).
-- `clip`: number, default `0`. A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.
+- `clip`: number, default `0`. A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.
 - `channels`: number, default `1`. The bars: 1 (mono), 2 (stereo)…
 - `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.
 - `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. The thickness of each bar.
 - `hold`: number, default `1500`. How long the peak hold line stays (ms); 0: no line.
 - `falloff`: number, default `24`. How fast a lower level falls (dB per second); 0: at once.
-- `scale`: boolean, reflects. Shows the dB scale (6, 0, -6, -12, -24, -36, -48, -60 within min and max).
+- `scale`: boolean, reflects. Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.
 - `marks` (property only): `Array<number | { value: number; label?: string }>`. Your own scale, in dB (replaces the one of scale).
 - `label`: string, default `Level` (text `meter.label`). The accessible name.
 
 Events:
 
-- `ray-clip` (detail `{ channel: number }`): A channel's peak reached clip (once until its light is cleared).
+- `ray-clip` (detail `{ channel: number }`): A channel's peak reached clip (once until its mark is cleared).
 
 Parts (`::part()`):
 
 - `channels`: The bars (role=meter).
-- `channel`: One channel: its clip light and track.
+- `channel`: One channel (data-clipped when clipped).
 - `track`: A bar's track.
 - `peak`: The peak level (translucent).
 - `rms`: The RMS level (solid).
 - `hold`: The peak hold line.
-- `clip`: The clip light (data-clipped on its channel and on the host).
 - `scale`: The dB scale.
 - `tick`: A label of the scale.
 
 Methods and properties:
 
 - `setLevels(peak: number | number[], rms?: number | number[]): void`: The levels now in dB, a number or one per channel; without rms, one solid bar.
-- `reset(): void`: Clears the levels, the hold lines and the clip lights.
-- `resetClip(): void`: Clears the clip lights.
+- `reset(): void`: Clears the levels, the hold lines and the clip marks.
+- `resetClip(): void`: Clears the clip marks.
 - `readonly clipped: boolean`: A channel reached clip since the last reset.
 
 Texts (`setStrings`; English):
