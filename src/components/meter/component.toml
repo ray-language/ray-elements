@@ -1,0 +1,127 @@
+[component]
+name = "Meter"
+category = "Data display"
+summary = "An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip mark, one bar per channel; setLevels() on every animation frame costs no render."
+aliases = ["Level meter", "VU meter", "Peak meter"]
+files = ["meter.js"]
+requires = []
+tags = ["ray-meter"]
+
+[ray-meter]
+class = "RayMeter"
+extends = "RayElement"
+summary = "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off."
+
+[ray-meter.properties.min]
+type = "number"
+default = "-60"
+description = "The dB at the bottom: lower levels show nothing."
+
+[ray-meter.properties.max]
+type = "number"
+default = "6"
+description = "The dB at the top."
+
+[ray-meter.properties.warn]
+type = "number"
+default = "-12"
+description = "Where the yellow zone starts (dB)."
+
+[ray-meter.properties.danger]
+type = "number"
+default = "-3"
+description = "Where the red zone starts (dB)."
+
+[ray-meter.properties.clip]
+type = "number"
+default = "0"
+description = "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar."
+
+[ray-meter.properties.channels]
+type = "number"
+default = "1"
+description = "The bars: 1 (mono), 2 (stereo)…"
+
+[ray-meter.properties.orientation]
+type = "string"
+values = ["vertical", "horizontal"]
+default = "vertical"
+reflect = true
+description = "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end."
+
+[ray-meter.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg"]
+default = "sm"
+reflect = true
+description = "The thickness of each bar."
+
+[ray-meter.properties.hold]
+type = "number"
+default = "1500"
+description = "How long the peak hold line stays (ms); 0: no line."
+
+[ray-meter.properties.falloff]
+type = "number"
+default = "24"
+description = "How fast a lower level falls (dB per second); 0: at once."
+
+[ray-meter.properties.scale]
+type = "boolean"
+reflect = true
+description = "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead."
+
+[ray-meter.properties.marks]
+attribute = false
+type = "array"
+ts = "Array<number | { value: number; label?: string }>"
+description = "Your own scale, in dB (replaces the one of scale)."
+
+[ray-meter.properties.label]
+type = "string"
+string = "meter.label"
+description = "The accessible name."
+
+[ray-meter.events.ray-clip]
+description = "A channel's peak reached clip (once until its mark is cleared)."
+detail = "{ channel: number }"
+
+[ray-meter.parts.channels]
+description = "The bars (role=meter)."
+
+[ray-meter.parts.channel]
+description = "One channel (data-clipped when clipped)."
+
+[ray-meter.parts.track]
+description = "A bar's track."
+
+[ray-meter.parts.peak]
+description = "The peak level (translucent)."
+
+[ray-meter.parts.rms]
+description = "The RMS level (solid)."
+
+[ray-meter.parts.hold]
+description = "The peak hold line."
+
+[ray-meter.parts.scale]
+description = "The dB scale."
+
+[ray-meter.parts.tick]
+description = "A label of the scale."
+
+[ray-meter.members.setLevels]
+ts = "setLevels(peak: number | number[], rms?: number | number[]): void"
+description = "The levels now in dB, a number or one per channel; without rms, one solid bar."
+
+[ray-meter.members.reset]
+ts = "reset(): void"
+description = "Clears the levels, the hold lines and the clip marks."
+
+[ray-meter.members.resetClip]
+ts = "resetClip(): void"
+description = "Clears the clip marks."
+
+[ray-meter.members.clipped]
+ts = "readonly clipped: boolean"
+description = "A channel reached clip since the last reset."

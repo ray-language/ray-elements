@@ -3462,7 +3462,7 @@
     },
     {
       "name": "ray-slider",
-      "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+      "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
       "attributes": [
         {
           "name": "value",
@@ -3546,6 +3546,30 @@
         {
           "name": "unit",
           "description": "Appended to the shown value and its spoken text (%, px, ms…)."
+        },
+        {
+          "name": "orientation",
+          "description": "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
+          "values": [
+            {
+              "name": "horizontal"
+            },
+            {
+              "name": "vertical"
+            }
+          ]
+        },
+        {
+          "name": "thumb",
+          "description": "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.",
+          "values": [
+            {
+              "name": "round"
+            },
+            {
+              "name": "cap"
+            }
+          ]
         },
         {
           "name": "required",
@@ -6342,6 +6366,83 @@
       ]
     },
     {
+      "name": "ray-meter",
+      "description": "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off.",
+      "attributes": [
+        {
+          "name": "min",
+          "description": "The dB at the bottom: lower levels show nothing."
+        },
+        {
+          "name": "max",
+          "description": "The dB at the top."
+        },
+        {
+          "name": "warn",
+          "description": "Where the yellow zone starts (dB)."
+        },
+        {
+          "name": "danger",
+          "description": "Where the red zone starts (dB)."
+        },
+        {
+          "name": "clip",
+          "description": "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar."
+        },
+        {
+          "name": "channels",
+          "description": "The bars: 1 (mono), 2 (stereo)…"
+        },
+        {
+          "name": "orientation",
+          "description": "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.",
+          "values": [
+            {
+              "name": "vertical"
+            },
+            {
+              "name": "horizontal"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "The thickness of each bar.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            }
+          ]
+        },
+        {
+          "name": "hold",
+          "description": "How long the peak hold line stays (ms); 0: no line."
+        },
+        {
+          "name": "falloff",
+          "description": "How fast a lower level falls (dB per second); 0: at once."
+        },
+        {
+          "name": "scale",
+          "description": "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.",
+          "valueSet": "v"
+        },
+        {
+          "name": "label",
+          "description": "The accessible name."
+        }
+      ]
+    },
+    {
       "name": "ray-stat",
       "description": "A metric tile: label, value, change against a previous period, note.",
       "attributes": [
@@ -8028,7 +8129,7 @@
     },
     {
       "name": "ray-split",
-      "description": "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane.",
+      "description": "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the sized pane. position, min, max and collapsed are the sized pane's: the start pane, or the end pane with fixed=\"end\".",
       "attributes": [
         {
           "name": "orientation",
@@ -8043,20 +8144,32 @@
           ]
         },
         {
+          "name": "fixed",
+          "description": "The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches.",
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "end"
+            }
+          ]
+        },
+        {
           "name": "position",
-          "description": "Initial size of the start pane: px (280) or any CSS length (30%, 20rem)."
+          "description": "Initial size of the sized pane: px (280) or any CSS length (30%, 20rem)."
         },
         {
           "name": "min",
-          "description": "Minimum size of the start pane in px."
+          "description": "Minimum size of the sized pane in px."
         },
         {
           "name": "max",
-          "description": "Maximum size of the start pane in px."
+          "description": "Maximum size of the sized pane in px."
         },
         {
           "name": "collapsed",
-          "description": "The start pane is hidden.",
+          "description": "The sized pane is hidden.",
           "valueSet": "v"
         },
         {

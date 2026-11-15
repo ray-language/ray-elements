@@ -1216,6 +1216,10 @@ export interface RaySliderOwnProps {
   unit?: string;
   /** Labeled ticks under the track. */
   marks?: Array<number | { value: number; label?: string }>;
+  /** vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
+  orientation?: "horizontal" | "vertical";
+  /** The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables. */
+  thumb?: "round" | "cap";
   /** Required for form submission. */
   required?: boolean;
   /** Corner radius. */
@@ -2143,6 +2147,40 @@ export type RayKbdProps = RayKbdOwnProps & Omit<React.HTMLAttributes<Ray.RayKbd>
 /** <ray-kbd> as a React component. */
 export declare const RayKbd: React.ForwardRefExoticComponent<RayKbdProps & React.RefAttributes<Ray.RayKbd>>;
 
+export interface RayMeterOwnProps {
+  /** The dB at the bottom: lower levels show nothing. */
+  min?: number;
+  /** The dB at the top. */
+  max?: number;
+  /** Where the yellow zone starts (dB). */
+  warn?: number;
+  /** Where the red zone starts (dB). */
+  danger?: number;
+  /** A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar. */
+  clip?: number;
+  /** The bars: 1 (mono), 2 (stereo)… */
+  channels?: number;
+  /** vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end. */
+  orientation?: "vertical" | "horizontal";
+  /** The thickness of each bar. */
+  size?: "xs" | "sm" | "md" | "lg";
+  /** How long the peak hold line stays (ms); 0: no line. */
+  hold?: number;
+  /** How fast a lower level falls (dB per second); 0: at once. */
+  falloff?: number;
+  /** Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead. */
+  scale?: boolean;
+  /** Your own scale, in dB (replaces the one of scale). */
+  marks?: Array<number | { value: number; label?: string }>;
+  /** The accessible name. */
+  label?: string;
+  /** A channel's peak reached clip (once until its mark is cleared). */
+  onRayClip?: (event: CustomEvent<{ channel: number }>) => void;
+}
+export type RayMeterProps = RayMeterOwnProps & Omit<React.HTMLAttributes<Ray.RayMeter>, keyof RayMeterOwnProps> & { children?: React.ReactNode };
+/** <ray-meter> as a React component. */
+export declare const RayMeter: React.ForwardRefExoticComponent<RayMeterProps & React.RefAttributes<Ray.RayMeter>>;
+
 export interface RayStatOwnProps {
   /** What is measured. */
   label?: string;
@@ -2598,13 +2636,15 @@ export declare const RaySeparator: React.ForwardRefExoticComponent<RaySeparatorP
 export interface RaySplitOwnProps {
   /** horizontal: side by side; vertical: stacked. */
   orientation?: "horizontal" | "vertical";
-  /** Initial size of the start pane: px (280) or any CSS length (30%, 20rem). */
+  /** The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches. */
+  fixed?: "start" | "end";
+  /** Initial size of the sized pane: px (280) or any CSS length (30%, 20rem). */
   position?: string;
-  /** Minimum size of the start pane in px. */
+  /** Minimum size of the sized pane in px. */
   min?: number;
-  /** Maximum size of the start pane in px. */
+  /** Maximum size of the sized pane in px. */
   max?: number;
-  /** The start pane is hidden. */
+  /** The sized pane is hidden. */
   collapsed?: boolean;
   /** The divider cannot be moved. */
   disabled?: boolean;

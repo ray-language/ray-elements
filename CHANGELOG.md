@@ -7,6 +7,29 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-meter`: an audio level meter for a mixer's channel strip. Peak and RMS
+  in dB, green, yellow and red zones (`warn`, `danger`), a peak hold line
+  (`hold`), a clip mark at the top of each bar (`clip`, the `ray-clip`
+  event, `resetClip()`), falloff ballistics, one bar per channel
+  (`channels`), an optional dB scale (`scale`, `marks`), vertical or
+  horizontal. `setLevels(peak, rms)` on every animation frame writes CSS
+  variables only, so 60 updates a second cost no render; the meter role's
+  value follows a few times a second. `--ray-meter-inset` lines it up with a
+  vertical slider of the same height, whose marks carry the numbers.
+- `ray-slider orientation="vertical"`: a fader. The minimum is at the bottom,
+  the marks run on its left, aligned against the track so the numbers line
+  up, and the length is the host's height (`--ray-slider-length`, 12rem).
+- `ray-slider` thumbs: `thumb="cap"`, a mixing desk's fader cap (a short,
+  wide block with a line at its middle, over a plain slot), and the
+  `--ray-slider-thumb-size`, `-length`, `-background`, `-border`, `-radius`
+  and `-shadow` variables to draw any other.
+- `ray-split fixed="end"`: the end pane has the size (`position`, `min`,
+  `max`, `collapsed`, `autosave`) and the start pane takes the rest: an
+  inspector docked on the right keeps its width while the middle stretches.
+  Keys, drag and right to left follow.
+
 ## [0.20.1] - 2026-11-14
 
 ### Fixed

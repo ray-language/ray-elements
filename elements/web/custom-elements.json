@@ -9858,7 +9858,7 @@
           "name": "RaySlider",
           "tagName": "ray-slider",
           "customElement": true,
-          "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+          "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
           "superclass": {
             "name": "FieldControl"
           },
@@ -9979,6 +9979,24 @@
               },
               "description": "Appended to the shown value and its spoken text (%, px, ms…).",
               "fieldName": "unit"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "\"horizontal\" | \"vertical\""
+              },
+              "description": "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
+              "fieldName": "orientation",
+              "default": "horizontal"
+            },
+            {
+              "name": "thumb",
+              "type": {
+                "text": "\"round\" | \"cap\""
+              },
+              "description": "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.",
+              "fieldName": "thumb",
+              "default": "round"
             },
             {
               "name": "required",
@@ -10159,6 +10177,28 @@
                 "text": "Array<number | { value: number; label?: string }>"
               },
               "description": "Labeled ticks under the track."
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "type": {
+                "text": "\"horizontal\" | \"vertical\""
+              },
+              "description": "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
+              "attribute": "orientation",
+              "reflects": true,
+              "default": "horizontal"
+            },
+            {
+              "kind": "field",
+              "name": "thumb",
+              "type": {
+                "text": "\"round\" | \"cap\""
+              },
+              "description": "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.",
+              "attribute": "thumb",
+              "reflects": true,
+              "default": "round"
             },
             {
               "kind": "field",
@@ -18586,6 +18626,354 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/meter/meter.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayMeter",
+          "tagName": "ray-meter",
+          "customElement": true,
+          "description": "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off.",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The dB at the bottom: lower levels show nothing.",
+              "fieldName": "min",
+              "default": "-60"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The dB at the top.",
+              "fieldName": "max",
+              "default": "6"
+            },
+            {
+              "name": "warn",
+              "type": {
+                "text": "number"
+              },
+              "description": "Where the yellow zone starts (dB).",
+              "fieldName": "warn",
+              "default": "-12"
+            },
+            {
+              "name": "danger",
+              "type": {
+                "text": "number"
+              },
+              "description": "Where the red zone starts (dB).",
+              "fieldName": "danger",
+              "default": "-3"
+            },
+            {
+              "name": "clip",
+              "type": {
+                "text": "number"
+              },
+              "description": "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.",
+              "fieldName": "clip",
+              "default": "0"
+            },
+            {
+              "name": "channels",
+              "type": {
+                "text": "number"
+              },
+              "description": "The bars: 1 (mono), 2 (stereo)…",
+              "fieldName": "channels",
+              "default": "1"
+            },
+            {
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\""
+              },
+              "description": "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.",
+              "fieldName": "orientation",
+              "default": "vertical"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\""
+              },
+              "description": "The thickness of each bar.",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "hold",
+              "type": {
+                "text": "number"
+              },
+              "description": "How long the peak hold line stays (ms); 0: no line.",
+              "fieldName": "hold",
+              "default": "1500"
+            },
+            {
+              "name": "falloff",
+              "type": {
+                "text": "number"
+              },
+              "description": "How fast a lower level falls (dB per second); 0: at once.",
+              "fieldName": "falloff",
+              "default": "24"
+            },
+            {
+              "name": "scale",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.",
+              "fieldName": "scale"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The accessible name.",
+              "fieldName": "label",
+              "default": "Level"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "The dB at the bottom: lower levels show nothing.",
+              "attribute": "min",
+              "reflects": false,
+              "default": "-60"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "The dB at the top.",
+              "attribute": "max",
+              "reflects": false,
+              "default": "6"
+            },
+            {
+              "kind": "field",
+              "name": "warn",
+              "type": {
+                "text": "number"
+              },
+              "description": "Where the yellow zone starts (dB).",
+              "attribute": "warn",
+              "reflects": false,
+              "default": "-12"
+            },
+            {
+              "kind": "field",
+              "name": "danger",
+              "type": {
+                "text": "number"
+              },
+              "description": "Where the red zone starts (dB).",
+              "attribute": "danger",
+              "reflects": false,
+              "default": "-3"
+            },
+            {
+              "kind": "field",
+              "name": "clip",
+              "type": {
+                "text": "number"
+              },
+              "description": "A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar.",
+              "attribute": "clip",
+              "reflects": false,
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "channels",
+              "type": {
+                "text": "number"
+              },
+              "description": "The bars: 1 (mono), 2 (stereo)…",
+              "attribute": "channels",
+              "reflects": false,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "orientation",
+              "type": {
+                "text": "\"vertical\" | \"horizontal\""
+              },
+              "description": "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.",
+              "attribute": "orientation",
+              "reflects": true,
+              "default": "vertical"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\""
+              },
+              "description": "The thickness of each bar.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "hold",
+              "type": {
+                "text": "number"
+              },
+              "description": "How long the peak hold line stays (ms); 0: no line.",
+              "attribute": "hold",
+              "reflects": false,
+              "default": "1500"
+            },
+            {
+              "kind": "field",
+              "name": "falloff",
+              "type": {
+                "text": "number"
+              },
+              "description": "How fast a lower level falls (dB per second); 0: at once.",
+              "attribute": "falloff",
+              "reflects": false,
+              "default": "24"
+            },
+            {
+              "kind": "field",
+              "name": "scale",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead.",
+              "attribute": "scale",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "marks",
+              "type": {
+                "text": "Array<number | { value: number; label?: string }>"
+              },
+              "description": "Your own scale, in dB (replaces the one of scale)."
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "The accessible name.",
+              "attribute": "label",
+              "reflects": false,
+              "default": "Level"
+            },
+            {
+              "kind": "method",
+              "name": "setLevels",
+              "description": "The levels now in dB, a number or one per channel; without rms, one solid bar."
+            },
+            {
+              "kind": "method",
+              "name": "reset",
+              "description": "Clears the levels, the hold lines and the clip marks."
+            },
+            {
+              "kind": "method",
+              "name": "resetClip",
+              "description": "Clears the clip marks."
+            },
+            {
+              "kind": "field",
+              "name": "clipped",
+              "description": "A channel reached clip since the last reset."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-clip",
+              "type": {
+                "text": "CustomEvent<{ channel: number }>"
+              },
+              "description": "A channel's peak reached clip (once until its mark is cleared)."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "channels",
+              "description": "The bars (role=meter)."
+            },
+            {
+              "name": "channel",
+              "description": "One channel (data-clipped when clipped)."
+            },
+            {
+              "name": "track",
+              "description": "A bar's track."
+            },
+            {
+              "name": "peak",
+              "description": "The peak level (translucent)."
+            },
+            {
+              "name": "rms",
+              "description": "The RMS level (solid)."
+            },
+            {
+              "name": "hold",
+              "description": "The peak hold line."
+            },
+            {
+              "name": "scale",
+              "description": "The dB scale."
+            },
+            {
+              "name": "tick",
+              "description": "A label of the scale."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayMeter",
+          "declaration": {
+            "name": "RayMeter",
+            "module": "components/meter/meter.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-meter",
+          "declaration": {
+            "name": "RayMeter",
+            "module": "components/meter/meter.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/stat/stat.js",
       "declarations": [
         {
@@ -22826,7 +23214,7 @@
           "name": "RaySplit",
           "tagName": "ray-split",
           "customElement": true,
-          "description": "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane.",
+          "description": "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the sized pane. position, min, max and collapsed are the sized pane's: the start pane, or the end pane with fixed=\"end\".",
           "superclass": {
             "name": "RayElement"
           },
@@ -22841,11 +23229,20 @@
               "default": "horizontal"
             },
             {
+              "name": "fixed",
+              "type": {
+                "text": "\"start\" | \"end\""
+              },
+              "description": "The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches.",
+              "fieldName": "fixed",
+              "default": "start"
+            },
+            {
               "name": "position",
               "type": {
                 "text": "string"
               },
-              "description": "Initial size of the start pane: px (280) or any CSS length (30%, 20rem).",
+              "description": "Initial size of the sized pane: px (280) or any CSS length (30%, 20rem).",
               "fieldName": "position",
               "default": "50%"
             },
@@ -22854,7 +23251,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Minimum size of the start pane in px.",
+              "description": "Minimum size of the sized pane in px.",
               "fieldName": "min",
               "default": "0"
             },
@@ -22863,7 +23260,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Maximum size of the start pane in px.",
+              "description": "Maximum size of the sized pane in px.",
               "fieldName": "max"
             },
             {
@@ -22871,7 +23268,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "The start pane is hidden.",
+              "description": "The sized pane is hidden.",
               "fieldName": "collapsed"
             },
             {
@@ -22905,11 +23302,22 @@
             },
             {
               "kind": "field",
+              "name": "fixed",
+              "type": {
+                "text": "\"start\" | \"end\""
+              },
+              "description": "The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches.",
+              "attribute": "fixed",
+              "reflects": true,
+              "default": "start"
+            },
+            {
+              "kind": "field",
               "name": "position",
               "type": {
                 "text": "string"
               },
-              "description": "Initial size of the start pane: px (280) or any CSS length (30%, 20rem).",
+              "description": "Initial size of the sized pane: px (280) or any CSS length (30%, 20rem).",
               "attribute": "position",
               "reflects": false,
               "default": "50%"
@@ -22920,7 +23328,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Minimum size of the start pane in px.",
+              "description": "Minimum size of the sized pane in px.",
               "attribute": "min",
               "reflects": false,
               "default": "0"
@@ -22931,7 +23339,7 @@
               "type": {
                 "text": "number"
               },
-              "description": "Maximum size of the start pane in px.",
+              "description": "Maximum size of the sized pane in px.",
               "attribute": "max",
               "reflects": false
             },
@@ -22941,7 +23349,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "The start pane is hidden.",
+              "description": "The sized pane is hidden.",
               "attribute": "collapsed",
               "reflects": true
             },
@@ -22968,12 +23376,12 @@
             {
               "kind": "field",
               "name": "size",
-              "description": "The start pane's size in px."
+              "description": "The sized pane's size in px."
             },
             {
               "kind": "method",
               "name": "toggle",
-              "description": "Collapses or restores the start pane."
+              "description": "Collapses or restores the sized pane."
             }
           ],
           "events": [
@@ -22988,11 +23396,11 @@
           "slots": [
             {
               "name": "start",
-              "description": "The sized pane (sidebar)."
+              "description": "The first pane: sized (a sidebar), or the one that takes the rest with fixed=\"end\"."
             },
             {
               "name": "end",
-              "description": "The pane that takes the rest."
+              "description": "The second pane: the one that takes the rest, or sized with fixed=\"end\" (an inspector)."
             }
           ],
           "cssParts": [

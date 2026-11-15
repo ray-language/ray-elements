@@ -1,6 +1,6 @@
 # Sidebar
 
-The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed).
+The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in a pane of a ray-split (the start pane, or the end pane with fixed="end" for an inspector; min, max, autosave, collapsed).
 
 Import: `import "@raylang/elements/sidebar";` · Category: Navigation
 

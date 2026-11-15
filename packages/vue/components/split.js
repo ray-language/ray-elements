@@ -4,6 +4,6 @@ import "@raylang/elements/split";
 import { createComponent } from "../create.js";
 
 export const RaySplit = /*#__PURE__*/ createComponent("RaySplit", "ray-split", {
-  properties: ["orientation", "position", "min", "max", "collapsed", "disabled", "autosave"],
+  properties: ["orientation", "fixed", "position", "min", "max", "collapsed", "disabled", "autosave"],
   booleans: ["collapsed", "disabled"],
 });

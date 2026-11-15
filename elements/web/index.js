@@ -54,6 +54,7 @@ export { RayCode, setHighlighter, tokenize } from "./components/code/code.js";
 export { RayIcon } from "./components/icon/icon.js";
 export { RayIndicator } from "./components/indicator/indicator.js";
 export { RayKbd } from "./components/kbd/kbd.js";
+export { RayMeter } from "./components/meter/meter.js";
 export { RayStat } from "./components/stat/stat.js";
 export { RayTable } from "./components/table/table.js";
 export { RayTimeline, RayTimelineItem } from "./components/timeline/timeline.js";

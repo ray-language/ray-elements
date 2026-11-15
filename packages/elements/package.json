@@ -244,6 +244,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/kbd/kbd.js"
     },
+    "./meter": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/meter/meter.js"
+    },
     "./stat": {
       "types": "./ray-elements.d.ts",
       "default": "./components/stat/stat.js"

@@ -50,6 +50,7 @@ import "./components/code/code.js";
 import "./components/icon/icon.js";
 import "./components/indicator/indicator.js";
 import "./components/kbd/kbd.js";
+import "./components/meter/meter.js";
 import "./components/stat/stat.js";
 import "./components/table/table.js";
 import "./components/timeline/timeline.js";

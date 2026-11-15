@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RaySlider = /*#__PURE__*/ createComponent("ray-slider", {
   displayName: "RaySlider",
-  properties: ["value", "min", "max", "step", "name", "label", "description", "descriptionPosition", "error", "disabled", "color", "size", "showValue", "unit", "marks", "required", "radius", "variant"],
+  properties: ["value", "min", "max", "step", "name", "label", "description", "descriptionPosition", "error", "disabled", "color", "size", "showValue", "unit", "marks", "orientation", "thumb", "required", "radius", "variant"],
   events: { onInput: "input", onChange: "change" },
 });

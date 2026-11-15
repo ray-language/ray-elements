@@ -5,6 +5,6 @@ import { createComponent } from "../create.js";
 
 export const RaySplit = /*#__PURE__*/ createComponent("ray-split", {
   displayName: "RaySplit",
-  properties: ["orientation", "position", "min", "max", "collapsed", "disabled", "autosave"],
+  properties: ["orientation", "fixed", "position", "min", "max", "collapsed", "disabled", "autosave"],
   events: { onRayResize: "ray-resize" },
 });

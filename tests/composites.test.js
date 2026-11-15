@@ -31,6 +31,47 @@ T.test("progress: progressbar values, indeterminate", async (T) => {
   box.remove();
 });
 
+T.test("slider vertical: stands up, the minimum at the bottom, marks on its left, steps up", async (T) => {
+  const box = await mount(`<form><ray-slider name="gain" orientation="vertical" label="Gain" value="25" style="height: 240px"></ray-slider></form>`);
+  const s = box.querySelector("ray-slider");
+  s.marks = [{ value: 0, label: "-inf" }, { value: 100, label: "0" }];
+  await T.settle();
+  const input = s.shadowRoot.querySelector("input");
+  const r = input.getBoundingClientRect();
+  T.ok(r.height > 150 && r.height > r.width * 5, `the input is tall (${Math.round(r.width)}x${Math.round(r.height)})`);
+  T.eq(getComputedStyle(input).writingMode, "vertical-lr");
+  T.eq(input.getAttribute("aria-orientation"), "vertical");
+  T.eq(Math.round(s.getBoundingClientRect().height), 240, "the length is the host's height");
+  const [low, high] = s.shadowRoot.querySelectorAll(".mark");
+  T.ok(low.getBoundingClientRect().top > high.getBoundingClientRect().top + 100, "the minimum's mark is at the bottom");
+  T.ok(low.getBoundingClientRect().right <= r.left + 1, "the marks are before the track (on the left)");
+  T.ok(Math.abs(low.getBoundingClientRect().right - high.getBoundingClientRect().right) < 1, "aligned against it: the numbers line up");
+  input.focus();
+  input.stepUp(); // what ArrowUp does to the native range
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+  await T.settle();
+  T.eq(s.value, 26);
+  T.eq(new FormData(box.querySelector("form")).get("gain"), "26");
+  s.orientation = "horizontal";
+  await T.settle();
+  T.ok(input.getBoundingClientRect().width > input.getBoundingClientRect().height, "back to horizontal");
+  box.remove();
+});
+
+T.test("slider thumbs: cap, the --ray-slider-thumb-* variables, no head without a label", async (T) => {
+  const box = await mount(`<ray-slider orientation="vertical" thumb="cap" aria-label="Fader" style="height: 200px"></ray-slider>
+    <ray-slider label="Own" style="--ray-slider-thumb-size: 30px; --ray-slider-thumb-length: 10px; width: 200px"></ray-slider>`);
+  const [cap, own] = box.querySelectorAll("ray-slider");
+  const input = cap.shadowRoot.querySelector("input");
+  T.eq(Math.round(input.getBoundingClientRect().width), 24, "the cap is 1.5rem across the track");
+  T.eq(cap.shadowRoot.querySelector(".head").hidden, true, "no label, no shown value: no head");
+  T.ok(Math.abs(input.getBoundingClientRect().top - cap.getBoundingClientRect().top) < 1, "the track starts at the top");
+  T.eq(input.getAttribute("aria-label"), "Fader");
+  T.eq(Math.round(own.shadowRoot.querySelector("input").getBoundingClientRect().height), 30, "--ray-slider-thumb-size sets the room across the track");
+  T.eq(own.shadowRoot.querySelector(".head").hidden, false);
+  box.remove();
+});
+
 T.test("slider: value, FormData, unit, marks, reset", async (T) => {
   const box = await mount(`<form><ray-slider name="vol" value="40" min="0" max="80" unit="%" show-value label="Volume"></ray-slider></form>`);
   const form = box.querySelector("form");
@@ -167,6 +208,62 @@ T.test("split: keyboard, clamping, collapse, drag, autosave", async (T) => {
   T.eq(fourth.querySelector("ray-split").collapsed, false, "the saved state wins over the attribute");
   fourth.remove();
   try { localStorage.removeItem("ray-split:test"); localStorage.removeItem("ray-split:test:collapsed"); } catch {}
+});
+
+T.test("split fixed=end: the end pane has the size, keeps it while the split grows; keys, drag, collapse, rtl", async (T) => {
+  const box = await mount(`<ray-split fixed="end" position="200" min="100" max="300" style="width: 600px; height: 200px"><div slot="start">a</div><div slot="end">b</div></ray-split>`);
+  const split = box.querySelector("ray-split");
+  const d = split.divider;
+  const end = split.shadowRoot.querySelector(".end");
+  const start = split.shadowRoot.querySelector(".start");
+  T.eq(Math.round(split.size), 200);
+  T.eq(Math.round(end.getBoundingClientRect().width), 200, "the end pane is the sized one");
+  T.eq(d.getAttribute("aria-controls"), "end");
+  split.style.width = "800px";
+  await T.settle();
+  T.eq(Math.round(end.getBoundingClientRect().width), 200, "a wider split: the end pane keeps its width");
+  T.ok(start.getBoundingClientRect().width > 550, "and the start pane stretches");
+  key(d, "ArrowLeft");
+  await T.settle();
+  T.eq(Math.round(split.size), 210, "ArrowLeft moves the divider left: the end pane grows");
+  key(d, "ArrowRight", { shiftKey: true });
+  await T.settle();
+  T.eq(Math.round(split.size), 160);
+  key(d, "End");
+  await T.settle();
+  T.eq(Math.round(split.size), 300, "End = max");
+  key(d, "Enter");
+  await T.settle();
+  T.eq(Math.round(end.getBoundingClientRect().width), 0, "collapsed: the end pane");
+  T.eq(getComputedStyle(end).visibility, "hidden");
+  T.eq(getComputedStyle(start).visibility, "visible");
+  key(d, "Enter");
+  await T.settle();
+  const r = split.getBoundingClientRect();
+  d.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, button: 0, pointerId: 8, clientX: r.right - 300, clientY: r.top + 10 }));
+  d.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 8, clientX: r.right - 250, clientY: r.top + 10 }));
+  await T.settle();
+  T.eq(Math.round(split.size), 250, "dragged: measured from the end edge");
+  split.setAttribute("dir", "rtl");
+  await T.settle();
+  T.ok(end.getBoundingClientRect().right <= start.getBoundingClientRect().left + 1, "rtl: the end pane is on the left");
+  key(d, "ArrowRight");
+  await T.settle();
+  T.eq(Math.round(split.size), 260, "rtl: ArrowRight moves the divider right, the end pane grows");
+  d.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, button: 0, pointerId: 9, clientX: r.left + 260, clientY: r.top + 10 }));
+  d.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerId: 9, clientX: r.left + 220, clientY: r.top + 10 }));
+  await T.settle();
+  T.eq(Math.round(split.size), 220, "rtl drag: from the left edge");
+  split.removeAttribute("dir");
+  split.orientation = "vertical";
+  split.style.height = "500px";
+  await T.settle();
+  T.ok(Math.abs(end.getBoundingClientRect().bottom - split.getBoundingClientRect().bottom) < 1, "vertical: the end pane is at the bottom");
+  T.eq(Math.round(end.getBoundingClientRect().height), 220, "with the size");
+  key(d, "ArrowUp");
+  await T.settle();
+  T.eq(Math.round(split.size), 230, "ArrowUp: the bottom pane grows");
+  box.remove();
 });
 
 T.test("table: rows, text-only cells, nodes, sorting with aria-sort", async (T) => {

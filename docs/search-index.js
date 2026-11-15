@@ -252,12 +252,14 @@ export default [
     "icon": "layers"
   },
   {
-    "label": "Slider",
+    "label": "Slider (Range, Fader)",
     "group": "Components · Inputs",
-    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated.",
+    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
     "href": "components/slider.html",
     "keywords": [
       "slider",
+      "range",
+      "fader",
       "ray-slider"
     ],
     "icon": "layers"
@@ -359,7 +361,7 @@ export default [
   {
     "label": "Sidebar",
     "group": "Components · Navigation",
-    "description": "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in the start pane of a ray-split (min, max, autosave, collapsed).",
+    "description": "The side navigation of an app shell: header, content and footer; on wide screens it collapses to an icon rail (or out of view), below a breakpoint it becomes an off-canvas drawer. toggle() does the right thing for the screen. It is for navigation, a list of places with icons; for content such as a tree of documents, a panel that hides and resizes, put your own element in a pane of a ray-split (the start pane, or the end pane with fixed=\"end\" for an inspector; min, max, autosave, collapsed).",
     "href": "components/sidebar.html",
     "keywords": [
       "sidebar",
@@ -572,6 +574,20 @@ export default [
     "keywords": [
       "kbd",
       "ray-kbd"
+    ],
+    "icon": "layers"
+  },
+  {
+    "label": "Meter (Level meter, VU meter, Peak meter)",
+    "group": "Components · Data display",
+    "description": "An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip mark, one bar per channel; setLevels() on every animation frame costs no render.",
+    "href": "components/meter.html",
+    "keywords": [
+      "meter",
+      "level meter",
+      "vu meter",
+      "peak meter",
+      "ray-meter"
     ],
     "icon": "layers"
   },
@@ -822,7 +838,7 @@ export default [
   {
     "label": "Split",
     "group": "Components · Layout",
-    "description": "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.",
+    "description": "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); one pane has the size (the start one, or the end one with fixed=\"end\": a docked inspector), which can be remembered.",
     "href": "components/split.html",
     "keywords": [
       "split",

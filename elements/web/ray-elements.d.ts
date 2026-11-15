@@ -1359,7 +1359,7 @@ export interface RaySelectEventMap extends HTMLElementEventMap {
 }
 
 // --- Slider (slider)
-/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks. Form-associated. */
+/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated. */
 export declare class RaySlider extends FieldControl {
   /** Current value. The value attribute is the initial one (restored on reset). */
   value: number | undefined;
@@ -1391,6 +1391,10 @@ export declare class RaySlider extends FieldControl {
   unit: string | undefined;
   /** Labeled ticks under the track. */
   marks: Array<number | { value: number; label?: string }> | undefined;
+  /** vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
+  orientation: "horizontal" | "vertical";
+  /** The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables. */
+  thumb: "round" | "cap";
 }
 
 // --- Switch (switch)
@@ -2386,6 +2390,53 @@ export declare class RayKbd extends RayElement {
   variant: "default" | "filled" | "outline";
 }
 
+// --- Meter (meter)
+/** <ray-meter> Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation="vertical"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb="cap", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off. */
+export declare class RayMeter extends RayElement {
+  /** The dB at the bottom: lower levels show nothing. */
+  min: number;
+  /** The dB at the top. */
+  max: number;
+  /** Where the yellow zone starts (dB). */
+  warn: number;
+  /** Where the red zone starts (dB). */
+  danger: number;
+  /** A peak at or over it (dB) marks the channel as clipped (a red band at the top of its bar) until resetClip(), reset() or a click on the bar. */
+  clip: number;
+  /** The bars: 1 (mono), 2 (stereo)… */
+  channels: number;
+  /** vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end. */
+  orientation: "vertical" | "horizontal";
+  /** The thickness of each bar. */
+  size: "xs" | "sm" | "md" | "lg";
+  /** How long the peak hold line stays (ms); 0: no line. */
+  hold: number;
+  /** How fast a lower level falls (dB per second); 0: at once. */
+  falloff: number;
+  /** Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead. */
+  scale: boolean | undefined;
+  /** Your own scale, in dB (replaces the one of scale). */
+  marks: Array<number | { value: number; label?: string }> | undefined;
+  /** The accessible name. */
+  label: string;
+  /** The levels now in dB, a number or one per channel; without rms, one solid bar. */
+  setLevels(peak: number | number[], rms?: number | number[]): void;
+  /** Clears the levels, the hold lines and the clip marks. */
+  reset(): void;
+  /** Clears the clip marks. */
+  resetClip(): void;
+  /** A channel reached clip since the last reset. */
+  readonly clipped: boolean;
+  addEventListener<K extends keyof RayMeterEventMap>(type: K, listener: (this: RayMeter, ev: RayMeterEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayMeterEventMap>(type: K, listener: (this: RayMeter, ev: RayMeterEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayMeterEventMap extends HTMLElementEventMap {
+  /** A channel's peak reached clip (once until its mark is cleared). */
+  "ray-clip": CustomEvent<{ channel: number }>;
+}
+
 // --- Stat (stat)
 /** <ray-stat> A metric tile: label, value, change against a previous period, note. */
 export declare class RayStat extends RayElement {
@@ -2889,25 +2940,27 @@ export declare class RaySeparator extends RayElement {
 }
 
 // --- Split (split)
-/** <ray-split> Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane. */
+/** <ray-split> Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the sized pane. position, min, max and collapsed are the sized pane's: the start pane, or the end pane with fixed="end". */
 export declare class RaySplit extends RayElement {
   /** horizontal: side by side; vertical: stacked. */
   orientation: "horizontal" | "vertical";
-  /** Initial size of the start pane: px (280) or any CSS length (30%, 20rem). */
+  /** The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches. */
+  fixed: "start" | "end";
+  /** Initial size of the sized pane: px (280) or any CSS length (30%, 20rem). */
   position: string;
-  /** Minimum size of the start pane in px. */
+  /** Minimum size of the sized pane in px. */
   min: number;
-  /** Maximum size of the start pane in px. */
+  /** Maximum size of the sized pane in px. */
   max: number | undefined;
-  /** The start pane is hidden. */
+  /** The sized pane is hidden. */
   collapsed: boolean | undefined;
   /** The divider cannot be moved. */
   disabled: boolean | undefined;
   /** A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute). */
   autosave: string | undefined;
-  /** The start pane's size in px. */
+  /** The sized pane's size in px. */
   readonly size: number;
-  /** Collapses or restores the start pane. */
+  /** Collapses or restores the sized pane. */
   toggle(): void;
   addEventListener<K extends keyof RaySplitEventMap>(type: K, listener: (this: RaySplit, ev: RaySplitEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
@@ -3031,6 +3084,7 @@ declare global {
     "ray-icon": RayIcon;
     "ray-indicator": RayIndicator;
     "ray-kbd": RayKbd;
+    "ray-meter": RayMeter;
     "ray-stat": RayStat;
     "ray-table": RayTable;
     "ray-timeline": RayTimeline;
