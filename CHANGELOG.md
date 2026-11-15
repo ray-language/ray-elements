@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.21.0] - 2026-11-15
+
 ### Added
 
 - `ray-meter`: an audio level meter for a mixer's channel strip. Peak and RMS
