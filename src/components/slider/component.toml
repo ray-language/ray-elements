@@ -85,6 +85,13 @@ type = "array"
 ts = "Array<number | { value: number; label?: string }>"
 description = "Labeled ticks under the track."
 
+[ray-slider.properties.orientation]
+type = "string"
+values = ["horizontal", "vertical"]
+default = "horizontal"
+reflect = true
+description = "vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it)."
+
 [ray-slider.events.input]
 description = "While dragging."
 

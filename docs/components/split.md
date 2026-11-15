@@ -1,20 +1,21 @@
 # Split
 
-Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.
+Two panes with a draggable, keyboard-accessible divider (window splitter pattern); one pane has the size (the start one, or the end one with fixed="end": a docked inspector), which can be remembered.
 
 Import: `import "@raylang/elements/split";` · Category: Layout
 
 ## `<ray-split>` (RaySplit, extends RayElement)
 
-Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane.
+Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the sized pane. position, min, max and collapsed are the sized pane's: the start pane, or the end pane with fixed="end".
 
 Properties:
 
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. horizontal: side by side; vertical: stacked.
-- `position`: string, default `50%`. Initial size of the start pane: px (280) or any CSS length (30%, 20rem).
-- `min`: number, default `0`. Minimum size of the start pane in px.
-- `max`: number. Maximum size of the start pane in px.
-- `collapsed`: boolean, reflects. The start pane is hidden.
+- `fixed`: `start` | `end`, default `start`, reflects. The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches.
+- `position`: string, default `50%`. Initial size of the sized pane: px (280) or any CSS length (30%, 20rem).
+- `min`: number, default `0`. Minimum size of the sized pane in px.
+- `max`: number. Maximum size of the sized pane in px.
+- `collapsed`: boolean, reflects. The sized pane is hidden.
 - `disabled`: boolean, reflects. The divider cannot be moved.
 - `autosave`: string. A key: the size and the collapsed state are saved in localStorage and restored (a saved state wins over the collapsed attribute).
 
@@ -24,8 +25,8 @@ Events:
 
 Slots:
 
-- `start`: The sized pane (sidebar).
-- `end`: The pane that takes the rest.
+- `start`: The first pane: sized (a sidebar), or the one that takes the rest with fixed="end".
+- `end`: The second pane: the one that takes the rest, or sized with fixed="end" (an inspector).
 
 Parts (`::part()`):
 
@@ -35,8 +36,8 @@ Parts (`::part()`):
 
 Methods and properties:
 
-- `readonly size: number`: The start pane's size in px.
-- `toggle(): void`: Collapses or restores the start pane.
+- `readonly size: number`: The sized pane's size in px.
+- `toggle(): void`: Collapses or restores the sized pane.
 
 Texts (`setStrings`; English):
 
@@ -61,7 +62,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
       <ray-nav-link label="tests"><ray-icon slot="left" name="folder"></ray-icon></ray-nav-link>
       <ray-nav-link label="ray.toml"><ray-icon slot="left" name="settings"></ray-icon></ray-nav-link>
     </nav>
-    <ray-split slot="end" orientation="vertical" position="62%" min="70" aria-label="Resize the terminal">
+    <ray-split slot="end" orientation="vertical" fixed="end" position="38%" min="70" aria-label="Resize the terminal">
       <section slot="start" class="demo-ide-editor" aria-label="Editor">
         <div class="demo-ide-tabs"><span class="demo-ide-tab" aria-current="true">main.ray</span><span class="demo-ide-tab">server.ray</span></div>
         <pre class="demo-ide-code"><code><span class="ln">1</span><span class="k">import</span> net/http;

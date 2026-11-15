@@ -1,9 +1,10 @@
 // <ray-split>: two panes (slot="start", slot="end") with a draggable divider
-// (ray-sublime's sidebar and docks). The start pane has the size; the end
-// pane takes the rest.
+// (ray-sublime's sidebar and docks). The start pane has the size and the end
+// pane takes the rest; fixed="end" sizes the end pane instead (an inspector
+// docked on the right that keeps its width while the middle stretches).
 //
 // The divider is a focusable separator (WAI-ARIA window splitter): arrows
-// move it (Shift: faster), Home/End go to min/max, Enter collapses the start
+// move it (Shift: faster), Home/End go to min/max, Enter collapses the sized
 // pane. With `autosave="key"` the size and the collapsed state survive
 // reloads (localStorage).
 
@@ -25,8 +26,10 @@ const styles = css`
     --_size: 50%;
   }
   :host([orientation="vertical"]) { grid-template-columns: none; grid-template-rows: var(--_size) 0.375rem minmax(0, 1fr); }
+  :host([fixed="end"]) { grid-template-columns: minmax(0, 1fr) 0.375rem var(--_size); }
+  :host([fixed="end"][orientation="vertical"]) { grid-template-columns: none; grid-template-rows: minmax(0, 1fr) 0.375rem var(--_size); }
   .pane { min-width: 0; min-height: 0; overflow: auto; }
-  :host([collapsed]) .start { visibility: hidden; }
+  :host([collapsed]:not([fixed="end"])) .start, :host([collapsed][fixed="end"]) .end { visibility: hidden; }
   .divider {
     position: relative;
     z-index: 1;
@@ -65,6 +68,8 @@ const BIG_STEP = 50;
 export class RaySplit extends RayElement {
   static properties = {
     orientation: { type: String, reflect: true, default: "horizontal" },
+    /** The pane that has the size (position, min, max, collapsed): start, or end. */
+    fixed: { type: String, reflect: true, default: "start" },
     position: { type: String, default: "50%" },
     min: { type: Number, default: 0 },
     max: { type: Number },
@@ -76,7 +81,7 @@ export class RaySplit extends RayElement {
   static template = `
     <div class="pane start" part="start" id="start"><slot name="start"></slot></div>
     <div class="divider" part="divider" role="separator" tabindex="0" aria-controls="start"></div>
-    <div class="pane end" part="end"><slot name="end"></slot></div>`;
+    <div class="pane end" part="end" id="end"><slot name="end"></slot></div>`;
 
   constructor() {
     super();
@@ -104,12 +109,12 @@ export class RaySplit extends RayElement {
     }
   }
 
-  /** The start pane's current size in px. */
+  /** The sized pane's current size in px (the start pane's, or the end's with fixed="end"). */
   get size() {
-    return this.$(".start").getBoundingClientRect()[this._vertical() ? "height" : "width"];
+    return this.$(this._end() ? ".end" : ".start").getBoundingClientRect()[this._vertical() ? "height" : "width"];
   }
 
-  /** Collapses or restores the start pane. */
+  /** Collapses or restores the sized pane. */
   toggle() {
     this.collapsed = !this.collapsed;
     this.emit("ray-resize", { size: this.collapsed ? 0 : this.size, collapsed: this.collapsed });
@@ -143,6 +148,7 @@ export class RaySplit extends RayElement {
     const vertical = this._vertical();
     // The separator line is perpendicular to the split direction.
     this.divider.setAttribute("aria-orientation", vertical ? "horizontal" : "vertical");
+    this.divider.setAttribute("aria-controls", this._end() ? "end" : "start");
     this.divider.setAttribute("aria-label", this.getAttribute("aria-label") ?? this.t("split.resize"));
     this.divider.tabIndex = this.disabled ? -1 : 0;
     if (this.disabled) this.divider.setAttribute("aria-disabled", "true");
@@ -152,6 +158,11 @@ export class RaySplit extends RayElement {
 
   _vertical() {
     return this.orientation === "vertical";
+  }
+
+  /** The end pane has the size. */
+  _end() {
+    return this.fixed === "end";
   }
 
   _total() {
@@ -201,9 +212,12 @@ export class RaySplit extends RayElement {
     this.setAttribute("data-dragging", "");
     const rect = this.getBoundingClientRect();
     const vertical = this._vertical();
-    // The start pane's size: right to left it is on the right.
-    const rtl = !vertical && isRtl(this);
-    const at = (ev) => (vertical ? ev.clientY - rect.top : rtl ? rect.right - ev.clientX : ev.clientX - rect.left);
+    // The sized pane's size, from its edge: the start pane is on the right
+    // right to left, and the end pane on the left.
+    const fromEnd = this._end() !== (!vertical && isRtl(this));
+    const at = (ev) => (vertical
+      ? (this._end() ? rect.bottom - ev.clientY : ev.clientY - rect.top)
+      : fromEnd ? rect.right - ev.clientX : ev.clientX - rect.left);
     const move = (ev) => this._resizeTo(at(ev), false);
     const up = (ev) => {
       this.divider.removeEventListener("pointermove", move);
@@ -222,8 +236,10 @@ export class RaySplit extends RayElement {
     const vertical = this._vertical();
     const step = e.shiftKey ? BIG_STEP : STEP;
     const current = this.collapsed ? 0 : this.size;
-    const less = vertical ? "ArrowUp" : "ArrowLeft";
-    const more = vertical ? "ArrowDown" : "ArrowRight";
+    // The arrows move the divider; the sized pane grows towards the other one.
+    let less = vertical ? "ArrowUp" : "ArrowLeft";
+    let more = vertical ? "ArrowDown" : "ArrowRight";
+    if (this._end()) [less, more] = [more, less];
     // Right to left, ArrowLeft moves the divider away from the start pane.
     const key = vertical ? e.key : inlineKey(e.key, this);
     let next = null;

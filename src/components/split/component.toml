@@ -1,7 +1,7 @@
 [component]
 name = "Split"
 category = "Layout"
-summary = "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered."
+summary = "Two panes with a draggable, keyboard-accessible divider (window splitter pattern); one pane has the size (the start one, or the end one with fixed=\"end\": a docked inspector), which can be remembered."
 files = ["split.js"]
 requires = []
 tags = ["ray-split"]
@@ -9,7 +9,7 @@ tags = ["ray-split"]
 [ray-split]
 class = "RaySplit"
 extends = "RayElement"
-summary = "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the start pane."
+summary = "Divider keys: arrows move it (Shift: faster), Home/End go to min/max, Enter or double click collapse the sized pane. position, min, max and collapsed are the sized pane's: the start pane, or the end pane with fixed=\"end\"."
 
 [ray-split.properties.orientation]
 type = "string"
@@ -18,24 +18,31 @@ default = "horizontal"
 reflect = true
 description = "horizontal: side by side; vertical: stacked."
 
+[ray-split.properties.fixed]
+type = "string"
+values = ["start", "end"]
+default = "start"
+reflect = true
+description = "The pane that has the size and collapses; the other takes the rest. end: a panel docked on the end side (an inspector) that keeps its width while the start pane stretches."
+
 [ray-split.properties.position]
 type = "string"
 default = "50%"
-description = "Initial size of the start pane: px (280) or any CSS length (30%, 20rem)."
+description = "Initial size of the sized pane: px (280) or any CSS length (30%, 20rem)."
 
 [ray-split.properties.min]
 type = "number"
 default = "0"
-description = "Minimum size of the start pane in px."
+description = "Minimum size of the sized pane in px."
 
 [ray-split.properties.max]
 type = "number"
-description = "Maximum size of the start pane in px."
+description = "Maximum size of the sized pane in px."
 
 [ray-split.properties.collapsed]
 type = "boolean"
 reflect = true
-description = "The start pane is hidden."
+description = "The sized pane is hidden."
 
 [ray-split.properties.disabled]
 type = "boolean"
@@ -51,10 +58,10 @@ description = "After a drag, a key or a collapse."
 detail = "{ size: number; collapsed: boolean }"
 
 [ray-split.slots.start]
-description = "The sized pane (sidebar)."
+description = "The first pane: sized (a sidebar), or the one that takes the rest with fixed=\"end\"."
 
 [ray-split.slots.end]
-description = "The pane that takes the rest."
+description = "The second pane: the one that takes the rest, or sized with fixed=\"end\" (an inspector)."
 
 [ray-split.parts.divider]
 description = "The separator."
@@ -67,8 +74,8 @@ description = "The end pane."
 
 [ray-split.members.size]
 ts = "readonly size: number"
-description = "The start pane's size in px."
+description = "The sized pane's size in px."
 
 [ray-split.members.toggle]
 ts = "toggle(): void"
-description = "Collapses or restores the start pane."
+description = "Collapses or restores the sized pane."

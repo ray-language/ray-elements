@@ -1,6 +1,7 @@
 // <ray-slider>: a range input (native, so keyboard, touch and screen readers
 // work as usual) with label, description, value display and marks.
-// Form-associated.
+// Form-associated. orientation="vertical" stands it up (a mixer's fader):
+// the minimum at the bottom, the marks on its inline-end side.
 
 import { css, define } from "../../core/core.js";
 import { applyColor, sizeStyles } from "../../core/styles.js";
@@ -63,9 +64,48 @@ const styles = css`
   input:disabled { --_filled: var(--ray-border); }
   .marks { position: relative; height: 1.25rem; margin: var(--ray-space-1) calc(var(--_thumb) / 2) 0; font-size: var(--ray-font-size-xs); color: var(--ray-muted-foreground); }
   .marks:empty { display: none; }
-  .mark { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+  .mark { position: absolute; inset-inline-start: var(--_at); transform: translateX(-50%); white-space: nowrap; }
   .mark:dir(rtl) { transform: translateX(50%); }
   .mark::before { content: ""; display: block; width: 1px; height: 0.25rem; margin: 0 auto 0.125rem; background: var(--ray-border); }
+
+  /* Vertical: the track stands between the label (above) and the error; the
+     marks run beside it. The length is the host's height. */
+  :host([orientation="vertical"]) {
+    display: inline-grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "head head" "description description" "root marks" "error error";
+    justify-content: center;
+    height: var(--ray-slider-length, 12rem);
+    min-height: 0;
+  }
+  :host([orientation="vertical"][description-position="below"]) {
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "head head" "root marks" "description description" "error error";
+  }
+  :host([orientation="vertical"]) .head { grid-area: head; flex-direction: column; align-items: center; gap: 0; margin-bottom: var(--ray-space-1); }
+  :host([orientation="vertical"]) .label { align-self: center; margin-bottom: 0; }
+  :host([orientation="vertical"]) .description { grid-area: description; text-align: center; }
+  :host([orientation="vertical"]) .error { grid-area: error; text-align: center; }
+  :host([orientation="vertical"]) .root { grid-area: root; justify-self: center; min-height: 0; padding: 0 calc((var(--_thumb) - var(--_track)) / 2); }
+  :host([orientation="vertical"]) input {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: var(--_thumb);
+    height: 100%;
+    margin: 0 calc((var(--_track) - var(--_thumb)) / 2);
+  }
+  :host([orientation="vertical"]) input::-webkit-slider-runnable-track {
+    width: var(--_track);
+    height: 100%;
+    background: linear-gradient(to top, var(--_filled) var(--_pct), var(--ray-muted) var(--_pct)); /* physical */
+  }
+  :host([orientation="vertical"]) input::-webkit-slider-thumb { margin-top: 0; margin-left: calc((var(--_track) - var(--_thumb)) / 2); } /* physical */
+  :host([orientation="vertical"]) input::-moz-range-track { width: var(--_track); height: 100%; }
+  :host([orientation="vertical"]) input::-moz-range-progress { width: var(--_track); height: auto; }
+  :host([orientation="vertical"]) .marks { grid-area: marks; position: relative; height: auto; min-width: 1.5rem; margin: calc(var(--_thumb) / 2) 0; margin-inline-start: var(--ray-space-1); }
+  :host([orientation="vertical"]) .mark { inset-inline-start: 0; bottom: var(--_at); display: flex; align-items: center; transform: translateY(50%); } /* physical */
+  :host([orientation="vertical"]) .mark::before { width: 0.25rem; height: 1px; margin: 0; margin-inline-end: 0.125rem; }
 `;
 
 export class RaySlider extends FieldControl {
@@ -79,6 +119,8 @@ export class RaySlider extends FieldControl {
     showValue: { type: Boolean, reflect: true },
     unit: { type: String },
     marks: { attribute: false },
+    /** horizontal, or vertical: a fader, the minimum at the bottom. */
+    orientation: { type: String, reflect: true, default: "horizontal" },
   };
   static styles = [sizeStyles, fieldStyles, styles];
   static template = `
@@ -108,6 +150,7 @@ export class RaySlider extends FieldControl {
     if (this.value === undefined) this.commitProperty("value", Number(c.value));
     if (Number(c.value) !== this.value) c.value = String(this.value);
     applyColor(this.$(".root"), this.color);
+    c.setAttribute("aria-orientation", this.orientation === "vertical" ? "vertical" : "horizontal");
     this.syncField();
     if (changed.has("marks") || changed.has("min") || changed.has("max") || !this._marked) this._renderMarks();
     this._commit();
@@ -140,7 +183,7 @@ export class RaySlider extends FieldControl {
       const v = typeof m === "number" ? m : m.value;
       const span = document.createElement("span");
       span.className = "mark";
-      span.style.insetInlineStart = `${((v - min) / (max - min || 1)) * 100}%`;
+      span.style.setProperty("--_at", `${((v - min) / (max - min || 1)) * 100}%`);
       span.textContent = typeof m === "number" ? String(m) : (m.label ?? String(m.value));
       box.append(span);
     }

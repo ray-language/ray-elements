@@ -54,6 +54,7 @@ export { RayCode } from "./components/code.js";
 export { RayIcon } from "./components/icon.js";
 export { RayIndicator } from "./components/indicator.js";
 export { RayKbd } from "./components/kbd.js";
+export { RayMeter } from "./components/meter.js";
 export { RayStat } from "./components/stat.js";
 export { RayTable } from "./components/table.js";
 export { RayTimeline, RayTimelineItem } from "./components/timeline.js";

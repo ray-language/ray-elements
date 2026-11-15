@@ -349,6 +349,7 @@ Members whose name starts with `_` are internal.
 - [Icon](https://elements.raylang.dev/components/icon.md): `<ray-icon>` (Data display). An icon of the registry: the whole set (the components' too) changes with setIcons().
 - [Indicator](https://elements.raylang.dev/components/indicator.md): `<ray-indicator>` (Data display). A dot or a small label on the edge of any element (Mantine's Indicator): "New" on an avatar, an unread count on a bell, an online dot.
 - [Kbd](https://elements.raylang.dev/components/kbd.md): `<ray-kbd>` (Data display). A keyboard key: a raised keycap, or a flat chip (filled or outline) for hints in menus and buttons.
+- [Meter](https://elements.raylang.dev/components/meter.md): `<ray-meter>` (Data display). An audio level meter (a mixer's channel strip): peak and RMS in dB, green, yellow and red zones, a peak hold line and a clip light, one bar per channel; setLevels() on every animation frame costs no render.
 - [Stat](https://elements.raylang.dev/components/stat.md): `<ray-stat>` (Data display). A metric tile: label, value, change against a previous period, note.
 - [Table](https://elements.raylang.dev/components/table.md): `<ray-table>` (Data display). A data table from columns and data: sorting (aria-sort), row selection, clickable rows, sticky header, striped, empty state.
 - [Timeline](https://elements.raylang.dev/components/timeline.md): `<ray-timeline>`, `<ray-timeline-item>` (Data display). Events in order along a line (Mantine's Timeline): activity, history, a deploy's stages.
@@ -371,7 +372,7 @@ Members whose name starts with `_` are internal.
 - [Group](https://elements.raylang.dev/components/group.md): `<ray-group>` (Layout). Its children in a row (Mantine's Group): spaced by the space scale, centered, wrapping when they do not fit.
 - [Scroll area](https://elements.raylang.dev/components/scroll-area.md): `<ray-scroll-area>` (Layout). A box that scrolls its content with the native scrolling and a thin themed scrollbar (Mantine's ScrollArea).
 - [Separator](https://elements.raylang.dev/components/separator.md): `<ray-separator>` (Layout). A horizontal or vertical rule, optionally labeled (Mantine's Divider).
-- [Split](https://elements.raylang.dev/components/split.md): `<ray-split>` (Layout). Two panes with a draggable, keyboard-accessible divider (window splitter pattern); the size can be remembered.
+- [Split](https://elements.raylang.dev/components/split.md): `<ray-split>` (Layout). Two panes with a draggable, keyboard-accessible divider (window splitter pattern); one pane has the size (the start one, or the end one with fixed="end": a docked inspector), which can be remembered.
 - [Stack](https://elements.raylang.dev/components/stack.md): `<ray-stack>` (Layout). Its children in a column, spaced by the space scale (Mantine's Stack): forms, panels, anything stacked.
 - [Status bar](https://elements.raylang.dev/components/statusbar.md): `<ray-statusbar>`, `<ray-statusbar-item>` (Layout). The bar at the bottom of an app window: items on the left and on the right; items with action are buttons.
 - [Theme toggle](https://elements.raylang.dev/components/theme-toggle.md): `<ray-theme-toggle>` (Theme). Icon button that cycles the document theme: system, light, dark.

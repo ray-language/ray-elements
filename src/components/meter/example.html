@@ -1,0 +1,42 @@
+<style>
+  .demo-mixer { display: flex; flex-wrap: wrap; gap: var(--ray-space-5); align-items: flex-end; }
+  .demo-strip { display: flex; align-items: flex-end; gap: var(--ray-space-2); padding: var(--ray-space-3); border: 1px solid var(--ray-border); border-radius: var(--ray-radius-default); --ray-slider-length: 13rem; --ray-meter-length: 11.5rem; }
+</style>
+<div class="demo-caption">A mixer: a fader and a stereo meter per track (a test signal, no audio)</div>
+<div class="demo-mixer" id="demo-mixer">
+  <div class="demo-strip"><ray-slider orientation="vertical" label="Drums" min="-60" max="6" value="0" show-value unit=" dB"></ray-slider><ray-meter channels="2" label="Drums level"></ray-meter></div>
+  <div class="demo-strip"><ray-slider orientation="vertical" label="Bass" min="-60" max="6" value="-6" show-value unit=" dB" color="violet"></ray-slider><ray-meter channels="2" label="Bass level"></ray-meter></div>
+  <div class="demo-strip"><ray-slider orientation="vertical" label="Keys" min="-60" max="6" value="-12" show-value unit=" dB" color="teal"></ray-slider><ray-meter channels="2" label="Keys level"></ray-meter></div>
+  <div class="demo-strip"><ray-slider orientation="vertical" label="Master" min="-60" max="6" value="4" show-value unit=" dB" color="orange"></ray-slider><ray-meter channels="2" size="md" scale label="Master level"></ray-meter></div>
+</div>
+
+<div class="demo-caption">Horizontal, with its own scale</div>
+<div class="demo-stack" style="max-width: 24rem">
+  <ray-meter id="demo-input" orientation="horizontal" channels="2" label="Input level"></ray-meter>
+  <ray-button size="xs" variant="default" id="demo-meter-reset">Reset the clip lights</ray-button>
+</div>
+
+<script type="module">
+  // A test signal: a beat and a wobble per track, scaled by its fader.
+  const strips = [...document.querySelectorAll("#demo-mixer .demo-strip")];
+  const input = document.getElementById("demo-input");
+  input.marks = [-48, -24, -12, -6, 0, 6];
+  const db = (a) => (a > 0 ? 20 * Math.log10(a) : -Infinity);
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function frame(t) {
+    const s = t / 1000;
+    strips.forEach((strip, i) => {
+      const gain = Number(strip.querySelector("ray-slider").value);
+      const beat = Math.pow(Math.max(0, Math.sin(s * Math.PI * 2 * (1 + i * 0.25))), 6);
+      const peaks = [0, 1].map((ch) => db(0.25 + 0.55 * beat + 0.1 * Math.sin(s * 7 + ch + i)) + gain);
+      strip.querySelector("ray-meter").setLevels(peaks, peaks.map((p) => p - 9));
+    });
+    const level = db(0.3 + 0.3 * Math.abs(Math.sin(s * 1.3)));
+    input.setLevels([level, level - 2], [level - 8, level - 10]);
+    if (!still) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  document.getElementById("demo-meter-reset").addEventListener("click", () => {
+    for (const m of document.querySelectorAll("ray-meter")) m.resetClip();
+  });
+</script>
