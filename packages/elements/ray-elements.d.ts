@@ -1064,6 +1064,47 @@ export interface RayInputEventMap extends HTMLElementEventMap {
   "ray-highlight-hover": CustomEvent<{ range: HighlightRange | null; rect: DOMRect | null }>;
 }
 
+// --- Knob (knob)
+/** <ray-knob> Drag up or down to turn it (the whole sweep is 200px; hold Shift for ten times finer), or use the wheel. Keys: arrows step it (Shift: ten steps), Page Up/Down a tenth of the sweep, Home/End the ends. A double click returns to default-value. The dial is role=slider with the value's text (format, or the value and unit). Look: --ray-knob-size, --ray-knob-track, --ray-knob-arc, --ray-knob-body, --ray-knob-pointer, and the dial, track, arc, body and pointer parts. */
+export declare class RayKnob extends FieldControl {
+  /** Current value. The value attribute is the initial one (restored on reset). */
+  value: number | undefined;
+  /** Minimum. */
+  min: number;
+  /** Maximum. */
+  max: number;
+  /** Step; 0: continuous. */
+  step: number;
+  /** What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar). */
+  defaultValue: number | undefined;
+  /** log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep. */
+  scale: "linear" | "log";
+  /** The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune. */
+  bipolar: boolean | undefined;
+  /** Form field name. */
+  name: string | undefined;
+  /** Visible label, above the dial (it names the slider). */
+  label: string | undefined;
+  /** Help text. */
+  description: string | undefined;
+  /** Error text. */
+  error: string | undefined;
+  /** Not interactive nor submitted. */
+  disabled: boolean | undefined;
+  /** The arc's color. */
+  color: string | undefined;
+  /** The dial's size (28 to 72px; --ray-knob-size for any other). */
+  size: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Shows the value under the dial. */
+  showValue: boolean | undefined;
+  /** Appended to the value's text (" dB", " Hz", "%"). */
+  unit: string | undefined;
+  /** The value's text, shown and spoken: (v) => v >= 1000 ? `${v / 1000} kHz` : `${v} Hz`. */
+  format: (value: number) => string | undefined;
+  /** The value's text, as shown and spoken. */
+  readonly valueText: string;
+}
+
 // --- Mode input (mode-input)
 /** A mode of ray-mode-input: hint is the trigger's short text ("€"), attrs the attributes it sets on the field. */
 export type ModeOption = { value: string; label: string; icon?: string; hint?: string; description?: string; disabled?: boolean; attrs?: Record<string, string> };
@@ -3034,6 +3075,7 @@ declare global {
     "ray-file-upload": RayFileUpload;
     "ray-image-crop": RayImageCrop;
     "ray-input": RayInput;
+    "ray-knob": RayKnob;
     "ray-mode-input": RayModeInput;
     "ray-number-input": RayNumberInput;
     "ray-password-input": RayPasswordInput;

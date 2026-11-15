@@ -100,6 +100,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/input/input.js"
     },
+    "./knob": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/knob/knob.js"
+    },
     "./mode-input": {
       "types": "./ray-elements.d.ts",
       "default": "./components/mode-input/mode-input.js"

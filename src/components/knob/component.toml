@@ -1,0 +1,129 @@
+[component]
+name = "Knob"
+category = "Inputs"
+summary = "A rotary control (a mixer's gain or pan, an effect's amount): drag up or down, the wheel or the arrow keys turn it, a double click puts it back; a log scale for frequencies, a bipolar arc for pan. Form-associated."
+aliases = ["Rotary", "Dial", "Potentiometer"]
+files = ["knob.js"]
+requires = []
+tags = ["ray-knob"]
+
+[ray-knob]
+class = "RayKnob"
+extends = "FieldControl"
+summary = "Drag up or down to turn it (the whole sweep is 200px; hold Shift for ten times finer), or use the wheel. Keys: arrows step it (Shift: ten steps), Page Up/Down a tenth of the sweep, Home/End the ends. A double click returns to default-value. The dial is role=slider with the value's text (format, or the value and unit). Look: --ray-knob-size, --ray-knob-track, --ray-knob-arc, --ray-knob-body, --ray-knob-pointer, and the dial, track, arc, body and pointer parts."
+
+[ray-knob.properties.value]
+type = "number"
+description = "Current value. The value attribute is the initial one (restored on reset)."
+
+[ray-knob.properties.min]
+type = "number"
+default = "0"
+description = "Minimum."
+
+[ray-knob.properties.max]
+type = "number"
+default = "100"
+description = "Maximum."
+
+[ray-knob.properties.step]
+type = "number"
+default = "1"
+description = "Step; 0: continuous."
+
+[ray-knob.properties.defaultValue]
+attribute = "default-value"
+type = "number"
+description = "What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar)."
+
+[ray-knob.properties.scale]
+type = "string"
+values = ["linear", "log"]
+default = "linear"
+reflect = true
+description = "log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep."
+
+[ray-knob.properties.bipolar]
+type = "boolean"
+reflect = true
+description = "The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune."
+
+[ray-knob.properties.name]
+type = "string"
+description = "Form field name."
+
+[ray-knob.properties.label]
+type = "string"
+description = "Visible label, above the dial (it names the slider)."
+
+[ray-knob.properties.description]
+type = "string"
+description = "Help text."
+
+[ray-knob.properties.error]
+type = "string"
+description = "Error text."
+
+[ray-knob.properties.disabled]
+type = "boolean"
+description = "Not interactive nor submitted."
+
+[ray-knob.properties.color]
+type = "string"
+reflect = true
+description = "The arc's color."
+
+[ray-knob.properties.size]
+type = "string"
+values = ["xs", "sm", "md", "lg", "xl"]
+default = "sm"
+reflect = true
+description = "The dial's size (28 to 72px; --ray-knob-size for any other)."
+
+[ray-knob.properties.showValue]
+attribute = "show-value"
+type = "boolean"
+reflect = true
+description = "Shows the value under the dial."
+
+[ray-knob.properties.unit]
+type = "string"
+description = "Appended to the value's text (\" dB\", \" Hz\", \"%\")."
+
+[ray-knob.properties.format]
+attribute = false
+type = "function"
+ts = "(value: number) => string"
+description = "The value's text, shown and spoken: (v) => v >= 1000 ? `${v / 1000} kHz` : `${v} Hz`."
+
+[ray-knob.events.input]
+description = "While it turns."
+
+[ray-knob.events.change]
+description = "When it settles: the end of a drag, a key, a pause of the wheel, a double click."
+
+[ray-knob.parts.dial]
+description = "The dial (role=slider)."
+
+[ray-knob.parts.track]
+description = "The ring's track."
+
+[ray-knob.parts.arc]
+description = "The arc of the value."
+
+[ray-knob.parts.body]
+description = "The knob's body."
+
+[ray-knob.parts.pointer]
+description = "The line that shows where it points."
+
+[ray-knob.parts.value]
+description = "The value under the dial (show-value)."
+
+[ray-knob.members.valueText]
+ts = "readonly valueText: string"
+description = "The value's text, as shown and spoken."
+
+[ray-knob.model]
+property = "value"
+events = ["input"]
