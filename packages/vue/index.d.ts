@@ -712,6 +712,60 @@ export interface RayInputProps {
 /** <ray-input> as a Vue component. */
 export declare const RayInput: DefineComponent<RayInputProps>;
 
+export interface RayKnobProps {
+  /** Current value. The value attribute is the initial one (restored on reset). */
+  value?: number;
+  /** Minimum. */
+  min?: number;
+  /** Maximum. */
+  max?: number;
+  /** Step; 0: continuous. */
+  step?: number;
+  /** What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar). */
+  defaultValue?: number;
+  /** log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep. */
+  scale?: "linear" | "log";
+  /** The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune. */
+  bipolar?: boolean;
+  /** Form field name. */
+  name?: string;
+  /** Visible label, above the dial (it names the slider). */
+  label?: string;
+  /** Help text. */
+  description?: string;
+  /** Error text. */
+  error?: string;
+  /** Not interactive nor submitted. */
+  disabled?: boolean;
+  /** The arc's color. */
+  color?: string;
+  /** The dial's size (28 to 72px; --ray-knob-size for any other). */
+  size?: "xs" | "sm" | "md" | "lg" | "xl";
+  /** Shows the value under the dial. */
+  showValue?: boolean;
+  /** Appended to the value's text (" dB", " Hz", "%"). */
+  unit?: string;
+  /** The value's text, shown and spoken: (v) => v >= 1000 ? `${v / 1000} kHz` : `${v} Hz`. */
+  format?: (value: number) => string;
+  /** Required for form submission. */
+  required?: boolean;
+  /** Corner radius. */
+  radius?: "xs" | "sm" | "md" | "lg" | "xl" | "full";
+  /** Box style. */
+  variant?: "default" | "filled" | "unstyled";
+  /** Description before or after the control. */
+  descriptionPosition?: "above" | "below";
+  /** v-model: the element's `value`. */
+  modelValue?: number;
+  "onUpdate:modelValue"?: (value: number) => void;
+  /** While it turns. */
+  onInput?: (event: Event) => void;
+  /** When it settles: the end of a drag, a key, a pause of the wheel, a double click. */
+  onChange?: (event: Event) => void;
+}
+/** <ray-knob> as a Vue component. */
+export declare const RayKnob: DefineComponent<RayKnobProps>;
+
 export interface RayModeInputProps {
   /** The chosen mode's value (default: the first). Setting it applies that mode without ray-mode-change. */
   mode?: string;
@@ -2713,6 +2767,7 @@ export declare const components: {
   RayFileUpload: typeof RayFileUpload;
   RayImageCrop: typeof RayImageCrop;
   RayInput: typeof RayInput;
+  RayKnob: typeof RayKnob;
   RayModeInput: typeof RayModeInput;
   RayNumberInput: typeof RayNumberInput;
   RayPasswordInput: typeof RayPasswordInput;
@@ -2816,6 +2871,7 @@ declare module "vue" {
     RayFileUpload: typeof RayFileUpload;
     RayImageCrop: typeof RayImageCrop;
     RayInput: typeof RayInput;
+    RayKnob: typeof RayKnob;
     RayModeInput: typeof RayModeInput;
     RayNumberInput: typeof RayNumberInput;
     RayPasswordInput: typeof RayPasswordInput;

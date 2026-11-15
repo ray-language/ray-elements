@@ -18,6 +18,7 @@ export { RayDatePicker, RayCalendar } from "./components/date-picker.js";
 export { RayFileUpload } from "./components/file-upload.js";
 export { RayImageCrop } from "./components/image-crop.js";
 export { RayInput } from "./components/input.js";
+export { RayKnob } from "./components/knob.js";
 export { RayModeInput } from "./components/mode-input.js";
 export { RayNumberInput } from "./components/number-input.js";
 export { RayPasswordInput } from "./components/password-input.js";

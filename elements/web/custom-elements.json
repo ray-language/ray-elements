@@ -6202,6 +6202,474 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/knob/knob.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayKnob",
+          "tagName": "ray-knob",
+          "customElement": true,
+          "description": "Drag up or down to turn it (the whole sweep is 200px; hold Shift for ten times finer), or use the wheel. Keys: arrows step it (Shift: ten steps), Page Up/Down a tenth of the sweep, Home/End the ends. A double click returns to default-value. The dial is role=slider with the value's text (format, or the value and unit). Look: --ray-knob-size, --ray-knob-track, --ray-knob-arc, --ray-knob-body, --ray-knob-pointer, and the dial, track, arc, body and pointer parts.",
+          "superclass": {
+            "name": "FieldControl"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current value. The value attribute is the initial one (restored on reset).",
+              "fieldName": "value"
+            },
+            {
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum.",
+              "fieldName": "min",
+              "default": "0"
+            },
+            {
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum.",
+              "fieldName": "max",
+              "default": "100"
+            },
+            {
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "Step; 0: continuous.",
+              "fieldName": "step",
+              "default": "1"
+            },
+            {
+              "name": "default-value",
+              "type": {
+                "text": "number"
+              },
+              "description": "What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar).",
+              "fieldName": "defaultValue"
+            },
+            {
+              "name": "scale",
+              "type": {
+                "text": "\"linear\" | \"log\""
+              },
+              "description": "log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep.",
+              "fieldName": "scale",
+              "default": "linear"
+            },
+            {
+              "name": "bipolar",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune.",
+              "fieldName": "bipolar"
+            },
+            {
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "fieldName": "name"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label, above the dial (it names the slider).",
+              "fieldName": "label"
+            },
+            {
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "fieldName": "description"
+            },
+            {
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "fieldName": "error"
+            },
+            {
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "fieldName": "disabled"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "The arc's color.",
+              "fieldName": "color"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "The dial's size (28 to 72px; --ray-knob-size for any other).",
+              "fieldName": "size",
+              "default": "sm"
+            },
+            {
+              "name": "show-value",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the value under the dial.",
+              "fieldName": "showValue"
+            },
+            {
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "description": "Appended to the value's text (\" dB\", \" Hz\", \"%\").",
+              "fieldName": "unit"
+            },
+            {
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "fieldName": "required"
+            },
+            {
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "fieldName": "radius"
+            },
+            {
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "fieldName": "variant",
+              "default": "default"
+            },
+            {
+              "name": "description-position",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "fieldName": "descriptionPosition",
+              "default": "above"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "number"
+              },
+              "description": "Current value. The value attribute is the initial one (restored on reset).",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "min",
+              "type": {
+                "text": "number"
+              },
+              "description": "Minimum.",
+              "attribute": "min",
+              "reflects": false,
+              "default": "0"
+            },
+            {
+              "kind": "field",
+              "name": "max",
+              "type": {
+                "text": "number"
+              },
+              "description": "Maximum.",
+              "attribute": "max",
+              "reflects": false,
+              "default": "100"
+            },
+            {
+              "kind": "field",
+              "name": "step",
+              "type": {
+                "text": "number"
+              },
+              "description": "Step; 0: continuous.",
+              "attribute": "step",
+              "reflects": false,
+              "default": "1"
+            },
+            {
+              "kind": "field",
+              "name": "defaultValue",
+              "type": {
+                "text": "number"
+              },
+              "description": "What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar).",
+              "attribute": "default-value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "scale",
+              "type": {
+                "text": "\"linear\" | \"log\""
+              },
+              "description": "log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep.",
+              "attribute": "scale",
+              "reflects": true,
+              "default": "linear"
+            },
+            {
+              "kind": "field",
+              "name": "bipolar",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune.",
+              "attribute": "bipolar",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "name",
+              "type": {
+                "text": "string"
+              },
+              "description": "Form field name.",
+              "attribute": "name",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Visible label, above the dial (it names the slider).",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "description",
+              "type": {
+                "text": "string"
+              },
+              "description": "Help text.",
+              "attribute": "description",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "error",
+              "type": {
+                "text": "string"
+              },
+              "description": "Error text.",
+              "attribute": "error",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "disabled",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Not interactive nor submitted.",
+              "attribute": "disabled",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "The arc's color.",
+              "attribute": "color",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\""
+              },
+              "description": "The dial's size (28 to 72px; --ray-knob-size for any other).",
+              "attribute": "size",
+              "reflects": true,
+              "default": "sm"
+            },
+            {
+              "kind": "field",
+              "name": "showValue",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Shows the value under the dial.",
+              "attribute": "show-value",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "unit",
+              "type": {
+                "text": "string"
+              },
+              "description": "Appended to the value's text (\" dB\", \" Hz\", \"%\").",
+              "attribute": "unit",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "format",
+              "type": {
+                "text": "(value: number) => string"
+              },
+              "description": "The value's text, shown and spoken: (v) => v >= 1000 ? `${v / 1000} kHz` : `${v} Hz`."
+            },
+            {
+              "kind": "field",
+              "name": "required",
+              "type": {
+                "text": "boolean"
+              },
+              "description": "Required for form submission.",
+              "attribute": "required",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "radius",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | \"full\""
+              },
+              "description": "Corner radius.",
+              "attribute": "radius",
+              "reflects": true
+            },
+            {
+              "kind": "field",
+              "name": "variant",
+              "type": {
+                "text": "\"default\" | \"filled\" | \"unstyled\""
+              },
+              "description": "Box style.",
+              "attribute": "variant",
+              "reflects": true,
+              "default": "default"
+            },
+            {
+              "kind": "field",
+              "name": "descriptionPosition",
+              "type": {
+                "text": "\"above\" | \"below\""
+              },
+              "description": "Description before or after the control.",
+              "attribute": "description-position",
+              "reflects": true,
+              "default": "above"
+            },
+            {
+              "kind": "field",
+              "name": "valueText",
+              "description": "The value's text, as shown and spoken."
+            }
+          ],
+          "events": [
+            {
+              "name": "input",
+              "type": {
+                "text": "Event"
+              },
+              "description": "While it turns."
+            },
+            {
+              "name": "change",
+              "type": {
+                "text": "Event"
+              },
+              "description": "When it settles: the end of a drag, a key, a pause of the wheel, a double click."
+            }
+          ],
+          "slots": [],
+          "cssParts": [
+            {
+              "name": "dial",
+              "description": "The dial (role=slider)."
+            },
+            {
+              "name": "track",
+              "description": "The ring's track."
+            },
+            {
+              "name": "arc",
+              "description": "The arc of the value."
+            },
+            {
+              "name": "body",
+              "description": "The knob's body."
+            },
+            {
+              "name": "pointer",
+              "description": "The line that shows where it points."
+            },
+            {
+              "name": "value",
+              "description": "The value under the dial (show-value)."
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayKnob",
+          "declaration": {
+            "name": "RayKnob",
+            "module": "components/knob/knob.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-knob",
+          "declaration": {
+            "name": "RayKnob",
+            "module": "components/knob/knob.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/mode-input/mode-input.js",
       "declarations": [
         {

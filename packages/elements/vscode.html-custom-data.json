@@ -2025,6 +2025,160 @@
       ]
     },
     {
+      "name": "ray-knob",
+      "description": "Drag up or down to turn it (the whole sweep is 200px; hold Shift for ten times finer), or use the wheel. Keys: arrows step it (Shift: ten steps), Page Up/Down a tenth of the sweep, Home/End the ends. A double click returns to default-value. The dial is role=slider with the value's text (format, or the value and unit). Look: --ray-knob-size, --ray-knob-track, --ray-knob-arc, --ray-knob-body, --ray-knob-pointer, and the dial, track, arc, body and pointer parts.",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "Current value. The value attribute is the initial one (restored on reset)."
+        },
+        {
+          "name": "min",
+          "description": "Minimum."
+        },
+        {
+          "name": "max",
+          "description": "Maximum."
+        },
+        {
+          "name": "step",
+          "description": "Step; 0: continuous."
+        },
+        {
+          "name": "default-value",
+          "description": "What a double click returns to. Default: the value attribute; without one, min (the middle when bipolar)."
+        },
+        {
+          "name": "scale",
+          "description": "log: equal turns for equal ratios (20 Hz to 20 kHz); needs min above 0. The arrow keys then move a hundredth of the sweep.",
+          "values": [
+            {
+              "name": "linear"
+            },
+            {
+              "name": "log"
+            }
+          ]
+        },
+        {
+          "name": "bipolar",
+          "description": "The arc grows from 0 (from the middle when the range does not span 0): pan, a balance, a detune.",
+          "valueSet": "v"
+        },
+        {
+          "name": "name",
+          "description": "Form field name."
+        },
+        {
+          "name": "label",
+          "description": "Visible label, above the dial (it names the slider)."
+        },
+        {
+          "name": "description",
+          "description": "Help text."
+        },
+        {
+          "name": "error",
+          "description": "Error text."
+        },
+        {
+          "name": "disabled",
+          "description": "Not interactive nor submitted.",
+          "valueSet": "v"
+        },
+        {
+          "name": "color",
+          "description": "The arc's color."
+        },
+        {
+          "name": "size",
+          "description": "The dial's size (28 to 72px; --ray-knob-size for any other).",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "show-value",
+          "description": "Shows the value under the dial.",
+          "valueSet": "v"
+        },
+        {
+          "name": "unit",
+          "description": "Appended to the value's text (\" dB\", \" Hz\", \"%\")."
+        },
+        {
+          "name": "required",
+          "description": "Required for form submission.",
+          "valueSet": "v"
+        },
+        {
+          "name": "radius",
+          "description": "Corner radius.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            },
+            {
+              "name": "full"
+            }
+          ]
+        },
+        {
+          "name": "variant",
+          "description": "Box style.",
+          "values": [
+            {
+              "name": "default"
+            },
+            {
+              "name": "filled"
+            },
+            {
+              "name": "unstyled"
+            }
+          ]
+        },
+        {
+          "name": "description-position",
+          "description": "Description before or after the control.",
+          "values": [
+            {
+              "name": "above"
+            },
+            {
+              "name": "below"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "name": "ray-mode-input",
       "description": "Declare the modes as <option> children (label, data-icon, data-hint, data-description, disabled, and data-set-<attribute> for each attribute the mode sets on the field) or with the options property. A mode's attributes replace the field's own while it is chosen and give them back after. The menu is a ray-menu of radio items in the field's shadow root; Alt+ArrowDown opens it from the field, and the trigger keeps the caret in the field.",
       "attributes": [

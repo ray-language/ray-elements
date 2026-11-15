@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-knob`: a rotary control for a mixer or an effect. Drag up or down to
+  turn it (Shift: ten times finer), or the wheel; the arrow keys step it,
+  Page Up/Down move a tenth, Home/End go to the ends, a double click returns
+  to `default-value`. `scale="log"` for frequencies, `bipolar` for pan (the
+  arc grows from 0), `format` for the value's text, sizes and colors.
+  Form-associated; the dial is a `role="slider"` with the value's text.
+
 ## [0.21.0] - 2026-11-15
 
 ### Added

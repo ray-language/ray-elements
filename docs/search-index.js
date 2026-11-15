@@ -160,6 +160,20 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "Knob (Rotary, Dial, Potentiometer)",
+    "group": "Components · Inputs",
+    "description": "A rotary control (a mixer's gain or pan, an effect's amount): drag up or down, the wheel or the arrow keys turn it, a double click puts it back; a log scale for frequencies, a bipolar arc for pan. Form-associated.",
+    "href": "components/knob.html",
+    "keywords": [
+      "knob",
+      "rotary",
+      "dial",
+      "potentiometer",
+      "ray-knob"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Mode input",
     "group": "Components · Inputs",
     "description": "A text field with a menu of modes on one side: choosing a mode applies its attributes to the field (type, placeholder, inputmode, pattern…), so one control says what a value is and the value — a file path or text, an amount in € or $, a search by name or ID. Everything else is ray-input.",
