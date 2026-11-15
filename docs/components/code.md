@@ -61,7 +61,7 @@ Texts (`setStrings`; English):
 - `code.show-all`: Show all {count} lines
 - `code.show-less`: Show less
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.21.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.22.0.
 
 ## Example
 

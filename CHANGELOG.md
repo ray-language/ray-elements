@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.22.0] - 2026-11-15
+
 ### Added
 
 - `ray-knob`: a rotary control for a mixer or an effect. Drag up or down to
