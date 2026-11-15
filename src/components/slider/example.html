@@ -32,7 +32,7 @@
 
 <div class="demo-caption">Vertical: a fader</div>
 <div style="display: flex; gap: var(--ray-space-6); align-items: flex-end">
-  <ray-slider id="demo-fader" orientation="vertical" label="Volume" min="-60" max="6" value="-6" show-value unit=" dB"></ray-slider>
+  <ray-slider id="demo-fader" orientation="vertical" label="Volume" min="-60" max="6" value="-6" show-value unit=" dB" style="height: 15rem"></ray-slider>
   <ray-slider orientation="vertical" label="Pan" min="-50" max="50" value="0" color="teal" style="height: 9rem"></ray-slider>
 </div>
 
@@ -50,7 +50,7 @@
   });
 
   // Marks: numbers, or { value, label }.
-  document.getElementById("demo-fader").marks = [6, 0, -6, -12, -24, -48].map((v) => ({ value: v, label: String(v) }));
+  document.getElementById("demo-fader").marks = [6, 0, -12, -24, -36, -48, -60].map((v) => ({ value: v, label: String(v) }));
   document.getElementById("demo-tempo").marks = [60, 90, 120, 150, 180];
   document.getElementById("demo-quality").marks = [
     { value: 0, label: "Draft" }, { value: 25, label: "Low" }, { value: 50, label: "Medium" }, { value: 75, label: "High" }, { value: 100, label: "Max" },

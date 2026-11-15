@@ -1661,7 +1661,7 @@ Properties:
 - `showValue` (attribute `show-value`): boolean, reflects. Shows the value next to the label.
 - `unit`: string. Appended to the shown value and its spoken text (%, px, ms…).
 - `marks` (property only): `Array<number | { value: number; label?: string }>`. Labeled ticks under the track.
-- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
 
 Also the properties of FieldControl: `required`, `radius`, `variant`.
 
@@ -3183,7 +3183,7 @@ Properties:
 - `danger`: number, default `-3`. Where the red zone starts (dB).
 - `clip`: number, default `0`. A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.
 - `channels`: number, default `1`. The bars: 1 (mono), 2 (stereo)…
-- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. vertical: bars that rise, the scale beside them; horizontal: bars that grow towards the inline end.
+- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.
 - `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. The thickness of each bar.
 - `hold`: number, default `1500`. How long the peak hold line stays (ms); 0: no line.
 - `falloff`: number, default `24`. How fast a lower level falls (dB per second); 0: at once.

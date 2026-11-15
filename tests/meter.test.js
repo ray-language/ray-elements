@@ -74,6 +74,9 @@ T.test("meter: scale, marks, horizontal and rtl", async (T) => {
   T.eq([...vert.shadowRoot.querySelectorAll(".tick")].map((t) => t.textContent).join(), "6,0,-6,-12,-24", "the scale within min and max");
   const ticks = vert.shadowRoot.querySelectorAll(".tick");
   T.ok(ticks[0].getBoundingClientRect().top < ticks[4].getBoundingClientRect().top, "louder is higher");
+  const bar = tracks(vert)[0].getBoundingClientRect();
+  T.ok(ticks[0].getBoundingClientRect().right <= bar.left + 1, "the scale is on the left of the bars");
+  T.ok(Math.abs(ticks[0].getBoundingClientRect().right - ticks[4].getBoundingClientRect().right) < 1, "aligned against them: the numbers line up");
   vert.marks = [{ value: 0, label: "0 dB" }];
   await T.settle();
   T.eq(vert.shadowRoot.querySelector(".tick").textContent, "0 dB");

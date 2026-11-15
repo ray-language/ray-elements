@@ -1238,7 +1238,7 @@ export interface RaySliderProps {
   unit?: string;
   /** Labeled ticks under the track. */
   marks?: Array<number | { value: number; label?: string }>;
-  /** vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
+  /** vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
   orientation?: "horizontal" | "vertical";
   /** Required for form submission. */
   required?: boolean;
@@ -2185,7 +2185,7 @@ export interface RayMeterProps {
   clip?: number;
   /** The bars: 1 (mono), 2 (stereo)… */
   channels?: number;
-  /** vertical: bars that rise, the scale beside them; horizontal: bars that grow towards the inline end. */
+  /** vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end. */
   orientation?: "vertical" | "horizontal";
   /** The thickness of each bar. */
   size?: "xs" | "sm" | "md" | "lg";

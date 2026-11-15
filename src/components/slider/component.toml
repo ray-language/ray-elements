@@ -90,7 +90,7 @@ type = "string"
 values = ["horizontal", "vertical"]
 default = "horizontal"
 reflect = true
-description = "vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it)."
+description = "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it)."
 
 [ray-slider.events.input]
 description = "While dragging."

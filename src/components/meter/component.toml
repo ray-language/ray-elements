@@ -47,7 +47,7 @@ type = "string"
 values = ["vertical", "horizontal"]
 default = "vertical"
 reflect = true
-description = "vertical: bars that rise, the scale beside them; horizontal: bars that grow towards the inline end."
+description = "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end."
 
 [ray-meter.properties.size]
 type = "string"

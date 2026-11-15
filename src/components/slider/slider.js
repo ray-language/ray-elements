@@ -1,7 +1,8 @@
 // <ray-slider>: a range input (native, so keyboard, touch and screen readers
 // work as usual) with label, description, value display and marks.
 // Form-associated. orientation="vertical" stands it up (a mixer's fader):
-// the minimum at the bottom, the marks on its inline-end side.
+// the minimum at the bottom, the marks on its inline-start side (the left),
+// aligned against the track so their numbers line up.
 
 import { css, define } from "../../core/core.js";
 import { applyColor, sizeStyles } from "../../core/styles.js";
@@ -69,19 +70,20 @@ const styles = css`
   .mark::before { content: ""; display: block; width: 1px; height: 0.25rem; margin: 0 auto 0.125rem; background: var(--ray-border); }
 
   /* Vertical: the track stands between the label (above) and the error; the
-     marks run beside it. The length is the host's height. */
+     marks run before it (on the left), aligned against it, so numbers line
+     up. The length is the host's height. */
   :host([orientation="vertical"]) {
     display: inline-grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto minmax(0, 1fr) auto;
-    grid-template-areas: "head head" "description description" "root marks" "error error";
+    grid-template-areas: "head head" "description description" "marks root" "error error";
     justify-content: center;
     height: var(--ray-slider-length, 12rem);
     min-height: 0;
   }
   :host([orientation="vertical"][description-position="below"]) {
     grid-template-rows: auto minmax(0, 1fr) auto auto;
-    grid-template-areas: "head head" "root marks" "description description" "error error";
+    grid-template-areas: "head head" "marks root" "description description" "error error";
   }
   :host([orientation="vertical"]) .head { grid-area: head; flex-direction: column; align-items: center; gap: 0; margin-bottom: var(--ray-space-1); }
   :host([orientation="vertical"]) .label { align-self: center; margin-bottom: 0; }
@@ -103,9 +105,9 @@ const styles = css`
   :host([orientation="vertical"]) input::-webkit-slider-thumb { margin-top: 0; margin-left: calc((var(--_track) - var(--_thumb)) / 2); } /* physical */
   :host([orientation="vertical"]) input::-moz-range-track { width: var(--_track); height: 100%; }
   :host([orientation="vertical"]) input::-moz-range-progress { width: var(--_track); height: auto; }
-  :host([orientation="vertical"]) .marks { grid-area: marks; position: relative; height: auto; min-width: 1.5rem; margin: calc(var(--_thumb) / 2) 0; margin-inline-start: var(--ray-space-1); }
-  :host([orientation="vertical"]) .mark { inset-inline-start: 0; bottom: var(--_at); display: flex; align-items: center; transform: translateY(50%); } /* physical */
-  :host([orientation="vertical"]) .mark::before { width: 0.25rem; height: 1px; margin: 0; margin-inline-end: 0.125rem; }
+  :host([orientation="vertical"]) .marks { grid-area: marks; position: relative; height: auto; min-width: 1.5rem; margin: calc(var(--_thumb) / 2) 0; margin-inline-end: var(--ray-space-1); font-variant-numeric: tabular-nums; }
+  :host([orientation="vertical"]) .mark { inset-inline-start: auto; inset-inline-end: 0; bottom: var(--_at); display: flex; flex-direction: row-reverse; align-items: center; line-height: 1; transform: translateY(50%); } /* physical */
+  :host([orientation="vertical"]) .mark::before { width: 0.25rem; height: 1px; margin: 0; margin-inline-start: 0.125rem; }
 `;
 
 export class RaySlider extends FieldControl {

@@ -17,7 +17,8 @@ change the API.
   every animation frame writes CSS variables only, so 60 updates a second cost
   no render; the meter role's value follows a few times a second.
 - `ray-slider orientation="vertical"`: a fader. The minimum is at the bottom,
-  the marks run beside the track, the length is the host's height
+  the marks run on its left, aligned against the track so the numbers line
+  up, the length is the host's height
   (`--ray-slider-length`, 12rem).
 - `ray-split fixed="end"`: the end pane has the size (`position`, `min`,
   `max`, `collapsed`, `autosave`) and the start pane takes the rest: an

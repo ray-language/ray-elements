@@ -31,7 +31,7 @@ T.test("progress: progressbar values, indeterminate", async (T) => {
   box.remove();
 });
 
-T.test("slider vertical: stands up, the minimum at the bottom, marks beside it, steps up", async (T) => {
+T.test("slider vertical: stands up, the minimum at the bottom, marks on its left, steps up", async (T) => {
   const box = await mount(`<form><ray-slider name="gain" orientation="vertical" label="Gain" value="25" style="height: 240px"></ray-slider></form>`);
   const s = box.querySelector("ray-slider");
   s.marks = [{ value: 0, label: "-inf" }, { value: 100, label: "0" }];
@@ -44,7 +44,8 @@ T.test("slider vertical: stands up, the minimum at the bottom, marks beside it, 
   T.eq(Math.round(s.getBoundingClientRect().height), 240, "the length is the host's height");
   const [low, high] = s.shadowRoot.querySelectorAll(".mark");
   T.ok(low.getBoundingClientRect().top > high.getBoundingClientRect().top + 100, "the minimum's mark is at the bottom");
-  T.ok(low.getBoundingClientRect().left >= r.right - 1, "the marks are beside the track");
+  T.ok(low.getBoundingClientRect().right <= r.left + 1, "the marks are before the track (on the left)");
+  T.ok(Math.abs(low.getBoundingClientRect().right - high.getBoundingClientRect().right) < 1, "aligned against it: the numbers line up");
   input.focus();
   input.stepUp(); // what ArrowUp does to the native range
   input.dispatchEvent(new Event("input", { bubbles: true }));

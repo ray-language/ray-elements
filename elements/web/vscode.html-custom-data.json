@@ -3549,7 +3549,7 @@
         },
         {
           "name": "orientation",
-          "description": "vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
+          "description": "vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).",
           "values": [
             {
               "name": "horizontal"
@@ -6383,7 +6383,7 @@
         },
         {
           "name": "orientation",
-          "description": "vertical: bars that rise, the scale beside them; horizontal: bars that grow towards the inline end.",
+          "description": "vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.",
           "values": [
             {
               "name": "vertical"

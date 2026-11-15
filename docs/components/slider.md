@@ -23,7 +23,7 @@ Properties:
 - `showValue` (attribute `show-value`): boolean, reflects. Shows the value next to the label.
 - `unit`: string. Appended to the shown value and its spoken text (%, px, ms…).
 - `marks` (property only): `Array<number | { value: number; label?: string }>`. Labeled ticks under the track.
-- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks beside the track; its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
+- `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
 
 Also the properties of FieldControl: `required`, `radius`, `variant`.
 
@@ -79,7 +79,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
 
 <div class="demo-caption">Vertical: a fader</div>
 <div style="display: flex; gap: var(--ray-space-6); align-items: flex-end">
-  <ray-slider id="demo-fader" orientation="vertical" label="Volume" min="-60" max="6" value="-6" show-value unit=" dB"></ray-slider>
+  <ray-slider id="demo-fader" orientation="vertical" label="Volume" min="-60" max="6" value="-6" show-value unit=" dB" style="height: 15rem"></ray-slider>
   <ray-slider orientation="vertical" label="Pan" min="-50" max="50" value="0" color="teal" style="height: 9rem"></ray-slider>
 </div>
 
@@ -97,7 +97,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   });
 
   // Marks: numbers, or { value, label }.
-  document.getElementById("demo-fader").marks = [6, 0, -6, -12, -24, -48].map((v) => ({ value: v, label: String(v) }));
+  document.getElementById("demo-fader").marks = [6, 0, -12, -24, -36, -48, -60].map((v) => ({ value: v, label: String(v) }));
   document.getElementById("demo-tempo").marks = [60, 90, 120, 150, 180];
   document.getElementById("demo-quality").marks = [
     { value: 0, label: "Draft" }, { value: 25, label: "Low" }, { value: 50, label: "Medium" }, { value: 75, label: "High" }, { value: 100, label: "Max" },

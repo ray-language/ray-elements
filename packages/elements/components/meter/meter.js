@@ -64,11 +64,12 @@ const styles = css`
   :host([orientation="horizontal"]) .hold { inset-inline: auto; inset-block: 0; bottom: 0; inset-inline-start: var(--_h, 0%); width: 2px; height: auto; } /* physical */
   .scale { position: relative; min-width: 1.75rem; font-size: 0.625rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ray-muted-foreground); }
   .scale:empty { display: none; }
-  /* Vertical: the labels sit beside the bars, level with the track (below the clip light). */
-  :host(:not([orientation="horizontal"])) .scale { margin-top: calc(var(--_w) + 2px); }
+  /* Vertical: the labels sit before the bars (on the left), aligned against
+     them so the numbers line up, level with the track (below the clip light). */
+  :host(:not([orientation="horizontal"])) .scale { order: -1; margin-top: calc(var(--_w) + 2px); }
   :host([orientation="horizontal"]) .scale { min-width: 0; height: 0.875rem; margin-inline-end: calc(var(--_w) + 2px); }
-  .tick { position: absolute; inset-inline-start: 0; bottom: var(--_at); transform: translateY(50%); direction: ltr; unicode-bidi: isolate; white-space: nowrap; } /* physical */
-  :host([orientation="horizontal"]) .tick { bottom: auto; top: 0; inset-inline-start: var(--_at); transform: translateX(-50%); }
+  .tick { position: absolute; inset-inline-end: 0; bottom: var(--_at); transform: translateY(50%); direction: ltr; unicode-bidi: isolate; white-space: nowrap; } /* physical */
+  :host([orientation="horizontal"]) .tick { bottom: auto; top: 0; inset-inline-end: auto; inset-inline-start: var(--_at); transform: translateX(-50%); }
   :host([orientation="horizontal"]:dir(rtl)) .tick { transform: translateX(50%); }
 `;
 

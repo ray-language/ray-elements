@@ -16,7 +16,7 @@ Properties:
 - `danger`: number, default `-3`. Where the red zone starts (dB).
 - `clip`: number, default `0`. A peak at or over it (dB) lights the channel's clip light until resetClip(), reset() or a click on the light.
 - `channels`: number, default `1`. The bars: 1 (mono), 2 (stereo)…
-- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. vertical: bars that rise, the scale beside them; horizontal: bars that grow towards the inline end.
+- `orientation`: `vertical` | `horizontal`, default `vertical`, reflects. vertical: bars that rise, the scale before them (on the left, aligned against them); horizontal: bars that grow towards the inline end.
 - `size`: `xs` | `sm` | `md` | `lg`, default `sm`, reflects. The thickness of each bar.
 - `hold`: number, default `1500`. How long the peak hold line stays (ms); 0: no line.
 - `falloff`: number, default `24`. How fast a lower level falls (dB per second); 0: at once.
