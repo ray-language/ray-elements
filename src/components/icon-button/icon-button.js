@@ -11,7 +11,12 @@ const styles = css`
   :host { width: var(--_h); }
   .button { width: var(--_h); padding: 0; }
   .label { font-size: calc(var(--_fs) * 1.15); }
-  ::slotted(svg) { width: 1.15em; height: 1.15em; }
+  /* The icon alone is a block, centered by the label's flex: inline, it sat
+     on a line box whose position follows the font's metrics (~1px low).
+     A ray-icon draws 1em of its own font size, so 1.15em makes it the size
+     of an <svg>; --ray-icon-size and size= still win. */
+  ::slotted(svg) { display: block; width: 1.15em; height: 1.15em; }
+  ::slotted(ray-icon) { display: flex; font-size: 1.15em; }
 `;
 
 export class RayIconButton extends RayButton {
