@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.22.1] - 2026-11-16
+
 ### Fixed
 
 - `ray-icon-button` and `ray-toggle square`: an icon alone sat about 1 px
