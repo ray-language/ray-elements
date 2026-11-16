@@ -52,7 +52,7 @@ Texts (`setStrings`; English):
 - `meter.value`: {value} dB
 - `meter.silent`: Silence
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.22.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.22.1.
 
 ## Example
 
