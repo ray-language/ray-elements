@@ -19,6 +19,9 @@ const styles = css`
   :host([square]) .button { width: var(--_h); padding: 0; }
   :host([square]) .label { font-size: calc(var(--_fs) * 1.15); }
   ::slotted(svg) { width: 1.15em; height: 1.15em; }
+  /* Square, the icon alone is centered and sized as in ray-icon-button. */
+  :host([square]) ::slotted(svg) { display: block; }
+  :host([square]) ::slotted(ray-icon) { display: flex; font-size: 1.15em; }
 
   /* Base of the drawn variants, at the specificity of one class so each
      variant's own off look below wins. */

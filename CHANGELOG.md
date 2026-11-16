@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `ray-icon-button` and `ray-toggle square`: an icon alone sat about 1 px
+  below the center (inline, on a line box that follows the font's metrics);
+  it is a block now, centered. A `ray-icon` there is now as big as an
+  `<svg>` (1.15 times the button's font, 16 → 18.5 px in `sm`), so "the icon
+  scales with it" holds for both; `--ray-icon-size` or the icon's `size`
+  still set it (#438).
+
 ## [0.22.0] - 2026-11-15
 
 ### Added

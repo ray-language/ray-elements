@@ -727,7 +727,7 @@
           "slots": [
             {
               "name": "",
-              "description": "The icon (an inline <svg> is sized to the button)."
+              "description": "The icon, centered: a ray-icon or an inline <svg>, both sized to the button (1.15 times its font; --ray-icon-size or the icon's size= override it)."
             }
           ],
           "cssParts": [

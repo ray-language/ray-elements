@@ -165,6 +165,29 @@ T.test("icon-button: the host is its square; a width from outside wins", async (
   box.remove();
 });
 
+T.test("icon-button, toggle square: an icon alone sits at the center, a ray-icon as big as an <svg>", async (T) => {
+  await Promise.all(["ray-toggle", "ray-icon"].map((t) => customElements.whenDefined(t)));
+  const box = await mount(["sm", "md", "xl"].map((s) => `
+    <ray-icon-button size="${s}" label="Play"><ray-icon name="play"></ray-icon></ray-icon-button>
+    <ray-icon-button size="${s}" label="Play"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></ray-icon-button>
+    <ray-toggle square size="${s}" label="Loop"><ray-icon name="star"></ray-icon></ray-toggle>
+    <ray-toggle square size="${s}" label="Loop"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8z"/></svg></ray-toggle>`).join(""));
+  const els = [...box.children];
+  for (const el of els) {
+    const b = inner(el, "button").getBoundingClientRect();
+    const i = el.firstElementChild.getBoundingClientRect();
+    const what = `${el.localName} ${el.getAttribute("size")} ${el.firstElementChild.localName}`;
+    T.ok(i.height > 0, `${what}: drawn`);
+    T.ok(Math.abs(i.top + i.height / 2 - (b.top + b.height / 2)) < 0.1, `${what}: centered vertically (${(i.top + i.height / 2 - (b.top + b.height / 2)).toFixed(2)}px)`);
+    T.ok(Math.abs(i.left + i.width / 2 - (b.left + b.width / 2)) < 0.1, `${what}: centered horizontally`);
+  }
+  for (let n = 0; n < els.length; n += 2) {
+    const [a, b] = [els[n], els[n + 1]].map((el) => el.firstElementChild.getBoundingClientRect().height);
+    T.ok(Math.abs(a - b) < 0.1, `${els[n].localName} ${els[n].getAttribute("size")}: ray-icon ${a.toFixed(1)}px, <svg> ${b.toFixed(1)}px`);
+  }
+  box.remove();
+});
+
 T.test("button: size takes a CSS length; the font follows", async (T) => {
   const box = await mount(`<ray-button size="4rem">Start</ray-button><ray-button size="xl">Start</ray-button>`);
   const [big, xl] = box.children;
