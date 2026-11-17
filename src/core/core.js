@@ -8,6 +8,7 @@ import { parseColor, shades, contrastRatio, toHex, toOklch } from "./color.js";
 
 export { setIcons, getIcon, iconNames, iconAliases } from "./icons.js";
 export { setStrings, getString, stringKeys, langOf, defineStrings } from "./strings.js";
+export { taperPosition, taperValue } from "./taper.js";
 
 export const PREFIX = "ray";
 

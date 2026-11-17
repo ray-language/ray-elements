@@ -1,7 +1,7 @@
 [component]
 name = "Slider"
 category = "Inputs"
-summary = "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated."
+summary = "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap (and a fader's gestures), linear or on a fader's dB curve. Form-associated."
 aliases = ["Range", "Fader"]
 files = ["slider.js"]
 requires = []
@@ -98,7 +98,19 @@ type = "string"
 values = ["round", "cap"]
 default = "round"
 reflect = true
-description = "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables."
+description = "The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). A cap also plays as a fader: a click on the slot does not move it, a drag moves it from where it is (Shift: ten times finer), the wheel steps it (Shift: ten steps), and the arrow keys with Shift take ten steps. Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables."
+
+[ray-slider.properties.taper]
+type = "string"
+values = ["linear", "fader"]
+default = "linear"
+reflect = true
+description = "How the values spread along the track. fader: dB on a mixing desk's curve (the fourth root of the gain, min at the bottom), so the range used to mix gets most of the travel: with -60…6, 0 dB at 81 %, -12 at 52 %, -24 at 32 %. The marks follow it; ray-meter taper=\"fader\" beside it lines up with them. A key or a wheel notch moves a hundredth of the travel (Shift: a tenth). The curve itself: taperPosition and taperValue from @raylang/elements/core."
+
+[ray-slider.properties.defaultValue]
+attribute = "default-value"
+type = "number"
+description = "What a double click returns to (a fader's 0 dB). Without it, the value attribute."
 
 [ray-slider.events.input]
 description = "While dragging."

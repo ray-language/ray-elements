@@ -268,7 +268,7 @@ export default [
   {
     "label": "Slider (Range, Fader)",
     "group": "Components · Inputs",
-    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.",
+    "description": "A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap (and a fader's gestures), linear or on a fader's dB curve. Form-associated.",
     "href": "components/slider.html",
     "keywords": [
       "slider",

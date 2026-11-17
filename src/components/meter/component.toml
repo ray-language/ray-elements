@@ -10,7 +10,7 @@ tags = ["ray-meter"]
 [ray-meter]
 class = "RayMeter"
 extends = "RayElement"
-summary = "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off."
+summary = "Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation=\"vertical\"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb=\"cap\", 0.5625rem for the round one): and the same taper: its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off."
 
 [ray-meter.properties.min]
 type = "number"
@@ -70,6 +70,13 @@ description = "How fast a lower level falls (dB per second); 0: at once."
 type = "boolean"
 reflect = true
 description = "Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead."
+
+[ray-meter.properties.taper]
+type = "string"
+values = ["linear", "fader"]
+default = "linear"
+reflect = true
+description = "How the dB spread along the bar: linear, or fader (a mixing desk's curve, as ray-slider taper=\"fader\"): beside a fader with that taper, give both the same one and the bars line up with its marks. The zones (warn, danger) and the scale follow it."
 
 [ray-meter.properties.marks]
 attribute = false

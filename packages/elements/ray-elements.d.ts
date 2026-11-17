@@ -75,6 +75,12 @@ export type StringValue = string | ({ other: string } & Partial<Record<"zero" | 
  */
 export declare function setStrings(lang: string, strings: Record<string, StringValue>): void;
 export declare function setStrings(strings: Record<string, StringValue>): void;
+/** A value's taper: linear, or fader (a mixing desk's curve for dB). */
+export type Taper = "linear" | "fader";
+/** Where `value` sits between min (0) and max (1) with a taper: what ray-slider and ray-meter use. */
+export declare function taperPosition(value: number, min: number, max: number, taper?: Taper): number;
+/** The value at `position` (0…1) between min and max: taperPosition's inverse. */
+export declare function taperValue(position: number, min: number, max: number, taper?: Taper): number;
 /** A text in the language of `el` (the page's without one), "{name}" filled from `values`. */
 export declare function getString(key: string, el?: Element | null, values?: Record<string, unknown>): string;
 /** The key and English text of every text declared so far (the components loaded). */
@@ -1400,7 +1406,7 @@ export interface RaySelectEventMap extends HTMLElementEventMap {
 }
 
 // --- Slider (slider)
-/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated. */
+/** <ray-slider> A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap (and a fader's gestures), linear or on a fader's dB curve. Form-associated. */
 export declare class RaySlider extends FieldControl {
   /** Current value. The value attribute is the initial one (restored on reset). */
   value: number | undefined;
@@ -1434,8 +1440,12 @@ export declare class RaySlider extends FieldControl {
   marks: Array<number | { value: number; label?: string }> | undefined;
   /** vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it). */
   orientation: "horizontal" | "vertical";
-  /** The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables. */
+  /** The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). A cap also plays as a fader: a click on the slot does not move it, a drag moves it from where it is (Shift: ten times finer), the wheel steps it (Shift: ten steps), and the arrow keys with Shift take ten steps. Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables. */
   thumb: "round" | "cap";
+  /** How the values spread along the track. fader: dB on a mixing desk's curve (the fourth root of the gain, min at the bottom), so the range used to mix gets most of the travel: with -60…6, 0 dB at 81 %, -12 at 52 %, -24 at 32 %. The marks follow it; ray-meter taper="fader" beside it lines up with them. A key or a wheel notch moves a hundredth of the travel (Shift: a tenth). The curve itself: taperPosition and taperValue from @raylang/elements/core. */
+  taper: "linear" | "fader";
+  /** What a double click returns to (a fader's 0 dB). Without it, the value attribute. */
+  defaultValue: number | undefined;
 }
 
 // --- Switch (switch)
@@ -2432,7 +2442,7 @@ export declare class RayKbd extends RayElement {
 }
 
 // --- Meter (meter)
-/** <ray-meter> Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation="vertical"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb="cap", 0.5625rem for the round one): its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off. */
+/** <ray-meter> Levels are dB (20 * log10 of the amplitude; -Infinity for silence). A peak goes up at once and falls at falloff dB/s, so call setLevels() on every frame; the hold line keeps the highest peak for hold ms. The bars are role=meter, its value (the loudest channel) updated a few times a second. Colors: --ray-meter-low, --ray-meter-mid, --ray-meter-high; length: the host's height (--ray-meter-length, 12rem), or its width when horizontal. Beside a fader (ray-slider orientation="vertical"), give both the same height and the meter --ray-meter-inset: half the slider's thumb length (0.4375rem for thumb="cap", 0.5625rem for the round one): and the same taper: its bars then line up with the slider's marks, which carry the numbers; leave the meter's own scale off. */
 export declare class RayMeter extends RayElement {
   /** The dB at the bottom: lower levels show nothing. */
   min: number;
@@ -2456,6 +2466,8 @@ export declare class RayMeter extends RayElement {
   falloff: number;
   /** Shows the dB scale on the left of the bars (6, 0, -6, -12, -24, -36, -48, -60 within min and max). Part of the meter, and optional: beside a fader, put the numbers on the fader (its marks) instead. */
   scale: boolean | undefined;
+  /** How the dB spread along the bar: linear, or fader (a mixing desk's curve, as ray-slider taper="fader"): beside a fader with that taper, give both the same one and the bars line up with its marks. The zones (warn, danger) and the scale follow it. */
+  taper: "linear" | "fader";
   /** Your own scale, in dB (replaces the one of scale). */
   marks: Array<number | { value: number; label?: string }> | undefined;
   /** The accessible name. */

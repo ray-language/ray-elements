@@ -4,7 +4,7 @@ import "@raylang/elements/slider";
 import { createComponent } from "../create.js";
 
 export const RaySlider = /*#__PURE__*/ createComponent("RaySlider", "ray-slider", {
-  properties: ["value", "min", "max", "step", "name", "label", "description", "descriptionPosition", "error", "disabled", "color", "size", "showValue", "unit", "marks", "orientation", "thumb", "required", "radius", "variant"],
+  properties: ["value", "min", "max", "step", "name", "label", "description", "descriptionPosition", "error", "disabled", "color", "size", "showValue", "unit", "marks", "orientation", "thumb", "taper", "defaultValue", "required", "radius", "variant"],
   booleans: ["disabled", "showValue", "required"],
   model: { prop: "value", events: ["input"] },
 });
