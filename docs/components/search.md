@@ -47,7 +47,7 @@ Texts (`setStrings`; English):
 - `search.placeholder`: Search…
 - `search.clear`: Clear search
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.22.1.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.23.0.
 
 ## Example
 
