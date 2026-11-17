@@ -3,9 +3,17 @@
 // Form-associated. orientation="vertical" stands it up (a mixer's fader):
 // the minimum at the bottom, the marks on its inline-start side (the left),
 // aligned against the track so their numbers line up.
+//
+// thumb="cap" plays as a mixing desk's fader, not a form's range: a click on
+// the slot does not move it (a jump in level is audible), a drag moves it from
+// where it is (Shift: ten times finer), the wheel steps it. taper="fader"
+// spreads dB on a desk's curve (ray-meter has the same taper, so a meter
+// beside it lines up with its marks). A double click returns to
+// default-value on any slider.
 
-import { css, define } from "../../core/core.js";
+import { css, define, taperPosition, taperValue } from "../../core/core.js";
 import { applyColor, sizeStyles } from "../../core/styles.js";
+import { inlineKey } from "../../core/direction.js";
 import { FieldControl, fieldStyles } from "../../core/form.js";
 
 const styles = css`
@@ -138,7 +146,15 @@ const styles = css`
   /* thumb="cap": a plain slot, as on a desk (the cap shows the value). */
   :host([thumb="cap"]) input::-webkit-slider-runnable-track { background: var(--ray-muted); }
   :host([thumb="cap"]) input::-moz-range-progress { background: transparent; }
+  /* The cap is dragged by the root, from where it is: the native range would
+     jump to the pointer. scroll-margin carries the thumb's length to script. */
+  :host([thumb="cap"]) .root { touch-action: none; cursor: grab; scroll-margin-top: var(--_tl); }
+  :host([thumb="cap"]) input { pointer-events: none; }
+  :host([thumb="cap"][disabled]) .root { cursor: default; }
 `;
+
+const RES = 10000; // a tapered range's native positions
+const SWEEP_PAGE = 0.1; // Page Up/Down, and Shift with the wheel or a key when tapered
 
 export class RaySlider extends FieldControl {
   static properties = {
@@ -153,8 +169,12 @@ export class RaySlider extends FieldControl {
     marks: { attribute: false },
     /** horizontal, or vertical: a fader, the minimum at the bottom. */
     orientation: { type: String, reflect: true, default: "horizontal" },
-    /** round, or cap: a mixing desk's fader cap. */
+    /** round, or cap: a mixing desk's fader cap, and a fader's gestures. */
     thumb: { type: String, reflect: true, default: "round" },
+    /** linear, or fader: dB on a mixing desk's curve. */
+    taper: { type: String, reflect: true, default: "linear" },
+    /** What a double click returns to. */
+    defaultValue: { type: Number, attribute: "default-value" },
   };
   static styles = [sizeStyles, fieldStyles, styles];
   static template = `
@@ -167,26 +187,40 @@ export class RaySlider extends FieldControl {
     <div class="marks" part="marks"></div>
     <div class="error" part="error" id="error" hidden></div>`;
 
+  #drag = null;
+  #wheelEnd = 0;
+
   wire() {
     this._default = this.getAttribute("value");
-    this.control.addEventListener("input", () => {
-      this.commitProperty("value", Number(this.control.value));
+    const c = this.control;
+    const root = this.$(".root");
+    c.addEventListener("input", () => {
+      this.commitProperty("value", this.#tapered() ? this.#at(Number(c.value) / RES) : Number(c.value));
       this._commit();
     });
-    this.control.addEventListener("change", (e) => this.forward(e));
+    c.addEventListener("change", (e) => this.forward(e));
+    c.addEventListener("keydown", (e) => this.#key(e));
+    root.addEventListener("pointerdown", (e) => this.#down(e));
+    root.addEventListener("wheel", (e) => this.#wheel(e), { passive: false });
+    root.addEventListener("dblclick", () => {
+      const home = this.#home();
+      if (this.effectivelyDisabled || home === null) return;
+      this.#set(home, true);
+    });
   }
 
   update(changed) {
     const c = this.control;
-    c.min = String(this.min ?? 0);
-    c.max = String(this.max ?? 100);
-    c.step = String(this.step ?? 1);
-    if (this.value === undefined) this.commitProperty("value", Number(c.value));
-    if (Number(c.value) !== this.value) c.value = String(this.value);
+    const tapered = this.#tapered();
+    c.min = tapered ? "0" : String(this.min ?? 0);
+    c.max = tapered ? String(RES) : String(this.max ?? 100);
+    c.step = tapered ? "1" : String(this.step ?? 1);
+    if (this.value === undefined) this.commitProperty("value", tapered ? this.#at(Number(c.value) / RES) : Number(c.value));
+    this.#place();
     applyColor(this.$(".root"), this.color);
     c.setAttribute("aria-orientation", this.orientation === "vertical" ? "vertical" : "horizontal");
     this.syncField();
-    if (changed.has("marks") || changed.has("min") || changed.has("max") || !this._marked) this._renderMarks();
+    if (changed.has("marks") || changed.has("min") || changed.has("max") || changed.has("taper") || !this._marked) this._renderMarks();
     this._commit();
   }
 
@@ -196,15 +230,17 @@ export class RaySlider extends FieldControl {
     const max = Number(c.max);
     const pct = max > min ? ((Number(c.value) - min) / (max - min)) * 100 : 0;
     c.style.setProperty("--_pct", `${pct}%`);
-    const text = `${c.value}${this.unit ?? ""}`;
+    const v = this.value ?? Number(c.value);
+    const text = `${v}${this.unit ?? ""}`;
     const value = this.$(".value");
     value.hidden = !this.showValue;
     // Without a label or a shown value, no head: the track starts at the top.
     this.$(".head").hidden = !this.label && !this.showValue;
     value.textContent = text;
-    if (this.unit) c.setAttribute("aria-valuetext", text);
+    // Tapered, the native value is a position: the text says the value.
+    if (this.unit || this.#tapered()) c.setAttribute("aria-valuetext", text);
     else c.removeAttribute("aria-valuetext");
-    this.internals.setFormValue(c.value);
+    this.internals.setFormValue(String(v));
     this.syncValidity();
   }
 
@@ -213,16 +249,145 @@ export class RaySlider extends FieldControl {
     const box = this.$(".marks");
     box.replaceChildren();
     if (!Array.isArray(this.marks)) return;
-    const min = this.min ?? 0;
-    const max = this.max ?? 100;
     for (const m of this.marks) {
       const v = typeof m === "number" ? m : m.value;
       const span = document.createElement("span");
       span.className = "mark";
-      span.style.setProperty("--_at", `${((v - min) / (max - min || 1)) * 100}%`);
+      span.style.setProperty("--_at", `${this.#pos(v) * 100}%`);
       span.textContent = typeof m === "number" ? String(m) : (m.label ?? String(m.value));
       box.append(span);
     }
+  }
+
+  #tapered() {
+    return this.taper === "fader" && (this.max ?? 100) > (this.min ?? 0);
+  }
+
+  #cap() {
+    return this.thumb === "cap";
+  }
+
+  /** The value's place along the track, 0…1. */
+  #pos(v) {
+    return taperPosition(v, this.min ?? 0, this.max ?? 100, this.#tapered() ? "fader" : "linear");
+  }
+
+  /** The value at a place along the track, on a step. */
+  #at(p) {
+    return this.#clamp(taperValue(p, this.min ?? 0, this.max ?? 100, this.#tapered() ? "fader" : "linear"));
+  }
+
+  #clamp(v) {
+    const min = this.min ?? 0;
+    const max = this.max ?? 100;
+    const step = this.step ?? 1;
+    if (step > 0) v = min + Math.round((v - min) / step) * step;
+    // Rounding errors of the step (0.1 + 0.2): keep its decimals.
+    const decimals = step > 0 ? (String(step).split(".")[1] ?? "").length : 6;
+    return Number(Math.max(min, Math.min(max, v)).toFixed(Math.min(10, decimals + 2)));
+  }
+
+  /** The native range follows the value (a position when tapered). */
+  #place() {
+    const c = this.control;
+    if (this.#tapered()) {
+      if (this.#at(Number(c.value) / RES) !== this.value) c.value = String(Math.round(this.#pos(this.value) * RES));
+    } else if (Number(c.value) !== this.value) c.value = String(this.value);
+  }
+
+  #home() {
+    if (this.defaultValue !== undefined && this.defaultValue !== null && !Number.isNaN(this.defaultValue)) return this.defaultValue;
+    if (this._default !== null && this._default !== undefined) return Number(this._default);
+    return null;
+  }
+
+  #set(v, commit) {
+    v = this.#clamp(v);
+    if (v !== this.value) {
+      this.commitProperty("value", v);
+      this.#place();
+      this._commit();
+      this.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+    }
+    if (commit) this.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  /** One step: the step, or a hundredth of the travel when tapered; big: ten. */
+  #nudge(dir, big) {
+    const v = this.value ?? 0;
+    if (this.#tapered()) return this.#at(this.#pos(v) + dir * (big ? SWEEP_PAGE : SWEEP_PAGE / 10));
+    const step = (this.step ?? 1) > 0 ? this.step : ((this.max ?? 100) - (this.min ?? 0)) / 100;
+    return v + dir * step * (big ? 10 : 1);
+  }
+
+  // The keys of a native range, played by hand when the native ones would be
+  // wrong (tapered: its positions are not the value's steps) or short (a cap:
+  // Shift for ten steps, as on ray-knob).
+  #key(e) {
+    if (this.effectivelyDisabled || (!this.#tapered() && !this.#cap())) return;
+    const v = this.value ?? 0;
+    // Right to left, ArrowLeft raises it (as a native range does); vertical, ArrowUp.
+    const key = this.orientation === "vertical" ? e.key : inlineKey(e.key, this);
+    let next = null;
+    if (key === "ArrowUp" || key === "ArrowRight") next = this.#nudge(1, e.shiftKey);
+    else if (key === "ArrowDown" || key === "ArrowLeft") next = this.#nudge(-1, e.shiftKey);
+    else if (e.key === "PageUp") next = this.#at(this.#pos(v) + SWEEP_PAGE);
+    else if (e.key === "PageDown") next = this.#at(this.#pos(v) - SWEEP_PAGE);
+    else if (e.key === "Home") next = this.min ?? 0;
+    else if (e.key === "End") next = this.max ?? 100;
+    if (next === null) return;
+    e.preventDefault();
+    this.#set(next, true);
+  }
+
+  // A cap is dragged from where it is: the pointer's travel along the slot
+  // moves it as much (Shift: ten times less), and a click alone leaves it.
+  #down(e) {
+    if (!this.#cap() || this.effectivelyDisabled || e.button !== 0) return;
+    e.preventDefault();
+    const c = this.control;
+    c.focus();
+    const root = this.$(".root");
+    try {
+      root.setPointerCapture(e.pointerId);
+    } catch {
+      // The pointer is already gone: drag without capture.
+    }
+    const vertical = this.orientation === "vertical";
+    const rect = c.getBoundingClientRect();
+    const thumb = parseFloat(getComputedStyle(root).scrollMarginTop) || 0;
+    const travel = Math.max(1, (vertical ? rect.height : rect.width) - thumb);
+    const sign = vertical ? -1 : getComputedStyle(this).direction === "rtl" ? -1 : 1;
+    const at = (ev) => (vertical ? ev.clientY : ev.clientX);
+    // Shift is read as it moves, so pressing it mid-drag refines from there.
+    this.#drag = { from: at(e), p: this.#pos(this.value ?? 0), fine: e.shiftKey, start: this.value };
+    const move = (ev) => {
+      const d = this.#drag;
+      if (!d) return;
+      if (ev.shiftKey !== d.fine) Object.assign(d, { from: at(ev), p: this.#pos(this.value ?? 0), fine: ev.shiftKey });
+      this.#set(this.#at(d.p + (sign * (at(ev) - d.from)) / (travel * (d.fine ? 10 : 1))), false);
+    };
+    const up = () => {
+      root.removeEventListener("pointermove", move);
+      root.removeEventListener("pointerup", up);
+      root.removeEventListener("pointercancel", up);
+      const moved = this.#drag && this.#drag.start !== this.value;
+      this.#drag = null;
+      if (moved) this.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    root.addEventListener("pointermove", move);
+    root.addEventListener("pointerup", up);
+    root.addEventListener("pointercancel", up);
+  }
+
+  #wheel(e) {
+    if (!this.#cap() || this.effectivelyDisabled) return;
+    e.preventDefault();
+    const notch = Math.sign(e.deltaY || e.deltaX);
+    if (!notch) return;
+    this.#set(this.#nudge(-notch, e.shiftKey), false);
+    clearTimeout(this.#wheelEnd);
+    this.#wheelEnd = setTimeout(() => this.dispatchEvent(new Event("change", { bubbles: true })), 250);
   }
 
   formResetCallback() {

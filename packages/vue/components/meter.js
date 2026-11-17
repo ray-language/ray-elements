@@ -4,6 +4,6 @@ import "@raylang/elements/meter";
 import { createComponent } from "../create.js";
 
 export const RayMeter = /*#__PURE__*/ createComponent("RayMeter", "ray-meter", {
-  properties: ["min", "max", "warn", "danger", "clip", "channels", "orientation", "size", "hold", "falloff", "scale", "marks", "label"],
+  properties: ["min", "max", "warn", "danger", "clip", "channels", "orientation", "size", "hold", "falloff", "scale", "taper", "marks", "label"],
   booleans: ["scale"],
 });

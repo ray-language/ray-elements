@@ -52,12 +52,12 @@
   <ray-button size="xs" variant="default" id="demo-eq-flat">Flat</ray-button>
 </div>
 
-<div class="demo-caption">A console: fader caps (thumb="cap"), the scale on the first fader</div>
+<div class="demo-caption">A console: fader caps (thumb="cap") on a desk's dB curve (taper="fader"). Drag a cap from where it is (Shift: finer), use the wheel, or double click for 0 dB</div>
 <div class="demo-console" id="demo-console">
-  <div class="demo-console-strip"><output>0.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Vocals" min="-60" max="6" step="0.5" value="0" style="height: 13rem"></ray-slider><span>Vocals</span></div>
-  <div class="demo-console-strip"><output>-4.5 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Guitar" min="-60" max="6" step="0.5" value="-4.5" style="height: 13rem"></ray-slider><span>Guitar</span></div>
-  <div class="demo-console-strip"><output>-9.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Bass" min="-60" max="6" step="0.5" value="-9" style="height: 13rem"></ray-slider><span>Bass</span></div>
-  <div class="demo-console-strip"><output>-2.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Drums" min="-60" max="6" step="0.5" value="-2" style="height: 13rem"></ray-slider><span>Drums</span></div>
+  <div class="demo-console-strip"><output>0.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Vocals" min="-60" max="6" step="0.5" value="0" style="height: 13rem"></ray-slider><span>Vocals</span></div>
+  <div class="demo-console-strip"><output>-4.5 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Guitar" min="-60" max="6" step="0.5" value="-4.5" style="height: 13rem"></ray-slider><span>Guitar</span></div>
+  <div class="demo-console-strip"><output>-9.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Bass" min="-60" max="6" step="0.5" value="-9" style="height: 13rem"></ray-slider><span>Bass</span></div>
+  <div class="demo-console-strip"><output>-2.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Drums" min="-60" max="6" step="0.5" value="-2" style="height: 13rem"></ray-slider><span>Drums</span></div>
 </div>
 
 <div class="demo-caption">Your own thumb: the --ray-slider-thumb-* variables</div>
@@ -88,7 +88,7 @@
     for (const s of eq) s.value = 0;
   });
   const faders = [...document.querySelectorAll("#demo-console ray-slider")];
-  faders[0].marks = [6, 0, -6, -12, -24, -36, -60].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
+  faders[0].marks = [6, 0, -6, -12, -24, -48].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
   for (const f of faders) {
     f.addEventListener("input", () => {
       f.closest(".demo-console-strip").querySelector("output").textContent = `${f.value.toFixed(1)} dB`;

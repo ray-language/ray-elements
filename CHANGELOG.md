@@ -7,6 +7,22 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-slider thumb="cap"` plays as a mixing desk's fader (#444): a click on
+  the slot no longer jumps the level, a drag moves the cap from where it is
+  (Shift: ten times finer), the wheel steps it, and Shift with an arrow key
+  takes ten steps. The native range stays for the keyboard, forms and screen
+  readers.
+- `default-value` on `ray-slider`: a double click returns to it (a fader's
+  0 dB); without it, the `value` attribute.
+- `taper="fader"` on `ray-slider` and `ray-meter` (#445): dB on a desk's
+  curve (the fourth root of the gain), so the range used to mix gets most of
+  the travel (with -60…6, 0 dB at 81 %, -12 at 52 %). Marks, zones and the
+  meter's scale follow it, and a meter beside a fader with the same taper
+  lines up with its marks. The curve is exported for an app's own controls:
+  `taperPosition` and `taperValue` from `@raylang/elements/core`.
+
 ## [0.22.1] - 2026-11-16
 
 ### Fixed

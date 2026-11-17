@@ -73,6 +73,12 @@ export type StringValue = string | ({ other: string } & Partial<Record<"zero" | 
  */
 export declare function setStrings(lang: string, strings: Record<string, StringValue>): void;
 export declare function setStrings(strings: Record<string, StringValue>): void;
+/** A value's taper: linear, or fader (a mixing desk's curve for dB). */
+export type Taper = "linear" | "fader";
+/** Where `value` sits between min (0) and max (1) with a taper: what ray-slider and ray-meter use. */
+export declare function taperPosition(value: number, min: number, max: number, taper?: Taper): number;
+/** The value at `position` (0…1) between min and max: taperPosition's inverse. */
+export declare function taperValue(position: number, min: number, max: number, taper?: Taper): number;
 /** A text in the language of `el` (the page's without one), "{name}" filled from `values`. */
 export declare function getString(key: string, el?: Element | null, values?: Record<string, unknown>): string;
 /** The key and English text of every text declared so far (the components loaded). */

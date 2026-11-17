@@ -9,7 +9,7 @@
 //     requestAnimationFrame(frame);
 //   }
 
-import { RayElement, css, define, defineStrings } from "../../core/core.js";
+import { RayElement, css, define, defineStrings, taperPosition } from "../../core/core.js";
 
 // The texts it writes, in English (setStrings translates them; one per line: the tools read them).
 const STRINGS = {
@@ -91,6 +91,8 @@ export class RayMeter extends RayElement {
     hold: { type: Number, default: 1500 },
     falloff: { type: Number, default: 24 },
     scale: { type: Boolean, reflect: true },
+    /** linear, or fader: dB on a mixing desk's curve (as ray-slider taper="fader"). */
+    taper: { type: String, reflect: true, default: "linear" },
     marks: { attribute: false },
     label: { type: String, string: "meter.label" },
   };
@@ -190,7 +192,7 @@ export class RayMeter extends RayElement {
     box.setAttribute("aria-label", this.getAttribute("aria-label") ?? this.label);
     box.setAttribute("aria-valuemin", String(min));
     box.setAttribute("aria-valuemax", String(max));
-    if (changed.has("scale") || changed.has("marks") || changed.has("min") || changed.has("max") || !this._scaled) this.#renderScale(min, max);
+    if (changed.has("scale") || changed.has("marks") || changed.has("taper") || changed.has("min") || changed.has("max") || !this._scaled) this.#renderScale(min, max);
     this.#paint();
     this.#speak();
   }
@@ -214,8 +216,7 @@ export class RayMeter extends RayElement {
   }
 
   #pct(db, min, max) {
-    if (!(db > min)) return 0;
-    return Math.min(100, ((db - min) / (max - min || 1)) * 100);
+    return taperPosition(db, min, max, this.taper === "fader" ? "fader" : "linear") * 100;
   }
 
   #paint() {

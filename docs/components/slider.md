@@ -1,6 +1,6 @@
 # Slider (also Range, Fader)
 
-A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap. Form-associated.
+A native range input (keyboard, touch and screen readers as usual) with label, value display and marks; horizontal or vertical (a fader), with a round thumb or a mixing desk's cap (and a fader's gestures), linear or on a fader's dB curve. Form-associated.
 
 Import: `import "@raylang/elements/slider";` · Category: Inputs
 
@@ -24,7 +24,9 @@ Properties:
 - `unit`: string. Appended to the shown value and its spoken text (%, px, ms…).
 - `marks` (property only): `Array<number | { value: number; label?: string }>`. Labeled ticks under the track.
 - `orientation`: `horizontal` | `vertical`, default `horizontal`, reflects. vertical: a fader, the minimum at the bottom and the marks before the track (on the left, aligned against it); its length is the host's height (--ray-slider-length, 12rem by default). The arrow keys work as on a horizontal one (ArrowUp raises it).
-- `thumb`: `round` | `cap`, default `round`, reflects. The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.
+- `thumb`: `round` | `cap`, default `round`, reflects. The thumb: round, or cap (a mixing desk's fader cap: a short, wide block with a line at its middle, over a plain slot). A cap also plays as a fader: a click on the slot does not move it, a drag moves it from where it is (Shift: ten times finer), the wheel steps it (Shift: ten steps), and the arrow keys with Shift take ten steps. Any other look: the --ray-slider-thumb-size (across the track), -length (along it), -background, -border, -radius and -shadow variables.
+- `taper`: `linear` | `fader`, default `linear`, reflects. How the values spread along the track. fader: dB on a mixing desk's curve (the fourth root of the gain, min at the bottom), so the range used to mix gets most of the travel: with -60…6, 0 dB at 81 %, -12 at 52 %, -24 at 32 %. The marks follow it; ray-meter taper="fader" beside it lines up with them. A key or a wheel notch moves a hundredth of the travel (Shift: a tenth). The curve itself: taperPosition and taperValue from @raylang/elements/core.
+- `defaultValue` (attribute `default-value`): number. What a double click returns to (a fader's 0 dB). Without it, the value attribute.
 
 Also the properties of FieldControl: `required`, `radius`, `variant`.
 
@@ -100,12 +102,12 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
   <ray-button size="xs" variant="default" id="demo-eq-flat">Flat</ray-button>
 </div>
 
-<div class="demo-caption">A console: fader caps (thumb="cap"), the scale on the first fader</div>
+<div class="demo-caption">A console: fader caps (thumb="cap") on a desk's dB curve (taper="fader"). Drag a cap from where it is (Shift: finer), use the wheel, or double click for 0 dB</div>
 <div class="demo-console" id="demo-console">
-  <div class="demo-console-strip"><output>0.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Vocals" min="-60" max="6" step="0.5" value="0" style="height: 13rem"></ray-slider><span>Vocals</span></div>
-  <div class="demo-console-strip"><output>-4.5 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Guitar" min="-60" max="6" step="0.5" value="-4.5" style="height: 13rem"></ray-slider><span>Guitar</span></div>
-  <div class="demo-console-strip"><output>-9.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Bass" min="-60" max="6" step="0.5" value="-9" style="height: 13rem"></ray-slider><span>Bass</span></div>
-  <div class="demo-console-strip"><output>-2.0 dB</output><ray-slider orientation="vertical" thumb="cap" aria-label="Drums" min="-60" max="6" step="0.5" value="-2" style="height: 13rem"></ray-slider><span>Drums</span></div>
+  <div class="demo-console-strip"><output>0.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Vocals" min="-60" max="6" step="0.5" value="0" style="height: 13rem"></ray-slider><span>Vocals</span></div>
+  <div class="demo-console-strip"><output>-4.5 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Guitar" min="-60" max="6" step="0.5" value="-4.5" style="height: 13rem"></ray-slider><span>Guitar</span></div>
+  <div class="demo-console-strip"><output>-9.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Bass" min="-60" max="6" step="0.5" value="-9" style="height: 13rem"></ray-slider><span>Bass</span></div>
+  <div class="demo-console-strip"><output>-2.0 dB</output><ray-slider orientation="vertical" thumb="cap" taper="fader" default-value="0" aria-label="Drums" min="-60" max="6" step="0.5" value="-2" style="height: 13rem"></ray-slider><span>Drums</span></div>
 </div>
 
 <div class="demo-caption">Your own thumb: the --ray-slider-thumb-* variables</div>
@@ -136,7 +138,7 @@ The markup of the site's live example (the `demo-*` classes are the site's, not 
     for (const s of eq) s.value = 0;
   });
   const faders = [...document.querySelectorAll("#demo-console ray-slider")];
-  faders[0].marks = [6, 0, -6, -12, -24, -36, -60].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
+  faders[0].marks = [6, 0, -6, -12, -24, -48].map((v) => ({ value: v, label: v > 0 ? `+${v}` : String(v) }));
   for (const f of faders) {
     f.addEventListener("input", () => {
       f.closest(".demo-console-strip").querySelector("output").textContent = `${f.value.toFixed(1)} dB`;
