@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.23.0] - 2026-11-17
+
 ### Added
 
 - `ray-slider thumb="cap"` plays as a mixing desk's fader (#444): a click on
