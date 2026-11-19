@@ -1,0 +1,84 @@
+[component]
+name = "QR code"
+category = "Data display"
+summary = "A QR code of a text or a link (to open on a phone, pair a device, set up two-step sign-in), drawn as one SVG path: sharp at any size and in print. Its own encoder, no dependencies (about 3 KB gzip, only where imported); a logo at the middle; toSVG() and toPNG() to save or share it."
+aliases = ["QR", "Barcode", "2D code"]
+files = ["qr.js"]
+requires = []
+tags = ["ray-qr"]
+
+[component.exports.qrMatrix]
+ts = "function qrMatrix(text: string, options?: { ecc?: \"L\" | \"M\" | \"Q\" | \"H\"; mask?: number }): { version: number; ecc: \"L\" | \"M\" | \"Q\" | \"H\"; mask: number; size: number; modules: boolean[][] }"
+description = "The encoder alone: the QR code of a text (modules[y][x], true: dark), for a canvas, a printer or a server. Throws a RangeError when the text does not fit."
+
+[ray-qr]
+class = "RayQr"
+extends = "RayElement"
+summary = "Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from \"@raylang/elements/qr\"."
+
+[ray-qr.properties.value]
+type = "string"
+description = "The text or link to encode. Empty: nothing is drawn."
+
+[ray-qr.properties.ecc]
+type = "string"
+values = ["L", "M", "Q", "H"]
+default = "M"
+reflect = true
+description = "Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H."
+
+[ray-qr.properties.size]
+type = "string"
+default = "md"
+reflect = true
+ts = '"xs" | "sm" | "md" | "lg" | "xl" | (string & {})'
+description = "The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length."
+
+[ray-qr.properties.quietZone]
+attribute = "quiet-zone"
+type = "number"
+default = "4"
+description = "The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background)."
+
+[ray-qr.properties.color]
+type = "string"
+description = "The modules' color: a palette color or any CSS color (default black). Keep it dark."
+
+[ray-qr.properties.background]
+type = "string"
+description = "The background, any CSS color (default white). Keep it light."
+
+[ray-qr.properties.label]
+type = "string"
+description = "Its accessible name (default \"QR code\", translated). Say what it is for (\"Scan to open on your phone\"), and show the link or code as text too: not everyone can scan."
+
+[ray-qr.events.ray-error]
+detail = "{ error: Error }"
+description = "The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn."
+
+[ray-qr.slots.default]
+description = "A logo for the middle (an <img> or an <svg>), on the background color, 22 % of the code's side."
+
+[ray-qr.parts.code]
+description = "The <svg>."
+
+[ray-qr.parts.background]
+description = "The background rectangle."
+
+[ray-qr.parts.modules]
+description = "The path of the dark modules."
+
+[ray-qr.parts.logo]
+description = "The logo's box."
+
+[ray-qr.members.matrix]
+ts = "readonly matrix: { version: number; ecc: \"L\" | \"M\" | \"Q\" | \"H\"; mask: number; size: number; modules: boolean[][] } | null"
+description = "The code drawn: its version, the level used, the mask and modules[y][x] (true: dark); null when nothing is drawn."
+
+[ray-qr.members.toSVG]
+ts = "toSVG(options?: { size?: number }): string"
+description = "A standalone SVG document, colors resolved, an <img> logo included; size in px (default: as drawn)."
+
+[ray-qr.members.toPNG]
+ts = "toPNG(options?: { size?: number }): Promise<Blob>"
+description = "A PNG (an <img> logo included; one from another origin without CORS rejects it); size in px (default 8 px a module)."

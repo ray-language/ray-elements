@@ -252,6 +252,10 @@
       "types": "./ray-elements.d.ts",
       "default": "./components/meter/meter.js"
     },
+    "./qr": {
+      "types": "./ray-elements.d.ts",
+      "default": "./components/qr/qr.js"
+    },
     "./stat": {
       "types": "./ray-elements.d.ts",
       "default": "./components/stat/stat.js"

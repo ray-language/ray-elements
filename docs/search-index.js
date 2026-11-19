@@ -606,6 +606,20 @@ export default [
     "icon": "layers"
   },
   {
+    "label": "QR code (QR, Barcode, 2D code)",
+    "group": "Components · Data display",
+    "description": "A QR code of a text or a link (to open on a phone, pair a device, set up two-step sign-in), drawn as one SVG path: sharp at any size and in print. Its own encoder, no dependencies (about 3 KB gzip, only where imported); a logo at the middle; toSVG() and toPNG() to save or share it.",
+    "href": "components/qr.html",
+    "keywords": [
+      "qr",
+      "qr",
+      "barcode",
+      "2d code",
+      "ray-qr"
+    ],
+    "icon": "layers"
+  },
+  {
     "label": "Stat",
     "group": "Components · Data display",
     "description": "A metric tile: label, value, change against a previous period, note.",

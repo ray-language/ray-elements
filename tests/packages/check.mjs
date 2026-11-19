@@ -26,6 +26,7 @@ const CASES = [
   ["elements: button + icon", `import "@raylang/elements/button"; import "@raylang/elements/icon";`, ["ray-button", "ray-icon"], 12],
   ["elements: icon-button", `import "@raylang/elements/icon-button";`, ["ray-icon-button", "ray-button"], 12],
   ["elements: core (setIcons)", `import { setIcons } from "@raylang/elements/core"; setIcons({});`, [], 10],
+  ["elements: qr", `import "@raylang/elements/qr";`, ["ray-qr"], 13],
   ["react: RayButton", `import { RayButton } from "@raylang/react"; console.log(RayButton);`, ["ray-button"], 13],
   ["vue: RaySwitch", `import { RaySwitch } from "@raylang/vue"; console.log(RaySwitch);`, ["ray-switch", "ray-checkbox"], 13], // a switch is a checkbox
   // The whole set, to show the difference (no budget: it is everything).

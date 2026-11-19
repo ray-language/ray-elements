@@ -3275,6 +3275,55 @@ Texts (`setStrings`; English):
 - `meter.value`: {value} dB
 - `meter.silent`: Silence
 
+### QR code (also QR, Barcode, 2D code)
+
+A QR code of a text or a link (to open on a phone, pair a device, set up two-step sign-in), drawn as one SVG path: sharp at any size and in print. Its own encoder, no dependencies (about 3 KB gzip, only where imported); a logo at the middle; toSVG() and toPNG() to save or share it.
+
+Import: `import "@raylang/elements/qr";` · Category: Data display
+
+#### `<ray-qr>` (RayQr, extends RayElement)
+
+Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from "@raylang/elements/qr".
+
+Properties:
+
+- `value`: string. The text or link to encode. Empty: nothing is drawn.
+- `ecc`: `L` | `M` | `Q` | `H`, default `M`, reflects. Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H.
+- `size`: `"xs" | "sm" | "md" | "lg" | "xl" | (string & {})`, default `md`, reflects. The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length.
+- `quietZone` (attribute `quiet-zone`): number, default `4`. The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background).
+- `color`: string. The modules' color: a palette color or any CSS color (default black). Keep it dark.
+- `background`: string. The background, any CSS color (default white). Keep it light.
+- `label`: string. Its accessible name (default "QR code", translated). Say what it is for ("Scan to open on your phone"), and show the link or code as text too: not everyone can scan.
+
+Events:
+
+- `ray-error` (detail `{ error: Error }`): The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn.
+
+Slots:
+
+- (default): A logo for the middle (an <img> or an <svg>), on the background color, 22 % of the code's side.
+
+Parts (`::part()`):
+
+- `code`: The <svg>.
+- `background`: The background rectangle.
+- `modules`: The path of the dark modules.
+- `logo`: The logo's box.
+
+Methods and properties:
+
+- `readonly matrix: { version: number; ecc: "L" | "M" | "Q" | "H"; mask: number; size: number; modules: boolean[][] } | null`: The code drawn: its version, the level used, the mask and modules[y][x] (true: dark); null when nothing is drawn.
+- `toSVG(options?: { size?: number }): string`: A standalone SVG document, colors resolved, an <img> logo included; size in px (default: as drawn).
+- `toPNG(options?: { size?: number }): Promise<Blob>`: A PNG (an <img> logo included; one from another origin without CORS rejects it); size in px (default 8 px a module).
+
+Exports (from `@raylang/elements/qr` and `@raylang/elements`):
+
+- `function qrMatrix(text: string, options?: { ecc?: "L" | "M" | "Q" | "H"; mask?: number }): { version: number; ecc: "L" | "M" | "Q" | "H"; mask: number; size: number; modules: boolean[][] }`: The encoder alone: the QR code of a text (modules[y][x], true: dark), for a canvas, a printer or a server. Throws a RangeError when the text does not fit.
+
+Texts (`setStrings`; English):
+
+- `qr.label`: QR code
+
 ### Stat
 
 A metric tile: label, value, change against a previous period, note.

@@ -19500,6 +19500,237 @@
     },
     {
       "kind": "javascript-module",
+      "path": "components/qr/qr.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "name": "RayQr",
+          "tagName": "ray-qr",
+          "customElement": true,
+          "description": "Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from \"@raylang/elements/qr\".",
+          "superclass": {
+            "name": "RayElement"
+          },
+          "attributes": [
+            {
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text or link to encode. Empty: nothing is drawn.",
+              "fieldName": "value"
+            },
+            {
+              "name": "ecc",
+              "type": {
+                "text": "\"L\" | \"M\" | \"Q\" | \"H\""
+              },
+              "description": "Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H.",
+              "fieldName": "ecc",
+              "default": "M"
+            },
+            {
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | (string & {})"
+              },
+              "description": "The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length.",
+              "fieldName": "size",
+              "default": "md"
+            },
+            {
+              "name": "quiet-zone",
+              "type": {
+                "text": "number"
+              },
+              "description": "The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background).",
+              "fieldName": "quietZone",
+              "default": "4"
+            },
+            {
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "The modules' color: a palette color or any CSS color (default black). Keep it dark.",
+              "fieldName": "color"
+            },
+            {
+              "name": "background",
+              "type": {
+                "text": "string"
+              },
+              "description": "The background, any CSS color (default white). Keep it light.",
+              "fieldName": "background"
+            },
+            {
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its accessible name (default \"QR code\", translated). Say what it is for (\"Scan to open on your phone\"), and show the link or code as text too: not everyone can scan.",
+              "fieldName": "label"
+            }
+          ],
+          "members": [
+            {
+              "kind": "field",
+              "name": "value",
+              "type": {
+                "text": "string"
+              },
+              "description": "The text or link to encode. Empty: nothing is drawn.",
+              "attribute": "value",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "ecc",
+              "type": {
+                "text": "\"L\" | \"M\" | \"Q\" | \"H\""
+              },
+              "description": "Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H.",
+              "attribute": "ecc",
+              "reflects": true,
+              "default": "M"
+            },
+            {
+              "kind": "field",
+              "name": "size",
+              "type": {
+                "text": "\"xs\" | \"sm\" | \"md\" | \"lg\" | \"xl\" | (string & {})"
+              },
+              "description": "The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length.",
+              "attribute": "size",
+              "reflects": true,
+              "default": "md"
+            },
+            {
+              "kind": "field",
+              "name": "quietZone",
+              "type": {
+                "text": "number"
+              },
+              "description": "The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background).",
+              "attribute": "quiet-zone",
+              "reflects": false,
+              "default": "4"
+            },
+            {
+              "kind": "field",
+              "name": "color",
+              "type": {
+                "text": "string"
+              },
+              "description": "The modules' color: a palette color or any CSS color (default black). Keep it dark.",
+              "attribute": "color",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "background",
+              "type": {
+                "text": "string"
+              },
+              "description": "The background, any CSS color (default white). Keep it light.",
+              "attribute": "background",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "label",
+              "type": {
+                "text": "string"
+              },
+              "description": "Its accessible name (default \"QR code\", translated). Say what it is for (\"Scan to open on your phone\"), and show the link or code as text too: not everyone can scan.",
+              "attribute": "label",
+              "reflects": false
+            },
+            {
+              "kind": "field",
+              "name": "matrix",
+              "description": "The code drawn: its version, the level used, the mask and modules[y][x] (true: dark); null when nothing is drawn."
+            },
+            {
+              "kind": "method",
+              "name": "toSVG",
+              "description": "A standalone SVG document, colors resolved, an <img> logo included; size in px (default: as drawn)."
+            },
+            {
+              "kind": "method",
+              "name": "toPNG",
+              "description": "A PNG (an <img> logo included; one from another origin without CORS rejects it); size in px (default 8 px a module)."
+            }
+          ],
+          "events": [
+            {
+              "name": "ray-error",
+              "type": {
+                "text": "CustomEvent<{ error: Error }>"
+              },
+              "description": "The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn."
+            }
+          ],
+          "slots": [
+            {
+              "name": "",
+              "description": "A logo for the middle (an <img> or an <svg>), on the background color, 22 % of the code's side."
+            }
+          ],
+          "cssParts": [
+            {
+              "name": "code",
+              "description": "The <svg>."
+            },
+            {
+              "name": "background",
+              "description": "The background rectangle."
+            },
+            {
+              "name": "modules",
+              "description": "The path of the dark modules."
+            },
+            {
+              "name": "logo",
+              "description": "The logo's box."
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "qrMatrix",
+          "description": "The encoder alone: the QR code of a text (modules[y][x], true: dark), for a canvas, a printer or a server. Throws a RangeError when the text does not fit."
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "RayQr",
+          "declaration": {
+            "name": "RayQr",
+            "module": "components/qr/qr.js"
+          }
+        },
+        {
+          "kind": "custom-element-definition",
+          "name": "ray-qr",
+          "declaration": {
+            "name": "RayQr",
+            "module": "components/qr/qr.js"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "qrMatrix",
+          "declaration": {
+            "name": "qrMatrix",
+            "module": "components/qr/qr.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
       "path": "components/stat/stat.js",
       "declarations": [
         {

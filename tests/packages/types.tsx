@@ -24,6 +24,12 @@ const db: number = taperValue(at, -60, 6, "fader");
 taperPosition(0, -60, 6, "log");
 void db;
 
+// The QR encoder alone.
+import { qrMatrix } from "@raylang/elements/qr";
+const code = qrMatrix("https://elements.raylang.dev", { ecc: "Q" });
+const dark: boolean = code.modules[0][0];
+void dark;
+
 // Icon names: the default set completes, an app's own names still type-check.
 const icons: IconName[] = ["star", "chevron-down", "none", "my-own-icon"];
 
