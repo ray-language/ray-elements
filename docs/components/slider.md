@@ -41,7 +41,7 @@ Parts (`::part()`):
 
 Vue `v-model`: `value` (updated on input).
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.23.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.24.0.
 
 ## Example
 

@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.24.0] - 2026-11-19
+
 ### Added
 
 - `ray-qr`: a QR code of a text or a link (open on a phone, pair a device,
