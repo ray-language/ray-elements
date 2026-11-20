@@ -2490,6 +2490,41 @@ export interface RayMeterEventMap extends HTMLElementEventMap {
   "ray-clip": CustomEvent<{ channel: number }>;
 }
 
+// --- QR code (qr)
+/** The encoder alone: the QR code of a text (modules[y][x], true: dark), for a canvas, a printer or a server. Throws a RangeError when the text does not fit. */
+export declare function qrMatrix(text: string, options?: { ecc?: "L" | "M" | "Q" | "H"; mask?: number }): { version: number; ecc: "L" | "M" | "Q" | "H"; mask: number; size: number; modules: boolean[][] };
+/** <ray-qr> Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from "@raylang/elements/qr". */
+export declare class RayQr extends RayElement {
+  /** The text or link to encode. Empty: nothing is drawn. */
+  value: string | undefined;
+  /** Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H. */
+  ecc: "L" | "M" | "Q" | "H";
+  /** The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length. */
+  size: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
+  /** The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background). */
+  quietZone: number;
+  /** The modules' color: a palette color or any CSS color (default black). Keep it dark. */
+  color: string | undefined;
+  /** The background, any CSS color (default white). Keep it light. */
+  background: string | undefined;
+  /** Its accessible name (default "QR code", translated). Say what it is for ("Scan to open on your phone"), and show the link or code as text too: not everyone can scan. */
+  label: string | undefined;
+  /** The code drawn: its version, the level used, the mask and modules[y][x] (true: dark); null when nothing is drawn. */
+  readonly matrix: { version: number; ecc: "L" | "M" | "Q" | "H"; mask: number; size: number; modules: boolean[][] } | null;
+  /** A standalone SVG document, colors resolved, an <img> logo included; size in px (default: as drawn). */
+  toSVG(options?: { size?: number }): string;
+  /** A PNG (an <img> logo included; one from another origin without CORS rejects it); size in px (default 8 px a module). */
+  toPNG(options?: { size?: number }): Promise<Blob>;
+  addEventListener<K extends keyof RayQrEventMap>(type: K, listener: (this: RayQr, ev: RayQrEventMap[K]) => unknown, options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof RayQrEventMap>(type: K, listener: (this: RayQr, ev: RayQrEventMap[K]) => unknown, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+}
+export interface RayQrEventMap extends HTMLElementEventMap {
+  /** The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn. */
+  "ray-error": CustomEvent<{ error: Error }>;
+}
+
 // --- Stat (stat)
 /** <ray-stat> A metric tile: label, value, change against a previous period, note. */
 export declare class RayStat extends RayElement {
@@ -3139,6 +3174,7 @@ declare global {
     "ray-indicator": RayIndicator;
     "ray-kbd": RayKbd;
     "ray-meter": RayMeter;
+    "ray-qr": RayQr;
     "ray-stat": RayStat;
     "ray-table": RayTable;
     "ray-timeline": RayTimeline;

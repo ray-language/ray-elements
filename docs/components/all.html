@@ -97,6 +97,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/components/indicator/indicator.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/kbd/kbd.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/meter/meter.js" fetchpriority="low">
+<link rel="modulepreload" href="../../src/components/qr/qr.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/stat/stat.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/table/table.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/components/timeline/timeline.js" fetchpriority="low">
@@ -141,7 +142,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <link rel="modulepreload" href="../../src/core/icons.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/strings.js" fetchpriority="low">
 <link rel="modulepreload" href="../../src/core/taper.js" fetchpriority="low">
-<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/avatar-picker/avatar-picker.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/image-crop/image-crop.js"; import "../../src/components/input/input.js"; import "../../src/components/knob/knob.js"; import "../../src/components/mode-input/mode-input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/tags-input/tags-input.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/doc-tabs/doc-tabs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/meter/meter.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/pulse/pulse.js"; import "../../src/components/ring-progress/ring-progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/step-dots/step-dots.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
+<script type="module" blocking="render">import "../../src/components/button/button.js"; import "../../src/components/button-group/button-group.js"; import "../../src/components/icon-button/icon-button.js"; import "../../src/components/toggle/toggle.js"; import "../../src/components/toggle-group/toggle-group.js"; import "../../src/components/avatar-picker/avatar-picker.js"; import "../../src/components/checkbox/checkbox.js"; import "../../src/components/checkbox-group/checkbox-group.js"; import "../../src/components/color-picker/color-picker.js"; import "../../src/components/combobox/combobox.js"; import "../../src/components/date-picker/date-picker.js"; import "../../src/components/file-upload/file-upload.js"; import "../../src/components/image-crop/image-crop.js"; import "../../src/components/input/input.js"; import "../../src/components/knob/knob.js"; import "../../src/components/mode-input/mode-input.js"; import "../../src/components/number-input/number-input.js"; import "../../src/components/password-input/password-input.js"; import "../../src/components/path-input/path-input.js"; import "../../src/components/radio/radio.js"; import "../../src/components/search/search.js"; import "../../src/components/segmented-control/segmented-control.js"; import "../../src/components/select/select.js"; import "../../src/components/slider/slider.js"; import "../../src/components/switch/switch.js"; import "../../src/components/tags-input/tags-input.js"; import "../../src/components/textarea/textarea.js"; import "../../src/components/bottom-nav/bottom-nav.js"; import "../../src/components/breadcrumbs/breadcrumbs.js"; import "../../src/components/doc-tabs/doc-tabs.js"; import "../../src/components/nav-link/nav-link.js"; import "../../src/components/pagination/pagination.js"; import "../../src/components/sidebar/sidebar.js"; import "../../src/components/stepper/stepper.js"; import "../../src/components/tabs/tabs.js"; import "../../src/components/command-palette/command-palette.js"; import "../../src/components/dialog/dialog.js"; import "../../src/components/drawer/drawer.js"; import "../../src/components/menu/menu.js"; import "../../src/components/popover/popover.js"; import "../../src/components/tooltip/tooltip.js"; import "../../src/components/accordion/accordion.js"; import "../../src/components/attachment/attachment.js"; import "../../src/components/avatar/avatar.js"; import "../../src/components/badge/badge.js"; import "../../src/components/blockquote/blockquote.js"; import "../../src/components/carousel/carousel.js"; import "../../src/components/code/code.js"; import "../../src/components/icon/icon.js"; import "../../src/components/indicator/indicator.js"; import "../../src/components/kbd/kbd.js"; import "../../src/components/meter/meter.js"; import "../../src/components/qr/qr.js"; import "../../src/components/stat/stat.js"; import "../../src/components/table/table.js"; import "../../src/components/timeline/timeline.js"; import "../../src/components/alert/alert.js"; import "../../src/components/empty-state/empty-state.js"; import "../../src/components/notification/notification.js"; import "../../src/components/progress/progress.js"; import "../../src/components/pulse/pulse.js"; import "../../src/components/ring-progress/ring-progress.js"; import "../../src/components/skeleton/skeleton.js"; import "../../src/components/spinner/spinner.js"; import "../../src/components/step-dots/step-dots.js"; import "../../src/components/app-bar/app-bar.js"; import "../../src/components/app-shell/app-shell.js"; import "../../src/components/aspect-ratio/aspect-ratio.js"; import "../../src/components/card/card.js"; import "../../src/components/center/center.js"; import "../../src/components/container/container.js"; import "../../src/components/grid/grid.js"; import "../../src/components/group/group.js"; import "../../src/components/scroll-area/scroll-area.js"; import "../../src/components/separator/separator.js"; import "../../src/components/split/split.js"; import "../../src/components/stack/stack.js"; import "../../src/components/statusbar/statusbar.js"; import "../../src/components/theme-toggle/theme-toggle.js"; document.documentElement.removeAttribute("data-ray-loading");</script>
 <script type="speculationrules">{"prefetch": [{"source": "document", "where": {"href_matches": "*.html"}, "eagerness": "moderate"}]}</script>
 </head>
 <body>
@@ -236,6 +237,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <ray-nav-link label="Indicator" href="#indicator"></ray-nav-link>
 <ray-nav-link label="Kbd" href="#kbd"></ray-nav-link>
 <ray-nav-link label="Meter (Level meter, VU meter, Peak meter)" href="#meter"></ray-nav-link>
+<ray-nav-link label="QR code (QR, Barcode, 2D code)" href="#qr"></ray-nav-link>
 <ray-nav-link label="Stat" href="#stat"></ray-nav-link>
 <ray-nav-link label="Table" href="#table"></ray-nav-link>
 <ray-nav-link label="Timeline" href="#timeline"></ray-nav-link>
@@ -334,6 +336,7 @@ if (location.protocol === "file:") window.__rayServeHint();
 <a class="side-link" href="#indicator">Indicator</a>
 <a class="side-link" href="#kbd">Kbd</a>
 <a class="side-link" href="#meter">Meter (Level meter, VU meter, Peak meter)</a>
+<a class="side-link" href="#qr">QR code (QR, Barcode, 2D code)</a>
 <a class="side-link" href="#stat">Stat</a>
 <a class="side-link" href="#table">Table</a>
 <a class="side-link" href="#timeline">Timeline</a>
@@ -4878,6 +4881,90 @@ setHighlighter((code, lang) => codeToHtml(code, { lang, theme }));
 <h3 id="meter-texts">Texts</h3>
 <p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
 <div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>meter.label</code></td><td>Level</td></tr><tr><td><code>meter.value</code></td><td>{value} dB</td></tr><tr><td><code>meter.silent</code></td><td>Silence</td></tr></tbody></table></div>
+</section>
+<section id="qr" class="component">
+<h2>QR code <span class="aka">also QR, Barcode, 2D code</span></h2>
+<p class="summary">A QR code of a text or a link (to open on a phone, pair a device, set up two-step sign-in), drawn as one SVG path: sharp at any size and in print. Its own encoder, no dependencies (about 3 KB gzip, only where imported); a logo at the middle; toSVG() and toPNG() to save or share it.</p>
+<div class="example"><style>
+  .demo-qr-row { display: flex; flex-wrap: wrap; gap: var(--ray-space-6); align-items: center; }
+  .demo-qr-share { display: grid; grid-template-columns: auto minmax(0, 18rem); justify-content: start; gap: var(--ray-space-5); align-items: center; }
+  .demo-qr-share p { margin: 0; font-size: var(--ray-font-size-sm); color: var(--ray-muted-foreground); }
+  .demo-qr-secret { font-family: var(--ray-font-mono); font-size: var(--ray-font-size-sm); letter-spacing: 0.08em; overflow-wrap: anywhere; }
+  .demo-qr-sizes { display: flex; flex-wrap: wrap; gap: var(--ray-space-4); align-items: flex-end; }
+  @media (max-width: 40em) { .demo-qr-share { grid-template-columns: 1fr; } }
+</style>
+
+<div class="demo-caption">Open on your phone: type a link, the code follows</div>
+<div class="demo-qr-share">
+  <ray-qr id="demo-qr-link" size="lg" value="https://elements.raylang.dev" label="Scan to open the link on your phone"></ray-qr>
+  <div class="demo-stack">
+    <ray-input id="demo-qr-input" label="Link" value="https://elements.raylang.dev"></ray-input>
+    <p id="demo-qr-info"></p>
+    <div class="demo-actions">
+      <ray-button size="xs" variant="default" id="demo-qr-png">Download PNG</ray-button>
+      <ray-button size="xs" variant="default" id="demo-qr-svg">Download SVG</ray-button>
+    </div>
+  </div>
+</div>
+
+<div class="demo-caption">Two-step sign-in: the code, and the key as text for who cannot scan</div>
+<div class="demo-qr-share">
+  <ray-qr size="md" quiet-zone="2" value="otpauth://totp/rayvault:ana@example.com?secret=JBSWY3DPEHPK3PXP&amp;issuer=rayvault" label="Scan with your authenticator app"></ray-qr>
+  <div class="demo-stack">
+    <p>Scan it with your authenticator app, or type this key:</p>
+    <span class="demo-qr-secret">JBSW Y3DP EHPK 3PXP</span>
+  </div>
+</div>
+
+<div class="demo-caption">A logo at the middle (the error correction goes up to H), colors, sizes</div>
+<div class="demo-qr-sizes">
+  <ray-qr size="lg" value="https://github.com/ray-language/ray-elements" label="ray-elements on GitHub">
+    <img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='2' y='2' width='9' height='9' rx='2' fill='%231c7ed6'/%3E%3Crect x='13' y='2' width='9' height='9' rx='2' fill='%2374c0fc'/%3E%3Crect x='2' y='13' width='9' height='9' rx='2' fill='%2374c0fc'/%3E%3Crect x='13' y='13' width='9' height='9' rx='2' fill='%231c7ed6'/%3E%3C/svg%3E">
+  </ray-qr>
+  <ray-qr size="md" color="indigo" value="https://elements.raylang.dev/components/qr.html" label="This page"></ray-qr>
+  <ray-qr size="sm" value="WIFI:T:WPA;S:Studio;P:correct horse battery staple;;" label="Join the studio's Wi-Fi"></ray-qr>
+  <ray-qr size="xs" value="https://raylang.dev" label="raylang.dev"></ray-qr>
+</div>
+
+<script type="module">
+  const qr = document.getElementById("demo-qr-link");
+  const input = document.getElementById("demo-qr-input");
+  const info = document.getElementById("demo-qr-info");
+  const describe = () => {
+    const m = qr.matrix;
+    info.textContent = m ? `Version ${m.version} (${m.size} × ${m.size} modules), error correction ${m.ecc}.` : "Type something to encode.";
+  };
+  input.addEventListener("input", async () => {
+    qr.value = input.value;
+    await new Promise(requestAnimationFrame);
+    describe();
+  });
+  qr.addEventListener("ray-error", () => (info.textContent = "Too long for a QR code."));
+  customElements.whenDefined("ray-qr").then(() => requestAnimationFrame(describe));
+  const save = (blob, name) => {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  };
+  document.getElementById("demo-qr-png").addEventListener("click", async () => save(await qr.toPNG({ size: 512 }), "link.png"));
+  document.getElementById("demo-qr-svg").addEventListener("click", () => save(new Blob([qr.toSVG({ size: 512 })], { type: "image/svg+xml" }), "link.svg"));
+</script>
+</div>
+<details class="source" data-code-src="code/qr.html"><summary>Code</summary>
+<div class="source-switch"><ray-segmented-control size="xs" aria-label="Language" value="html" data-source-switch><option value="html">HTML</option><option value="react">React</option><option value="vue">Vue</option></ray-segmented-control></div>
+<div class="source-body"><p class="source-status"><a href="../code/qr.html">Open the code</a></p></div></details>
+<p class="tag"><code>&lt;ray-qr&gt;</code> &middot; <code>RayQr</code></p>
+<p class="note">Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from &quot;@raylang/elements/qr&quot;.</p>
+<div class="api"><table><thead><tr><th>Property</th><th>Attribute</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>value</code></td><td><code>value</code></td><td>string</td><td></td><td>The text or link to encode. Empty: nothing is drawn.</td></tr><tr><td><code>ecc</code></td><td><code>ecc</code> <span class="reflects">reflects</span></td><td><code>L</code> | <code>M</code> | <code>Q</code> | <code>H</code></td><td><code>M</code></td><td>Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H.</td></tr><tr><td><code>size</code></td><td><code>size</code> <span class="reflects">reflects</span></td><td>string</td><td><code>md</code></td><td>The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length.</td></tr><tr><td><code>quietZone</code></td><td><code>quiet-zone</code></td><td>number</td><td><code>4</code></td><td>The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background).</td></tr><tr><td><code>color</code></td><td><code>color</code></td><td>string</td><td></td><td>The modules' color: a palette color or any CSS color (default black). Keep it dark.</td></tr><tr><td><code>background</code></td><td><code>background</code></td><td>string</td><td></td><td>The background, any CSS color (default white). Keep it light.</td></tr><tr><td><code>label</code></td><td><code>label</code></td><td>string</td><td></td><td>Its accessible name (default &quot;QR code&quot;, translated). Say what it is for (&quot;Scan to open on your phone&quot;), and show the link or code as text too: not everyone can scan.</td></tr></tbody></table></div>
+
+<div class="api"><table><thead><tr><th>Event</th><th>Description</th></tr></thead><tbody><tr><td><code>ray-error</code></td><td>The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Slot</th><th>Description</th></tr></thead><tbody><tr><td>(default)</td><td>A logo for the middle (an &lt;img&gt; or an &lt;svg&gt;), on the background color, 22 % of the code's side.</td></tr></tbody></table></div>
+<div class="api"><table><thead><tr><th>Part</th><th>Description</th></tr></thead><tbody><tr><td><code>code</code></td><td>The &lt;svg&gt;.</td></tr><tr><td><code>background</code></td><td>The background rectangle.</td></tr><tr><td><code>modules</code></td><td>The path of the dark modules.</td></tr><tr><td><code>logo</code></td><td>The logo's box.</td></tr></tbody></table></div>
+<h3 id="qr-texts">Texts</h3>
+<p class="note">What it writes itself, in English; <code>setStrings()</code> translates them (Getting started: Languages).</p>
+<div class="api"><table><thead><tr><th>Key</th><th>English</th></tr></thead><tbody><tr><td><code>qr.label</code></td><td>QR code</td></tr></tbody></table></div>
 </section>
 <section id="stat" class="component">
 <h2>Stat</h2>

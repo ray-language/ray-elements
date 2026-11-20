@@ -7,6 +7,18 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `ray-qr`: a QR code of a text or a link (open on a phone, pair a device,
+  set up two-step sign-in), drawn as one SVG path, sharp at any size. Its own
+  encoder, no dependencies: versions 1-40, error correction L/M/Q/H (raised
+  when it costs no size), numeric, alphanumeric and UTF-8 byte modes, checked
+  module for module against python-qrcode and read back with zxing. Dark on
+  light whatever the theme; `color`, `background`, `size`, `quiet-zone`; a
+  logo in the slot (level H); `toSVG()` and `toPNG()`; `matrix`; `ray-error`
+  when the text does not fit. The encoder alone: `qrMatrix` from
+  `@raylang/elements/qr`. About 5 KB gzip, only for an app that imports it.
+
 ## [0.23.0] - 2026-11-17
 
 ### Added

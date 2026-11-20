@@ -6625,6 +6625,71 @@
       ]
     },
     {
+      "name": "ray-qr",
+      "description": "Dark on light whatever the theme (scanners need it): --ray-qr-color and --ray-qr-background (or color and background) change them, keep the modules darker. The smallest version that holds the text is used, and the error correction raised while it still fits (a stronger code, same size). Text: UTF-8, as phones read it. The encoder alone: import { qrMatrix } from \"@raylang/elements/qr\".",
+      "attributes": [
+        {
+          "name": "value",
+          "description": "The text or link to encode. Empty: nothing is drawn."
+        },
+        {
+          "name": "ecc",
+          "description": "Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H.",
+          "values": [
+            {
+              "name": "L"
+            },
+            {
+              "name": "M"
+            },
+            {
+              "name": "Q"
+            },
+            {
+              "name": "H"
+            }
+          ]
+        },
+        {
+          "name": "size",
+          "description": "The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length.",
+          "values": [
+            {
+              "name": "xs"
+            },
+            {
+              "name": "sm"
+            },
+            {
+              "name": "md"
+            },
+            {
+              "name": "lg"
+            },
+            {
+              "name": "xl"
+            }
+          ]
+        },
+        {
+          "name": "quiet-zone",
+          "description": "The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background)."
+        },
+        {
+          "name": "color",
+          "description": "The modules' color: a palette color or any CSS color (default black). Keep it dark."
+        },
+        {
+          "name": "background",
+          "description": "The background, any CSS color (default white). Keep it light."
+        },
+        {
+          "name": "label",
+          "description": "Its accessible name (default \"QR code\", translated). Say what it is for (\"Scan to open on your phone\"), and show the link or code as text too: not everyone can scan."
+        }
+      ]
+    },
+    {
       "name": "ray-stat",
       "description": "A metric tile: label, value, change against a previous period, note.",
       "attributes": [

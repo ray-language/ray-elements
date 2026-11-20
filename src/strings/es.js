@@ -117,6 +117,7 @@ const STRINGS = {
   "progress.label": "Progreso",
   "ring-progress.label": "Progreso",
   "pulse.label": "Cargando",
+  "qr.label": "Código QR",
   "search.placeholder": "Buscar…",
   "search.clear": "Borrar búsqueda",
   "select.empty": "Sin opciones",

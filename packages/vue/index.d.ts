@@ -2267,6 +2267,27 @@ export interface RayMeterProps {
 /** <ray-meter> as a Vue component. */
 export declare const RayMeter: DefineComponent<RayMeterProps>;
 
+export interface RayQrProps {
+  /** The text or link to encode. Empty: nothing is drawn. */
+  value?: string;
+  /** Error correction, the least used (raised when it costs no size): L recovers 7 % of the code, M 15 %, Q 25 %, H 30 %. With a logo, always H. */
+  ecc?: "L" | "M" | "Q" | "H";
+  /** The side, quiet zone included: xs (4rem), sm (6rem), md (8rem), lg (12rem), xl (16rem), or any CSS length. */
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | (string & {});
+  /** The light margin around the code, in modules (the standard asks for 4; 2 reads well on a plain background). */
+  quietZone?: number;
+  /** The modules' color: a palette color or any CSS color (default black). Keep it dark. */
+  color?: string;
+  /** The background, any CSS color (default white). Keep it light. */
+  background?: string;
+  /** Its accessible name (default "QR code", translated). Say what it is for ("Scan to open on your phone"), and show the link or code as text too: not everyone can scan. */
+  label?: string;
+  /** The value does not fit in a QR code (over about 2,900 bytes at L); nothing is drawn. */
+  onRayError?: (event: CustomEvent<{ error: Error }>) => void;
+}
+/** <ray-qr> as a Vue component. */
+export declare const RayQr: DefineComponent<RayQrProps>;
+
 export interface RayStatProps {
   /** What is measured. */
   label?: string;
@@ -2825,6 +2846,7 @@ export declare const components: {
   RayIndicator: typeof RayIndicator;
   RayKbd: typeof RayKbd;
   RayMeter: typeof RayMeter;
+  RayQr: typeof RayQr;
   RayStat: typeof RayStat;
   RayTable: typeof RayTable;
   RayTimeline: typeof RayTimeline;
@@ -2929,6 +2951,7 @@ declare module "vue" {
     RayIndicator: typeof RayIndicator;
     RayKbd: typeof RayKbd;
     RayMeter: typeof RayMeter;
+    RayQr: typeof RayQr;
     RayStat: typeof RayStat;
     RayTable: typeof RayTable;
     RayTimeline: typeof RayTimeline;
