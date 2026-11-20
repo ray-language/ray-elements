@@ -111,6 +111,12 @@ there (use `T.settle()`; see `tests/harness.js`).
 - Run `build` and both test suites; include the generated output.
 - New behavior comes with tests and, for a component, its example.
 - Commit messages: a short summary line, then what and why.
+- Note the change in `CHANGELOG.md` under "Unreleased" (Added, Changed,
+  Removed, Fixed). A change that makes a page look different without the
+  page changing (a size, a margin, a color) starts with **Looks different:**,
+  so whoever upgrades knows what to look at. The changelog ships in the three
+  npm packages and in the raylang package, and each release's section becomes
+  its GitHub release.
 
 ## Releases
 
@@ -126,6 +132,8 @@ there (use `T.settle()`; see `tests/harness.js`).
      otherwise with npm's trusted publishing (each package trusts
      `ray-language/ray-elements` and `release.yml` on npmjs.com, which needs the
      package to exist: the first release uses the token).
+   - **notes**: a GitHub release for the tag, with the version's section of
+     `CHANGELOG.md` (a release that exists is left as it is).
 
    Run it by hand for a dry run: the same jobs, with nothing published.
 

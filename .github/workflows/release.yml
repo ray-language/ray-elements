@@ -3,6 +3,7 @@
 #   check    the tag is ray-elements.toml's version, the tests pass, the committed
 #            output matches the sources, and the site builds
 #   npm      @raylang/elements, then @raylang/react and @raylang/vue
+#   notes    a GitHub release for the tag, with the version's CHANGELOG.md section
 #
 # The site is not deployed from here: site.yml publishes it on every push to
 # main, so the docs follow main and a docs change needs no release.
@@ -150,3 +151,38 @@ jobs:
             echo "Publishing $name@$version to $tag$([ "$DRY_RUN" = "true" ] && echo " (dry run)")"
             (cd "packages/$dir" && npm publish --tag "$tag" "${flags[@]}")
           done
+
+  notes:
+    needs: npm
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # the GitHub release
+    steps:
+      - uses: actions/checkout@v4
+
+      # The section "## [X.Y.Z] - date" of CHANGELOG.md, up to the next version.
+      - name: GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "Dry run: no GitHub release."
+            exit 0
+          fi
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "The release $GITHUB_REF_NAME exists: left as it is."
+            exit 0
+          fi
+          awk -v v="$version" '
+            index($0, "## [" v "]") == 1 { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          if ! grep -q '[^[:space:]]' notes.md; then
+            echo "::error::CHANGELOG.md has no section for $version."
+            exit 1
+          fi
+          case "$version" in *-*) pre=(--prerelease) ;; *) pre=() ;; esac
+          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag "${pre[@]}"

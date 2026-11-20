@@ -139,6 +139,26 @@ pub fn set_menu_item(n: Native, tag: string, enabled: bool, checked: bool) -> Re
     Result.Ok(r)
 }
 
+// ui.set_menu_title, recorded for the page: the palette shows the new text
+// ("Undo" → "Undo Split Clip") without recording the whole menu again.
+pub fn set_menu_title(n: Native, tag: string, title: string) -> Result<int, string> {
+    let r = ui.set_menu_title(tag, title)?;
+    record_title(n, tag, title);
+    Result.Ok(r)
+}
+
+// Records `title` as the text of the item `tag`, in every recorded menu,
+// without touching the menu bar; nothing when no item has that tag.
+pub fn record_title(n: Native, tag: string, title: string) {
+    for m in n.menus {
+        for i in 0..m.items.len() {
+            if (m.items[i].tag == tag) {
+                m.items[i].title = title;
+            }
+        }
+    }
+}
+
 // Records `items` as the menu `title` (replacing it), without touching the
 // menu bar: for tests, and for menus declared some other way.
 pub fn record(n: Native, title: string, items: [ui.MenuItem]) {
@@ -593,6 +613,16 @@ fn renames_a_menu() {
     let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
     assert(a.starts_with("{\"ok\":true,\"value\":[{\"menu\":\"Archivo\",\"tag\":\"open\""));
     assert(!a.contains("\"File\"") && !a.contains("\"new\"") && !a.contains("Other"));
+}
+
+@test
+fn retitles_a_menu_item() {
+    let n = with_menus();
+    record_title(n, "new", "New Project");
+    record_title(n, "missing", "Other");
+    let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
+    assert(a.contains("\"tag\":\"new\",\"title\":\"New Project\",\"shortcut\":\"cmd+n\",\"enabled\":true"));
+    assert(!a.contains("\"title\":\"New\",") && !a.contains("Other"));
 }
 
 @test

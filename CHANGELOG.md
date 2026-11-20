@@ -7,6 +7,19 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- `bridge.set_menu_title(n, tag, title)`: `ui.set_menu_title` (an item's
+  text, "Undo" → "Undo Split Clip"), and the page's copy of the menus follows,
+  so the command palette shows the new text; `bridge.record_title` records it
+  without touching the bar. The raylang package now needs raylang 1.27.103
+  (#447).
+- What changed, where an upgrade finds it: `CHANGELOG.md` ships in
+  `@raylang/elements`, `@raylang/react`, `@raylang/vue` and the raylang
+  package, each tag gets a GitHub release with its section, and `llms.txt`
+  says so. An entry that changes how an untouched page looks starts with
+  **Looks different:** (#448).
+
 ## [0.24.0] - 2026-11-19
 
 ### Added
@@ -45,8 +58,8 @@ change the API.
 
 - `ray-icon-button` and `ray-toggle square`: an icon alone sat about 1 px
   below the center (inline, on a line box that follows the font's metrics);
-  it is a block now, centered. A `ray-icon` there is now as big as an
-  `<svg>` (1.15 times the button's font, 16 → 18.5 px in `sm`), so "the icon
+  it is a block now, centered. **Looks different:** a `ray-icon` there is
+  now as big as an `<svg>` (1.15 times the button's font, 16 → 18.5 px in `sm`), so "the icon
   scales with it" holds for both; `--ray-icon-size` or the icon's `size`
   still set it (#438).
 

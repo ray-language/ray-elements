@@ -297,6 +297,14 @@ Extend `RayElement`, `FormControl`, `FieldControl` or `Floating` (or any
 component class) from `@raylang/elements/core`; see the Extending guide.
 Members whose name starts with `_` are internal.
 
+## Upgrading
+
+`CHANGELOG.md` in the package (`node_modules/@raylang/elements/CHANGELOG.md`,
+or the raylang package's `CHANGELOG.md`) lists each version's additions,
+changes and fixes; an entry that changes how an untouched page looks starts
+with **Looks different:**. Read the versions between yours and the new one
+before upgrading.
+
 ## Components
 
 ### Base classes

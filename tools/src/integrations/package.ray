@@ -102,6 +102,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${el}/README.md", readme(i, "elements"))?;
     put(written, "${el}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${el}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
+    put(written, "${el}/CHANGELOG.md", fs.read_file("${root}/CHANGELOG.md")?)?;
 
     // --- react (and vue): the package target; no components beyond ray-elements's own
     let t = wrappers.package_target();
@@ -126,6 +127,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${r}/README.md", readme(i, "react"))?;
     put(written, "${r}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${r}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
+    put(written, "${r}/CHANGELOG.md", fs.read_file("${root}/CHANGELOG.md")?)?;
 
     // --- vue
     let v = "${base}/vue";
@@ -148,6 +150,7 @@ pub fn run(root: string, cs: [Component]) -> Result<[string], string> {
     put(written, "${v}/README.md", readme(i, "vue"))?;
     put(written, "${v}/LICENSE", fs.read_file("${root}/LICENSE")?)?;
     put(written, "${v}/NOTICE", fs.read_file("${root}/NOTICE")?)?;
+    put(written, "${v}/CHANGELOG.md", fs.read_file("${root}/CHANGELOG.md")?)?;
     Result.Ok(written)
 }
 
