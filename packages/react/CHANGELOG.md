@@ -1,0 +1,819 @@
+# Changelog
+
+All notable changes to ray-elements. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and versions follow
+[Semantic Versioning](https://semver.org/): before 1.0, a minor version may
+change the API.
+
+## [Unreleased]
+
+### Added
+
+- `bridge.set_menu_title(n, tag, title)`: `ui.set_menu_title` (an item's
+  text, "Undo" → "Undo Split Clip"), and the page's copy of the menus follows,
+  so the command palette shows the new text; `bridge.record_title` records it
+  without touching the bar. The raylang package now needs raylang 1.27.103
+  (#447).
+- What changed, where an upgrade finds it: `CHANGELOG.md` ships in
+  `@raylang/elements`, `@raylang/react`, `@raylang/vue` and the raylang
+  package, each tag gets a GitHub release with its section, and `llms.txt`
+  says so. An entry that changes how an untouched page looks starts with
+  **Looks different:** (#448).
+
+## [0.24.0] - 2026-11-19
+
+### Added
+
+- `ray-qr`: a QR code of a text or a link (open on a phone, pair a device,
+  set up two-step sign-in), drawn as one SVG path, sharp at any size. Its own
+  encoder, no dependencies: versions 1-40, error correction L/M/Q/H (raised
+  when it costs no size), numeric, alphanumeric and UTF-8 byte modes, checked
+  module for module against python-qrcode and read back with zxing. Dark on
+  light whatever the theme; `color`, `background`, `size`, `quiet-zone`; a
+  logo in the slot (level H); `toSVG()` and `toPNG()`; `matrix`; `ray-error`
+  when the text does not fit. The encoder alone: `qrMatrix` from
+  `@raylang/elements/qr`. About 5 KB gzip, only for an app that imports it.
+
+## [0.23.0] - 2026-11-17
+
+### Added
+
+- `ray-slider thumb="cap"` plays as a mixing desk's fader (#444): a click on
+  the slot no longer jumps the level, a drag moves the cap from where it is
+  (Shift: ten times finer), the wheel steps it, and Shift with an arrow key
+  takes ten steps. The native range stays for the keyboard, forms and screen
+  readers.
+- `default-value` on `ray-slider`: a double click returns to it (a fader's
+  0 dB); without it, the `value` attribute.
+- `taper="fader"` on `ray-slider` and `ray-meter` (#445): dB on a desk's
+  curve (the fourth root of the gain), so the range used to mix gets most of
+  the travel (with -60…6, 0 dB at 81 %, -12 at 52 %). Marks, zones and the
+  meter's scale follow it, and a meter beside a fader with the same taper
+  lines up with its marks. The curve is exported for an app's own controls:
+  `taperPosition` and `taperValue` from `@raylang/elements/core`.
+
+## [0.22.1] - 2026-11-16
+
+### Fixed
+
+- `ray-icon-button` and `ray-toggle square`: an icon alone sat about 1 px
+  below the center (inline, on a line box that follows the font's metrics);
+  it is a block now, centered. **Looks different:** a `ray-icon` there is
+  now as big as an `<svg>` (1.15 times the button's font, 16 → 18.5 px in `sm`), so "the icon
+  scales with it" holds for both; `--ray-icon-size` or the icon's `size`
+  still set it (#438).
+
+## [0.22.0] - 2026-11-15
+
+### Added
+
+- `ray-knob`: a rotary control for a mixer or an effect. Drag up or down to
+  turn it (Shift: ten times finer), or the wheel; the arrow keys step it,
+  Page Up/Down move a tenth, Home/End go to the ends, a double click returns
+  to `default-value`. `scale="log"` for frequencies, `bipolar` for pan (the
+  arc grows from 0), `format` for the value's text, sizes and colors.
+  Form-associated; the dial is a `role="slider"` with the value's text.
+
+## [0.21.0] - 2026-11-15
+
+### Added
+
+- `ray-meter`: an audio level meter for a mixer's channel strip. Peak and RMS
+  in dB, green, yellow and red zones (`warn`, `danger`), a peak hold line
+  (`hold`), a clip mark at the top of each bar (`clip`, the `ray-clip`
+  event, `resetClip()`), falloff ballistics, one bar per channel
+  (`channels`), an optional dB scale (`scale`, `marks`), vertical or
+  horizontal. `setLevels(peak, rms)` on every animation frame writes CSS
+  variables only, so 60 updates a second cost no render; the meter role's
+  value follows a few times a second. `--ray-meter-inset` lines it up with a
+  vertical slider of the same height, whose marks carry the numbers.
+- `ray-slider orientation="vertical"`: a fader. The minimum is at the bottom,
+  the marks run on its left, aligned against the track so the numbers line
+  up, and the length is the host's height (`--ray-slider-length`, 12rem).
+- `ray-slider` thumbs: `thumb="cap"`, a mixing desk's fader cap (a short,
+  wide block with a line at its middle, over a plain slot), and the
+  `--ray-slider-thumb-size`, `-length`, `-background`, `-border`, `-radius`
+  and `-shadow` variables to draw any other.
+- `ray-split fixed="end"`: the end pane has the size (`position`, `min`,
+  `max`, `collapsed`, `autosave`) and the start pane takes the rest: an
+  inspector docked on the right keeps its width while the middle stretches.
+  Keys, drag and right to left follow.
+
+## [0.20.1] - 2026-11-14
+
+### Fixed
+
+- `ray-segmented-control` shows an option's new text, value or `disabled`
+  when its `<option>` changes (a page that switches language rewrites them),
+  as `ray-select` already did; the buttons are kept when the values stay the
+  same, so focus and the indicator do not move.
+- The Spanish catalog has an entry of its own, `@raylang/elements/strings/es`:
+  import maps that map only a package's exact entries (raylang's
+  `ui.import_map`) did not resolve it from the `./strings/*` pattern and the
+  page's module failed to load. The file name works too
+  (`@raylang/elements/strings/es.js`, now also with a bundler).
+
+## [0.20.0] - 2026-11-14
+
+### Added
+
+- Languages: what the components write themselves (button names, screen
+  reader labels, "No matches", "Page 3", validation and file messages, about
+  140 texts) comes from a catalog, English by default. `setStrings(es)` sets
+  one for every element, `setStrings("es", es)` for those under `lang="es"`
+  (and "es-AR"…): an element reads its nearest `lang`, across shadow roots,
+  and the elements on the page update at once, also when a `lang` changes.
+  Ships with Spanish: `@raylang/elements/strings/es`. Plural forms by
+  `Intl.PluralRules`. Each component declares its own texts, so a bundle
+  carries only those of what it imports, and its reference lists them.
+  Also `getString()`, `stringKeys()`, `langOf()`; for your own components,
+  `defineStrings()`, the property option `string: "<key>"` and `this.t()`.
+- `ray-dialog` and `ray-drawer`: `close-label`, the close button's name.
+
+### Changed
+
+- The `*-label` properties (`pick-label`, `close-label`, `empty-label`,
+  `placeholder` of the search and the date picker…) take their default from
+  the catalog, so it follows the language; an attribute or a value set still
+  wins. About 60 texts that could not be changed before (the dialogs' ×,
+  "Clear", "Increment", "Previous month", "Remove {label}", "Select all
+  rows", "No options"…) can now.
+- `describeAccept(accept, el)` takes an element for its language.
+- `ray-statusbar` and `ray-toaster` keep an `aria-label` the app set; the
+  default one follows the language.
+
+## [0.19.1] - 2026-11-13
+
+### Changed
+
+- Docs: `ray-combobox` no longer presents itself as Mantine's TagsInput; it
+  points to `ray-tags-input` for free-form tags with suggestions and says why
+  on a touch screen (the list has little room above the keyboard).
+  `ray-tags-input` takes the "TagsInput" alias and points back to
+  `ray-combobox` for a fixed list.
+
+## [0.19.0] - 2026-11-13
+
+### Added
+
+- `ray-avatar-picker`: a profile picture field, the composition of
+  `ray-avatar`, `ray-image-crop` and a sheet. "Choose photo" opens the system
+  picker (the camera or the photo library on a phone); the image opens
+  framed in a circle, in a bottom drawer on a narrow screen and a dialog
+  otherwise (`sheet`), and "Use photo" makes the framed part, at
+  `output-size` (320), the value: a data URL, or a Blob with
+  `output="blob"`. Without a picture the avatar shows the initials of
+  `display-name`; with one, "Change photo" and "Remove photo". Cancel leaves
+  the value as it was; a file that cannot be decoded shows `failed-label`
+  and fires `ray-error`. It takes part in a form under `name` (the data
+  URL, or a file `<name>.jpg`), with `required` and reset to the `value`
+  attribute. Every text is a property. `edit(file)` opens the sheet on an
+  image from elsewhere; `pick()`, `clear()`, `toBlob()`. With `preview`,
+  the avatar of a picture is a button that fires a cancelable `ray-preview`
+  and, unless the app takes it (`preventDefault()`), shows the picture large
+  in a dialog (`showPreview()`). `readonly` hides the buttons and keeps the
+  preview; `disabled` turns the preview off too. Events: `input`, `change`,
+  `ray-preview`.
+- Icons `camera` and `trash`, and the roles `ui.photo` (`camera`),
+  `ui.delete` (`trash`) and `ui.confirm` (`check`): the buttons of
+  `ray-avatar-picker`.
+
+## [0.18.0] - 2026-11-13
+
+### Added
+
+- `ray-tags-input`: free-form tags with the suggestions in view. What is
+  typed becomes a tag on Enter, on a separator (`separators`, a comma by
+  default; a pasted "a, b, c" adds three) or when the field is left, so a
+  Save button tapped before Enter still gets it. The suggestions (child
+  `<option>` elements or `data`) are buttons under the field, filtered as
+  you type with case and accents aside, the chosen ones left out, at most
+  `suggestions-limit` (6). There is no dropdown: on a phone nothing opens
+  over the field when the keyboard comes up, and pressing a suggestion
+  while typing keeps the focus in the field, so the keyboard stays up. No
+  two tags are the same, case and accents aside; `max` caps them. The value
+  is an array, one form entry per tag; `addTag()`, `removeTag()`,
+  `commitText()`. Events: `input`, `change` (only when the tags change, not
+  while typing).
+- Icon role `ui.add` (`plus`): the suggestions of `ray-tags-input`.
+
+## [0.17.1] - 2026-11-12
+
+### Fixed
+
+- Dropdowns, menus, popovers and tooltips are placed inside the part of the
+  page the user can see. On a phone with the on-screen keyboard up, that is
+  the visual viewport, which is smaller than the window and may be scrolled:
+  a `ray-combobox` list used to open over its own field and under the status
+  bar. The safe areas (notch, status bar, home indicator) are kept clear.
+  When neither side has room, the panel takes the roomier side and its
+  height is capped to that room, with scrolling. It is placed again when
+  the keyboard opens or closes, and when the page scrolls under it.
+- `ray-combobox` shows no expand arrow when it has no options to pick from
+  (a `creatable` tag field).
+- `ray-segmented-control`: after a font size change, the highlight could
+  keep the old size and position, outside the control. A `full-width` row
+  keeps its width while its options resize, so the resize observer, which
+  watched only the row, did not fire. It now also watches the options.
+
+## [0.17.0] - 2026-11-11
+
+### Added
+
+- `ray-image-crop`: frames an image (a URL, `File` or `Blob`) in a rectangle
+  or a circle of any `aspect`, by dragging, pinching, the wheel (a trackpad
+  pinch too) or the keyboard (arrows move, `+`/`-`, PageUp/PageDown, Home/End
+  zoom, `0` resets), with an optional zoom slider (`zoom-control`). The image
+  always covers the frame. `crop` reads or sets the framing as a rectangle in
+  pixels of the original; `toBlob()`, `toDataURL()` and `toCanvas()` export
+  it at `output-size` in `type` and `quality`. The image is kept as a reduced
+  working copy, not decoded at full size for the life of the element.
+  Events: `input`, `change`, `ray-load`, `ray-error`.
+- `ray-calendar`: `full-width` fills the container. The seven columns share
+  its width and the days grow square, up to `--ray-calendar-max-cell`
+  (default 1.5 times the size's cell); past that they get wider than tall.
+- `ray-calendar`: each day also carries the parts `day-selected`,
+  `day-today`, `day-outside` and `day-disabled`. `::part()` takes no
+  attribute selector, so before this a `dayState` mark could not leave the
+  selected day alone; now `::part(day-taken day-selected)` styles a marked
+  day that is selected. The date picker's dropdown exports them. `selected`,
+  `today`, `outside` and `disabled` are no longer valid `dayState` names.
+- `ray-segmented-control`: `orientation="auto"`, a row that stacks when its
+  options at their natural width do not fit in the room its parent gives it,
+  and goes back to a row when they fit again. Each option's text is the part
+  `label`, and the chosen option also carries the part `control-selected`
+  (`::part()` takes no attribute selector).
+- `ray-button`: `wrap` breaks a long label into lines and lets the button
+  grow from its height.
+
+### Fixed
+
+- `ray-calendar` had a fixed width (seven cells of its size) and overflowed
+  a narrower container, a phone column with `size="lg"` or `"xl"` for
+  example. It now shrinks with the container, in a grid or flex parent too:
+  the columns narrow, the days keep their height, and a long month name is
+  cut with an ellipsis. In a container that sizes to its content, such as the
+  date picker's dropdown, it keeps its width.
+- `ray-segmented-control` and `ray-button` overflowed a container narrower
+  than their labels (a 320 px phone, a large text size). Both now stay inside
+  it. The segmented control's options shrink and their labels end in an
+  ellipsis. The button's label ends in an ellipsis too: it was declared, but
+  never applied.
+
+## [0.16.0] - 2026-11-10
+
+### Added
+
+- `ray-notification`: each action takes a `variant` (a button variant,
+  default `default`; `filled` marks the main answer), a `color` and a `name`.
+  Each action button also has the parts `action-<index>` and, with a name,
+  `action-<name>`, so `::part(action-1)` styles one alone (`::part(action)`
+  still styles them all). `notify({ action })` takes the same fields.
+
+### Fixed
+
+- `updateNotification(id, { message })` replaced every child of the
+  notification, slotted action and icon nodes included; it now replaces only
+  the message.
+
+## [0.15.0] - 2026-11-10
+
+### Added
+
+- `ray-select`: `native="auto|always|never"`, as in `ray-date-picker`. On a
+  touch screen (`auto`) the native select takes the tap and the system's
+  picker is the dropdown; the value, events and shown text follow it.
+- `ray-notification` and `notify()`: an action can carry an icon
+  (`action: { label, icon }`, `actionIcon`), a name or a node such as a
+  `<ray-pulse>`; `actions: [...]` gives several buttons (`ray-action`'s
+  `detail.index` says which); the `action` slot takes your own controls.
+  Part `actions` wraps them.
+
+### Fixed
+
+- `ray-select`: on iOS a tap opened the component's list and the system's
+  picker at once: the host's delegated focus reached the hidden native
+  select. Outside `native` mode the model is now inert.
+- `ray-icon`: follows `--ray-icon-size`, as the documentation says and as the
+  components' own icons do (it always measured 1em); `size` still wins.
+- `ray-toaster`: after a modal dialog or drawer opened, a tap outside no
+  longer collapsed the expanded stack on a touch screen (moving into the
+  overlay and back dropped the document listener). It also leaves any
+  overlay that is no longer open, whatever closed it.
+- `ray-toaster`: in the collapsed stack, a card behind that is taller than
+  the front one fills its clipped box, so its bottom border and corners show
+  instead of being cut.
+
+## [0.14.2] - 2026-11-10
+
+### Fixed
+
+- `ray-number-input`: on iOS, a tap on the suffix or on the slack beside the
+  number closed the keyboard as it opened (the focus was moved by script and
+  the touch's compatibility events took it away). The text field is now the
+  whole box, the suffix is drawn over it after the digits and takes no
+  pointer events, and the prefix is a label for the field, so a tap anywhere
+  focuses it natively.
+
+## [0.14.1] - 2026-11-10
+
+### Fixed
+
+- `ray-number-input`: with a `prefix` or `suffix` the text field kept its
+  intrinsic width (about 20 characters), so in a wide field the suffix
+  floated mid-way instead of hugging the number.
+
+## [0.14.0] - 2026-11-10
+
+### Changed
+
+- `ray-number-input`: `prefix` and `suffix` are drawn beside the editable
+  number (parts `prefix` and `suffix`), hugging it, instead of inside the text
+  field: on a phone the number pad could not edit "10 min" and the unit read
+  as part of the value. The field holds the digits only; `aria-valuetext`,
+  the min/max messages and typed text with the affix are as before.
+
+### Fixed
+
+- `ray-toaster`: the stack starts clear of the notch and the home indicator
+  (`env(safe-area-inset-top/bottom)`), like `ray-app-bar` and `ray-bottom-nav`.
+
+## [0.13.0] - 2026-11-09
+
+### Added
+
+- `ray-date-picker` `native`: which picker the trigger opens, the system's
+  (`always`), the calendar (`never`) or, by default, the system's on a touch
+  screen and the calendar elsewhere.
+- `ray-input` `type="time"`, `"date"` and `"datetime-local"`: the browser's
+  pickers (the native ones on phones) in a field with label, description,
+  error and form value.
+- `ray-calendar` `dayState(date)`: a function that marks days with a state;
+  the day gets `data-state` and the part `day-<state>`, styleable from
+  outside (`::part(day-missed)::after` for a dot), and `refresh()` renders
+  the month again. The day buttons' `data-date` is now documented.
+- `ray-drawer` `size="content"`: as big as what it holds, up to the
+  viewport, with the body scrolling past that: a bottom sheet.
+- `ray-elements check` finds the icons of `setIcons(ICONS)` when `ICONS` is
+  an object literal of the file or imported from a local module, not only
+  those written inline in the call.
+
+### Fixed
+
+- `ray-date-picker`: a date picked in the native date input (the system's
+  picker on a phone, which a form's previous/next keys could reach beside
+  the calendar) was not the field's value and fired no `change`; and the
+  two pickers competed on a phone. The native input now sets the value like
+  a calendar pick, stays out of the focus order while the calendar is the
+  picker, and is the picker on touch screens.
+- `ray-toaster` with `position="top-center"` or `"bottom-center"` took half
+  the width on a phone: the `-center` rule's `left: 50%` outlived the phone
+  layout's full width.
+
+## [0.12.0] - 2026-11-08
+
+### Added
+
+- `ray-input` and `ray-textarea`: `highlightAt(x, y)` and the
+  `ray-highlight-hover` event (the range under the pointer and the box of
+  the line of it, null on leaving), so an app can put its own popover over a
+  highlighted range without reaching into the text layer.
+- `ray-popover` and `ray-menu`: `anchor` (an element, a DOMRect or a
+  function returning one) places the panel against something other than the
+  trigger: a text range, the pointer.
+
+### Fixed
+
+- `ray-menu`, `ray-popover`: an `open = false` right after `open = true` (or
+  the reverse) was undone when the popover's late `toggle` event re-committed
+  the earlier state; the menu reappeared, anchored to the trigger, and kept
+  the focus. The newer value now wins.
+- `ray-menu` with `context`: a press on the trigger area outside the open
+  menu did not close it, since the trigger is excused from light dismiss;
+  for a context menu the trigger is the whole area it serves, so there it
+  closes like a system context menu.
+
+## [0.11.0] - 2026-11-07
+
+### Added
+
+- `ray-pulse`: an indeterminate wait indicator softer than `ray-spinner`, up
+  to five circles that breathe or ripple. Four presets (`variant`: `cluster`,
+  `breathe`, `ripple`, `dots`) overridden one knob at a time by `count`,
+  `shape`, `fade` and `direction`; cycle, opacity floor, start scale and
+  phase stagger come from `--ray-pulse-*` custom properties.
+
+## [0.10.0] - 2026-10-30
+
+### Added
+
+- `ray-input` and `ray-textarea` parts `suggestion-label`,
+  `suggestion-detail` and `suggestion-description`: the pieces of an inline
+  suggestion, styleable from outside.
+- `bridge.rename_menu(n, old, new)`: `ui.rename_menu`, recorded for the page,
+  so the command palette lists the items under the new title and a later
+  `replace_menu` with it replaces that menu instead of adding a second one;
+  `bridge.record_rename` records it without touching the bar. The package now
+  needs raylang 1.27.81 (`ui.rename_menu`).
+
+### Fixed
+
+- An inline suggestion's description is in the interface font, not the
+  label's mono one: it sat inside the label (whose text it also joined).
+
+## [0.9.0] - 2026-10-25
+
+### Added
+
+- `ray-command-palette` `navigate-label`, `run-label` and `close-label`: the
+  words of its keyboard hint, which were fixed in English.
+- `ray-menu` fires a cancelable `ray-request-open` (`{ event }`) before its
+  trigger opens it, ahead of reading the items: the place to fill items that
+  depend on what was clicked. A native context menu read them in the same
+  `contextmenu` as the app's own listener, so it could show the previous
+  click's items.
+- `ray-code` `verbatim`: shows and copies the text exactly as given, with
+  its common indentation and blank first and last lines, for data such as
+  a response body or a log.
+- `ray-tabs` `size` (`xs` to `xl`, `sm` by default): the height, font size
+  and padding of its tabs, for a compact tab bar without restyling each
+  `ray-tab` from outside.
+- `ray-tabs` with more tabs than width says so: the edge that hides tabs
+  fades out, a vertical wheel scrolls the list sideways, and the selected
+  tab scrolls into view when `value` changes. The host carries
+  `data-overflow-start` / `data-overflow-end` to style it further. Before,
+  the list scrolled with no sign, and with a mouse without a trackpad the
+  hidden tabs were reachable only from the keyboard.
+- `ray-sidebar` `collapse="offcanvas"`: collapsed on a wide screen, the
+  sidebar leaves no width and drops out of the tab order instead of
+  becoming an icon rail (`collapse="icon"`, the default). Its docs now say
+  what it is for (navigation) and what to use for content such as a tree
+  of documents (a `ray-split` pane).
+- `ray-sidebar` `resizable`: on a wide screen its inner edge is a
+  separator that drags, or arrow-keys, the width between `min-width` and
+  `max-width` (px), with `ray-resize` after each change and `autosave` to
+  keep it.
+- `ray-menu-item` `type="checkbox"` and `type="radio"` (with `name`), and
+  `checked`: choosing one toggles it, or checks it and unchecks the other
+  radio items of its group, before `ray-select`; it shows a check mark,
+  with the `menuitemcheckbox`/`menuitemradio` roles, and the native menu
+  shows the mark too.
+- `ray-command-palette` actions take `prefix`: text or a node of any width
+  before the label (a colored HTTP method, a status), where `icon` is a
+  small square.
+- `ray-tab` `count`: a small number after the label (`"3"`, `"99+"`),
+  lighter than a `ray-badge`, for tab bars where a pill per tab does not
+  fit.
+- `ray-doc-tabs` + `ray-doc-tab`: the tabs of open documents over one
+  shared panel (`panel`, WAI-ARIA tabs). Each tab has an icon or tag slot,
+  its name, and a × (or, with `dirty`, an unsaved dot that turns into the ×
+  under the pointer); the ×, a middle click or Delete fire
+  `ray-request-close` and the app removes the tab. The tab that takes the
+  closed one's place is selected and, if the closed tab had the focus,
+  focused. An `end` slot holds a new-tab button; too many tabs scroll
+  sideways like `ray-tabs`.
+- `ray-mode-input`: a text field with a menu of modes on one side; choosing
+  a mode applies its attributes to the field (`type`, `placeholder`,
+  `pattern`…), so one control says what a value is and the value (text or
+  a file, € or $, by name or ID). Modes come from `<option>` children
+  (`data-set-<attribute>`) or `options`; `ray-mode-change` is cancelable;
+  the menu is native with `native-menu`. Everything else is `ray-input`.
+- EXTENDING.md: putting a ray-element, such as a `ray-menu`, in your
+  component's shadow root.
+- `highlight` on `ray-input` and `ray-textarea`: a function from the text
+  to ranges (`{ start, end, kind?, title? }`) painted in a layer behind it,
+  in step with typing and with values set from script; `kind: "error"` is
+  red with a wavy underline, other kinds are styled with
+  `::part(highlight-<kind>)`, and a range's `title` is the tooltip over
+  it. `refreshHighlight()` runs it again when what it marks changes (the
+  `{{variables}}` an app defines, say).
+- EXTENDING.md: why a sheet pushed into a component's
+  `adoptedStyleSheets` disappears, and what to use instead.
+- `complete` on `ray-input` and `ray-textarea`: inline suggestions over
+  free text. A function of the text and the caret returns the part a
+  suggestion replaces and the suggestions (`{ from, to, items }`, or a
+  promise of it); a list opens under that part (arrows, Enter or Tab,
+  Escape, Ctrl+Space to ask), the chosen value replaces it as an undoable
+  edit, and `ray-complete` follows. The field is a combobox for assistive
+  technology. `ray-combobox` still picks a value from a list; this
+  completes a fragment inside the text.
+
+### Changed
+
+- `ray-split` `autosave` also keeps whether the start pane is collapsed
+  (by the divider or by script), not only its size: a hidden side panel
+  stays hidden after a reload. A saved state wins over the `collapsed`
+  attribute.
+
+### Fixed
+
+- `ray-icon-button` gives its host the square's width, so an `auto` grid
+  track or a shrink-to-fit box sizes it without relying on the inner
+  button's flex basis (an app saw it measure 0 in WebKit). A width set on
+  the element still wins.
+
+## [0.8.0] - 2026-10-19
+
+### Added
+
+- Icons with a direction: under `dir="rtl"` the roles that point along the
+  text (`ui.next`, `ui.previous`, `ui.first`, `ui.last`, `ui.disclosure`,
+  `ui.separator`) are drawn mirrored, the built-in glyph or the app's own
+  (pagination, date-picker, breadcrumbs, nav-link, whose open chevron turns
+  the other way). `<ray-icon mirror>` does it for an icon of yours (a back
+  arrow).
+- Keyboard and pointer right to left. Arrow keys follow the reading
+  direction (ArrowLeft is forward under `dir="rtl"`) in tabs, radio groups,
+  the segmented control, toggle groups, the calendar, the carousel and the
+  split. The split drags and sizes its start pane on the right, the carousel
+  scrolls toward the left with its next button there, `ray-scroll-area`'s
+  shadows, `scrollToEnd()` and `ray-reach-end` (`edge: "left"`) follow, and
+  the slider's fill and marks and `ray-indicator`'s `start`/`end` positions
+  mirror. The
+  color picker stays as it is: a color space is a picture, not text.
+- `isRtl(el)` and `inlineKey(key, el)`, for components of your own.
+- Right to left in the docs: a README section and the `llms.txt` rules,
+  and an **RTL** button on the site that shows every example with
+  `dir="rtl"` (remembered; the site around them stays left to right).
+- `start`/`end` values for the attributes that name a side, following the
+  writing direction: `ray-checkbox`/`ray-switch` `label-position`,
+  `ray-accordion` `chevron-position`, `ray-separator` `label-position`,
+  `ray-timeline` `align`, `ray-drawer` `position`, `ray-sidebar` `side`
+  (its border and its narrow-screen drawer) and `ray-toaster` `position`
+  (`top-start`, `bottom-end`…). `left` and `right` stay sides of the
+  screen, whatever the direction; `ray-stepper` `icon-position` is now
+  `start` (`left` still works).
+
+### Changed
+
+- The components' CSS uses logical properties (`inset-inline-start`,
+  `padding-inline-end`, `text-align: start`…) instead of left and right, the
+  first step toward right-to-left support: under `dir="rtl"` paddings,
+  labels, the switch's thumb, vertical tabs, select and search adornments and
+  the like mirror. Nothing changes left to right. Still physical: the
+  `left`/`right` values of the attributes that name a side (see the
+  `start`/`end` values below) and the color picker. `ray-code` always lays
+  code out left to right.
+- Floating panels align `-start`/`-end` with the writing direction: under
+  `dir="rtl"` a `bottom-start` popover, menu, select, combobox or
+  date-picker panel lines up with the right edge of its trigger, and a
+  context menu opens to the left of the pointer. The sides (`top`, `bottom`,
+  `left`, `right`) stay sides of the screen; nothing changes left to right.
+- The defaults that named a side are logical: `end` for `label-position`,
+  `chevron-position` and `ray-drawer` `position`, `start` for
+  `ray-sidebar` `side`, `ray-timeline` `align` and `ray-stepper`
+  `icon-position`, `bottom-end` for `ray-toaster`. Left to right they look
+  the same; code that read the default (`drawer.position === "right"`) sees
+  the new name. Right to left, a drawer opens from the left, notifications
+  stack bottom left and a sidebar's drawer slides in from the right.
+- `build` rejects physical CSS in the components unless the line is marked
+  `/* physical */`, gradients toward a side included.
+
+### Fixed
+
+- A parent `ray-nav-link` draws its chevron (the icon was never
+  painted into the link, rendered after the template).
+
+## [0.7.0] - 2026-10-18
+
+### Added
+
+- `IconName`, the type of icon names: the default set (and `"none"`) for
+  completion, any other name still valid. `ray-icon`'s `name` and the `icon`
+  of `ray-alert`, `ray-blockquote`, `ray-bottom-nav-item`, `ray-notification`
+  and `ray-timeline-item` take it, in TypeScript and in the React and Vue
+  wrappers; the VS Code data suggests the names (and the scale of an open
+  `size`). The list is generated from the registry, so it cannot drift.
+- Filled icons, for a state: `<ray-icon name="star" filled>` draws the
+  filled version, or the outline one when there is none. Built in for `user`,
+  `info`, `circle-check`, `alert-triangle`, `circle-x`, `folder`, `bell`,
+  `star`, `settings`, `home` and `message-circle`; an app adds its own with
+  `setIcons({ "name:filled": … })`. `getIcon(name, { filled })`,
+  `iconNames({ filled: true })`, and `data-ray-icon-filled` for
+  `paintIcons()` in your own components. The current item of a
+  `ray-bottom-nav` draws its icon filled.
+- `ray-step-dots` `value-text` and `done-text`: the announced text in the
+  page's language (`value-text="Asalto {step} de {count}"`), numbers formatted
+  with Intl; it was always English ("Round 4 of 12").
+- The icon gallery finds icons by what they are for ("favorite" finds `star`,
+  "warning" `alert-triangle`), and `llms.txt` lists the icons with a filled
+  version (and now `quote`, which it missed).
+- Icon roles: the components draw `ui.close`, `ui.remove`, `ui.clear`,
+  `ui.expand`, `ui.next`, `ui.checked`… instead of glyph names. Each role
+  draws its glyph until the app registers the role, so `setIcons({ close: … })`
+  still changes every × and `setIcons({ "ui.remove": … })` only the chips'.
+  `iconAliases()` lists them; `llms.txt` too.
+- `ray-elements check` warns (`no-filled-icon`) when `filled` is on an icon
+  without a filled version; it reads `"name:filled"` keys in `setIcons()`.
+
+### Changed
+
+- `ray-elements check` reports an unregistered icon (`unknown-icon`) in every
+  attribute that takes an icon name, not only in `ray-icon`'s `name`.
+
+## [0.6.0] - 2026-10-17
+
+### Added
+
+- `size` of `ray-button`, `ray-icon-button` and `ray-toggle` takes any CSS
+  length besides xs…xl; the font, the padding and the icon follow.
+  `<ray-icon-button size="5.5rem" radius="full" variant="gradient">` is the big
+  main action of a phone screen (start, pause, record).
+- `ray-number-input format="duration"`: the value is seconds, shown and typed
+  as m:ss (h:mm:ss when min or max reaches an hour; a plain number is
+  seconds), with an `aria-valuetext` such as "3 minutes, 15 seconds" in the
+  page's language. The form still gets the seconds. `formatDuration`,
+  `parseDuration` and `durationText` are exported beside `formatNumber`.
+- `ray-ring-progress`: progress as a ring, with the default slot in the
+  middle (a countdown's clock, a goal). `value` of `max`, `color`, `size`
+  (xs…xl or a length: the diameter), `thickness`, `round-caps`, `show-value`;
+  indeterminate without a value; announced as a progressbar.
+- `ray-radio-card`: a radio drawn as a card (title, detail, icon, more
+  content), in a `ray-radio-group` like a `ray-radio`: arrow keys, the form,
+  `required` and `disabled` come from the group, and cards and radios can be
+  mixed. Put the cards in a `ray-grid` for columns; `hide-indicator` leaves
+  the border and the background alone to show the choice.
+- `ray-step-dots`: a row of dots, one per step (done, current, to do), for
+  rounds, onboarding pages or a quiz. `count` and `value` (the current step,
+  0-based), `color`, `size`, `align`; announced as a progressbar with
+  `label` as the step's name ("Round 4 of 12").
+
+## [0.5.2] - 2026-10-17
+
+### Added
+
+- `ray-elements check`, a checker of the markup that uses ray-elements, in
+  `@raylang/elements` (`npx ray-elements check src/`; in a raylang app, `node
+  node_modules/@raylang/elements/check/cli.js check assets/`) and as
+  `@raylang/elements/check` (`checkMarkup()`). It reads HTML, Vue, Svelte,
+  Astro, JSX and TSX against the installed version's `custom-elements.json`
+  and icons, and reports unknown elements, attributes, slots and events,
+  invalid values, `disabled="false"`, unregistered icons, icon buttons
+  without a label and literal colors, with a suggestion; JSON output for
+  tools and agents. `llms.txt` tells agents to run it.
+
+### Fixed
+
+- `custom-elements.json` and `vscode.html-custom-data.json` list the
+  attributes a component inherits from `FieldControl` and `Floating`
+  (`ray-number-input` lacked `label`, `name`, `required`…), as the types
+  already did.
+- They also list the attributes that only set the initial value: `checked`
+  on `ray-checkbox` and `ray-switch`, `value` on `ray-checkbox-group` and
+  `ray-combobox` (marked `initial = true` in `component.toml`); the API pages
+  and `llms-full.txt` say so instead of "property only".
+- `ray-radio`: `checked` can be set, as on a native radio (`radio.checked =
+  true` makes it the group's value, without events); it was read-only, so
+  `<RayRadio checked>` in React 19 threw. Its `checked` attribute, which marks
+  the group's initial value, is in the manifests too.
+- The bottom navigation's example: its app bar hid on scroll with
+  `scroll-behavior="hide"`, not `scroll="hide"` (found by `ray-elements
+  check`). The `ray-icon` reference says that `name="none"` draws a blank.
+
+## [0.5.1] - 2026-10-16
+
+### Added
+
+- Docs for AI agents: `llms.txt` (the rules for using the components, and a
+  link to each one's API as Markdown, `components/<name>.md`) and
+  `llms-full.txt` (the whole reference in one file: components, tokens, icon
+  names, the core's types), on the site and in `@raylang/elements` (so also in
+  a raylang app's `node_modules/`). Generated from `site/llms.md` and the
+  components' metadata.
+
+## [0.5.0] - 2026-10-12
+
+### Removed
+
+- `@raylang/vue`: the `RayDs` alias of the plugin (deprecated in 0.4.0); use
+  `RayElements`.
+
+### Changed
+
+- The `elements` raylang package, the tools and `examples/starter`,
+  `desktop-app` and `lean-app` need raylang 1.27.48.
+- `enableRaylang()` tints the title bar for a chosen theme (light or dark) in
+  a `full_content` window too, so the window's appearance follows the theme.
+  Before 1.27.48 a title bar color made that bar opaque.
+
+## [0.4.1] - 2026-10-12
+
+### Fixed
+
+- `ray-input` (and `ray-password-input`, `ray-search`) and `ray-number-input`:
+  Enter submits the form, as in a native field. Their `<input>` lives in a
+  shadow root, so the browser's implicit submission never reached the form.
+  The HTML rule: a click on the first submit button (`ray-button
+  type="submit"` included; nothing when it is disabled), or, without one, a
+  submit when the form has a single text field.
+- `base.css` defines `.ray-muted` (secondary text), which the starter already
+  used.
+- `examples/starter`, `desktop-app` and `lean-app` ask for raylang 1.27.44,
+  the first with `[web] package`; `lean-app`'s Add button shows its icon
+  (`slot="left"`, not `start`).
+
+## [0.4.0] - 2026-10-11
+
+### Changed
+
+- `@raylang/vue`: the plugin is `RayElements` (`import RayElements from
+  "@raylang/vue"; app.use(RayElements)`). `RayDs`, the 0.3.0 name, stays as a
+  deprecated alias until 0.5.0.
+
+## [0.3.0] - 2026-10-11
+
+The first public release, under its final name: the project is **ray-elements**
+(formerly ray-ds), the npm packages are `@raylang/elements`, `@raylang/react` and
+`@raylang/vue`, and the raylang package is `elements` (`elements/bridge`). The
+bridge protocol key and the page event are `ray-elements` and
+`ray-elements:menu`.
+
+### Components (68)
+
+- **Buttons:** button, button group, icon button, toggle, toggle group.
+- **Inputs:** input, number input, password input, search, textarea, select,
+  combobox (searchable, multiple, creatable), checkbox and checkbox group,
+  radio group, switch, segmented control, slider, date picker and calendar,
+  color picker and color input, file upload, path input.
+- **Navigation:** tabs, nav link, sidebar, bottom nav, breadcrumbs, stepper,
+  pagination.
+- **Overlays:** dialog (the modal, with `confirmDialog()`), drawer, popover,
+  tooltip, menu (also as a context menu), command palette.
+- **Data display:** icon, badge, avatar, indicator, blockquote, code
+  (pluggable highlighter), kbd, accordion, table, stat, carousel, timeline,
+  attachment.
+- **Feedback:** alert, spinner, progress, empty state, skeleton,
+  notifications (`notify()`).
+- **Layout:** app shell, app bar, stack, group, grid, container, center,
+  scroll area, card, separator, split, status bar, aspect ratio.
+- **Theme:** theme toggle.
+
+### Foundations
+
+- Design tokens in `tokens.toml` → `dist/tokens.css` and `tokens.json`:
+  palette, light and dark themes, primary color, spacing, radius, shadows,
+  motion, charts; contrast checked at build time (AA).
+- Runtime theming: `setTheme()`, `setPrimary()`, `definePrimary()` with any
+  CSS color, `chartTheme()` for chart libraries.
+- `RayElement`, `FormControl`, `FieldControl` and `Floating` base classes for
+  components of your own; an icon registry (`setIcons()`).
+
+### Integrations
+
+- `@raylang/elements`, `@raylang/react` and `@raylang/vue` packages (not yet on
+  npm): typed (`.d.ts`), `custom-elements.json`, VS Code HTML data, React
+  wrappers and Vue wrappers with `v-model`. Each names its source (repository,
+  directory, issues) and publishes with public access; the repository's
+  `repository` and `homepage` live in `ray-elements.toml`.
+- Only what you use: `@raylang/elements/<name>` (one component and what it
+  uses) and `@raylang/elements/core` (the API alone); `@raylang/react` and
+  `@raylang/vue` are a module per component with `sideEffects: false`, so a
+  bundle keeps the wrappers it imports and their elements (a button with an
+  icon: 9.5 KB gzip instead of 94 KB). `examples/lean-app` does it in a raylang
+  app: per-component modules, and a dialog loaded on first open. `tests/packages` checks it with esbuild,
+  and compiles the generated declarations with `tsc`.
+- The `release` workflow, on a version tag: the raylang package to its
+  repository (`git subtree split`), the npm packages (`NPM_TOKEN` or trusted
+  publishing, with provenance from a public repository) and the site.
+- Tools: `tools/run.sh add` copies components (and what they
+  need) into an app; `wrap` generates types and React/Vue wrappers for an
+  app's own components.
+
+### raylang
+
+- A native bridge between the page and a raylang program: `elements/bridge`
+  (`bridge.handle(e)` in the app's event loop) and `enableRaylang()` in the
+  page (`core/raylang.js`). Components ask a host registry (`core/host.js`),
+  never the bridge, and keep their web behavior without one.
+- With it: `ray-file-upload native` opens the system file dialog and gives
+  paths (`paths`), `ray-path-input` gets a Browse… button for a file, a
+  folder or a save target, `confirmDialog()` asks with the system dialog,
+  `ray-menu native` opens as the system's context menu, and
+  `ray-command-palette native-menus` lists and runs the app's menu bar
+  (declared with `bridge.menu`; `bridge.route` gives the app the menu event).
+- The window: in a `full_content` window `ray-app-shell` turns its header
+  into the title bar (room for the window buttons, drags the window;
+  `dragRegion()` for any element), the window's background and title bar
+  follow the theme, and `trackEdits(form)` shows unsaved changes.
+- An "In a raylang app" section on the pages of the components that use the
+  bridge, and `examples/desktop-app`, a folder browser that uses all of it.
+- The raylang package `elements` (raylang 1.27.44 or later): it carries
+  `@raylang/elements` as published (`elements/web`, `[web] package`), and the
+  app's pages import it by its npm name, as with a bundler
+  (`import "@raylang/elements/button"`): raylang serves it at
+  `ray://app/node_modules/@raylang/elements/` with an import map, under
+  `ray run` and in a native binary, and links it into the app's
+  `node_modules/` so the editor resolves the imports with their types;
+  `examples/starter` is the smallest app with it. It is published to its own
+  repository, `github.com/ray-language/elements` (`git+https://…/elements@v0.3.0`),
+  split out of `elements/` with its history on every version tag.
+
+### Docs site
+
+- A page per component with live examples, their code in HTML, React and
+  Vue, and the API generated from `component.toml`; a catalog with
+  thumbnails, ⌘K search, guides and the foundations page.
+- `tools/run.sh site` writes the site ready to publish, with a
+  404 page.
+
+[0.3.0]: https://github.com/ray-language/ray-elements/releases/tag/v0.3.0

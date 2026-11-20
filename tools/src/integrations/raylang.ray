@@ -13,7 +13,7 @@
 //                 it into the app's node_modules/ for the editor.
 //   version.ray   VERSION, ray-elements.toml's version (the bridge's hello says it)
 //   ray.toml      its version line; README.md its install line
-//   LICENSE, NOTICE  copies of the repository's
+//   LICENSE, NOTICE, CHANGELOG.md  copies of the repository's
 //
 // elements/ is the whole package: its own repository
 // (github.com/ray-language/elements) is `git subtree split --prefix elements`.
@@ -33,7 +33,7 @@ pub fn run(root: string, version: string) -> Result<int, string> {
         if (l.starts_with("version = ")) { "version = \"${version}\"" } else { l }
     })?;
     sync(root, "README.md", fn(l: string) -> string { install_line(l, version) })?;
-    for name in ["LICENSE", "NOTICE"] {
+    for name in ["LICENSE", "NOTICE", "CHANGELOG.md"] {
         fs.write_file("${root}/elements/${name}", fs.read_file("${root}/${name}")?)?;
     }
     Result.Ok(count(web)?)
