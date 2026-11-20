@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.25.0] - 2026-11-20
+
 ### Added
 
 - `bridge.set_menu_title(n, tag, title)`: `ui.set_menu_title` (an item's
