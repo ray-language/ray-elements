@@ -342,6 +342,7 @@ export interface Host {
 }
 /** An item of the app's native menu bar, as a host lists it. */
 export interface HostMenuItem {
+  /** The menu's title; for an item of a submenu, its path ("File › Open Recent"). */
   menu: string;
   tag: string;
   title: string;
