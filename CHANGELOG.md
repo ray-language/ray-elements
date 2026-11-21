@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.26.0] - 2026-11-21
+
 ### Fixed
 
 - `elements/bridge` with submenus (`ui.submenu`, raylang 1.27.110): the
