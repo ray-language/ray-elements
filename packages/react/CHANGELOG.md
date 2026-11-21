@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `elements/bridge` with submenus (`ui.submenu`, raylang 1.27.110): the
+  items of a submenu now reach the command palette, grouped under their path
+  ("File › Open Recent"), and `run_menu` runs them; `set_menu_item` and
+  `set_menu_title` update them too, and a disabled submenu disables its
+  items. The submenus themselves are not listed (they emit no event). The
+  raylang package now needs raylang 1.27.110 (#474).
+
 ## [0.25.0] - 2026-11-20
 
 ### Added

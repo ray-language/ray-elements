@@ -129,14 +129,20 @@ pub fn rename_menu(n: Native, old: string, new: string) -> Result<int, string> {
 pub fn set_menu_item(n: Native, tag: string, enabled: bool, checked: bool) -> Result<int, string> {
     let r = ui.set_menu_item(tag, enabled, checked)?;
     for m in n.menus {
-        for i in 0..m.items.len() {
-            if (m.items[i].tag == tag) {
-                m.items[i].enabled = enabled;
-                m.items[i].checked = checked;
-            }
-        }
+        set_state(m.items, tag, enabled, checked);
     }
     Result.Ok(r)
+}
+
+// The items `tag` of `items` and of their submenus, set to `enabled` and `checked`.
+fn set_state(items: [ui.MenuItem], tag: string, enabled: bool, checked: bool) {
+    for i in 0..items.len() {
+        if (items[i].tag == tag) {
+            items[i].enabled = enabled;
+            items[i].checked = checked;
+        }
+        set_state(items[i].children, tag, enabled, checked);
+    }
 }
 
 // ui.set_menu_title, recorded for the page: the palette shows the new text
@@ -151,10 +157,44 @@ pub fn set_menu_title(n: Native, tag: string, title: string) -> Result<int, stri
 // without touching the menu bar; nothing when no item has that tag.
 pub fn record_title(n: Native, tag: string, title: string) {
     for m in n.menus {
-        for i in 0..m.items.len() {
-            if (m.items[i].tag == tag) {
-                m.items[i].title = title;
-            }
+        set_title(m.items, tag, title);
+    }
+}
+
+fn set_title(items: [ui.MenuItem], tag: string, title: string) {
+    for i in 0..items.len() {
+        if (items[i].tag == tag) {
+            items[i].title = title;
+        }
+        set_title(items[i].children, tag, title);
+    }
+}
+
+// An item the page can run: the path of its menu ("File", or "File › Open
+// Recent" in a submenu) and whether it can run (it and every submenu above it
+// enabled).
+struct Runnable {
+    menu: string,
+    item: ui.MenuItem,
+    enabled: bool,
+}
+
+// The items of the recorded menus that emit an event, submenus included, in
+// menu order: not separators, the submenus themselves or "role:" items.
+fn runnables(n: Native) -> [Runnable] {
+    var out: [Runnable] = [];
+    for m in n.menus {
+        collect(m.title, m.items, true, out);
+    }
+    out
+}
+
+fn collect(path: string, items: [ui.MenuItem], enabled: bool, out: [Runnable]) {
+    for it in items {
+        if (it.opens_submenu || it.children.len() > 0) {
+            collect("${path} › ${it.title}", it.children, enabled && it.enabled, out);
+        } else if (it.tag != "" && it.title != "" && !it.tag.starts_with("role:")) {
+            out.push(Runnable { menu: path, item: it, enabled: enabled && it.enabled });
         }
     }
 }
@@ -307,20 +347,16 @@ fn hello() -> string {
 // handles (no separators, no "role:*" items, which act natively).
 fn menu_items(n: Native) -> string {
     var out = json.arr();
-    for m in n.menus {
-        for it in m.items {
-            if (it.tag != "" && it.title != "" && !it.tag.starts_with("role:")) {
-                out = out.item(
-                    json.obj()
-                        .field("menu", m.title)
-                        .field("tag", it.tag)
-                        .field("title", it.title)
-                        .field("shortcut", chord(it.shortcut))
-                        .field("enabled", it.enabled)
-                        .field("checked", it.checked)
-                );
-            }
-        }
+    for r in runnables(n) {
+        out = out.item(
+            json.obj()
+                .field("menu", r.menu)
+                .field("tag", r.item.tag)
+                .field("title", r.item.title)
+                .field("shortcut", chord(r.item.shortcut))
+                .field("enabled", r.enabled)
+                .field("checked", r.item.checked)
+        );
     }
     json.render_arr(out)
 }
@@ -328,14 +364,12 @@ fn menu_items(n: Native) -> string {
 // {tag} -> true; route() then gives the app the "menu" event.
 fn run_menu(n: Native, j: json.Json) -> Result<string, string> {
     let tag = json.get_string(j, "tag").unwrap_or("");
-    for m in n.menus {
-        for it in m.items {
-            if (it.tag == tag && !tag.starts_with("role:")) {
-                if (!it.enabled) {
-                    return Result.Err("run_menu: '${tag}' is disabled");
-                }
-                return Result.Ok("true");
+    for r in runnables(n) {
+        if (r.item.tag == tag) {
+            if (!r.enabled) {
+                return Result.Err("run_menu: '${tag}' is disabled");
             }
+            return Result.Ok("true");
         }
     }
     Result.Err("run_menu: no menu item '${tag}'")
@@ -623,6 +657,30 @@ fn retitles_a_menu_item() {
     let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
     assert(a.contains("\"tag\":\"new\",\"title\":\"New Project\",\"shortcut\":\"cmd+n\",\"enabled\":true"));
     assert(!a.contains("\"title\":\"New\",") && !a.contains("Other"));
+}
+
+@test
+fn lists_and_runs_the_items_of_submenus() {
+    let n = with_menus();
+    var old = ui.submenu("Older", [ui.item("recent:2", "C", "")]);
+    old.enabled = false;
+    record(n, "File", [
+        ui.item("new", "New", "cmd+n"),
+        ui.submenu("Open Recent", [ui.item("recent:0", "A", ""), ui.separator(), ui.submenu("More", [ui.item("recent:1", "B", "")]), old]),
+    ]);
+    let a = answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap();
+    assert(a.contains("{\"menu\":\"File › Open Recent\",\"tag\":\"recent:0\",\"title\":\"A\""));
+    assert(a.contains("{\"menu\":\"File › Open Recent › More\",\"tag\":\"recent:1\",\"title\":\"B\",\"shortcut\":\"\",\"enabled\":true"));
+    assert(a.contains("\"tag\":\"recent:2\",\"title\":\"C\",\"shortcut\":\"\",\"enabled\":false"));
+    assert(!a.contains("\"title\":\"Open Recent\""));
+    assert_eq(respond(n, 3, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"recent:1\"}").unwrap().1.unwrap_or("-"), "recent:1");
+    assert(answer(n, "{\"ray-elements\":1,\"op\":\"run_menu\",\"tag\":\"recent:2\"}").unwrap().contains("'recent:2' is disabled"));
+    record_title(n, "recent:1", "B (moved)");
+    assert(answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap().contains("\"title\":\"B (moved)\""));
+    for m in n.menus {
+        set_state(m.items, "recent:0", false, true);
+    }
+    assert(answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap().contains("\"tag\":\"recent:0\",\"title\":\"A\",\"shortcut\":\"\",\"enabled\":false,\"checked\":true"));
 }
 
 @test

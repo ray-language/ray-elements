@@ -5083,7 +5083,7 @@
         },
         {
           "name": "native-menus",
-          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.",
+          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts (an item of a submenu under its path, \"File › Open Recent\"); running one gives the program the menu's own event.",
           "valueSet": "v"
         },
         {

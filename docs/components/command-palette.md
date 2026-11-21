@@ -22,7 +22,7 @@ Properties:
 - `navigateLabel` (attribute `navigate-label`): string, default `navigate` (text `command-palette.navigate`). The keyboard hint's word for ↑↓.
 - `runLabel` (attribute `run-label`): string, default `run` (text `command-palette.run`). The keyboard hint's word for ↵.
 - `closeLabel` (attribute `close-label`): string, default `close` (text `command-palette.close`). The keyboard hint's word for esc.
-- `nativeMenus` (attribute `native-menus`): boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts; running one gives the program the menu's own event.
+- `nativeMenus` (attribute `native-menus`): boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window, menus declared with elements/bridge), also lists the app's menu bar, grouped by menu with its shortcuts (an item of a submenu under its path, "File › Open Recent"); running one gives the program the menu's own event.
 - `overlayBlur` (attribute `overlay-blur`): string. Blur of the page behind: px ("8"), a CSS length or "none". Default: --ray-overlay-blur ([overlay] blur in tokens.toml).
 
 Events:
