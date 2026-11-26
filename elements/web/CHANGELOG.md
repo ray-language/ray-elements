@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.27.0] - 2026-11-25
+
 ### Added
 
 - A `--ray-sidebar` token: the app's frame, for `ray-sidebar` and an app's

@@ -27,7 +27,7 @@ Texts (`setStrings`; English):
 - `stat.down`: Down {value}
 - `stat.flat`: No change {value}
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.26.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.27.0.
 
 ## Example
 
