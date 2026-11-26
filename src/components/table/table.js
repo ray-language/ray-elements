@@ -10,6 +10,8 @@
 // parsed as HTML). Sorting cycles asc -> desc -> none per column and is done
 // here unless `manual-sort` (then listen to ray-sort and pass sorted data).
 // With `selectable`, rows get checkboxes and `selection` holds their keys.
+// The cells are in the shadow tree: style them with ::part(th), ::part(td)
+// and a column's own part (column.part = "name": ::part(name)).
 // For plain server-rendered tables there is the .ray-table class in base.css.
 
 import { RayElement, css, define, defineStrings } from "../../core/core.js";
@@ -40,14 +42,14 @@ const styles = css`
   :host([with-column-borders]) th + th, :host([with-column-borders]) td + td { border-inline-start: 1px solid var(--ray-border); }
   tbody tr:last-child td { border-bottom: 0; }
   :host(:not([with-border])) tbody tr:last-child td { border-bottom: 1px solid var(--ray-border); }
-  th { font-size: var(--ray-font-size-xs); font-weight: var(--ray-font-weight-semibold); color: var(--ray-muted-foreground); white-space: nowrap; background: var(--ray-background); }
+  th { font-size: var(--ray-font-size-xs); font-weight: var(--ray-font-weight-semibold); color: var(--ray-muted-foreground); white-space: nowrap; background: var(--ray-table-header-background, var(--ray-surface, var(--ray-background))); }
   :host([sticky-header]) thead th { position: sticky; top: 0; z-index: 1; box-shadow: 0 1px 0 var(--ray-border); }
   [data-align="right"] { text-align: right; } /* physical */
   [data-align="center"] { text-align: center; }
   :host([striped]) tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--ray-muted) 60%, transparent); }
   tbody tr:hover td { background: var(--ray-default-hover); }
   :host([no-hover]) tbody tr:hover td { background: inherit; }
-  tbody tr[aria-selected="true"] td { background: var(--ray-primary-light); }
+  tbody tr[aria-selected="true"] td { background: var(--ray-table-selected-background, var(--ray-primary-light)); }
   tbody tr[data-clickable] { cursor: pointer; }
   tbody tr:focus-visible { outline: var(--ray-focus-ring-width) solid var(--ray-ring); outline-offset: -2px; }
   .sort {
@@ -159,6 +161,7 @@ export class RayTable extends RayElement {
     for (const col of columns) {
       const th = document.createElement("th");
       th.scope = "col";
+      th.part = col.part ? `th ${col.part}` : "th";
       if (col.align) th.dataset.align = col.align;
       if (col.width) th.style.width = typeof col.width === "number" ? `${col.width}px` : col.width;
       const label = col.label ?? col.key;
@@ -206,6 +209,7 @@ export class RayTable extends RayElement {
       }
       for (const col of columns) {
         const td = document.createElement("td");
+        td.part = col.part ? `td ${col.part}` : "td";
         if (col.align) td.dataset.align = col.align;
         const v = typeof col.render === "function" ? col.render(row, index) : row?.[col.key];
         if (v instanceof Node) td.append(v);

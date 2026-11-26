@@ -6727,7 +6727,7 @@
     },
     {
       "name": "ray-table",
-      "description": "Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height.",
+      "description": "Cells are text (render may return a DOM node; strings are never parsed as HTML). The cells live in the shadow tree, so page CSS does not reach a td: style them with ::part(th), ::part(td) and a column's part (column.part = \"mono\": ray-table::part(mono) { font-family: var(--ray-font-family-mono) }). The scroll height comes from --ray-table-max-height; the sticky header's background from --ray-table-header-background (default: --ray-surface, which ray-dialog, ray-drawer and ray-card set, else --ray-background); a selected row's from --ray-table-selected-background (default --ray-primary-light; transparent leaves the checkbox alone to show it).",
       "attributes": [
         {
           "name": "row-key",

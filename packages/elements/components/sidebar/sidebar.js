@@ -52,7 +52,7 @@ const styles = css`
     height: 100%;
     overflow: hidden;
     color: var(--ray-foreground);
-    background: var(--ray-sidebar, color-mix(in srgb, var(--ray-muted) 70%, var(--ray-background)));
+    background: var(--ray-sidebar);
     border-inline-end: 1px solid var(--ray-border);
   }
   /* side: start/end follow the writing direction, left/right are sides of

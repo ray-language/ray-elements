@@ -32,6 +32,7 @@ aa = [
     "secondary-foreground on secondary",
     "muted-foreground on muted",
     "muted-foreground on background",
+    "muted-foreground on sidebar",
     "accent-foreground on accent",
     "destructive-foreground on destructive",
     "success on background",
@@ -376,6 +377,13 @@ light = "{gray.0}"
 dark = "{dark.6}"
 # Secondary text (descriptions, placeholders, captions): clearly dimmer than
 # foreground, still AA on background, card and muted.
+# The app's frame (ray-sidebar; also for an app's own header or status bar):
+# a quiet step from the page in both schemes. Dark mixes less of muted, which
+# sits several steps above the page there (one in light), so the step stays
+# as gentle and the border still shows against it.
+[semantic.sidebar]
+light = "color-mix(in srgb, {gray.0} 70%, {white})"
+dark = "color-mix(in srgb, {dark.6} 30%, {dark.9})"
 [semantic.muted-foreground]
 light = "color-mix(in srgb, {gray.7} 50%, {gray.6})"
 dark = "color-mix(in srgb, {dark.1} 75%, {dark.2})"

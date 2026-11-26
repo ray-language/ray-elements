@@ -6,11 +6,11 @@ Import: `import "@raylang/elements/table";` · Category: Data display
 
 ## `<ray-table>` (RayTable, extends RayElement)
 
-Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height.
+Cells are text (render may return a DOM node; strings are never parsed as HTML). The cells live in the shadow tree, so page CSS does not reach a td: style them with ::part(th), ::part(td) and a column's part (column.part = "mono": ray-table::part(mono) { font-family: var(--ray-font-family-mono) }). The scroll height comes from --ray-table-max-height; the sticky header's background from --ray-table-header-background (default: --ray-surface, which ray-dialog, ray-drawer and ray-card set, else --ray-background); a selected row's from --ray-table-selected-background (default --ray-primary-light; transparent leaves the checkbox alone to show it).
 
 Properties:
 
-- `columns` (property only): `TableColumn[]`. Columns: key, label, width, align, sortable, render(row, index), sort(a, b).
+- `columns` (property only): `TableColumn[]`. Columns: key, label, width, align, sortable, part (an extra part name for its th and td cells), render(row, index), sort(a, b).
 - `data` (property only): `any[]`. Rows (objects).
 - `rowKey` (attribute `row-key`): string, default `id`. Field that identifies a row (selection).
 - `selectable`: boolean, reflects. A checkbox per row and a select-all checkbox.
@@ -41,6 +41,8 @@ Parts (`::part()`):
 
 - `table`: The <table>.
 - `scroll`: The scroll container.
+- `th`: Every header cell (also named by its column's part).
+- `td`: Every body cell (also named by its column's part).
 
 Methods and properties:
 
@@ -48,7 +50,7 @@ Methods and properties:
 
 Types:
 
-- `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
+- `{ key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; part?: string; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number }`: A column of ray-table.
 - `{ key: string; direction: "asc" | "desc" }`: The sort state of ray-table.
 
 Texts (`setStrings`; English):

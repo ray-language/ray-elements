@@ -2308,7 +2308,7 @@ export interface RayStatProps {
 export declare const RayStat: DefineComponent<RayStatProps>;
 
 export interface RayTableProps {
-  /** Columns: key, label, width, align, sortable, render(row, index), sort(a, b). */
+  /** Columns: key, label, width, align, sortable, part (an extra part name for its th and td cells), render(row, index), sort(a, b). */
   columns?: Ray.TableColumn[];
   /** Rows (objects). */
   data?: any[];

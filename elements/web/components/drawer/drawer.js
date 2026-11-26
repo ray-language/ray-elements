@@ -18,7 +18,7 @@ defineStrings(STRINGS);
 const SIZES = { xs: "20rem", sm: "23.75rem", md: "27.5rem", lg: "38.75rem", xl: "48.75rem", full: "100%" };
 
 const styles = css`
-  :host { display: contents; --_size: 27.5rem; --_inset: 0px; --_r: 0px; }
+  :host { display: contents; --_size: 27.5rem; --_inset: 0px; --_r: 0px; --ray-surface: var(--ray-card); }
   :host([floating]) { --_inset: var(--ray-space-3); --_r: var(--ray-radius-lg); }
   dialog {
     position: fixed;

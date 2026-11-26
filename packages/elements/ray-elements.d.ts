@@ -2547,12 +2547,12 @@ export declare class RayStat extends RayElement {
 
 // --- Table (table)
 /** A column of ray-table. */
-export type TableColumn = { key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number };
+export type TableColumn = { key: string; label?: string; width?: number | string; align?: "left" | "center" | "right"; sortable?: boolean; part?: string; render?: (row: any, index: number) => string | number | Node | null | undefined; sort?: (a: any, b: any) => number };
 /** The sort state of ray-table. */
 export type TableSort = { key: string; direction: "asc" | "desc" };
-/** <ray-table> Cells are text (render may return a DOM node; strings are never parsed as HTML). The scroll height comes from --ray-table-max-height. */
+/** <ray-table> Cells are text (render may return a DOM node; strings are never parsed as HTML). The cells live in the shadow tree, so page CSS does not reach a td: style them with ::part(th), ::part(td) and a column's part (column.part = "mono": ray-table::part(mono) { font-family: var(--ray-font-family-mono) }). The scroll height comes from --ray-table-max-height; the sticky header's background from --ray-table-header-background (default: --ray-surface, which ray-dialog, ray-drawer and ray-card set, else --ray-background); a selected row's from --ray-table-selected-background (default --ray-primary-light; transparent leaves the checkbox alone to show it). */
 export declare class RayTable extends RayElement {
-  /** Columns: key, label, width, align, sortable, render(row, index), sort(a, b). */
+  /** Columns: key, label, width, align, sortable, part (an extra part name for its th and td cells), render(row, index), sort(a, b). */
   columns: TableColumn[] | undefined;
   /** Rows (objects). */
   data: any[] | undefined;
