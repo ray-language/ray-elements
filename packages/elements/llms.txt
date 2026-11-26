@@ -166,6 +166,12 @@ green a check, red an error, yellow a warning, others info).
   checks contrast), `onThemeChange(cb)`. `<ray-theme-toggle>` is the switch.
 - App-wide defaults for a component: `configure({ defaults: { "ray-button":
   { variant: "light" } } })`.
+- Surfaces: `--ray-background` (the page), `--ray-card` (cards, dialogs,
+  drawers), `--ray-sidebar` (the app's frame: `ray-sidebar`, and your own
+  header or status bar), `--ray-muted` (filled inputs, tiles). `ray-dialog`,
+  `ray-drawer` and `ray-card` set `--ray-surface` to their color for what
+  must paint over it (a `ray-table`'s sticky header); set it on your own
+  panels too.
 
 ## Languages
 

@@ -680,3 +680,41 @@ T.test("input: time, date and datetime-local pickers keep the field's height and
   T.eq(time.control.value, "21:05");
   box.remove();
 });
+
+T.test("sidebar: --ray-sidebar is a gentle step from the page in both schemes", async (T) => {
+  const box = document.createElement("div");
+  box.innerHTML = `<div data-theme="light"><ray-sidebar></ray-sidebar></div><div data-theme="dark"><ray-sidebar></ray-sidebar></div>`;
+  document.body.append(box);
+  await T.settle();
+  const [light, dark] = [...box.querySelectorAll("ray-sidebar")].map((s) => getComputedStyle(s.shadowRoot.querySelector(".panel")).backgroundColor);
+  T.ok(light !== "rgba(0, 0, 0, 0)" && dark !== "rgba(0, 0, 0, 0)", `${light} / ${dark}`);
+  // color-mix() computes to color(srgb r g b) with 0..1 channels.
+  const rgb = (c) => c.match(/[\d.]+/g).slice(0, 3).map((n) => Math.round(c.startsWith("color(") ? n * 255 : n));
+  const near = (c, want) => rgb(c).every((v, i) => Math.abs(v - want[i]) <= 1);
+  T.ok(near(dark, [28, 28, 28]), `dark: 30 % of muted over the page (${rgb(dark)})`);
+  T.ok(near(light, [250, 251, 252]), `light: as before (${rgb(light)})`);
+  box.remove();
+});
+
+T.test("table: header over the surface, selection color, cell parts", async (T) => {
+  const box = document.createElement("div");
+  box.innerHTML = `<div data-theme="dark"><ray-card><ray-table sticky-header selectable></ray-table></ray-card><ray-table></ray-table>
+    <ray-table selectable style="--ray-table-selected-background: transparent"></ray-table></div>`;
+  document.body.append(box);
+  const [inCard, onPage, plain] = box.querySelectorAll("ray-table");
+  for (const t of [inCard, onPage, plain]) {
+    t.columns = [{ key: "name", part: "mono" }, { key: "value" }];
+    t.data = [{ id: 1, name: "a", value: "1" }];
+    t.selection = [1];
+  }
+  await T.settle();
+  const bg = (t, sel) => getComputedStyle(t.shadowRoot.querySelector(sel)).backgroundColor;
+  T.ok(bg(inCard, "thead th") !== bg(onPage, "thead th"), `the header in a card is not the page's (${bg(inCard, "thead th")} / ${bg(onPage, "thead th")})`);
+  T.eq(bg(inCard, "thead th"), getComputedStyle(inCard.closest("ray-card").shadowRoot.querySelector(".card")).backgroundColor, "it is the card's");
+  T.ok(bg(inCard, 'tbody tr[aria-selected="true"] td') !== "rgba(0, 0, 0, 0)", "a selected row is tinted");
+  T.eq(bg(plain, 'tbody tr[aria-selected="true"] td'), "rgba(0, 0, 0, 0)", "unless --ray-table-selected-background is transparent");
+  const tds = onPage.shadowRoot.querySelectorAll("tbody td");
+  T.eq([...tds].map((td) => td.part.value).join("|"), "td mono|td");
+  T.eq([...onPage.shadowRoot.querySelectorAll("thead th")].map((th) => th.part.value).join("|"), "th mono|th");
+  box.remove();
+});

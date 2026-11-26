@@ -33,6 +33,9 @@ const styles = css`
   :host([with-border]) .card,
   :host([variant="outline"]) .card { border-color: var(--ray-border); }
   :host([variant="filled"]) .card { background: var(--ray-muted); }
+  /* What sits on it paints over the card's color (a ray-table's sticky header). */
+  :host(:not([variant="outline"])) { --ray-surface: var(--ray-card); }
+  :host([variant="filled"]) { --ray-surface: var(--ray-muted); }
   :host([variant="outline"]) .card { background: transparent; }
   .header, .footer { padding: var(--_p); }
   .header { padding-bottom: 0; }

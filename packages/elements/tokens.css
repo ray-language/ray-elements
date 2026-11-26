@@ -285,6 +285,7 @@
     --ray-default-hover: light-dark(var(--ray-gray-1), color-mix(in srgb, var(--ray-white) 7%, transparent));
     --ray-raised: light-dark(var(--ray-white), var(--ray-dark-4));
     --ray-muted: light-dark(var(--ray-gray-0), var(--ray-dark-6));
+    --ray-sidebar: light-dark(color-mix(in srgb, var(--ray-gray-0) 70%, var(--ray-white)), color-mix(in srgb, var(--ray-dark-6) 30%, var(--ray-dark-9)));
     --ray-muted-foreground: light-dark(color-mix(in srgb, var(--ray-gray-7) 50%, var(--ray-gray-6)), color-mix(in srgb, var(--ray-dark-1) 75%, var(--ray-dark-2)));
     --ray-accent: light-dark(var(--ray-gray-1), var(--ray-dark-6));
     --ray-accent-foreground: light-dark(var(--ray-gray-9), var(--ray-gray-1));

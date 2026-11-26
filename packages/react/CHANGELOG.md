@@ -7,6 +7,28 @@ change the API.
 
 ## [Unreleased]
 
+### Added
+
+- A `--ray-sidebar` token: the app's frame, for `ray-sidebar` and an app's
+  own header or status bar, with the AA check of `muted-foreground` on it.
+- `--ray-surface`: `ray-dialog`, `ray-drawer` and `ray-card` set it to their
+  color, for what paints over them.
+- `ray-table`: the parts `th` and `td`, and `column.part` (an extra part name
+  for a column's cells: `ray-table::part(mono)`), so page CSS reaches the
+  cells; `--ray-table-header-background` and
+  `--ray-table-selected-background` (`transparent`: only the checkbox shows
+  a selected row) (#497).
+
+### Fixed
+
+- `ray-sidebar` in dark: **Looks different:** its default background is a
+  gentler step from the page (`#1c1c1c` on `#141414`, was `#262626`), as in
+  light, and its border shows against it again (#494).
+- `ray-table` with `sticky-header` in a `ray-dialog`, `ray-drawer` or
+  `ray-card`: **Looks different:** the header takes the surface's color
+  (`--ray-surface`) instead of the page's, so it no longer shows as a darker
+  band in dark (#497).
+
 ## [0.26.0] - 2026-11-21
 
 ### Fixed

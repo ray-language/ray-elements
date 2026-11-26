@@ -2282,7 +2282,7 @@ export type RayStatProps = RayStatOwnProps & Omit<React.HTMLAttributes<Ray.RaySt
 export declare const RayStat: React.ForwardRefExoticComponent<RayStatProps & React.RefAttributes<Ray.RayStat>>;
 
 export interface RayTableOwnProps {
-  /** Columns: key, label, width, align, sortable, render(row, index), sort(a, b). */
+  /** Columns: key, label, width, align, sortable, part (an extra part name for its th and td cells), render(row, index), sort(a, b). */
   columns?: Ray.TableColumn[];
   /** Rows (objects). */
   data?: any[];

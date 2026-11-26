@@ -28,7 +28,7 @@ const STRINGS = {
 defineStrings(STRINGS);
 
 const styles = css`
-  :host { display: contents; --_w: 27.5rem; }
+  :host { display: contents; --_w: 27.5rem; --ray-surface: var(--ray-card); }
   :host([size="xs"]) { --_w: 20rem; }
   :host([size="sm"]) { --_w: 23.75rem; }
   :host([size="lg"]) { --_w: 38.75rem; }
