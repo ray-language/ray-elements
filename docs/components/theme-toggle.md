@@ -28,7 +28,7 @@ Texts (`setStrings`; English):
 - `theme-toggle.to-light`: light
 - `theme-toggle.to-dark`: dark
 
-Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.26.0.
+Shared rules (loading, slots, forms, events, theme, React and Vue): https://elements.raylang.dev/llms.txt. This page describes ray-elements 0.27.0.
 
 ## Example
 
