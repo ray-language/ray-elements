@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.27.1] - 2026-11-27
+
 ### Fixed
 
 - In a raylang app on a phone, `confirmDialog()` asked the system and its
