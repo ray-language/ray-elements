@@ -525,3 +525,30 @@ T.test("raylang: a window with its own title bar tints it only for a chosen them
     setHost(real);
   }
 });
+
+T.test("a native call that fails falls back to the page: confirmDialog, ray-menu native", async (T) => {
+  await customElements.whenDefined("ray-menu");
+  const before = getHost();
+  setHost({
+    name: "phone",
+    can: (op) => op === "confirm" || op === "popup_menu",
+    confirm: () => Promise.reject(new Error("ui: message dialogs are not available on mobile (v1)")),
+    popupMenu: () => Promise.reject(new Error("ui: menus are not available on mobile (v1)")),
+  });
+  const asked = confirmDialog({ label: "Disconnect?", confirmLabel: "Disconnect" });
+  await T.settle();
+  const d = [...document.querySelectorAll("ray-dialog")].find((x) => x.label === "Disconnect?");
+  T.ok(d && d.open, "the page's dialog asks");
+  d.querySelector('[data-dialog-close="confirm"]').click();
+  T.eq(await asked, true);
+
+  const box = await mount(`<ray-menu native><ray-button slot="trigger">More</ray-button><ray-menu-item value="a">A</ray-menu-item></ray-menu>`);
+  const menu = box.querySelector("ray-menu");
+  box.querySelector("ray-button").click();
+  await T.settle();
+  await T.settle();
+  T.ok(menu.open, "the page's menu opens");
+  menu.open = false;
+  box.remove();
+  setHost(before);
+});

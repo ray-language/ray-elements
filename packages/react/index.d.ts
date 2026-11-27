@@ -1850,7 +1850,7 @@ export interface RayMenuOwnProps {
   context?: boolean;
   /** Choosing an item does not close the menu. */
   keepOpen?: boolean;
-  /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
+  /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens. */
   native?: boolean;
   /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
   anchor?: Element | DOMRect | (() => DOMRect) | null;
