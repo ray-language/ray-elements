@@ -336,10 +336,29 @@ fn run(n: Native, window: int, op: string, j: json.Json) -> Result<string, strin
 
 const OPS: [string] = ["hello", "pick_files", "pick_path", "confirm", "menu_items", "run_menu", "popup_menu", "window_colors", "set_edited"];
 
+// What std/ui does not have on a phone (v1): message dialogs ("message
+// dialogs are not available on mobile") and menus, context menus included.
+// Not offered there, the page uses its own dialog and menu.
+const DESKTOP_ONLY: [string] = ["confirm", "popup_menu"];
+
+// The operations offered on `os` (platform()'s names).
+fn ops(os: string) -> [string] {
+    if (os != "ios" && os != "android") {
+        return OPS;
+    }
+    var out: [string] = [];
+    for op in OPS {
+        if (!DESKTOP_ONLY.contains(op)) {
+            out.push(op);
+        }
+    }
+    out
+}
+
 fn hello() -> string {
     json.obj().field("protocol", PROTOCOL).field("version", version.VERSION).field("platform", platform()).field(
         "ops",
-        json.list(OPS)
+        json.list(ops(platform()))
     ).render()
 }
 
@@ -681,6 +700,16 @@ fn lists_and_runs_the_items_of_submenus() {
         set_state(m.items, "recent:0", false, true);
     }
     assert(answer(n, "{\"ray-elements\":1,\"op\":\"menu_items\"}").unwrap().contains("\"tag\":\"recent:0\",\"title\":\"A\",\"shortcut\":\"\",\"enabled\":false,\"checked\":true"));
+}
+
+@test
+fn offers_on_a_phone_only_what_it_has() {
+    assert_eq(ops("macos"), OPS);
+    assert_eq(ops("linux"), OPS);
+    let phone = ops("ios");
+    assert(!phone.contains("confirm") && !phone.contains("popup_menu"));
+    assert(phone.contains("pick_files") && phone.contains("hello"));
+    assert_eq(ops("android"), phone);
 }
 
 @test

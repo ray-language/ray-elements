@@ -6,7 +6,7 @@ Import: `import "@raylang/elements/dialog";` · Category: Overlays
 
 ## `<ray-dialog>` (RayDialog, extends RayElement)
 
-Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.
+Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false, and with the ray-dialog when the system cannot (on a phone, where the bridge does not offer it, or when the call fails).
 
 Properties:
 
@@ -54,7 +54,7 @@ Vue `v-model`: `open` (updated on ray-open, ray-close).
 
 Exports (from `@raylang/elements/dialog` and `@raylang/elements`):
 
-- `function confirmDialog(options?: ConfirmOptions): Promise<boolean>`: A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog).
+- `function confirmDialog(options?: ConfirmOptions): Promise<boolean>`: A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog; it is also the fallback when the system dialog fails).
 
 Types:
 

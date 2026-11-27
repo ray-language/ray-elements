@@ -1941,9 +1941,9 @@ export interface RayCommandPaletteEventMap extends HTMLElementEventMap {
 // --- Dialog (dialog)
 /** Options of confirmDialog(). */
 export type ConfirmOptions = { label?: string; message?: string; confirmLabel?: string; cancelLabel?: string; color?: string; native?: boolean };
-/** A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog). */
+/** A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog; it is also the fallback when the system dialog fails). */
 export declare function confirmDialog(options?: ConfirmOptions): Promise<boolean>;
-/** <ray-dialog> Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false. */
+/** <ray-dialog> Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false, and with the ray-dialog when the system cannot (on a phone, where the bridge does not offer it, or when the call fails). */
 export declare class RayDialog extends RayElement {
   /** Shown as a modal. */
   open: boolean | undefined;
@@ -2043,7 +2043,7 @@ export declare class RayMenu extends Floating {
   context: boolean | undefined;
   /** Choosing an item does not close the menu. */
   keepOpen: boolean | undefined;
-  /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. */
+  /** With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens. */
   native: boolean | undefined;
   /** What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it. */
   anchor: Element | DOMRect | (() => DOMRect) | null;

@@ -12,7 +12,7 @@ Properties:
 - `placement`: `bottom-start` | `bottom` | `bottom-end` | `top-start` | `top` | `top-end` | `right-start` | `left-start`, default `bottom-start`, reflects. Preferred side and alignment: top/bottom/left/right are sides of the screen; on top and bottom, -start/-end follow the writing direction (right to left, "bottom-start" lines up the right edges).
 - `context`: boolean, reflects. Opens on right click (contextmenu) over the trigger area, at the pointer.
 - `keepOpen` (attribute `keep-open`): boolean, reflects. Choosing an item does not close the menu.
-- `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.
+- `native`: boolean, reflects. With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens.
 - `anchor` (property only): `Element | DOMRect | (() => DOMRect) | null`. What the panel is placed against instead of the trigger: an element, a DOMRect or a function returning one (a text range, the pointer; read again on every reposition). The trigger still opens it.
 
 Also the properties of Floating: `offset`.

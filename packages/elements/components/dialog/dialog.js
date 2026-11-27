@@ -311,10 +311,13 @@ export function confirmDialog({
   native = true,
 } = {}) {
   // With a native host (core/host.js), the system's modal asks instead; a
-  // red confirmation (a destructive action) gets the warning style.
+  // red confirmation (a destructive action) gets the warning style. When the
+  // system cannot show it, the page's dialog asks.
   if (native && hostCan("confirm")) {
     const style = color === "red" ? "warning" : "";
-    return getHost().confirm({ title: label, message, confirmLabel, cancelLabel, style });
+    return getHost()
+      .confirm({ title: label, message, confirmLabel, cancelLabel, style })
+      .catch(() => confirmDialog({ label, message, confirmLabel, cancelLabel, color, native: false }));
   }
   return new Promise((resolve) => {
     const d = document.createElement("ray-dialog");

@@ -7,6 +7,15 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- In a raylang app on a phone, `confirmDialog()` asked the system and its
+  promise was rejected with nothing shown: std/ui has no message dialogs on
+  iOS and Android (v1). `elements/bridge` no longer offers `confirm` or
+  `popup_menu` there, and the page falls back on its own: `confirmDialog()`
+  asks with a `ray-dialog` when the system dialog fails, and `ray-menu
+  native` opens its own panel when the system menu fails (finding #507).
+
 ## [0.27.0] - 2026-11-25
 
 ### Added

@@ -5094,7 +5094,7 @@
     },
     {
       "name": "ray-dialog",
-      "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
+      "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false, and with the ray-dialog when the system cannot (on a phone, where the bridge does not offer it, or when the call fails).",
       "attributes": [
         {
           "name": "open",
@@ -5322,7 +5322,7 @@
         },
         {
           "name": "native",
-          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+          "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens.",
           "valueSet": "v"
         },
         {

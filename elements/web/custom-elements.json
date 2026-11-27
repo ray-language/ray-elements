@@ -15162,7 +15162,7 @@
           "name": "RayDialog",
           "tagName": "ray-dialog",
           "customElement": true,
-          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false.",
+          "description": "Any slotted element with data-dialog-close closes it (its value becomes returnValue). JS: show(), close(returnValue), confirmDialog({ label, message, confirmLabel, cancelLabel, color, native }) -> Promise<boolean>; with a native host (ray-elements/core/raylang.js in a std/ui window) it asks with the system dialog unless native is false, and with the ray-dialog when the system cannot (on a phone, where the bridge does not offer it, or when the call fails).",
           "superclass": {
             "name": "RayElement"
           },
@@ -15460,7 +15460,7 @@
         {
           "kind": "function",
           "name": "confirmDialog",
-          "description": "A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog)."
+          "description": "A confirmation dialog; resolves true when confirmed. With a native host, the system dialog (native: false keeps the ray-dialog; it is also the fallback when the system dialog fails)."
         }
       ],
       "exports": [
@@ -15846,7 +15846,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens.",
               "fieldName": "native"
             },
             {
@@ -15907,7 +15907,7 @@
               "type": {
                 "text": "boolean"
               },
-              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select.",
+              "description": "With a native host (ray-elements/core/raylang.js in a std/ui window), opens as the system's context menu at the pointer: items and dividers, same ray-select. Where the system has none (a phone: the bridge does not offer it) or the call fails, the page's menu opens.",
               "attribute": "native",
               "reflects": true
             },

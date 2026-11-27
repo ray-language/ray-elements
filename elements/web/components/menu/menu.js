@@ -69,16 +69,17 @@ export class RayMenu extends Floating {
       t.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         if (!this._requestOpen(e)) return;
-        if (this._native()) {
-          this.popupNative();
-          return;
-        }
         this._point = pointRect(e.clientX, e.clientY);
         this._focusOnOpen = "first";
         const openNow = () => {
           if (this.open) this.reposition();
           else this.open = true;
         };
+        // The system's menu; the page's when the system cannot show one.
+        if (this._native()) {
+          this.popupNative().catch(openNow);
+          return;
+        }
         // macOS/Linux fire contextmenu on press: the release that follows,
         // outside the just-opened panel, would light-dismiss it. Open after it.
         if (e.buttons & 2) {
@@ -91,7 +92,11 @@ export class RayMenu extends Floating {
     }
     t.addEventListener("click", (e) => {
       if (this._native()) {
-        if (this._requestOpen(e)) this.popupNative();
+        if (!this._requestOpen(e)) return;
+        this.popupNative().catch(() => {
+          this._focusOnOpen = "first";
+          this.open = true;
+        });
         return;
       }
       if (!this.open && (this.justClosed() || !this._requestOpen(e))) return;
