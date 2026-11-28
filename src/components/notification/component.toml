@@ -138,7 +138,7 @@ description = "Shows a notification; returns its id."
 
 [component.exports.updateNotification]
 ts = "function updateNotification(id: string, options?: NotifyOptions): boolean"
-description = "Changes a shown notification and restarts its auto-close."
+description = "Changes a shown notification and restarts its auto-close. Without autoClose it keeps the one it was shown with (autoClose: false stays)."
 
 [component.exports.hideNotification]
 ts = "function hideNotification(id: string): boolean"

@@ -7,6 +7,13 @@ change the API.
 
 ## [Unreleased]
 
+### Fixed
+
+- `updateNotification(id, options)` without `autoClose` gave the notice the
+  default 4 s, so one shown with `autoClose: false` closed by itself (and
+  called its `onClose`). It now keeps the auto-close the notice was shown
+  with, and restarts it; pass `autoClose` to change it (finding #513).
+
 ## [0.27.1] - 2026-11-27
 
 ### Fixed

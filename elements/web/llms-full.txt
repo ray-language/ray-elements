@@ -3596,7 +3596,7 @@ Methods and properties:
 Exports (from `@raylang/elements/notification` and `@raylang/elements`):
 
 - `function notify(options?: NotifyOptions): string`: Shows a notification; returns its id.
-- `function updateNotification(id: string, options?: NotifyOptions): boolean`: Changes a shown notification and restarts its auto-close.
+- `function updateNotification(id: string, options?: NotifyOptions): boolean`: Changes a shown notification and restarts its auto-close. Without autoClose it keeps the one it was shown with (autoClose: false stays).
 - `function hideNotification(id: string): boolean`: Removes a notification.
 - `function clearNotifications(): void`: Removes every notification.
 - `function statusIcon(color: string): string`: The status icon a color gets: circle-check, circle-x, alert-triangle or info.

@@ -629,6 +629,7 @@ export function notify(options = {}) {
     hideNotification(id);
   });
   el._onClose = options.onClose;
+  el._autoClose = options.autoClose ?? 4000;
   t.append(el);
   // Enter from the edge: start off-screen, then let layout() transition it in.
   const top = (t.position ?? "bottom-end").startsWith("top");
@@ -642,18 +643,22 @@ export function notify(options = {}) {
   const all = t.querySelectorAll("ray-notification[data-notification-id]");
   for (let i = 0; i < all.length - (t.limit ?? 5); i++) hideNotification(all[i].dataset.notificationId);
   t.raise();
-  schedule(id, options.loading ? 0 : (options.autoClose ?? 4000));
+  schedule(id, options.loading ? 0 : el._autoClose);
   return id;
 }
 
-/** Changes a shown notification (e.g. loading -> done). Restarts its auto-close. */
+/**
+ * Changes a shown notification (e.g. loading -> done) and restarts its auto-close. Without
+ * autoClose it keeps the one it was shown with: one shown with autoClose: false still stays.
+ */
 export function updateNotification(id, options = {}) {
   const el = find(id);
   if (!el) return false;
   apply(el, options);
   if ("onClose" in options) el._onClose = options.onClose;
+  if ("autoClose" in options) el._autoClose = options.autoClose ?? 4000;
   const loading = "loading" in options ? options.loading : el.loading;
-  schedule(id, loading ? 0 : (options.autoClose ?? 4000));
+  schedule(id, loading ? 0 : el._autoClose);
   return true;
 }
 

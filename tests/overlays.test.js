@@ -444,6 +444,32 @@ T.test("notify: shows in a live region, updates, hides, auto-closes", async (T) 
   T.eq(closed, true, "onClose called");
 });
 
+T.test("updateNotification keeps the auto-close the notice was shown with (finding #513)", async (T) => {
+  clearNotifications();
+  // The hidden test window throttles timers: record the delays scheduled instead of waiting.
+  const real = window.setTimeout;
+  const delays = [];
+  window.setTimeout = (fn, ms, ...rest) => {
+    delays.push(ms);
+    return real(() => {}, 0);
+  };
+  try {
+    const short = notify({ message: "short", autoClose: 150 });
+    updateNotification(short, { message: "still short" });
+    T.eq(delays.join(), "150,150", "an update without autoClose restarts the one it was shown with");
+    delays.length = 0;
+    const stays = notify({ message: "stays", autoClose: false });
+    updateNotification(stays, { message: "still here" });
+    updateNotification(stays, { actions: [{ label: "OK" }] });
+    T.eq(delays.join(), "", "shown with autoClose: false, updates schedule no close");
+    updateNotification(stays, { autoClose: 60 });
+    T.eq(delays.join(), "60", "an explicit autoClose applies");
+  } finally {
+    window.setTimeout = real;
+    clearNotifications();
+  }
+});
+
 T.test("notify: close button, same id updates, limit", async (T) => {
   clearNotifications();
   const id = notify({ id: "job", title: "Working", loading: true });
