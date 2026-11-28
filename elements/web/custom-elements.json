@@ -21216,7 +21216,7 @@
         {
           "kind": "function",
           "name": "updateNotification",
-          "description": "Changes a shown notification and restarts its auto-close."
+          "description": "Changes a shown notification and restarts its auto-close. Without autoClose it keeps the one it was shown with (autoClose: false stays)."
         },
         {
           "kind": "function",

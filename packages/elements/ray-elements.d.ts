@@ -2677,7 +2677,7 @@ export type NotifyAction = { label: string; icon?: string | Node; variant?: "def
 export type NotifyOptions = { id?: string; title?: string; message?: string; color?: string; icon?: string; loading?: boolean; autoClose?: number | false; closable?: boolean; withBorder?: boolean; action?: NotifyAction; actions?: NotifyAction[]; onClose?: () => void };
 /** Shows a notification; returns its id. */
 export declare function notify(options?: NotifyOptions): string;
-/** Changes a shown notification and restarts its auto-close. */
+/** Changes a shown notification and restarts its auto-close. Without autoClose it keeps the one it was shown with (autoClose: false stays). */
 export declare function updateNotification(id: string, options?: NotifyOptions): boolean;
 /** Removes a notification. */
 export declare function hideNotification(id: string): boolean;
