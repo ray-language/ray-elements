@@ -7,6 +7,8 @@ change the API.
 
 ## [Unreleased]
 
+## [0.27.2] - 2026-11-28
+
 ### Fixed
 
 - `updateNotification(id, options)` without `autoClose` gave the notice the
